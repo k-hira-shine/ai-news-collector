@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 
 import feedparser
 
-from utils import data_dir, hash_url, now_iso, retry, today_str
+from utils import data_dir, hash_url, now_iso, parse_datetime, retry, today_str
 
 logger = logging.getLogger("ai-news.collector")
 
@@ -388,6 +388,21 @@ def deduplicate(items: list[dict], cache: SeenURLsCache) -> list[dict]:
     return unique
 
 
+def _filter_old_items(items: list[dict], max_age_days: int = 7) -> list[dict]:
+    """published_at が max_age_days 以上前のアイテムを除外する"""
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    before = len(items)
+    filtered = []
+    for item in items:
+        pub = parse_datetime(item.get("published_at", ""))
+        if pub is None or pub >= cutoff:
+            filtered.append(item)
+    removed = before - len(filtered)
+    if removed:
+        logger.info("Age filter (>%dd): %d → %d (%d removed)", max_age_days, before, len(filtered), removed)
+    return filtered
+
+
 def save_daily_jsonl(items: list[dict]) -> str:
     path = data_dir("daily", f"{today_str()}.jsonl")
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -458,6 +473,7 @@ def collect_all(config: dict, skip_sources: set[str] | None = None) -> tuple[lis
             logger.error("%s collection completely failed: %s", name, e)
 
     items = deduplicate(items, cache)
+    items = _filter_old_items(items, max_age_days=config.get("collection", {}).get("max_age_days", 7))
     save_daily_jsonl(items)
     cache.save()
     return items, runtime_meta

@@ -1,6 +1,9 @@
 # AI News Collector 設定ファイル
 # Primary: Gemini 2.5 Pro / Fallback: Gemini 2.5 Flash (503 時自動切替)
 
+collection:
+  max_age_days: 7
+
 x_twitter:
   search_queries:
     - "AI OR artificial intelligence OR LLM -filter:replies lang:en"
