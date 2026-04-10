@@ -91,10 +91,11 @@ class DiscordNotifier:
 
         messages: list[dict] = []
         messages.append({"embeds": [embed_header]})
-        messages.append({"embeds": [embed_top]})
 
         if x_trends_embeds:
             messages.append({"embeds": x_trends_embeds[:10]})
+
+        messages.append({"embeds": [embed_top]})
 
         chunk: list[dict] = []
         chunk_chars = 0

@@ -220,6 +220,8 @@ AI/ML と無関係な記事はスキップしてください。
             eng_str = ""
             if eng.get("likes") or eng.get("retweets"):
                 eng_str = f" | ❤️{eng.get('likes', 0)} 🔁{eng.get('retweets', 0)}"
+                if eng.get("views"):
+                    eng_str += f" 👁{eng['views']}"
 
             pub = it.get("published_at", "")[:16]
             content_preview = it.get("content", "")[:200].replace("\n", " ")
@@ -252,6 +254,13 @@ AI/ML と無関係な記事はスキップしてください。
                 bonus += self.scoring_cfg.get("official_source_bonus", 2.0)
             if item.get("is_must_follow"):
                 bonus += self.scoring_cfg.get("must_follow_bonus", 1.5)
+
+            if item.get("source") == "x":
+                likes = item.get("engagement", {}).get("likes", 0)
+                for tier in self.scoring_cfg.get("x_engagement_bonus", []):
+                    if likes >= tier["likes"]:
+                        bonus += tier["bonus"]
+                        break
 
             s["bonus"] = bonus
             s["final_score"] = min(10.0, s.get("importance_score", 0) + bonus)
@@ -289,12 +298,18 @@ AI/ML と無関係な記事はスキップしてください。
 3. top_articles: 重要度上位{self.top_n}件。各記事に rank, id, title, url, summary (1〜2文), importance_reason, category, source_label を含める
 4. category_summaries: カテゴリ({categories_str})別の要約と主要記事 (最大5件)
 5. action_items: ビジネスへの示唆・アクションアイテムを3〜5件
-6. x_trends: X/Twitter で特に盛り上がっているトピックを3〜5件。記事一覧の中から source=x のデータに着目し、エンゲージメント（いいね・RT）が高いものや、複数ユーザーが言及しているトピックを抽出してください。各トピックに:
-   - topic: トピック名（短く）
-   - description: なぜ盛り上がっているか、Xユーザーがどう反応しているか（2〜3文）
-   - buzz_level: "high" / "medium" / "low"
-   - sentiment: "positive" / "negative" / "neutral" / "mixed"
-   - representative_tweets: 代表的なツイート1〜3件（author, text, url, likes, retweets）
+6. x_trends: X/Twitter で特に盛り上がっているトピックを5〜7件抽出。これは本レポートの重要セクションです。
+   記事一覧の source=x のデータに着目し、以下の観点で分析してください:
+   - エンゲージメント（いいね・RT・閲覧数）が突出して高い投稿
+   - 複数のユーザーが同じテーマに言及しているもの
+   - 公式アカウント発の情報に対するユーザーの反応
+
+   各トピックに以下を含めてください:
+   - topic: トピック名（短く具体的に）
+   - description: なぜ盛り上がっているか・Xユーザーがどう反応しているか・議論の論点や対立軸があればそれも含めて（3〜4文で詳しく）
+   - buzz_level: "high"（いいね5000+や複数バズ投稿） / "medium"（いいね1000+） / "low"
+   - sentiment: "positive" / "negative" / "neutral" / "mixed"（賛否両論の場合）
+   - representative_tweets: 代表的なツイート1〜3件（author, text, url, likes, retweets）。エンゲージメントが高い順に選定
 """
         result = self._call_gemini(model, prompt, STAGE2_SCHEMA, budget)
 
@@ -318,11 +333,24 @@ AI/ML と無関係な記事はスキップしてください。
             official = " [公式]" if item.get("is_official") else ""
             must = " [必須]" if item.get("is_must_follow") else ""
 
+            eng = item.get("engagement", {})
+            eng_parts = []
+            if eng.get("likes"):
+                eng_parts.append(f"❤️{eng['likes']}")
+            if eng.get("retweets"):
+                eng_parts.append(f"🔁{eng['retweets']}")
+            if eng.get("views"):
+                eng_parts.append(f"👁{eng['views']}")
+            if eng.get("bookmarks"):
+                eng_parts.append(f"🔖{eng['bookmarks']}")
+            eng_str = f"  Engagement: {' '.join(eng_parts)}\n" if eng_parts else ""
+
             lines.append(
                 f"[{s['id']}] Score: {s['final_score']:.1f} (LLM:{s.get('importance_score', 0)} +bonus:{s.get('bonus', 0):.1f}) | {s.get('category', '?')}{official}{must}\n"
                 f"  Title: {item.get('title', '')}\n"
                 f"  URL: {item.get('url', '')}\n"
                 f"  Source: {item.get('source', '')}:{item.get('source_name', '')}\n"
+                f"{eng_str}"
                 f"  {item.get('content', '')[:500]}"
             )
         return "\n\n".join(lines)

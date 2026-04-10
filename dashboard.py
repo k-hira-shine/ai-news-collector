@@ -147,28 +147,7 @@ def _render_latest(a: dict) -> str:
         f"{prev_html}</div>"
     )
 
-    # Top articles
-    articles_html: list[str] = []
-    for art in a.get("top_articles", [])[:10]:
-        rank = art.get("rank", 0)
-        cls = {1: " gold", 2: " silver", 3: " bronze"}.get(rank, "")
-        title = escape(art.get("title", ""))
-        url = escape(art.get("url", ""))
-        summary = escape(art.get("summary", ""))
-        cat = escape(art.get("category", ""))
-        src = escape(art.get("source_label", ""))
-
-        link = f'<a href="{url}" target="_blank" rel="noopener">{title}</a>' if url else title
-        articles_html.append(
-            f'<div class="article">'
-            f'<span class="rank{cls}">{rank}</span>{link}'
-            f'<div class="meta">{cat} · {src}</div>'
-            f'<div class="summary">{summary}</div></div>'
-        )
-
-    parts.append(f'<div class="card"><h2>⭐ TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
-
-    # X Trends
+    # X Trends (TOP 記事の前に配置)
     x_trends = a.get("x_trends", [])
     if x_trends:
         trends_html: list[str] = []
@@ -207,6 +186,27 @@ def _render_latest(a: dict) -> str:
             )
 
         parts.append(f'<div class="card"><h2>🐦 X/Twitter で話題</h2>{"".join(trends_html)}</div>')
+
+    # Top articles
+    articles_html: list[str] = []
+    for art in a.get("top_articles", [])[:10]:
+        rank = art.get("rank", 0)
+        cls = {1: " gold", 2: " silver", 3: " bronze"}.get(rank, "")
+        title = escape(art.get("title", ""))
+        url = escape(art.get("url", ""))
+        summary = escape(art.get("summary", ""))
+        cat = escape(art.get("category", ""))
+        src = escape(art.get("source_label", ""))
+
+        link = f'<a href="{url}" target="_blank" rel="noopener">{title}</a>' if url else title
+        articles_html.append(
+            f'<div class="article">'
+            f'<span class="rank{cls}">{rank}</span>{link}'
+            f'<div class="meta">{cat} · {src}</div>'
+            f'<div class="summary">{summary}</div></div>'
+        )
+
+    parts.append(f'<div class="card"><h2>⭐ TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
 
     # Category summaries
     cats_html: list[str] = []
