@@ -65,14 +65,21 @@ def time_slot() -> str:
 
 
 def parse_datetime(s: str) -> datetime | None:
-    """ISO 形式の日時文字列をパース (失敗時 None)"""
+    """ISO 形式 / RFC 2822 形式の日時文字列をパース (失敗時 None)"""
     if not s:
         return None
+    # ISO 8601
     try:
         dt = datetime.fromisoformat(s.replace("Z", "+00:00"))
         if dt.tzinfo is None:
             dt = dt.replace(tzinfo=timezone.utc)
         return dt
+    except (ValueError, TypeError):
+        pass
+    # RFC 2822 (X/Twitter: "Sat Apr 04 23:28:36 +0000 2026")
+    from email.utils import parsedate_to_datetime
+    try:
+        return parsedate_to_datetime(s)
     except (ValueError, TypeError):
         return None
 
