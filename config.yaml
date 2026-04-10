@@ -44,9 +44,7 @@ rss_feeds:
     - name: "DeepMind Blog"
       url: "https://deepmind.google/blog/rss.xml"
       priority: critical
-    - name: "Meta AI Blog"
-      url: "https://ai.meta.com/blog/rss/"
-      priority: critical
+    # Meta AI Blog: RSS なし (2026-04 確認)。@MetaAI の X で代替収集。
     - name: "Hugging Face Blog"
       url: "https://huggingface.co/blog/feed.xml"
       priority: high
@@ -70,6 +68,7 @@ rss_feeds:
       url: "https://hnrss.org/frontpage?points=100&q=AI+OR+LLM+OR+GPT"
     - name: "arXiv cs.AI"
       url: "https://rss.arxiv.org/rss/cs.AI"
+      max_entries: 50
   domestic:
     - name: "ITmedia AI+"
       url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml"

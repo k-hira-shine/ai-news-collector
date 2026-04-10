@@ -153,7 +153,10 @@ def _fetch_rss_feed(feed_info: dict, cutoff: datetime) -> list[dict]:
     priority = feed_info.get("priority", "normal")
     items: list[dict] = []
 
+    max_entries = feed_info.get("max_entries", 0)
     for entry in parsed.entries:
+        if max_entries and len(items) >= max_entries:
+            break
         pub_date = _parse_feed_date(entry)
         if pub_date and pub_date < cutoff:
             continue
