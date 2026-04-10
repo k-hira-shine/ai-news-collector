@@ -223,7 +223,7 @@ AI/ML と無関係な記事はスキップしてください。
 """
         fallback = self.models.get("fallback", "gemini-2.5-flash")
         result = self._call_gemini(model, prompt, STAGE1_SCHEMA, budget, fallback_model=fallback)
-        return result.get("scored_items", [])
+        return self._validate_stage1_result(result)
 
     def _compress_items_for_stage1(self, items: list[dict]) -> str:
         lines: list[str] = []
@@ -330,10 +330,12 @@ AI/ML と無関係な記事はスキップしてください。
    - representative_tweets: 代表的なツイート1〜3件（author, text, url, likes, retweets）。エンゲージメントが高い順に選定
 """
         fallback = self.models.get("fallback", "gemini-2.5-flash")
-        result = self._call_gemini(model, prompt, STAGE2_SCHEMA, budget, fallback_model=fallback)
+        result = self._validate_stage2_result(
+            self._call_gemini(model, prompt, STAGE2_SCHEMA, budget, fallback_model=fallback)
+        )
 
         # id→url / title のフォールバック補完
-        for art in result.get("top_articles", []):
+        for art in result["top_articles"]:
             item = items_by_id.get(art.get("id", ""), {})
             if not art.get("url"):
                 art["url"] = item.get("url", "")
@@ -490,6 +492,51 @@ AI/ML と無関係な記事はスキップしてください。
         if not isinstance(parsed, dict):
             raise ValueError(f"Expected dict from Gemini, got {type(parsed).__name__}")
         return parsed
+
+    @staticmethod
+    def _require_list_field(payload: dict, field: str) -> list:
+        value = payload.get(field)
+        if not isinstance(value, list):
+            raise ValueError(f"Expected '{field}' to be a list, got {type(value).__name__}")
+        return value
+
+    @staticmethod
+    def _require_dict_field(payload: dict, field: str) -> dict:
+        value = payload.get(field)
+        if not isinstance(value, dict):
+            raise ValueError(f"Expected '{field}' to be an object, got {type(value).__name__}")
+        return value
+
+    @classmethod
+    def _validate_stage1_result(cls, payload: dict) -> list[dict]:
+        return cls._require_list_field(payload, "scored_items")
+
+    @classmethod
+    def _validate_stage2_result(cls, payload: dict) -> dict:
+        trend_summary = payload.get("trend_summary")
+        if not isinstance(trend_summary, str):
+            raise ValueError(
+                f"Expected 'trend_summary' to be a string, got {type(trend_summary).__name__}"
+            )
+
+        trend_evolution = cls._require_dict_field(payload, "trend_evolution")
+        since_last = trend_evolution.get("since_last")
+        if not isinstance(since_last, str):
+            raise ValueError(
+                f"Expected 'trend_evolution.since_last' to be a string, got {type(since_last).__name__}"
+            )
+        tracked_topics = trend_evolution.get("tracked_topics")
+        if not isinstance(tracked_topics, list):
+            raise ValueError(
+                "Expected 'trend_evolution.tracked_topics' to be a list, "
+                f"got {type(tracked_topics).__name__}"
+            )
+
+        cls._require_list_field(payload, "top_articles")
+        cls._require_list_field(payload, "category_summaries")
+        cls._require_list_field(payload, "action_items")
+        cls._require_list_field(payload, "x_trends")
+        return payload
 
     # ── 前日分析の読み込み / 保存 ──────────────────────────────────────
 

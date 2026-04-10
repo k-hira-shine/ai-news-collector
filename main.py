@@ -30,16 +30,18 @@ def main() -> None:
     config = load_config()
 
     # ── Step 1: Collect ───────────────────────────────────────────────
+    x_runtime = {}
     if args.analyze_only:
         from collector import _load_latest_daily
         items = _load_latest_daily()
         logger.info("Analyze-only: loaded %d items from latest JSONL", len(items))
     else:
-        from collector import collect_all
+        from collector import _should_warn_x_cookies, collect_all
         skip_sources: set[str] = set()
         if args.skip_x:
             skip_sources.add("x")
-        items = collect_all(config, skip_sources=skip_sources)
+        items, runtime_meta = collect_all(config, skip_sources=skip_sources)
+        x_runtime = runtime_meta.get("x", {})
 
     x_items = [i for i in items if i["source"] == "x"]
     stats = {
@@ -54,13 +56,9 @@ def main() -> None:
 
     cookies_may_be_expired = False
     if not args.analyze_only and not args.skip_x:
-        cookies_val = os.environ.get("X_COOKIES", "")
-        has_cookies = bool(cookies_val and "auth_token=" in cookies_val)
-        has_apify = bool(os.environ.get("APIFY_TOKEN"))
-        x_search_items = [i for i in x_items if not i.get("is_must_follow")]
-        cookies_may_be_expired = has_cookies and has_apify and len(x_search_items) == 0
+        cookies_may_be_expired = _should_warn_x_cookies(x_runtime)
         if cookies_may_be_expired:
-            logger.warning("⚠️ X_COOKIES may be expired — search returned 0, only timeline available")
+            logger.warning("⚠️ X_COOKIES may be expired — search returned 0 before filters/dedup")
 
     if args.dry_run:
         logger.info("Dry run — skipping analysis and notification")

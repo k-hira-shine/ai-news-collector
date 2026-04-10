@@ -21,10 +21,40 @@ ssl._create_default_https_context = ssl._create_unverified_context
 # ━━━━━━━━━━━━━━━━ X/Twitter (Apify) ━━━━━━━━━━━━━━━━
 
 
-def collect_x_twitter(config: dict) -> list[dict]:
+def _default_x_runtime_meta() -> dict:
+    return {
+        "has_apify": False,
+        "has_cookies": False,
+        "search_queries_configured": 0,
+        "search_total": 0,
+        "search_error_count": 0,
+    }
+
+
+def _should_warn_x_cookies(meta: dict) -> bool:
+    """Cookie expiry warning is only valid for clean zero-result searches."""
+    return bool(
+        meta.get("has_apify")
+        and meta.get("has_cookies")
+        and meta.get("search_queries_configured", 0) > 0
+        and meta.get("search_error_count", 0) == 0
+        and meta.get("search_total", 0) == 0
+    )
+
+
+def _collect_x_twitter_with_meta(config: dict) -> tuple[list[dict], dict]:
+    meta = _default_x_runtime_meta()
+    items = collect_x_twitter(config, runtime_meta=meta)
+    return items, meta
+
+
+def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[dict]:
     """Apify 経由で X/Twitter を収集 (検索 + 必須アカウント)"""
+    meta = runtime_meta if runtime_meta is not None else _default_x_runtime_meta()
     token = os.environ.get("APIFY_TOKEN")
     cookies = os.environ.get("X_COOKIES", "")
+    meta["has_apify"] = bool(token)
+    meta["has_cookies"] = bool(cookies and "auth_token=" in cookies)
     if not token:
         logger.warning("APIFY_TOKEN not set — skipping X/Twitter")
         return []
@@ -38,12 +68,15 @@ def collect_x_twitter(config: dict) -> list[dict]:
     client = ApifyClient(token)
     x_cfg = config.get("x_twitter", {})
     actor_id = x_cfg.get("apify_actor", "get-leads/all-in-one-x-scraper")
+    search_queries = x_cfg.get("search_queries", [])
+    meta["search_queries_configured"] = len(search_queries)
     items: list[dict] = []
-    has_cookies = bool(cookies and "auth_token=" in cookies)
+    has_cookies = meta["has_cookies"]
 
     if has_cookies:
-        search_total = 0
-        for query in x_cfg.get("search_queries", []):
+        if not search_queries:
+            logger.info("X search queries not configured — skipping search queries")
+        for query in search_queries:
             try:
                 run_input: dict = {
                     "scrapeMode": "x-tweet-scraper",
@@ -58,12 +91,13 @@ def collect_x_twitter(config: dict) -> list[dict]:
                 for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                     items.append(_normalize_tweet(tweet))
                     count += 1
-                search_total += count
+                meta["search_total"] += count
                 logger.info("X search '%s…': %d tweets", query[:40], count)
             except Exception as e:
+                meta["search_error_count"] += 1
                 logger.error("X search '%s…' failed: %s", query[:40], e)
 
-        if search_total == 0:
+        if _should_warn_x_cookies(meta):
             logger.warning(
                 "⚠️ X search returned 0 results with cookies — "
                 "cookies may be expired. Update X_COOKIES secret."
@@ -394,7 +428,7 @@ def _load_latest_daily() -> list[dict]:
 # ━━━━━━━━━━━━━━━━ オーケストレータ ━━━━━━━━━━━━━━━━
 
 
-def collect_all(config: dict, skip_sources: set[str] | None = None) -> list[dict]:
+def collect_all(config: dict, skip_sources: set[str] | None = None) -> tuple[list[dict], dict]:
     """全ソースから収集し、重複排除して保存"""
     skip = skip_sources or set()
     cache = SeenURLsCache(
@@ -402,8 +436,9 @@ def collect_all(config: dict, skip_sources: set[str] | None = None) -> list[dict
     )
 
     items: list[dict] = []
+    runtime_meta = {"x": _default_x_runtime_meta()}
     sources = [
-        (lambda: collect_x_twitter(config), "X/Twitter", "x"),
+        (lambda: _collect_x_twitter_with_meta(config), "X/Twitter", "x"),
         (lambda: collect_rss(config), "RSS", "rss"),
         (lambda: collect_youtube(config), "YouTube", "youtube"),
     ]
@@ -413,11 +448,16 @@ def collect_all(config: dict, skip_sources: set[str] | None = None) -> list[dict
             logger.info("Skipping %s (--skip-%s)", name, key)
             continue
         try:
-            items.extend(source_fn())
+            collected = source_fn()
+            if key == "x":
+                source_items, runtime_meta["x"] = collected
+            else:
+                source_items = collected
+            items.extend(source_items)
         except Exception as e:
             logger.error("%s collection completely failed: %s", name, e)
 
     items = deduplicate(items, cache)
     save_daily_jsonl(items)
     cache.save()
-    return items
+    return items, runtime_meta
