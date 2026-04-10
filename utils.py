@@ -55,7 +55,7 @@ def now_iso() -> str:
 
 
 def today_str() -> str:
-    return datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    return datetime.now(zoneinfo.ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d")
 
 
 def time_slot() -> str:
