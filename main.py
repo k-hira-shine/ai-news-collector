@@ -54,9 +54,11 @@ def main() -> None:
 
     cookies_may_be_expired = False
     if not args.analyze_only and not args.skip_x:
-        cookies_set = bool(os.environ.get("X_COOKIES", ""))
+        cookies_val = os.environ.get("X_COOKIES", "")
+        has_cookies = bool(cookies_val and "auth_token=" in cookies_val)
+        has_apify = bool(os.environ.get("APIFY_TOKEN"))
         x_search_items = [i for i in x_items if not i.get("is_must_follow")]
-        cookies_may_be_expired = cookies_set and len(x_search_items) == 0
+        cookies_may_be_expired = has_cookies and has_apify and len(x_search_items) == 0
         if cookies_may_be_expired:
             logger.warning("⚠️ X_COOKIES may be expired — search returned 0, only timeline available")
 

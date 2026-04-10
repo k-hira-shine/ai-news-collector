@@ -4,6 +4,7 @@ import functools
 import hashlib
 import logging
 import os
+import random
 import time
 import zoneinfo
 from datetime import datetime, timezone
@@ -18,7 +19,6 @@ def setup_logging(level=logging.INFO) -> logging.Logger:
 
 def retry(max_retries=3, base_delay=2, max_delay=30, exceptions=(Exception,)):
     """Exponential backoff リトライデコレータ（ジッター付き）"""
-    import random
 
     def decorator(func):
         @functools.wraps(func)

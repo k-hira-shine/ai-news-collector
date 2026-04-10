@@ -437,8 +437,15 @@ AI/ML と無関係な記事はスキップしてください。
 
     @staticmethod
     def _is_server_error(exc: Exception) -> bool:
+        for attr in ("status_code", "code"):
+            try:
+                code = int(getattr(exc, attr, 0) or 0)
+                if code in (429, 500, 502, 503):
+                    return True
+            except (TypeError, ValueError):
+                pass
         msg = str(exc).lower()
-        return "503" in msg or "unavailable" in msg or "overloaded" in msg
+        return any(k in msg for k in ("503", "429", "unavailable", "overloaded", "quota", "resource_exhausted"))
 
     @retry(max_retries=4, base_delay=15, max_delay=120)
     def _call_gemini_single(
@@ -471,13 +478,18 @@ AI/ML と無関係な記事はスキップしてください。
             raise ValueError("Empty response from Gemini")
 
         try:
-            return json.loads(text)
+            parsed = json.loads(text)
         except json.JSONDecodeError:
             match = re.search(r"```(?:json)?\s*\n(.*?)\n```", text, re.DOTALL)
             if match:
-                return json.loads(match.group(1))
-            logger.error("Failed to parse Gemini response: %s…", text[:500])
-            raise
+                parsed = json.loads(match.group(1))
+            else:
+                logger.error("Failed to parse Gemini response: %s…", text[:500])
+                raise
+
+        if not isinstance(parsed, dict):
+            raise ValueError(f"Expected dict from Gemini, got {type(parsed).__name__}")
+        return parsed
 
     # ── 前日分析の読み込み / 保存 ──────────────────────────────────────
 
