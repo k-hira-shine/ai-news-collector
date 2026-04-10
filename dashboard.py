@@ -91,6 +91,17 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .cat-card .cat-summary {{ font-size: 0.9rem; color: var(--muted); }}
 .action {{ padding: 0.4rem 0; }}
 .action::before {{ content: "💡"; margin-right: 0.5rem; }}
+.x-trend {{ padding: 0.8rem 0; border-bottom: 1px solid var(--surface2); }}
+.x-trend:last-child {{ border-bottom: none; }}
+.x-trend .topic {{ font-weight: 700; font-size: 1.05rem; }}
+.x-trend .desc {{ margin-top: 0.3rem; font-size: 0.95rem; }}
+.x-trend .tweet {{ background: var(--surface2); border-radius: 8px; padding: 0.6rem 0.8rem; margin-top: 0.5rem; font-size: 0.9rem; }}
+.x-trend .tweet .author {{ color: var(--blue); font-weight: 600; }}
+.x-trend .tweet .eng {{ color: var(--muted); font-size: 0.8rem; margin-top: 0.2rem; }}
+.buzz {{ display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.8rem; margin-left: 0.5rem; }}
+.buzz-high {{ background: #dc262633; color: var(--red); }}
+.buzz-medium {{ background: #f59e0b33; color: var(--yellow); }}
+.buzz-low {{ background: #1e40af33; color: var(--blue); }}
 .history-chart {{ display: flex; align-items: flex-end; gap: 4px; height: 100px; margin-top: 1rem; }}
 .history-bar {{ flex: 1; background: var(--accent); border-radius: 4px 4px 0 0; min-width: 24px; position: relative; }}
 .history-bar .label {{ position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }}
@@ -156,6 +167,46 @@ def _render_latest(a: dict) -> str:
         )
 
     parts.append(f'<div class="card"><h2>⭐ TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
+
+    # X Trends
+    x_trends = a.get("x_trends", [])
+    if x_trends:
+        trends_html: list[str] = []
+        buzz_labels = {"high": "🔥 HIGH", "medium": "🔥 MEDIUM", "low": "LOW"}
+        buzz_css = {"high": "buzz-high", "medium": "buzz-medium", "low": "buzz-low"}
+        sentiment_icons = {"positive": "😊", "negative": "😟", "neutral": "😐", "mixed": "🤔"}
+
+        for tr in x_trends:
+            topic = escape(tr.get("topic", ""))
+            desc = escape(tr.get("description", ""))
+            bl = tr.get("buzz_level", "")
+            sent = sentiment_icons.get(tr.get("sentiment", ""), "")
+            buzz_tag = f'<span class="buzz {buzz_css.get(bl, "")}">{buzz_labels.get(bl, bl)}</span>'
+
+            tweets_html = ""
+            for tw in tr.get("representative_tweets", [])[:2]:
+                tw_author = escape(tw.get("author", ""))
+                tw_text = escape(tw.get("text", "")[:200])
+                tw_url = escape(tw.get("url", ""))
+                tw_likes = tw.get("likes", 0)
+                tw_rts = tw.get("retweets", 0)
+                author_link = f'<a href="{tw_url}" target="_blank" rel="noopener">@{tw_author}</a>' if tw_url else f"@{tw_author}"
+                eng_parts = []
+                if tw_likes:
+                    eng_parts.append(f"❤️ {tw_likes:,}")
+                if tw_rts:
+                    eng_parts.append(f"🔁 {tw_rts:,}")
+                eng_html = f'<div class="eng">{" · ".join(eng_parts)}</div>' if eng_parts else ""
+                tweets_html += f'<div class="tweet"><span class="author">{author_link}</span> {tw_text}{eng_html}</div>'
+
+            trends_html.append(
+                f'<div class="x-trend">'
+                f'<span class="topic">{sent} {topic}</span>{buzz_tag}'
+                f'<div class="desc">{desc}</div>'
+                f'{tweets_html}</div>'
+            )
+
+        parts.append(f'<div class="card"><h2>🐦 X/Twitter で話題</h2>{"".join(trends_html)}</div>')
 
     # Category summaries
     cats_html: list[str] = []

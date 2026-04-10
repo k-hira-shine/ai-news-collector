@@ -21,6 +21,7 @@ COLORS = {
     "ユースケース": 0x3498DB,  # blue
     "action": 0xE67E22,  # orange
     "stats": 0x95A5A6,  # grey
+    "x_trends": 0x1DA1F2,  # twitter blue
 }
 
 SLOT_LABELS = {"morning": "朝便", "evening": "夕便"}
@@ -81,6 +82,9 @@ class DiscordNotifier:
         # Message 3+: カテゴリ別
         category_embeds = self._build_category_embeds(analysis)
 
+        # Message: X トレンド
+        x_trends_embeds = self._build_x_trends_embeds(analysis)
+
         # Message N: アクションアイテム + 統計
         embed_action = self._build_action_embed(analysis)
         embed_stats = self._build_stats_embed(stats)
@@ -88,6 +92,9 @@ class DiscordNotifier:
         messages: list[dict] = []
         messages.append({"embeds": [embed_header]})
         messages.append({"embeds": [embed_top]})
+
+        if x_trends_embeds:
+            messages.append({"embeds": x_trends_embeds[:10]})
 
         chunk: list[dict] = []
         chunk_chars = 0
@@ -183,6 +190,42 @@ class DiscordNotifier:
                 }
             )
         return embeds
+
+    def _build_x_trends_embeds(self, analysis: dict) -> list[dict]:
+        trends = analysis.get("x_trends", [])
+        if not trends:
+            return []
+
+        buzz_icons = {"high": "🔥🔥🔥", "medium": "🔥🔥", "low": "🔥"}
+        sentiment_icons = {
+            "positive": "😊", "negative": "😟",
+            "neutral": "😐", "mixed": "🤔",
+        }
+
+        lines: list[str] = []
+        for tr in trends:
+            topic = tr.get("topic", "")
+            desc = tr.get("description", "")
+            buzz = buzz_icons.get(tr.get("buzz_level", ""), "🔥")
+            sent = sentiment_icons.get(tr.get("sentiment", ""), "")
+
+            lines.append(f"**{buzz} {topic}** {sent}\n{desc}")
+
+            for tw in tr.get("representative_tweets", [])[:2]:
+                author = tw.get("author", "")
+                text = tw.get("text", "")[:120]
+                url = tw.get("url", "")
+                likes = tw.get("likes", 0)
+                rts = tw.get("retweets", 0)
+                eng = f"❤️{likes} 🔁{rts}" if likes or rts else ""
+                link = f"[@{author}]({url})" if url else f"@{author}"
+                lines.append(f"　> {link}: {text}… {eng}")
+
+        return [{
+            "title": "🐦 X/Twitter で話題",
+            "description": "\n\n".join(lines)[:4096],
+            "color": COLORS["x_trends"],
+        }]
 
     def _build_action_embed(self, analysis: dict) -> dict:
         items = analysis.get("action_items", [])

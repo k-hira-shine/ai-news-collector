@@ -88,8 +88,35 @@ STAGE2_SCHEMA = {
             },
         },
         "action_items": {"type": "array", "items": {"type": "string"}},
+        "x_trends": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "topic": {"type": "string"},
+                    "description": {"type": "string"},
+                    "buzz_level": {"type": "string"},
+                    "sentiment": {"type": "string"},
+                    "representative_tweets": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "author": {"type": "string"},
+                                "text": {"type": "string"},
+                                "url": {"type": "string"},
+                                "likes": {"type": "integer"},
+                                "retweets": {"type": "integer"},
+                            },
+                            "required": ["author", "text"],
+                        },
+                    },
+                },
+                "required": ["topic", "description", "buzz_level"],
+            },
+        },
     },
-    "required": ["trend_summary", "top_articles", "category_summaries", "action_items"],
+    "required": ["trend_summary", "top_articles", "category_summaries", "action_items", "x_trends"],
 }
 
 
@@ -262,6 +289,12 @@ AI/ML と無関係な記事はスキップしてください。
 3. top_articles: 重要度上位{self.top_n}件。各記事に rank, id, title, url, summary (1〜2文), importance_reason, category, source_label を含める
 4. category_summaries: カテゴリ({categories_str})別の要約と主要記事 (最大5件)
 5. action_items: ビジネスへの示唆・アクションアイテムを3〜5件
+6. x_trends: X/Twitter で特に盛り上がっているトピックを3〜5件。記事一覧の中から source=x のデータに着目し、エンゲージメント（いいね・RT）が高いものや、複数ユーザーが言及しているトピックを抽出してください。各トピックに:
+   - topic: トピック名（短く）
+   - description: なぜ盛り上がっているか、Xユーザーがどう反応しているか（2〜3文）
+   - buzz_level: "high" / "medium" / "low"
+   - sentiment: "positive" / "negative" / "neutral" / "mixed"
+   - representative_tweets: 代表的なツイート1〜3件（author, text, url, likes, retweets）
 """
         result = self._call_gemini(model, prompt, STAGE2_SCHEMA, budget)
 
@@ -389,4 +422,5 @@ AI/ML と無関係な記事はスキップしてください。
             "top_articles": [],
             "category_summaries": [],
             "action_items": [],
+            "x_trends": [],
         }
