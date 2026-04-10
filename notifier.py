@@ -1,0 +1,251 @@
+"""Discord Webhook で分析結果を Embed 形式で配信"""
+
+import logging
+import os
+import time
+
+import requests
+
+from utils import retry, today_str
+
+logger = logging.getLogger("ai-news.notifier")
+
+COLORS = {
+    "header": 0x5865F2,  # blurple
+    "top": 0xED4245,  # red
+    "モデル/ツール": 0x57F287,  # green
+    "企業動向": 0xFEE75C,  # yellow
+    "規制/政策": 0xEB459E,  # fuchsia
+    "研究論文": 0x5865F2,  # blurple
+    "資金調達": 0xF47B67,  # coral
+    "ユースケース": 0x3498DB,  # blue
+    "action": 0xE67E22,  # orange
+    "stats": 0x95A5A6,  # grey
+}
+
+SLOT_LABELS = {"morning": "朝便", "evening": "夕便"}
+
+
+class DiscordNotifier:
+    def __init__(
+        self,
+        webhook_url: str | None = None,
+        delay: float = 0.5,
+        ranking_top: int = 10,
+        max_items_per_category: int = 5,
+    ):
+        self.webhook_url = webhook_url or os.environ.get("DISCORD_WEBHOOK_URL", "")
+        self.delay = delay
+        self.ranking_top = ranking_top
+        self.max_items_per_category = max_items_per_category
+
+    # ── public ────────────────────────────────────────────────────────
+
+    def notify(self, analysis: dict, stats: dict) -> bool:
+        """分析結果を Discord に配信 (複数メッセージ分割)"""
+        if not self.webhook_url:
+            logger.warning("DISCORD_WEBHOOK_URL not set — skipping notification")
+            return False
+
+        if not analysis.get("top_articles"):
+            return self._send_simple("⚠️ 本日の収集データがありません。")
+
+        messages = self._build_messages(analysis, stats)
+        ok = True
+        for i, payload in enumerate(messages):
+            if i > 0:
+                time.sleep(self.delay)
+            if not self._send_payload(payload):
+                ok = False
+        return ok
+
+    def send_status(self, message: str) -> bool:
+        """ステータス通知 (プレーンテキスト)"""
+        if not self.webhook_url:
+            return False
+        return self._send_simple(message)
+
+    # ── メッセージ構築 ─────────────────────────────────────────────────
+
+    def _build_messages(self, analysis: dict, stats: dict) -> list[dict]:
+        """6000文字制限を考慮して複数メッセージに分割"""
+        slot = SLOT_LABELS.get(analysis.get("slot", ""), "")
+        date_label = today_str()
+
+        # Message 1: ヘッダー + トレンド + 前日比
+        embed_header = self._build_header_embed(analysis, date_label, slot)
+
+        # Message 2: TOP ランキング
+        embed_top = self._build_top_embed(analysis)
+
+        # Message 3+: カテゴリ別
+        category_embeds = self._build_category_embeds(analysis)
+
+        # Message N: アクションアイテム + 統計
+        embed_action = self._build_action_embed(analysis)
+        embed_stats = self._build_stats_embed(stats)
+
+        messages: list[dict] = []
+        messages.append({"embeds": [embed_header]})
+        messages.append({"embeds": [embed_top]})
+
+        chunk: list[dict] = []
+        chunk_chars = 0
+        for emb in category_embeds:
+            emb_len = self._embed_char_count(emb)
+            if chunk and (chunk_chars + emb_len > 5500 or len(chunk) >= 10):
+                messages.append({"embeds": chunk})
+                chunk = []
+                chunk_chars = 0
+            chunk.append(emb)
+            chunk_chars += emb_len
+        if chunk:
+            messages.append({"embeds": chunk})
+
+        footer_embeds = [embed_action]
+        if embed_stats:
+            footer_embeds.append(embed_stats)
+        messages.append({"embeds": footer_embeds})
+
+        return messages
+
+    def _build_header_embed(self, analysis: dict, date: str, slot: str) -> dict:
+        trend = analysis.get("trend_summary", "")
+        pdc = analysis.get("previous_day_comparison", {})
+
+        desc_parts = [f"**📊 今日の注目トレンド**\n{trend}"]
+
+        prev_lines: list[str] = []
+        if pdc.get("continuing"):
+            prev_lines.append("**継続:** " + "、".join(pdc["continuing"]))
+        if pdc.get("new_topics"):
+            prev_lines.append("**新規:** " + "、".join(pdc["new_topics"]))
+        if pdc.get("fading"):
+            prev_lines.append("**沈静化:** " + "、".join(pdc["fading"]))
+        if prev_lines:
+            desc_parts.append("**前日からの流れ**\n" + "\n".join(prev_lines))
+
+        return {
+            "title": f"🤖 AI News {date} {slot}",
+            "description": "\n\n".join(desc_parts)[:4096],
+            "color": COLORS["header"],
+        }
+
+    def _build_top_embed(self, analysis: dict) -> dict:
+        articles = analysis.get("top_articles", [])[:self.ranking_top]
+        medals = ("🥇", "🥈", "🥉", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣", "🔟")
+
+        lines: list[str] = []
+        for i, art in enumerate(articles):
+            medal = medals[i] if i < len(medals) else f"{i + 1}."
+            title = art.get("title", "")[:80]
+            url = art.get("url", "")
+            summary = art.get("summary", "")
+            cat = art.get("category", "")
+            src = art.get("source_label", "")
+
+            link = f"[{title}]({url})" if url else title
+            lines.append(f"{medal} {link}\n　→ {summary} [{cat}] [{src}]")
+
+        return {
+            "title": f"⭐ 重要ニュース TOP{len(articles)}",
+            "description": "\n\n".join(lines)[:4096],
+            "color": COLORS["top"],
+        }
+
+    def _build_category_embeds(self, analysis: dict) -> list[dict]:
+        embeds: list[dict] = []
+        for cat_sum in analysis.get("category_summaries", []):
+            cat = cat_sum.get("category", "")
+            summary = cat_sum.get("summary", "")
+            count = cat_sum.get("count", 0)
+            articles = cat_sum.get("key_articles", [])[:self.max_items_per_category]
+
+            lines: list[str] = [summary]
+            if articles:
+                lines.append("")
+                for a in articles:
+                    t = a.get("title", "")[:60]
+                    u = a.get("url", "")
+                    link = f"[{t}]({u})" if u else t
+                    sub = a.get("summary", "")
+                    line = f"• {link}"
+                    if sub:
+                        line += f"\n　{sub}"
+                    lines.append(line)
+
+            count_str = f" ({count}件)" if count else ""
+            embeds.append(
+                {
+                    "title": f"📁 {cat}{count_str}",
+                    "description": "\n".join(lines)[:4096],
+                    "color": COLORS.get(cat, 0x99AAB5),
+                }
+            )
+        return embeds
+
+    def _build_action_embed(self, analysis: dict) -> dict:
+        items = analysis.get("action_items", [])
+        lines = [f"• {a}" for a in items]
+        return {
+            "title": "💡 ビジネスへの示唆",
+            "description": "\n".join(lines)[:4096] if lines else "なし",
+            "color": COLORS["action"],
+        }
+
+    def _build_stats_embed(self, stats: dict) -> dict | None:
+        if not stats:
+            return None
+
+        parts: list[str] = []
+        if stats.get("total"):
+            src_line = " / ".join(
+                f"{k}: {v}"
+                for k, v in [
+                    ("X", stats.get("x_count", 0)),
+                    ("RSS", stats.get("rss_count", 0)),
+                    ("YouTube", stats.get("youtube_count", 0)),
+                ]
+            )
+            parts.append(f"収集: {stats['total']}件 ({src_line})")
+        if stats.get("official_count"):
+            parts.append(f"公式ソース: {stats['official_count']}件")
+        if stats.get("must_follow_count"):
+            parts.append(f"必須アカウント: {stats['must_follow_count']}件")
+        if stats.get("elapsed_sec"):
+            parts.append(f"処理時間: {stats['elapsed_sec']:.0f}秒")
+
+        return {
+            "title": "📈 収集統計",
+            "description": "\n".join(parts)[:4096],
+            "color": COLORS["stats"],
+        }
+
+    # ── Discord API 送信 ───────────────────────────────────────────────
+
+    @retry(max_retries=2, base_delay=2)
+    def _send_payload(self, payload: dict) -> bool:
+        res = requests.post(self.webhook_url, json=payload, timeout=30)
+        if res.status_code in (200, 204):
+            return True
+        if res.status_code == 429:
+            try:
+                retry_after = res.json().get("retry_after", 1)
+            except Exception:
+                retry_after = 2
+            logger.warning("Discord rate limited, waiting %.1fs", retry_after)
+            time.sleep(retry_after)
+            raise Exception(f"Discord rate limited ({retry_after}s)")
+        logger.error("Discord send failed: %d %s", res.status_code, res.text[:300])
+        return False
+
+    def _send_simple(self, content: str) -> bool:
+        return self._send_payload({"content": content})
+
+    @staticmethod
+    def _embed_char_count(embed: dict) -> int:
+        total = len(embed.get("title", ""))
+        total += len(embed.get("description", ""))
+        for f in embed.get("fields", []):
+            total += len(f.get("name", "")) + len(f.get("value", ""))
+        return total

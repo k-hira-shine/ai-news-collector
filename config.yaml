@@ -1,0 +1,126 @@
+# AI News Collector 設定ファイル
+# 全ステージ Gemini 2.5 Pro で統一 (無料枠内)
+
+x_twitter:
+  search_queries:
+    - "AI OR artificial intelligence OR LLM -filter:replies lang:en"
+    - "ChatGPT OR Claude OR Gemini OR GPT -filter:replies"
+    - "OpenAI OR Anthropic OR Google DeepMind OR Meta AI"
+    - "生成AI OR 人工知能 OR AI活用 lang:ja"
+  must_follow_accounts:
+    - handle: "OpenAI"
+      label: "OpenAI公式"
+      priority: critical
+    - handle: "AnthropicAI"
+      label: "Anthropic公式"
+      priority: critical
+    - handle: "GoogleDeepMind"
+      label: "DeepMind公式"
+      priority: critical
+    - handle: "GoogleAI"
+      label: "Google AI公式"
+      priority: critical
+    - handle: "MetaAI"
+      label: "Meta AI公式"
+      priority: critical
+    - handle: "nvidia"
+      label: "NVIDIA公式"
+      priority: high
+    - handle: "huaborhi"
+      label: "Hugging Face公式"
+      priority: high
+  max_results_per_query: 40
+  min_engagement: 10
+  apify_actor: "get-leads/all-in-one-x-scraper"
+
+rss_feeds:
+  official:
+    - name: "OpenAI Blog"
+      url: "https://openai.com/blog/rss.xml"
+      priority: critical
+    - name: "Google AI Blog"
+      url: "https://blog.google/technology/ai/rss/"
+      priority: critical
+    - name: "DeepMind Blog"
+      url: "https://deepmind.google/blog/rss.xml"
+      priority: critical
+    - name: "Meta AI Blog"
+      url: "https://ai.meta.com/blog/rss/"
+      priority: critical
+    - name: "Hugging Face Blog"
+      url: "https://huggingface.co/blog/feed.xml"
+      priority: high
+    - name: "NVIDIA AI Blog"
+      url: "https://blogs.nvidia.com/feed/"
+      priority: high
+  international:
+    - name: "TechCrunch AI"
+      url: "https://techcrunch.com/category/artificial-intelligence/feed/"
+    - name: "The Verge AI"
+      url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+    - name: "Ars Technica"
+      url: "https://feeds.arstechnica.com/arstechnica/index"
+    - name: "MIT Technology Review"
+      url: "https://www.technologyreview.com/feed/"
+    - name: "Wired AI"
+      url: "https://www.wired.com/feed/tag/ai/latest/rss"
+    - name: "VentureBeat AI"
+      url: "https://venturebeat.com/category/ai/feed/"
+    - name: "Hacker News AI"
+      url: "https://hnrss.org/frontpage?points=100&q=AI+OR+LLM+OR+GPT"
+    - name: "arXiv cs.AI"
+      url: "https://rss.arxiv.org/rss/cs.AI"
+  domestic:
+    - name: "ITmedia AI+"
+      url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml"
+    - name: "GIGAZINE"
+      url: "https://gigazine.net/news/rss_2.0/"
+    - name: "Publickey"
+      url: "https://www.publickey1.jp/atom.xml"
+
+youtube:
+  search_keywords:
+    - "AI news"
+    - "AI ニュース"
+    - "生成AI 最新"
+    - "LLM update"
+    - "ChatGPT update"
+  must_follow_channels: []
+  max_results_per_keyword: 20
+
+analysis:
+  models:
+    stage1_filter: "gemini-2.5-pro"
+    stage2_analysis: "gemini-2.5-pro"
+  thinking_budget:
+    stage1: 128
+    stage2: 1024
+  categories:
+    - "モデル/ツール"
+    - "企業動向"
+    - "規制/政策"
+    - "研究論文"
+    - "資金調達"
+    - "ユースケース"
+  top_n: 10
+  stage1_top_n: 100
+  enable_previous_day_context: true
+
+scoring:
+  freshness_bonus:
+    - hours: 3
+      bonus: 2.0
+    - hours: 6
+      bonus: 1.0
+    - hours: 12
+      bonus: 0.5
+  official_source_bonus: 2.0
+  must_follow_bonus: 1.5
+
+discord:
+  ranking_top: 10
+  max_items_per_category: 5
+  message_delay_sec: 0.5
+
+cache:
+  seen_urls_retention_days: 7
