@@ -314,14 +314,12 @@ AI/ML と無関係な記事はスキップしてください。
     def _call_gemini(
         self, model: str, prompt: str, schema: dict | None = None, thinking_budget: int = 128
     ) -> dict:
-        from google.genai.types import GenerateContentConfig, ThinkingConfig
-
-        config_kwargs: dict = {
-            "thinking_config": ThinkingConfig(thinking_budget=thinking_budget),
+        config_dict: dict = {
+            "thinking_config": {"thinking_budget": thinking_budget},
         }
         if schema:
-            config_kwargs["response_mime_type"] = "application/json"
-            config_kwargs["response_schema"] = schema
+            config_dict["response_mime_type"] = "application/json"
+            config_dict["response_json_schema"] = schema
 
         logger.info("Calling %s (thinking=%d)…", model, thinking_budget)
         t0 = time.time()
@@ -329,7 +327,7 @@ AI/ML と無関係な記事はスキップしてください。
         response = self.client.models.generate_content(
             model=model,
             contents=prompt,
-            config=GenerateContentConfig(**config_kwargs),
+            config=config_dict,
         )
 
         elapsed = time.time() - t0
