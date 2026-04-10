@@ -19,6 +19,8 @@ def load_config(path: str = "config.yaml") -> dict:
 def main() -> None:
     parser = argparse.ArgumentParser(description="AI News Collector")
     parser.add_argument("--dry-run", action="store_true", help="Collect only, skip analysis/notification")
+    parser.add_argument("--analyze-only", action="store_true", help="Skip collection, reuse latest daily JSONL")
+    parser.add_argument("--skip-x", action="store_true", help="Skip X/Twitter collection (saves Apify credits)")
     args = parser.parse_args()
 
     logger = setup_logging()
@@ -28,9 +30,16 @@ def main() -> None:
     config = load_config()
 
     # ── Step 1: Collect ───────────────────────────────────────────────
-    from collector import collect_all
-
-    items = collect_all(config)
+    if args.analyze_only:
+        from collector import _load_latest_daily
+        items = _load_latest_daily()
+        logger.info("Analyze-only: loaded %d items from latest JSONL", len(items))
+    else:
+        from collector import collect_all
+        skip_sources: set[str] = set()
+        if args.skip_x:
+            skip_sources.add("x")
+        items = collect_all(config, skip_sources=skip_sources)
 
     stats = {
         "total": len(items),

@@ -352,23 +352,54 @@ def save_daily_jsonl(items: list[dict]) -> str:
     return path
 
 
+# ━━━━━━━━━━━━━━━━ JSONL 読み込み ━━━━━━━━━━━━━━━━
+
+
+def _load_latest_daily() -> list[dict]:
+    """直近の daily JSONL を読み込んで返す (--analyze-only 用)"""
+    daily_dir = data_dir("daily")
+    if not os.path.isdir(daily_dir):
+        return []
+    files = sorted(
+        [f for f in os.listdir(daily_dir) if f.endswith(".jsonl")], reverse=True
+    )
+    if not files:
+        return []
+    path = os.path.join(daily_dir, files[0])
+    items: list[dict] = []
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if line:
+                try:
+                    items.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+    logger.info("Loaded %d items from %s", len(items), path)
+    return items
+
+
 # ━━━━━━━━━━━━━━━━ オーケストレータ ━━━━━━━━━━━━━━━━
 
 
-def collect_all(config: dict) -> list[dict]:
+def collect_all(config: dict, skip_sources: set[str] | None = None) -> list[dict]:
     """全ソースから収集し、重複排除して保存"""
+    skip = skip_sources or set()
     cache = SeenURLsCache(
         retention_days=config.get("cache", {}).get("seen_urls_retention_days", 7)
     )
 
     items: list[dict] = []
     sources = [
-        (lambda: collect_x_twitter(config), "X/Twitter"),
-        (lambda: collect_rss(config), "RSS"),
-        (lambda: collect_youtube(config), "YouTube"),
+        (lambda: collect_x_twitter(config), "X/Twitter", "x"),
+        (lambda: collect_rss(config), "RSS", "rss"),
+        (lambda: collect_youtube(config), "YouTube", "youtube"),
     ]
 
-    for source_fn, name in sources:
+    for source_fn, name, key in sources:
+        if key in skip:
+            logger.info("Skipping %s (--skip-%s)", name, key)
+            continue
         try:
             items.extend(source_fn())
         except Exception as e:
