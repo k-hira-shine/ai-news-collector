@@ -221,7 +221,8 @@ AI/ML と無関係な記事はスキップしてください。
 ===== 記事一覧 ({len(items)}件) =====
 {items_text}
 """
-        result = self._call_gemini(model, prompt, STAGE1_SCHEMA, budget)
+        fallback = self.models.get("fallback", "gemini-2.5-flash")
+        result = self._call_gemini(model, prompt, STAGE1_SCHEMA, budget, fallback_model=fallback)
         return result.get("scored_items", [])
 
     def _compress_items_for_stage1(self, items: list[dict]) -> str:
@@ -328,7 +329,8 @@ AI/ML と無関係な記事はスキップしてください。
    - sentiment: "positive" / "negative" / "neutral" / "mixed"（賛否両論の場合）
    - representative_tweets: 代表的なツイート1〜3件（author, text, url, likes, retweets）。エンゲージメントが高い順に選定
 """
-        result = self._call_gemini(model, prompt, STAGE2_SCHEMA, budget)
+        fallback = self.models.get("fallback", "gemini-2.5-flash")
+        result = self._call_gemini(model, prompt, STAGE2_SCHEMA, budget, fallback_model=fallback)
 
         # id→url / title のフォールバック補完
         for art in result.get("top_articles", []):
@@ -412,12 +414,41 @@ AI/ML と無関係な記事はスキップしてください。
 
     # ── Gemini API 呼び出し ────────────────────────────────────────────
 
-    @retry(max_retries=5, base_delay=10, max_delay=120)
     def _call_gemini(
+        self,
+        model: str,
+        prompt: str,
+        schema: dict | None = None,
+        thinking_budget: int = 128,
+        fallback_model: str | None = None,
+    ) -> dict:
+        try:
+            return self._call_gemini_single(model, prompt, schema, thinking_budget)
+        except Exception as e:
+            if fallback_model and self._is_server_error(e):
+                logger.warning(
+                    "Primary model %s exhausted retries, falling back to %s",
+                    model, fallback_model,
+                )
+                return self._call_gemini_single(
+                    fallback_model, prompt, schema, thinking_budget
+                )
+            raise
+
+    @staticmethod
+    def _is_server_error(exc: Exception) -> bool:
+        msg = str(exc).lower()
+        return "503" in msg or "unavailable" in msg or "overloaded" in msg
+
+    @retry(max_retries=4, base_delay=15, max_delay=120)
+    def _call_gemini_single(
         self, model: str, prompt: str, schema: dict | None = None, thinking_budget: int = 128
     ) -> dict:
+        from google.genai import types
+
         config_dict: dict = {
             "thinking_config": {"thinking_budget": thinking_budget},
+            "http_options": types.HttpOptions(timeout=300_000),
         }
         if schema:
             config_dict["response_mime_type"] = "application/json"
@@ -433,7 +464,7 @@ AI/ML と無関係な記事はスキップしてください。
         )
 
         elapsed = time.time() - t0
-        logger.info("Gemini responded in %.1fs", elapsed)
+        logger.info("Gemini responded in %.1fs (%s)", elapsed, model)
 
         text = response.text
         if not text:

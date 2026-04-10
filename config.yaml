@@ -91,9 +91,10 @@ analysis:
   models:
     stage1_filter: "gemini-2.5-pro"
     stage2_analysis: "gemini-2.5-pro"
+    fallback: "gemini-2.5-flash"
   thinking_budget:
     stage1: 128
-    stage2: 1024
+    stage2: 512
   categories:
     - "モデル/ツール"
     - "企業動向"

@@ -17,7 +17,8 @@ def setup_logging(level=logging.INFO) -> logging.Logger:
 
 
 def retry(max_retries=3, base_delay=2, max_delay=30, exceptions=(Exception,)):
-    """Exponential backoff リトライデコレータ"""
+    """Exponential backoff リトライデコレータ（ジッター付き）"""
+    import random
 
     def decorator(func):
         @functools.wraps(func)
@@ -31,10 +32,13 @@ def retry(max_retries=3, base_delay=2, max_delay=30, exceptions=(Exception,)):
                     if attempt == max_retries:
                         raise
                     delay = min(base_delay * (2**attempt), max_delay)
+                    jitter = delay * random.uniform(0, 0.3)
+                    total_delay = delay + jitter
                     logging.getLogger("ai-news").warning(
-                        "Retry %d/%d for %s: %s", attempt + 1, max_retries, func.__name__, e
+                        "Retry %d/%d for %s (%.0fs wait): %s",
+                        attempt + 1, max_retries, func.__name__, total_delay, e,
                     )
-                    time.sleep(delay)
+                    time.sleep(total_delay)
             raise last_exc  # type: ignore[misc]
 
         return wrapper
