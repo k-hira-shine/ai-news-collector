@@ -119,19 +119,31 @@ class DiscordNotifier:
 
     def _build_header_embed(self, analysis: dict, date: str, slot: str) -> dict:
         trend = analysis.get("trend_summary", "")
-        pdc = analysis.get("previous_day_comparison", {})
+        evo = analysis.get("trend_evolution", {})
 
         desc_parts = [f"**📊 今日の注目トレンド**\n{trend}"]
 
-        prev_lines: list[str] = []
-        if pdc.get("continuing"):
-            prev_lines.append("**継続:** " + "、".join(pdc["continuing"]))
-        if pdc.get("new_topics"):
-            prev_lines.append("**新規:** " + "、".join(pdc["new_topics"]))
-        if pdc.get("fading"):
-            prev_lines.append("**沈静化:** " + "、".join(pdc["fading"]))
-        if prev_lines:
-            desc_parts.append("**前日からの流れ**\n" + "\n".join(prev_lines))
+        since_last = evo.get("since_last", "")
+        if since_last:
+            desc_parts.append(f"**🔄 前回からの変化**\n{since_last}")
+
+        tracked = evo.get("tracked_topics", [])
+        if tracked:
+            status_icons = {
+                "NEW": "⚡", "RISING": "📈", "SUSTAINED": "➡️",
+                "FADING": "📉", "RESURFACED": "🔄",
+            }
+            topic_lines: list[str] = []
+            for t in tracked:
+                icon = status_icons.get(t.get("status", ""), "•")
+                topic = t.get("topic", "")
+                status = t.get("status", "")
+                streak = t.get("streak_days", 0)
+                streak_str = f" ({streak}日目)" if streak and streak > 1 else ""
+                evolution = t.get("evolution", "")
+                evo_str = f"\n　_{evolution}_" if evolution else ""
+                topic_lines.append(f"{icon} **{status}** {topic}{streak_str}{evo_str}")
+            desc_parts.append("**📈 トレンド推移**\n" + "\n".join(topic_lines))
 
         return {
             "title": f"🤖 AI News {date} {slot}",

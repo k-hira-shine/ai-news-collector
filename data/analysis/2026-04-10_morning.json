@@ -1,327 +1,332 @@
 {
-  "trend_summary": "本日のAI業界は、Anthropicの動向が市場を席巻しました。同社が独自AIチップ開発を検討しているとの報道に加え、最新モデルがもたらすサイバーリスクについて米金融当局がウォール街と緊急会合を開いたというニュースが大きな注目を集めています。これに対抗するように、MicrosoftはOpenAIやAnthropicに代わる自社製大規模モデル開発を来年までに目指す方針を表明。また、OpenAIの新たな高価格プランや、AIの知能が人間を超える「シンギュラリティ」に関する議論も活発化しており、AI開発競争の激化とそれに伴う社会・経済への影響が今日の主要テーマとなっています。",
-  "previous_day_comparison": {
-    "continuing": [],
-    "new_topics": [],
-    "fading": []
+  "trend_summary": "本日のAI業界は、AIの能力向上とそれに伴うリスクや社会的責任が同時に浮き彫りになる一日でした。特に、Google DeepMindがAIエージェントがオンライン情報によって操作される危険性を指摘した大規模研究を発表し、セキュリティへの警鐘を鳴らしました。一方で、AnthropicのAIが数千件のソフトウェア脆弱性を発見するという画期的な成果も報告されています。国内では、経済産業省がAI利用における民事責任のガイドラインを公表し、AIエージェントの自律的な判断に対する法的整理が進展しました。これらの動きは、AIの社会実装が新たなフェーズに入ったことを示唆しています。",
+  "trend_evolution": {
+    "since_last": "初回実行のため比較データなし",
+    "tracked_topics": [
+      {
+        "topic": "AIエージェントの操作リスク",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Google DeepMindの大規模研究論文の発表により、AIエージェントが外部情報によって騙される脆弱性が大きな議題として浮上した。"
+      },
+      {
+        "topic": "Anthropicの躍進",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "AIによる数千件の脆弱性発見という技術的成果と、作業自動化ツール「Cowork」の一般提供開始が同時に報じられ、同社の存在感が高まった。"
+      },
+      {
+        "topic": "AIの法的責任に関するガイドライン",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "日本の経済産業省が「AI利活用における民事責任の解釈適用に関する手引き」を公表し、国内でのAI利用のルール作りが具体化した。"
+      },
+      {
+        "topic": "AIによるソフトウェア・セキュリティ向上",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Anthropicのモデルが数十年来のソフトウェア脆弱性を大量に発見したことで、AIがサイバーセキュリティ分野で革新をもたらす可能性が示された。"
+      },
+      {
+        "topic": "韓国製LLMの性能向上",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "韓国のUpstageが「Solar Pro 3」をリリースし、主要ベンチマークで高いスコアを記録。グローバルなLLM開発競争の激化を示した。"
+      },
+      {
+        "topic": "OpenAIの新たな料金体系",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Codex利用を主目的とした月額100ドルのProプランが導入され、開発者向けサービスの多様化が進んでいることが示された。"
+      }
+    ]
   },
   "top_articles": [
     {
-      "id": "116bc1730b1ab2d9",
+      "id": "2b592486405f3d2b",
       "rank": 1,
-      "title": "Microsoft aims to develop large, cutting-edge artificial intelligence models by next year, part of a push to build in-house alternatives to the most powerful AI tools from OpenAI and Anthropic",
-      "url": "https://x.com/business/status/2039706957792137353",
-      "summary": "Microsoftは、OpenAIやAnthropicの最先端モデルに対抗するため、来年までに独自の高性能な大規模AIモデルを開発することを目指しています。これは、AI開発における自社能力の強化と外部依存の低減を狙う動きです。",
-      "importance_reason": "これまでOpenAIへの大規模投資でAI業界をリードしてきたMicrosoftが、自社開発に大きく舵を切る方針を示しており、AI業界の勢力図を塗り替える可能性を秘めた重要な戦略転換です。",
-      "category": "企業動向",
-      "source_label": "x:@business"
-    },
-    {
-      "id": "e254b7b5dd4d8858",
-      "rank": 2,
-      "title": "JUST IN: Anthropic reportedly considering designing its ‌own AI chips to reduce dependence on Nvidia.",
-      "url": "https://x.com/Polymarket/status/2042428490700439781",
-      "summary": "Anthropicが、Nvidiaへの依存を減らすために独自のAIチップ設計を検討していると報じられました。大手AI企業によるハードウェアの垂直統合の動きが加速しています。",
-      "importance_reason": "AIモデル開発企業がソフトウェアだけでなくハードウェア（チップ）開発にも乗り出すトレンドを示しています。これはAI開発コストの削減と性能最適化に繋がり、半導体市場の競争環境に大きな影響を与える可能性があります。",
-      "category": "企業動向",
-      "source_label": "x:@Polymarket"
-    },
-    {
-      "id": "228af563a9404ec1",
-      "rank": 3,
-      "title": "EXCLUSIVE: Treasury Secretary Scott Bessent and Federal Reserve Chair Jerome Powell summoned Wall Street leaders to an urgent meeting on concerns that the latest AI model from Anthropic will usher in an era of greater cyber risk.",
-      "url": "https://x.com/business/status/2042407370320396457",
-      "summary": "米財務長官と連邦準備制度理事会議長が、Anthropicの最新AIモデルがもたらすサイバーリスク増大への懸念から、ウォール街のリーダーたちを緊急会合に召集しました。",
-      "importance_reason": "最新AIが国家レベルの金融システムに与える脅威について、最高レベルの金融当局が公に懸念を示した初のケースであり、今後のAI規制や金融機関におけるAI利用のガイドラインに大きな影響を与えると考えられます。",
-      "category": "規制/政策",
-      "source_label": "x:@business"
-    },
-    {
-      "id": "bb89a1b52081a208",
-      "rank": 4,
-      "title": "By the end of 2026, AI will likely surpass every individual human intelligence on Earth. By 2030, it will surpass the collective intelligence of everyone on Earth. So we’re moving into the singularity",
-      "url": "https://x.com/XFreeze/status/2040880438193860972",
-      "summary": "2026年末までにAIは個人の知能を、2030年までには全人類の集合知を超え、シンギュラリティ（技術的特異点）に突入するという予測が大きな注目を集めています。",
-      "importance_reason": "AIの指数関数的な進化がもたらす未来像について、具体的な年次予測と共に提示されており、社会全体でAIの長期的な影響とガバナンスについて議論する必要性を喚起しています。",
+      "title": "🚨BREAKING: Google DeepMind just published the largest study ever done on AI agent manipulation, and the findings should stop everyone cold. websites can already tell when an AI is visiting instead of",
+      "url": "https://x.com/AIHighlight/status/2041514151466471734",
+      "summary": "Google DeepMindが、AIエージェントがウェブサイトによって操作される危険性に関する大規模な研究結果を発表。ウェブサイトはAIの訪問を検知し、人間とは異なる偽情報を与える可能性があることを明らかにしました。",
+      "importance_reason": "AIエージェントの実用化が進む中、その判断が外部情報によって容易に歪められる可能性を具体的に示した画期的な研究であり、今後のAIセキュリティと安全な情報収集の議論において中心的な論点となります。",
       "category": "研究論文",
-      "source_label": "x:@XFreeze"
+      "source_label": "x:@AIHighlight"
     },
     {
-      "id": "b7b0ae61ab1c2c60",
+      "id": "d23c32b631aad90b",
+      "rank": 2,
+      "title": "🚨 Anthropicの新しいAIモデルが、主要なすべてのオペレーティングシステムやウェブブラウザにおいて、数十年前から存在する深刻なソフトウェアのセキュリティ脆弱性を数千件も検出したと報じられる：FT",
+      "url": "https://x.com/SOU_BTC/status/2042425864336580929",
+      "summary": "Anthropicの新型AIモデルが、主要なOSやブラウザに存在する何十年も見過ごされてきた重大なソフトウェア脆弱性を数千件発見したとFinancial Timesが報じました。",
+      "importance_reason": "AIが人間の専門家でも見つけられなかったコードの欠陥を発見できる能力を示し、サイバーセキュリティ対策やソフトウェア開発の品質向上に革命をもたらす可能性を示唆する重要な成果です。",
+      "category": "ユースケース",
+      "source_label": "x:@SOU_BTC"
+    },
+    {
+      "id": "ffeb34e855b2117c",
+      "rank": 3,
+      "title": "経産省が「AI利活用における民事責任の解釈適用に関する手引き」を公表。",
+      "url": "https://x.com/m_masuda/status/2042236255031918796",
+      "summary": "日本の経済産業省が、AI利用における民事責任の考え方を整理した手引きを公表しました。AIの利用形態を「補助／支援型」と「依拠／代替型」に分類し、責任の所在を明確化しています。",
+      "importance_reason": "AI、特に自律的に判断するAIエージェントの社会実装が進む中で、法的責任の所在を明確にする国内初の本格的な政府ガイドラインであり、今後の企業活動やサービス開発の指針となります。",
+      "category": "規制/政策",
+      "source_label": "x:@m_masuda"
+    },
+    {
+      "id": "b1760484ed7e1d2e",
+      "rank": 4,
+      "title": "Google DeepMindの研究者らによるSSRN（※）論文。 「AIエージェントは、ネット上の情報そのものにだまされたり操られたりする危険がある」ことを改めて警告しています。",
+      "url": "https://x.com/ai_database/status/2040981038663618876",
+      "summary": "Google DeepMindの研究者が、AIエージェントがインターネット上の情報によって騙されたり操作されたりする危険性を警告する論文を発表。人には見えない命令の埋め込みなど6種類の攻撃手法を挙げています。",
+      "importance_reason": "トップランクの記事と同様のテーマを扱い、具体的な攻撃手法にまで踏み込んでいる点で重要です。AIエージェントの信頼性と安全性を確保するための技術的対策の必要性を強く訴えています。",
+      "category": "研究論文",
+      "source_label": "x:@ai_database"
+    },
+    {
+      "id": "0349128e0f2e3040",
       "rank": 5,
-      "title": "Elon Musk’s artificial intelligence company xAI has sued Colorado to block a new state law requiring tech companies to establish safeguards to prevent discrimination by autonomous tools in certain employment decisions",
-      "url": "https://x.com/business/status/2042401921470808414",
-      "summary": "イーロン・マスク氏のxAIが、AIによる雇用差別を防ぐための新たな州法を阻止するため、コロラド州を提訴しました。AI規制をめぐる法廷闘争が本格化しています。",
-      "importance_reason": "AIのバイアスと差別に関する規制のあり方をめぐり、テクノロジー企業と行政が直接対決する象徴的な事例です。この訴訟の結果は、米国内の他の州や連邦レベルでのAI規制の方向性に影響を与える可能性があります。",
-      "category": "規制/政策",
-      "source_label": "x:@business"
+      "title": "アンソロピック、作業自動化AI「Cowork」一般提供開始　ソフト株下落 - 日本経済新聞",
+      "url": "https://x.com/SOU_BTC/status/2042370198066642946",
+      "summary": "Anthropicが事務作業を自動化するAI「Cowork」の一般提供を開始しました。この記事は、AIによる市場への影響から関連ソフトウェア企業の株価が下落したことにも触れています。",
+      "importance_reason": "大手AI企業が具体的な業務自動化ソリューションを市場に投入したことで、AIが既存のソフトウェア市場や労働市場に与える影響が現実のものとなりつつあることを示す象徴的な出来事です。",
+      "category": "企業動向",
+      "source_label": "x:@SOU_BTC"
     },
     {
-      "id": "3466c0177e9179dc",
+      "id": "a33557ec66b7d616",
       "rank": 6,
-      "title": "Scoop: Meta will still open-source AI models — just not all of them",
-      "url": "https://x.com/axios/status/2041209719260332258",
-      "summary": "Metaは今後もAIモデルのオープンソース化を継続するものの、全てのモデルを公開するわけではない方針であることが報じられました。同社のオープンソース戦略に変化が見られます。",
-      "importance_reason": "これまで強力にオープンソース戦略を推進してきたMetaが、一部モデルをクローズドにする可能性を示唆しており、AI業界におけるオープンソースとクローズドソースのバランスが変化する兆しとなります。",
-      "category": "企業動向",
-      "source_label": "x:@axios"
-    },
-    {
-      "id": "e4f1c28245d3e2a3",
-      "rank": 7,
-      "title": "$100 ChatGPT pro tier official. -5x codex rates -access to ChatGPT pro -unlimited thinking. Yeah, that’s really worth the $100. great deal, good pricing. Well done OpenAI",
-      "url": "https://x.com/kimmonismus/status/2042296131820941628",
-      "summary": "OpenAIが月額100ドルの新たな「ChatGPT Pro」Tierを正式に発表しました。このプランには、Codexレートの5倍アクセスや無制限の思考機能が含まれるとされています。",
-      "importance_reason": "AIサービスのマネタイズにおいて、より高機能・高価格帯のプロフェッショナル向けプランを導入する動きを示しています。これにより、AIの利用がヘビーユーザーや企業向けにさらに細分化されていくことが予想されます。",
+      "title": "🇰🇷 South Korean AI lab Upstage has launched Solar Pro 3! Solar Pro 3 scores 26 on the Artificial Analysis Intelligence Index, a significant improvement over Solar Pro 2 and is currently the second str",
+      "url": "https://x.com/ArtificialAnlys/status/2041746467543732522",
+      "summary": "韓国のAIラボUpstageが、新しい言語モデル「Solar Pro 3」を発表しました。このモデルはArtificial Analysis Intelligence Indexで高いスコアを記録し、韓国製モデルとしてトップクラスの性能を誇ります。",
+      "importance_reason": "米国企業が支配的なLLM市場において、韓国企業が高い性能を持つモデルを開発したことは、グローバルな開発競争の多様化と激化を示しており、今後の勢力図に影響を与える可能性があります。",
       "category": "モデル/ツール",
-      "source_label": "x:@kimmonismus"
+      "source_label": "x:@ArtificialAnlys"
     },
     {
-      "id": "4a760d469cd466de",
+      "id": "8fe61cf6e4eb005b",
+      "rank": 7,
+      "title": "アンソロピックの作業自動化AI「Cowork」がいよいよ一般提供を開始しました。",
+      "url": "https://x.com/russianblue2009/status/2042435889302028700",
+      "summary": "Anthropicの作業自動化AI「Cowork」の一般提供開始を伝える記事。従来のAIが「方法を教える」ツールだったのに対し、「Cowork」は実際の作業を代行する点が異なると強調しています。",
+      "importance_reason": "AIの役割が「相談相手」から「実行者（エージェント）」へと進化していることを明確に示しており、AIがビジネスプロセスに与えるインパクトの質的な変化を理解する上で重要です。",
+      "category": "モデル/ツール",
+      "source_label": "x:@russianblue2009"
+    },
+    {
+      "id": "97a23fef7d60ef4f",
       "rank": 8,
-      "title": "*BESSENT SUMMONED WALL STREET CEOS TO DISCUSS ANTHROPIC’S MYTHOS",
-      "url": "https://x.com/zerohedge/status/2042402456894615582",
-      "summary": "米財務長官がウォール街のCEOを召集し、Anthropicの新型モデル「Mythos」について協議したというニュースが、モデル名と共に拡散されています。",
-      "importance_reason": "記事3と同様の事象を伝えていますが、「Mythos」という具体的なモデル名（またはプロジェクト名）が言及されており、市場の憶測と関心を高めています。これは、新モデルのマーケティング効果にも繋がっています。",
+      "title": "OpenAI introduces a $100 per month Pro tier offering 5 times more Codex usage than the $20 Plus plan for longer high-effort sessions, and includes a promotion through 31 May that provides up to 10 tim",
+      "url": "https://x.com/koltregaskes/status/2042298059313545345",
+      "summary": "OpenAIが、月額100ドルの新しいProプランを導入しました。このプランは、既存のPlusプランの5倍のCodex利用上限を提供し、ヘビーユーザーや開発者を対象としています。",
+      "importance_reason": "AIサービスの収益化モデルが、一般消費者向けだけでなく、より専門的で高負荷な利用をするプロフェッショナル層へと拡大していることを示しています。市場の成熟とユーザー層の細分化が進んでいる証拠です。",
       "category": "企業動向",
-      "source_label": "x:@zerohedge"
+      "source_label": "x:@koltregaskes"
     },
     {
-      "id": "f1ee8eb0bfba3bbe",
+      "id": "ef697a13343c1d2b",
       "rank": 9,
-      "title": "ソフト株の試練続く、AI脅威が成長期待を「粉砕」－Claudeが台風の目 - Bloomberg",
-      "url": "https://x.com/4ki4/status/2042375039610392683",
-      "summary": "AnthropicのClaudeなど高性能AIの登場が、既存のソフトウェア企業の成長期待を脅かし、株価に影響を与えているとブルームバーグが報じています。",
-      "importance_reason": "生成AIが既存のSaaSビジネスモデルを破壊する可能性（ディスラプション）を具体的に指摘しており、投資家心理や市場評価にAIが与える影響の大きさを物語っています。",
-      "category": "企業動向",
-      "source_label": "x:@4ki4"
+      "title": "YouTubeがショート動画向けの「ライブセルフィー」機能をリリース、ユーザーの顔と声をリアルタイムで記録したAIアバターを使った動画を生成可能に",
+      "url": "https://gigazine.net/news/20260410-youtube-shorts-ai-avatar/",
+      "summary": "YouTubeが、ユーザー自身のAIアバターを生成してショート動画で利用できる新機能「ライブセルフィー」を導入しました。ユーザーの顔と声をリアルタイムでキャプチャし、デジタルクローンを作成します。",
+      "importance_reason": "大手プラットフォームが生成AIを一般ユーザー向けのコンテンツ制作ツールとして本格的に統合した事例です。AIアバターの普及が加速し、デジタルアイデンティティや肖像権に関する新たな議論を生む可能性があります。",
+      "category": "ユースケース",
+      "source_label": "rss:GIGAZINE"
     },
     {
-      "id": "bee15f0a067605bf",
+      "id": "fa443879666d846f",
       "rank": 10,
-      "title": "Artificial intelligence is the sleeper issue of the midterms with voter anxious about the technology taking jobs and raising electricity rates with its power-hungry data centers",
-      "url": "https://x.com/business/status/2042340504101138876",
-      "summary": "AIによる雇用の喪失やデータセンターの電力消費による電気料金高騰への懸念が、有権者の間で高まっており、米国中間選挙の隠れた争点になりつつあります。",
-      "importance_reason": "AIが専門家だけでなく、一般市民の経済的な不安と直結する政治問題として認識され始めていることを示しています。今後の選挙結果が、AIへの公的投資や規制の方向性を左右する可能性があります。",
+      "title": "Hon’ble Union Minister of Education, Shri @dpradhanbjp, will launch the Computational Thinking and Artificial Intelligence (CT & AI) Curriculum for Classes III to VIII.",
+      "url": "https://x.com/EduMinOfIndia/status/2039218622560960875",
+      "summary": "インドの教育省が、小学校3年生から中学校2年生までを対象とした、計算論的思考と人工知能（AI）に関する新しいカリキュラムを開始します。",
+      "importance_reason": "人口大国であるインドが国家レベルで初等・中等教育にAI教育を導入することは、将来のAI人材育成における国際競争に大きな影響を与えます。AIリテラシーの早期教育が世界的な潮流となることを示唆しています。",
       "category": "規制/政策",
-      "source_label": "x:@business"
+      "source_label": "x:@EduMinOfIndia"
     }
   ],
   "category_summaries": [
     {
-      "category": "企業動向",
-      "summary": "AI業界の巨人たちの戦略転換が鮮明になった一日でした。MicrosoftがOpenAIへの依存を減らし自社モデル開発に注力する一方、AnthropicはNvidia依存脱却のため独自チップ開発を検討。Metaはオープンソース戦略を一部見直す動きを見せ、大手間の競争と垂直統合が加速しています。また、AnthropicのAIが既存ソフトウェア市場に与える脅威も指摘されています。",
-      "count": 8,
+      "category": "研究論文",
+      "summary": "本日はGoogle DeepMindによるAIエージェントの脆弱性に関する研究が最大のトピックでした。AIエージェントがオンライン上の情報によって意図的に操作される危険性が、複数の論文や投稿で警告されています。この問題は、自律型AIの社会実装に向けた信頼性と安全性の確保における中心的な課題となりそうです。",
+      "count": 3,
       "key_articles": [
         {
-          "title": "Microsoft aims to develop large, cutting-edge artificial intelligence models by next year...",
-          "url": "https://x.com/business/status/2039706957792137353"
+          "title": "🚨BREAKING: Google DeepMind just published the largest study ever done on AI agent manipulation, and the findings should stop everyone cold.",
+          "url": "https://x.com/AIHighlight/status/2041514151466471734"
         },
         {
-          "title": "JUST IN: Anthropic reportedly considering designing its ‌own AI chips to reduce dependence on Nvidia.",
-          "url": "https://x.com/Polymarket/status/2042428490700439781"
+          "title": "Google DeepMindの研究者らによるSSRN（※）論文。「AIエージェントは、ネット上の情報そのものにだまされたり操られたりする危険がある」ことを改めて警告しています。",
+          "url": "https://x.com/ai_database/status/2040981038663618876"
         },
         {
-          "title": "Scoop: Meta will still open-source AI models — just not all of them",
-          "url": "https://x.com/axios/status/2041209719260332258"
+          "title": "Humans already hallucinate much more than artificial intelligence.",
+          "url": "https://x.com/JosephJacks_/status/2040883516704202965"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "Anthropicが作業自動化AI「Cowork」を一般提供開始し、大きな注目を集めました。これにより既存ソフトウェア企業の株価が下落するなど、市場への直接的な影響も観測されています。また、OpenAIが開発者向けの新たな高価格プランを発表するなど、大手AI企業のビジネスモデル多様化の動きも見られました。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "アンソロピック、作業自動化AI「Cowork」一般提供開始　ソフト株下落 - 日本経済新聞",
+          "url": "https://x.com/SOU_BTC/status/2042370198066642946"
         },
         {
-          "title": "*BESSENT SUMMONED WALL STREET CEOS TO DISCUSS ANTHROPIC’S MYTHOS",
-          "url": "https://x.com/zerohedge/status/2042402456894615582"
+          "title": "OpenAI introduces a $100 per month Pro tier offering 5 times more Codex usage than the $20 Plus plan for longer high-effort sessions, and includes a promotion through 31 May that provides up to 10 tim",
+          "url": "https://x.com/koltregaskes/status/2042298059313545345"
         },
         {
-          "title": "ソフト株の試練続く、AI脅威が成長期待を「粉砕」－Claudeが台風の目 - Bloomberg",
-          "url": "https://x.com/4ki4/status/2042375039610392683"
+          "title": "すげい。さすがソフトバンク。しかもつい最近の話！　（ソフトバンク　AIを活用して、早朝・夜間にネットショッピング購入商品を効率的に配達する企業を設立）",
+          "url": "https://x.com/InsideCHIKIRIN/status/872367847393153024"
         }
       ]
     },
     {
       "category": "規制/政策",
-      "summary": "AIの社会的影響に対する政府・規制当局の警戒感が一気に高まりました。特に、Anthropicの最新モデルが金融システムに与えるサイバーリスクを巡り、米財務省とFRBが緊急会合を開いたことは象徴的です。また、xAIがAIの差別防止法を巡りコロラド州を提訴するなど、規制のあり方をめぐる対立も表面化。AIが中間選挙の争点になりつつあるとの指摘も見られます。",
-      "count": 3,
+      "summary": "日本で経済産業省がAI利用に関する民事責任の手引きを公表したことが最大のニュースです。AIエージェントのような自律型AIの責任の所在を整理する動きは、今後の社会実装を促進する上で重要な一歩となります。また、インドでは初等・中等教育にAIカリキュラムが導入されるなど、国家レベルでのAI人材育成の動きも注目されます。",
+      "count": 2,
       "key_articles": [
         {
-          "title": "EXCLUSIVE: Treasury Secretary Scott Bessent and Federal Reserve Chair Jerome Powell summoned Wall Street leaders to an urgent meeting on concerns that the latest AI model from Anthropic will usher in an era of greater cyber risk.",
-          "url": "https://x.com/business/status/2042407370320396457"
+          "title": "経産省が「AI利活用における民事責任の解釈適用に関する手引き」を公表。",
+          "url": "https://x.com/m_masuda/status/2042236255031918796"
         },
         {
-          "title": "Elon Musk’s artificial intelligence company xAI has sued Colorado to block a new state law requiring tech companies to establish safeguards to prevent discrimination by autonomous tools in certain employment decisions",
-          "url": "https://x.com/business/status/2042401921470808414"
-        },
-        {
-          "title": "Artificial intelligence is the sleeper issue of the midterms with voter anxious about the technology taking jobs and raising electricity rates with its power-hungry data centers",
-          "url": "https://x.com/business/status/2042340504101138876"
-        }
-      ]
-    },
-    {
-      "category": "研究論文",
-      "summary": "AIが人類の知能を超える「シンギュラリティ」に関する議論が再燃しています。2026年には個人の知能を、2030年には人類全体の集合知を超えるという具体的な予測が大きな反響を呼びました。イーロン・マスク氏も超知能AIの制御の困難さについて言及しており、AIの長期的なリスクとガバナンスが重要なテーマとなっています。",
-      "count": 3,
-      "key_articles": [
-        {
-          "title": "By the end of 2026, AI will likely surpass every individual human intelligence on Earth...",
-          "url": "https://x.com/XFreeze/status/2040880438193860972"
-        },
-        {
-          "title": "Elon Musk on why it's harder to control a super-intelligent AI when it achieves top intelligence...",
-          "url": "https://x.com/XFreeze/status/2041860876328956181"
-        },
-        {
-          "title": "“The possibilities with AI are almost unlimited. If you think about what intelligence is and let’s take human intelligence, first of all. Human intelligence always astounds me, and I don’t think we think about this enough...",
-          "url": "https://x.com/NobelPrize/status/2038589330441077228"
-        }
-      ]
-    },
-    {
-      "category": "モデル/ツール",
-      "summary": "主要なAIツールプロバイダーから新たな動きがありました。OpenAIは月額100ドルの高機能なChatGPT Pro Tierを正式に発表し、サービスの収益化と高度化を推進。一方、Anthropicは共同作業ツール「Claude Cowork」の一般提供を開始し、ビジネス利用の拡大を図っています。各社のサービス展開と価格戦略が注目されます。",
-      "count": 4,
-      "key_articles": [
-        {
-          "title": "$100 ChatGPT pro tier official. -5x codex rates -access to ChatGPT pro -unlimited thinking",
-          "url": "https://x.com/kimmonismus/status/2042296131820941628"
-        },
-        {
-          "title": "Claude Cowork, now generally available!",
-          "url": "https://x.com/bcherny/status/2042344772153848043"
-        },
-        {
-          "title": "🧵 ChatGPT vs Grok vs Gemini vs Claude vs Perplexity — 5 leading AI tools explained.",
-          "url": "https://x.com/piyascode9/status/2042094264835072335"
-        },
-        {
-          "title": "噂通り$100プランきたね しかも通常は5xのところ、しばらくは最大10x使えると…",
-          "url": "https://x.com/suke_arts/status/2042408568859869471"
+          "title": "Hon’ble Union Minister of Education, Shri @dpradhanbjp, will launch the Computational Thinking and Artificial Intelligence (CT & AI) Curriculum for Classes III to VIII.",
+          "url": "https://x.com/EduMinOfIndia/status/2039218622560960875"
         }
       ]
     },
     {
       "category": "ユースケース",
-      "summary": "日本では、特定の業務に特化したAI活用事例が注目を集めました。特に、マーケティングツール「UTAGE」のAPIとAnthropicの「Claude Code」を連携させることで、チャットで指示するだけでLP（ランディングページ）やステップ配信を自動構築する事例が複数報告され、非エンジニアによる業務自動化の可能性を示しています。",
-      "count": 5,
+      "summary": "AnthropicのAIが数千件のソフトウェア脆弱性を発見したというニュースが際立っています。これはAIがサイバーセキュリティ分野で画期的な貢献をする可能性を示すものです。また、YouTubeがAIアバター生成機能をリリースするなど、エンターテインメント分野での活用も進んでいます。医療分野でのAI活用に関する過去の事例も再注目されました。",
+      "count": 7,
       "key_articles": [
         {
-          "title": "UTAGEのAPI公開は革命！ Claude Codeに日本語で話しかけるだけで LP、ステップ配信など UTAGEに構築されていく。",
-          "url": "https://x.com/leo_aima/status/2041514121301246029"
+          "title": "🚨 Anthropicの新しいAIモデルが、主要なすべてのオペレーティングシステムやウェブブラウザにおいて、数十年前から存在する深刻なソフトウェアのセキュリティ脆弱性を数千件も検出したと報じられる：FT",
+          "url": "https://x.com/SOU_BTC/status/2042425864336580929"
         },
         {
-          "title": "「API連携とかエンジニアの領域でしょ」って思って自動化を諦めてる人、 本当にもったいないと思う。 UTAGEの公式API、Claude Codeと繋げたらチャットで「LP作って」って言うだけでファネル一式が自動で完成した。",
-          "url": "https://x.com/serena_ailab/status/2041282311246041459"
+          "title": "YouTubeがショート動画向けの「ライブセルフィー」機能をリリース、ユーザーの顔と声をリアルタイムで記録したAIアバターを使った動画を生成可能に",
+          "url": "https://gigazine.net/news/20260410-youtube-shorts-ai-avatar/"
         },
         {
-          "title": "higgsfieldでseedance2.0使ったら、実写の顔のリファレンスもいけた！ そして自動でMVを作れるんじゃないか？と思って試しみた。(テロップはremotion)",
-          "url": "https://x.com/onofumi_AI/status/2042418756685873302"
+          "title": "医者が選んだ抗がん剤では意識障害など重い副作用がでたのに、人工知能（ワトソン君）が「この抗がん剤に変えたほうがいいよ」っていう薬に変えたら効き目がよく、退院できたって！",
+          "url": "https://x.com/InsideCHIKIRIN/status/761176682187284480"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "韓国Upstage社の新モデル「Solar Pro 3」の発表が注目を集めました。グローバルなLLM開発競争が激化していることを示す動きです。また、Anthropicの作業自動化AI「Cowork」が一般提供を開始し、AIが指示を待つだけでなく自律的に作業を実行する「エージェント」としての役割を本格化させています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "🇰🇷 South Korean AI lab Upstage has launched Solar Pro 3! Solar Pro 3 scores 26 on the Artificial Analysis Intelligence Index, a significant improvement over Solar Pro 2 and is currently the second str",
+          "url": "https://x.com/ArtificialAnlys/status/2041746467543732522"
         },
         {
-          "title": "テックベンチャー総研・PR TIMES2社共催セミナー「広報PR担当者のための生成AI活用実践セミナー」に登壇します！...",
-          "url": "https://x.com/omn_writers/status/2042375617619116414"
+          "title": "アンソロピックの作業自動化AI「Cowork」がいよいよ一般提供を開始しました。",
+          "url": "https://x.com/russianblue2009/status/2042435889302028700"
         },
         {
-          "title": "【デヴィエーション・ゲーム】にじうぉ～ずvs人工知能AI🎨お絵描きバトル💥【にじさんじ / 樋口楓】",
-          "url": "https://www.youtube.com/watch?v=abbglKFuXDA"
+          "title": "知らないと損するAIツール2025年版",
+          "url": "https://x.com/tomsan_001/status/2042347073983693047"
         }
       ]
     }
   ],
   "action_items": [
-    "Anthropicの最新モデルが金融システムへの脅威として認識されたことを受け、特に金融機関は自社で導入しているAIのリスク評価とサイバーセキュリティ対策を緊急に見直すべきです。",
-    "MicrosoftやAnthropicが独自AIチップ開発に動いていることは、Nvidiaへの依存リスクとサプライチェーンの垂直統合の流れを示唆します。半導体業界への影響を注視し、自社のハードウェア調達戦略を再検討する必要があります。",
-    "OpenAIが月額$100の高価格プランを導入したことは、AIサービスの価値と価格設定の多様化を示します。自社のAI活用においてコスト対効果を再評価し、用途に応じた最適なサービス・プランを選定する戦略が求められます。",
-    "主要AI企業間の競争が激化し、各社が独自の強みを打ち出しています。特定ベンダーへのロックインを避け、複数のモデルを比較・評価し、自社のビジネス課題に最適なツールを組み合わせる柔軟なAI活用体制を構築することが重要です。"
+    "【セキュリティ】自社でAIエージェントやRAGを活用している場合、Google DeepMindの論文を参考に、情報ソースの汚染や操作に対する防御策の検討を開始する。",
+    "【法務・コンプライアンス】経済産業省が公表した「AI利活用における民事責任の手引き」を精査し、自社のAI利用ポリシーや利用規約がガイドラインに準拠しているかを確認する。",
+    "【事業開発】Anthropicの「Cowork」のような作業自動化AIの動向を注視し、自社の業務プロセスにおける自動化の可能性や、既存のSaaSビジネスへの影響を評価する。",
+    "【人事・教育】インドの事例を参考に、社内でのAIリテラシー教育プログラムの導入・拡充を検討する。特に、非技術職の従業員がAIを安全かつ効果的に利用するための基礎知識習得が重要となる。",
+    "【研究開発】AnthropicのAIによる脆弱性発見の事例は、AIを品質保証（QA）やデバッグプロセスに組み込む有効性を示している。自社のソフトウェア開発ライフサイクルへのAI導入を具体的に検討する。"
   ],
   "x_trends": [
     {
-      "topic": "Anthropic新モデル『Mythos』と米当局の緊急会合",
-      "description": "Anthropicの最新AIモデル（一部で『Mythos』と呼ばれる）がもたらすサイバーリスクを議論するため、米財務長官とFRB議長がウォール街のCEOを緊急招集したというニュースがXで爆発的に拡散。AIが国家の金融安全保障を揺るがすほどの存在になったという衝撃が広がっており、規制の必要性やAnthropicの技術力に対する驚きの声が多数投稿されています。モデル名『Mythos』の響きが憶測を呼び、マーケティング効果も生んでいます。",
-      "buzz_level": "medium",
-      "sentiment": "mixed",
-      "representative_tweets": [
-        {
-          "author": "x:@zerohedge",
-          "text": "*BESSENT SUMMONED WALL STREET CEOS TO DISCUSS ANTHROPIC’S MYTHOS\n\nyou gotta give it to their marketing department",
-          "url": "https://x.com/zerohedge/status/2042402456894615582",
-          "likes": 1495,
-          "retweets": 62
-        },
-        {
-          "author": "x:@business",
-          "text": "EXCLUSIVE: Treasury Secretary Scott Bessent and Federal Reserve Chair Jerome Powell summoned Wall Street leaders to an urgent meeting on concerns that the latest AI model from Anthropic will usher in an era of greater cyber risk. https://t.co/d8eVXEzq5v",
-          "url": "https://x.com/business/status/2042407370320396457",
-          "likes": 502,
-          "retweets": 177
-        }
-      ]
-    },
-    {
-      "topic": "シンギュラリティ（技術的特異点）到来予測",
-      "description": "「2026年にAIが個人の知能を、2030年に人類の集合知を超える」という具体的な年次を示したシンギュラリティ到来の予測ツイートが、100万回以上のインプレッションを獲得し、大きな話題となっています。この予測に対し、多くのユーザーが期待と不安の入り混じった反応を示しています。AIの進化速度に驚嘆する声や、人類の未来を憂う声、超知能AIの制御の是非を問う議論が活発に行われています。",
-      "buzz_level": "medium",
-      "sentiment": "mixed",
-      "representative_tweets": [
-        {
-          "author": "x:@XFreeze",
-          "text": "By the end of 2026, AI will likely surpass every individual human intelligence on Earth\n\nBy 2030, it will surpass the collective intelligence of everyone on Earth\n\nSo we’re moving into the singularity\n\nWe are currently writing the ‘initial conditions’ for a superintelligence. If",
-          "url": "https://x.com/XFreeze/status/2040880438193860972",
-          "likes": 3580,
-          "retweets": 912
-        },
-        {
-          "author": "x:@XFreeze",
-          "text": "Elon Musk on why it's harder to control a super-intelligent AI when it achieves top intelligence:\n\n“We’re building hyper-intelligent AIs smarter than we can even comprehend”\n\nWhy is controlling super-intelligent AI impossible?\n\n\"It’s like raising a super-genius child that you https://t.co/jahvMgZ8kS",
-          "url": "https://x.com/XFreeze/status/2041860876328956181",
-          "likes": 2391,
-          "retweets": 586
-        }
-      ]
-    },
-    {
-      "topic": "OpenAIの月額$100新プラン発表",
-      "description": "OpenAIが月額100ドルの高価格帯プラン「ChatGPT Pro Tier」を正式に発表したという情報が広まり、ユーザーの間で価格設定の妥当性を巡る議論が起きています。投稿では「5倍のCodexレート」「無制限の思考」といった機能が挙げられ、一部のヘビーユーザーからは「素晴らしい取引だ」「価格に見合う価値がある」と肯定的な意見が出ています。一方で、高価格であることから、一般ユーザーとプロユーザーの利用格差が広がることを懸念する声も見られます。",
+      "topic": "AnthropicのAIによる脆弱性発見",
+      "description": "AnthropicのAIがOSやブラウザに長年存在した数千件の脆弱性を発見したというFTの報道が、X上で大きな衝撃をもって受け止められています。多くのユーザーはAIの驚異的な能力に「かっこよすぎ」「すごい」とポジティブな反応を示しています。この成果は、AIが人間の能力を超えてサイバーセキュリティに貢献できる可能性を示す画期的な事例として拡散されています。",
       "buzz_level": "medium",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "x:@kimmonismus",
-          "text": "$100 ChatGPT pro tier official. \n\n-5x codex rates\n-access to ChatGPT pro\n-unlimited thinking \n\nYeah, that’s really worth the $100. great deal, good pricing. Well done OpenAI",
-          "url": "https://x.com/kimmonismus/status/2042296131820941628",
-          "likes": 1158,
-          "retweets": 26
+          "author": "@SOU_BTC",
+          "text": "🚨 Anthropicの新しいAIモデルが、主要なすべてのオペレーティングシステムやウェブブラウザにおいて、数十年前から存在する深刻なソフトウェアのセキュリティ脆弱性を数千件も検出したと報じられる：FT",
+          "url": "https://x.com/SOU_BTC/status/2042425864336580929",
+          "likes": 41,
+          "retweets": 9
+        },
+        {
+          "author": "@SOU_BTC",
+          "text": "Anthropicカッコよすぎだろ…",
+          "url": "https://x.com/SOU_BTC/status/2042400418052128995",
+          "likes": 38,
+          "retweets": 2
         }
       ]
     },
     {
-      "topic": "Anthropicの独自AIチップ開発検討",
-      "description": "AnthropicがNvidiaへの依存を減らすため、自社でAIチップを設計することを検討しているというニュースが流れました。Google、Amazon、Microsoftに続く動きとして、AI開発におけるハードウェアの垂直統合が主要トレンドであることが再確認されました。ユーザーからは、AI開発コストの削減や性能向上への期待、そしてNvidiaの市場独占への挑戦として注目するコメントが寄せられています。",
-      "buzz_level": "low",
-      "sentiment": "neutral",
+      "topic": "Google DeepMindのAIエージェント操作リスク研究",
+      "description": "Google DeepMindが発表したAIエージェントの操作リスクに関する論文が、専門家やAIウォッチャーの間で広く共有され、議論を呼んでいます。AIがウェブサイトから偽の情報を与えられて騙されるという内容は衝撃的であり、「全員が凍りつくべき発見」としてその重要性が強調されています。この研究は、今後のAIエージェント開発における安全性確保の必要性を強く印象付けました。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
       "representative_tweets": [
         {
-          "author": "x:@Polymarket",
-          "text": "JUST IN: Anthropic reportedly considering designing its ‌own AI chips to reduce dependence on Nvidia.",
-          "url": "https://x.com/Polymarket/status/2042428490700439781",
-          "likes": 807,
-          "retweets": 42
+          "author": "@AIHighlight",
+          "text": "🚨BREAKING: Google DeepMind just published the largest study ever done on AI agent manipulation, and the findings should stop everyone cold.\n\nwebsites can already tell when an AI is visiting instead of a human. When they detect one, they serve it different content. The agent https://t.co/92KkEwWmWY",
+          "url": "https://x.com/AIHighlight/status/2041514151466471734",
+          "likes": 103,
+          "retweets": 35
+        },
+        {
+          "author": "@ai_database",
+          "text": "Google DeepMindの研究者らによるSSRN（※）論文。\n「AIエージェントは、ネット上の情報そのものにだまされたり操られたりする危険がある」ことを改めて警告しています。\n\n攻撃の種類は大まかに6つ。\n①人には見えない命令を埋め込む攻撃\n②推論をゆがめる表現の仕込み\n③RAGやメモリの汚染 https://t.co/mGf8ADkY9K",
+          "url": "https://x.com/ai_database/status/2040981038663618876",
+          "likes": 86,
+          "retweets": 21
         }
       ]
     },
     {
-      "topic": "MicrosoftのOpenAI対抗モデル開発",
-      "description": "MicrosoftがOpenAIやAnthropicに対抗しうる自社製の大規模AIモデルを来年までに開発するという報道が注目を集めています。これまでOpenAIの最大のパートナーであったMicrosoftのこの動きは、AI業界のパワーバランスの変化を示唆するものとして受け止められています。ユーザーは、巨大テック企業間の開発競争がさらに激化することへの期待と、技術の寡占化への懸念を表明しています。",
+      "topic": "Anthropic「Cowork」一般提供開始",
+      "description": "Anthropicが作業自動化AI「Cowork」の一般提供を開始したことが複数のアカウントから投稿され、話題となっています。単に情報を提供するだけでなく、実際の作業を代行するというコンセプトが注目されています。この動きは、AIによるホワイトカラー業務の自動化が本格化することを示唆しており、一部では既存のソフトウェア企業のビジネスを脅かす存在として市場への影響も懸念されています。",
+      "buzz_level": "low",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "@SOU_BTC",
+          "text": "アンソロピック、作業自動化AI「Cowork」一般提供開始　ソフト株下落 - 日本経済新聞 \n\nアンソロピックは事務作業を自動化するAI「Cowork」の一般提供を始めた。企業が社員の利用状況を管理する機能を加えた。AIに市場を奪われる懸念で9日の米株式市場でソフト株が下落した。\n\nhttps://t.co/LSzKTcahRV",
+          "url": "https://x.com/SOU_BTC/status/2042370198066642946",
+          "likes": 37,
+          "retweets": 10
+        },
+        {
+          "author": "@russianblue2009",
+          "text": "アンソロピックの作業自動化AI「Cowork」がいよいよ一般提供を開始しました。\n「また新しいAIか」と思ったら大間違いです。\n\nChatGPTは「どうすればいいか教えてくれる」ツールでした。\nCoworkは違います。",
+          "url": "https://x.com/russianblue2009/status/2042435889302028700",
+          "likes": 8,
+          "retweets": 2
+        }
+      ]
+    },
+    {
+      "topic": "経産省のAI民事責任ガイドライン公表",
+      "description": "日本の経済産業省が「AI利活用における民事責任の解釈適用に関する手引き」を公表したことが、国内の法務・技術関係者の間で注目されています。特に、AIの利用形態を「補助／支援型」と「依拠／代替型」に分類し、後者がAIエージェントの自律判断と関連付けられている点に関心が集まっています。これは、日本におけるAIの社会実装とルール作りの進展を示す重要な動きと捉えられています。",
       "buzz_level": "low",
       "sentiment": "neutral",
       "representative_tweets": [
         {
-          "author": "x:@business",
-          "text": "Microsoft aims to develop large, cutting-edge artificial intelligence models by next year, part of a push to build in-house alternatives to the most powerful AI tools from OpenAI and Anthropic https://t.co/nUHA1a4GFC",
-          "url": "https://x.com/business/status/2039706957792137353",
-          "likes": 261,
-          "retweets": 32
+          "author": "@m_masuda",
+          "text": "経産省が「AI利活用における民事責任の解釈適用に関する手引き」を公表。\n\nAIが利用される形態に応じて、「補助／支援型AI」と「依拠／代替型AI」に分けて整理していますね。後者はAIエージェントによる自律判断とも関係します。\n\nhttps://t.co/O8TI3gNAdf https://t.co/ToYEvTrxHY",
+          "url": "https://x.com/m_masuda/status/2042236255031918796",
+          "likes": 10,
+          "retweets": 2
         }
       ]
     }
   ],
-  "run_time": "2026-04-10T03:19:53.187143+00:00",
+  "run_time": "2026-04-10T03:34:02.830882+00:00",
   "slot": "morning",
-  "item_count": 25
+  "item_count": 23
 }

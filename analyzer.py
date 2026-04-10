@@ -37,14 +37,25 @@ STAGE2_SCHEMA = {
     "type": "object",
     "properties": {
         "trend_summary": {"type": "string"},
-        "previous_day_comparison": {
+        "trend_evolution": {
             "type": "object",
             "properties": {
-                "continuing": {"type": "array", "items": {"type": "string"}},
-                "new_topics": {"type": "array", "items": {"type": "string"}},
-                "fading": {"type": "array", "items": {"type": "string"}},
+                "since_last": {"type": "string"},
+                "tracked_topics": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "topic": {"type": "string"},
+                            "status": {"type": "string"},
+                            "streak_days": {"type": "integer"},
+                            "evolution": {"type": "string"},
+                        },
+                        "required": ["topic", "status"],
+                    },
+                },
             },
-            "required": ["continuing", "new_topics", "fading"],
+            "required": ["since_last", "tracked_topics"],
         },
         "top_articles": {
             "type": "array",
@@ -116,7 +127,7 @@ STAGE2_SCHEMA = {
             },
         },
     },
-    "required": ["trend_summary", "top_articles", "category_summaries", "action_items", "x_trends"],
+    "required": ["trend_summary", "trend_evolution", "top_articles", "category_summaries", "action_items", "x_trends"],
 }
 
 
@@ -174,8 +185,8 @@ class NewsAnalyzer:
         time.sleep(15)
 
         # Stage 2: 深層分析
-        previous = self._load_previous_analysis()
-        analysis = self._stage2_analyze(top_items, items_by_id, previous)
+        recent_analyses = self._load_recent_analyses(count=5)
+        analysis = self._stage2_analyze(top_items, items_by_id, recent_analyses)
 
         # メタデータ付与
         analysis["run_time"] = now_iso()
@@ -270,13 +281,13 @@ AI/ML と無関係な記事はスキップしてください。
     # ── Stage 2 ───────────────────────────────────────────────────────
 
     def _stage2_analyze(
-        self, top_items: list[dict], items_by_id: dict, previous: dict | None
+        self, top_items: list[dict], items_by_id: dict, recent_analyses: list[dict]
     ) -> dict:
         model = self.models.get("stage2_analysis", "gemini-2.5-pro")
         budget = self.thinking.get("stage2", 1024)
 
         items_text = self._format_items_for_stage2(top_items, items_by_id)
-        prev_context = self._format_previous_context(previous)
+        prev_context = self._format_previous_context(recent_analyses)
         categories_str = ", ".join(self.categories)
 
         prompt = f"""あなたはシニアAI産業アナリストです。本日のAIニューストップ記事を包括的に分析してください。
@@ -290,11 +301,17 @@ AI/ML と無関係な記事はスキップしてください。
 すべて日本語で出力してください。
 
 1. trend_summary: 今日のAI界の最重要動向を3〜5文で概説
-2. previous_day_comparison:
-   - continuing: 前日から継続している話題
-   - new_topics: 今日新たに浮上した話題
-   - fading: 沈静化した話題
-   (前日データがない場合は空配列)
+2. trend_evolution: 過去データと今回を照合し、トレンドの推移を分析してください。
+   - since_last: 前回の配信から何が変わったかを1段落 (3〜4文) で簡潔にまとめる。新たに浮上した話題、勢いが増した話題、沈静化した話題を含める
+   - tracked_topics: 主要トピック (5〜8件) ごとに以下を付与:
+     - topic: トピック名（短く具体的に）
+     - status: 以下のいずれか
+       "NEW" (今回初登場) / "RISING" (前回より盛り上がり拡大) /
+       "SUSTAINED" (安定して継続) / "FADING" (勢い低下) /
+       "RESURFACED" (一度消えて再浮上)
+     - streak_days: 何日連続で話題になっているか (初登場は1)
+     - evolution: 時系列でどう変化したか (1文。例: "初報→米当局が動く→規制議論に発展")
+   (過去データがない場合は since_last を "初回実行のため比較データなし" とし、全トピックを NEW にする)
 3. top_articles: 重要度上位{self.top_n}件。各記事に rank, id, title, url, summary (1〜2文), importance_reason, category, source_label を含める
 4. category_summaries: カテゴリ({categories_str})別の要約と主要記事 (最大5件)
 5. action_items: ビジネスへの示唆・アクションアイテムを3〜5件
@@ -355,18 +372,42 @@ AI/ML と無関係な記事はスキップしてください。
             )
         return "\n\n".join(lines)
 
-    def _format_previous_context(self, previous: dict | None) -> str:
-        if not previous:
-            return "===== 前日分析 =====\n前日のデータはありません（初回実行）。previous_day_comparison は空配列を返してください。"
+    def _format_previous_context(self, recent: list[dict]) -> str:
+        if not recent:
+            return (
+                "===== 過去の分析 =====\n"
+                "過去データなし（初回実行）。trend_evolution.since_last は "
+                "\"初回実行のため比較データなし\" とし、全トピックの status を \"NEW\" にしてください。"
+            )
 
-        parts = ["===== 前日分析 ====="]
-        if previous.get("trend_summary"):
-            parts.append(f"前日のトレンド: {previous['trend_summary']}")
-        tops = previous.get("top_articles", [])[:5]
-        if tops:
-            parts.append("前日のトップ5:")
-            for a in tops:
-                parts.append(f"  - {a.get('title', '')} ({a.get('category', '')})")
+        parts = ["===== 過去の分析 (新しい順) ====="]
+
+        for i, a in enumerate(recent):
+            run_time = a.get("run_time", "?")[:16]
+            slot = a.get("slot", "")
+            label = f"[{i + 1}] {run_time} ({slot})"
+
+            summary = a.get("trend_summary", "")[:200]
+            parts.append(f"\n{label}")
+            if summary:
+                parts.append(f"  トレンド: {summary}")
+
+            x_trends = a.get("x_trends", [])
+            if x_trends:
+                topics = [f"{t.get('topic', '')} ({t.get('buzz_level', '')})" for t in x_trends[:5]]
+                parts.append(f"  X話題: {', '.join(topics)}")
+
+            evo = a.get("trend_evolution", {})
+            tracked = evo.get("tracked_topics", [])
+            if tracked:
+                evo_items = [f"{t.get('topic', '')}[{t.get('status', '')}]" for t in tracked[:5]]
+                parts.append(f"  推移: {', '.join(evo_items)}")
+
+            tops = a.get("top_articles", [])[:3]
+            if tops:
+                top_titles = [a.get("title", "")[:60] for a in tops]
+                parts.append(f"  TOP3: {' / '.join(top_titles)}")
+
         return "\n".join(parts)
 
     # ── Gemini API 呼び出し ────────────────────────────────────────────
@@ -409,22 +450,24 @@ AI/ML と無関係な記事はスキップしてください。
 
     # ── 前日分析の読み込み / 保存 ──────────────────────────────────────
 
-    def _load_previous_analysis(self) -> dict | None:
+    def _load_recent_analyses(self, count: int = 5) -> list[dict]:
+        """過去 count 回分の分析結果を新しい順で返す"""
         if not self.config.get("analysis", {}).get("enable_previous_day_context", True):
-            return None
+            return []
 
         analysis_dir = data_dir("analysis")
         if not os.path.isdir(analysis_dir):
-            return None
+            return []
 
         files = sorted(glob(os.path.join(analysis_dir, "*.json")), reverse=True)
-        for f in files:
+        results: list[dict] = []
+        for f in files[:count]:
             try:
                 with open(f, "r", encoding="utf-8") as fh:
-                    return json.load(fh)
+                    results.append(json.load(fh))
             except (json.JSONDecodeError, OSError):
                 continue
-        return None
+        return results
 
     def _save_analysis(self, result: dict) -> str:
         slot = result.get("slot", time_slot())
@@ -446,7 +489,7 @@ AI/ML と無関係な記事はスキップしてください。
             "slot": time_slot(),
             "item_count": 0,
             "trend_summary": "収集データがありません。",
-            "previous_day_comparison": {"continuing": [], "new_topics": [], "fading": []},
+            "trend_evolution": {"since_last": "", "tracked_topics": []},
             "top_articles": [],
             "category_summaries": [],
             "action_items": [],

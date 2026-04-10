@@ -70,11 +70,19 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
 .card h2 {{ font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
 .trend {{ font-size: 1rem; }}
-.prev-day {{ margin-top: 1rem; }}
-.prev-day span {{ display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; margin: 2px; }}
-.prev-day .cont {{ background: #1e40af33; color: var(--blue); }}
-.prev-day .new {{ background: #16a34a33; color: var(--green); }}
-.prev-day .fade {{ background: #dc262633; color: var(--red); }}
+.since-last {{ margin-top: 1rem; padding: 0.8rem; background: var(--surface2); border-radius: 8px; font-size: 0.95rem; }}
+.trend-evo {{ margin-top: 1rem; }}
+.trend-evo .evo-item {{ padding: 0.5rem 0; border-bottom: 1px solid var(--surface2); display: flex; align-items: baseline; gap: 0.5rem; }}
+.trend-evo .evo-item:last-child {{ border-bottom: none; }}
+.trend-evo .status-badge {{ display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }}
+.trend-evo .st-NEW {{ background: #16a34a33; color: var(--green); }}
+.trend-evo .st-RISING {{ background: #dc262633; color: var(--red); }}
+.trend-evo .st-SUSTAINED {{ background: #1e40af33; color: var(--blue); }}
+.trend-evo .st-FADING {{ background: #6b728033; color: var(--muted); }}
+.trend-evo .st-RESURFACED {{ background: #f59e0b33; color: var(--yellow); }}
+.trend-evo .evo-topic {{ font-weight: 600; }}
+.trend-evo .evo-streak {{ color: var(--muted); font-size: 0.85rem; }}
+.trend-evo .evo-desc {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }}
 .article {{ padding: 0.8rem 0; border-bottom: 1px solid var(--surface2); }}
 .article:last-child {{ border-bottom: none; }}
 .article .rank {{ display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; margin-right: 0.5rem; vertical-align: top; }}
@@ -126,25 +134,44 @@ def _render_latest(a: dict) -> str:
 
     parts: list[str] = []
 
-    # Trend summary
+    # Trend summary + evolution
     trend = escape(a.get("trend_summary", ""))
-    pdc = a.get("previous_day_comparison", {})
-    prev_html = ""
-    if any(pdc.get(k) for k in ("continuing", "new_topics", "fading")):
-        tags: list[str] = []
-        for t in pdc.get("continuing", []):
-            tags.append(f'<span class="cont">↔ {escape(t)}</span>')
-        for t in pdc.get("new_topics", []):
-            tags.append(f'<span class="new">🆕 {escape(t)}</span>')
-        for t in pdc.get("fading", []):
-            tags.append(f'<span class="fade">↓ {escape(t)}</span>')
-        prev_html = f'<div class="prev-day">{"".join(tags)}</div>'
+    evo = a.get("trend_evolution", {})
+
+    since_html = ""
+    since_last = evo.get("since_last", "")
+    if since_last:
+        since_html = f'<div class="since-last">🔄 {escape(since_last)}</div>'
+
+    evo_html = ""
+    tracked = evo.get("tracked_topics", [])
+    if tracked:
+        status_icons = {
+            "NEW": "⚡", "RISING": "📈", "SUSTAINED": "➡️",
+            "FADING": "📉", "RESURFACED": "🔄",
+        }
+        evo_items: list[str] = []
+        for t in tracked:
+            status = t.get("status", "")
+            icon = status_icons.get(status, "•")
+            topic = escape(t.get("topic", ""))
+            streak = t.get("streak_days", 0)
+            streak_str = f'<span class="evo-streak">({streak}日目)</span>' if streak and streak > 1 else ""
+            evolution = escape(t.get("evolution", ""))
+            evo_desc = f'<div class="evo-desc">{evolution}</div>' if evolution else ""
+            evo_items.append(
+                f'<div class="evo-item">'
+                f'<span class="status-badge st-{status}">{icon} {status}</span>'
+                f'<span class="evo-topic">{topic}</span>{streak_str}'
+                f'{evo_desc}</div>'
+            )
+        evo_html = f'<div class="trend-evo">{"".join(evo_items)}</div>'
 
     parts.append(
         f'<div class="card">'
         f"<h2>📊 {run_date} {slot_label}</h2>"
         f'<div class="trend">{trend}</div>'
-        f"{prev_html}</div>"
+        f"{since_html}{evo_html}</div>"
     )
 
     # X Trends (TOP 記事の前に配置)
