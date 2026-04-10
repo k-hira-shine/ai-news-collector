@@ -41,15 +41,24 @@ def main() -> None:
             skip_sources.add("x")
         items = collect_all(config, skip_sources=skip_sources)
 
+    x_items = [i for i in items if i["source"] == "x"]
     stats = {
         "total": len(items),
-        "x_count": sum(1 for i in items if i["source"] == "x"),
+        "x_count": len(x_items),
         "rss_count": sum(1 for i in items if i["source"] == "rss"),
         "youtube_count": sum(1 for i in items if i["source"] == "youtube"),
         "official_count": sum(1 for i in items if i.get("is_official")),
         "must_follow_count": sum(1 for i in items if i.get("is_must_follow")),
     }
     logger.info("Collected: %s", stats)
+
+    cookies_may_be_expired = False
+    if not args.analyze_only and not args.skip_x:
+        cookies_set = bool(os.environ.get("X_COOKIES", ""))
+        x_search_items = [i for i in x_items if not i.get("is_must_follow")]
+        cookies_may_be_expired = cookies_set and len(x_search_items) == 0
+        if cookies_may_be_expired:
+            logger.warning("⚠️ X_COOKIES may be expired — search returned 0, only timeline available")
 
     if args.dry_run:
         logger.info("Dry run — skipping analysis and notification")
@@ -89,7 +98,10 @@ def main() -> None:
 
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)
-    notifier.send_status(f"✅ AI News Collector 完了 ({elapsed:.0f}秒, {stats['total']}件収集)")
+    status_msg = f"✅ AI News Collector 完了 ({elapsed:.0f}秒, {stats['total']}件収集)"
+    if cookies_may_be_expired:
+        status_msg += "\n⚠️ X_COOKIES が期限切れの可能性があります。検索結果が 0 件でした。GitHub Secrets を更新してください。"
+    notifier.send_status(status_msg)
 
 
 if __name__ == "__main__":

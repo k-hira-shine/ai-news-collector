@@ -39,25 +39,37 @@ def collect_x_twitter(config: dict) -> list[dict]:
     x_cfg = config.get("x_twitter", {})
     actor_id = x_cfg.get("apify_actor", "get-leads/all-in-one-x-scraper")
     items: list[dict] = []
+    has_cookies = bool(cookies and "auth_token=" in cookies)
 
-    for query in x_cfg.get("search_queries", []):
-        try:
-            run_input: dict = {
-                "scrapeMode": "x-tweet-scraper",
-                "searchQueries": [query],
-                "sort": "Top",
-                "maxResults": x_cfg.get("max_results_per_query", 40),
-                "loginCookies": cookies,
-            }
+    if has_cookies:
+        search_total = 0
+        for query in x_cfg.get("search_queries", []):
+            try:
+                run_input: dict = {
+                    "scrapeMode": "x-tweet-scraper",
+                    "searchQueries": [query],
+                    "sort": "Top",
+                    "maxResults": x_cfg.get("max_results_per_query", 40),
+                    "loginCookies": cookies,
+                }
 
-            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
-            count = 0
-            for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
-                items.append(_normalize_tweet(tweet))
-                count += 1
-            logger.info("X search '%s…': %d tweets", query[:40], count)
-        except Exception as e:
-            logger.error("X search '%s…' failed: %s", query[:40], e)
+                run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
+                count = 0
+                for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+                    items.append(_normalize_tweet(tweet))
+                    count += 1
+                search_total += count
+                logger.info("X search '%s…': %d tweets", query[:40], count)
+            except Exception as e:
+                logger.error("X search '%s…' failed: %s", query[:40], e)
+
+        if search_total == 0:
+            logger.warning(
+                "⚠️ X search returned 0 results with cookies — "
+                "cookies may be expired. Update X_COOKIES secret."
+            )
+    else:
+        logger.info("X_COOKIES not set — skipping search queries (timeline only)")
 
     for acct in x_cfg.get("must_follow_accounts", []):
         try:
