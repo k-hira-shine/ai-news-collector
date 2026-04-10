@@ -412,7 +412,7 @@ AI/ML と無関係な記事はスキップしてください。
 
     # ── Gemini API 呼び出し ────────────────────────────────────────────
 
-    @retry(max_retries=2, base_delay=5, max_delay=60)
+    @retry(max_retries=5, base_delay=10, max_delay=120)
     def _call_gemini(
         self, model: str, prompt: str, schema: dict | None = None, thinking_budget: int = 128
     ) -> dict:

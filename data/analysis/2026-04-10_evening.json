@@ -1,229 +1,360 @@
 {
-  "trend_summary": "本日のAI業界は、計算資源を巡る競争激化と、生成AIの社会実装に伴うリスクの両面が際立つ一日となりました。OpenAIが計算能力への大規模投資の重要性を訴える一方、IntelとGoogleがAIインフラでの協業を発表し、基盤技術の覇権争いが加速しています。同時に、Gartnerは企業向け生成AIアプリのセキュリティインシデント増加を予測しており、技術の普及とリスク管理のバランスが喫緊の課題として浮上しています。また、Alibaba製とみられる高性能動画生成AI「HappyHorse-1.0」の登場は、モデル開発競争の新たな局面を示唆しています。",
+  "trend_summary": "本日のAI業界は、Anthropic社の動向が市場全体を揺るがす中心的な話題となりました。特に、同社の未公開モデル「Mythos」がもたらす潜在的なサイバーセキュリティリスクに対し、米財務長官とFRB議長が金融機関トップと緊急会合を開いたという報道は、AIの能力が国家レベルの経済安全保障問題として認識され始めたことを象徴しています。これと並行し、Metaがクローズドモデル「Muse Spark」を、Googleがオープンモデル「Gemma 4」を発表するなど、主要プレイヤーによるモデル開発競争も激化の一途をたどっています。AIエージェントの高度化と社会実装が進む中で、そのリスク管理と規制のあり方が、技術開発そのものと並ぶ最重要課題として浮上した一日でした。",
   "trend_evolution": {
-    "since_last": "前回の分析から、AIセキュリティに関する議論は継続しつつ、本日は計算資源を巡る競争が新たな中心テーマとして浮上しました。OpenAIやIntel、Googleといった巨大テック企業によるインフラ投資や提携が報じられ、ハードウェアの重要性が改めて示されています。前回注目されたAIエージェントの操作リスクや法的責任に関する議論はやや後退し、代わりに企業の収益化戦略（OpenAIの広告事業など）や、Alibabaのような新たなプレイヤーによる高性能モデルの登場が注目を集めています。",
+    "since_last": "前回の分析ではAnthropicの最新モデルに関するリスク懸念が報じられ始めた段階でしたが、本日は米政府最高レベルが介入する事態にまで発展し、トピックの重要性が急上昇しました。OpenAIとHugging Faceの連携という前日の大きな話題は一旦落ち着き、再び大手ラボ間のモデル開発競争と、それに伴う社会への影響に焦点が戻っています。特に、AIエージェントの自律性が高まる中でのセキュリティや悪用リスクに関する議論が、Google DeepMindの研究発表とAnthropicの事例によって、より具体的かつ深刻なテーマとして顕在化しています。",
     "tracked_topics": [
       {
-        "topic": "計算資源を巡る競争激化",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "OpenAIの計算能力への投資の言及と、IntelとGoogleのAIインフラ提携の発表により、AIの性能を支える基盤競争が顕在化した。"
+        "topic": "Anthropic新モデルの金融システムリスク",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "モデルの能力に関する初期報道から、米政府・金融当局が介入する国家安全保障レベルの懸念へと発展。"
       },
       {
-        "topic": "生成AIのセキュリティリスク",
+        "topic": "大手AIラボのモデル開発競争",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "Metaが「Muse Spark」で高性能クローズドモデル市場に再参入し、Googleが「Gemma 4」でオープンモデルの性能を底上げしたことで競争が再燃。"
+      },
+      {
+        "topic": "AIエージェントの高度化と実用化",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "Anthropicが「Managed Agents」や「Cowork」を一般公開するなど、研究段階からビジネス実装フェーズへの移行が加速。"
+      },
+      {
+        "topic": "AIエージェントのセキュリティリスク",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "Google DeepMindの論文に加え、Anthropicのモデルが持つリスクが金融システムへの脅威として具体的に議論され始めた。"
+      },
+      {
+        "topic": "OpenAIの資金調達と事業拡大",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "1220億ドルという巨額の資金調達が報じられ、AIインフラへの投資競争がさらに激化することを示唆。"
+      },
+      {
+        "topic": "AIに対する規制当局の調査と介入",
         "status": "SUSTAINED",
         "streak_days": 2,
-        "evolution": "AIエージェントの操作リスクや脆弱性発見の議論から、Gartnerによる企業導入時のセキュリティインシデント予測へと、よりビジネス実装に近いリスクへと焦点が移行した。"
-      },
-      {
-        "topic": "OpenAIの事業戦略",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "計算資源への投資方針、広告収益化の野心的な予測、高額な新料金プランなど、同社の多角的な事業展開が明らかになった。"
-      },
-      {
-        "topic": "高性能動画生成AIの登場",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "謎の高性能モデル「HappyHorse-1.0」がランキングに登場し、後にAlibaba製と判明。動画生成分野における競争の激化を示した。"
-      },
-      {
-        "topic": "AIの脆弱性対策ツール",
-        "status": "SUSTAINED",
-        "streak_days": 2,
-        "evolution": "Anthropicによる脆弱性発見のニュースに続き、Mozillaが汎用的なAI脆弱性スキャンツールを公開し、コミュニティ主導の対策が進展している。"
-      },
-      {
-        "topic": "AIの健康・医療分野への応用と課題",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "MetaのAIが不正確な健康アドバイスを提供する事例や、Neuralinkが発話支援で成果を上げる事例が報じられ、応用の可能性とリスクが同時に示された。"
-      },
-      {
-        "topic": "AIエージェント開発支援",
-        "status": "SUSTAINED",
-        "streak_days": 2,
-        "evolution": "昨日のGoogleによる操作リスク研究に続き、本日はAnthropicとGoogleがそれぞれ開発者向けにスキル検証ツールや実践ガイドを公開し、エージェント開発のエコシステム整備が進んでいる。"
+        "evolution": "フロリダ州司法長官によるOpenAI調査など、地方政府レベルでの監視の動きが継続。"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "88956c11598e750a",
+      "id": "f476322956b8d6f5",
       "rank": 1,
-      "title": "28年までに生成AIアプリの4分の1にセキュリティ事故、MCP普及でリスク拡大――Gartner予測",
-      "url": "https://www.itmedia.co.jp/aiplus/articles/2604/10/news117.html",
-      "summary": "Gartnerは、2028年までに企業の生成AIアプリケーションの25%がセキュリティインシデントを経験すると予測。特にMCP（マルチモーダル・コンポジット・プロンプト）のような規格がリスクを拡大させるため、厳格なガードレールと監視体制の構築が不可欠だと指摘している。",
-      "importance_reason": "大手調査会社Gartnerによる具体的な将来予測であり、生成AIの企業導入におけるセキュリティリスクが、もはや理論上の懸念ではなく、現実的な経営課題であることを示しているため。",
-      "category": "規制/政策",
-      "source_label": "rss:ITmedia AI+"
+      "title": "We've signed an agreement with Google and Broadcom for multiple gigawatts of next-generation TPU capacity, coming online starting in 2027, to train and serve frontier Claude models.",
+      "url": "https://x.com/AnthropicAI/status/2041275561704931636",
+      "summary": "Anthropicが、GoogleおよびBroadcomと複数ギガワット規模の次世代TPU供給契約を締結しました。2027年から稼働予定で、将来のClaudeフロンティアモデルの学習とサービス提供に利用されます。",
+      "importance_reason": "AI開発のボトルネックである計算資源を確保するための大規模な動きであり、Google Cloudとの強固なパートナーシップを示唆しています。AIインフラ競争の激化を象徴する重要な発表です。",
+      "category": "企業動向",
+      "source_label": "x:@AnthropicAI"
     },
     {
-      "id": "9c527c6391013a77",
+      "id": "228af563a9404ec1",
       "rank": 2,
-      "title": "AI需要が爆発的に増加も計算能力が制約に、大規模に投資していたOpenAIが巻き返しをはかる",
-      "url": "https://gigazine.net/news/20260410-anthropic-openai-compute-capacity/",
-      "summary": "OpenAIが株主への手紙で、AI競争の勝敗を分けるのは計算能力であり、大規模な計算資源への先行投資が自社の長期的優位性につながると主張していることが明らかになった。",
-      "importance_reason": "AI開発のボトルネックが計算資源であることを業界のリーダーが改めて明言したものであり、今後のAI業界における投資と競争の焦点がどこにあるかを明確に示しているため。",
-      "category": "企業動向",
-      "source_label": "rss:GIGAZINE"
+      "title": "EXCLUSIVE: Treasury Secretary Scott Bessent and Federal Reserve Chair Jerome Powell summoned Wall Street leaders to an urgent meeting on concerns that the latest AI model from Anthropic will usher in an era of greater cyber risk.",
+      "url": "https://x.com/business/status/2042407370320396457",
+      "summary": "米財務長官とFRB議長が、ウォール街の金融機関トップを緊急招集し、Anthropicの最新AIモデルがもたらすサイバーリスクについて協議したと報じられました。",
+      "importance_reason": "AIの能力が初めて金融システムの安定性を揺るがす国家レベルのリスクとして、最高レベルの経済政策当局によって認識されたことを示す画期的な出来事です。",
+      "category": "規制/政策",
+      "source_label": "x:@business"
     },
     {
-      "id": "b1eaf1b38c27449f",
+      "id": "0f25a398dcaf4cfc",
       "rank": 3,
-      "title": "IntelとGoogleが複数年のAIインフラ契約を締結",
-      "url": "https://gigazine.net/news/20260410-intel-google/",
-      "summary": "IntelとGoogleが、次世代のAIおよびクラウドインフラ開発に向けた複数年にわたる協業を発表。AIの計算基盤における巨大テック企業間の連携が加速している。",
-      "importance_reason": "AIチップメーカーとクラウド大手が手を組むことで、NVIDIA優位の市場構造に変化をもたらす可能性があり、AIインフラの勢力図に影響を与える重要な動きであるため。",
-      "category": "企業動向",
-      "source_label": "rss:GIGAZINE"
+      "title": "Today, we closed our latest funding round with $122 billion in committed capital at an $852B post-money valuation.",
+      "url": "https://x.com/OpenAI/status/2039085161971896807",
+      "summary": "OpenAIが、8520億ドルの評価額で1220億ドルの資金調達を完了したと発表しました。この資金は、AIの利益を世界中に普及させるために使用されます。",
+      "importance_reason": "AI業界史上、最大級の資金調達であり、フロンティアAI開発とインフラ構築に必要な資本の規模が桁違いに増大していることを示しています。",
+      "category": "資金調達",
+      "source_label": "x:@OpenAI"
     },
     {
-      "id": "5d5c0dfe85d61f6e",
+      "id": "71edcf4d62fbaf46",
       "rank": 4,
-      "title": "OpenAIは広告収入が劇的に増加し2026年に約25億ドルに到達すると予測している、その後も倍々に増え続け2030年には約1000億ドルに達するという楽観的予測",
-      "url": "https://gigazine.net/news/20260410-openai-ad-revenue/",
-      "summary": "OpenAIが投資家向けに、ChatGPTへの広告導入により2026年に25億ドル、2030年には1000億ドルという極めて野心的な広告収益予測を示していることが判明した。",
-      "importance_reason": "AIのマネタイズ手法として広告事業が中核に据えられていることを示しており、同社のビジネスモデルと将来の収益性に対する強気な姿勢がうかがえるため。",
-      "category": "企業動向",
-      "source_label": "rss:GIGAZINE"
+      "title": "Meta is back! Muse Spark scores 52 on the Artificial Analysis Intelligence Index, behind only Gemini 3.1 Pro, GPT-5.4, and Claude Opus 4.6. Muse Spark is the first new release since Llama 4 in April 2025 and also Meta's first release that is not open weights",
+      "url": "https://x.com/ArtificialAnlys/status/2041913043379220801",
+      "summary": "Metaがクローズドモデル「Muse Spark」をリリースしました。ベンチマークスコアは52で、Gemini、GPT、Claudeの最新モデルに次ぐ性能を記録し、大手AIラボ間の性能競争にMetaが本格的に復帰したことを示しています。",
+      "importance_reason": "これまでオープンソース戦略を主軸としてきたMetaが、高性能なクローズドモデルをリリースしたことは、同社の戦略転換の可能性を示唆し、市場競争をさらに激化させる要因となります。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ArtificialAnlys"
     },
     {
-      "id": "ae43fceafe498389",
+      "id": "5c3ef79f90ef70c5",
       "rank": 5,
-      "title": "Meta’s New AI Asked for My Raw Health Data—and Gave Me Terrible Advice",
-      "url": "https://www.wired.com/story/metas-new-ai-asked-for-my-raw-health-data-and-gave-me-terrible-advice/",
-      "summary": "Metaの新しいAIモデル「Muse Spark」が、ユーザーの健康データ（検査結果など）を分析すると申し出たが、プライバシーリスクに加え、医学的に不適切で危険なアドバイスを生成したことが報告された。",
-      "importance_reason": "AIを健康・医療分野に適用する際の危険性を具体的に示す事例。専門知識を要する領域でのAI利用には、精度だけでなく安全性と倫理に関する厳格な基準が必要であることを浮き彫りにした。",
-      "category": "ユースケース",
-      "source_label": "rss:Wired AI"
+      "title": "Today, we’re launching Gemma 4, our most intelligent open models to date. Built with the same breakthrough technology as Gemini 3, Gemma 4 brings advanced reasoning to your personal hardware and devices.",
+      "url": "https://x.com/GoogleAI/status/2039735543068504476",
+      "summary": "Googleが、最新のオープンモデルシリーズ「Gemma 4」を発表しました。Gemini 3と同じ技術を基盤としており、個人のデバイス上で高度な推論能力を提供することを目指しています。",
+      "importance_reason": "オープンソースAIモデルの性能水準を再び引き上げる重要なリリースであり、オンデバイスAIの普及と、より広範な開発者コミュニティによるイノベーションを促進します。",
+      "category": "モデル/ツール",
+      "source_label": "x:@GoogleAI"
     },
     {
-      "id": "c4e0ba45458622cb",
+      "id": "f755135e8c6205c6",
       "rank": 6,
-      "title": "謎の高性能動画生成AI「HappyHorse-1.0」はAlibaba製であることが判明、すでに偽サイトが多数公開されており公式Xが注意喚起",
-      "url": "https://gigazine.net/news/20260410-happyhorse-1-video-generation-ai-alibaba/",
-      "summary": "動画生成AIの性能ランキングでトップに立った謎のモデル「HappyHorse-1.0」が、Alibabaの研究チームによるものだと判明。その注目度の高さから、すでに偽のウェブサイトが複数出現している。",
-      "importance_reason": "米国の巨大テック企業以外からトップ性能のモデルが登場したことで、動画生成AI分野の競争がグローバルに拡大していることを示す象徴的な出来事であるため。",
+      "title": "New on the Engineering Blog: Building Managed Agents—our hosted service for long-running agents—meant solving an old problem in computing: how to design a system for “programs as yet unthought of.”",
+      "url": "https://x.com/AnthropicAI/status/2041929199976640948",
+      "summary": "Anthropicが、長時間稼働するAIエージェント向けのホストサービス「Managed Agents」の設計思想について解説しました。これは、まだ考えられていないプログラムのためのシステムを設計するという古典的なコンピューティングの課題に取り組むものです。",
+      "importance_reason": "自律型AIエージェントを本番環境で安定して運用するための具体的なアーキテクチャや課題解決策を示しており、AIエージェント開発の実用化に向けた重要な一歩です。",
       "category": "モデル/ツール",
-      "source_label": "rss:GIGAZINE"
+      "source_label": "x:@AnthropicAI"
     },
     {
-      "id": "907e752a30a62242",
+      "id": "05f81bf7d5dd2d3c",
       "rank": 7,
-      "title": "謎の動画生成AIモデル「HappyHorse-1.0」が匿名テストで世界最高性能を達成",
-      "url": "https://gigazine.net/news/20260410-happyhorse-1-video-generation-ai/",
-      "summary": "「Artificial Analysis」の動画生成AI性能ランキングに突如「HappyHorse-1.0」が登場し、GoogleやByteDanceのモデルを上回り1位を獲得。当初は開発元が不明で話題となった。",
-      "importance_reason": "ブラインドテスト形式のベンチマークサイトが、新たな高性能モデルを発掘するプラットフォームとして機能していることを示している。",
+      "title": "We're bringing the advisor strategy to the Claude Platform. Pair Opus as an advisor with Sonnet or Haiku as an executor, and get near Opus-level intelligence in your agents at a fraction of the cost.",
+      "url": "https://x.com/claudeai/status/2042308622181339453",
+      "summary": "Anthropicが、高性能モデル(Opus)をアドバイザー、軽量モデル(Sonnet/Haiku)を実行役として組み合わせる「アドバイザー戦略」を発表しました。これにより、低コストでOpusに匹敵するインテリジェンスをエージェントに実装できます。",
+      "importance_reason": "AIエージェントの運用コストという実用上の大きな課題に対する具体的な解決策を提示しており、マルチエージェントシステムの普及を加速させる可能性があります。",
       "category": "モデル/ツール",
-      "source_label": "rss:GIGAZINE"
+      "source_label": "x:@claudeai"
     },
     {
-      "id": "17f72e28e2b9a6ae",
+      "id": "1ca22686d401d478",
       "rank": 8,
-      "title": "ChatGPT's $100/Month Plan Costs More Than Netflix + Spotify",
-      "url": "https://www.youtube.com/watch?v=gnP3o4vHHvg",
-      "summary": "OpenAIが、最も強力なAIモデルに無制限アクセスできる月額100ドルの「ChatGPT Pro」プランを開始。この価格設定は、一般的なサブスクリプションサービスを大幅に上回るものとなっている。",
-      "importance_reason": "高性能AIの価値と価格設定に関するOpenAIの戦略を示すもの。高額な料金設定が市場に受け入れられるかどうかが、今後のAIサービスの価格動向を占う上で注目される。",
-      "category": "企業動向",
-      "source_label": "youtube:Pulse AI"
+      "title": "ChatGPT is now available in CarPlay.",
+      "url": "https://x.com/OpenAI/status/2039748699350532097",
+      "summary": "OpenAIが、ChatGPTをAppleのCarPlayで利用可能にしたと発表しました。これにより、運転中に音声モードでChatGPTを利用できるようになります。",
+      "importance_reason": "AIアシスタントがPCやスマートフォンといった従来のデバイスを超え、自動車という新たなプラットフォームへ本格的に進出する動きであり、ユースケースの拡大を示しています。",
+      "category": "モデル/ツール",
+      "source_label": "x:@OpenAI"
     },
     {
-      "id": "f5e2194ad7039229",
+      "id": "8d1f21e050eeff31",
       "rank": 9,
-      "title": "Neuralink brain chip allows nonverbal man to talk using AI",
-      "url": "https://www.youtube.com/watch?v=9awnA05i70k",
-      "summary": "3人目のNeuralink脳チップ埋め込み患者であるBrad Smith氏が、AIを介して思考で発話できるようになったと報告。彼の生活が劇的に変化したと語っている。",
-      "importance_reason": "ブレイン・コンピュータ・インターフェース（BCI）とAI技術が、重度の障害を持つ人々のコミュニケーション能力を回復させる画期的なユースケースを示しているため。",
-      "category": "ユースケース",
-      "source_label": "youtube:NewsNation"
+      "title": "🚨 BREAKING: Google DeepMind just mapped the attack surface that nobody in AI is talking about. Websites can already detect when an AI agent visits and serve it completely different content than humans see.",
+      "url": "https://x.com/alex_prompter/status/2040731938751914065",
+      "summary": "Google DeepMindの研究で、ウェブサイトがAIエージェントを検出し、人間とは異なる悪意のあるコンテンツを提示することで、エージェントを操作できるという新たな攻撃対象領域（アタックサーフェス）が明らかにされました。",
+      "importance_reason": "自律型AIエージェントがオンラインで情報収集する際の根本的な脆弱性を指摘しており、今後のAIセキュリティ研究における重要なマイルストーンとなる研究です。",
+      "category": "研究論文",
+      "source_label": "x:@alex_prompter"
     },
     {
-      "id": "a26ac25dda122907",
+      "id": "22f3ff974c68fdee",
       "rank": 10,
-      "title": "Microsoft starts removing Copilot buttons from Windows 11 apps",
-      "url": "https://www.theverge.com/news/909640/microsoft-removing-copilot-windows-11-buttons",
-      "summary": "MicrosoftがWindows 11のアプリから「不要な」Copilotボタンの削除を開始。メモ帳アプリなどでは、Copilotボタンが「書き込みツール」メニューに統合されるなど、UI/UXの調整が進んでいる。",
-      "importance_reason": "AI機能をOSに深く統合する過程で、ユーザー体験を最適化するための試行錯誤が行われていることを示している。当初の積極的な露出戦略からの軌道修正と見られる。",
+      "title": "We’re updating our ChatGPT Pro and Plus subscriptions to better support the growing use of Codex. We’re introducing a new $100/month Pro tier.",
+      "url": "https://x.com/OpenAI/status/2042295688323875316",
+      "summary": "OpenAIが、プログラミング支援モデルCodexのヘビーユーザー向けに、月額100ドルの新たなChatGPT Proプランを発表しました。これにより、従来のPlusプランの5倍のCodex利用が可能になります。",
+      "importance_reason": "AIによるソフトウェア開発支援の需要が非常に高いことを背景に、OpenAIがプロフェッショナル向けに価格設定とサービスを細分化し、マネタイズを強化する動きを示しています。",
       "category": "企業動向",
-      "source_label": "rss:The Verge AI"
+      "source_label": "x:@OpenAI"
     }
   ],
   "category_summaries": [
     {
-      "category": "企業動向",
-      "summary": "OpenAIの計算資源への強気な投資姿勢と野心的な広告収益予測、IntelとGoogleのAIインフラ提携が報じられ、AI業界の基盤を巡る競争が激化しています。一方で、MicrosoftはCopilotのUI/UXを調整するなど、ユーザーへの浸透に向けた最適化も進めています。",
-      "count": 6,
-      "key_articles": [
-        {
-          "title": "AI需要が爆発的に増加も計算能力が制約に、大規模に投資していたOpenAIが巻き返しをはかる",
-          "url": "https://gigazine.net/news/20260410-anthropic-openai-compute-capacity/"
-        },
-        {
-          "title": "IntelとGoogleが複数年のAIインフラ契約を締結",
-          "url": "https://gigazine.net/news/20260410-intel-google/"
-        },
-        {
-          "title": "OpenAIは広告収入が劇的に増加し2026年に約25億ドルに到達すると予測している、その後も倍々に増え続け2030年には約1000億ドルに達するという楽観的予測",
-          "url": "https://gigazine.net/news/20260410-openai-ad-revenue/"
-        }
-      ]
-    },
-    {
       "category": "モデル/ツール",
-      "summary": "Alibaba製とみられる高性能動画生成AI「HappyHorse-1.0」がランキングに登場し、業界に衝撃を与えました。また、MozillaがAIの脆弱性スキャンツールをオープンソースで公開し、AnthropicやGoogleも開発者向けツールやガイドを提供するなど、AI開発エコシステムの成熟が進んでいます。",
-      "count": 8,
+      "summary": "大手AIラボによる新モデルの発表が相次ぎました。Metaは高性能クローズドモデル「Muse Spark」で競争に復帰し、Googleはオープンモデル「Gemma 4」でエコシステムを強化。Anthropicは「Managed Agents」やコスト効率化のための「アドバイザー戦略」など、エージェントの実用化に向けたツール群を拡充しました。また、OpenAIはChatGPTをCarPlayに対応させ、利用シーンを拡大しています。",
+      "count": 27,
       "key_articles": [
         {
-          "title": "謎の高性能動画生成AI「HappyHorse-1.0」はAlibaba製であることが判明、すでに偽サイトが多数公開されており公式Xが注意喚起",
-          "url": "https://gigazine.net/news/20260410-happyhorse-1-video-generation-ai-alibaba/"
+          "title": "Meta is back! Muse Spark scores 52 on the Artificial Analysis Intelligence Index...",
+          "url": "https://x.com/ArtificialAnlys/status/2041913043379220801"
         },
         {
-          "title": "あらゆるAIの脆弱性をスキャンするツール「0DIN AI Scanner」をMozillaがオープンソースでリリース",
-          "url": "https://gigazine.net/news/20260410-mozilla-0din-ai-scanner/"
+          "title": "Today, we’re launching Gemma 4, our most intelligent open models to date.",
+          "url": "https://x.com/GoogleAI/status/2039735543068504476"
         },
         {
-          "title": "AIエージェントの「スキル」の品質低下を防ぐ？　テストと検証機能を強化",
-          "url": "https://atmarkit.itmedia.co.jp/ait/articles/2604/10/news060.html"
+          "title": "New on the Engineering Blog: Building Managed Agents...",
+          "url": "https://x.com/AnthropicAI/status/2041929199976640948"
+        },
+        {
+          "title": "We're bringing the advisor strategy to the Claude Platform.",
+          "url": "https://x.com/claudeai/status/2042308622181339453"
+        },
+        {
+          "title": "ChatGPT is now available in CarPlay.",
+          "url": "https://x.com/OpenAI/status/2039748699350532097"
         }
       ]
     },
     {
-      "category": "ユースケース",
-      "summary": "AIの応用範囲が広がる一方で、そのリスクも顕在化しています。Neuralinkが脳チップとAIで発話能力を回復させる画期的な成果を見せる一方、MetaのAIは不正確な健康アドバイスを生成する危険性を示しました。応用の可能性と倫理的課題が同時に浮き彫りになっています。",
-      "count": 3,
+      "category": "企業動向",
+      "summary": "今週の最大の動きはAnthropicに関連するもので、Google/Broadcomとの大規模なTPU契約や自社製チップ設計の検討など、計算資源確保への強い意志が示されました。また、OpenAIは新たなChatGPT Proプランを発表し、収益化を強化。Karpathy氏の投稿をきっかけに、AIの能力に対する一般的な理解と専門家の認識のギャップも話題となりました。",
+      "count": 23,
       "key_articles": [
         {
-          "title": "Meta’s New AI Asked for My Raw Health Data—and Gave Me Terrible Advice",
-          "url": "https://www.wired.com/story/metas-new-ai-asked-for-my-raw-health-data-and-gave-me-terrible-advice/"
+          "title": "We've signed an agreement with Google and Broadcom for multiple gigawatts of next-generation TPU capacity...",
+          "url": "https://x.com/AnthropicAI/status/2041275561704931636"
         },
         {
-          "title": "Neuralink brain chip allows nonverbal man to talk using AI | Katie Pavlich Tonight",
-          "url": "https://www.youtube.com/watch?v=9awnA05i70k"
+          "title": "We’re updating our ChatGPT Pro and Plus subscriptions to better support the growing use of Codex.",
+          "url": "https://x.com/OpenAI/status/2042295688323875316"
+        },
+        {
+          "title": "Claude Cowork is now generally available to all paid plans.",
+          "url": "https://x.com/claudeai/status/2042273755485888810"
+        },
+        {
+          "title": "Google DeepMind 🤝 Agile Robots",
+          "url": "https://x.com/GoogleDeepMind/status/2036418139672482229"
+        },
+        {
+          "title": "Judging by my tl there is a growing gap in understanding of AI capability.",
+          "url": "https://x.com/karpathy/status/2042334451611693415"
         }
       ]
     },
     {
       "category": "規制/政策",
-      "summary": "Gartnerが2028年までに企業の生成AIアプリの25%でセキュリティ事故が発生すると予測し、AI導入に伴うリスク管理の重要性を強調しました。技術がビジネスの現場に浸透するにつれ、ガイドライン策定や監視体制の構築が急務となっています。",
+      "summary": "Anthropicの最新モデル「Mythos」が金融システムに与えるサイバーリスクが、米財務省とFRBを動かすほどの重大な懸念事項となりました。これはAIの能力が初めて国家の経済安全保障と直結する問題として扱われた事例です。並行して、フロリダ州司法長官がOpenAIに対する調査を開始するなど、AI企業への監視の目も厳しさを増しています。",
+      "count": 10,
+      "key_articles": [
+        {
+          "title": "EXCLUSIVE: Treasury Secretary Scott Bessent and Federal Reserve Chair Jerome Powell summoned Wall Street leaders...",
+          "url": "https://x.com/business/status/2042407370320396457"
+        },
+        {
+          "title": "We've signed an MOU with the Australian Government to collaborate on AI safety research...",
+          "url": "https://x.com/AnthropicAI/status/2039137425214353555"
+        },
+        {
+          "title": "Today, we launched an investigation into OpenAI and ChatGPT.",
+          "url": "https://x.com/AGJamesUthmeier/status/2042258048115265541"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "Google DeepMindが、ウェブサイトがAIエージェントを検知し、人間とは異なる情報を与えて操作する「クローキング」の危険性を指摘する研究を発表し、大きな注目を集めました。また、Andrej Karpathy氏が提唱するRAGの代替案「LLM Wiki」も、AIの知識管理手法として開発者コミュニティで議論を呼んでいます。",
+      "count": 10,
+      "key_articles": [
+        {
+          "title": "🚨 BREAKING: Google DeepMind just mapped the attack surface that nobody in AI is talking about.",
+          "url": "https://x.com/alex_prompter/status/2040731938751914065"
+        },
+        {
+          "title": "New on the Anthropic Engineering Blog: How we use a multi-agent harness to push Claude further...",
+          "url": "https://x.com/AnthropicAI/status/2036481033621623056"
+        },
+        {
+          "title": "🚨 Andrej Karpathy thinks RAG is broken. He published the replacement 2 days ago. It's called LLM Wiki.",
+          "url": "https://x.com/heynavtoor/status/2041140052949090417"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "OpenAIが8520億ドルという驚異的な評価額で1220億ドルの資金調達ラウンドをクローズしたことが報じられました。これはAIインフラとフロンティアモデル開発に必要な資本規模が、従来のスタートアップ投資の常識を遥かに超えていることを示しています。",
       "count": 1,
       "key_articles": [
         {
-          "title": "28年までに生成AIアプリの4分の1にセキュリティ事故、MCP普及でリスク拡大――Gartner予測",
-          "url": "https://www.itmedia.co.jp/aiplus/articles/2604/10/news117.html"
+          "title": "Today, we closed our latest funding round with $122 billion in committed capital at an $852B post-money valuation.",
+          "url": "https://x.com/OpenAI/status/2039085161971896807"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "Andrej Karpathy氏が提唱する「LLM Wiki」という概念に触発され、AIを単なるタスク実行ツールとしてではなく、個人の知識ベースを構築・管理する「セカンドブレイン」として活用する動きが注目されています。ObsidianとClaude Codeを組み合わせる具体的な手法などが開発者コミュニティで共有されました。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "Farzapedia, personal wikipedia of Farza, good example following my Wiki LLM tweet.",
+          "url": "https://x.com/karpathy/status/2040572272944324650"
+        },
+        {
+          "title": "Claude Code + Obsidian is the most powerful AI combo I've ever used.",
+          "url": "https://x.com/milesdeutscher/status/2041972675418189933"
         }
       ]
     }
   ],
   "action_items": [
-    "自社のAI導入計画において、Gartnerの予測を踏まえたセキュリティインシデント対策を盛り込み、専門家を交えたリスク評価と監視体制の構築を検討する。",
-    "AIの計算資源が競争力の源泉であることを再認識し、自社の用途に応じて、クラウドサービスの選定やオンプレミス環境の構築、ハードウェア投資戦略を見直す。",
-    "動画生成AIの進化に注目し、マーケティングやコンテンツ制作における活用可能性を検討する。特に「HappyHorse-1.0」のような新興モデルの性能を注視し、早期の技術検証を計画する。",
-    "Mozillaが公開した「0DIN AI Scanner」のようなオープンソースツールを活用し、自社で開発または利用しているAIシステムの脆弱性評価プロセスを強化する。",
-    "ヘルスケアなど専門知識を要する分野でのAI活用は、誤情報のリスクが極めて高いことを認識し、導入の際はファクトチェックや専門家による監督体制を必須とする。"
+    "自社でAIエージェントを開発・利用している場合、Google DeepMindが指摘する『AIクローキング』などの新たな攻撃手法を想定したセキュリティ対策と監視体制の見直しを直ちに開始すべきです。",
+    "Anthropicの『アドバイザー戦略』を参考に、自社のAIアプリケーションにおいて、タスクの種類に応じて高性能モデルと軽量モデルを動的に使い分けるハイブリッド構成を検討し、コストパフォーマンスを最適化するべきです。",
+    "金融機関や重要インフラ関連企業は、Anthropicのモデルを巡る米政府の動きを注視し、AIがもたらす新たなシステムリスクを洗い出し、BCP（事業継続計画）やインシデント対応計画に反映させる必要があります。",
+    "『LLM Wiki』のコンセプトに注目し、社内のナレッジマネジメントにAIをどう活用できるか再検討する。単なる情報検索ではなく、AIが自律的に知識を構造化・更新するシステムの導入を検討する価値があります。",
+    "Metaのクローズドモデル参入やOpenAIの価格体系細分化を受け、自社のAI戦略においてオープンソースとプロプライエタリモデルの使い分け、およびコスト構造を再評価すべきです。"
   ],
-  "x_trends": [],
-  "run_time": "2026-04-10T09:50:44.378644+00:00",
+  "x_trends": [
+    {
+      "topic": "Anthropic新モデル『Mythos』の金融リスク懸念",
+      "description": "Anthropicの未公開モデル『Mythos』がもたらすサイバーセキュリティリスクについて、米財務長官とFRB議長がウォール街のCEOを緊急招集したというニュースがX上で大きな衝撃を与えました。ユーザーは、AIの能力が国家の金融システムを脅かすレベルに達したことを示す象徴的な出来事と捉え、その潜在能力への期待と同時に深刻なリスクへの懸念を表明しています。この件は、AIの能力が単なる技術的な話題ではなく、経済安全保障上の最重要課題となったことを示しています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "x:@Polymarket",
+          "text": "BREAKING: Scott Bessent & Jerome Powell urgently summoned Wall Street leaders to discuss systemic risks from Anthropic’s new Mythos model.",
+          "url": "https://x.com/Polymarket/status/2042405391187722341",
+          "likes": 4005,
+          "retweets": 389
+        },
+        {
+          "author": "x:@business",
+          "text": "EXCLUSIVE: Treasury Secretary Scott Bessent and Federal Reserve Chair Jerome Powell summoned Wall Street leaders to an urgent meeting on concerns that the latest AI model from Anthropic will usher in an era of greater cyber risk. https://t.co/d8eVXEzq5v",
+          "url": "https://x.com/business/status/2042407370320396457",
+          "likes": 502,
+          "retweets": 177
+        }
+      ]
+    },
+    {
+      "topic": "Anthropicの『アドバイザー戦略』発表",
+      "description": "Anthropicが、高性能なOpusモデルを「アドバイザー」、軽量なSonnet/Haikuを「実行役」として組み合わせ、コストを抑えつつ高い性能を維持する『アドバイザー戦略』を発表し、開発者から絶賛されています。これはAIエージェントの運用コストという現実的な課題に対するエレガントな解決策と見なされており、「天才的」「ゲームチェンジャーだ」といった肯定的な反応が多数寄せられています。このアプローチは、今後のマルチエージェントシステムの設計思想に大きな影響を与える可能性があります。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@claudeai",
+          "text": "We're bringing the advisor strategy to the Claude Platform.\n\nPair Opus as an advisor with Sonnet or Haiku as an executor, and get near Opus-level intelligence in your agents at a fraction of the cost. https://t.co/fRkegyMs5t",
+          "url": "https://x.com/claudeai/status/2042308622181339453",
+          "likes": 24713,
+          "retweets": 1622
+        }
+      ]
+    },
+    {
+      "topic": "AIの能力に対する理解度のギャップ",
+      "description": "Andrej Karpathy氏の「AIの能力に関する一般の理解と現実の間にギャップが広がっている」という指摘が、多くのAI研究者や開発者から強い共感を呼んでいます。特に「昨年無料版のChatGPTを少し試しただけの印象でAIを判断している人が多すぎる」という部分は、専門家が日々目の当たりにしている現実を的確に表現していると評価されています。この投稿をきっかけに、AIリテラシーの重要性や、最新のAIがもつ真の能力をどう社会に伝えていくべきかという議論が活発化しています。",
+      "buzz_level": "high",
+      "sentiment": "neutral",
+      "representative_tweets": [
+        {
+          "author": "x:@karpathy",
+          "text": "Judging by my tl there is a growing gap in understanding of AI capability.\n\nThe first issue I think is around recency and tier of use. I think a lot of people tried the free tier of ChatGPT somewhere last year and allowed it to inform their views on AI a little too much. This is",
+          "url": "https://x.com/karpathy/status/2042334451611693415",
+          "likes": 15256,
+          "retweets": 1814
+        }
+      ]
+    },
+    {
+      "topic": "OpenAIの巨額資金調達",
+      "description": "OpenAIが8520億ドルという天文学的な評価額で1220億ドルの資金調達を発表し、X上で驚きをもって受け止められました。ユーザーからは、この巨額の資金がAGI（汎用人工知能）開発をいかに加速させるかについての期待と、一企業への資本と権力の集中に対する懸念が同時に表明されています。このニュースは、AI開発競争が莫大な資本力を必要とする段階に入ったことを明確に示しており、今後の業界の勢力図を占う上で重要な指標と見なされています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "x:@OpenAI",
+          "text": "Today, we closed our latest funding round with $122 billion in committed capital at an $852B post-money valuation.\n\nThe fastest way to expand AI’s benefits is to put useful intelligence in people’s hands early and let access compound globally. \n\nThis funding gives us resources to",
+          "url": "https://x.com/OpenAI/status/2039085161971896807",
+          "likes": 8396,
+          "retweets": 740
+        }
+      ]
+    },
+    {
+      "topic": "Google DeepMindによるAIエージェントの操作リスク研究",
+      "description": "Google DeepMindが発表した、ウェブサイトがAIエージェントを検知して人間とは異なるコンテンツを見せることで操作できるという研究成果が、セキュリティ研究者やAI開発者の間で大きな話題となりました。「クローキング」や「プロンプト隠蔽」といった具体的な手法が示されたことで、自律エージェントの安全性をいかに確保するかという課題の緊急性が改めて認識されています。X上では、この研究の重要性を解説するスレッドが多数投稿され、技術的な詳細や対策について活発な議論が交わされています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "x:@alex_prompter",
+          "text": "🚨 BREAKING: Google DeepMind just mapped the attack surface that nobody in AI is talking about.\n\nWebsites can already detect when an AI agent visits and serve it completely different content than humans see.\n\n> Hidden instructions in HTML.\n> Malicious commands in image pixels.\n> https://t.co/ws2t8guMXu",
+          "url": "https://x.com/alex_prompter/status/2040731938751914065",
+          "likes": 7003,
+          "retweets": 1620
+        }
+      ]
+    }
+  ],
+  "run_time": "2026-04-10T14:14:36.734555+00:00",
   "slot": "evening",
-  "item_count": 34
+  "item_count": 627
 }
