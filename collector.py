@@ -43,12 +43,12 @@ def collect_x_twitter(config: dict) -> list[dict]:
     for query in x_cfg.get("search_queries", []):
         try:
             run_input: dict = {
-                "searchTerms": [query],
+                "scrapeMode": "x-tweet-scraper",
+                "searchQueries": [query],
                 "sort": "Top",
-                "maxItems": x_cfg.get("max_results_per_query", 40),
+                "maxResults": x_cfg.get("max_results_per_query", 40),
+                "loginCookies": cookies,
             }
-            if cookies:
-                run_input["twitterCookies"] = cookies
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
             count = 0
@@ -61,9 +61,12 @@ def collect_x_twitter(config: dict) -> list[dict]:
 
     for acct in x_cfg.get("must_follow_accounts", []):
         try:
-            run_input = {"handles": [acct["handle"]], "maxItems": 10}
-            if cookies:
-                run_input["twitterCookies"] = cookies
+            run_input: dict = {
+                "scrapeMode": "x-timeline-scraper",
+                "profiles": [acct["handle"]],
+                "maxResults": 10,
+                "loginCookies": cookies,
+            }
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=60)
             for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():

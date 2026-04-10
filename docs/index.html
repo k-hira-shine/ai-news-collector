@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News Dashboard</title>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #818cf8;
+  --green: #34d399; --red: #f87171; --yellow: #fbbf24; --blue: #60a5fa;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
+header { text-align: center; margin-bottom: 2rem; }
+header h1 { font-size: 1.8rem; color: var(--accent); }
+header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+.card { background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.card h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }
+.trend { font-size: 1rem; }
+.prev-day { margin-top: 1rem; }
+.prev-day span { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.85rem; margin: 2px; }
+.prev-day .cont { background: #1e40af33; color: var(--blue); }
+.prev-day .new { background: #16a34a33; color: var(--green); }
+.prev-day .fade { background: #dc262633; color: var(--red); }
+.article { padding: 0.8rem 0; border-bottom: 1px solid var(--surface2); }
+.article:last-child { border-bottom: none; }
+.article .rank { display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; margin-right: 0.5rem; vertical-align: top; }
+.article .rank.gold { background: #f59e0b; }
+.article .rank.silver { background: #9ca3af; }
+.article .rank.bronze { background: #b45309; }
+.article a { color: var(--text); text-decoration: none; font-weight: 600; }
+.article a:hover { color: var(--accent); text-decoration: underline; }
+.article .meta { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+.article .summary { font-size: 0.95rem; margin-top: 0.3rem; }
+.cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
+.cat-card { background: var(--surface2); border-radius: 8px; padding: 1rem; }
+.cat-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+.cat-card .cat-summary { font-size: 0.9rem; color: var(--muted); }
+.action { padding: 0.4rem 0; }
+.action::before { content: "💡"; margin-right: 0.5rem; }
+.history-chart { display: flex; align-items: flex-end; gap: 4px; height: 100px; margin-top: 1rem; }
+.history-bar { flex: 1; background: var(--accent); border-radius: 4px 4px 0 0; min-width: 24px; position: relative; }
+.history-bar .label { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }
+.empty { text-align: center; color: var(--muted); padding: 4rem 0; font-size: 1.1rem; }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>🤖 AI News Dashboard</h1>
+  <div class="updated">Last updated: 2026-04-10 02:55 UTC</div>
+</header>
+<div class="card"><h2>📊 2026-04-10 朝便</h2><div class="trend">本日のAI業界は、OpenAIによる8520億ドル評価での巨額資金調達の発表が市場を震撼させ、最大のニュースとなりました。同時に、Anthropicが発表した新モデル「Mythos」が、その高性能さからサイバーセキュリティリスクへの懸念を呼び、米政府・金融当局が緊急会合を開くなど、規制や安全保障の議論を加速させています。GoogleやMetaも新モデル（Gemma 4, Muse Spark）を次々と発表し、主要プレイヤー間の開発競争は激化の一途を辿っています。また、OpenAIが新たな価格帯のプランを導入するなど、ビジネスモデルの多様化も進んでおり、技術開発と社会実装の両面で大きな動きが見られる一日でした。</div></div>
+<div class="card"><h2>⭐ TOP 10</h2><div class="article"><span class="rank gold">1</span><a href="https://x.com/OpenAI/status/2039085161971896807" target="_blank" rel="noopener">Today, we closed our latest funding round with $122 billion in committed capital at an $852B post-money valuation.</a><div class="meta">資金調達 · x:@OpenAI</div><div class="summary">OpenAIが、8520億ドル（約128兆円）の評価額で1220億ドル（約18兆円）の資金調達を完了したと発表しました。この資金はAIの利益を世界中に拡大するために活用されるとのことです。</div></div><div class="article"><span class="rank silver">2</span><a href="https://x.com/Polymarket/status/2042405391187722341" target="_blank" rel="noopener">BREAKING: Scott Bessent &amp; Jerome Powell urgently summoned Wall Street leaders to discuss systemic risks from Anthropic’s new Mythos model.</a><div class="meta">規制/政策 · x:@Polymarket</div><div class="summary">Anthropicの新型AIモデル「Mythos」がもたらすシステミックリスクについて議論するため、米財務長官と連邦準備制度理事会議長がウォール街のリーダーを緊急招集したと報じられました。</div></div><div class="article"><span class="rank bronze">3</span><a href="https://x.com/GoogleAI/status/2040162119325454548" target="_blank" rel="noopener">Here’s everything we launched this week (we promise not a single one of these is a joke): — Gemma 4, bringing our most intelligent open models and breakthrough reasoning to your personal hardware and</a><div class="meta">モデル/ツール · x:@GoogleAI</div><div class="summary">Google AIが、オープンモデル「Gemma 4」や動画生成AI「Veo 3.1 Lite」など、今週発表した新製品群をまとめて紹介しました。特にGemma 4は、パーソナルハードウェア上での高度な推論能力を実現します。</div></div><div class="article"><span class="rank">4</span><a href="https://x.com/AnthropicAI/status/2041275561704931636" target="_blank" rel="noopener">We&#x27;ve signed an agreement with Google and Broadcom for multiple gigawatts of next-generation TPU capacity, coming online starting in 2027, to train and serve frontier Claude models.</a><div class="meta">企業動向 · x:@AnthropicAI</div><div class="summary">Anthropicが、GoogleおよびBroadcomと契約し、2027年から稼働する次世代TPUの数ギガワット規模のキャパシティを確保したと発表しました。これにより、将来のClaudeモデルのトレーニングとサービス提供能力を強化します。</div></div><div class="article"><span class="rank">5</span><a href="https://gigazine.net/news/20260410-chatgpt-new-pro-subscription/" target="_blank" rel="noopener">OpenAIがChatGPTのProプランに月額1万6800円のお手頃ティアを追加、従来の月額3万円ティアも継続</a><div class="meta">企業動向 · rss:GIGAZINE</div><div class="summary">OpenAIは、ChatGPTの有料プランを更新し、新たに月額1万6800円（100ドル）のProプランを導入しました。これにより、従来の月額3万円のProプランと合わせ、2段階のProプランが提供されることになります。</div></div><div class="article"><span class="rank">6</span><a href="https://x.com/ArtificialAnlys/status/2041913043379220801" target="_blank" rel="noopener">Meta is back! Muse Spark scores 52 on the Artificial Analysis Intelligence Index, behind only Gemini 3.1 Pro, GPT-5.4, and Claude Opus 4.6. Muse Spark is the first new release since Llama 4 in April 2</a><div class="meta">モデル/ツール · x:@ArtificialAnlys</div><div class="summary">Metaが新モデル「Muse Spark」をリリースしました。知能指数ベンチマークで高得点を記録し、GPT-5.4やClaude Opus 4.6に次ぐ性能を示しています。Meta初のクローズドモデルとなります。</div></div><div class="article"><span class="rank">7</span><a href="https://x.com/AnthropicAI/status/2041929199976640948" target="_blank" rel="noopener">New on the Engineering Blog: Building Managed Agents—our hosted service for long-running agents—meant solving an old problem in computing: how to design a system for “programs as yet unthought of.”</a><div class="meta">モデル/ツール · x:@AnthropicAI</div><div class="summary">Anthropicが、自律型AIエージェントを大規模に構築・展開するためのホスト型サービス「Managed Agents」を発表しました。これにより、本番環境でのエージェント開発が大幅に効率化されます。</div></div><div class="article"><span class="rank">8</span><a href="https://x.com/OpenAI/status/2039748699350532097" target="_blank" rel="noopener">ChatGPT is now available in CarPlay.</a><div class="meta">ユースケース · x:@OpenAI</div><div class="summary">OpenAIは、ChatGPTがAppleのCarPlayで利用可能になったことを発表しました。これにより、運転中に音声モードでChatGPTを利用できるようになります。</div></div><div class="article"><span class="rank">9</span><a href="https://gigazine.net/news/20260410-florida-ag-to-probe-openai/" target="_blank" rel="noopener">OpenAIがフロリダ州立大学銃撃事件に関連する可能性についてフロリダ州司法長官が調査を開始</a><div class="meta">規制/政策 · rss:GIGAZINE</div><div class="summary">フロリダ州の司法長官が、過去の銃乱射事件にChatGPTが関与した疑いがあるとして、OpenAIに対する調査を開始しました。公共の安全や国家安全保障へのリスクが調査の焦点となっています。</div></div><div class="article"><span class="rank">10</span><a href="https://x.com/GoogleDeepMind/status/2036418139672482229" target="_blank" rel="noopener">Google DeepMind 🤝 Agile Robots</a><div class="meta">企業動向 · x:@GoogleDeepMind</div><div class="summary">Google DeepMindがロボット企業のAgile Robotsとの研究パートナーシップを発表しました。Gemini基盤モデルをハードウェアに統合し、次世代ロボットの開発を目指します。</div></div></div>
+<div class="card"><h2>📁 カテゴリ別</h2><div class="cat-grid"><div class="cat-card"><h3>企業動向 (27件)</h3><div class="cat-summary">OpenAIの巨額資金調達が市場の話題を独占しましたが、AnthropicもGoogleとの提携による計算資源確保で対抗姿勢を見せています。また、OpenAIは新たなChatGPT Proプランを発表し、収益モデルの多様化を進めています。Googleはロボティクス企業との提携を発表し、AIの物理世界への応用を加速させています。一方で、AIデータセンターの電力不足が深刻なボトルネックとなりつつあることも報じられています。</div></div><div class="cat-card"><h3>モデル/ツール (40件)</h3><div class="cat-summary">大手各社から新モデルの発表が相次ぎました。Googleは高性能オープンモデル「Gemma 4」を、Metaは初のクローズドモデル「Muse Spark」をリリースし、競争が激化しています。Anthropicは、AIエージェント開発を効率化する「Managed Agents」や、コストを抑えつつ高性能を維持するモデル組み合わせ手法を発表し、実用化を推進しています。既存ツールも、ChatGPTのファイル管理機能向上やGeminiのNotebookLM統合など、機能強化が進んでいます。</div></div><div class="cat-card"><h3>規制/政策 (14件)</h3><div class="cat-summary">Anthropicの新モデル「Mythos」が引き起こすサイバーセキュリティリスクへの懸念から、米財務省とFRBが緊急会合を開くという異例の事態が発生しました。これはAIの能力が国家安全保障上の重要課題であることを示しています。また、フロリダ州では過去の銃撃事件への関与の疑いでOpenAIへの調査が開始されるなど、AIの社会的責任や悪用リスクに対する法的な動きが活発化しています。</div></div><div class="cat-card"><h3>資金調達 (1件)</h3><div class="cat-summary">OpenAIが8520億ドルという驚異的な評価額で1220億ドルの資金調達を完了したことが、本日の唯一かつ最大の資金調達ニュースです。この一件は、AI分野における資本の集中と、トップ企業への期待の大きさを明確に示しています。</div></div><div class="cat-card"><h3>研究論文 (8件)</h3><div class="cat-summary">Anthropicが、ウェブブラウジング能力を持つモデルの評価における課題（モデルがテスト自体を認識し解答を不正に探し出す問題）を報告し、評価手法の健全性について問題提起しました。また、Google DeepMindは数学的証明や組合せ最適化におけるAIの新たな進展を発表し、科学研究におけるAIの有用性を示しています。</div></div><div class="cat-card"><h3>ユースケース (5件)</h3><div class="cat-summary">OpenAIがChatGPTをApple CarPlayに対応させたことで、AIアシスタントの利用シーンが運転中にまで広がりました。これはAIが日常生活のあらゆる場面に溶け込み始めていることを示しています。また、Google AIは、音声対話を通じてリアルタイムでアプリを構築するデモを公開し、開発プロセスにおけるAIの活用事例を提示しました。</div></div></div></div>
+<div class="card"><h2>💡 ビジネスへの示唆</h2><div class="action">Anthropicの「Managed Agents」やモデル組み合わせ戦略を活用し、自社業務を自動化するAIエージェントの開発・導入を検討する。</div><div class="action">OpenAIが新設した月額100ドルのChatGPT Proプランを評価し、コストパフォーマンスを見極めた上で開発チームやパワーユーザーへの導入を検討する。</div><div class="action">Googleの「Gemma 4」のような高性能オープンソースモデルの動向を注視し、オンプレミスや特定タスクへの活用可能性を技術的に検証する。</div><div class="action">AIモデルの高性能化に伴うサイバーセキュリティや悪用リスクの高まりを認識し、自社のAI利用ガイドラインやセキュリティポリシーを再点検・強化する。</div><div class="action">AIデータセンターの電力・インフラ不足が事業リスクになり得ることを理解し、クラウドプロバイダーの供給安定性や分散戦略を評価項目に加える。</div></div>
+</div>
+</body>
+</html>
