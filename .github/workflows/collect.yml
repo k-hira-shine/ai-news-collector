@@ -1,10 +1,7 @@
 name: AI News Collector
 
 on:
-  schedule:
-    - cron: '17 22 * * *'   # UTC 22:17 = JST 07:17 (朝便)
-    - cron: '23 9 * * *'    # UTC 09:23 = JST 18:23 (夕便)
-  workflow_dispatch:          # 手動実行
+  workflow_dispatch:          # Cloud Scheduler (GCP) から JST 07:00 / 18:00 に発火
 
 concurrency:
   group: ai-news-collector
