@@ -21,6 +21,23 @@ ssl._create_default_https_context = ssl._create_unverified_context
 # ━━━━━━━━━━━━━━━━ X/Twitter (Apify) ━━━━━━━━━━━━━━━━
 
 
+def _get_apify_usage(token: str) -> dict | None:
+    """Apify 月間使用量 API から通算コストを取得"""
+    try:
+        req = urllib.request.Request(
+            "https://api.apify.com/v2/users/me/usage/monthly",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read()).get("data", {})
+        return {
+            "total": data.get("totalUsageCreditsUsdAfterVolumeDiscount", 0),
+            "cycle_end": data.get("usageCycle", {}).get("endAt", ""),
+        }
+    except Exception:
+        return None
+
+
 def _default_x_runtime_meta() -> dict:
     return {
         "has_apify": False,
@@ -75,6 +92,8 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     items: list[dict] = []
     has_cookies = meta["has_cookies"]
 
+    usage_before = _get_apify_usage(token)
+
     if has_cookies:
         if not search_queries:
             logger.info("X search queries not configured — skipping search queries")
@@ -90,13 +109,12 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
                 run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
                 meta["apify_runs"] += 1
-                meta["apify_cost_usd"] += run.get("usageTotalUsd", 0)
                 count = 0
                 for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                     items.append(_normalize_tweet(tweet))
                     count += 1
                 meta["search_total"] += count
-                logger.info("X search '%s…': %d tweets ($%.4f)", query[:40], count, run.get("usageTotalUsd", 0))
+                logger.info("X search '%s…': %d tweets", query[:40], count)
             except Exception as e:
                 meta["search_error_count"] += 1
                 logger.error("X search '%s…' failed: %s", query[:40], e)
@@ -123,7 +141,6 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
             meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += run.get("usageTotalUsd", 0)
             for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                 item = _normalize_tweet(tweet)
                 author_lower = item["author"].lower()
@@ -132,7 +149,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 item["is_official"] = acct_cfg.get("priority") == "critical"
                 item["priority"] = acct_cfg.get("priority", "normal")
                 items.append(item)
-            logger.info("X must-follow batch (%d profiles): OK ($%.4f)", len(handles), run.get("usageTotalUsd", 0))
+            logger.info("X must-follow batch (%d profiles): OK", len(handles))
         except Exception as e:
             logger.error("X must-follow batch failed: %s", e)
 
@@ -147,18 +164,11 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         logger.info("X engagement filter (>=%d): %d → %d", min_eng, before, len(items))
 
     if meta["apify_runs"] > 0:
-        try:
-            req = urllib.request.Request(
-                "https://api.apify.com/v2/users/me/usage/monthly",
-                headers={"Authorization": f"Bearer {token}"},
-            )
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                usage_data = json.loads(resp.read()).get("data", {})
-            meta["apify_cycle_total_usd"] = usage_data.get("totalUsageCreditsUsdAfterVolumeDiscount", 0)
-            cycle = usage_data.get("usageCycle", {})
-            meta["apify_cycle_end"] = cycle.get("endAt", "")
-        except Exception:
-            pass
+        usage_after = _get_apify_usage(token)
+        if usage_before is not None and usage_after is not None:
+            meta["apify_cost_usd"] = usage_after["total"] - usage_before["total"]
+            meta["apify_cycle_total_usd"] = usage_after["total"]
+            meta["apify_cycle_end"] = usage_after.get("cycle_end", "")
 
     logger.info("X/Twitter total: %d items (Apify: %d runs, $%.4f)", len(items), meta["apify_runs"], meta["apify_cost_usd"])
     return items
