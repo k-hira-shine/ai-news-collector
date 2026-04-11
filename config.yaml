@@ -6,11 +6,10 @@ collection:
 
 x_twitter:
   search_queries:
-    - "AI OR artificial intelligence OR LLM -filter:replies lang:en"
-    - "ChatGPT OR Claude OR Gemini OR GPT -filter:replies"
-    - "OpenAI OR Anthropic OR Google DeepMind OR Meta AI"
+    - "ChatGPT OR Claude OR Gemini OR GPT OR OpenAI OR Anthropic OR DeepMind OR Meta AI OR LLM -filter:replies lang:en"
     - "生成AI OR 人工知能 OR AI活用 lang:ja"
-    - "\"Claude Code\" OR \"claude code\" -filter:replies"
+    - "Claude Code OR Cursor AI OR GitHub Copilot OR Devin OR AI coding -filter:replies"
+  max_results_per_query: 120
   must_follow_accounts:
     - handle: "OpenAI"
       label: "OpenAI公式"
@@ -45,7 +44,6 @@ x_twitter:
     - handle: "aonboaonbo"
       label: "あおんぼ@総合WEBマーケプロデューサー"
       priority: high
-  max_results_per_query: 40
   min_engagement: 10
   apify_actor: "get-leads/all-in-one-x-scraper"
   apify_monthly_budget_usd: 29.0
