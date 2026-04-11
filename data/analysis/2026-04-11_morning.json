@@ -1,0 +1,357 @@
+{
+  "trend_summary": "本日のAI業界は、OpenAI創設メンバーAndrej Karpathy氏が提唱した「LLMエージェントがソフトウェア業界を根底から覆す」というビジョンが大きな注目を集めました。彼の発言は、コード共有からエージェント共有へと開発パラダイムがシフトする可能性を示唆し、業界の未来像を巡る議論を巻き起こしています。並行して、AnthropicはClaudeの新機能「/ultraplan」やMicrosoft Word連携を発表し、開発者とビジネスユーザー双方への浸透を加速。一方で、米国政府がAnthropicを安全保障上の脅威と見なしつつ、その技術力の高さを警告するという矛盾した動きを見せており、AIの戦略的な重要性が浮き彫りになっています。",
+  "trend_evolution": {
+    "since_last": "前回の分析で急浮上したClaudeのサイバーセキュリティリスクに関する話題は一旦沈静化し、代わりに開発ツールとしての進化（/ultraplan、Word連携）が大きな注目を集めています。Andrej Karpathy氏によるLLMエージェントの将来像に関する議論が新たにトップトレンドとなり、業界のパラダイムシフトへの関心が高まっています。また、米国政府のAI企業に対する複雑な姿勢や、日本国内での生成AI利用を巡る著作権・倫理問題も再浮上し、技術開発と社会実装の両面で議論が活発化しています。",
+    "tracked_topics": [
+      {
+        "topic": "LLMエージェントによるソフトウェア業界の変革",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Andrej Karpathy氏の論文をきっかけに、コード共有からエージェント共有へのパラダイムシフトの可能性が議論され始めた。"
+      },
+      {
+        "topic": "Anthropic/Claudeのエコシステム拡大と機能強化",
+        "status": "RISING",
+        "streak_days": 3,
+        "evolution": "開発者エコシステムの急拡大が報告された後、本日は具体的な新機能（/ultraplan、Word連携）の発表でさらに勢いを増している。"
+      },
+      {
+        "topic": "米国政府のAI企業への二律背反な対応",
+        "status": "RESURFACED",
+        "streak_days": 1,
+        "evolution": "以前からあった規制の動きが、Anthropicを「脅威」と「重要技術」と同時に位置づけるという具体的な矛盾として再び注目されている。"
+      },
+      {
+        "topic": "AIの著作権・倫理問題（日本）",
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "アニメOPでのAI利用問題が継続して議論されており、クリエイティブ業界での生成AI利用の是非が問われている。"
+      },
+      {
+        "topic": "LLMの技術的進化と研究（MoE推論など）",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "LLMの根本的な課題に関する議論から、本日はNVIDIAによるMoEモデル推論の高速化技術（DWDP）の発表へと具体的な技術進展に焦点が移った。"
+      },
+      {
+        "topic": "AIによる雇用への影響",
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "レイオフの話題に加え、本日は日本国内での新卒採用枠への影響という具体的なレポートが登場し、議論が継続している。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "383a503d3d07a7c2",
+      "rank": 1,
+      "title": "🚨 do you understand what andrej karpathy just quietly published..",
+      "url": "https://x.com/TukiFromKL/status/2040488439867429290",
+      "summary": "OpenAI創設メンバーで元テスラAI責任者のAndrej Karpathy氏が、LLMエージェント時代には特定のコードを共有する必要がなくなり、ソフトウェア業界全体が破壊される可能性があると示唆。この発言が大きな波紋を広げている。",
+      "importance_reason": "LLM開発の第一人者による、ソフトウェア開発の未来に関する根源的なパラダイムシフトの提言であり、業界の長期的な方向性に大きな影響を与える可能性があるため。",
+      "category": "研究論文",
+      "source_label": "x:@TukiFromKL"
+    },
+    {
+      "id": "16afdb14ed25baa8",
+      "rank": 2,
+      "title": "【新機能登場】 Claude Codeに新機能「/ultraplan」登場！🎉",
+      "url": "https://x.com/claudecode_lab/status/2042722362643398719",
+      "summary": "Anthropicのコーディング支援ツール「Claude Code」に、実装計画をWeb上で自動生成・編集・実行できる新機能「/ultraplan」が追加された。従来のplanモードから大幅に進化し、開発ワークフローの効率化が期待される。",
+      "importance_reason": "Anthropicが開発者向けツールを急速に強化しており、AIによるソフトウェア開発の自動化トレンドを象徴する具体的な機能アップデートであるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@claudecode_lab"
+    },
+    {
+      "id": "481729705dfc92fa",
+      "rank": 3,
+      "title": "Anthropic says Claude for Word is now in beta letting users draft, edit & revise documents directly from the sidebar while preserving formatting and tracked changes.",
+      "url": "https://x.com/StockSavvyShay/status/2042724375309488502",
+      "summary": "Anthropicが、Microsoft Word内で直接文書の作成や編集、校正を行える「Claude for Word」のベータ版を発表した。書式や変更履歴を維持したまま作業でき、Word、Excel、PowerPointを横断した文脈理解も可能。",
+      "importance_reason": "主要なビジネスアプリケーションへのAI統合であり、一般ユーザーの生産性向上に直結する重要な動き。Anthropicのビジネス領域への本格的な進出を示す。",
+      "category": "モデル/ツール",
+      "source_label": "x:@StockSavvyShay"
+    },
+    {
+      "id": "9f31b1df4f22fc4d",
+      "rank": 4,
+      "title": "The US government is simultaneously blacklisting Anthropic as a national security threat and summoning Wall Street CEOs to warn them about how powerful Anthropic's technology is. Read that again.",
+      "url": "https://x.com/aakashgupta/status/2042663667146309908",
+      "summary": "米国政府がAnthropicを国家安全保障上の脅威としてブラックリストに載せる一方で、ウォール街のCEOを召喚し同社の技術の強力さについて警告するという、矛盾した対応を取っていることが指摘されている。",
+      "importance_reason": "AI技術が地政学的・経済的な最重要課題であることを象徴する出来事。政府の規制と産業振興の間のジレンマを浮き彫りにしており、今後の政策動向に影響を与える可能性がある。",
+      "category": "規制/政策",
+      "source_label": "x:@aakashgupta"
+    },
+    {
+      "id": "e9af18d4350a28b9",
+      "rank": 5,
+      "title": "Grok-4.20 just ranked #1 in Legal & Government on Chatbot Arena",
+      "url": "https://x.com/XFreeze/status/2042294436533588299",
+      "summary": "xAIの「Grok-4.20」が、Chatbot Arenaの法律・行政分野でAnthropicのOpus 4.6やGoogleのGemini 3.1 Proを上回り1位を獲得したと報告されている。実際の訴訟や税務処理での活用事例も挙げられている。",
+      "importance_reason": "特定の専門分野においてGrokが競合モデルを凌駕する性能を示したことで、LLM市場の競争が多角化していることを示唆する。Xのリアルタイムデータとの連携による強みが現れた可能性がある。",
+      "category": "企業動向",
+      "source_label": "x:@XFreeze"
+    },
+    {
+      "id": "2745f77f3792c229",
+      "rank": 6,
+      "title": "Introducing DWDP = “Distributed Weight Data Parallelism” for MoE LLM inference using NVL72-based clusters from #NVIDIAResearch.",
+      "url": "https://x.com/NVIDIAAIDev/status/2042714027470561429",
+      "summary": "NVIDIA Researchが、MoE（Mixture of Experts）モデルの推論を高速化する新技術「DWDP (Distributed Weight Data Parallelism)」を発表した。GPU間で専門家（experts）を効率的にオフロードし、P2Pコピーでオンデマンドに取得することで、推論速度を向上させる。",
+      "importance_reason": "巨大化するMoEモデルの効率的な運用は業界全体の課題であり、NVIDIAによるこの新技術は推論コストの削減と性能向上に直接的に貢献するため。",
+      "category": "研究論文",
+      "source_label": "x:@NVIDIAAIDev"
+    },
+    {
+      "id": "1a6386a4517cda91",
+      "rank": 7,
+      "title": "Californians sue over AI tool that records doctor visits",
+      "url": "https://arstechnica.com/tech-policy/2026/04/californians-sue-over-ai-tool-that-records-doctor-visits/",
+      "summary": "カリフォルニア州で、医師の診察を記録・文字起こしするAIツールが、機密性の高い患者との会話をオフサイトで処理していたとして、複数の住民がプライバシー侵害で訴訟を起こした。",
+      "importance_reason": "ヘルスケア分野でのAI活用におけるプライバシーとデータセキュリティの課題が法廷闘争に発展した事例。今後の規制や業界のガイドライン策定に影響を与える可能性がある。",
+      "category": "規制/政策",
+      "source_label": "rss:Ars Technica"
+    },
+    {
+      "id": "d3b82561db5cb126",
+      "rank": 8,
+      "title": "経産省、30社を「DX銘柄2026」に認定　3年連続選出のSMBCは500億円超投資、成果は？",
+      "url": "https://www.itmedia.co.jp/business/articles/2604/11/news018.html",
+      "summary": "経済産業省が、AI活用などのデジタルトランスフォーメーション（DX）に優れた企業30社を「DX銘柄2026」として選定した。特に三井住友フィナンシャルグループ（SMBC）は、500億円超を投資しAI活用で成果を上げている。",
+      "importance_reason": "日本政府がAIを含むDXを推進する企業の取り組みを評価しており、国内の産業界におけるAI導入の動向と成功事例を示す指標となるため。",
+      "category": "企業動向",
+      "source_label": "rss:ITmedia AI+"
+    },
+    {
+      "id": "284eb764dec3dcca",
+      "rank": 9,
+      "title": "AI代替で消える新卒枠……中途も影響半数で「売り手市場」に暗雲",
+      "url": "https://monoist.itmedia.co.jp/mn/articles/2604/11/news019.html",
+      "summary": "AIの導入により、これまで新卒が担っていた業務が代替され、新卒採用枠が減少する可能性が指摘されている。中途採用市場にも影響が及び、従来の「売り手市場」が変化する兆しが見られる。",
+      "importance_reason": "AIが労働市場、特にエントリーレベルの雇用に与える具体的な影響について警鐘を鳴らす記事であり、社会的な議論を喚起する可能性がある。",
+      "category": "企業動向",
+      "source_label": "rss:ITmedia AI+"
+    },
+    {
+      "id": "ef7c30a53573d7dd",
+      "rank": 10,
+      "title": "Executive compression is happening faster than anyone expected.",
+      "url": "https://x.com/aakashgupta/status/2042684298671853903",
+      "summary": "AI業界への人材流動が加速し、大手テック企業のCTOクラスの幹部が、AnthropicなどのAI企業で一般の技術職（Member of Technical Staff）に就く「Executive Compression（幹部の圧縮）」現象が起きていることが報告されている。",
+      "importance_reason": "AI業界が他業界からトップレベルの人材を惹きつける「頭脳集中」の現状を示しており、業界の勢いと人材獲得競争の激しさを象徴しているため。",
+      "category": "企業動向",
+      "source_label": "x:@aakashgupta"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "モデル/ツール",
+      "summary": "AnthropicがClaude Codeの新機能「/ultraplan」とMicrosoft Wordとの連携ベータ版を発表し、開発とビジネス両面でのエコシステムを強力に拡大しています。これにより、AIによるコーディングや文書作成の自動化がさらに現実的なものとなっています。一方で、LLMの量子化技術に関する解説ブログや、様々なオープンソースツールの活用法も活発に共有されており、開発者コミュニティの熱気が高まっています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "【新機能登場】 Claude Codeに新機能「/ultraplan」登場！🎉",
+          "url": "https://x.com/claudecode_lab/status/2042722362643398719"
+        },
+        {
+          "title": "Anthropic says Claude for Word is now in beta letting users draft, edit & revise documents directly from the sidebar while preserving formatting and tracked changes.",
+          "url": "https://x.com/StockSavvyShay/status/2042724375309488502"
+        },
+        {
+          "title": "*Finally* read through @samwhoo's blog on LLM quantization.",
+          "url": "https://x.com/BenjDicken/status/2042048921560871045"
+        },
+        {
+          "title": "Claude Code 2.1.101 has been released.",
+          "url": "https://x.com/ClaudeCodeLog/status/2042685432987590948"
+        },
+        {
+          "title": "X運用のすべてを０円で。 L Harnessは始まりにすぎません。従来のX運用サービスの基本的な機能はもちろん、オープンソースだからこそ高速で自己進化していくX Harnessを０円で公開します。",
+          "url": "https://x.com/aonboaonbo/status/2042283213859819764"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "AI業界への人材流動が加速し、大手企業のCTOクラスがAI企業の一般技術職に転職する「Executive Compression」が注目されています。xAIのGrokが特定分野で競合を上回る性能を見せるなど、競争は激化。国内では経産省がAI活用企業を「DX銘柄」として認定する一方、AIによる新卒採用枠の減少懸念も報じられており、AIがビジネスと雇用に与える光と影が浮き彫りになっています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "Grok-4.20 just ranked #1 in Legal & Government on Chatbot Arena",
+          "url": "https://x.com/XFreeze/status/2042294436533588299"
+        },
+        {
+          "title": "Executive compression is happening faster than anyone expected.",
+          "url": "https://x.com/aakashgupta/status/2042684298671853903"
+        },
+        {
+          "title": "経産省、30社を「DX銘柄2026」に認定　3年連続選出のSMBCは500億円超投資、成果は？",
+          "url": "https://www.itmedia.co.jp/business/articles/2604/11/news018.html"
+        },
+        {
+          "title": "AI代替で消える新卒枠……中途も影響半数で「売り手市場」に暗雲",
+          "url": "https://monoist.itmedia.co.jp/mn/articles/2604/11/news019.html"
+        },
+        {
+          "title": "The board that fired him? Replaced. The safety team that questioned his priorities? Dissolved. The nonprofit structure that was supposed to keep mission above profit? Restructured. The employees who w",
+          "url": "https://x.com/rcbregman/status/2042526824089923916"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "米国政府がAnthropicを安全保障上の脅威と見なしつつ、その技術力を金融機関に警告するという二律背反な対応が大きな注目を集め、AIの戦略的重要性が浮き彫りになりました。また、カリフォルニア州では医療記録AIツールがプライバシー侵害で提訴され、ヘルスケア分野での法的リスクが顕在化。日本ではアニメ制作における生成AI利用が発覚し、映像が公開中止になるなど、著作権と倫理を巡る問題が続いています。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "The US government is simultaneously blacklisting Anthropic as a national security threat and summoning Wall Street CEOs to warn them about how powerful Anthropic's technology is. Read that again.",
+          "url": "https://x.com/aakashgupta/status/2042663667146309908"
+        },
+        {
+          "title": "Californians sue over AI tool that records doctor visits",
+          "url": "https://arstechnica.com/tech-policy/2026/04/californians-sue-over-ai-tool-that-records-doctor-visits/"
+        },
+        {
+          "title": "本好きの下剋上が生成AI使用発覚でOP映像公開中止したらしいです🤚オープニング映像において、生成AI使用が発覚し、YouTubeで公開されていたノンクレジット映像を公開終了することを発表⚡生成AIでは大量のデータを読み込む必要があり、現状として、その学習データの大半が使用許諾を取っていないです",
+          "url": "https://x.com/ginyokosuka/status/2042740221973008486"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "Andrej Karpathy氏が提唱した「LLMエージェントがソフトウェア業界の構造を破壊する」という未来予測が最大の話題となりました。これは、コード共有からエージェント共有へのパラダイムシフトを示唆するものです。技術面では、NVIDIAがMoEモデルの推論を高速化する新技術「DWDP」を発表し、大規模モデルの実用化をさらに前進させています。また、AI自身の進化が加速する「知性のループ」に関する議論も注目されています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "🚨 do you understand what andrej karpathy just quietly published..",
+          "url": "https://x.com/TukiFromKL/status/2040488439867429290"
+        },
+        {
+          "title": "Introducing DWDP = “Distributed Weight Data Parallelism” for MoE LLM inference using NVL72-based clusters from #NVIDIAResearch.",
+          "url": "https://x.com/NVIDIAAIDev/status/2042714027470561429"
+        },
+        {
+          "title": "【「AIが賢くなることをAI自身が加速させる」ループに入ったか】知性の物理学を研究する田中秀宣／「お辞儀」から考えるAIの文化形成／シンギュラリティ時代の世界をどう生きるか【1on1】",
+          "url": "https://www.youtube.com/watch?v=J7x-FJMB2kM"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "Claude Codeをはじめとする各種AIツールを組み合わせ、設計と実装で使い分けるといった具体的な活用ノウハウが共有されています。また、AIによるスライド作成やECサイトの商品情報をChatGPTに連携させる方法など、ビジネスの現場ですぐに役立つ実践的なテクニックに関心が集まっています。一方で、AIが生成した偽情報によって救助活動が混乱するなど、誤用のリスクも報告されています。",
+      "count": 8,
+      "key_articles": [
+        {
+          "title": "🔴AI 동시통역 LIVE '반세기 만의 유인 달 궤도 비행' NASA 아르테미스 2호 지구 귀환 생중계..'2800도' 대기권 재진입 \"최대 고비\" | SBS 실시간 라이브",
+          "url": "https://www.youtube.com/watch?v=W3RtU3QzKRk"
+        },
+        {
+          "title": "How To Get Your Shopify Products Inside ChatGPT (Step-by-Step, March 2026 Update)",
+          "url": "https://www.youtube.com/watch?v=IqAiNJmaL4Y"
+        },
+        {
+          "title": "まーしー式AIスライドのサービス買わせて いただきまして、教えてもらいました！",
+          "url": "https://x.com/aonboaonbo/status/2042563851460432131"
+        },
+        {
+          "title": "「Claude Codeは手、Antigravityは脳」 この一文で全部つながった。",
+          "url": "https://x.com/dansyu_callenge/status/2042719484583252048"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "Andrej Karpathy氏が提唱する「エージェント中心の開発」へのシフトを念頭に、自社のソフトウェア開発プロセスやサービス提供形態が将来どう変化しうるか、長期的なシナリオプランニングを開始する。",
+    "AnthropicのClaude CodeやWord連携など、急速に進化するAI開発・業務ツールを評価・導入し、開発者や従業員の生産性向上に繋げるパイロットプログラムを検討する。",
+    "AIの導入・活用にあたり、プライバシー保護や著作権に関する法的リスクを再評価する。特に、顧客データやクリエイティブ制作に関わる領域では、弁護士を交えたガイドラインの見直しを行う。",
+    "AIがエントリーレベルの雇用を代替する可能性を考慮し、新入社員や若手人材の育成方針を再検討する。AIを使いこなすスキルや、より創造的な業務へのシフトを促す教育プログラムを計画する。",
+    "自社が属する特定業界・分野に特化したLLMの性能動向を注視する（例：Grokの法律分野）。汎用モデルだけでなく、専門分野で高い性能を発揮するモデルの活用も視野に入れる。"
+  ],
+  "x_trends": [
+    {
+      "topic": "Andrej Karpathy氏の「LLMエージェントがソフトウェアを破壊する」という提言",
+      "description": "OpenAI創設メンバーAndrej Karpathy氏の最新の論文内容がX上で大きな衝撃を与えています。彼が提唱する「LLMエージェント時代にはコードの代わりにエージェントを共有する」というビジョンは、ソフトウェア開発のあり方を根底から覆す可能性を秘めています。多くの開発者や技術者は、このパラダイムシフトがもたらす影響の大きさに驚きと興奮を示しており、今後の業界の方向性を決定づける重要な提言として拡散されています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@TukiFromKL",
+          "text": "🚨 do you understand what andrej karpathy just quietly published..\n\nkarpathy.. founding team at openai, former head of AI at tesla.. just said something that breaks the entire software industry in one paragraph..\n\nin the LLM agent era.. there's less need to share specific code or https://t.co/9r2ILFpRmZ",
+          "url": "https://x.com/TukiFromKL/status/2040488439867429290",
+          "likes": 1865,
+          "retweets": 206
+        }
+      ]
+    },
+    {
+      "topic": "xAIのGrokが特定分野で競合を凌駕",
+      "description": "xAIが開発したLLM「Grok-4.20」が、Chatbot Arenaの「法律・行政」カテゴリでAnthropicのOpusやGoogleのGeminiを上回り1位になったという投稿が爆発的に拡散されています。700万回以上の表示回数を記録しており、多くのユーザーがGrokの専門分野における性能の高さに驚きを示しています。Xのリアルタイムデータや特定データセットでのファインチューニングが、競合に対する優位性を生み出しているのではないかと推測されています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@XFreeze",
+          "text": "Grok-4.20 just ranked #1 in Legal & Government on Chatbot Arena\n\nIt’s officially outperforming Anthropic’s Opus 4.6 and Google’s Gemini 3.1 Pro\n\nGrok is actively helping people navigate real lawsuits and do complex tax management (I've been personally using it for my own taxes) https://t.co/bOfouqEz7C",
+          "url": "https://x.com/XFreeze/status/2042294436533588299",
+          "likes": 2431,
+          "retweets": 390
+        }
+      ]
+    },
+    {
+      "topic": "LLMの量子化技術に関する解説記事への称賛",
+      "description": "LLMのモデルサイズを圧縮する技術である「量子化」について、技術的な詳細を平易に解説したブログ記事が大きな称賛を集めています。多くの技術者が「信じられないほど素晴らしい」「AIモデルがどう動くかを深く理解する助けになる」とコメントしており、5000以上のブックマークを記録。表面的な理解に留まりがちなLLMの内部動作について、深い知識を求めるコミュニティの需要が高いことを示しています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@BenjDicken",
+          "text": "*Finally* read through @samwhoo's blog on LLM quantization.\n\nIt's incredible.\n\nFor many (even in tech) the understanding of how LLMs work stops at the surface level. Sam is helping us all go deeper, digging into the interesting facets of how AI models truly work.\n\nRead it! https://t.co/TXhf469847",
+          "url": "https://x.com/BenjDicken/status/2042048921560871045",
+          "likes": 3757,
+          "retweets": 368
+        }
+      ]
+    },
+    {
+      "topic": "Anthropic (Claude) の新機能リリースとエコシステム拡大",
+      "description": "Anthropicが立て続けに新機能を発表し、X上で大きな話題となっています。特に、開発者向けのコーディング支援ツール「Claude Code」に実装計画を自動生成する「/ultraplan」が追加されたこと、そしてビジネスユーザー向けにMicrosoft Wordと連携する「Claude for Word」がベータ版として登場したことに注目が集まっています。これらの動きは、Anthropicが開発者とビジネスの両市場で急速に存在感を高めていることを示しており、ユーザーからは歓迎と期待の声が多数寄せられています。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@StockSavvyShay",
+          "text": "Anthropic says Claude for Word is now in beta letting users draft, edit & revise documents directly from the sidebar while preserving formatting and tracked changes.\n\nClaude can also pull context across $MSFT Word, Excel & PowerPoint in a single conversation. https://t.co/QLddTvoIRg",
+          "url": "https://x.com/StockSavvyShay/status/2042724375309488502",
+          "likes": 179,
+          "retweets": 16
+        },
+        {
+          "author": "@claudecode_lab",
+          "text": "【新機能登場】\n\nClaude Codeに新機能「/ultraplan」登場！🎉\n\nUltraplanとは、ClaudeがWeb上で実装計画を全部作ってくれる新モードです🔥\n\n計画をWebブラウザでじっくり読んで編集 → そのままWebで実行するか、ターミナルに戻して実行するかを選べます。\n\n✅ 今までのplanモードからの進化まとめ： https://t.co/DvSW35geue",
+          "url": "https://x.com/claudecode_lab/status/2042722362643398719",
+          "likes": 127,
+          "retweets": 15
+        }
+      ]
+    },
+    {
+      "topic": "米国政府のAnthropicへの矛盾した対応",
+      "description": "米国政府がAnthropicを「国家安全保障上の脅威」としてブラックリストに載せる一方で、金融機関のCEOらには「Anthropicの技術は非常に強力だ」と警告しているという二重の対応が指摘され、話題を呼んでいます。この投稿は、AI技術が持つ潜在的なリスクと経済的な重要性の間で、政府が複雑なジレンマに直面していることを示唆しています。ユーザーからは、この矛盾した状況に対する皮肉や、AIを巡る地政学的な駆け引きの複雑さを指摘するコメントが見られます。",
+      "buzz_level": "low",
+      "sentiment": "neutral",
+      "representative_tweets": [
+        {
+          "author": "@aakashgupta",
+          "text": "The US government is simultaneously blacklisting Anthropic as a national security threat and summoning Wall Street CEOs to warn them about how powerful Anthropic's technology is. Read that again.\n\nTuesday: Bessent and Powell pull bank CEOs into Treasury HQ for an emergency",
+          "url": "https://x.com/aakashgupta/status/2042663667146309908",
+          "likes": 40,
+          "retweets": 9
+        }
+      ]
+    }
+  ],
+  "run_time": "2026-04-11T00:51:12.365609+00:00",
+  "slot": "morning",
+  "item_count": 80
+}
