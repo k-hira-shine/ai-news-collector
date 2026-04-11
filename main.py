@@ -51,6 +51,12 @@ def main() -> None:
         "youtube_count": sum(1 for i in items if i["source"] == "youtube"),
         "official_count": sum(1 for i in items if i.get("is_official")),
         "must_follow_count": sum(1 for i in items if i.get("is_must_follow")),
+        "apify_cost_usd": x_runtime.get("apify_cost_usd", 0),
+        "apify_runs": x_runtime.get("apify_runs", 0),
+        "apify_cycle_total_usd": x_runtime.get("apify_cycle_total_usd", 0),
+        "apify_cycle_end": x_runtime.get("apify_cycle_end", ""),
+        "apify_monthly_budget_usd": config.get("x_twitter", {}).get("apify_monthly_budget_usd", 29.0),
+        "apify_warning_threshold": config.get("x_twitter", {}).get("apify_warning_threshold", 0.8),
     }
     logger.info("Collected: %s", stats)
 

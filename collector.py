@@ -28,6 +28,8 @@ def _default_x_runtime_meta() -> dict:
         "search_queries_configured": 0,
         "search_total": 0,
         "search_error_count": 0,
+        "apify_cost_usd": 0.0,
+        "apify_runs": 0,
     }
 
 
@@ -87,12 +89,14 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 }
 
                 run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
+                meta["apify_runs"] += 1
+                meta["apify_cost_usd"] += run.get("usageTotalUsd", 0)
                 count = 0
                 for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                     items.append(_normalize_tweet(tweet))
                     count += 1
                 meta["search_total"] += count
-                logger.info("X search '%s…': %d tweets", query[:40], count)
+                logger.info("X search '%s…': %d tweets ($%.4f)", query[:40], count, run.get("usageTotalUsd", 0))
             except Exception as e:
                 meta["search_error_count"] += 1
                 logger.error("X search '%s…' failed: %s", query[:40], e)
@@ -105,25 +109,32 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     else:
         logger.info("X_COOKIES not set — skipping search queries (timeline only)")
 
-    for acct in x_cfg.get("must_follow_accounts", []):
+    must_follow = x_cfg.get("must_follow_accounts", [])
+    if must_follow:
         try:
+            handles = [acct["handle"] for acct in must_follow]
+            priority_map = {acct["handle"].lower(): acct for acct in must_follow}
             run_input: dict = {
                 "scrapeMode": "x-timeline-scraper",
-                "profiles": [acct["handle"]],
+                "profiles": handles,
                 "maxResults": 10,
                 "loginCookies": cookies,
             }
 
-            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=60)
+            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
+            meta["apify_runs"] += 1
+            meta["apify_cost_usd"] += run.get("usageTotalUsd", 0)
             for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                 item = _normalize_tweet(tweet)
+                author_lower = item["author"].lower()
+                acct_cfg = priority_map.get(author_lower, {})
                 item["is_must_follow"] = True
-                item["is_official"] = acct.get("priority") == "critical"
-                item["priority"] = acct.get("priority", "normal")
+                item["is_official"] = acct_cfg.get("priority") == "critical"
+                item["priority"] = acct_cfg.get("priority", "normal")
                 items.append(item)
-            logger.info("X must-follow @%s: OK", acct["handle"])
+            logger.info("X must-follow batch (%d profiles): OK ($%.4f)", len(handles), run.get("usageTotalUsd", 0))
         except Exception as e:
-            logger.error("X must-follow @%s failed: %s", acct["handle"], e)
+            logger.error("X must-follow batch failed: %s", e)
 
     min_eng = x_cfg.get("min_engagement", 0)
     if min_eng > 0:
@@ -135,7 +146,21 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         ]
         logger.info("X engagement filter (>=%d): %d → %d", min_eng, before, len(items))
 
-    logger.info("X/Twitter total: %d items", len(items))
+    if meta["apify_runs"] > 0:
+        try:
+            req = urllib.request.Request(
+                "https://api.apify.com/v2/users/me/usage/monthly",
+                headers={"Authorization": f"Bearer {token}"},
+            )
+            with urllib.request.urlopen(req, timeout=10) as resp:
+                usage_data = json.loads(resp.read()).get("data", {})
+            meta["apify_cycle_total_usd"] = usage_data.get("totalUsageCreditsUsdAfterVolumeDiscount", 0)
+            cycle = usage_data.get("usageCycle", {})
+            meta["apify_cycle_end"] = cycle.get("endAt", "")
+        except Exception:
+            pass
+
+    logger.info("X/Twitter total: %d items (Apify: %d runs, $%.4f)", len(items), meta["apify_runs"], meta["apify_cost_usd"])
     return items
 
 

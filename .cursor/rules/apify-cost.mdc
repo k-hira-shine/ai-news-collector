@@ -1,0 +1,25 @@
+---
+description: Apify Actor のコスト管理ルール。Apify の実装変更・Actor 追加・収集設定変更時に参照する。
+alwaysApply: false
+---
+
+# Apify コスト管理
+
+## Actor 呼び出しの原則
+
+- **配列パラメータを活用する**: `profiles`, `searchQueries` 等が配列を受け付ける場合、1回の Actor 起動でまとめて渡す。1件ずつ起動しない。
+- **バッチ化の前に取得件数の挙動を確認する**: `maxResults` が「全体の上限」か「項目ごとの上限」かは Actor によって異なる。不明な場合はテストするか、個別実行を維持する。
+- Actor 起動には per-event 料金（起動料 + dataset 書き込み）がかかるため、**起動回数の削減がコスト削減に直結する**。
+
+## 現在の構成と想定コスト
+
+- Actor: `get-leads/all-in-one-x-scraper`（Starter = Bronze 割引適用）
+- 検索: 4クエリ × 個別起動（バッチ化すると取得件数が減る可能性があるため）
+- タイムライン: 11アカウント × 1回バッチ起動（テスト済み: プロフィールごとに maxResults 適用）
+- 1実行あたり 5 Actor 起動、約 $0.10
+- 1日2回実行 → 月間約 $6
+
+## 設定変更時のチェック
+
+- `config.yaml` の `search_queries` や `must_follow_accounts` を増やす場合、コスト増を計算してからユーザーに報告する。
+- 新しい Actor を追加する場合、料金体系（per-event / per-result / 月額レンタル）を確認し、月間コスト試算を出す。

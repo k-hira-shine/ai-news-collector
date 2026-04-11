@@ -268,6 +268,17 @@ class DiscordNotifier:
             parts.append(f"公式ソース: {stats['official_count']}件")
         if stats.get("must_follow_count"):
             parts.append(f"必須アカウント: {stats['must_follow_count']}件")
+        if stats.get("apify_cost_usd"):
+            budget = stats.get("apify_monthly_budget_usd", 29.0)
+            cycle_total = stats.get("apify_cycle_total_usd", 0)
+            remaining = max(0, budget - cycle_total)
+            apify_line = f"💰 Apify: ${stats['apify_cost_usd']:.4f} ({stats.get('apify_runs', 0)}回実行)"
+            if cycle_total:
+                apify_line += f" | 通算 ${cycle_total:.2f} / ${budget:.0f} (残り ${remaining:.2f})"
+            parts.append(apify_line)
+            threshold = stats.get("apify_warning_threshold", 0.8)
+            if cycle_total and cycle_total >= budget * threshold:
+                parts.append(f"⚠️ Apify 残高が {(1 - threshold) * 100:.0f}% を切りました！")
         if stats.get("elapsed_sec"):
             parts.append(f"処理時間: {stats['elapsed_sec']:.0f}秒")
 
