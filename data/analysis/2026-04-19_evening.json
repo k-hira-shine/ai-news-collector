@@ -1,0 +1,381 @@
+{
+  "trend_summary": "本日のAI業界は、生成AIによる著作権侵害問題が日本の政策課題として急浮上し、法的な整理が進む見通しが立ったことが最大の注目点です。この規制の動きと並行して、Anthropicの「Claude Opus 4.7」やOpenAIの「Codex」といった新モデルやツールの話題も継続しており、性能評価や具体的なユースケースの議論が活発に行われています。さらに、MetaのAI関連レイオフや、Amazon、Microsoftが人事評価にAI習熟度を組み込むなど、AIが企業組織や個人のキャリアに与える影響がより一層顕在化しています。X（旧Twitter）では、AIの学習倫理を巡る議論や、スタンフォード大学のLLM講義のような高度な学習コンテンツが注目を集めるなど、技術の社会実装に伴う多角的な議論が展開されています。",
+  "trend_evolution": {
+    "since_last": "前回の分析ではAnthropicの新ツール「Claude Design」が市場を席巻していましたが、本日はその熱狂がやや落ち着き、より具体的なモデル性能の評価や、日本国内の「生成AIの権利侵害」という法規制のトピックに議論の中心が移行しました。Claude Opus 4.7に関する評価は継続していますが、新たに浮上した法規制の議論がトップニュースとして注目を集めています。また、AIが人事評価や雇用に与える影響といった、より実務的な企業動向に関する話題も増加しており、技術発表フェーズから社会実装に伴う課題の議論へと関心がシフトしている様子がうかがえます。",
+    "tracked_topics": [
+      {
+        "topic": "日本のAI規制・政策動向",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "生成AIの無断利用と著作権問題に関する議論から、権利侵害に対する具体的な法的整理の動きへと進展した。"
+      },
+      {
+        "topic": "Claude Opus 4.7の評価と議論",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "リリース発表からコーディングベンチマークでの高評価、そして現在は実ユーザーによる賛否両論の評価へとフェーズが移行している。"
+      },
+      {
+        "topic": "AIと雇用の関係（レイオフ・人事評価）",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "MetaのAI関連レイオフやAmazon/Microsoftの人事評価へのAIスキル導入など、AIが雇用に与える具体的な影響が報じられ始めた。"
+      },
+      {
+        "topic": "OpenAIの動向（Codexアップデート）",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "新Codexの発表から継続して、具体的な機能や他ツールとの比較、活用方法に関する情報が共有されている。"
+      },
+      {
+        "topic": "AIの高度な学習コンテンツへの関心",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "スタンフォード大学のLLM講義動画がXでバイラルヒットし、専門的な知識への需要が顕在化した。"
+      },
+      {
+        "topic": "Anthropic「Claude Design」の衝撃と普及",
+        "status": "FADING",
+        "streak_days": 3,
+        "evolution": "発表直後の爆発的な熱狂から、具体的なユースケースの共有やTipsの投稿へと落ち着きを見せ始めている。"
+      },
+      {
+        "topic": "AIエージェント開発と実用化",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "Karpathy氏の実験など研究レベルの話題から、Claude Routinesなど具体的な自動化ツールに関する議論が継続している。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "284d85dbf3e3801f",
+      "rank": 1,
+      "title": "【生成AIによる権利侵害 法的整理へ】",
+      "url": "https://x.com/YahooNewsTopics/status/2044981928114450541",
+      "summary": "Yahoo!ニュースが、生成AIによる著作権などの権利侵害問題について、政府が法的整理を進める方針であることを報じました。AIの学習データ利用や生成物の扱いに関するルール作りが本格化する見通しです。",
+      "importance_reason": "国内のAI開発・利用における法的リスクとコンプライアンスの方向性を左右する最重要トピック。今後のビジネス展開に直接的な影響を与えるため、極めて注目度が高い。",
+      "category": "規制/政策",
+      "source_label": "x:@YahooNewsTopics"
+    },
+    {
+      "id": "e3e233e3cda1c5c5",
+      "rank": 2,
+      "title": "Instead of watching Netflix tonight, watch this 2-hour Stanford lecture.",
+      "url": "https://x.com/heyDhavall/status/2045415049188229525",
+      "summary": "LLMがどのように構築されているかを解説するスタンフォード大学の2時間の講義動画が、X上で「トップAI企業の社員が学ぶ以上の内容」として紹介され、爆発的に拡散されました。",
+      "importance_reason": "技術者やAIに関心を持つ層の間で、表層的な使い方だけでなく、LLMの根本的な仕組みを理解しようとする強い学習意欲が存在することを示している。コミュニティの知識レベル向上に寄与するコンテンツとして価値が高い。",
+      "category": "ユースケース",
+      "source_label": "x:@heyDhavall"
+    },
+    {
+      "id": "520a12bd918bc2a2",
+      "rank": 3,
+      "title": "Claude Opus 4.7, Qwen 3.6, Happy Oyster, realtime 3D worlds, new Google TTS: AI NEWS",
+      "url": "https://www.youtube.com/watch?v=G8fqduzB5lc",
+      "summary": "最新のAIニュースをまとめた動画で、AnthropicのClaude Opus 4.7やAlibabaのQwen 3.6など、主要なモデルのアップデート情報を網羅的に紹介しています。",
+      "importance_reason": "主要プレイヤーの最新モデル動向を一度に把握できるサマリー情報。特にClaudeとQwenという、OpenAI以外の主要モデルの進化を比較する上で重要なインプットとなる。",
+      "category": "モデル/ツール",
+      "source_label": "youtube:AI Search"
+    },
+    {
+      "id": "378717fe1f892091",
+      "rank": 4,
+      "title": "注目AIニュース15選〜Claude Opus 4.7、Claude for Word、OpenAI Codex進化、Anthropic 120兆円評価など",
+      "url": "https://www.youtube.com/watch?v=0Zfrz7rWE4c",
+      "summary": "こちらもAIニュースのまとめ動画で、Claude Opus 4.7やOpenAI Codexの進化といった技術的な話題に加え、Anthropicの企業評価額などビジネス面の動向もカバーしています。",
+      "importance_reason": "技術とビジネスの両側面からAI業界の動向をまとめたものであり、複合的な視点から市場を理解するのに役立つ。",
+      "category": "モデル/ツール",
+      "source_label": "youtube:いけともch"
+    },
+    {
+      "id": "d1ef325947d2eb8f",
+      "rank": 5,
+      "title": "Testing Out OpenAI's New \"Super App\"",
+      "url": "https://www.youtube.com/watch?v=BLdY1fqy8FE",
+      "summary": "OpenAIや他の主要AI企業が提供する新しいインターフェース、いわゆる「スーパーアプリ」について、その機能や使い勝手を検証する動画です。",
+      "importance_reason": "AIの能力がモデルだけでなく、それを活用するためのUI/UXに大きく依存することを示唆している。主要企業がどのようなインターフェース戦略をとっているかを理解する上で重要。",
+      "category": "企業動向",
+      "source_label": "youtube:Matt Wolfe"
+    },
+    {
+      "id": "943d798f4b5f5077",
+      "rank": 6,
+      "title": "Meta Fires 10% of Employees in AI Takeover",
+      "url": "https://www.youtube.com/watch?v=ItBhiT1EJeM",
+      "summary": "MetaがAIへの移行を理由に、従業員の10%にあたる約8000人を解雇したと報じています。これは今年最大規模のAI関連レイオフとされています。",
+      "importance_reason": "AI導入が大規模な雇用調整に直結する具体的な事例。企業のAI戦略が組織構造や人材に与えるインパクトの大きさを示している。",
+      "category": "企業動向",
+      "source_label": "youtube:Mark Savant"
+    },
+    {
+      "id": "d445a594ee68ad51",
+      "rank": 7,
+      "title": "How to Use Opus 4.7 and the New Codex",
+      "url": "https://www.youtube.com/watch?v=5LdCJHnGwNo",
+      "summary": "AnthropicのClaude Opus 4.7とOpenAIの新しいCodexの具体的な使い方を解説する動画。Macの操作、ブラウザ機能、画像生成など、実践的な活用法が紹介されています。",
+      "importance_reason": "最新AIツールの具体的な機能と活用方法を伝えることで、技術のポテンシャルをユーザーに示している。開発者やパワーユーザーにとって価値の高い情報。",
+      "category": "モデル/ツール",
+      "source_label": "youtube:The AI Daily Brief: Artificial Intelligence News"
+    },
+    {
+      "id": "839fadd6dc8b3a5c",
+      "rank": 8,
+      "title": "「他人の著作物を無断で複製利用してる生成AI」を使いたい人たちは...(略)",
+      "url": "https://x.com/gameendokuda/status/2045447237011202194",
+      "summary": "生成AIの学習プロセスについて、「人間の学習」と「機械によるデータ複製」を同一視する意見を批判し、「無断複製利用」という言葉を使うべきだと主張する投稿です。",
+      "importance_reason": "トップ記事の法規制の動きとも関連し、AIの学習データの正当性を巡る社会的な議論の核心をついている。クリエイター側と推進側の間の根本的な認識のズレを浮き彫りにしている。",
+      "category": "規制/政策",
+      "source_label": "x:@gameendokuda"
+    },
+    {
+      "id": "c9c8221880425f18",
+      "rank": 9,
+      "title": "絵描きがお気持ち表明 ↓ 生成AIユーザーがピキって引用にシュバる ↓ 海外勢がその異常さにドン引き←今ここ",
+      "url": "https://x.com/Holy_Hyssopus/status/2045465222522270174",
+      "summary": "日本のX上で見られる、イラストレーターと生成AIユーザー間の対立構造が、海外からも特異な現象として注目されていることを指摘する投稿です。",
+      "importance_reason": "生成AIを巡る日本特有のコミュニティ間の対立が激化していることを示しており、社会実装を進める上での大きな課題となっている。この対立がグローバルな文脈でどう見られているかという視点を提供している。",
+      "category": "ユースケース",
+      "source_label": "x:@Holy_Hyssopus"
+    },
+    {
+      "id": "9b159e878e9ede95",
+      "rank": 10,
+      "title": "AmazonやMicrosoftが評価制度にAI習熟度を組み込み始めた。...",
+      "url": "https://x.com/gami0507/status/2045744239397814731",
+      "summary": "AmazonやMicrosoftが人事評価制度にAIスキルの習熟度を組み込み始めたことや、LINEヤフーが人事領域で生成AIを活用している事例を紹介し、日本企業の対応の必要性を訴えています。",
+      "importance_reason": "AIスキルが個人のキャリア評価に直結する時代が到来したことを示す重要な兆候。企業の人材育成戦略や個人のスキルアップの方向性に大きな影響を与える。",
+      "category": "企業動向",
+      "source_label": "x:@gami0507"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "規制/政策",
+      "summary": "本日は「生成AIによる権利侵害」に対する法整備の動きがトップニュースとなり、国内のAI規制に関する議論が本格化しました。X上では、AIの学習プロセスを「無断複製利用」と表現すべきだという意見が広がるなど、著作権を巡る根本的な議論が活発化しています。米国の対中AIチップ輸出規制に関する話題も散見され、経済安全保障の観点も引き続き重要です。",
+      "count": 4,
+      "key_articles": [
+        {
+          "title": "【生成AIによる権利侵害 法的整理へ】",
+          "url": "https://x.com/YahooNewsTopics/status/2044981928114450541"
+        },
+        {
+          "title": "「他人の著作物を無断で複製利用してる生成AI」を使いたい人たちは...(略)",
+          "url": "https://x.com/gameendokuda/status/2045447237011202194"
+        },
+        {
+          "title": "US Blocked Chinese AI - But $3 Billion Leaked Out",
+          "url": "https://www.youtube.com/watch?v=SMbn4EGFFaU"
+        },
+        {
+          "title": "【2026年04月19日】AIが勝手に働く？最新エージェントとAIスマホ、法規制とカスハラ対策の衝撃",
+          "url": "https://www.youtube.com/watch?v=wL7ZU4D92bs"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "Anthropicの「Claude Opus 4.7」に関する話題が継続しており、高評価と低評価の両方の声が上がっています。特に4.6との連携で性能を発揮するという意見や、デザイン能力の低さを指摘する声など、具体的な使用感に関する投稿が目立ちます。OpenAIのCodexやChatGPTのアップデート情報も引き続き共有され、主要モデル間の競争とユーザーによる使い分けの模索が続いています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "Claude Opus 4.7, Qwen 3.6, Happy Oyster, realtime 3D worlds, new Google TTS: AI NEWS",
+          "url": "https://www.youtube.com/watch?v=G8fqduzB5lc"
+        },
+        {
+          "title": "注目AIニュース15選〜Claude Opus 4.7、Claude for Word、OpenAI Codex進化、Anthropic 120兆円評価など",
+          "url": "https://www.youtube.com/watch?v=0Zfrz7rWE4c"
+        },
+        {
+          "title": "How to Use Opus 4.7 and the New Codex",
+          "url": "https://www.youtube.com/watch?v=5LdCJHnGwNo"
+        },
+        {
+          "title": "Claude Opus 4.7が世界中で評判悪すぎて、なんか変なバグやら暴走やらしないか怖くて4.6を使ってる。",
+          "url": "https://x.com/zento_ai/status/2045471463743094915"
+        },
+        {
+          "title": "RT @mar_snscoach: Claude Designでサクッと作ったと思えない素敵なHPすね！...",
+          "url": "https://x.com/mercarioji/status/2045785357820780696"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "MetaによるAI戦略を理由とした10%の人員削減が大きな注目を集めました。また、AmazonやMicrosoftが人事評価にAI習熟度を組み込み始めたというニュースは、AIスキルがビジネスパーソンの必須能力になる時代の到来を告げています。OpenAIの「スーパーアプリ」構想やサイバーエージェントのAI導入戦略など、各社の具体的なAI活用・組織変革の動きが活発です。",
+      "count": 12,
+      "key_articles": [
+        {
+          "title": "Meta Fires 10% of Employees in AI Takeover",
+          "url": "https://www.youtube.com/watch?v=ItBhiT1EJeM"
+        },
+        {
+          "title": "AmazonやMicrosoftが評価制度にAI習熟度を組み込み始めた。...",
+          "url": "https://x.com/gami0507/status/2045744239397814731"
+        },
+        {
+          "title": "Testing Out OpenAI's New \"Super App\"",
+          "url": "https://www.youtube.com/watch?v=BLdY1fqy8FE"
+        },
+        {
+          "title": "サイバーエージェントが公開した「大規模組織のAI導入戦略」が有益。",
+          "url": "https://x.com/MacopeninSUTABA/status/2045669207002808498"
+        },
+        {
+          "title": "Elon Just Revealed the AI Model Factory",
+          "url": "https://www.youtube.com/watch?v=jLx3wNHAbnE"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "スタンフォード大学のLLM講義動画がX上で爆発的に拡散され、多くのAI関係者が視聴を推奨するなど、高度な学習コンテンツへの関心が高まっています。また、Anthropic、Google、Metaなどが提供する無料のAI学習リソースまとめも注目を集めました。一方で、イラストレーターと生成AIユーザー間の対立が激化していることを示す投稿も高いエンゲージメントを獲得しており、技術の社会受容における課題も浮き彫りになっています。",
+      "count": 22,
+      "key_articles": [
+        {
+          "title": "Instead of watching Netflix tonight, watch this 2-hour Stanford lecture.",
+          "url": "https://x.com/heyDhavall/status/2045415049188229525"
+        },
+        {
+          "title": "絵描きがお気持ち表明 ↓ 生成AIユーザーがピキって引用にシュバる ↓ 海外勢がその異常さにドン引き←今ここ",
+          "url": "https://x.com/Holy_Hyssopus/status/2045465222522270174"
+        },
+        {
+          "title": "Learn AI for free directly from top companies.",
+          "url": "https://x.com/vikas_ai_/status/2045771445738123672"
+        },
+        {
+          "title": "Instead of watching an hour of Netflix, watch this 2 hour hour Stanford lecture...",
+          "url": "https://x.com/HeyAmit_/status/2045765012833333661"
+        },
+        {
+          "title": "「寝てる間もClaudeが働く！『Routines』でAIを24時間自動運転する完全ガイド」が有益。",
+          "url": "https://x.com/MacopeninSUTABA/status/2045708465343979637"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "本日は目立った研究論文の発表はありませんでしたが、Andrej Karpathy氏のAIエージェント実験に関する動画や、「エージェントを使った開発は勾配降下法でしかない」といった専門家による洞察が共有され、AIエージェントの現在の能力と限界に関する議論が行われています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "Karpathy's Agent Ran 700 Experiments While He Slept. It's Coming For You.",
+          "url": "https://www.youtube.com/watch?v=xnG8h3UnNFI"
+        },
+        {
+          "title": "エージェント使った開発は勾配降下法でしかない。...",
+          "url": "https://x.com/zento_ai/status/2044850490698293372"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "国内での生成AIの権利侵害に関する法整備の動向を注視し、自社のAI利用ガイドラインや学習データのコンプライアンス体制を再点検する。",
+    "AmazonやMicrosoftの動きに倣い、自社の人材育成計画や人事評価制度にAIリテラシーや活用スキルを組み込むことを検討する。",
+    "Claude Opus 4.7のように、最新モデルの性能評価が分かれるケースが増えているため、単一のモデルに依存せず、複数のモデルをタスクに応じて使い分けるマルチAI戦略を推進する。",
+    "スタンフォード大学の講義動画が流行したように、社員のAIスキル向上のため、質の高い外部の学習リソースを積極的に紹介・活用する仕組みを構築する。",
+    "クリエイターコミュニティとの対立を避け、円滑な事業展開を行うため、生成AIの倫理的利用や著作権への配慮に関する社内ポリシーを明確化し、外部へのコミュニケーションを強化する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "生成AIの権利侵害、法整備へ",
+      "description": "Yahoo!ニュースが報じた「生成AIによる権利侵害の法的整理」がXで広く拡散され、最大の関心事となっている。ユーザーからは「ようやく来たか」「遅すぎる」といった法整備を歓迎する声が多い一方、「これでクリエイターが救われる」「無断学習という詭弁はもう通用しない」など、クリエイターの権利保護への期待が高まっている。このニュースは、AI開発と利用における法的リスクを再認識させるきっかけとなっている。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "@YahooNewsTopics",
+          "text": "【生成AIによる権利侵害 法的整理へ】\nhttps://t.co/UYnts1aPdv",
+          "url": "https://x.com/YahooNewsTopics/status/2044981928114450541",
+          "likes": 14242,
+          "retweets": 4764
+        }
+      ]
+    },
+    {
+      "topic": "スタンフォード大のLLM講義動画がバイラル化",
+      "description": "LLMの仕組みを解説するスタンフォード大学の2時間の講義動画が、「Netflixを見るより有益」として複数のインフルエンサーによって紹介され、爆発的に拡散された。多くのユーザーが「これは見るべき」「ブックマークした」と反応しており、AI技術の表層的な利用だけでなく、その根幹にある仕組みを理解したいという強い学習意欲がコミュニティ内に存在することを示している。質の高い教育コンテンツへの渇望がうかがえる。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@heyDhavall",
+          "text": "Instead of watching Netflix tonight, watch this 2-hour Stanford lecture.\n\nYou’ll learn more about how ChatGPT, Claude, and other LLMs are built than most people at top AI companies learn in years. https://t.co/lCYboxt2rz",
+          "url": "https://x.com/heyDhavall/status/2045415049188229525",
+          "likes": 11491,
+          "retweets": 1894
+        },
+        {
+          "author": "@HeyAmit_",
+          "text": "Instead of watching an hour of Netflix, watch this 2 hour hour Stanford lecture will teach you more about how LLMs like ChatGPT and Claude are built than most people working at top AI companies learn in their entire careers.\nhttps://t.co/XvyVQhv0LV",
+          "url": "https://x.com/HeyAmit_/status/2045765012833333661",
+          "likes": 19,
+          "retweets": 8
+        }
+      ]
+    },
+    {
+      "topic": "クリエイター vs 生成AIユーザーの対立激化",
+      "description": "「絵描きが意見表明すると生成AIユーザーが攻撃し、その構図を海外勢が奇異の目で見ている」という趣旨の投稿が、1万9000以上の「いいね」を獲得し、大きな共感を呼んでいる。このツイートは、日本国内における生成AIを巡るコミュニティ間の対立がいかに深刻で、特殊な状況にあるかを浮き彫りにした。リプライや引用では、双方の立場からの意見が交わされ、溝の深さを示す議論が続いている。社会実装における文化的な摩擦の象徴例となっている。",
+      "buzz_level": "high",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "@Holy_Hyssopus",
+          "text": "絵描きがお気持ち表明\n↓\n生成AIユーザーがピキって引用にシュバる\n↓\n海外勢がその異常さにドン引き←今ここ",
+          "url": "https://x.com/Holy_Hyssopus/status/2045465222522270174",
+          "likes": 19589,
+          "retweets": 1377
+        }
+      ]
+    },
+    {
+      "topic": "AI学習は「無断複製利用」か？",
+      "description": "AIの学習プロセスについて、「人間の学習」との類推は詭弁であり、実態は「無断複製利用」であると指摘するツイートが注目を集めている。この投稿は、トップニュースとなった法規制の動きとも連動し、AI開発の倫理的・法的な問題を鋭く指摘している。ユーザーからは「的確な表現」「この言葉を使うべき」と賛同の声が多く寄せられており、AIの学習データの正当性を問う議論における重要な論点として認識されている。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "@gameendokuda",
+          "text": "「他人の著作物を無断で複製利用してる生成AI」を使いたい人たちは、このように「人間の学習」と「機械によるデータ読み取り&保存(著作権侵害として犯罪になり得る)」を混同させた詭弁をのたまうので、「無断学習」と書くより「無断複製利用」や「無断機械学習」、「無断AI学習」と書いた方が良いね。 https://t.co/oEwdJvWL80",
+          "url": "https://x.com/gameendokuda/status/2045447237011202194",
+          "likes": 992,
+          "retweets": 268
+        }
+      ]
+    },
+    {
+      "topic": "Claude Opus 4.7の性能評価",
+      "description": "Anthropicの最新モデル「Claude Opus 4.7」について、ユーザーからのリアルな評価が投稿されている。特に、「Opus 4.6と4.7を組み合わせると良い結果が出る」というポジティブな報告がある一方で、「評判が悪すぎて怖いので4.6を使っている」「デザイン能力が酷い」といったネガティブな意見も散見される。リリース直後の熱狂から一歩進み、ユーザーが実際のタスクで試した上での賛否両論が交わされるフェーズに入っている。",
+      "buzz_level": "low",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "@zento_ai",
+          "text": "おお！！！Opus 4.6 → 4.7タッグがめっちゃ良い！！\n\n本当にめっちゃ良い！\n\nOpus 4.6でブルドーザーのように突き進み、\nそのあと4.6で2回やって実装できんなこれw\n\nってなったやつを4.7に渡すと一発で解決できた！",
+          "url": "https://x.com/zento_ai/status/2045116783577973062",
+          "likes": 94,
+          "retweets": 9
+        },
+        {
+          "author": "@zento_ai",
+          "text": "Claude Opus 4.7が世界中で評判悪すぎて、なんか変なバグやら暴走やらしないか怖くて4.6を使ってる。",
+          "url": "https://x.com/zento_ai/status/2045471463743094915",
+          "likes": 89,
+          "retweets": 3
+        },
+        {
+          "author": "@zento_ai",
+          "text": "Opus 4.7のデザイン能力本当に酷いのだが。",
+          "url": "https://x.com/zento_ai/status/2045058122348450096",
+          "likes": 114,
+          "retweets": 1
+        }
+      ]
+    }
+  ],
+  "run_time": "2026-04-19T09:06:18.340558+00:00",
+  "slot": "evening",
+  "item_count": 109
+}
