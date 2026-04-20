@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-04-20 朝便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-04-20</span>
+      <span class="slot-badge">朝便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">🚨JUST IN: Singapore’s financial regulator is urging banks to strengthen cyber defenses over concerns tied to Anthropic’…</div>
+        <div class="tags">
+          <span class="tag cat-reg">規制/政策</span>
+          <span class="tag src">x:@coinbureau</span>
+        </div>
+        <div class="summary">シンガポールの金融規制当局が、Anthropicの未公開AIモデル「Mythos」に起因する懸念から、国内銀行に対しサイバー防衛の強化を要請しました。このモデルは、Anthropic自身が広範なリリースには危険すぎると判断しているものです。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">国家安全保障局(NSA)はすでにAnthropicの次世代AI「Mythos Preview」を使用しているとの報道、サプライチェーン上のリスクに指定されてもなおClaudeは国防総省内で広く使用されている</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">rss:GIGAZINE</span>
+          </div>
+          <div class="summary">米国家安全保障局(NSA)が、Anthropicの次世代AIモデル「Mythos Preview」を既に使用開始していると報じられました。Anthropicは国防総省からリスク企業と認定されながらも、サイバー防衛上の必要性から再び政府内で利用検討が進んでいます。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">「Claude Design」が登場、AIに頼んでUIやプレゼン資料をデザイン可能</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">rss:GIGAZINE</span>
+          </div>
+          <div class="summary">AI開発企業Anthropicが、AIと協力してUIやプレゼンテーション資料を作成できるデザインツール「Claude Design」を発表しました。これにより、デザインの専門知識がないユーザーでも高品質なデザイン制作が可能になります。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-usecase">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">ロボットが北京ハーフマラソンで人間の記録を破る</div>
+          <div class="tags">
+            <span class="tag cat-usecase">ユースケース</span>
+            <span class="tag src">rss:GIGAZINE</span>
+          </div>
+          <div class="summary">中国・北京で開催された人型ロボットによるハーフマラソン大会で、優勝したロボットが人間の世界記録を上回るタイムで完走しました。これはロボットの身体能力が新たな段階に達したことを示しています。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">GPT 5.5 PRO (SPUD) LEAKED: OpenAI's New Model BEATS Claude Opus 4.7!</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">youtube:Universe of AI</span>
+          </div>
+          <div class="summary">OpenAIの次期フロンティアモデル、コードネーム「Spud」（GPT 5.5 Proとしてリリースされる可能性）がリークされました。この新モデルはAnthropicのClaude Opus 4.7を凌駕する性能を持つとされ、早ければ来週にもリリースされる可能性があります。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日のAI業界はAnthropicが話題を独占しました。未公開の高性能モデル「Mythos」が危険視され、シンガポール金融当局がサイバーセキュリティ強化を要請するなど、世界的な規制・安全保障上の懸念を引き起こしています。一方で、米NSAが同モデルを既に利用しているとの報道もあり、AIの能力とリスクを巡る緊張感が高まっています。また、AnthropicはUIデザインツール「Claude Design」も発表し、その革新性とFigmaとの競合を示唆する動きが大きな注目を集め、技…</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <span class="status st-RISING">📈 RISING</span>
+        <span class="topic-name">Anthropic「Mythos」の脅威と安全保障</span>
+        <span class="streak">5日目</span>
+      </div>
+      
+      <div class="topic-chip">
+        <span class="status st-RISING">📈 RISING</span>
+        <span class="topic-name">Anthropic「Claude Design」の衝撃</span>
+        <span class="streak">3日目</span>
+      </div>
+      
+      <div class="topic-chip">
+        <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+        <span class="topic-name">OpenAIの次世代モデル(GPT-5.5)への期待</span>
+        <span class="streak">2日目</span>
+      </div>
+      
+      <div class="topic-chip">
+        <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+        <span class="topic-name">AIによるサイバーセキュリティリスク</span>
+        <span class="streak">2日目</span>
+      </div>
+      
+      <div class="topic-chip">
+        <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+        <span class="topic-name">AIエージェントの社会実装とリスク</span>
+        <span class="streak">5日目</span>
+      </div>
+      
+      <div class="topic-chip">
+        <span class="status st-NEW">⚡ NEW</span>
+        <span class="topic-name">人型ロボットの進化</span>
+        
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">12</span>
+        </div>
+        <div class="summary">Anthropicが「Mythos」モデルのNSAへの提供や、「Claude Design」の発表とそれに伴う役員の動きで市場の注目を独占。AIの社会実装も進み、中国でのAIエージェント急拡大やVercelのハッキング事件など、実利用に伴…</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">4</span>
+        </div>
+        <div class="summary">Anthropicの未公開モデル「Mythos」が引き起こすサイバーセキュリティ上の懸念が最大のトピック。シンガポール金融当局が銀行に警告を発するなど、AIの潜在的リスクが具体的な金融規制のアクションにつながった。国内では、大学がGoog…</div>
+      </div>
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">8</span>
+        </div>
+        <div class="summary">AnthropicがUIデザインツール「Claude Design」を発表し、大きな話題を呼んだ。一方、OpenAIも次世代モデル「GPT 5.5 Pro (Spud)」のリーク情報で存在感を示し、両社の開発競争が激化している。また、Ch…</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">9</span>
+        </div>
+        <div class="summary">AIの応用範囲が物理世界へと大きく拡大。中国の人型ロボットがハーフマラソンで人間の世界記録を更新し、ウクライナでは兵士を地上ロボットに置き換える計画が進行中であることが報じられた。より身近な応用例として、Meta AIを搭載したRay-B…</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">10</span>
+        </div>
+        <div class="summary">AIの安全性と信頼性に関する研究が注目を集めた。特に、安全でない行動が意図せずAIエージェントに伝播する「サブリミナル転移」を実証した論文は、今日のMythosを巡る懸念と共鳴している。他にも、LLMの推論過程の解釈可能性や、研究における…</div>
+      </div>
+      
+      <div class="cat-card cat-fund">
+        <div class="head">
+          <span class="name">資金調達</span>
+          <span class="count">2</span>
+        </div>
+        <div class="summary">本日は具体的な資金調達のニュースはなかったものの、AI市場全体への投資熱の高まりを示すコンテンツが散見された。100兆ドル規模の市場リセットを見据えた投資戦略や、次のブルラン（強気相場）を牽引する可能性のあるアルトコインに関する議論が行わ…</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">Anthropic「Mythos」が引き起こす国際的なサイバーセキュリティ懸念</span>
+        </div>
+        <div class="desc">Anthropicが危険すぎると判断し未公開にしているAI「Mythos」を巡り、シンガポールの金融当局が銀行にサイバー防衛の強化を要請したというニュースが、複数の大手メディアや仮想通貨系インフルエ…</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">AnthropicとFigmaの競合関係を示唆するCPOの辞任劇</span>
+        </div>
+        <div class="desc">AnthropicのCPOがFigmaの役員を辞任した直後に、Anthropicが競合製品となる「Claude Design」を発表した一連の流れがインフルエンサーによって時系列でポストされ、大きな…</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">NVIDIA CEOが提唱する「AIの5層モデル」</span>
+        </div>
+        <div class="desc">NVIDIAのジェンスン・フアンCEOが示した「エネルギー、チップ、クラウド、モデル、エージェント」から成るAIの5層構造モデルが、投資家やテクノロジー愛好家の間で広く共有されている。各層に対応する…</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-04-20 04:22 UTC · AI News Collector
+     · <a href="https://k-hira-shine.github.io/ai-news-collector/">Dashboard</a>
+  </div>
+
+</div>
+</body>
+</html>
