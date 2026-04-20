@@ -45,20 +45,61 @@ def _default_x_runtime_meta() -> dict:
         "search_queries_configured": 0,
         "search_total": 0,
         "search_error_count": 0,
+        "auth_error_count": 0,
+        "must_follow_configured": 0,
+        "must_follow_items": 0,
+        "must_follow_error": False,
         "apify_cost_usd": 0.0,
         "apify_runs": 0,
     }
 
 
+_AUTH_ERROR_PATTERN = re.compile(
+    r"(?i)\b("
+    r"login\s*required|login\s*failed|"
+    r"not\s*logged\s*in|session\s*expired|"
+    r"unauthori[sz]ed|authentication\s*(failed|required)|"
+    r"invalid\s*(auth|token|cookie|session)|"
+    r"auth_token|ct0\s*(missing|invalid)|"
+    r"403\s*forbidden|401\s*unauthori[sz]ed|"
+    r"cookies?\s*(expired|invalid|missing)"
+    r")\b"
+)
+
+
+def _run_log_has_auth_error(client, run_id: str) -> bool:
+    """Fetch Apify run log and check for auth-related failure keywords.
+
+    Returns False on any fetch error (conservative: don't falsely warn).
+    """
+    try:
+        log_text = client.run(run_id).log().get()
+    except Exception as e:
+        logger.debug("Failed to fetch Apify run log %s: %s", run_id, e)
+        return False
+    if not log_text:
+        return False
+    return bool(_AUTH_ERROR_PATTERN.search(log_text))
+
+
 def _should_warn_x_cookies(meta: dict) -> bool:
-    """Cookie expiry warning is only valid for clean zero-result searches."""
-    return bool(
-        meta.get("has_apify")
-        and meta.get("has_cookies")
-        and meta.get("search_queries_configured", 0) > 0
-        and meta.get("search_error_count", 0) == 0
-        and meta.get("search_total", 0) == 0
-    )
+    """Warn only when there is concrete evidence that cookies are bad.
+
+    Criteria:
+      - Apify + cookies are configured and searches were attempted
+      - At least one Apify run log contained auth-related errors
+      - The must-follow timeline (which uses the same cookies) also returned
+        zero items — if it succeeded, cookies are clearly still valid.
+    """
+    if not meta.get("has_apify") or not meta.get("has_cookies"):
+        return False
+    if meta.get("search_queries_configured", 0) <= 0:
+        return False
+    if meta.get("auth_error_count", 0) <= 0:
+        return False
+    if meta.get("must_follow_items", 0) > 0:
+        return False
+    return True
 
 
 def _collect_x_twitter_with_meta(config: dict) -> tuple[list[dict], dict]:
@@ -109,25 +150,32 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
                 run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
                 meta["apify_runs"] += 1
+                run_status = (run or {}).get("status", "")
+                run_id = (run or {}).get("id", "")
+                if run_status and run_status != "SUCCEEDED":
+                    meta["search_error_count"] += 1
+                    logger.error("X search '%s…' run status=%s", query[:40], run_status)
+                    if run_id and _run_log_has_auth_error(client, run_id):
+                        meta["auth_error_count"] += 1
+                        logger.warning("X search '%s…': auth error detected in run log", query[:40])
+                    continue
                 count = 0
                 for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                     items.append(_normalize_tweet(tweet))
                     count += 1
                 meta["search_total"] += count
                 logger.info("X search '%s…': %d tweets", query[:40], count)
+                if count == 0 and run_id and _run_log_has_auth_error(client, run_id):
+                    meta["auth_error_count"] += 1
+                    logger.warning("X search '%s…': 0 results + auth error in run log", query[:40])
             except Exception as e:
                 meta["search_error_count"] += 1
                 logger.error("X search '%s…' failed: %s", query[:40], e)
-
-        if _should_warn_x_cookies(meta):
-            logger.warning(
-                "⚠️ X search returned 0 results with cookies — "
-                "cookies may be expired. Update X_COOKIES secret."
-            )
     else:
         logger.info("X_COOKIES not set — skipping search queries (timeline only)")
 
     must_follow = x_cfg.get("must_follow_accounts", [])
+    meta["must_follow_configured"] = len(must_follow)
     if must_follow:
         try:
             handles = [acct["handle"] for acct in must_follow]
@@ -141,6 +189,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
             meta["apify_runs"] += 1
+            mf_count = 0
             for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                 item = _normalize_tweet(tweet)
                 author_lower = item["author"].lower()
@@ -149,9 +198,18 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 item["is_official"] = acct_cfg.get("priority") == "critical"
                 item["priority"] = acct_cfg.get("priority", "normal")
                 items.append(item)
-            logger.info("X must-follow batch (%d profiles): OK", len(handles))
+                mf_count += 1
+            meta["must_follow_items"] = mf_count
+            logger.info("X must-follow batch (%d profiles): %d tweets", len(handles), mf_count)
         except Exception as e:
+            meta["must_follow_error"] = True
             logger.error("X must-follow batch failed: %s", e)
+
+    if has_cookies and _should_warn_x_cookies(meta):
+        logger.warning(
+            "⚠️ X search returned 0 results with auth errors AND must-follow "
+            "timeline is empty — cookies are likely expired. Update X_COOKIES."
+        )
 
     min_eng = x_cfg.get("min_engagement", 0)
     if min_eng > 0:
