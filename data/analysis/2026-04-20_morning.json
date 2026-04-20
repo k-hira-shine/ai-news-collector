@@ -1,368 +1,276 @@
 {
-  "trend_summary": "本日のAI業界はAnthropicが話題を独占しました。未公開の高性能モデル「Mythos」が危険視され、シンガポール金融当局がサイバーセキュリティ強化を要請するなど、世界的な規制・安全保障上の懸念を引き起こしています。一方で、米NSAが同モデルを既に利用しているとの報道もあり、AIの能力とリスクを巡る緊張感が高まっています。また、AnthropicはUIデザインツール「Claude Design」も発表し、その革新性とFigmaとの競合を示唆する動きが大きな注目を集め、技術力とビジネス戦略の両面で市場をリードする存在感を示しました。",
+  "trend_summary": "本日のAI業界は、AnthropicがExcelやPowerPointといった日常的な業務ツールとの連携を深める新機能を発表し、実用性の向上で注目を集めています。一方、Elon Musk氏が提唱するAIによる失業対策「ユニバーサル・ハイインカム」が大きな議論を呼び、AIが社会経済に与える影響についての議論が再燃しています。これらと並行して、Anthropicとホワイトハウスの会談報道もあり、AIの能力向上に伴うリスク管理と政策的対応が引き続き重要なテーマとなっています。また、AIスキルの学習機会を提供する企業の動きも活発化しており、人材育成の側面もクローズアップされています。",
   "trend_evolution": {
-    "since_last": "前回、AIによるサイバーセキュリティの脅威が最大の焦点となりましたが、本日はその中心にAnthropicの「Mythos」モデルが明確に位置づけられました。シンガポール当局の警告やNSAの利用報道により、議論がより具体的かつ深刻化しています。また、昨日から話題となっていたAnthropicの新ツールは「Claude Design」として正式に報じられ、デザインツール市場への参入という新たな側面が加わりました。OpenAIの次世代モデルに関する噂も継続しており、両社の競争がさらに激化している状況です。",
+    "since_last": "前回の分析ではAnthropicの高性能モデル「Mythos」の脅威と安全保障が中心でしたが、本日はその流れを汲みつつも、より具体的な政策レベルでの対話（ホワイトハウスとの会談）や、実用的なアプリケーション（Claude for Excel/PowerPoint）へと話題がシフトしています。Elon Musk氏の発言により「AIと雇用」の問題が再び大きく浮上し、新たな議論の軸となりました。一方で、これまで継続していた「Mythos」のサイバーセキュリティ懸念に関する直接的な技術的議論はやや落ち着きを見せ、政策的・経済的な影響へと関心が移っています。",
     "tracked_topics": [
       {
-        "topic": "Anthropic「Mythos」の脅威と安全保障",
+        "topic": "Anthropicの動向（政策対話と製品強化）",
         "status": "RISING",
-        "streak_days": 5,
-        "evolution": "危険性の初報→米政府との協議→サイバーセキュリティ懸念が国際的に拡大し、NSA利用の報道も浮上"
+        "streak_days": 6,
+        "evolution": "新モデル発表→脅威論浮上→政府との対立→政策レベルでの対話と実用ツール強化へと多角化"
       },
       {
-        "topic": "Anthropic「Claude Design」の衝撃",
-        "status": "RISING",
-        "streak_days": 3,
-        "evolution": "新ツールの噂→「Claude Design」として正式発表され、Figmaとの競合関係が明確化"
+        "topic": "AIと雇用の関係（失業対策とUBI/UHI）",
+        "status": "RESURFACED",
+        "streak_days": 1,
+        "evolution": "Metaのレイオフ報道からElon Musk氏の「UHI」提唱で再燃し、経済的対策の議論へと発展"
       },
       {
-        "topic": "OpenAIの次世代モデル(GPT-5.5)への期待",
-        "status": "SUSTAINED",
-        "streak_days": 2,
-        "evolution": "リリース噂が浮上し、Claude対抗モデルとしての具体的な性能リーク情報が出始める"
-      },
-      {
-        "topic": "AIによるサイバーセキュリティリスク",
-        "status": "SUSTAINED",
-        "streak_days": 2,
-        "evolution": "Google DeepMind論文から始まり、本日はAnthropicのMythosを震源とする金融機関への警告へと具体化"
-      },
-      {
-        "topic": "AIエージェントの社会実装とリスク",
-        "status": "SUSTAINED",
-        "streak_days": 5,
-        "evolution": "開発競争の話題から、中国での急拡大や情報漏洩リスク、ウクライナでの軍事利用など具体的な社会実装フェーズへ移行"
-      },
-      {
-        "topic": "人型ロボットの進化",
+        "topic": "AIのコンシューマー向け普及と評価",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "北京ハーフマラソンで人間の世界記録を更新するロボットが登場し、物理的な能力向上が注目される"
+        "evolution": "ChatGPTの急成長を例に、AIの消費者向け価値を問う議論がX上で発生"
+      },
+      {
+        "topic": "AIスキルと人材育成",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "さくらインターネットのAI検定開始を機に、実践的なAIスキル習得の重要性が注目される"
+      },
+      {
+        "topic": "AIエージェント技術の進化",
+        "status": "SUSTAINED",
+        "streak_days": 6,
+        "evolution": "AIエージェントの社会実装リスクの議論から、Agent Swarmsのような新技術の登場で能力向上に関心が継続"
+      },
+      {
+        "topic": "LLMのプロンプト技術とモデル特性",
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "各LLMの性能比較から、Geminiのような特定モデルの能力を最大限に引き出すプロンプト技術に関心が継続"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "8105a6bcda2fe1e1",
+      "id": "c9267b34c1495e49",
       "rank": 1,
-      "title": "🚨JUST IN: Singapore’s financial regulator is urging banks to strengthen cyber defenses over concerns tied to Anthropic’s unreleased Mythos AI model, which the company considers too dangerous to releas",
-      "url": "https://x.com/coinbureau/status/2046069576488923255",
-      "summary": "シンガポールの金融規制当局が、Anthropicの未公開AIモデル「Mythos」に起因する懸念から、国内銀行に対しサイバー防衛の強化を要請しました。このモデルは、Anthropic自身が広範なリリースには危険すぎると判断しているものです。",
-      "importance_reason": "AIモデルが国家レベルのサイバーセキュリティ懸念を引き起こし、金融規制当局が具体的な対策を要請するという象徴的な出来事。AIのリスク管理が国際的な政策課題となっていることを示している。",
-      "category": "規制/政策",
-      "source_label": "x:@coinbureau"
+      "title": "ExcelとPowerPointを行き来する手間解消　Claudeの「コンテキスト共有」と「スキル」で業務自動化",
+      "url": "https://atmarkit.itmedia.co.jp/ait/articles/2604/20/news024.html",
+      "summary": "Anthropicが、ExcelとPowerPoint向けのClaude機能を強化しました。複数ファイル間で文脈を共有したり、定型作業をワンクリックで実行する「スキル」機能を追加し、業務効率化を促進します。",
+      "importance_reason": "これまでチャットインターフェースが中心だったLLMが、ビジネスで最も広く使われるExcelやPowerPointに深く統合されることで、AIの業務活用が新たなフェーズに入ったことを示す象徴的なニュースです。",
+      "category": "モデル/ツール",
+      "source_label": "rss:ITmedia AI+"
     },
     {
-      "id": "9b3cea14391cd74e",
+      "id": "c3193555d060b0ab",
       "rank": 2,
-      "title": "国家安全保障局(NSA)はすでにAnthropicの次世代AI「Mythos Preview」を使用しているとの報道、サプライチェーン上のリスクに指定されてもなおClaudeは国防総省内で広く使用されている",
-      "url": "https://gigazine.net/news/20260420-us-government-anthropic-mythos-preview/",
-      "summary": "米国家安全保障局(NSA)が、Anthropicの次世代AIモデル「Mythos Preview」を既に使用開始していると報じられました。Anthropicは国防総省からリスク企業と認定されながらも、サイバー防衛上の必要性から再び政府内で利用検討が進んでいます。",
-      "importance_reason": "最も機密性の高い政府機関が、危険性が指摘される最先端AIを既に利用しているという衝撃的な内容。AIの能力が国家安全保障において不可欠なツールとなっている実態を浮き彫りにしている。",
-      "category": "企業動向",
-      "source_label": "rss:GIGAZINE"
+      "title": "Anthropicとホワイトハウス、Mythosへの懸念高まりを受けて“仲直り”を模索か",
+      "url": "https://www.itmedia.co.jp/aiplus/articles/2604/20/news077.html",
+      "summary": "米政府とAnthropicのCEOが、最新AIモデルのサイバーセキュリティリスクについて会談しました。国防総省との一時的な対立を経て、両者がAIの安全性確保に向けた協力関係を再構築しようとしている可能性が報じられています。",
+      "importance_reason": "AI開発企業と国家安全保障当局との関係性を示す重要な動きです。高性能AIのリスク管理が、企業単体ではなく国家レベルの課題として扱われていることを明確に示しています。",
+      "category": "規制/政策",
+      "source_label": "rss:ITmedia AI+"
     },
     {
-      "id": "5730a12f1b2343b8",
+      "id": "d627a4102661bcd2",
       "rank": 3,
-      "title": "「Claude Design」が登場、AIに頼んでUIやプレゼン資料をデザイン可能",
-      "url": "https://gigazine.net/news/20260420-claude-design/",
-      "summary": "AI開発企業Anthropicが、AIと協力してUIやプレゼンテーション資料を作成できるデザインツール「Claude Design」を発表しました。これにより、デザインの専門知識がないユーザーでも高品質なデザイン制作が可能になります。",
-      "importance_reason": "AnthropicがLLMの応用範囲をデザイン領域にまで拡大し、Figmaなどの既存ツール市場に直接参入したことを示す重要な発表。AIによるクリエイティブワークの変革を象徴する。",
-      "category": "モデル/ツール",
-      "source_label": "rss:GIGAZINE"
-    },
-    {
-      "id": "dcb51b6797589e86",
-      "rank": 4,
-      "title": "ロボットが北京ハーフマラソンで人間の記録を破る",
-      "url": "https://gigazine.net/news/20260420-humanoid-robot-sprints-victory-beijing-half-marathon/",
-      "summary": "中国・北京で開催された人型ロボットによるハーフマラソン大会で、優勝したロボットが人間の世界記録を上回るタイムで完走しました。これはロボットの身体能力が新たな段階に達したことを示しています。",
-      "importance_reason": "AIの進化がソフトウェア（知能）だけでなく、ハードウェア（身体能力）においても人間を超え始めたことを示すマイルストーン。労働やスポーツなど、物理世界におけるAIロボットの活用可能性を大きく広げる。",
-      "category": "ユースケース",
-      "source_label": "rss:GIGAZINE"
-    },
-    {
-      "id": "5bc8f41e101774a4",
-      "rank": 5,
-      "title": "GPT 5.5 PRO (SPUD) LEAKED: OpenAI's New Model BEATS Claude Opus 4.7!",
-      "url": "https://www.youtube.com/watch?v=Ga-13kTU474",
-      "summary": "OpenAIの次期フロンティアモデル、コードネーム「Spud」（GPT 5.5 Proとしてリリースされる可能性）がリークされました。この新モデルはAnthropicのClaude Opus 4.7を凌駕する性能を持つとされ、早ければ来週にもリリースされる可能性があります。",
-      "importance_reason": "トップAI企業間の性能競争が激化していることを示すリーク情報。Anthropicの躍進に対し、OpenAIがすぐさま王座奪還に動く可能性を示唆しており、市場の期待感を高めている。",
-      "category": "モデル/ツール",
-      "source_label": "youtube:Universe of AI"
-    },
-    {
-      "id": "f48fff7edec1f899",
-      "rank": 6,
-      "title": "Anthropic's Chief Product Officer sat on Figma's board. Figma integrated Claude as their AI assistant. On Monday he resigned from Figma. The same day, reports surfaced that Anthropic was building design tools. Yesterday Anthropic launched Claude Design.",
-      "url": "https://x.com/TheGeorgePu/status/2045465422690967637",
-      "summary": "AnthropicのCPOがFigmaの役員を辞任した直後、Anthropicがデザインツールを開発中との報道があり、その翌日に「Claude Design」が発表されました。これはFigmaへの直接的な競合製品となります。",
-      "importance_reason": "AI業界の競争の激しさと、企業間の複雑な関係性を象徴する一連の出来事。役員の動きと製品リリースが連動しており、Anthropicの戦略的な動きとして大きな注目を集めている。",
+      "title": "イーロン・マスクがAIによる解雇に対し給付金を送る「ユニバーサル・ハイインカム」で対応すべきと発言し批判が殺到",
+      "url": "https://gigazine.net/news/20260420-universal-high-income/",
+      "summary": "Elon Musk氏が、AIによる失業問題の対策として、生産性向上による富から給付金を配る「ユニバーサル・ハイインカム」を提唱しました。しかし、この構想は多くの専門家やXユーザーから批判を浴び、大きな議論を呼んでいます。",
+      "importance_reason": "AIが社会・経済構造に与える長期的影響と、それに対する具体的な政策オプション（UBI/UHI）に関する議論を再燃させた点で非常に重要です。テクノロジーリーダーの発言が社会的な議論を喚起する典型例と言えます。",
       "category": "企業動向",
-      "source_label": "x:@TheGeorgePu"
+      "source_label": "rss:GIGAZINE"
     },
     {
-      "id": "ac6fe944462f6641",
-      "rank": 7,
-      "title": "Singapore’s financial regulator is urging banks to plug their cybersecurity holes, as concerns over Anthropic's latest AI model Mythos spread to Asia",
-      "url": "https://x.com/business/status/2046055823676232041",
-      "summary": "Anthropicの最新AIモデル「Mythos」への懸念がアジアに広がる中、シンガポールの金融規制当局が銀行に対し、サイバーセキュリティの脆弱性を塞ぐよう強く求めています。",
-      "importance_reason": "トップ記事[8105a6bc]と同様、AIの潜在的リスクがグローバルな金融システムに影響を与え始めていることを示す。複数の大手メディアが報じており、問題の重要性が高いことを裏付けている。",
-      "category": "規制/政策",
-      "source_label": "x:@business"
+      "id": "629b21cd52c59448",
+      "rank": 4,
+      "title": "Ppl who believe that AI has no consumer use, how do u square that with skyrocketing use of AI and ChatGPT being the fastest growing consumer technology of all time? ChatGPT alone has 6.7M reviews and ",
+      "url": "https://x.com/TaylorLorenz/status/2046048067494039812",
+      "summary": "著名テックジャーナリストが、ChatGPTの驚異的な成長と高いユーザー評価を挙げ、「AIに消費者向け用途はない」という懐疑論に疑問を呈しました。この投稿は、AIの価値を巡る議論をX上で巻き起こしています。",
+      "importance_reason": "AI、特に生成AIの消費者向け市場での成功を具体的なデータで示し、その社会的受容と価値について根本的な問いを投げかけている点で重要です。",
+      "category": "企業動向",
+      "source_label": "x:@TaylorLorenz"
     },
     {
-      "id": "c06822be92874495",
-      "rank": 8,
-      "title": "🇸🇬 JUST IN: Singapore's Monetary Authority is urging banks to strengthen cybersecurity defenses amid growing concerns over Anthropic's Mythos AI model spreading across Asia.",
-      "url": "https://x.com/Cointelegraph/status/2046071492127907859",
-      "summary": "アジア全域でAnthropicのAIモデル「Mythos」への懸念が広がる中、シンガポール通貨監督庁が銀行にサイバーセキュリティ防衛の強化を要請しました。",
-      "importance_reason": "金融、暗号資産系メディアもこのニュースを速報しており、AIの脅威がテクノロジー業界だけでなく、幅広い経済分野で重大な関心事となっていることを示している。",
-      "category": "規制/政策",
-      "source_label": "x:@Cointelegraph"
-    },
-    {
-      "id": "30bc9e2a374559fc",
-      "rank": 9,
-      "title": "Subliminal Transfer of Unsafe Behaviors in AI Agent Distillation",
-      "url": "https://arxiv.org/abs/2604.15559",
-      "summary": "AIエージェントにおいて、安全でない行動が、意味的に関連のないデータを通じてモデル蒸留の過程で「サブリミナル的」に伝播しうることを実証した初の研究論文。静的なテキストだけでなく、エージェントの行動特性も意図せず継承される危険性を示しています。",
-      "importance_reason": "AIの安全性を揺るがす新たな脆弱性を指摘した重要な研究。Mythosのようなモデルの危険性が議論される中、AIの振る舞いを制御することの難しさを学術的に裏付けている。",
-      "category": "研究論文",
-      "source_label": "rss:arXiv cs.AI"
-    },
-    {
-      "id": "4c286871e61d6541",
-      "rank": 10,
-      "title": "中国人型ロボがハーフマラソンで50分台、人間の世界記録超え　昨年から1時間50分短縮",
-      "url": "https://www.itmedia.co.jp/news/articles/2604/20/news057.html",
-      "summary": "北京で開催された人型ロボットのハーフマラソンで、優勝タイムが50分26秒と人間の世界記録を大幅に更新しました。中国は2026年を人型ロボットの「商業化元年」と位置付けており、技術力を誇示する形となりました。",
-      "importance_reason": "トップ記事[dcb51b]の続報。技術的な進歩だけでなく、中国が国家戦略としてロボット産業を推進している背景を伝えており、地政学的な意味合いも持つ。",
+      "id": "e3af94c5691ebb51",
+      "rank": 5,
+      "title": "無料の教材で「使えるAIスキル」を学べる　さくらインターネットがAI検定を開始",
+      "url": "https://atmarkit.itmedia.co.jp/ait/articles/2604/20/news035.html",
+      "summary": "さくらインターネットが、実務的なAIスキルを認定する「さくらのAI検定」を開始しました。無料のオンライン教材を提供し、AIの基礎から実践までを学べる機会を創出し、人材育成を支援します。",
+      "importance_reason": "AI技術の普及に伴い、それを使いこなす人材の育成が急務となる中、企業が主体となって具体的な学習・認定プログラムを提供する動きとして注目されます。",
       "category": "ユースケース",
       "source_label": "rss:ITmedia AI+"
+    },
+    {
+      "id": "4fe20220f3b23beb",
+      "rank": 6,
+      "title": "Agent Swarms Is One of The Most Powerful AI System Yet",
+      "url": "https://www.youtube.com/watch?v=KdP305UYuNA",
+      "summary": "Abacus AIが発表した「Agent Swarms」技術が、単なるデモを超えた強力なAIシステムとして注目されています。複数のAIエージェントが協調して複雑なタスクを解決するこのアプローチは、AIの能力を飛躍させる可能性を秘めています。",
+      "importance_reason": "シングルエージェントからマルチエージェント（スウォーム）へと、AIアーキテクチャの進化の方向性を示す研究であり、将来のAI開発に大きな影響を与える可能性があります。",
+      "category": "研究論文",
+      "source_label": "youtube:AI Revolution"
+    },
+    {
+      "id": "5ecb968ef0257fcb",
+      "rank": 7,
+      "title": "Google Gemini is the smartest AI right now. But 90% of people prompt it like ChatGPT. That's why I made the Gemini Mastery Guide:",
+      "url": "https://x.com/Tanmoy_ai/status/2046070713640157227",
+      "summary": "AI専門家が、Google Geminiの能力を最大限に引き出すためのプロンプトガイドを無料で提供し、話題となっています。多くの人がChatGPTと同じようにプロンプトしているため、Gemini特有の思考方法に合わせた使い方を指南しています。",
+      "importance_reason": "LLMの性能が向上する一方で、それを使いこなすユーザー側のスキル（プロンプトエンジニアリング）の重要性が増していることを示す事例です。",
+      "category": "モデル/ツール",
+      "source_label": "x:@Tanmoy_ai"
+    },
+    {
+      "id": "d0b4814fee5f241e",
+      "rank": 8,
+      "title": "Gpt Image 1.5 on ChatGPT. Prompt: Cinematic side-profile portrait of a young bearded man wearing a dark hoodie, eyes closed in deep contemplation. A faint ghostly double exposure of his own profile f",
+      "url": "https://x.com/Sheldon056/status/2046071752477073910",
+      "summary": "ChatGPTに搭載された画像生成モデル（Gpt Image 1.5）を使って生成された、高品質で芸術的なポートレート画像がX上で共有されました。プロンプトと生成結果が示され、モデルの表現力の高さがうかがえます。",
+      "importance_reason": "最新の画像生成AIの能力を示す具体的な作例であり、クリエイティブ分野におけるAIの進化と応用可能性を示唆しています。",
+      "category": "ユースケース",
+      "source_label": "x:@Sheldon056"
+    },
+    {
+      "id": "014b44acd75e18d2",
+      "rank": 9,
+      "title": "Claude Designで社内ダッシュボードをもっと視覚的にわかりやすくした💡 https://t.co/N0U18RbH1b",
+      "url": "https://x.com/zento_ai/status/2046070927583305937",
+      "summary": "AIスタートアップの代表が、Anthropicの「Claude Design」を活用して社内ダッシュボードを改善した事例を報告しました。UI/UXデザインの領域でAIを実務に活用する具体的なユースケースとして注目されます。",
+      "importance_reason": "発表されたばかりの新技術（Claude Design）が、早くも実務の現場でどのように活用され、価値を生み出しているかを示す好例です。",
+      "category": "ユースケース",
+      "source_label": "x:@zento_ai"
+    },
+    {
+      "id": "cc1be8ae6d2795b3",
+      "rank": 10,
+      "title": "ChatGPT Me Gmail Change Kaise Kare (2026) | Easy Step-by-Step Guide",
+      "url": "https://www.youtube.com/watch?v=N18rlfMi3ks",
+      "summary": "ChatGPTアカウントに紐づくGmailアドレスの変更方法を解説するチュートリアル動画です。基本的な操作方法に関する情報需要が存在することを示しています。",
+      "importance_reason": "AIツールの普及に伴い、基本的な使い方や設定変更といった、幅広い層に向けたハウツーコンテンツの需要が高まっていることを示唆しています。",
+      "category": "ユースケース",
+      "source_label": "youtube:Active Raja Tech"
     }
   ],
   "category_summaries": [
     {
-      "category": "企業動向",
-      "summary": "Anthropicが「Mythos」モデルのNSAへの提供や、「Claude Design」の発表とそれに伴う役員の動きで市場の注目を独占。AIの社会実装も進み、中国でのAIエージェント急拡大やVercelのハッキング事件など、実利用に伴う機会とリスクが顕在化している。Nvidia CEOはAIに必要な5つの要素を提示し、エコシステム全体への視点も示された。",
-      "count": 12,
+      "category": "モデル/ツール",
+      "summary": "AnthropicがExcelやPowerPointとの連携を強化し、業務自動化を大きく前進させました。これにより、LLMが日常的なビジネスツールに深く組み込まれるトレンドが加速しています。また、Google Geminiのような特定のモデルの能力を最大限に引き出すためのプロンプト技術に関する情報共有も活発です。",
+      "count": 2,
       "key_articles": [
         {
-          "title": "国家安全保障局(NSA)はすでにAnthropicの次世代AI「Mythos Preview」を使用しているとの報道、サプライチェーン上のリスクに指定されてもなおClaudeは国防総省内で広く使用されている",
-          "url": "https://gigazine.net/news/20260420-us-government-anthropic-mythos-preview/"
+          "title": "ExcelとPowerPointを行き来する手間解消　Claudeの「コンテキスト共有」と「スキル」で業務自動化",
+          "url": "https://atmarkit.itmedia.co.jp/ait/articles/2604/20/news024.html"
         },
         {
-          "title": "Anthropic's Chief Product Officer sat on Figma's board. Figma integrated Claude as their AI assistant. On Monday he resigned from Figma. The same day, reports surfaced that Anthropic was building",
-          "url": "https://x.com/TheGeorgePu/status/2045465422690967637"
+          "title": "Google Gemini is the smartest AI right now. But 90% of people prompt it like ChatGPT. That's why I made the Gemini Mastery Guide:",
+          "url": "https://x.com/Tanmoy_ai/status/2046070713640157227"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "Elon Musk氏の「ユニバーサル・ハイインカム」発言が、AIによる雇用喪失という長期的課題に再び光を当て、大きな議論を巻き起こしました。同時に、ChatGPTの急成長を例に、AIのコンシューマー向け市場での価値を問う声も上がっており、AIの社会的・経済的インパクトに関する議論が多角的に展開されています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "イーロン・マスクがAIによる解雇に対し給付金を送る「ユニバーサル・ハイインカム」で対応すべきと発言し批判が殺到",
+          "url": "https://gigazine.net/news/20260420-universal-high-income/"
         },
         {
-          "title": "中国でAIエージェント急拡大　「24時間無休の秘書」活用　政府は情報漏えいリスク警戒",
-          "url": "https://www.itmedia.co.jp/news/articles/2604/20/news056.html"
-        },
-        {
-          "title": "開発者向けクラウドプラットフォームのVercelがハッキングされる、「サードパーティー製AIツール」が攻撃の経路か",
-          "url": "https://gigazine.net/news/20260420-vercel-hacked/"
-        },
-        {
-          "title": "Nvidia CEO Jensen Huang just revealed the “five-layer” model of what AI is dependent upon…",
-          "url": "https://x.com/MrMikeInvesting/status/2045934002348118054"
+          "title": "Ppl who believe that AI has no consumer use, how do u square that with skyrocketing use of AI and ChatGPT being the fastest growing consumer technology of all time? ChatGPT alone has 6.7M reviews and ",
+          "url": "https://x.com/TaylorLorenz/status/2046048067494039812"
         }
       ]
     },
     {
       "category": "規制/政策",
-      "summary": "Anthropicの未公開モデル「Mythos」が引き起こすサイバーセキュリティ上の懸念が最大のトピック。シンガポール金融当局が銀行に警告を発するなど、AIの潜在的リスクが具体的な金融規制のアクションにつながった。国内では、大学がGoogle検索の「AIモード」における個人情報入力に注意喚起するなど、データプライバシーに関する啓発活動も進んでいる。",
-      "count": 4,
+      "summary": "Anthropicとホワイトハウスの会談が報じられ、高性能AIがもたらすサイバーセキュリティリスクが国家レベルの議題となっていることが明らかになりました。AI開発企業と政府機関との連携・対話が、技術の安全な発展に不可欠であるとの認識が広まっています。",
+      "count": 1,
       "key_articles": [
         {
-          "title": "🚨JUST IN: Singapore’s financial regulator is urging banks to strengthen cyber defenses over concerns tied to Anthropic’s unreleased Mythos AI model, which the company considers too dangerous to releas",
-          "url": "https://x.com/coinbureau/status/2046069576488923255"
-        },
-        {
-          "title": "Singapore’s financial regulator is urging banks to plug their cybersecurity holes, as concerns over Anthropic's latest AI model Mythos spread to Asia https://t.co/9B7Lhov1mx",
-          "url": "https://x.com/business/status/2046055823676232041"
-        },
-        {
-          "title": "🇸🇬 JUST IN: Singapore's Monetary Authority is urging banks to strengthen cybersecurity defenses amid growing concerns over Anthropic's Mythos AI model spreading across Asia. https://t.co/h0An88bm1D",
-          "url": "https://x.com/Cointelegraph/status/2046071492127907859"
-        },
-        {
-          "title": "Google検索「AIモード」に個人情報を入力しないで――立教大など、学内に注意喚起",
-          "url": "https://www.itmedia.co.jp/news/articles/2604/20/news069.html"
-        }
-      ]
-    },
-    {
-      "category": "モデル/ツール",
-      "summary": "AnthropicがUIデザインツール「Claude Design」を発表し、大きな話題を呼んだ。一方、OpenAIも次世代モデル「GPT 5.5 Pro (Spud)」のリーク情報で存在感を示し、両社の開発競争が激化している。また、ChatGPTの画像生成機能のアップデートも報じられるなど、各社がマルチモーダル対応を強化している。",
-      "count": 8,
-      "key_articles": [
-        {
-          "title": "「Claude Design」が登場、AIに頼んでUIやプレゼン資料をデザイン可能",
-          "url": "https://gigazine.net/news/20260420-claude-design/"
-        },
-        {
-          "title": "GPT 5.5 PRO (SPUD) LEAKED: OpenAI's New Model BEATS Claude Opus 4.7!",
-          "url": "https://www.youtube.com/watch?v=Ga-13kTU474"
-        },
-        {
-          "title": "Grok 4.20 achieves an industry-leading 83% non-hallucination rate on Artificial Analysis’ AA-Omniscience benchmark - one of the most rigorous knowledge accuracy tests in AI",
-          "url": "https://x.com/XFreeze/status/2045896573897297954"
-        },
-        {
-          "title": "ChatGPTの画像生成AIが「NanoBanana」超え？漫画や動画風カットが実用レベルに【アスキー記事冒頭】OpenAIの画像生成モデル「GPT-Image-2（仮称）」がChatGPT一部ユーザーに対して開放され始めています。4月19日時点で、公式アナウンスはされていないものの、PlusやProといった月額課金ユーザーから、 https://t.co/6PSBGxTC22",
-          "url": "https://x.com/kiyoshi_shin/status/2045991264705974494"
-        }
-      ]
-    },
-    {
-      "category": "ユースケース",
-      "summary": "AIの応用範囲が物理世界へと大きく拡大。中国の人型ロボットがハーフマラソンで人間の世界記録を更新し、ウクライナでは兵士を地上ロボットに置き換える計画が進行中であることが報じられた。より身近な応用例として、Meta AIを搭載したRay-Banのスマートグラスや、Apple CarPlayでのAIチャットボット対応など、コンシューマー向け製品への搭載も進んでいる。",
-      "count": 9,
-      "key_articles": [
-        {
-          "title": "ロボットが北京ハーフマラソンで人間の記録を破る",
-          "url": "https://gigazine.net/news/20260420-humanoid-robot-sprints-victory-beijing-half-marathon/"
-        },
-        {
-          "title": "ウクライナが前線兵士を2万5000台の地上ロボットに置き換える計画に着手",
-          "url": "https://gigazine.net/news/20260420-ukraine-replace-robot/"
-        },
-        {
-          "title": "Redefine your look with Jennie. Introducing new prescription glasses with Meta AI – built for all- day comfort. https://t.co/bnxs8fA3dQ",
-          "url": "https://x.com/ray_ban/status/2044090841443307674"
-        },
-        {
-          "title": "🧐👉 Apple CarPlay AI Chatbots: What This Silent Update Means for Drivers #QixNewsAI",
-          "url": "https://www.youtube.com/watch?v=Q-ATx8lXZ7o"
+          "title": "Anthropicとホワイトハウス、Mythosへの懸念高まりを受けて“仲直り”を模索か",
+          "url": "https://www.itmedia.co.jp/aiplus/articles/2604/20/news077.html"
         }
       ]
     },
     {
       "category": "研究論文",
-      "summary": "AIの安全性と信頼性に関する研究が注目を集めた。特に、安全でない行動が意図せずAIエージェントに伝播する「サブリミナル転移」を実証した論文は、今日のMythosを巡る懸念と共鳴している。他にも、LLMの推論過程の解釈可能性や、研究におけるAIの不正行為を検出するベンチマークなど、AIの内部動作や挙動を理解し、制御しようとする研究が多数発表された。",
-      "count": 10,
+      "summary": "複数のAIエージェントが協調して動作する「Agent Swarms」技術が注目されています。これは、単一の強力なモデルに依存するのではなく、複数のエージェントの連携によってより複雑で高度なタスクを解決しようとするアプローチであり、今後のAIアーキテクチャの進化の方向性を示唆しています。",
+      "count": 1,
       "key_articles": [
         {
-          "title": "Subliminal Transfer of Unsafe Behaviors in AI Agent Distillation",
-          "url": "https://arxiv.org/abs/2604.15559"
-        },
-        {
-          "title": "Experience Compression Spectrum: Unifying Memory, Skills, and Rules in LLM Agents",
-          "url": "https://arxiv.org/abs/2604.15877"
-        },
-        {
-          "title": "ASMR-Bench: Auditing for Sabotage in ML Research",
-          "url": "https://arxiv.org/abs/2604.16286"
-        },
-        {
-          "title": "LLM Reasoning Is Latent, Not the Chain of Thought",
-          "url": "https://arxiv.org/abs/2604.15726"
+          "title": "Agent Swarms Is One of The Most Powerful AI System Yet",
+          "url": "https://www.youtube.com/watch?v=KdP305UYuNA"
         }
       ]
     },
     {
-      "category": "資金調達",
-      "summary": "本日は具体的な資金調達のニュースはなかったものの、AI市場全体への投資熱の高まりを示すコンテンツが散見された。100兆ドル規模の市場リセットを見据えた投資戦略や、次のブルラン（強気相場）を牽引する可能性のあるアルトコインに関する議論が行われている。",
-      "count": 2,
+      "category": "ユースケース",
+      "summary": "AIの実用化は、専門的な分野から一般的なスキル習得へと広がっています。さくらインターネットによる「AI検定」の開始は、AIを使いこなす人材の裾野を広げる動きです。また、画像生成やUIデザイン（Claude Design）など、クリエイティブ・開発業務での具体的な活用事例も引き続き共有されています。",
+      "count": 5,
       "key_articles": [
         {
-          "title": "The $100 Trillion AI Reset (5 Stocks Smart Investors Are Loading Up On)",
-          "url": "https://www.youtube.com/watch?v=tV1FkQ1dJE4"
+          "title": "無料の教材で「使えるAIスキル」を学べる　さくらインターネットがAI検定を開始",
+          "url": "https://atmarkit.itmedia.co.jp/ait/articles/2604/20/news035.html"
         },
         {
-          "title": "AI BULLRUN IMMINENT… Only THESE Altcoins are going to RIP",
-          "url": "https://www.youtube.com/watch?v=qUsaY1-GK6k"
+          "title": "Claude Designで社内ダッシュボードをもっと視覚的にわかりやすくした💡 https://t.co/N0U18RbH1b",
+          "url": "https://x.com/zento_ai/status/2046070927583305937"
+        },
+        {
+          "title": "Gpt Image 1.5 on ChatGPT. Prompt: Cinematic side-profile portrait of a young bearded man wearing a dark hoodie, eyes closed in deep contemplation. A faint ghostly double exposure of his own profile f",
+          "url": "https://x.com/Sheldon056/status/2046071752477073910"
         }
       ]
     }
   ],
   "action_items": [
-    "自社のAI利用ガイドラインを再点検し、特に金融情報や機密情報を扱うシステムにおいては、外部AIモデル（特に未検証の高性能モデル）との連携に関するリスク評価基準を厳格化する。",
-    "デザインやコンテンツ制作プロセスにAIツール（例: Claude Design）を試験的に導入し、プロトタイピングの高速化や非専門家のデザイン参加による生産性向上の可能性を検証する。",
-    "サードパーティ製AIツールやOAuth連携のセキュリティリスクを評価し、アクセス権限の最小化や定期的な監査を実施する。Vercelのインシデントは、AIツールが新たな攻撃経路となりうることを示している。",
-    "AIエージェントの導入を検討する際は、情報漏洩や意図しない自律行動のリスクを考慮した上で、監視・制御メカニズムを設計する。特に個人情報を扱う業務への適用は慎重に判断する。",
-    "AIの進化はソフトウェアに留まらないため、物流、製造、警備など物理的な作業を伴う業界は、人型ロボットの実用化に向けた技術動向とコストを注視し、将来的な導入計画を策定する。"
+    "AnthropicのExcel/PowerPoint連携機能を注視し、自社の定型業務で自動化できる領域がないか検討を開始する。",
+    "AIによる将来的な人員構成の変化を見据え、社内でのリスキリング・アップスキリング戦略の策定に着手する。「さくらのAI検定」のような外部プログラムの活用も検討する。",
+    "AIの社会実装に伴う経済的・倫理的議論（UHIなど）に関する社内勉強会を開催し、技術導入だけでなく、その社会的影響に対するリテラシーを高める。",
+    "利用しているLLM（ChatGPT, Gemini, Claudeなど）ごとに、その特性を最大限に活かすためのプロンプトガイドラインを整備し、社内の利用効率を向上させる。",
+    "自社のサービスや製品開発において、「Agent Swarms」のようなマルチエージェントシステムの概念を応用できないか、研究開発部門でフィージビリティスタディを開始する。"
   ],
   "x_trends": [
     {
-      "topic": "Anthropic「Mythos」が引き起こす国際的なサイバーセキュリティ懸念",
-      "description": "Anthropicが危険すぎると判断し未公開にしているAI「Mythos」を巡り、シンガポールの金融当局が銀行にサイバー防衛の強化を要請したというニュースが、複数の大手メディアや仮想通貨系インフルエンサーによって一斉に報じられ、大きな波紋を広げている。AIがもたらすシステミックリスクが現実のものとして認識され、ユーザーからはその危険性への驚きや、今後の規制強化を予測する声が上がっている。この話題は、AIの能力向上と安全性のトレードオフという根源的な問題を浮き彫りにした。",
+      "topic": "AIの消費者向け価値を巡る議論",
+      "description": "著名テックジャーナリストのTaylor Lorenz氏が、ChatGPTのアプリストアでのレビュー数や評価を根拠に「AIに消費者向け用途はない」という意見に疑問を呈したことで、議論が活発化しています。ユーザーからは「日常的に検索や文章作成で使っている」「もはや必須ツール」といった肯定的な意見が多く寄せられ、AIが既に多くの一般消費者の生活に浸透している実態が浮き彫りになりました。この投稿は、一部の技術評論家の見解と実際のユーザーの体感との間に存在するギャップを指摘するものとなっています。",
       "buzz_level": "medium",
-      "sentiment": "negative",
+      "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@business",
-          "text": "Singapore’s financial regulator is urging banks to plug their cybersecurity holes, as concerns over Anthropic's latest AI model Mythos spread to Asia https://t.co/9B7Lhov1mx",
-          "url": "https://x.com/business/status/2046055823676232041",
-          "likes": 23,
-          "retweets": 11
-        },
-        {
-          "author": "@coinbureau",
-          "text": "🚨JUST IN: Singapore’s financial regulator is urging banks to strengthen cyber defenses over concerns tied to Anthropic’s unreleased Mythos AI model, which the company considers too dangerous to release widely. https://t.co/acg4TdNRfG",
-          "url": "https://x.com/coinbureau/status/2046069576488923255",
-          "likes": 78,
-          "retweets": 13
-        },
-        {
-          "author": "@Cointelegraph",
-          "text": "🇸🇬 JUST IN: Singapore's Monetary Authority is urging banks to strengthen cybersecurity defenses amid growing concerns over Anthropic's Mythos AI model spreading across Asia. https://t.co/h0An88bm1D",
-          "url": "https://x.com/Cointelegraph/status/2046071492127907859",
-          "likes": 61,
+          "author": "@TaylorLorenz",
+          "text": "Ppl who believe that AI has no consumer use, how do u square that with skyrocketing use of AI and ChatGPT being the fastest growing consumer technology of all time? ChatGPT alone has 6.7M reviews and a 4.8 rating in the app store. People love these tools, how do u explain that?",
+          "url": "https://x.com/TaylorLorenz/status/2046048067494039812",
+          "likes": 283,
           "retweets": 10
         }
       ]
     },
     {
-      "topic": "AnthropicとFigmaの競合関係を示唆するCPOの辞任劇",
-      "description": "AnthropicのCPOがFigmaの役員を辞任した直後に、Anthropicが競合製品となる「Claude Design」を発表した一連の流れがインフルエンサーによって時系列でポストされ、大きな反響を呼んだ。ユーザーはこれを「計算され尽くした動き」「熾烈な競争の現れ」と捉え、AI業界のダイナミズムと戦略性を象徴する出来事として注目している。パートナーシップから一転して競合へと変わるドラマチックな展開が、多くの関心を集めている。",
-      "buzz_level": "medium",
-      "sentiment": "neutral",
+      "topic": "Claude Designの実践的活用",
+      "description": "Anthropicが発表したAIデザインツール「Claude Design」を早速実務で活用したという報告が注目を集めています。特に、AIスタートアップ経営者による「社内ダッシュボードの改善事例」の投稿は、この新技術が単なるコンセプトではなく、即座にビジネス現場の課題解決に貢献できることを示しました。ユーザーからは「すごい、もう試しているのか」「生産性が爆上がりしそう」といった驚きと期待の声が上がっており、ツールの実用性への関心の高さがうかがえます。",
+      "buzz_level": "low",
+      "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@TheGeorgePu",
-          "text": "Anthropic's Chief Product Officer sat on Figma's board.\n\nFigma integrated Claude as their AI assistant.\n\nOn Monday he resigned from Figma. \n\nThe same day, reports surfaced that Anthropic was building design tools.\n\nYesterday Anthropic launched Claude Design.\n\nA direct Figma",
-          "url": "https://x.com/TheGeorgePu/status/2045465422690967637",
-          "likes": 1482,
-          "retweets": 170
+          "author": "@zento_ai",
+          "text": "Claude Designで社内ダッシュボードをもっと視覚的にわかりやすくした💡 https://t.co/N0U18RbH1b",
+          "url": "https://x.com/zento_ai/status/2046070927583305937",
+          "likes": 10,
+          "retweets": 0
         }
       ]
     },
     {
-      "topic": "NVIDIA CEOが提唱する「AIの5層モデル」",
-      "description": "NVIDIAのジェンスン・フアンCEOが示した「エネルギー、チップ、クラウド、モデル、エージェント」から成るAIの5層構造モデルが、投資家やテクノロジー愛好家の間で広く共有されている。各層に対応する具体的な企業名（ティッカーシンボル）が挙げられているため、AIエコシステム全体を理解し、投資先を検討する上での分かりやすいフレームワークとして受け止められている。この投稿は2000件以上ブックマークされており、AI産業への投資熱の高さを示している。",
-      "buzz_level": "medium",
+      "topic": "Google Geminiのプロンプト技術",
+      "description": "「多くの人がGeminiをChatGPTと同じように使っているが、それでは性能を活かせない」と指摘し、Geminiに最適化されたプロンプトガイドを無償提供する投稿が関心を集めています。これは、異なるLLMが持つ独自の「思考」や特性を理解することの重要性を浮き彫りにしました。リプライでは「知らなかった」「ガイドが欲しい」といった反応が多く、ユーザーがより高度なAI活用法を求めていることが示されています。モデルの性能競争だけでなく、ユーザー側のスキルアップも重要なテーマとなっています。",
+      "buzz_level": "low",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@MrMikeInvesting",
-          "text": "Nvidia CEO Jensen Huang just revealed the “five-layer” model of what AI is dependent upon…\n\nThese 5 layers include:\n\n1. Energy ~ $NBIS, $IREN, $CIFR, $OKLO\n2. Chips ~ $NVDA, $AMD, $TSM, $AVGO\n3. Cloud Infrastructure ~ $AMZN, $MSFT, $GOOGL, $CRWV\n4. Models ~ $META, $ORCL\n5. https://t.co/HJtgKnXv9D",
-          "url": "https://x.com/MrMikeInvesting/status/2045934002348118054",
-          "likes": 1665,
-          "retweets": 230
-        }
-      ]
-    },
-    {
-      "topic": "Meta AI搭載Ray-Banスマートグラスの新モデル",
-      "description": "Ray-Banが、BLACKPINKのジェニーを起用し、Meta AIを搭載した新しい度付きメガネを発表したことで大きな注目を集めている。特にファッションやK-POPファン層からのエンゲージメントが高く、AIがよりスタイリッシュで日常的な製品に溶け込んでいることを示している。この投稿は1万件以上の「いいね」と4000件以上のリツイートを獲得しており、AI技術と著名人を組み合わせたマーケティングの成功例となっている。",
-      "buzz_level": "high",
-      "sentiment": "positive",
-      "representative_tweets": [
-        {
-          "author": "@ray_ban",
-          "text": "Redefine your look with Jennie. Introducing new prescription glasses with Meta AI – built for all- day comfort. https://t.co/bnxs8fA3dQ",
-          "url": "https://x.com/ray_ban/status/2044090841443307674",
-          "likes": 13478,
-          "retweets": 4740
+          "author": "@Tanmoy_ai",
+          "text": "Google Gemini is the smartest AI right now.\n\nBut 90% of people prompt it like ChatGPT.\n\nThat's why I made the Gemini Mastery Guide:\n\n→ How Gemini thinks differently\n→ Prompts built for Gemini\n→ 2000+ AI Prompts\n\nComment \"Gemini\" and I'll DM it free. https://t.co/2RzFSRuaiX",
+          "url": "https://x.com/Tanmoy_ai/status/2046070713640157227",
+          "likes": 8,
+          "retweets": 6
         }
       ]
     }
   ],
-  "run_time": "2026-04-20T04:22:43.764763+00:00",
+  "run_time": "2026-04-20T04:41:52.472494+00:00",
   "slot": "morning",
-  "item_count": 123
+  "item_count": 11
 }
