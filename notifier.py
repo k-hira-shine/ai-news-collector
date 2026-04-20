@@ -48,11 +48,10 @@ class DiscordNotifier:
         analysis: dict,
         stats: dict,
         diagram_png: bytes | None = None,
-        diagram_url: str = "",
     ) -> bool:
         """分析結果を Discord に配信 (複数メッセージ分割)
 
-        diagram_png / diagram_url が指定された場合は先頭に図解メッセージを送信する。
+        diagram_png が指定された場合は先頭に図解メッセージを送信する。
         """
         if not self.webhook_url:
             logger.warning("DISCORD_WEBHOOK_URL not set — skipping notification")
@@ -65,7 +64,7 @@ class DiscordNotifier:
 
         if diagram_png:
             diagram_filename = self._diagram_filename(analysis)
-            diagram_embed = self._build_diagram_embed(analysis, diagram_filename, diagram_url)
+            diagram_embed = self._build_diagram_embed(analysis, diagram_filename)
             if not self._send_payload_with_file(
                 {"embeds": [diagram_embed]},
                 filename=diagram_filename,
@@ -97,15 +96,12 @@ class DiscordNotifier:
         slot = analysis.get("slot", "morning")
         return f"ai-news-{date}-{slot}.png"
 
-    def _build_diagram_embed(self, analysis: dict, filename: str, url: str) -> dict:
+    def _build_diagram_embed(self, analysis: dict, filename: str) -> dict:
         slot = SLOT_LABELS.get(analysis.get("slot", ""), "")
         date = today_str()
-        desc_parts = ["**今日の AI ニュースを 1 枚にまとめました**"]
-        if url:
-            desc_parts.append(f"🔗 [フル版 HTML を見る]({url})")
         return {
             "title": f"🤖 AI News 図解版 {date} {slot}",
-            "description": "\n\n".join(desc_parts),
+            "description": "**今日の AI ニュースを 1 枚にまとめました**",
             "color": COLORS["header"],
             "image": {"url": f"attachment://{filename}"},
         }

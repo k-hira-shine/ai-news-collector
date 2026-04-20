@@ -78,7 +78,6 @@ def main() -> None:
 
     # ── Step 2.5: Diagram (HTML + PNG) ────────────────────────────────
     diagram_png: bytes | None = None
-    diagram_url = ""
     diagram_cfg = config.get("diagram", {})
     if analysis.get("top_articles") and diagram_cfg.get("enabled", True):
         try:
@@ -86,23 +85,13 @@ def main() -> None:
 
             slot = analysis.get("slot") or time_slot()
             date = today_str()
-            base_pages_url = diagram_cfg.get(
-                "pages_base_url",
-                "https://k-hira-shine.github.io/ai-news-collector",
-            )
             diagram_filename = f"{date}-{slot}"
-            diagram_url = f"{base_pages_url.rstrip('/')}/diagrams/{diagram_filename}.html"
-            dashboard_url = diagram_cfg.get(
-                "dashboard_url",
-                f"{base_pages_url.rstrip('/')}/",
-            )
 
             builder = DiagramBuilder()
             html, diagram_png = builder.build(
                 analysis,
                 slot=slot,
                 date=date,
-                dashboard_url=dashboard_url,
                 render_png=True,
             )
 
@@ -130,7 +119,7 @@ def main() -> None:
     )
 
     if analysis.get("top_articles"):
-        notifier.notify(analysis, stats, diagram_png=diagram_png, diagram_url=diagram_url)
+        notifier.notify(analysis, stats, diagram_png=diagram_png)
     else:
         notifier.send_status("⚠️ 本日の AI ニュースは 0 件でした。")
 

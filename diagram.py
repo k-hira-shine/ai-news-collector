@@ -86,10 +86,18 @@ class DiagramBuilder:
 
         try:
             with sync_playwright() as p:
-                browser = p.chromium.launch(args=["--no-sandbox"])
+                browser = p.chromium.launch(
+                    args=[
+                        "--no-sandbox",
+                        "--font-render-hinting=none",
+                        "--disable-font-subpixel-positioning",
+                        "--lang=ja-JP",
+                    ],
+                )
                 context = browser.new_context(
                     viewport={"width": width, "height": 1200},
                     device_scale_factor=2,
+                    locale="ja-JP",
                 )
                 page = context.new_page()
                 page.set_content(html, wait_until="networkidle")
