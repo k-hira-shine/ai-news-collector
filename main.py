@@ -76,6 +76,48 @@ def main() -> None:
     analyzer = NewsAnalyzer(config)
     analysis = analyzer.analyze(items)
 
+    # ── Step 2.5: Diagram (HTML + PNG) ────────────────────────────────
+    diagram_png: bytes | None = None
+    diagram_url = ""
+    diagram_cfg = config.get("diagram", {})
+    if analysis.get("top_articles") and diagram_cfg.get("enabled", True):
+        try:
+            from diagram import DiagramBuilder
+
+            slot = analysis.get("slot") or time_slot()
+            date = today_str()
+            base_pages_url = diagram_cfg.get(
+                "pages_base_url",
+                "https://k-hira-shine.github.io/ai-news-collector",
+            )
+            diagram_filename = f"{date}-{slot}"
+            diagram_url = f"{base_pages_url.rstrip('/')}/diagrams/{diagram_filename}.html"
+            dashboard_url = diagram_cfg.get(
+                "dashboard_url",
+                f"{base_pages_url.rstrip('/')}/",
+            )
+
+            builder = DiagramBuilder()
+            html, diagram_png = builder.build(
+                analysis,
+                slot=slot,
+                date=date,
+                dashboard_url=dashboard_url,
+                render_png=True,
+            )
+
+            diagrams_dir = os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "docs", "diagrams"
+            )
+            os.makedirs(diagrams_dir, exist_ok=True)
+            html_path = os.path.join(diagrams_dir, f"{diagram_filename}.html")
+            with open(html_path, "w", encoding="utf-8") as f:
+                f.write(html)
+            logger.info("Diagram HTML saved → %s (png=%s bytes)", html_path, len(diagram_png) if diagram_png else 0)
+        except Exception as e:
+            logger.error("Diagram generation failed: %s", e)
+            diagram_png = None
+
     # ── Step 3: Notify ────────────────────────────────────────────────
     from notifier import DiscordNotifier
 
@@ -88,7 +130,7 @@ def main() -> None:
     )
 
     if analysis.get("top_articles"):
-        notifier.notify(analysis, stats)
+        notifier.notify(analysis, stats, diagram_png=diagram_png, diagram_url=diagram_url)
     else:
         notifier.send_status("⚠️ 本日の AI ニュースは 0 件でした。")
 

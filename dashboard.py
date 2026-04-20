@@ -18,12 +18,36 @@ def generate_dashboard(output_path: str) -> None:
     latest = analyses[0] if analyses else None
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    html = _render(latest, analyses)
+    diagrams_dir = os.path.join(os.path.dirname(output_path), "diagrams")
+    diagram_files = _list_recent_diagrams(diagrams_dir, limit=14)
+
+    html = _render(latest, analyses, diagram_files)
     tmp = output_path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(html)
     os.replace(tmp, output_path)
     logger.info("Dashboard written → %s", output_path)
+
+
+def _list_recent_diagrams(diagrams_dir: str, limit: int = 14) -> list[dict]:
+    """docs/diagrams/*.html を新しい順に返す"""
+    if not os.path.isdir(diagrams_dir):
+        return []
+    files = sorted(glob(os.path.join(diagrams_dir, "*.html")), reverse=True)
+    results: list[dict] = []
+    for f in files[:limit]:
+        name = os.path.basename(f)
+        base = name.rsplit(".html", 1)[0]
+        date_part = base[:10] if len(base) >= 10 else base
+        slot_part = base[11:] if len(base) > 11 else ""
+        slot_label = {"morning": "朝便", "evening": "夕便"}.get(slot_part, slot_part)
+        results.append({
+            "name": name,
+            "date": date_part,
+            "slot": slot_label,
+            "rel_path": f"diagrams/{name}",
+        })
+    return results
 
 
 def _load_recent_analyses(days: int = 7) -> list[dict]:
@@ -41,13 +65,14 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
     return results
 
 
-def _render(latest: dict | None, history: list[dict]) -> str:
+def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | None = None) -> str:
     now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
+    diagrams = diagrams or []
     if not latest:
         body = '<p class="empty">まだ分析データがありません。初回実行をお待ちください。</p>'
     else:
-        body = _render_latest(latest) + _render_history(history)
+        body = _render_diagrams(diagrams) + _render_latest(latest) + _render_history(history)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -114,6 +139,10 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .history-bar {{ flex: 1; background: var(--accent); border-radius: 4px 4px 0 0; min-width: 24px; position: relative; }}
 .history-bar .label {{ position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }}
 .empty {{ text-align: center; color: var(--muted); padding: 4rem 0; font-size: 1.1rem; }}
+.diagram-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }}
+.diagram-item {{ display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.6rem 0.9rem; background: var(--surface2); border-radius: 8px; text-decoration: none; color: var(--text); font-size: 0.9rem; }}
+.diagram-item:hover {{ background: #475569; }}
+.diagram-item .slot-tag {{ display: inline-block; padding: 1px 8px; border-radius: 4px; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; }}
 </style>
 </head>
 <body>
@@ -256,6 +285,24 @@ def _render_latest(a: dict) -> str:
         parts.append(f'<div class="card"><h2>💡 ビジネスへの示唆</h2>{acts}</div>')
 
     return "\n".join(parts)
+
+
+def _render_diagrams(diagrams: list[dict]) -> str:
+    if not diagrams:
+        return ""
+    items: list[str] = []
+    for d in diagrams:
+        href = escape(d["rel_path"])
+        date = escape(d["date"])
+        slot = escape(d["slot"])
+        items.append(
+            f'<a class="diagram-item" href="{href}" target="_blank" rel="noopener">'
+            f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
+        )
+    return (
+        '<div class="card"><h2>🖼️ 図解版アーカイブ</h2>'
+        f'<div class="diagram-grid">{"".join(items)}</div></div>'
+    )
 
 
 def _render_history(history: list[dict]) -> str:

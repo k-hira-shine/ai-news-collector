@@ -1,5 +1,6 @@
 """Discord Webhook で分析結果を Embed 形式で配信"""
 
+import json
 import logging
 import os
 import time
@@ -42,8 +43,17 @@ class DiscordNotifier:
 
     # ── public ────────────────────────────────────────────────────────
 
-    def notify(self, analysis: dict, stats: dict) -> bool:
-        """分析結果を Discord に配信 (複数メッセージ分割)"""
+    def notify(
+        self,
+        analysis: dict,
+        stats: dict,
+        diagram_png: bytes | None = None,
+        diagram_url: str = "",
+    ) -> bool:
+        """分析結果を Discord に配信 (複数メッセージ分割)
+
+        diagram_png / diagram_url が指定された場合は先頭に図解メッセージを送信する。
+        """
         if not self.webhook_url:
             logger.warning("DISCORD_WEBHOOK_URL not set — skipping notification")
             return False
@@ -51,8 +61,21 @@ class DiscordNotifier:
         if not analysis.get("top_articles"):
             return self._send_simple("⚠️ 本日の収集データがありません。")
 
-        messages = self._build_messages(analysis, stats)
         ok = True
+
+        if diagram_png:
+            diagram_filename = self._diagram_filename(analysis)
+            diagram_embed = self._build_diagram_embed(analysis, diagram_filename, diagram_url)
+            if not self._send_payload_with_file(
+                {"embeds": [diagram_embed]},
+                filename=diagram_filename,
+                file_bytes=diagram_png,
+                content_type="image/png",
+            ):
+                ok = False
+            time.sleep(self.delay)
+
+        messages = self._build_messages(analysis, stats)
         for i, payload in enumerate(messages):
             if i > 0:
                 time.sleep(self.delay)
@@ -67,6 +90,25 @@ class DiscordNotifier:
         return self._send_simple(message)
 
     # ── メッセージ構築 ─────────────────────────────────────────────────
+
+    @staticmethod
+    def _diagram_filename(analysis: dict) -> str:
+        date = (analysis.get("run_time", "") or "")[:10] or today_str()
+        slot = analysis.get("slot", "morning")
+        return f"ai-news-{date}-{slot}.png"
+
+    def _build_diagram_embed(self, analysis: dict, filename: str, url: str) -> dict:
+        slot = SLOT_LABELS.get(analysis.get("slot", ""), "")
+        date = today_str()
+        desc_parts = ["**今日の AI ニュースを 1 枚にまとめました**"]
+        if url:
+            desc_parts.append(f"🔗 [フル版 HTML を見る]({url})")
+        return {
+            "title": f"🤖 AI News 図解版 {date} {slot}",
+            "description": "\n\n".join(desc_parts),
+            "color": COLORS["header"],
+            "image": {"url": f"attachment://{filename}"},
+        }
 
     def _build_messages(self, analysis: dict, stats: dict) -> list[dict]:
         """6000文字制限を考慮して複数メッセージに分割"""
@@ -308,6 +350,31 @@ class DiscordNotifier:
 
     def _send_simple(self, content: str) -> bool:
         return self._send_payload({"content": content})
+
+    @retry(max_retries=2, base_delay=2)
+    def _send_payload_with_file(
+        self,
+        payload: dict,
+        filename: str,
+        file_bytes: bytes,
+        content_type: str = "application/octet-stream",
+    ) -> bool:
+        """multipart/form-data でファイル添付付きメッセージを送信"""
+        files = {"files[0]": (filename, file_bytes, content_type)}
+        data = {"payload_json": json.dumps(payload, ensure_ascii=False)}
+        res = requests.post(self.webhook_url, data=data, files=files, timeout=60)
+        if res.status_code in (200, 204):
+            return True
+        if res.status_code == 429:
+            try:
+                retry_after = res.json().get("retry_after", 1)
+            except Exception:
+                retry_after = 2
+            logger.warning("Discord rate limited (file), waiting %.1fs", retry_after)
+            time.sleep(retry_after)
+            raise Exception(f"Discord rate limited ({retry_after}s)")
+        logger.error("Discord file send failed: %d %s", res.status_code, res.text[:300])
+        return False
 
     @staticmethod
     def _embed_char_count(embed: dict) -> int:
