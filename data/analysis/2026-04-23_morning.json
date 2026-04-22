@@ -1,0 +1,365 @@
+{
+  "trend_summary": "本日のAI業界は、OpenAIとGoogleによる「AIエージェント」開発競争の激化が最大の焦点となりました。OpenAIはChatGPTに業務自動化を行う「Workspace agents」を導入し、Googleはローコードでエージェントを構築できる「Gemini Enterprise Agent Platform」や新型TPUを発表。両社とも、AIを単なる対話ツールから、具体的なタスクを自律的に実行する「エージェント」へと進化させる明確なビジョンを打ち出しています。また、OpenAIがPII（個人識別可能情報）検出用のモデルをオープンソースで公開するなど、大手によるオープンソースへの貢献も注目される一方、Anthropicの強力なAI「Mythos」への不正アクセス報道が、高度なAI技術のセキュリティリスクという課題を改めて浮き彫りにしました。",
+  "trend_evolution": {
+    "since_last": "前回、OpenAIの画像生成モデル「ChatGPT Images 2.0」が業界を席巻しましたが、本日はその流れがAIの自律性、すなわち「AIエージェント」へと完全に移行しました。OpenAIとGoogleが相次いでエンタープライズ向けのエージェント開発プラットフォームを発表し、競争は新たな段階に入っています。前回から続くAnthropic「Mythos」に関する話題は、新たに不正アクセスというセキュリティインシデントに発展し、より深刻な議論を呼んでいます。また、SpaceXによるCursor買収の動きは、AI領域における大型M&Aの新たな火種として浮上しました。",
+    "tracked_topics": [
+      {
+        "topic": "AIエージェント開発競争の激化（OpenAI vs Google）",
+        "status": "RISING",
+        "streak_days": 4,
+        "evolution": "個別のAIエージェントの話題から、両社がエンタープライズ向け開発プラットフォームを公式発表し、本格的な競争局面へと発展した。"
+      },
+      {
+        "topic": "Anthropic「Mythos」のセキュリティリスクと不正アクセス問題",
+        "status": "RISING",
+        "streak_days": 3,
+        "evolution": "モデルの脆弱性発見能力への期待から、限定公開版への不正アクセスという具体的なセキュリティインシデント報道へと深刻化した。"
+      },
+      {
+        "topic": "GoogleによるAIインフラ（TPU）とプラットフォーム強化",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "自律型リサーチエージェントの発表に続き、それを支えるための新世代TPUや開発基盤の発表へと動きが具体化した。"
+      },
+      {
+        "topic": "OpenAIのエンタープライズ向け機能拡張",
+        "status": "SUSTAINED",
+        "streak_days": 4,
+        "evolution": "Codexの機能拡張や研究者向けAIの発表から、具体的な業務自動化エージェント「Workspace agents」の導入へと展開している。"
+      },
+      {
+        "topic": "AIスタートアップ「Cursor」とSpaceXの大型買収交渉",
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "初報から一夜明け、SpaceXの狙いやAI業界のM&A動向に関する分析記事が増え、話題が継続している。"
+      },
+      {
+        "topic": "大手テック企業によるオープンソースモデル公開",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "OpenAIがPII検出用の特殊モデルをApache 2.0ライセンスで公開し、コミュニティで大きな話題となった。"
+      },
+      {
+        "topic": "NVIDIAとGoogle Cloudの戦略的提携",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Googleが自社製TPUを発表する一方で、NVIDIAとも協業を深めるという全方位戦略が明らかになった。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "c71ef79e3212dc88",
+      "rank": 1,
+      "title": "Introducing workspace agents in ChatGPT",
+      "url": "https://openai.com/index/introducing-workspace-agents-in-chatgpt",
+      "summary": "OpenAIが、ChatGPTに複雑なワークフローを自動化する「Workspace agents」を導入。Codexを搭載し、クラウド上で動作することで、チームの業務を安全にスケールさせることが可能になる。",
+      "importance_reason": "AIが対話ツールから自律的な業務実行エージェントへと進化するトレンドを象徴する公式発表。エンタープライズAI市場におけるOpenAIの次の一手を示しており、Googleとの競争軸を明確にした。",
+      "category": "モデル/ツール",
+      "source_label": "rss:OpenAI Blog"
+    },
+    {
+      "id": "89013bd05f8d139d",
+      "rank": 2,
+      "title": "We're launching two specialized TPUs for the agentic era.",
+      "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/tpus-8t-8i-cloud-next/",
+      "summary": "Googleが、AIエージェント時代に対応するため、第8世代となる2種類の特化型TPUを発表。AIの未来を支えるインフラ強化への強いコミットメントを示した。",
+      "importance_reason": "AIエージェントの高度化を支えるハードウェア基盤の重要性を示す発表。NVIDIAへの依存を減らしつつ、AIインフラ市場での競争力を高めるGoogleの戦略的核心。",
+      "category": "モデル/ツール",
+      "source_label": "rss:Google AI Blog"
+    },
+    {
+      "id": "cdb791e266a7f399",
+      "rank": 3,
+      "title": "How SpaceX preempted a $2B fundraise with a $60B buyout offer",
+      "url": "https://techcrunch.com/2026/04/22/how-spacex-preempted-a-2b-fundraise-with-a-60b-buyout-offer/",
+      "summary": "AIコーディングツール「Cursor」が20億ドルの資金調達を目前に、SpaceXから600億ドルでの買収を含む巨額の提携案を受け入れ、交渉を停止した。",
+      "importance_reason": "AIスタートアップに対する評価額の高騰と、異業種の大企業による大型買収の可能性を示す象徴的な事例。AI業界のM&A市場を活性化させる可能性を秘めている。",
+      "category": "資金調達",
+      "source_label": "rss:TechCrunch AI"
+    },
+    {
+      "id": "5a37387ce0e8b8ab",
+      "rank": 4,
+      "title": "NVIDIA and Google Cloud Collaborate to Advance Agentic and Physical AI",
+      "url": "https://blogs.nvidia.com/blog/google-cloud-agentic-physical-ai-factories/",
+      "summary": "NVIDIAとGoogle Cloudが、エージェントAIや物理AIの発展を加速させるための協業を発表。10年以上にわたる協力関係をさらに深化させる。",
+      "importance_reason": "Googleが自社製TPUを推進する一方で、市場のデファクトスタンダードであるNVIDIAとの協力関係も強化するという全方位戦略を示している。AIインフラにおけるエコシステムの重要性を物語る。",
+      "category": "企業動向",
+      "source_label": "rss:NVIDIA AI Blog"
+    },
+    {
+      "id": "3efc4342b784ee3a",
+      "rank": 5,
+      "title": "Introducing OpenAI Privacy Filter",
+      "url": "https://openai.com/index/introducing-openai-privacy-filter",
+      "summary": "OpenAIが、テキスト中の個人識別可能情報（PII）を検出・墨消しするためのオープンウェイトモデル「Privacy Filter」を発表。最先端の精度を誇る。",
+      "importance_reason": "AIの安全性とプライバシー保護という重要課題に対し、業界リーダーであるOpenAIが具体的なソリューションをオープンソースで提供した点で意義深い。企業のデータガバナンスに直接貢献する可能性がある。",
+      "category": "モデル/ツール",
+      "source_label": "rss:OpenAI Blog"
+    },
+    {
+      "id": "cd7f14af9df4ffcb",
+      "rank": 6,
+      "title": "RT @altryne: OpenAI just open sourced a new 1.5B (50m active) model on HuggingFace with Apache 2.0 license!",
+      "url": "https://x.com/huggingface/status/2047009131127591205",
+      "summary": "OpenAIが、個人情報（PII）を検出するための15億パラメータの新しいモデルを、Apache 2.0ライセンスでHugging Face上でオープンソース公開したことが話題となっている。",
+      "importance_reason": "通常はクローズドな開発姿勢で知られるOpenAIが、実用的なモデルを寛容なライセンスで公開したことは、オープンソースコミュニティへの大きなサプライズであり、AIの安全性向上への貢献として高く評価されている。",
+      "category": "モデル/ツール",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "db01c4dc4eb82b8b",
+      "rank": 7,
+      "title": "Anthropic’s most dangerous AI model just fell into the wrong hands",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/916501/anthropic-mythos-unauthorized-users-access-security",
+      "summary": "Anthropicが危険性を警告していた強力なサイバーセキュリティAIモデル「Mythos」に、権限のない小規模なユーザーグループがアクセスしていたことがBloombergの報道で明らかになった。",
+      "importance_reason": "高度なAI技術がもたらす潜在的リスクが、理論上の懸念から現実のセキュリティインシデントへと発展したことを示している。AIのガバナンスとアクセス管理の重要性を業界全体に問いかける事件。",
+      "category": "規制/政策",
+      "source_label": "rss:The Verge AI"
+    },
+    {
+      "id": "ae80157ee9ce3932",
+      "rank": 8,
+      "title": "［速報］Google、AIエージェントをローコードで作れる「Agent Studio」含むAIエージェント基盤「Gemini Enterprise Agent Platform」発表",
+      "url": "https://www.publickey1.jp/blog/26/googleaiagent_studioaigemini_enterprise_agent_platform.html",
+      "summary": "Googleが、ローコードでAIエージェントを開発・運用・管理できる包括的なプラットフォーム「Gemini Enterprise Agent Platform」を発表。OpenAIのWorkspace agentsに対抗する動きと見られる。",
+      "importance_reason": "OpenAIに対抗し、Googleがエンタープライズ向けAIエージェント市場へ本格参入することを示す重要な発表。非技術者でもAIエージェントを構築できる環境を提供することで、企業へのAI導入を加速させる狙いがある。",
+      "category": "モデル/ツール",
+      "source_label": "rss:Publickey"
+    },
+    {
+      "id": "8f555fe918e1ef56",
+      "rank": 9,
+      "title": "Speeding up agentic workflows with WebSockets in the Responses API",
+      "url": "https://openai.com/index/speeding-up-agentic-workflows-with-websockets",
+      "summary": "OpenAIが、エージェントのワークフローを高速化するため、WebSocketsをResponses APIに導入したことを発表。APIのオーバーヘッドを削減し、モデルのレイテンシを改善する。",
+      "importance_reason": "AIエージェントの実用化には、応答速度が極めて重要。OpenAIが技術的な詳細を公開し、パフォーマンス向上に取り組んでいることを示すもので、開発者コミュニティにとって価値ある情報。",
+      "category": "モデル/ツール",
+      "source_label": "rss:OpenAI Blog"
+    },
+    {
+      "id": "048974ccb8fce123",
+      "rank": 10,
+      "title": "OpenAI now lets teams make custom bots that can do work on their own",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/917065/openai-chatgpt-workspace-agents-custom-teams-bots",
+      "summary": "OpenAIは、法人向けプランのユーザーが、自律的に業務タスクを実行できるカスタムボット「Workspace agents」を作成できる機能を公開した。Webから製品フィードバックを収集しSlackで報告するなどの利用例が挙げられている。",
+      "importance_reason": "OpenAIの公式発表を補完し、具体的なユースケースを交えて解説している記事。AIエージェントがどのように実業務に組み込まれていくかを理解する上で重要。",
+      "category": "モデル/ツール",
+      "source_label": "rss:The Verge AI"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "モデル/ツール",
+      "summary": "本日の最重要テーマは「AIエージェント」で、OpenAIが「Workspace agents」を、Googleが「Gemini Enterprise Agent Platform」をそれぞれ発表し、真っ向から激突。インフラ面ではGoogleが新世代TPUを発表し、エージェント時代に向けた基盤強化を進めている。また、OpenAIがPII検出モデルをオープンソースで公開し、コミュニティに貢献する動きも見られた。",
+      "count": 27,
+      "key_articles": [
+        {
+          "title": "Introducing workspace agents in ChatGPT",
+          "url": "https://openai.com/index/introducing-workspace-agents-in-chatgpt"
+        },
+        {
+          "title": "We're launching two specialized TPUs for the agentic era.",
+          "url": "https://blog.google/innovation-and-ai/infrastructure-and-cloud/google-cloud/tpus-8t-8i-cloud-next/"
+        },
+        {
+          "title": "Introducing OpenAI Privacy Filter",
+          "url": "https://openai.com/index/introducing-openai-privacy-filter"
+        },
+        {
+          "title": "［速報］Google、AIエージェントをローコードで作れる「Agent Studio」含むAIエージェント基盤「Gemini Enterprise Agent Platform」発表",
+          "url": "https://www.publickey1.jp/blog/26/googleaiagent_studioaigemini_enterprise_agent_platform.html"
+        },
+        {
+          "title": "RT @altryne: OpenAI just open sourced a new 1.5B (50m active) model on HuggingFace with Apache 2.0 license!",
+          "url": "https://x.com/huggingface/status/2047009131127591205"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "NVIDIAとGoogle Cloudの協業深化が発表され、AIインフラにおけるエコシステム構築の重要性が示された。また、SpaceXによるAIコーディングツール「Cursor」への巨額買収提案は、AI業界のM&A市場の活況を予感させる。Google DeepMindは企業のAI導入率が低い現状を指摘し、コンサルティングファームとの連携強化を発表するなど、AIの実用化に向けた動きも活発化している。",
+      "count": 18,
+      "key_articles": [
+        {
+          "title": "NVIDIA and Google Cloud Collaborate to Advance Agentic and Physical AI",
+          "url": "https://blogs.nvidia.com/blog/google-cloud-agentic-physical-ai-factories/"
+        },
+        {
+          "title": "Google Cloud launches two new AI chips to compete with Nvidia",
+          "url": "https://techcrunch.com/2026/04/22/google-cloud-next-new-tpu-ai-chips-compete-with-nvidia/"
+        },
+        {
+          "title": "イーロン・マスク氏率いるSpaceX、AIエディタ「Cursor」の買収権を獲得　AIモデル開発で協力も",
+          "url": "https://www.itmedia.co.jp/aiplus/articles/2604/22/news105.html"
+        },
+        {
+          "title": "Exclusive: Google deepens Thinking Machines Lab ties with new multibillion-dollar deal",
+          "url": "https://techcrunch.com/2026/04/22/exclusive-google-deepens-thinking-machines-lab-ties-with-new-multi-billion-dollar-deal/"
+        },
+        {
+          "title": "Only 25% of organizations have moved AI into production at scale. We’re working to change that. 🛠️",
+          "url": "https://x.com/GoogleDeepMind/status/2046927845851627657"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "Anthropicの高性能AI「Mythos」への不正アクセスが報じられ、AIの安全な管理とガバナンスが喫緊の課題として浮上。複数のメディアがこのインシデントをトップニュースとして取り上げ、深刻な懸念を表明している。また、エリザベス・ウォーレン上院議員がAIの過熱が金融危機を引き起こす可能性を警告するなど、AIに対する経済的・社会的なリスクへの警鐘も鳴らされている。",
+      "count": 7,
+      "key_articles": [
+        {
+          "title": "Anthropic’s most dangerous AI model just fell into the wrong hands",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/916501/anthropic-mythos-unauthorized-users-access-security"
+        },
+        {
+          "title": "AI failure could trigger the next financial crisis, warns Elizabeth Warren",
+          "url": "https://www.theverge.com/policy/917026/ai-economy-bubble-elizabeth-warren"
+        },
+        {
+          "title": "限定公開のはずの「Mythos」に不正ユーザーがアクセスか　セキュリティ以外の目的で利用と海外報道",
+          "url": "https://www.itmedia.co.jp/aiplus/articles/2604/22/news141.html"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "GoogleがChromeやGoogle MeetにAI機能を統合し、業務効率化を図る動きが目立った。ChromeではWeb上のタスクを自動化する「auto browse」機能が、Meetでは対面会議の議事録をAIが作成する機能が発表された。企業の生産性向上に直結する実用的な応用例が増加している。",
+      "count": 16,
+      "key_articles": [
+        {
+          "title": "Google turns Chrome into an AI co-worker for the workplace",
+          "url": "https://techcrunch.com/2026/04/22/google-turns-chrome-into-an-ai-coworker-for-the-workplace/"
+        },
+        {
+          "title": "Google Meet will take AI notes for in-person meetings too",
+          "url": "https://www.theverge.com/tech/916779/google-meet-ai-notetaker-in-person-meetings"
+        },
+        {
+          "title": "AI Overviews are coming to your Gmail at work",
+          "url": "https://techcrunch.com/2026/04/22/ai-overviews-are-coming-to-your-gmail-at-work/"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "SpaceXがAIコーディングツール「Cursor」に対し、20億ドルの資金調達を中止させ、600億ドル規模の買収交渉に持ち込んだというニュースが市場に衝撃を与えた。これは、AI分野におけるスタートアップの評価額が非常に高くなっていること、そして巨大資本が有望な技術を青田買いする動きが加速していることを示している。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "How SpaceX preempted a $2B fundraise with a $60B buyout offer",
+          "url": "https://techcrunch.com/2026/04/22/how-spacex-preempted-a-2b-fundraise-with-a-60b-buyout-offer/"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "小規模なモデルが特定のタスクにおいて大規模モデルを凌駕する性能を示す研究成果が報告されており、モデルの効率化と特化が今後の重要な研究テーマであることを示唆している。また、AIが人間を騙す能力に関する研究も報告され、AIの社会的スキルがもたらす危険性について警鐘を鳴らしている。",
+      "count": 4,
+      "key_articles": [
+        {
+          "title": "RT @j_golebiowski: A 1.7B parameter model beats GLM-5 (744B) on Schema Guided Dialogue — even when the training data is corrupted.",
+          "url": "https://x.com/huggingface/status/2047009506198999378"
+        },
+        {
+          "title": "5 AI Models Tried to Scam Me. Some of Them Were Scary Good",
+          "url": "https://www.wired.com/story/ai-model-phishing-attack-cybersecurity/"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "自社の反復的な業務プロセスを洗い出し、OpenAIの「Workspace agents」やGoogleの「Gemini Enterprise Agent Platform」のようなAIエージェントによる自動化の可能性を検討する。",
+    "AIを活用したシステムやサービスにおける個人情報（PII）の取り扱い方針を再点検し、OpenAIが公開した「Privacy Filter」のようなツールの導入を検討する。",
+    "AIエージェントの導入に伴うセキュリティリスクを評価し、アクセス管理や異常検知の仕組みを強化する。特に、Anthropic「Mythos」の事例を教訓として、内部からの不正利用や意図しない情報漏洩のリスクに備える。",
+    "AIインフラの選定において、Google TPUのような特定ベンダーの専用チップと、NVIDIA GPUのような汎用チップのメリット・デメリットを比較検討し、自社のワークロードに最適な構成を再評価する。",
+    "AI開発者やIT担当者向けに、ローコード/ノーコードのAIエージェント構築ツールのトレーニング機会を提供し、全社的なAI活用リテラシーの向上と業務効率化を推進する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "OpenAI、PII検出モデルをオープンソース公開",
+      "description": "OpenAIが個人識別可能情報（PII）を検出するモデルをApache 2.0ライセンスでHugging Faceに公開したことが、技術コミュニティから大きな賞賛を集めている。普段はクローズドな姿勢が目立つOpenAIによる寛容なライセンスでの実用的なモデル公開は「驚き」と「歓迎」をもって受け止められた。AIの安全性とプライバシー保護への貢献として、ポジティブな反応が大多数を占めている。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@huggingface",
+          "text": "RT @scaling01: OpenAI just released a new open-source model\n\nit's \"a bidirectional token-classification model for personally identifiable i…",
+          "url": "https://x.com/huggingface/status/2047013292925685954",
+          "likes": 0,
+          "retweets": 121
+        },
+        {
+          "author": "x:@huggingface",
+          "text": "RT @altryne: OpenAI just open sourced a new 1.5B (50m active) model on HuggingFace with Apache 2.0 license!\n\nIt's not a new LLM, this one i…",
+          "url": "https://x.com/huggingface/status/2047009131127591205",
+          "likes": 0,
+          "retweets": 66
+        }
+      ]
+    },
+    {
+      "topic": "Google DeepMind、企業のAI導入実態を指摘",
+      "description": "Google DeepMind公式アカウントが「AIを大規模に本番導入している組織は25%に過ぎない」というデータを引用し、大手コンサルティングファームとの連携強化を発表した。この投稿は、AIのポテンシャルと現実のビジネス活用の間にあるギャップを的確に指摘しているとして、多くのビジネス関係者から共感を得ている。AIの社会実装を加速させるための具体的な取り組みとして評価する声が多い。",
+      "buzz_level": "low",
+      "sentiment": "neutral",
+      "representative_tweets": [
+        {
+          "author": "x:@GoogleDeepMind",
+          "text": "Only 25% of organizations have moved AI into production at scale. We’re working to change that. 🛠️\n\n@Accenture, @BainandCompany, @BCG, @Deloitte, and @McKinsey are combining our research with their ex",
+          "url": "https://x.com/GoogleDeepMind/status/2046927845851627657",
+          "likes": 228,
+          "retweets": 22
+        }
+      ]
+    },
+    {
+      "topic": "小規模モデルの目覚ましい性能向上",
+      "description": "Hugging Face経由で、様々な小規模・中規模モデルが特定のタスクで驚異的な性能を発揮する事例が多数共有されている。「Qwen3.6-27B」の画像生成能力や、1.7Bモデルが744Bモデルを上回る対話性能など、モデルの効率化と特化が進んでいることを示す投稿が活発だ。これらの報告は、ローカル環境でのAI活用や、特定用途でのコスト効率の高いAIソリューションへの期待感を高めている。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@huggingface",
+          "text": "RT @simonw: The new Qwen3.6-27B just gave me definitely the best pelican riding a bicycle I've had from a 16.8GB model file! https://t.co/h…",
+          "url": "https://x.com/huggingface/status/2047063878803071412",
+          "likes": 0,
+          "retweets": 18
+        },
+        {
+          "author": "x:@huggingface",
+          "text": "RT @j_golebiowski: A 1.7B parameter model beats GLM-5 (744B) on Schema Guided Dialogue — even when the training data is corrupted.\n\nThat's…",
+          "url": "https://x.com/huggingface/status/2047009506198999378",
+          "likes": 0,
+          "retweets": 19
+        },
+        {
+          "author": "x:@huggingface",
+          "text": "RT @LottoLabs: Absolute madmen shipping this performance in 27b \n \nActually changes the landscape of local ai \nhttps://t.co/FEBP8fD7l5",
+          "url": "https://x.com/huggingface/status/2047013404188070041",
+          "likes": 0,
+          "retweets": 24
+        }
+      ]
+    },
+    {
+      "topic": "AIの高速化技術（DFlash）への注目",
+      "description": "Moonshot AIの「Kimi K2.6」モデルと高速化技術「DFlash」を組み合わせることで、AMDのMI300X上で毎秒508トークンという驚異的な処理速度を達成したという報告が注目を集めている。これはベースラインの5.6倍という大幅なスループット向上であり、大規模言語モデルの推論コストを劇的に下げる可能性を秘めている。ハードウェアとソフトウェア両面からの最適化が、AIの実用化を加速させる鍵であることを示している。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@huggingface",
+          "text": "RT @HotAisle: Kimi K2.6 + DFlash: 508 tok/s on 8x MI300X\n\n5.6x throughput improvement over baseline autoregressive serving\n\n90 tok/s → 508…",
+          "url": "https://x.com/huggingface/status/2047009299533066668",
+          "likes": 0,
+          "retweets": 31
+        }
+      ]
+    }
+  ],
+  "run_time": "2026-04-22T22:04:06.304053+00:00",
+  "slot": "morning",
+  "item_count": 145
+}
