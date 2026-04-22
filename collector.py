@@ -141,7 +141,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         for query in search_queries:
             try:
                 run_input: dict = {
-                    "scrapeMode": "x-tweet-scraper",
+                    "scrapeMode": "x-search-scraper",
                     "searchQueries": [query],
                     "sort": "Top",
                     "maxResults": x_cfg.get("max_results_per_query", 40),
