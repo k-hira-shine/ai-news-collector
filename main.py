@@ -131,6 +131,8 @@ def main() -> None:
     if analysis.get("top_articles"):
         notifier.notify(analysis, stats, diagram_png=diagram_png)
     else:
+        if anomalies:
+            notifier.send_alerts(anomalies)
         notifier.send_status("⚠️ 本日の AI ニュースは 0 件でした。")
 
     # ── Step 4: Dashboard ─────────────────────────────────────────────

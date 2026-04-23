@@ -88,6 +88,16 @@ class DiscordNotifier:
             return False
         return self._send_simple(message)
 
+    def send_alerts(self, anomalies: list[dict]) -> bool:
+        """健全性アラートのみを Embed で送信（0件実行時など notify() を通らない経路用）"""
+        if not self.webhook_url or not anomalies:
+            return False
+        from alerts import build_alert_embed
+        embed = build_alert_embed(anomalies)
+        if not embed:
+            return False
+        return self._send_payload({"embeds": [embed]})
+
     # ── メッセージ構築 ─────────────────────────────────────────────────
 
     @staticmethod
@@ -314,11 +324,14 @@ class DiscordNotifier:
             parts.append(f"公式ソース: {stats['official_count']}件")
         if stats.get("must_follow_count"):
             parts.append(f"必須アカウント: {stats['must_follow_count']}件")
-        if stats.get("apify_cost_usd"):
+        apify_runs = stats.get("apify_runs", 0)
+        apify_cost = stats.get("apify_cost_usd", 0)
+        if apify_runs or apify_cost:
             budget = stats.get("apify_monthly_budget_usd", 29.0)
             cycle_total = stats.get("apify_cycle_total_usd", 0)
             remaining = max(0, budget - cycle_total)
-            apify_line = f"💰 Apify: ${stats['apify_cost_usd']:.4f} ({stats.get('apify_runs', 0)}回実行)"
+            cost_str = f"${apify_cost:.4f}" if apify_cost else "測定不可（反映ラグ）"
+            apify_line = f"💰 Apify: {cost_str} ({apify_runs}回実行)"
             if cycle_total:
                 apify_line += f" | 通算 ${cycle_total:.2f} / ${budget:.0f} (残り ${remaining:.2f})"
             parts.append(apify_line)

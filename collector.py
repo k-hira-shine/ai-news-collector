@@ -15,7 +15,7 @@ from utils import data_dir, hash_url, now_iso, parse_datetime, retry, today_str
 
 logger = logging.getLogger("ai-news.collector")
 
-ssl._create_default_https_context = ssl._create_unverified_context
+_UNVERIFIED_SSL_CONTEXT = ssl._create_unverified_context()
 
 
 # ━━━━━━━━━━━━━━━━ X/Twitter (Apify) ━━━━━━━━━━━━━━━━
@@ -34,7 +34,8 @@ def _get_apify_usage(token: str) -> dict | None:
             "total": data.get("totalUsageCreditsUsdAfterVolumeDiscount", 0),
             "cycle_end": data.get("usageCycle", {}).get("endAt", ""),
         }
-    except Exception:
+    except Exception as e:
+        logger.warning("Apify usage API failed: %s", e)
         return None
 
 
@@ -189,18 +190,30 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
             meta["apify_runs"] += 1
-            mf_count = 0
-            for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
-                item = _normalize_tweet(tweet)
-                author_lower = item["author"].lower()
-                acct_cfg = priority_map.get(author_lower, {})
-                item["is_must_follow"] = True
-                item["is_official"] = acct_cfg.get("priority") == "critical"
-                item["priority"] = acct_cfg.get("priority", "normal")
-                items.append(item)
-                mf_count += 1
-            meta["must_follow_items"] = mf_count
-            logger.info("X must-follow batch (%d profiles): %d tweets", len(handles), mf_count)
+            run_status = (run or {}).get("status", "")
+            run_id = (run or {}).get("id", "")
+            if run_status and run_status != "SUCCEEDED":
+                meta["must_follow_error"] = True
+                logger.error("X must-follow batch run status=%s", run_status)
+                if run_id and _run_log_has_auth_error(client, run_id):
+                    meta["auth_error_count"] += 1
+                    logger.warning("X must-follow: auth error detected in run log")
+            else:
+                mf_count = 0
+                for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+                    item = _normalize_tweet(tweet)
+                    author_lower = item["author"].lower()
+                    acct_cfg = priority_map.get(author_lower, {})
+                    item["is_must_follow"] = True
+                    item["is_official"] = acct_cfg.get("priority") == "critical"
+                    item["priority"] = acct_cfg.get("priority", "normal")
+                    items.append(item)
+                    mf_count += 1
+                meta["must_follow_items"] = mf_count
+                logger.info("X must-follow batch (%d profiles): %d tweets", len(handles), mf_count)
+                if mf_count == 0 and run_id and _run_log_has_auth_error(client, run_id):
+                    meta["auth_error_count"] += 1
+                    logger.warning("X must-follow: 0 results + auth error in run log")
         except Exception as e:
             meta["must_follow_error"] = True
             logger.error("X must-follow batch failed: %s", e)
@@ -297,8 +310,19 @@ def collect_rss(config: dict, runtime_meta: dict | None = None) -> list[dict]:
 def _fetch_rss_feed(feed_info: dict, cutoff: datetime) -> list[dict]:
     url = feed_info["url"]
     req = urllib.request.Request(url, headers={"User-Agent": "AI-News-Collector/1.0"})
-    with urllib.request.urlopen(req, timeout=15) as resp:
-        content = resp.read()
+    try:
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            content = resp.read()
+    except (ssl.SSLError, urllib.error.URLError) as e:
+        is_ssl = isinstance(e, ssl.SSLError) or "SSL" in str(getattr(e, "reason", ""))
+        if not is_ssl:
+            raise
+        logger.warning(
+            "RSS '%s' SSL verify failed, retrying with unverified context: %s",
+            feed_info.get("name", url), e,
+        )
+        with urllib.request.urlopen(req, timeout=15, context=_UNVERIFIED_SSL_CONTEXT) as resp:
+            content = resp.read()
 
     parsed = feedparser.parse(content)
     is_official = feed_info.get("_group") == "official"
