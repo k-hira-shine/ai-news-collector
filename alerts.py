@@ -144,6 +144,35 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
                 "fallback モデルに切替。分析品質が通常より低い可能性あり。"
             ),
         })
+    if alerts_cfg.get("analysis_json_save_alert", True) and not analysis_meta.get("save_ok", True):
+        err = (analysis_meta.get("save_error") or "")[:200]
+        alerts.append({
+            "severity": "critical",
+            "title": "分析 JSON の保存に失敗",
+            "detail": f"data/analysis/ への書き込み失敗。ディスク or パーミッションを確認。\n{err}",
+        })
+
+    # ── 前回 Discord 配信（data/runtime/discord_state.json から）────────
+    if alerts_cfg.get("discord_prev_run_alert", True):
+        prev = (stats.get("discord_meta") or {}).get("prev_run") or {}
+        if (
+            prev
+            and not prev.get("skipped")
+            and int(prev.get("total", 0) or 0) > 0
+            and not prev.get("ok", True)
+        ):
+            fail = prev.get("failed_parts") or []
+            part = ", ".join(str(p) for p in fail[:8])
+            if len(fail) > 8:
+                part += "…"
+            alerts.append({
+                "severity": "warning",
+                "title": "前回の Discord 配信に失敗箇所あり",
+                "detail": (
+                    f"{len(fail)} 区画未送信: {part}\n"
+                    "Webhook / Discord 障害、または 429/5xx。Actions ログの stderr も参照。"
+                ),
+            })
 
     # ── Diagram 生成関連 ─────────────────────────────────────────────
     diagram_meta = stats.get("diagram_meta") or {}

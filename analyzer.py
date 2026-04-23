@@ -194,8 +194,7 @@ class NewsAnalyzer:
         analysis["slot"] = time_slot()
         analysis["item_count"] = len(items)
         analysis["fallback_used_stages"] = list(self.fallback_used_stages)
-
-        self._save_analysis(analysis)
+        analysis["analysis_save"] = self._try_save_analysis(analysis)
         return analysis
 
     # ── Stage 1 ───────────────────────────────────────────────────────
@@ -562,6 +561,17 @@ AI/ML と無関係な記事はスキップしてください。
             except (json.JSONDecodeError, OSError):
                 continue
         return results
+
+    def _try_save_analysis(self, result: dict) -> dict:
+        """data/analysis/*.json への永続化。失敗しても分析結果は呼び出し元に返す。"""
+        out: dict = {"ok": False, "path": "", "error": ""}
+        try:
+            out["path"] = self._save_analysis(result)
+            out["ok"] = True
+        except OSError as e:
+            out["error"] = str(e)[:300]
+            logger.error("Analysis save failed: %s", e)
+        return out
 
     def _save_analysis(self, result: dict) -> str:
         slot = result.get("slot", time_slot())

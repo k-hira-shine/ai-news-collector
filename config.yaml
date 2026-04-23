@@ -54,6 +54,8 @@ alerts:
   enabled: true
   rss_failure_rate_threshold: 0.3      # この割合以上のフィードが失敗で警告
   youtube_zero_results_alert: true     # キーワード設定ありで raw 収集 0 なら警告
+  analysis_json_save_alert: true        # data/analysis への JSON 保存失敗で critical
+  discord_prev_run_alert: true         # 前回保存した Discord 配信ログに失敗があれば warning
 
 rss_feeds:
   official:

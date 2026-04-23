@@ -85,9 +85,13 @@ def main() -> None:
 
     analyzer = NewsAnalyzer(config)
     analysis = analyzer.analyze(items)
+    a_save = analysis.get("analysis_save") or {}
     stats["analysis_meta"] = {
         "top_articles_count": len(analysis.get("top_articles") or []),
         "fallback_used_stages": list(analysis.get("fallback_used_stages") or []),
+        "save_ok": a_save.get("ok", True),
+        "save_path": a_save.get("path", ""),
+        "save_error": a_save.get("error", ""),
     }
 
     # ── Step 2.5: Diagram (HTML + PNG) ────────────────────────────────
@@ -132,8 +136,10 @@ def main() -> None:
             diagram_png = None
             diagram_meta["error"] = str(e)[:200]
     stats["diagram_meta"] = diagram_meta
+    from discord_state import load_discord_state, merge_delivery_results, save_discord_state
+    stats["discord_meta"] = {"prev_run": load_discord_state()}
 
-    # diagram_meta が埋まった後にもう一度検知（PNG 生成失敗を拾う）
+    # diagram_meta / 前回 Discord 配信ログ が揃った後に再検知
     anomalies = detect_anomalies(stats, config)
     stats["anomalies"] = anomalies
     for a in anomalies:
@@ -150,12 +156,15 @@ def main() -> None:
         max_items_per_category=discord_cfg.get("max_items_per_category", 5),
     )
 
+    delivery_parts: list[dict] = []
     if analysis.get("top_articles"):
-        notifier.notify(analysis, stats, diagram_png=diagram_png)
+        delivery_parts.append(notifier.notify(analysis, stats, diagram_png=diagram_png))
     else:
         if anomalies:
-            notifier.send_alerts(anomalies)
-        notifier.send_status("⚠️ 本日の AI ニュースは 0 件でした。")
+            delivery_parts.append(notifier.send_alerts(anomalies))
+        delivery_parts.append(
+            notifier.send_status("⚠️ 本日の AI ニュースは 0 件でした。")
+        )
 
     # ── Step 4: Dashboard ─────────────────────────────────────────────
     try:
@@ -175,7 +184,21 @@ def main() -> None:
         status_msg += f"\n⚠️ 健全性アラート {len(anomalies)} 件（上の Embed を確認）"
     elif cookies_may_be_expired:
         status_msg += "\n⚠️ X_COOKIES が期限切れの可能性があります。検索結果が 0 件でした。GitHub Secrets を更新してください。"
-    notifier.send_status(status_msg)
+    d_final = notifier.send_status(status_msg)
+    delivery_parts.append(d_final)
+    d_agg = merge_delivery_results(*delivery_parts)
+    if (not d_agg.get("ok")) and (not d_agg.get("skipped")) and d_agg.get("total", 0) > 0:
+        fail = d_agg.get("failed_parts") or []
+        tot = d_agg.get("total", 0)
+        short = ", ".join(fail[:6])
+        if len(fail) > 6:
+            short += "…"
+        delivery_parts.append(
+            notifier.send_status(
+                f"⚠️ Discord 配信の失敗: {len(fail)}/{tot} 区画未送信（{short}）"
+            )
+        )
+    save_discord_state(merge_delivery_results(*delivery_parts))
 
 
 if __name__ == "__main__":

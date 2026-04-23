@@ -18,6 +18,14 @@ def _stats(**overrides) -> dict:
         },
         "rss_meta": {"feeds_configured": 10, "feed_error_count": 0, "raw_total": 100},
         "youtube_meta": {"keywords_configured": 5, "raw_total": 40},
+        "analysis_meta": {
+            "top_articles_count": 5,
+            "fallback_used_stages": [],
+            "save_ok": True,
+            "save_path": "",
+            "save_error": "",
+        },
+        "discord_meta": {"prev_run": {}},
         "apify_runs": 2,
         "youtube_count": 40,
         "apify_cycle_total_usd": 5.0,
@@ -25,7 +33,7 @@ def _stats(**overrides) -> dict:
         "apify_warning_threshold": 0.8,
     }
     for k, v in overrides.items():
-        if k in ("x_meta", "rss_meta", "youtube_meta") and isinstance(v, dict):
+        if k in ("x_meta", "rss_meta", "youtube_meta", "analysis_meta", "discord_meta") and isinstance(v, dict):
             base[k] = {**base[k], **v}
         else:
             base[k] = v
@@ -33,7 +41,15 @@ def _stats(**overrides) -> dict:
 
 
 def _cfg(**overrides) -> dict:
-    base = {"alerts": {"enabled": True, "rss_failure_rate_threshold": 0.3, "youtube_zero_results_alert": True}}
+    base = {
+        "alerts": {
+            "enabled": True,
+            "rss_failure_rate_threshold": 0.3,
+            "youtube_zero_results_alert": True,
+            "analysis_json_save_alert": True,
+            "discord_prev_run_alert": True,
+        }
+    }
     base["alerts"].update(overrides)
     return base
 
@@ -95,6 +111,42 @@ class DetectAnomaliesTests(unittest.TestCase):
             _stats(x_meta={"auth_error_count": 5}), _cfg(enabled=False)
         )
         self.assertEqual(alerts, [])
+
+    def test_analysis_save_failure_is_critical(self) -> None:
+        alerts = detect_anomalies(
+            _stats(analysis_meta={"save_ok": False, "save_error": "disk full"}),
+            _cfg(),
+        )
+        self.assertTrue(any("分析 JSON" in a["title"] for a in alerts))
+        self.assertEqual(
+            [a for a in alerts if "分析 JSON" in a["title"]][0]["severity"],
+            "critical",
+        )
+
+    def test_discord_prev_run_failure_is_warning(self) -> None:
+        alerts = detect_anomalies(
+            _stats(
+                discord_meta={
+                    "prev_run": {
+                        "ok": False,
+                        "skipped": False,
+                        "total": 2,
+                        "failed_parts": ["msg0", "send_status"],
+                    }
+                }
+            ),
+            _cfg(),
+        )
+        self.assertTrue(any("前回の Discord" in a["title"] for a in alerts))
+
+    def test_discord_prev_skipped_no_alert(self) -> None:
+        alerts = detect_anomalies(
+            _stats(
+                discord_meta={"prev_run": {"ok": False, "skipped": True, "total": 0}}
+            ),
+            _cfg(),
+        )
+        self.assertFalse(any("前回の Discord" in a["title"] for a in alerts))
 
     def test_gemini_fallback_is_warning(self) -> None:
         alerts = detect_anomalies(

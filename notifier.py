@@ -11,6 +11,41 @@ from utils import retry, today_str
 
 logger = logging.getLogger("ai-news.notifier")
 
+
+def _delivery(
+    *,
+    failed_parts: list[str] | None = None,
+    total: int = 0,
+    succeeded: int | None = None,
+    skipped: bool = False,
+    reason: str = "",
+) -> dict:
+    """Discord への 1 バッチ（notify 全体 or send_status 1 回）の結果"""
+    fp = list(failed_parts or [])
+    if skipped:
+        return {
+            "ok": False,
+            "skipped": True,
+            "reason": reason,
+            "total": 0,
+            "succeeded": 0,
+            "failed_parts": [],
+        }
+    tot = int(total)
+    if succeeded is None:
+        suc = tot - len(fp)
+    else:
+        suc = int(succeeded)
+    return {
+        "ok": len(fp) == 0,
+        "skipped": False,
+        "reason": reason,
+        "total": tot,
+        "succeeded": max(0, suc),
+        "failed_parts": fp,
+    }
+
+
 COLORS = {
     "header": 0x5865F2,  # blurple
     "top": 0xED4245,  # red
@@ -48,17 +83,23 @@ class DiscordNotifier:
         analysis: dict,
         stats: dict,
         diagram_png: bytes | None = None,
-    ) -> bool:
+    ) -> dict:
         """分析結果を Discord に配信 (複数メッセージ分割)
 
         diagram_png が指定された場合は先頭に図解メッセージを送信する。
+        戻り値: _delivery 形式の dict
         """
         if not self.webhook_url:
             logger.warning("DISCORD_WEBHOOK_URL not set — skipping notification")
-            return False
+            return _delivery(skipped=True, reason="no_webhook")
 
         if not analysis.get("top_articles"):
-            return self._send_simple("⚠️ 本日の収集データがありません。")
+            ok = self._send_simple("⚠️ 本日の収集データがありません。")
+            return _delivery(
+                failed_parts=[] if ok else ["no_articles_guard"],
+                total=1,
+                succeeded=1 if ok else 0,
+            )
 
         results: list[tuple[str, bool]] = []
 
@@ -86,23 +127,39 @@ class DiscordNotifier:
                 "Discord notify partial failure: %d/%d dropped (%s)",
                 len(failed), len(results), ",".join(failed),
             )
-        return not failed
+        return _delivery(
+            failed_parts=failed,
+            total=len(results),
+            succeeded=len(results) - len(failed),
+        )
 
-    def send_status(self, message: str) -> bool:
+    def send_status(self, message: str) -> dict:
         """ステータス通知 (プレーンテキスト)"""
         if not self.webhook_url:
-            return False
-        return self._send_simple(message)
+            return _delivery(skipped=True, reason="no_webhook")
+        ok = self._send_simple(message)
+        return _delivery(
+            failed_parts=[] if ok else ["send_status"],
+            total=1,
+            succeeded=1 if ok else 0,
+        )
 
-    def send_alerts(self, anomalies: list[dict]) -> bool:
+    def send_alerts(self, anomalies: list[dict]) -> dict:
         """健全性アラートのみを Embed で送信（0件実行時など notify() を通らない経路用）"""
-        if not self.webhook_url or not anomalies:
-            return False
+        if not self.webhook_url:
+            return _delivery(skipped=True, reason="no_webhook")
+        if not anomalies:
+            return _delivery(skipped=True, reason="no_anomalies")
         from alerts import build_alert_embed
         embed = build_alert_embed(anomalies)
         if not embed:
-            return False
-        return self._send_payload({"embeds": [embed]})
+            return _delivery(failed_parts=["send_alerts_embed"], total=1, succeeded=0)
+        ok = self._send_payload({"embeds": [embed]})
+        return _delivery(
+            failed_parts=[] if ok else ["send_alerts"],
+            total=1,
+            succeeded=1 if ok else 0,
+        )
 
     # ── メッセージ構築 ─────────────────────────────────────────────────
 
