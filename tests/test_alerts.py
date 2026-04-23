@@ -96,6 +96,31 @@ class DetectAnomaliesTests(unittest.TestCase):
         )
         self.assertEqual(alerts, [])
 
+    def test_diagram_png_failure_is_warning(self) -> None:
+        alerts = detect_anomalies(
+            _stats(diagram_meta={"attempted": True, "png_generated": False, "error": "Playwright timeout"}),
+            _cfg(),
+        )
+        matched = [a for a in alerts if "図解" in a["title"]]
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0]["severity"], "warning")
+        self.assertIn("Playwright timeout", matched[0]["detail"])
+
+    def test_diagram_not_attempted_no_alert(self) -> None:
+        # top_articles が空で diagram ブロックをスキップしたケース
+        alerts = detect_anomalies(
+            _stats(diagram_meta={"attempted": False, "png_generated": False}),
+            _cfg(),
+        )
+        self.assertFalse(any("図解" in a["title"] for a in alerts))
+
+    def test_diagram_png_success_no_alert(self) -> None:
+        alerts = detect_anomalies(
+            _stats(diagram_meta={"attempted": True, "png_generated": True}),
+            _cfg(),
+        )
+        self.assertFalse(any("図解" in a["title"] for a in alerts))
+
     def test_expected_runs_search_batched(self) -> None:
         # 検索バッチ化後は search+timeline=2 runs 期待
         alerts = detect_anomalies(_stats(apify_runs=1), _cfg())

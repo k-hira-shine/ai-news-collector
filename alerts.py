@@ -132,6 +132,18 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
                 "detail": f"{yt_configured} キーワードで収集 0 件。API Quota 切れ or キー失効の可能性。",
             })
 
+    # ── Diagram 生成関連 ─────────────────────────────────────────────
+    diagram_meta = stats.get("diagram_meta") or {}
+    if diagram_meta.get("attempted") and not diagram_meta.get("png_generated"):
+        detail = "PNG 生成に失敗（テキストのみ配信）。Playwright/Chromium の状態を確認。"
+        if diagram_meta.get("error"):
+            detail += f"\nError: {diagram_meta['error']}"
+        alerts.append({
+            "severity": "warning",
+            "title": "図解 PNG 生成失敗",
+            "detail": detail,
+        })
+
     # ── コスト関連（既存の budget 警告とは別に、急増を検知）────────────
     cycle_total = stats.get("apify_cycle_total_usd", 0)
     budget = stats.get("apify_monthly_budget_usd", 29.0)

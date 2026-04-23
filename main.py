@@ -89,7 +89,15 @@ def main() -> None:
     # ── Step 2.5: Diagram (HTML + PNG) ────────────────────────────────
     diagram_png: bytes | None = None
     diagram_cfg = config.get("diagram", {})
+    diagram_meta = {
+        "enabled": bool(diagram_cfg.get("enabled", True)),
+        "attempted": False,
+        "html_saved": False,
+        "png_generated": False,
+        "error": "",
+    }
     if analysis.get("top_articles") and diagram_cfg.get("enabled", True):
+        diagram_meta["attempted"] = True
         try:
             from diagram import DiagramBuilder
 
@@ -112,10 +120,20 @@ def main() -> None:
             html_path = os.path.join(diagrams_dir, f"{diagram_filename}.html")
             with open(html_path, "w", encoding="utf-8") as f:
                 f.write(html)
+            diagram_meta["html_saved"] = True
+            diagram_meta["png_generated"] = diagram_png is not None
             logger.info("Diagram HTML saved → %s (png=%s bytes)", html_path, len(diagram_png) if diagram_png else 0)
         except Exception as e:
             logger.error("Diagram generation failed: %s", e)
             diagram_png = None
+            diagram_meta["error"] = str(e)[:200]
+    stats["diagram_meta"] = diagram_meta
+
+    # diagram_meta が埋まった後にもう一度検知（PNG 生成失敗を拾う）
+    anomalies = detect_anomalies(stats, config)
+    stats["anomalies"] = anomalies
+    for a in anomalies:
+        logger.warning("ALERT [%s] %s — %s", a["severity"], a["title"], a["detail"])
 
     # ── Step 3: Notify ────────────────────────────────────────────────
     from notifier import DiscordNotifier
