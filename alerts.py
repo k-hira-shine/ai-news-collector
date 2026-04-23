@@ -132,6 +132,19 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
                 "detail": f"{yt_configured} キーワードで収集 0 件。API Quota 切れ or キー失効の可能性。",
             })
 
+    # ── Analyzer 関連（Gemini フォールバック使用 = 品質劣化の可能性）────
+    analysis_meta = stats.get("analysis_meta") or {}
+    fallback_stages = analysis_meta.get("fallback_used_stages") or []
+    if fallback_stages:
+        alerts.append({
+            "severity": "warning",
+            "title": "Gemini モデルがフォールバック動作",
+            "detail": (
+                f"{'/'.join(fallback_stages)} で primary モデルがエラー（429/5xx）、"
+                "fallback モデルに切替。分析品質が通常より低い可能性あり。"
+            ),
+        })
+
     # ── Diagram 生成関連 ─────────────────────────────────────────────
     diagram_meta = stats.get("diagram_meta") or {}
     if diagram_meta.get("attempted") and not diagram_meta.get("png_generated"):

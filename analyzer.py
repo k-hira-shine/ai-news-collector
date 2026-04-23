@@ -144,6 +144,7 @@ class NewsAnalyzer:
         self.top_n = analysis_cfg.get("top_n", 10)
         self.stage1_top_n = analysis_cfg.get("stage1_top_n", 100)
         self.scoring_cfg = config.get("scoring", {})
+        self.fallback_used_stages: list[str] = []
         self._init_client()
 
     def _init_client(self) -> None:
@@ -192,6 +193,7 @@ class NewsAnalyzer:
         analysis["run_time"] = now_iso()
         analysis["slot"] = time_slot()
         analysis["item_count"] = len(items)
+        analysis["fallback_used_stages"] = list(self.fallback_used_stages)
 
         self._save_analysis(analysis)
         return analysis
@@ -222,7 +224,7 @@ AI/ML と無関係な記事はスキップしてください。
 {items_text}
 """
         fallback = self.models.get("fallback", "gemini-2.5-flash")
-        result = self._call_gemini(model, prompt, STAGE1_SCHEMA, budget, fallback_model=fallback)
+        result = self._call_gemini(model, prompt, STAGE1_SCHEMA, budget, fallback_model=fallback, stage_label="stage1")
         return self._validate_stage1_result(result)
 
     def _compress_items_for_stage1(self, items: list[dict]) -> str:
@@ -331,7 +333,7 @@ AI/ML と無関係な記事はスキップしてください。
 """
         fallback = self.models.get("fallback", "gemini-2.5-flash")
         result = self._validate_stage2_result(
-            self._call_gemini(model, prompt, STAGE2_SCHEMA, budget, fallback_model=fallback)
+            self._call_gemini(model, prompt, STAGE2_SCHEMA, budget, fallback_model=fallback, stage_label="stage2")
         )
 
         # id→url / title のフォールバック補完
@@ -423,15 +425,17 @@ AI/ML と無関係な記事はスキップしてください。
         schema: dict | None = None,
         thinking_budget: int = 128,
         fallback_model: str | None = None,
+        stage_label: str = "unknown",
     ) -> dict:
         try:
             return self._call_gemini_single(model, prompt, schema, thinking_budget)
         except Exception as e:
             if fallback_model and self._is_server_error(e):
                 logger.warning(
-                    "Primary model %s exhausted retries, falling back to %s",
-                    model, fallback_model,
+                    "Primary model %s exhausted retries, falling back to %s (stage=%s)",
+                    model, fallback_model, stage_label,
                 )
+                self.fallback_used_stages.append(stage_label)
                 return self._call_gemini_single(
                     fallback_model, prompt, schema, thinking_budget
                 )

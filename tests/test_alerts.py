@@ -96,6 +96,23 @@ class DetectAnomaliesTests(unittest.TestCase):
         )
         self.assertEqual(alerts, [])
 
+    def test_gemini_fallback_is_warning(self) -> None:
+        alerts = detect_anomalies(
+            _stats(analysis_meta={"fallback_used_stages": ["stage2"], "top_articles_count": 5}),
+            _cfg(),
+        )
+        matched = [a for a in alerts if "Gemini" in a["title"]]
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0]["severity"], "warning")
+        self.assertIn("stage2", matched[0]["detail"])
+
+    def test_no_fallback_no_alert(self) -> None:
+        alerts = detect_anomalies(
+            _stats(analysis_meta={"fallback_used_stages": [], "top_articles_count": 5}),
+            _cfg(),
+        )
+        self.assertFalse(any("Gemini" in a["title"] for a in alerts))
+
     def test_diagram_png_failure_is_warning(self) -> None:
         alerts = detect_anomalies(
             _stats(diagram_meta={"attempted": True, "png_generated": False, "error": "Playwright timeout"}),

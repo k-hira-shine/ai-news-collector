@@ -85,6 +85,10 @@ def main() -> None:
 
     analyzer = NewsAnalyzer(config)
     analysis = analyzer.analyze(items)
+    stats["analysis_meta"] = {
+        "top_articles_count": len(analysis.get("top_articles") or []),
+        "fallback_used_stages": list(analysis.get("fallback_used_stages") or []),
+    }
 
     # ── Step 2.5: Diagram (HTML + PNG) ────────────────────────────────
     diagram_png: bytes | None = None
