@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import MagicMock, patch
 
 from notifier import DiscordNotifier
 
@@ -42,6 +43,50 @@ class StatsEmbedTests(unittest.TestCase):
         })
         self.assertIn("10件", embed["description"])
         self.assertIn("X: 5", embed["description"])
+
+
+class SendPayloadRetryTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.n = DiscordNotifier(webhook_url="https://discord.example/webhook")
+
+    def _response(self, status_code: int, json_body: dict | None = None, text: str = ""):
+        r = MagicMock()
+        r.status_code = status_code
+        r.json.return_value = json_body or {}
+        r.text = text
+        return r
+
+    def test_200_is_success(self) -> None:
+        with patch("notifier.requests.post", return_value=self._response(204)) as post:
+            self.assertTrue(self.n._send_payload({"content": "x"}))
+            self.assertEqual(post.call_count, 1)
+
+    def test_5xx_is_retried_then_fails(self) -> None:
+        # 3 retries + 1 attempt = 4 calls, all 503
+        with patch("notifier.requests.post", return_value=self._response(503, text="unavailable")) as post, \
+                patch("notifier.time.sleep"):  # skip backoff delays
+            with self.assertRaises(Exception):
+                self.n._send_payload({"content": "x"})
+            self.assertEqual(post.call_count, 4)
+
+    def test_5xx_then_200_succeeds(self) -> None:
+        responses = [self._response(502), self._response(500), self._response(204)]
+        with patch("notifier.requests.post", side_effect=responses), \
+                patch("notifier.time.sleep"):
+            self.assertTrue(self.n._send_payload({"content": "x"}))
+
+    def test_400_is_not_retried(self) -> None:
+        with patch("notifier.requests.post", return_value=self._response(400, text="bad request")) as post:
+            self.assertFalse(self.n._send_payload({"content": "x"}))
+            self.assertEqual(post.call_count, 1)
+
+    def test_429_respects_retry_after(self) -> None:
+        responses = [self._response(429, json_body={"retry_after": 0.01}), self._response(204)]
+        with patch("notifier.requests.post", side_effect=responses), \
+                patch("notifier.time.sleep") as sleep:
+            self.assertTrue(self.n._send_payload({"content": "x"}))
+            # retry_after に対応した sleep が呼ばれている
+            sleep.assert_any_call(0.01)
 
 
 if __name__ == "__main__":

@@ -60,27 +60,33 @@ class DiscordNotifier:
         if not analysis.get("top_articles"):
             return self._send_simple("⚠️ 本日の収集データがありません。")
 
-        ok = True
+        results: list[tuple[str, bool]] = []
 
         if diagram_png:
             diagram_filename = self._diagram_filename(analysis)
             diagram_embed = self._build_diagram_embed(analysis, diagram_filename)
-            if not self._send_payload_with_file(
+            ok = self._send_payload_with_file(
                 {"embeds": [diagram_embed]},
                 filename=diagram_filename,
                 file_bytes=diagram_png,
                 content_type="image/png",
-            ):
-                ok = False
+            )
+            results.append(("diagram_png", ok))
             time.sleep(self.delay)
 
         messages = self._build_messages(analysis, stats)
         for i, payload in enumerate(messages):
             if i > 0:
                 time.sleep(self.delay)
-            if not self._send_payload(payload):
-                ok = False
-        return ok
+            results.append((f"msg{i}", self._send_payload(payload)))
+
+        failed = [label for label, ok in results if not ok]
+        if failed:
+            logger.error(
+                "Discord notify partial failure: %d/%d dropped (%s)",
+                len(failed), len(results), ",".join(failed),
+            )
+        return not failed
 
     def send_status(self, message: str) -> bool:
         """ステータス通知 (プレーンテキスト)"""
@@ -349,9 +355,13 @@ class DiscordNotifier:
 
     # ── Discord API 送信 ───────────────────────────────────────────────
 
-    @retry(max_retries=2, base_delay=2)
+    @retry(max_retries=3, base_delay=2)
     def _send_payload(self, payload: dict) -> bool:
-        res = requests.post(self.webhook_url, json=payload, timeout=30)
+        try:
+            res = requests.post(self.webhook_url, json=payload, timeout=30)
+        except (requests.ConnectionError, requests.Timeout) as e:
+            logger.warning("Discord send network error: %s — retrying", e)
+            raise
         if res.status_code in (200, 204):
             return True
         if res.status_code == 429:
@@ -362,13 +372,16 @@ class DiscordNotifier:
             logger.warning("Discord rate limited, waiting %.1fs", retry_after)
             time.sleep(retry_after)
             raise Exception(f"Discord rate limited ({retry_after}s)")
+        if 500 <= res.status_code < 600:
+            logger.warning("Discord %d — retrying: %s", res.status_code, res.text[:200])
+            raise Exception(f"Discord server error {res.status_code}")
         logger.error("Discord send failed: %d %s", res.status_code, res.text[:300])
         return False
 
     def _send_simple(self, content: str) -> bool:
         return self._send_payload({"content": content})
 
-    @retry(max_retries=2, base_delay=2)
+    @retry(max_retries=3, base_delay=2)
     def _send_payload_with_file(
         self,
         payload: dict,
@@ -379,7 +392,11 @@ class DiscordNotifier:
         """multipart/form-data でファイル添付付きメッセージを送信"""
         files = {"files[0]": (filename, file_bytes, content_type)}
         data = {"payload_json": json.dumps(payload, ensure_ascii=False)}
-        res = requests.post(self.webhook_url, data=data, files=files, timeout=60)
+        try:
+            res = requests.post(self.webhook_url, data=data, files=files, timeout=60)
+        except (requests.ConnectionError, requests.Timeout) as e:
+            logger.warning("Discord file send network error: %s — retrying", e)
+            raise
         if res.status_code in (200, 204):
             return True
         if res.status_code == 429:
@@ -390,6 +407,9 @@ class DiscordNotifier:
             logger.warning("Discord rate limited (file), waiting %.1fs", retry_after)
             time.sleep(retry_after)
             raise Exception(f"Discord rate limited ({retry_after}s)")
+        if 500 <= res.status_code < 600:
+            logger.warning("Discord file %d — retrying: %s", res.status_code, res.text[:200])
+            raise Exception(f"Discord server error {res.status_code}")
         logger.error("Discord file send failed: %d %s", res.status_code, res.text[:300])
         return False
 
