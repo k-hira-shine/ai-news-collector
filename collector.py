@@ -134,44 +134,45 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     items: list[dict] = []
     has_cookies = meta["has_cookies"]
 
-    usage_before = _get_apify_usage(token)
+    if has_cookies and search_queries:
+        # 3 クエリ × 個別起動 → 1 run にバッチ化（2026-04-23 テスト:
+        # maxResults はクエリごとに適用、コスト ~60% 削減）
+        try:
+            run_input = {
+                "scrapeMode": "x-search-scraper",
+                "searchQueries": list(search_queries),
+                "sort": "Top",
+                "maxResults": x_cfg.get("max_results_per_query", 40),
+                "loginCookies": cookies,
+            }
 
-    if has_cookies:
-        if not search_queries:
-            logger.info("X search queries not configured — skipping search queries")
-        for query in search_queries:
-            try:
-                run_input: dict = {
-                    "scrapeMode": "x-search-scraper",
-                    "searchQueries": [query],
-                    "sort": "Top",
-                    "maxResults": x_cfg.get("max_results_per_query", 40),
-                    "loginCookies": cookies,
-                }
-
-                run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
-                meta["apify_runs"] += 1
-                run_status = (run or {}).get("status", "")
-                run_id = (run or {}).get("id", "")
-                if run_status and run_status != "SUCCEEDED":
-                    meta["search_error_count"] += 1
-                    logger.error("X search '%s…' run status=%s", query[:40], run_status)
-                    if run_id and _run_log_has_auth_error(client, run_id):
-                        meta["auth_error_count"] += 1
-                        logger.warning("X search '%s…': auth error detected in run log", query[:40])
-                    continue
+            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
+            meta["apify_runs"] += 1
+            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
+            run_status = (run or {}).get("status", "")
+            run_id = (run or {}).get("id", "")
+            if run_status and run_status != "SUCCEEDED":
+                # バッチ内のクエリは全部失敗扱い
+                meta["search_error_count"] += len(search_queries)
+                logger.error("X search batch (%d queries) run status=%s", len(search_queries), run_status)
+                if run_id and _run_log_has_auth_error(client, run_id):
+                    meta["auth_error_count"] += 1
+                    logger.warning("X search batch: auth error detected in run log")
+            else:
                 count = 0
                 for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
                     items.append(_normalize_tweet(tweet))
                     count += 1
                 meta["search_total"] += count
-                logger.info("X search '%s…': %d tweets", query[:40], count)
+                logger.info("X search batch (%d queries): %d tweets", len(search_queries), count)
                 if count == 0 and run_id and _run_log_has_auth_error(client, run_id):
                     meta["auth_error_count"] += 1
-                    logger.warning("X search '%s…': 0 results + auth error in run log", query[:40])
-            except Exception as e:
-                meta["search_error_count"] += 1
-                logger.error("X search '%s…' failed: %s", query[:40], e)
+                    logger.warning("X search batch: 0 results + auth error in run log")
+        except Exception as e:
+            meta["search_error_count"] += len(search_queries)
+            logger.error("X search batch failed: %s", e)
+    elif has_cookies:
+        logger.info("X search queries not configured — skipping search queries")
     else:
         logger.info("X_COOKIES not set — skipping search queries (timeline only)")
 
@@ -190,6 +191,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
             meta["apify_runs"] += 1
+            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
             run_status = (run or {}).get("status", "")
             run_id = (run or {}).get("id", "")
             if run_status and run_status != "SUCCEEDED":
@@ -235,11 +237,10 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         logger.info("X engagement filter (>=%d): %d → %d", min_eng, before, len(items))
 
     if meta["apify_runs"] > 0:
-        usage_after = _get_apify_usage(token)
-        if usage_before is not None and usage_after is not None:
-            meta["apify_cost_usd"] = usage_after["total"] - usage_before["total"]
-            meta["apify_cycle_total_usd"] = usage_after["total"]
-            meta["apify_cycle_end"] = usage_after.get("cycle_end", "")
+        usage_now = _get_apify_usage(token)
+        if usage_now is not None:
+            meta["apify_cycle_total_usd"] = usage_now["total"]
+            meta["apify_cycle_end"] = usage_now.get("cycle_end", "")
 
     logger.info("X/Twitter total: %d items (Apify: %d runs, $%.4f)", len(items), meta["apify_runs"], meta["apify_cost_usd"])
     return items

@@ -75,9 +75,10 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
         })
 
     # Apify 起動回数が想定を大きく下回る
+    # 2026-04-23 以降: 検索もバッチ化したので 1 run
     expected_runs = 0
     if has_apify and has_cookies and search_configured > 0:
-        expected_runs += search_configured
+        expected_runs += 1  # search batch は 1 回
     if has_apify and must_follow_configured > 0:
         expected_runs += 1  # timeline batch は 1 回
     if expected_runs > 0 and apify_runs < expected_runs:
