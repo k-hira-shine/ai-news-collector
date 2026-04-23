@@ -263,7 +263,7 @@ def _normalize_tweet(tweet: dict) -> dict:
 # ━━━━━━━━━━━━━━━━ RSS ━━━━━━━━━━━━━━━━
 
 
-def collect_rss(config: dict) -> list[dict]:
+def collect_rss(config: dict, runtime_meta: dict | None = None) -> list[dict]:
     """RSS フィードから収集 (直近 24h)"""
     items: list[dict] = []
     feeds_config = config.get("rss_feeds", {})
@@ -274,15 +274,22 @@ def collect_rss(config: dict) -> list[dict]:
         for feed in feeds:
             all_feeds.append({**feed, "_group": group_name})
 
+    error_count = 0
     for fi in all_feeds:
         try:
             entries = _fetch_rss_feed(fi, cutoff)
             items.extend(entries)
             logger.info("RSS '%s': %d entries", fi["name"], len(entries))
         except Exception as e:
+            error_count += 1
             logger.error("RSS '%s' failed: %s", fi["name"], e)
 
-    logger.info("RSS total: %d items", len(items))
+    if runtime_meta is not None:
+        runtime_meta["feeds_configured"] = len(all_feeds)
+        runtime_meta["feed_error_count"] = error_count
+        runtime_meta["raw_total"] = len(items)
+
+    logger.info("RSS total: %d items (errors: %d/%d)", len(items), error_count, len(all_feeds))
     return items
 
 
@@ -344,8 +351,18 @@ def _parse_feed_date(entry) -> datetime | None:
 # ━━━━━━━━━━━━━━━━ YouTube ━━━━━━━━━━━━━━━━
 
 
-def collect_youtube(config: dict) -> list[dict]:
+def collect_youtube(config: dict, runtime_meta: dict | None = None) -> list[dict]:
     """YouTube Data API で AI 関連動画を収集"""
+    yt_cfg = config.get("youtube", {})
+    keywords = yt_cfg.get("search_keywords", [])
+    channels = yt_cfg.get("must_follow_channels", [])
+    if runtime_meta is not None:
+        runtime_meta["keywords_configured"] = len(keywords)
+        runtime_meta["channels_configured"] = len(channels)
+        runtime_meta["search_error_count"] = 0
+        runtime_meta["channel_error_count"] = 0
+        runtime_meta["raw_total"] = 0
+
     api_key = os.environ.get("YOUTUBE_API_KEY")
     if not api_key:
         logger.warning("YOUTUBE_API_KEY not set — skipping YouTube")
@@ -358,11 +375,10 @@ def collect_youtube(config: dict) -> list[dict]:
         return []
 
     youtube = build("youtube", "v3", developerKey=api_key)
-    yt_cfg = config.get("youtube", {})
     items: list[dict] = []
     published_after = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
 
-    for kw in yt_cfg.get("search_keywords", []):
+    for kw in keywords:
         try:
             resp = (
                 youtube.search()
@@ -381,9 +397,11 @@ def collect_youtube(config: dict) -> list[dict]:
                 items.append(_normalize_video(it))
             logger.info("YouTube '%s': %d videos", kw, len(resp.get("items", [])))
         except Exception as e:
+            if runtime_meta is not None:
+                runtime_meta["search_error_count"] += 1
             logger.error("YouTube search '%s' failed: %s", kw, e)
 
-    for ch in yt_cfg.get("must_follow_channels", []):
+    for ch in channels:
         try:
             resp = (
                 youtube.search()
@@ -404,7 +422,12 @@ def collect_youtube(config: dict) -> list[dict]:
                 v["priority"] = "high"
                 items.append(v)
         except Exception as e:
+            if runtime_meta is not None:
+                runtime_meta["channel_error_count"] += 1
             logger.error("YouTube channel %s failed: %s", ch.get("name", ch["id"]), e)
+
+    if runtime_meta is not None:
+        runtime_meta["raw_total"] = len(items)
 
     logger.info("YouTube total: %d items", len(items))
     return items
@@ -544,14 +567,18 @@ def collect_all(config: dict, skip_sources: set[str] | None = None) -> tuple[lis
     )
 
     items: list[dict] = []
-    runtime_meta = {"x": _default_x_runtime_meta()}
+    runtime_meta: dict = {
+        "x": _default_x_runtime_meta(),
+        "rss": {},
+        "youtube": {},
+    }
     sources = [
-        (lambda: _collect_x_twitter_with_meta(config), "X/Twitter", "x"),
-        (lambda: collect_rss(config), "RSS", "rss"),
-        (lambda: collect_youtube(config), "YouTube", "youtube"),
+        ("x", "X/Twitter", lambda: _collect_x_twitter_with_meta(config)),
+        ("rss", "RSS", lambda: collect_rss(config, runtime_meta=runtime_meta["rss"])),
+        ("youtube", "YouTube", lambda: collect_youtube(config, runtime_meta=runtime_meta["youtube"])),
     ]
 
-    for source_fn, name, key in sources:
+    for key, name, source_fn in sources:
         if key in skip:
             logger.info("Skipping %s (--skip-%s)", name, key)
             continue
@@ -564,6 +591,7 @@ def collect_all(config: dict, skip_sources: set[str] | None = None) -> tuple[lis
             items.extend(source_items)
         except Exception as e:
             logger.error("%s collection completely failed: %s", name, e)
+            runtime_meta.setdefault(key, {})["fatal_error"] = str(e)[:200]
 
     items = deduplicate(items, cache)
     items = _filter_old_items(items, max_age_days=config.get("collection", {}).get("max_age_days", 7))

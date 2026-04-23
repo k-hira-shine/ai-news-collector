@@ -151,6 +151,14 @@ class DiscordNotifier:
         footer_embeds = [embed_action]
         if embed_stats:
             footer_embeds.append(embed_stats)
+
+        anomalies = stats.get("anomalies") or []
+        if anomalies:
+            from alerts import build_alert_embed
+            alert_embed = build_alert_embed(anomalies)
+            if alert_embed:
+                footer_embeds.append(alert_embed)
+
         messages.append({"embeds": footer_embeds})
 
         return messages

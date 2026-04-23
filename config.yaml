@@ -49,6 +49,12 @@ x_twitter:
   apify_monthly_budget_usd: 29.0
   apify_warning_threshold: 0.8
 
+# Silent Failure 検知: 成功 exit した実行でも内部劣化があれば Discord へ警告
+alerts:
+  enabled: true
+  rss_failure_rate_threshold: 0.3      # この割合以上のフィードが失敗で警告
+  youtube_zero_results_alert: true     # キーワード設定ありで raw 収集 0 なら警告
+
 rss_feeds:
   official:
     - name: "OpenAI Blog"

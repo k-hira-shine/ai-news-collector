@@ -30,7 +30,8 @@ def main() -> None:
     config = load_config()
 
     # ── Step 1: Collect ───────────────────────────────────────────────
-    x_runtime = {}
+    x_runtime: dict = {}
+    runtime_meta: dict = {"x": {}, "rss": {}, "youtube": {}}
     if args.analyze_only:
         from collector import _load_latest_daily
         items = _load_latest_daily()
@@ -57,14 +58,23 @@ def main() -> None:
         "apify_cycle_end": x_runtime.get("apify_cycle_end", ""),
         "apify_monthly_budget_usd": config.get("x_twitter", {}).get("apify_monthly_budget_usd", 29.0),
         "apify_warning_threshold": config.get("x_twitter", {}).get("apify_warning_threshold", 0.8),
+        "x_meta": x_runtime,
+        "rss_meta": runtime_meta.get("rss", {}),
+        "youtube_meta": runtime_meta.get("youtube", {}),
     }
-    logger.info("Collected: %s", stats)
+    logger.info("Collected: %s", {k: v for k, v in stats.items() if not k.endswith("_meta")})
 
     cookies_may_be_expired = False
     if not args.analyze_only and not args.skip_x:
         cookies_may_be_expired = _should_warn_x_cookies(x_runtime)
         if cookies_may_be_expired:
             logger.warning("⚠️ X_COOKIES may be expired — search returned 0 before filters/dedup")
+
+    from alerts import detect_anomalies
+    anomalies = detect_anomalies(stats, config)
+    stats["anomalies"] = anomalies
+    for a in anomalies:
+        logger.warning("ALERT [%s] %s — %s", a["severity"], a["title"], a["detail"])
 
     if args.dry_run:
         logger.info("Dry run — skipping analysis and notification")
@@ -135,8 +145,11 @@ def main() -> None:
 
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)
-    status_msg = f"✅ AI News Collector 完了 ({elapsed:.0f}秒, {stats['total']}件収集)"
-    if cookies_may_be_expired:
+    status_icon = "⚠️" if anomalies else "✅"
+    status_msg = f"{status_icon} AI News Collector 完了 ({elapsed:.0f}秒, {stats['total']}件収集)"
+    if anomalies:
+        status_msg += f"\n⚠️ 健全性アラート {len(anomalies)} 件（上の Embed を確認）"
+    elif cookies_may_be_expired:
         status_msg += "\n⚠️ X_COOKIES が期限切れの可能性があります。検索結果が 0 件でした。GitHub Secrets を更新してください。"
     notifier.send_status(status_msg)
 
