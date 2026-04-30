@@ -1,0 +1,402 @@
+{
+  "trend_summary": "本日のAI業界は、巨大テック企業によるAIインフラへの巨額投資が最大の焦点となりました。Microsoft、Google、Meta、Amazonの4社合計で年間7000億ドル超という天文学的な設備投資計画が明らかになり、AGI開発競争が国家予算規模に達していることが示されました。モデル開発では、NVIDIAのオムニモーダルモデル「Nemotron 3 Nano Omni」やMistralのオープンモデル「Mistral Medium 3.5」など、多様なアプローチによる高性能モデルの発表が相次ぎ、競争はさらに激化しています。一方で、OpenAIがモデルの奇妙な挙動「ゴブリン問題」の原因を公式に解説するなど、技術の信頼性と透明性確保に向けた動きも注目されました。",
+  "trend_evolution": {
+    "since_last": "前回の分析ではGoogleやMetaの好決算がAI投資の正当性を証明した点が中心でしたが、本日はその投資規模が具体的に示され、「年間7000億ドル超」という数字が市場に衝撃を与えました。これにより「巨大テック企業のAIインフラ投資競争」が主要トレンドとして急浮上しています。また、前回はGPT-5.5が話題の中心でしたが、今回はNVIDIA、Mistral、IBMなど多様なプレイヤーからの新モデル発表が相次ぎ、モデル開発競争の多様化が鮮明になりました。AIの安全性に関する議論は、昨日のマスク氏の裁判証言から、本日はOpenAI自身の「ゴブリン問題」解説へと具体的な技術的課題に移っています。",
+    "tracked_topics": [
+      {
+        "topic": "巨大テック4社のAIインフラ投資競争激化",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "各社の好決算報告から一歩進み、年間7000億ドル超という具体的な巨額投資計画が表面化し、AGI開発競争のスケールが明確になった。"
+      },
+      {
+        "topic": "多様な高性能モデルのリリース競争",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "OpenAIのGPT-5.5中心だった話題が、NVIDIAのオムニモーダル、Mistralのオープンモデル、IBMのGraniteなど各社の強みを活かした多様なモデル発表へと拡大した。"
+      },
+      {
+        "topic": "Anthropicの巨額資金調達と動向",
+        "status": "RESURFACED",
+        "streak_days": 1,
+        "evolution": "安全性研究や脆弱性発見の話題から、新たに500億ドル規模の資金調達観測と政府との関係性に焦点が移り、再び市場の注目を集めている。"
+      },
+      {
+        "topic": "OpenAIの技術的課題と透明性確保",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "マスク氏との裁判という外部からの批判に加え、自社のモデルの奇妙な挙動（ゴブリン問題）について公式ブログで原因と対策を説明し、技術的透明性の確保に動いた。"
+      },
+      {
+        "topic": "AIエージェントの機能拡張と実用化",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "コーディング支援エージェントのリスクが議論された後、Geminiのファイル直接生成機能など、より具体的で生産性向上に直結する機能拡張が進んでいる。"
+      },
+      {
+        "topic": "AIの安全性とリスクに関する議論",
+        "status": "SUSTAINED",
+        "streak_days": 4,
+        "evolution": "マスク氏の裁判での「人類滅亡リスク」証言から、OpenAIの技術ブログでの具体的な挙動解説へと、議論が抽象的なレベルから技術的なレベルへと深化している。"
+      },
+      {
+        "topic": "イーロン・マスク vs OpenAI 裁判",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "裁判開始からマスク氏の証言内容へと連日報道が続いており、AI開発の理念と商業化を巡る対立が注目され続けている。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "6bdfb100de8923cf",
+      "rank": 1,
+      "title": "Sources: Anthropic could raise a new $50B round at a valuation of $900B",
+      "url": "https://techcrunch.com/2026/04/29/sources-anthropic-could-raise-a-new-50b-round-at-a-valuation-of-900b/",
+      "summary": "Claudeの開発元であるAnthropicが、9000億ドル（約140兆円）という驚異的な評価額で、新たに500億ドルの資金調達を行う可能性があると報じられた。複数の投資家から、8500億ドルから9000億ドルの評価額でのオファーが既にあるという。",
+      "importance_reason": "AI開発競争における資金調達規模が新たな次元に達したことを示す象徴的なニュース。実現すれば、AIスタートアップの評価額として過去最高となり、市場の期待感を反映している。",
+      "category": "資金調達",
+      "source_label": "rss:TechCrunch AI"
+    },
+    {
+      "id": "de7f45bbfe1b3859",
+      "rank": 2,
+      "title": "msft, goog, meta, & amazon are on track to spend ~$700b on ai infrastructure in 2026.",
+      "url": "https://x.com/signulll/status/2049614400860921877",
+      "summary": "Microsoft、Google、Meta、Amazonの4社が、2026年にAIインフラへ合計で約7000億ドル（約110兆円）を費やす見込みであると報じられている。これは国家予算や戦費に匹敵する規模であり、AGI開発の基盤が民間企業によって構築されている現状を示している。",
+      "importance_reason": "AGI開発競争が、もはや一企業の投資規模を超え、国家レベルの巨大プロジェクトとなっていることを明確に数字で示した。AIの未来が数社の巨大テック企業に委ねられている現状を浮き彫りにしている。",
+      "category": "企業動向",
+      "source_label": "x:@signulll"
+    },
+    {
+      "id": "c50d9067e7f6d358",
+      "rank": 3,
+      "title": "NVIDIAが視覚・音声・言語モデルを統合するオープンなオムニモーダル推論モデル「Nemotron 3 Nano Omni」を発表",
+      "url": "https://gigazine.net/news/20260430-nvidia-ai-nemotron-3-nano-omni/",
+      "summary": "NVIDIAが、視覚、音声、言語を統合したオムニモーダル推論モデル「Nemotron 3 Nano Omni」を発表した。エージェント型のワークフローにおいて、高い効率と精度を実現することを目指すオープンモデル。",
+      "importance_reason": "AIチップの巨人であるNVIDIAが、ハードウェアだけでなく、その上で動作する高性能な基盤モデル（特にマルチモーダル）の開発にも注力していることを示す。AIエコシステム全体を掌握しようとする戦略がうかがえる。",
+      "category": "モデル/ツール",
+      "source_label": "rss:GIGAZINE"
+    },
+    {
+      "id": "8b7276cd935e3184",
+      "rank": 4,
+      "title": "Where the goblins came from",
+      "url": "https://openai.com/index/where-the-goblins-came-from",
+      "summary": "OpenAIが公式ブログで、GPT-5の挙動に見られた「ゴブリン」と呼ばれる奇妙な人格が出現する問題について、そのタイムライン、根本原因、修正策を詳細に解説した。",
+      "importance_reason": "最先端モデルの予期せぬ挙動について、開発元自らが原因を分析し、透明性を持って公開した点で非常に重要。AIの信頼性・安全性を確保する上での技術的な課題と、それに対する真摯な取り組みを示している。",
+      "category": "研究論文",
+      "source_label": "rss:OpenAI Blog"
+    },
+    {
+      "id": "6206e1752a44de17",
+      "rank": 5,
+      "title": "Claude Sonnet 4.5超えのフランス製AIモデル「Mistral Medium 3.5」がオープンモデルとして公開される＆Mistral Vibeがクラウド対応",
+      "url": "https://gigazine.net/news/20260430-mistral-medium-3-5/",
+      "summary": "フランスのMistral AIが、1280億パラメータを持つ高性能モデル「Mistral Medium 3.5」をオープンモデルとして公開した。主要なベンチマークでClaude Sonnet 4.5を上回る性能を持つとされている。",
+      "importance_reason": "OpenAIやGoogle、Anthropicといった米国勢に対抗する欧州の雄、Mistralの存在感を示すニュース。高性能モデルをオープンに公開することで、AI開発コミュニティ全体の活性化に貢献している。",
+      "category": "モデル/ツール",
+      "source_label": "rss:GIGAZINE"
+    },
+    {
+      "id": "1ad7560e4bad1b23",
+      "rank": 6,
+      "title": "GeminiがPDF・Word・Excelなどを出力可能に",
+      "url": "https://gigazine.net/news/20260430-gemini-generate-files/",
+      "summary": "GoogleのAI「Gemini」が、チャット形式の対話から直接PDF、Word、Excelなどのファイルを生成できるようになった。これにより、回答のコピー＆ペーストや手動でのフォーマット調整の手間が不要になる。",
+      "importance_reason": "AIが単なるテキスト生成ツールから、具体的な成果物（ドキュメント）を直接作成する「実務ツール」へと進化していることを示す重要なアップデート。Google Workspaceとの連携により、生産性向上への貢献が期待される。",
+      "category": "モデル/ツール",
+      "source_label": "rss:GIGAZINE"
+    },
+    {
+      "id": "6b8c46a3e355b778",
+      "rank": 7,
+      "title": "Building the compute infrastructure for the Intelligence Age",
+      "url": "https://openai.com/index/building-the-compute-infrastructure-for-the-intelligence-age",
+      "summary": "OpenAIが、AGI（汎用人工知能）実現に向けた計算インフラ「Stargate」の構築をスケールアップし、増大するAIの需要に対応するためにデータセンターのキャパシティを増強していることを公式ブログで明らかにした。",
+      "importance_reason": "AGIという壮大な目標達成のために、計算インフラへの投資がいかに重要であるかをOpenAI自身が強調している。AIの性能向上は、モデルのアルゴリズムだけでなく、それを支える物理的なインフラに大きく依存することを示唆している。",
+      "category": "企業動向",
+      "source_label": "rss:OpenAI Blog"
+    },
+    {
+      "id": "da8bb949cd3f4de6",
+      "rank": 8,
+      "title": "New on the Science Blog: We gave Claude 99 problems analyzing real biological data and compared its performance against an expert panel.",
+      "url": "https://x.com/AnthropicAI/status/2049624600741560340",
+      "summary": "Anthropicが、生物学の難問99個をClaudeに分析させ、専門家パネルと比較した研究結果を公開。専門家が解けなかった23問のうち、最新モデルが約30%を解決したと報告している。",
+      "importance_reason": "AIが人間の専門家を超える能力を、科学研究という高度な領域で発揮し始めていることを示す実例。創薬や生命科学の研究を加速させるポテンシャルを秘めている。",
+      "category": "ユースケース",
+      "source_label": "x:@AnthropicAI"
+    },
+    {
+      "id": "b6b3b935c23f57d7",
+      "rank": 9,
+      "title": "プレゼン資料も指示を出すだけ？　OpenAI、最新画像生成モデル「Images 2.0」発表",
+      "url": "https://kn.itmedia.co.jp/kn/articles/2604/30/news051.html",
+      "summary": "OpenAIが最新の画像生成モデル「Images 2.0」を発表した。指示内容をより深く解釈する「Thinkingモード」を搭載し、プレゼンテーション資料の作成などを容易にする。",
+      "importance_reason": "画像生成AIが、単に美しい絵を描くだけでなく、ビジネス文書作成といったより実用的なタスクへと応用範囲を広げていることを示す。マルチモーダルAIの実用化がさらに一歩進んだ。",
+      "category": "モデル/ツール",
+      "source_label": "rss:ITmedia AI+"
+    },
+    {
+      "id": "35cc6975f5a625ea",
+      "rank": 10,
+      "title": "IBMがAIモデル「Granite 4.1」シリーズを公開、プロンプト追従やツール呼び出しが得意なオープンモデル",
+      "url": "https://gigazine.net/news/20260430-ibm-granite-4-1/",
+      "summary": "IBMが、小規模ながら高品質な学習データにより高い性能を実現したオープンモデル「Granite 4.1」シリーズを発表した。プロンプトへの追従性やツール呼び出し機能に優れている。",
+      "importance_reason": "巨大モデル開発競争とは一線を画し、ビジネス応用を重視した高品質な小型モデルというIBMの独自戦略を示す。オープンソースとして公開することで、エンタープライズ領域でのAI活用を促進する狙いがある。",
+      "category": "モデル/ツール",
+      "source_label": "rss:GIGAZINE"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "企業動向",
+      "summary": "Microsoft、Google、Meta、Amazonの4社が年間合計7000億ドル超という国家予算規模のAIインフラ投資を計画していることが明らかになり、AGI開発競争のスケールが浮き彫りになった。OpenAIも計算インフラ「Stargate」の増強を発表しており、AIの未来を左右するインフラ投資競争が激化している。また、元OpenAIの研究者が立ち上げたヘッジファンドが電力インフラに投資して大きな成功を収めたという話題も、AIとエネルギー問題の密接な関係を示唆している。",
+      "count": 27,
+      "key_articles": [
+        {
+          "title": "msft, goog, meta, & amazon are on track to spend ~$700b on ai infrastructure in 2026.",
+          "url": "https://x.com/signulll/status/2049614400860921877",
+          "summary": "巨大テック4社が2026年にAIインフラへ合計約7000億ドルを費やす見込みであり、AGI開発競争が民間主導で国家規模に達していることが示された。"
+        },
+        {
+          "title": "Building the compute infrastructure for the Intelligence Age",
+          "url": "https://openai.com/index/building-the-compute-infrastructure-for-the-intelligence-age",
+          "summary": "OpenAIがAGI実現に向けて計算インフラ「Stargate」を拡張し、データセンターのキャパシティを増強していることを公式に発表した。"
+        },
+        {
+          "title": "SoftBank is creating a robotics company that builds data centers — and already eyeing a $100B IPO",
+          "url": "https://techcrunch.com/2026/04/29/softbank-is-creating-a-robotics-company-that-builds-data-centers-and-already-eyeing-a-100b-ipo/",
+          "summary": "ソフトバンクがデータセンターを建設するロボット企業を設立し、1000億ドル規模のIPOを計画しており、AIインフラ構築自体にもAIとロボティクスが活用される流れを示している。"
+        },
+        {
+          "title": "Leopold Aschenbrenner, former OpenAI safety researcher, fired at 22, now running one of the best performing hedge funds on the planet.",
+          "url": "https://x.com/MilkRoadAI/status/2049636664361013390",
+          "summary": "元OpenAIの研究者が立ち上げたヘッジファンドが、AI開発のボトルネックとなる「電力」に早期から着目して投資し、1年で2億2500万ドルを55億ドルに増やしたことが話題となった。"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "今週は新モデルの発表が相次いだ。NVIDIAが視覚・音声・言語を統合したオムニモーダルモデル「Nemotron 3 Nano Omni」を、Mistral AIがClaude Sonnet 4.5を超える性能を持つオープンモデル「Mistral Medium 3.5」を公開した。GoogleはGeminiにチャットから直接PDFやExcelを生成する実用的な機能を追加。OpenAIも、より指示を深く解釈する画像生成モデル「Images 2.0」を発表し、各社がモデルの性能向上と応用範囲の拡大を競っている。",
+      "count": 28,
+      "key_articles": [
+        {
+          "title": "NVIDIAが視覚・音声・言語モデルを統合するオープンなオムニモーダル推論モデル「Nemotron 3 Nano Omni」を発表",
+          "url": "https://gigazine.net/news/20260430-nvidia-ai-nemotron-3-nano-omni/",
+          "summary": "ハードウェアの巨人NVIDIAが、視覚・音声・言語を統合した高性能なオムニモーダル推論モデルをオープンソースで公開した。"
+        },
+        {
+          "title": "Claude Sonnet 4.5超えのフランス製AIモデル「Mistral Medium 3.5」がオープンモデルとして公開される＆Mistral Vibeがクラウド対応",
+          "url": "https://gigazine.net/news/20260430-mistral-medium-3-5/",
+          "summary": "フランスのMistral AIが、主要ベンチマークでClaude Sonnet 4.5を上回る1280億パラメータのモデルをオープン公開し、競争力を示した。"
+        },
+        {
+          "title": "GeminiがPDF・Word・Excelなどを出力可能に",
+          "url": "https://gigazine.net/news/20260430-gemini-generate-files/",
+          "summary": "GoogleのGeminiがチャットから直接各種ドキュメントファイルを生成できるようになり、AIの実用性が大きく向上した。"
+        },
+        {
+          "title": "プレゼン資料も指示を出すだけ？　OpenAI、最新画像生成モデル「Images 2.0」発表",
+          "url": "https://kn.itmedia.co.jp/kn/articles/2604/30/news051.html",
+          "summary": "OpenAIが発表した「Images 2.0」は、指示解釈能力を高め、プレゼン資料作成などビジネス用途での活用を容易にする。"
+        },
+        {
+          "title": "IBMがAIモデル「Granite 4.1」シリーズを公開、プロンプト追従やツール呼び出しが得意なオープンモデル",
+          "url": "https://gigazine.net/news/20260430-ibm-granite-4-1/",
+          "summary": "IBMが、エンタープライズ向けに特化した高品質な小型オープンモデル「Granite 4.1」シリーズを公開した。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "OpenAIが自社モデルの奇妙な挙動（ゴブリン問題）の原因と対策を技術ブログで詳細に解説し、透明性を確保する姿勢を示したことが注目された。また、Google DeepMindがAGIの達成度を測るための認知フレームワークを提案し、AIの「知性」を科学的に評価しようとする動きも進んでいる。これらの動きは、AIの能力が向上する中で、その挙動を理解し、制御し、評価することの重要性が増していることを示している。",
+      "count": 9,
+      "key_articles": [
+        {
+          "title": "Where the goblins came from",
+          "url": "https://openai.com/index/where-the-goblins-came-from",
+          "summary": "OpenAIがGPT-5の挙動に見られた「ゴブリン」問題について、その原因と修正策を詳細に解説した公式ブログ記事。"
+        },
+        {
+          "title": "AGIはどうすれば実現するのか？　知性を成す「10の認知能力」をGoogleが特定",
+          "url": "https://atmarkit.itmedia.co.jp/ait/articles/2604/30/news024.html",
+          "summary": "Google DeepMindが、AGIの進捗を測定するための認知科学に基づいたフレームワークを提案する論文を発表した。"
+        },
+        {
+          "title": "OMEGA: Optimizing Machine Learning by Evaluating Generated Algorithms",
+          "url": "https://arxiv.org/abs/2604.26211",
+          "summary": "AI自身が新しい機械学習アルゴリズムを生成・評価するフレームワーク「OMEGA」に関する論文。AI研究の自動化を目指す。"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "本日最大の資金調達ニュースは、Anthropicが9000億ドル（約140兆円）という驚異的な評価額で500億ドルの資金調達を計画しているという報道だった。これが実現すれば、AI開発に必要な資金規模が新たな段階に入ったことを意味し、トッププレイヤーとその他との差がさらに開く可能性がある。この動きは、AIインフラへの巨額投資と連動しており、AGI開発競争の熾烈さを物語っている。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "Sources: Anthropic could raise a new $50B round at a valuation of $900B",
+          "url": "https://techcrunch.com/2026/04/29/sources-anthropic-could-raise-a-new-50b-round-at-a-valuation-of-900b/",
+          "summary": "Claudeの開発元Anthropicが、9000億ドルという記録的な評価額で500億ドルの資金調達を行う可能性があると報じられた。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "Anthropicの高性能モデル「Mythos」のアクセス拡大計画に対し、ホワイトハウスが待ったをかけたという報道が注目を集めた。政府利用への影響を懸念したもので、最先端AIの利用を巡り、開発企業と政府の間で緊張関係が生じていることを示唆している。この一件は、国家安全保障とAI技術の普及という二つの要請の間で、政策当局が難しい舵取りを迫られている現状を浮き彫りにした。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "🚨JUST IN: The White House reportedly OPPOSES Anthropic's plan to expand preview access to its Mythos AI model, per WSJ.",
+          "url": "https://x.com/coinbureau/status/2049715369540034579",
+          "summary": "WSJによると、ホワイトハウスはAnthropicのAIモデル「Mythos」のプレビューアクセス拡大計画に反対している。政府利用への影響が懸念されているという。"
+        },
+        {
+          "title": "Exclusive: The White House opposes a plan from Anthropic to expand access to its powerful artificial-intelligence model Mythos https://t.co/WmmlxMz9r5",
+          "url": "https://x.com/WSJ/status/2049668774349938691"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AnthropicのClaudeが、専門家でも解けなかった生物学の難問を解決したという報告は、AIが科学研究のフロンティアを押し広げる可能性を示した。また、Google Geminiが直接ドキュメントファイルを生成できるようになったことで、日常業務におけるAIの利便性が大幅に向上。コーディングや資料作成、スマートホーム制御など、AIエージェントが「作業を代行する」フェーズに入りつつあることが示された。",
+      "count": 21,
+      "key_articles": [
+        {
+          "title": "New on the Science Blog: We gave Claude 99 problems analyzing real biological data and compared its performance against an expert panel.",
+          "url": "https://x.com/AnthropicAI/status/2049624600741560340",
+          "summary": "Anthropicは、Claudeが生物学の難問を分析し、人間の専門家が解けなかった問題の約30%を解決したと発表した。"
+        },
+        {
+          "title": "Reid Hoffman Thinks Doctors Should Ask AI for a Second Opinion",
+          "url": "https://www.wired.com/story/reid-hoffman-ai-doctor-second-opinion-wired-health/",
+          "summary": "LinkedInの共同創業者リード・ホフマン氏は、医師がAIにセカンドオピニオンを求めないのは「医療過誤に近い」と述べ、医療分野でのAI活用を強く推進している。"
+        },
+        {
+          "title": "PEOPLE ARE NOW RUNNING CLAUDE CODE WITH LOCAL AI MODELS TO AVOID API COSTS.",
+          "url": "https://x.com/RoundtableSpace/status/2049658744674685295",
+          "summary": "開発者たちが、APIコストを回避するため、Claudeで生成したコードをOllamaやGemma 4のようなローカルAIモデルで実行する動きが広がっている。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "巨大テック4社が年間7000億ドル超を投じるAIインフラ投資の動向を注視し、自社のクラウド戦略やパートナー選定を見直す。",
+    "NVIDIA、Mistral、IBMなど多様な高性能モデルがオープンソースで公開されているため、自社の課題解決に最適なモデルを評価・選定し、PoC（概念実証）を計画する。",
+    "Geminiのファイル直接生成機能のような、実務に直結するAIツールの新機能をいち早く業務に取り入れ、生産性向上を図る。",
+    "元OpenAI研究者のヘッジファンドが電力インフラに投資して成功した事例を踏まえ、AIの普及に伴う電力需要の増大など、二次的なビジネスチャンスを検討する。",
+    "OpenAIの「ゴブリン問題」解説のように、自社でAIを活用する際に発生した予期せぬ挙動や失敗事例を記録・分析し、社内ナレッジとして共有する文化を醸成する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "巨大テック4社、年間7000億ドル超のAIインフラ投資計画",
+      "description": "Microsoft、Google、Meta、Amazonの4社が2026年にAIインフラへ合計約7000億ドル（約110兆円）を費やす見込みだというツイートが大きな衝撃を与えた。「国家予算や戦費に匹敵する」「文明の次のレイヤーが4つの民間企業によって作られている」といった驚きの声が多数上がっており、AGI開発競争の圧倒的なスケールと、その未来が数社の巨大テック企業に委ねられている現状に対する畏怖や懸念が広がっている。",
+      "buzz_level": "medium",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "@signulll",
+          "text": "msft, goog, meta, & amazon are on track to spend ~$700b on ai infrastructure in 2026.\n\nthis kinda spending usually happens via govts or wars whereas this time, it’s four companies racing to build the foundational mechanics of agi. \n\nkinda insane that the next layer of civilization is being ~entirely privately financed before most govts even understand what’s being built. has this ever happened before?!",
+          "url": "https://x.com/signulll/status/2049614400860921877",
+          "likes": 1190,
+          "retweets": 70
+        },
+        {
+          "author": "@StockMKTNewz",
+          "text": "JUST IN: THE AI INVESTMENT GROWS\n\nAmazon, Microsoft, Google and Meta Platforms just updated their guidance and now plan to spend a combined \n\n$710 BILLION on CAPEX this year\n\nAmazon $AMZN: $200B\nMicrosoft $MSFT: $190B\nGoogle $GOOGL: $185B\nMeta Platforms $META: $135B https://t.co/4M3AVvkjvC",
+          "url": "https://x.com/StockMKTNewz/status/2049614542749974736",
+          "likes": 636,
+          "retweets": 95
+        },
+        {
+          "author": "@StockSavvyShay",
+          "text": "$AMZN, $MSFT, $GOOGL and $META just updated guidance and now plan to spend a combined ~$710B on CapEx this year to build the AI economy: \n\n• Amazon ~$200B\n• Microsoft ~$190B\n• Google ~$185B\n• Meta ~$135B",
+          "url": "https://x.com/StockSavvyShay/status/2049617339516330470",
+          "likes": 574,
+          "retweets": 100
+        }
+      ]
+    },
+    {
+      "topic": "OpenAI、GPT-5の「ゴブリン問題」の原因を公式解説",
+      "description": "OpenAIが公式Xアカウントから「ゴブリンについて話します」と投稿し、GPT-5の挙動がおかしくなる問題の原因を解説したブログを公開。この直接的でユーモラスな対応が話題を呼んだ。ユーザーからは「透明性があって素晴らしい」「技術的な詳細を公開してくれるのはありがたい」と好意的な反応が多数寄せられている。AIのブラックボックス性を少しでも解消しようとする姿勢が評価された形だ。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@OpenAI",
+          "text": "We’re talking about Goblins. \nhttps://t.co/dqmcLGCW71",
+          "url": "https://x.com/OpenAI/status/2049690533845663830",
+          "likes": 4490,
+          "retweets": 487
+        }
+      ]
+    },
+    {
+      "topic": "プロンプトの工夫でClaudeを最大限活用するテクニック",
+      "description": "「Claudeに『これをやれ』と命令するのは、シニアエンジニアをインターンのように扱うことだ」というキャッチーな書き出しで始まる、高度なプロンプトテクニックを紹介するツイートが拡散した。具体的なプロンプト例が多数掲載されており、「コピーしてすぐ使える」「これは有益すぎる」といったコメントと共に、多くのユーザーによってブックマークされている。AIとの対話の質を高めたいというニーズの高さがうかがえる。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@Aina_Ai2",
+          "text": "Stop telling Claude, \"do this.\"\nStop telling Claude, \"write code.\"\nStop telling Claude, \"fix this error.\"\n\nYou're actually treating a senior AI like a junior intern.\nHere are 8 prompts you can copy and paste directly:",
+          "url": "https://x.com/Aina_Ai2/status/2049490182211301527",
+          "likes": 4989,
+          "retweets": 446
+        }
+      ]
+    },
+    {
+      "topic": "Gemini、チャットから直接ファイルを生成可能に",
+      "description": "Google Geminiがチャットから直接PDFやWord、Excelなどのファイルを生成できるようになったというニュースがXで大きな注目を集めた。「これは革命的」「コピー＆ペーストが不要になるのは神」「AIがアシスタントから実務担当者になった」など、その実用性を絶賛する声が相次いでいる。特に、手書きメモから整形されたPDFを生成するデモ動画は、多くのユーザーに衝撃を与えたようだ。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@AYi_AInotes",
+          "text": "Google的AI大模型终于有点像样的的更新更新，这波直接让不少靠AI生成文档的初创公司感受到巨大压力🤯👀\n\nGemini现在可以在聊天里直接生成Docs、Sheets、Slides、PDF、Word、Excel等主流办公文件，\n一句话prompt就能下载，\n完全不用复制粘贴、不用手动排版、不用调格式。\n\n支持的范围非常实用：包括带LaTeX公式的学术文档、表格、图表等。\n\n最震撼的是官方演示——",
+          "url": "https://x.com/AYi_AInotes/status/2049636674133537098",
+          "likes": 94,
+          "retweets": 15
+        }
+      ]
+    },
+    {
+      "topic": "Meta、AIツールが広告アカウントを直接管理できるCLIを公開",
+      "description": "Metaが、AIツールが自然言語を通じてMeta広告アカウントを直接管理できるようになるMCP（Meta Configuration Protocol）とCLI（コマンドラインインターフェース）をリリースしたことが開発者やマーケターの間で話題になっている。これにより、詳細なレポート作成やキャンペーン管理をAIに任せることが可能になる。「これはすぐにインストールすべき」「広告運用が劇的に変わる」といった期待の声が多く、AIエージェントによる業務自動化の新たな可能性として注目されている。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@BryanECano",
+          "text": "🚨 Meta released their Ads MCP and CLI today – if you use Claude or ChatGPT you should install this asap (resources in comments). \n\nWhat makes this announcement so interesting is that it gives AI tools direct, authorized access to help manage your Meta Ads account through natural language. \n\n1. Comprehensive reporting\nPull detailed reports, surface performance trends, and quickly understand what is happening across campaigns.\n\n2. Campaign management\nCreate and edit campaigns, ad sets, and ads wit",
+          "url": "https://x.com/BryanECano/status/2049659727492055353",
+          "likes": 1249,
+          "retweets": 99
+        }
+      ]
+    },
+    {
+      "topic": "元OpenAI研究者、電力株投資で巨万の富を築く",
+      "description": "22歳でOpenAIを解雇されたLeopold Aschenbrenner氏が立ち上げたヘッジファンドが、AI開発の根幹を成す「電力」に着目して投資を行い、1年で運用資産を25倍以上に増やしたという話が話題に。「先見の明がすごい」「AIのボトルネックは計算資源ではなく電力だという本質を突いている」と、その洞察力を称賛する声が多数寄せられている。AGI開発競争が激化する中で、その周辺領域に巨大なビジネスチャンスが生まれていることを示す象徴的な事例として受け止められている。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@MilkRoadAI",
+          "text": "Leopold Aschenbrenner, former OpenAI safety researcher, fired at 22, now running one of the best performing hedge funds on the planet.\n\nHe grew Situational Awareness LP from $225 million to $5.5 billion in roughly one year beating the S&P 500 by 47% in just his first six months.\n\nAnd the core bet wasn't Nvidia or OpenAI, it was electricity.\n\nHere's his actual mat and it's worth reading carefully (Save this).\n\nGPT-4 trained on roughly 10 megawatts of compute, a100-megawatt cluster followed in 202",
+          "url": "https://x.com/MilkRoadAI/status/2049636664361013390",
+          "likes": 629,
+          "retweets": 46
+        }
+      ]
+    }
+  ],
+  "run_time": "2026-04-30T09:06:31.681793+00:00",
+  "slot": "evening",
+  "item_count": 217,
+  "fallback_used_stages": []
+}
