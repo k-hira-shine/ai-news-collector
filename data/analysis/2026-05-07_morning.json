@@ -1,0 +1,356 @@
+{
+  "trend_summary": "本日のAI業界は、Anthropicがイーロン・マスク氏率いるSpaceXと提携し、同社のスーパーコンピューター「Colossus 1」の全計算能力を利用するという衝撃的なニュースが市場を席巻しました。この提携により、Anthropicは22万基以上のNVIDIA製GPUを追加確保し、主力モデル「Claude」の利用制限を大幅に緩和します。この動きは、AI開発競争のボトルネックがモデルのアルゴリズムから大規模な計算資源の確保へと完全に移行したことを象徴しており、業界の勢力図を塗り替える可能性を秘めています。また、AnthropicはAIエージェントが自律的に学習・改善する新機能「dreaming」も発表し、技術開発とインフラ確保の両面で攻勢を強めています。",
+  "trend_evolution": {
+    "since_last": "前回の分析ではOpenAIのAIスマートフォン開発の噂やAnthropicの金融特化エージェントが話題の中心でしたが、本日はAnthropicとSpaceXの電撃提携という、それを遥かに上回る規模のニュースが登場しました。これにより、これまでも続いていた「計算資源の確保」というトレンドが業界の最優先課題として一気に顕在化し、他の話題をほぼ全て上回る注目を集めています。Anthropic関連では、昨日までの金融エージェントの話題が新機能「dreaming」へとシフトし、同社の多角的な戦略が浮き彫りになりました。OpenAI関連の話題は相対的に沈静化しています。",
+    "tracked_topics": [
+      {
+        "topic": "AnthropicとSpaceXの電撃提携",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "突如として発表され、AI業界における計算資源確保の重要性を決定づけるニュースとなった。"
+      },
+      {
+        "topic": "AIエージェントの自己改善機能「dreaming」",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Anthropicが計算資源確保と同時に発表し、AIの自律的進化に関する議論を再燃させた。"
+      },
+      {
+        "topic": "計算資源（コンピュート）確保競争の激化",
+        "status": "RISING",
+        "streak_days": 6,
+        "evolution": "継続的なテーマだったが、今回の大型提携により、AI企業の存続をかけた最重要課題として再定義された。"
+      },
+      {
+        "topic": "OpenAIの新ネットワークプロトコル「MRC」",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "計算効率の改善を目指す動きとして、インフラ確保とは別軸の技術的アプローチとして登場。"
+      },
+      {
+        "topic": "OpenAI GPT-5.5 Instantのロールアウト",
+        "status": "FADING",
+        "streak_days": 3,
+        "evolution": "昨日の主要トピックだったが、Anthropicの大型ニュースの影で注目度が低下した。"
+      },
+      {
+        "topic": "GoogleのオンデバイスAI戦略（Gemini Nano）",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "ユーザーに無断で大容量ファイルをダウンロードしているとの批判が続き、プライバシー懸念が継続している。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "9b50a73e735dcce4",
+      "rank": 1,
+      "title": "Two frontier labs. One accelerated computing platform. Congrats to @SpaceX and @AnthropicAI on the new compute partnership, powered by 220,000+ NVIDIA GPUs inside Colossus 1. The future of AI runs on ",
+      "url": "https://x.com/nvidia/status/2052091408643756296",
+      "summary": "NVIDIAが、SpaceXとAnthropicの提携を祝福。SpaceXのデータセンター「Colossus 1」に搭載された22万基以上のNVIDIA製GPUが、このパートナーシップを支えていることを公式に認めた。",
+      "importance_reason": "AIインフラの心臓部であるGPUを提供するNVIDIAからの公式発表であり、提携の規模と技術的裏付けを最も権威ある形で示しているため。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "a2eeafa244367116",
+      "rank": 2,
+      "title": "Anthropic、マスク氏のSpaceXと契約　GPU22万基超を確保し「Claude」の利用制限を緩和",
+      "url": "https://www.itmedia.co.jp/news/articles/2605/07/news048.html",
+      "summary": "AnthropicがSpaceXとデータセンター「Colossus 1」の全演算能力を利用する契約を締結したと報じた。これによりNVIDIA製GPUを22万基以上確保し、Claudeの利用制限を大幅に緩和する。",
+      "importance_reason": "本日の最重要ニュースであるAnthropicとSpaceXの提携について、背景や規模（GPU22万基）、ユーザーへの影響（利用制限緩和）を包括的にまとめているため。",
+      "category": "企業動向",
+      "source_label": "rss:ITmedia AI+"
+    },
+    {
+      "id": "307fa2822c7fe967",
+      "rank": 3,
+      "title": "Effective today, we are: 1) Doubling Claude Code’s 5-hour rate limits for Pro, Max, and Team plans; 2) Removing the peak hours limit reduction on Claude Code for Pro and Max plans; and 3) Substanti",
+      "url": "https://x.com/claudeai/status/2052060693269008586",
+      "summary": "AnthropicがSpaceXとの提携に伴い、Claudeの利用制限を本日より緩和することを発表。Pro、Max、Teamプランでの5時間あたりのレートリミットが2倍になり、ピークタイムの制限も撤廃される。",
+      "importance_reason": "計算資源確保がユーザーにどのような利益をもたらすかを具体的に示した公式発表であり、Xでのエンゲージメントが極めて高く、ユーザーの関心の高さを物語っているため。",
+      "category": "企業動向",
+      "source_label": "x:@claudeai"
+    },
+    {
+      "id": "b2e634fd6c796cc5",
+      "rank": 4,
+      "title": "We’ve partnered with @AMD, @Broadcom, @Intel, @Microsoft, and @NVIDIA, to release Multipath Reliable Connection (MRC), a new open networking protocol that helps large AI training clusters run faster a",
+      "url": "https://x.com/OpenAI/status/2052025532485902368",
+      "summary": "OpenAIが、AMD、Intel、Microsoft、NVIDIAなどと共同で、大規模AIクラスタの学習を高速化・安定化させる新しいオープンネットワークプロトコル「MRC」をリリースしたと発表した。",
+      "importance_reason": "AI開発のもう一つのボトルネックであるネットワーク効率の改善に向けた重要な取り組み。業界の主要プレイヤーが結集しており、オープン標準化を目指す動きとして注目されるため。",
+      "category": "研究論文",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "e5bad48f471d316e",
+      "rank": 5,
+      "title": "BREAKING: Anthropic has released a feature called \"dreaming\" which allows AI agents to self-improve",
+      "url": "https://x.com/unusual_whales/status/2052068619635589466",
+      "summary": "Anthropicが、AIエージェントが自律的に学習し自己改善を行う新機能「dreaming」をリリースした。この機能により、エージェントは過去のセッションからパターンを学習する。",
+      "importance_reason": "計算資源の確保と同時に発表された、AIエージェントの能力を飛躍させる可能性のある新機能。AIの自律性向上という研究開発の最前線を示すニュースであるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@unusual_whales"
+    },
+    {
+      "id": "babe351610ba7342",
+      "rank": 6,
+      "title": "Same here. By way of background for those who care, I spent a lot of time last week with senior members of the Anthropic team to understand what they do to ensure Claude is good for humanity and was",
+      "url": "https://x.com/elonmusk/status/2052069691372478511",
+      "summary": "イーロン・マスク氏が、Anthropicチームと面会し、彼らが人類のためにAIを良くしようとしていることに感銘を受けたと投稿。これがSpaceXのデータセンターを貸し出す決定につながった背景を説明した。",
+      "importance_reason": "競合とも見られていたマスク氏が、Anthropicの理念に共感を示したという、提携の裏側にある人間的な側面を明らかにする投稿。業界の力学を理解する上で重要な情報であり、エンゲージメントも非常に高い。",
+      "category": "企業動向",
+      "source_label": "x:@elonmusk"
+    },
+    {
+      "id": "12fa961270152eb1",
+      "rank": 7,
+      "title": "xAI and SpaceXAI have just made Colossus 1 available to Anthropic to support Claude. This means more than 220,000 NVIDIA GPUs in one of the world’s largest and fastest-built AI superclusters are now ",
+      "url": "https://x.com/tetsuoai/status/2052085681548411380",
+      "summary": "xAIとAnthropicが、将来的に宇宙空間での太陽光発電によるAIコンピューティング施設の構築についても協議していると報じられている。今回の提携はその第一歩となる可能性がある。",
+      "importance_reason": "今回の提携が、将来の「宇宙データセンター」構想に繋がる可能性を示唆している点。AIインフラの未来に関する壮大なビジョンを提示しており、長期的なトレンドを占う上で興味深い。",
+      "category": "企業動向",
+      "source_label": "x:@tetsuoai"
+    },
+    {
+      "id": "47390b3577c1911d",
+      "rank": 8,
+      "title": "We’re partnering with the developers of @EveOnline to explore the next frontier of AI research in games. EVE's complex, player-driven universe is the perfect safe sandbox to test agents on memory, co",
+      "url": "https://x.com/GoogleDeepMind/status/2052011542707630461",
+      "summary": "Google DeepMindが、複雑なオンラインゲーム「EVE Online」の開発者と提携し、ゲームの世界をAIエージェントの研究用サンドボックスとして活用することを発表した。",
+      "importance_reason": "長期的な記憶や計画能力を持つ高度なAIエージェントを研究する上で、複雑な仮想世界がいかに重要かを示す事例。基礎研究における新たなアプローチとして注目される。",
+      "category": "研究論文",
+      "source_label": "x:@GoogleDeepMind"
+    },
+    {
+      "id": "de4a74e08ab06f31",
+      "rank": 9,
+      "title": "「Google Chrome 148」安定版リリース、Gemini Nanoがブラウザに組み込まれてウェブサイトから利用可能に",
+      "url": "https://gigazine.net/news/20260506-google-chrome-148/",
+      "summary": "Google Chromeの最新安定版バージョン148がリリースされ、ブラウザ内蔵のオンデバイスAIであるGemini Nanoがウェブサイトから利用可能になった。",
+      "importance_reason": "オンデバイスAIがOSレベルだけでなく、Webブラウザを通じて標準機能として組み込まれる大きな一歩。Webアプリケーションのあり方を変える可能性がある。",
+      "category": "モデル/ツール",
+      "source_label": "rss:GIGAZINE"
+    },
+    {
+      "id": "4251c14869afe94b",
+      "rank": 10,
+      "title": "do you understand what just happened to your computer.. Google Chrome secretly downloaded a 4GB AI model onto your device. Without asking.. Without telling you.. It's called weights.bin. It lives de",
+      "url": "https://x.com/k1rallik/status/2051745051894522198",
+      "summary": "Google Chromeが、ユーザーに通知なく4GBものAIモデル（Gemini Nanoのweights.bin）をPCにダウンロードしているという告発がX上で拡散。削除しても再ダウンロードされるとされ、大きな波紋を呼んでいる。",
+      "importance_reason": "オンデバイスAIの普及に伴うプライバシーとユーザーの自己決定権に関する問題を提起した投稿。極めて高いエンゲージメントを獲得しており、一般ユーザーの懸念を代弁しているため重要。",
+      "category": "モデル/ツール",
+      "source_label": "x:@k1rallik"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "企業動向",
+      "summary": "本日はAnthropicがSpaceXのスーパーコンピューター「Colossus 1」の全計算能力を利用するという、業界の勢力図を揺るがす電撃的な提携が最大のニュースとなった。これにより22万基以上のNVIDIA製GPUを確保し、Claudeの利用制限を大幅に緩和。イーロン・マスク氏も自ら経緯を語り、AI開発競争が計算資源の獲得競争へと完全にシフトしたことを象徴する一日となった。一方、OpenAIもインテルやNVIDIAなどと組み、データセンターのネットワーク効率を高める新技術「MRC」を発表し、インフラ競争の別の側面を見せた。",
+      "count": 35,
+      "key_articles": [
+        {
+          "title": "Anthropic、マスク氏のSpaceXと契約　GPU22万基超を確保し「Claude」の利用制限を緩和",
+          "url": "https://www.itmedia.co.jp/news/articles/2605/07/news048.html"
+        },
+        {
+          "title": "Our agreement with @SpaceX means we will use all the compute capacity at their Colossus 1 data center.",
+          "url": "https://x.com/claudeai/status/2052060694699237558"
+        },
+        {
+          "title": "Two frontier labs. One accelerated computing platform. Congrats to @SpaceX and @AnthropicAI on the new compute partnership, powered by 220,000+ NVIDIA GPUs inside Colossus 1. The future of AI runs on ",
+          "url": "https://x.com/nvidia/status/2052091408643756296"
+        },
+        {
+          "title": "Same here. By way of background for those who care, I spent a lot of time last week with senior members of the Anthropic team to understand what they do to ensure Claude is good for humanity and was",
+          "url": "https://x.com/elonmusk/status/2052069691372478511"
+        },
+        {
+          "title": "Anthropic Gets in Bed With SpaceX as the AI Race Turns Weird",
+          "url": "https://www.wired.com/story/anthropic-spacex-compute-deal-colossus/"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "Anthropicが、AIエージェントが過去のセッションから学び自己改善する新機能「dreaming」を発表し、注目を集めた。これにより、AIの自律的な能力向上が期待される。一方、Google Chromeは最新版でオンデバイスAI「Gemini Nano」をブラウザに統合したが、ユーザーの許可なく大容量のモデルファイルをダウンロードしているとの批判がXで広がり、プライバシーと透明性の観点から大きな議論を呼んでいる。また、OpenAIがGPT-5.5 Instantを展開開始したという情報も引き続き流れている。",
+      "count": 25,
+      "key_articles": [
+        {
+          "title": "BREAKING: Anthropic has released a feature called \"dreaming\" which allows AI agents to self-improve",
+          "url": "https://x.com/unusual_whales/status/2052068619635589466"
+        },
+        {
+          "title": "ANTHROPIC UNVEILS 'DREAMING' FEATURE TO HELP AI AGENTS ‘SELF-IMPROVE’",
+          "url": "https://x.com/DeItaone/status/2052060189927334145"
+        },
+        {
+          "title": "「Google Chrome 148」安定版リリース、Gemini Nanoがブラウザに組み込まれてウェブサイトから利用可能に",
+          "url": "https://gigazine.net/news/20260506-google-chrome-148/"
+        },
+        {
+          "title": "do you understand what just happened to your computer..",
+          "url": "https://x.com/k1rallik/status/2051745051894522198"
+        },
+        {
+          "title": "【速報】OpenAIがGPT-5.5 Instantを展開開始。",
+          "url": "https://x.com/masahirochaen/status/2051873138523451412"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "OpenAIがAMD、Intel、Microsoft、NVIDIAといった業界大手と共同で、AI学習クラスタの性能を向上させる新しいオープンネットワークプロトコル「MRC」を発表した。これは、計算資源の物理的な確保だけでなく、既存インフラの効率を最大化するアプローチとして重要である。また、Google DeepMindはオンラインゲーム「EVE Online」の世界をAIエージェントの実験場として活用する提携を発表し、AIの長期記憶や計画能力の研究を加速させる。その他、専門医より3年早くがんを発見するAIの研究も報告された。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "We’ve partnered with @AMD, @Broadcom, @Intel, @Microsoft, and @NVIDIA, to release Multipath Reliable Connection (MRC), a new open networking protocol that helps large AI training clusters run faster a",
+          "url": "https://x.com/OpenAI/status/2052025532485902368"
+        },
+        {
+          "title": "We’re partnering with the developers of @EveOnline to explore the next frontier of AI research in games.",
+          "url": "https://x.com/GoogleDeepMind/status/2052011542707630461"
+        },
+        {
+          "title": "専門医よりも3年早くガンを見つけるAIが誕生、通常のCT画像の「見えない変化」を検出",
+          "url": "https://gigazine.net/news/20260506-ai-cancer/"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "OpenAIが、大学生活の4年間を通じてChatGPTを活用してきた学生たちの功績を称える「ChatGPT Futures Class of 2026」を発表した。未知の天体マッピングや災害生存者の探知など、AIが学術研究や社会貢献に具体的に活用されている事例が示された。また、Googleも日本国内の120社以上における生成AIの活用事例集を公開し、ビジネス現場でのAI導入が様々な業界で進んでいることを強調している。",
+      "count": 10,
+      "key_articles": [
+        {
+          "title": "Introducing the ChatGPT Futures Class of 2026—26 honorees from the first graduating class to have had ChatGPT throughout all four years of university, who used AI to:",
+          "url": "https://x.com/OpenAI/status/2052086313797705954"
+        },
+        {
+          "title": "Googleが公開した「生成AI活用事例集2026年版」がすごいことになってた。国内120社以上の活用事例を余すことなく掲載。金融・小売・製造・IT・商社など各社の課題と解決策、成果指標まで具体的に掲載されており、Geminiや生成AIを実際に業務活用したいDX推進担当者は必見の内容...👇🧵 https://t.co/ym3beSYuxZ",
+          "url": "https://x.com/SuguruKun_ai/status/2051968276264308924"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "Appleが、SiriのAI機能実装の遅れを巡る集団訴訟で、2億5000万ドルを支払うことで和解に合意した。これは、AI機能の約束と実際の提供時期の乖離が法的なリスクになり得ることを示している。また、日本医師会がAIの臨床利用に関する答申を公表し、「Human-in-the-loop」の原則や、AIを「拡張知能」と位置づけるべきだとの見解を示した。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "Apple to pay $250M to settle lawsuit over Siri’s delayed AI features",
+          "url": "https://techcrunch.com/2026/05/06/apple-to-pay-250m-to-settle-lawsuit-over-siris-delayed-ai-features/"
+        },
+        {
+          "title": "AIの臨床利用に関する検討委員会（プロジェクト）答申　日本医師会",
+          "url": "https://x.com/EARL_med_tw/status/2051979018195603464"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "中国のAIラボであるDeepSeekが、最初の投資ラウンドで450億ドルという高い評価額に達する可能性があると報じられた。米国の巨大モデルよりも少ない計算能力とコストで高性能なLLMを開発したことで注目されており、AI分野での中国企業の台頭を示唆している。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "DeepSeek could hit $45B valuation from its first investment round",
+          "url": "https://techcrunch.com/2026/05/06/deepseek-could-hit-45b-valuation-from-its-first-investment-round/"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "【インフラ戦略の見直し】AI開発競争のボトルネックが計算資源の確保に移ったことを受け、自社のコンピュート戦略を再評価する。クラウド利用、データセンター提携、ハードウェア投資など、多角的な選択肢を検討する。",
+    "【ユーザー還元の迅速化】Anthropicが計算能力向上を即座に利用制限緩和に繋げたように、インフラ増強の成果を迅速に顧客価値に転換する体制を構築する。これは顧客満足度と競争優位性に直結する。",
+    "【オンデバイスAIのリスク管理】Google Chromeの事例を受け、オンデバイスAIを組み込む際は、ユーザーへの透明性（通知、同意取得）とリソース管理（ストレージ使用量）に最大限配慮する。信頼を損なうと普及の大きな障壁となる。",
+    "【オープンスタンダードへの貢献】OpenAIの「MRC」のように、業界共通の課題解決に繋がる技術標準化の動きに注目し、可能であれば貢献する。オープンなエコシステムへの参加は、長期的な技術的優位性に繋がる可能性がある。",
+    "【AIエージェントの活用準備】Anthropicの「dreaming」機能は、AIエージェントが自律的に進化する未来を示唆している。自社業務プロセスの中で、AIエージェントに委譲可能なタスクを洗い出し、段階的な導入計画を立て始める。"
+  ],
+  "x_trends": [
+    {
+      "topic": "AnthropicとSpaceXの電撃提携",
+      "description": "本日最大のニュース。AnthropicとSpaceX（xAI）が計算資源で提携し、Claudeの能力が大幅に向上するとの発表にXは騒然となった。Anthropic、xAI、NVIDIA、そしてイーロン・マスク本人までが次々に投稿し、情報の波が押し寄せた。ユーザーからは「AI戦争はコンピュート戦争になった」「予想外の組み合わせ」といった驚きの声が多く、業界の力学が大きく変わることへの期待と興奮が広がっている。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@claudeai",
+          "text": "Effective today, we are:\n\n1) Doubling Claude Code’s 5-hour rate limits for Pro, Max, and Team plans;\n\n2) Removing the peak hours limit reduction on Claude Code for Pro and Max plans; and\n\n3) Substantially raising our API rate limits for Opus models.",
+          "url": "https://x.com/claudeai/status/2052060693269008586",
+          "likes": 29235,
+          "retweets": 2312
+        },
+        {
+          "author": "@elonmusk",
+          "text": "Same here. \n\nBy way of background for those who care, I spent a lot of time last week with senior members of the Anthropic team to understand what they do to ensure Claude is good for humanity and was impressed. \n\nEveryone I met was highly competent and cared a great deal about doing the right thing. No one set off my evil detector. So long as they engage in critical self-examination, Claude will probably be good. \n\nAfter that, I was ok leasing Colossus 1 to Anthropic, as SpaceXAI had already mo",
+          "url": "https://x.com/elonmusk/status/2052069691372478511",
+          "likes": 16902,
+          "retweets": 1335
+        },
+        {
+          "author": "@xai",
+          "text": "SpaceXAI will provide @AnthropicAI with access to Colossus 1, one of the world’s largest and fastest-deployed AI supercomputers, to provide additional capacity for Claude → https://t.co/nfDR9S822L https://t.co/EQAz0S84m2",
+          "url": "https://x.com/xai/status/2052060350770515978",
+          "likes": 16354,
+          "retweets": 2001
+        }
+      ]
+    },
+    {
+      "topic": "Google Chrome、Gemini Nanoを無断ダウンロードか",
+      "description": "Google Chromeがユーザーに通知なく4GBもの大容量AIモデル（weights.bin）をPCにダウンロードしているとの指摘が大きな波紋を広げている。この投稿は360万回以上閲覧され、多くのユーザーが自分のPCを確認し、同様のファイルを発見したと報告。「ストレージの無駄遣い」「プライバシーの侵害だ」といった批判的な意見が殺到している。オンデバイスAIの利便性の裏で、ユーザーの同意と透明性が欠如している点に強い反発が起きている。",
+      "buzz_level": "high",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "@k1rallik",
+          "text": "do you understand what just happened to your computer..\n\nGoogle Chrome secretly downloaded a 4GB AI model onto your device. Without asking.. Without telling you..\n\nIt's called weights.bin. It lives deep in your system folders. It powers Gemini Nano - Google's on-device AI.\n\nAnd if you delete it? Chrome re-downloads it automatically. Like nothing happened.\n\nJust Google deciding your hard drive is their storage unit.\n\nAt 1 billion Chrome users - that's 4 BILLION gigabytes of data pushed silently a",
+          "url": "https://x.com/k1rallik/status/2051745051894522198",
+          "likes": 46984,
+          "retweets": 15536
+        }
+      ]
+    },
+    {
+      "topic": "Anthropicの新機能「dreaming」",
+      "description": "Anthropicが発表した、AIエージェントが自己改善する新機能「dreaming」も大きな話題となった。SpaceXとの提携ニュースと同時に発表されたことで相乗効果を生んでいる。「ついにAIが自律的に学習する時代が来たか」「SFの世界だ」といった期待の声が多く見られる。一方で、Wiredの記事のように「dreaming」といった人間的なプロセスを想起させる命名法に疑問を呈する声もあり、AIの能力向上と、それをどう社会が受け止めるかという議論も始まっている。",
+      "buzz_level": "medium",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "@unusual_whales",
+          "text": "BREAKING: Anthropic has released a feature called \"dreaming\" which allows AI agents to self-improve",
+          "url": "https://x.com/unusual_whales/status/2052068619635589466",
+          "likes": 4044,
+          "retweets": 255
+        },
+        {
+          "author": "@Polymarket",
+          "text": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
+          "url": "https://x.com/Polymarket/status/2052078010056982933",
+          "likes": 1709,
+          "retweets": 107
+        }
+      ]
+    },
+    {
+      "topic": "OpenAIの新ネットワークプロトコル「MRC」",
+      "description": "OpenAIがAMD、NVIDIA、Microsoftなど業界の巨人と共同で、AIデータセンターの効率を高める新プロトコル「MRC」を発表したことも、専門家や開発者コミュニティで注目された。Anthropicのニュースが規模の大きさで話題をさらったのに対し、こちらはAIインフラの「質」を高める技術的な取り組みとして評価されている。「計算資源の量だけでなく効率も重要」「オープンな取り組みが良い」といった肯定的な反応が見られた。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@OpenAI",
+          "text": "We’ve partnered with @AMD, @Broadcom, @Intel, @Microsoft, and @NVIDIA, to release Multipath Reliable Connection (MRC), a new open networking protocol that helps large AI training clusters run faster and more reliably, with less wasted GPU time.\n\nhttps://t.co/AiV952AJXs",
+          "url": "https://x.com/OpenAI/status/2052025532485902368",
+          "likes": 4514,
+          "retweets": 487
+        }
+      ]
+    }
+  ],
+  "run_time": "2026-05-06T22:09:06.433154+00:00",
+  "slot": "morning",
+  "item_count": 224,
+  "fallback_used_stages": []
+}
