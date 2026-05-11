@@ -37,6 +37,7 @@ def _default_x_runtime_meta() -> dict:
     return {
         "has_apify": False,
         "has_cookies": False,
+        "apify_actor": "",
         "search_queries_configured": 0,
         "search_total": 0,
         "search_error_count": 0,
@@ -114,9 +115,8 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     """Apify 経由で X/Twitter を収集 (検索 + 必須アカウント)"""
     meta = runtime_meta if runtime_meta is not None else _default_x_runtime_meta()
     token = os.environ.get("APIFY_TOKEN")
-    cookies = os.environ.get("X_COOKIES", "")
     meta["has_apify"] = bool(token)
-    meta["has_cookies"] = bool(cookies and "auth_token=" in cookies)
+    meta["has_cookies"] = False
     if not token:
         logger.warning("APIFY_TOKEN not set — skipping X/Twitter")
         return []
@@ -129,32 +129,24 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
     client = ApifyClient(token)
     x_cfg = config.get("x_twitter", {})
-    actor_id = x_cfg.get("apify_actor", "get-leads/all-in-one-x-scraper")
-    actor_build = x_cfg.get("apify_actor_build") or None
+    actor_id = x_cfg.get("apify_actor", "xquik/x-tweet-scraper")
+    meta["apify_actor"] = actor_id
     search_queries = x_cfg.get("search_queries", [])
     meta["search_queries_configured"] = len(search_queries)
     items: list[dict] = []
-    has_cookies = meta["has_cookies"]
 
-    if actor_build:
-        logger.info("Using pinned Actor build: %s", actor_build)
-
-    if has_cookies and search_queries:
-        # 3 クエリ × 個別起動 → 1 run にバッチ化（2026-04-23 テスト:
-        # maxResults はクエリごとに適用、コスト ~60% 削減）
+    if search_queries:
+        # xquik は searchTerms 配列で複数検索を1 runにまとめられる。
+        # maxItems は検索語ごとの上限として適用される（2026-05-11 比較テストで確認）。
         try:
             run_input = {
-                "scrapeMode": "x-search-scraper",
-                "searchQueries": list(search_queries),
-                "sort": "Top",
-                "maxResults": x_cfg.get("max_results_per_query", 40),
-                "loginCookies": cookies,
+                "searchTerms": list(search_queries),
+                "queryType": "Top",
+                "maxItems": x_cfg.get("max_results_per_query", 40),
+                "includeSearchTerms": True,
             }
 
-            call_kwargs: dict = {"run_input": run_input, "timeout_secs": 300}
-            if actor_build:
-                call_kwargs["build"] = actor_build
-            run = client.actor(actor_id).call(**call_kwargs)
+            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
             meta["apify_runs"] += 1
             meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
             run_status = (run or {}).get("status", "")
@@ -186,10 +178,8 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         except Exception as e:
             meta["search_error_count"] += len(search_queries)
             logger.error("X search batch failed: %s", e)
-    elif has_cookies:
-        logger.info("X search queries not configured — skipping search queries")
     else:
-        logger.info("X_COOKIES not set — skipping search queries (timeline only)")
+        logger.info("X search queries not configured — skipping search queries")
 
     must_follow = x_cfg.get("must_follow_accounts", [])
     meta["must_follow_configured"] = len(must_follow)
@@ -197,17 +187,15 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         try:
             handles = [acct["handle"] for acct in must_follow]
             priority_map = {acct["handle"].lower(): acct for acct in must_follow}
+            account_queries = [f"from:{handle} -filter:replies" for handle in handles]
             run_input: dict = {
-                "scrapeMode": "x-timeline-scraper",
-                "profiles": handles,
-                "maxResults": 10,
-                "loginCookies": cookies,
+                "searchTerms": account_queries,
+                "queryType": "Latest",
+                "maxItems": x_cfg.get("max_results_per_account", 10),
+                "includeSearchTerms": True,
             }
 
-            call_kwargs = {"run_input": run_input, "timeout_secs": 300}
-            if actor_build:
-                call_kwargs["build"] = actor_build
-            run = client.actor(actor_id).call(**call_kwargs)
+            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
             meta["apify_runs"] += 1
             meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
             run_status = (run or {}).get("status", "")
@@ -245,12 +233,6 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             meta["must_follow_error"] = True
             logger.error("X must-follow batch failed: %s", e)
 
-    if has_cookies and _should_warn_x_cookies(meta):
-        logger.warning(
-            "⚠️ X search returned 0 results with auth errors AND must-follow "
-            "timeline is empty — cookies are likely expired. Update X_COOKIES."
-        )
-
     min_eng = x_cfg.get("min_engagement", 0)
     if min_eng > 0:
         before = len(items)
@@ -272,15 +254,23 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
 
 def _normalize_tweet(tweet: dict) -> dict:
-    url = tweet.get("url") or tweet.get("tweetUrl") or ""
+    url = tweet.get("url") or tweet.get("tweetUrl") or tweet.get("twitterUrl") or ""
     author_obj = tweet.get("author") or {}
-    username = author_obj.get("userName") or tweet.get("username") or "unknown"
+    username = (
+        author_obj.get("userName")
+        or author_obj.get("username")
+        or tweet.get("username")
+        or tweet.get("userName")
+        or tweet.get("authorUsername")
+        or "unknown"
+    )
+    text = tweet.get("text") or tweet.get("fullText") or ""
     return {
         "id": hash_url(url),
         "source": "x",
         "url": url,
-        "title": (tweet.get("text") or "")[:200],
-        "content": tweet.get("text") or "",
+        "title": text[:200],
+        "content": text,
         "author": username,
         "published_at": tweet.get("createdAt") or "",
         "collected_at": now_iso(),

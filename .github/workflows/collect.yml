@@ -39,9 +39,7 @@ jobs:
       - name: Run collector
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
-          X_COOKIES: ${{ secrets.X_COOKIES }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: python main.py
 
       - name: Commit & push data
