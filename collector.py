@@ -135,6 +135,9 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     meta["search_queries_configured"] = len(search_queries)
     items: list[dict] = []
 
+    max_age_days = config.get("collection", {}).get("max_age_days", 2)
+    since_date = (datetime.now(timezone.utc) - timedelta(days=max_age_days)).strftime("%Y-%m-%d")
+
     if search_queries:
         # xquik は searchTerms 配列で複数検索を1 runにまとめられる。
         # maxItems は検索語ごとの上限として適用される（2026-05-11 比較テストで確認）。
@@ -144,6 +147,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 "queryType": "Top",
                 "maxItems": x_cfg.get("max_results_per_query", 40),
                 "includeSearchTerms": True,
+                "since": since_date,
             }
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
@@ -193,6 +197,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 "queryType": "Latest",
                 "maxItems": x_cfg.get("max_results_per_account", 10),
                 "includeSearchTerms": True,
+                "since": since_date,
             }
 
             run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
