@@ -61,12 +61,17 @@ jobs:
 
       - name: Deploy to GitHub Pages
         env:
-          PAGES_DEPLOY_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN }}
+          PAGES_DEPLOY_KEY: ${{ secrets.PAGES_DEPLOY_KEY }}
         run: |
-          if [ -z "${PAGES_DEPLOY_TOKEN}" ]; then
-            echo "PAGES_DEPLOY_TOKEN is not set; skipping GitHub Pages deploy."
+          if [ -z "${PAGES_DEPLOY_KEY}" ]; then
+            echo "PAGES_DEPLOY_KEY is not set; skipping GitHub Pages deploy."
             exit 0
           fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "${PAGES_DEPLOY_KEY}" > ~/.ssh/pages_deploy_key
+          chmod 600 ~/.ssh/pages_deploy_key
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/pages_deploy_key -o IdentitiesOnly=yes"
           cd docs
           git init
           git config user.name "github-actions[bot]"
@@ -74,5 +79,5 @@ jobs:
           git add .
           git commit -m "deploy: $(date -u +%Y-%m-%d_%H%M)"
           git push --force \
-            "https://x-access-token:${PAGES_DEPLOY_TOKEN}@github.com/k-hira-shine/ai-news-dashboard.git" \
+            "git@github.com:k-hira-shine/ai-news-dashboard.git" \
             HEAD:main
