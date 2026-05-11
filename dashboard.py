@@ -98,6 +98,8 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
+.nav-link {{ display: inline-block; margin-top: 0.8rem; padding: 0.4rem 1.2rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
+.nav-link:hover {{ background: #475569; }}
 .card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
 .card h2 {{ font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
 .trend {{ font-size: 1rem; }}
@@ -156,6 +158,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 <header>
   <h1>🤖 AI News Dashboard</h1>
   <div class="updated">Last updated: {now_str}</div>
+  <a class="nav-link" href="strategy.html">🎯 施策提案ページへ →</a>
 </header>
 {body}
 </div>
