@@ -1,0 +1,128 @@
+name: Compare X Actors
+
+on:
+  workflow_dispatch:
+
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install Apify client
+        run: pip install apify-client
+
+      - name: Run actor comparison
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import time
+
+          from apify_client import ApifyClient
+
+          token = os.environ["APIFY_TOKEN"]
+          client = ApifyClient(token)
+
+          search_query = "ChatGPT OR Claude OR Gemini OR OpenAI OR Anthropic lang:en -filter:replies"
+          official_queries = ["from:OpenAI", "from:AnthropicAI", "from:GoogleDeepMind"]
+
+          actors = [
+              {
+                  "name": "apidojo/tweet-scraper",
+                  "actor_id": "apidojo/tweet-scraper",
+                  "input": {
+                      "searchTerms": [search_query, *official_queries],
+                      "sort": "Top",
+                      "tweetLanguage": "en",
+                      "maxItems": 10,
+                      "includeSearchTerms": True,
+                  },
+              },
+              {
+                  "name": "xquik/x-tweet-scraper",
+                  "actor_id": "xquik/x-tweet-scraper",
+                  "input": {
+                      "searchTerms": [search_query, *official_queries],
+                      "queryType": "Top",
+                      "maxItems": 10,
+                      "includeSearchTerms": True,
+                  },
+              },
+              {
+                  "name": "kaitoeasyapi/twitter-x-data-tweet-scraper-pay-per-result-cheapest",
+                  "actor_id": "kaitoeasyapi/twitter-x-data-tweet-scraper-pay-per-result-cheapest",
+                  "input": {
+                      "searchTerms": [search_query, *official_queries],
+                      "queryType": "Top",
+                      "maxItems": 20,
+                  },
+              },
+          ]
+
+          def pick(item, *keys):
+              for key in keys:
+                  if key in item and item[key] not in (None, ""):
+                      return item[key]
+              return None
+
+          def normalize_sample(item):
+              author = item.get("author") if isinstance(item.get("author"), dict) else {}
+              return {
+                  "id": pick(item, "id", "tweetId", "rest_id"),
+                  "url": pick(item, "url", "tweetUrl", "twitterUrl"),
+                  "text": (pick(item, "text", "fullText", "content") or "")[:180],
+                  "author": pick(item, "username", "userName", "authorUsername") or author.get("userName") or author.get("username"),
+                  "likes": pick(item, "likeCount", "likes", "favorite_count"),
+                  "retweets": pick(item, "retweetCount", "retweets", "retweet_count"),
+                  "created_at": pick(item, "createdAt", "created_at", "timestamp"),
+                  "keys": sorted(list(item.keys()))[:40],
+              }
+
+          results = []
+          for actor in actors:
+              started = time.time()
+              result = {
+                  "name": actor["name"],
+                  "actor_id": actor["actor_id"],
+                  "status": "UNKNOWN",
+                  "elapsed_sec": None,
+                  "usage_total_usd": None,
+                  "item_count": 0,
+                  "sample": None,
+                  "error": None,
+              }
+              try:
+                  run = client.actor(actor["actor_id"]).call(
+                      run_input=actor["input"],
+                      timeout_secs=420,
+                  )
+                  result["status"] = (run or {}).get("status")
+                  result["usage_total_usd"] = (run or {}).get("usageTotalUsd")
+                  items = list(client.dataset(run["defaultDatasetId"]).iterate_items())
+                  result["item_count"] = len(items)
+                  if items:
+                      result["sample"] = normalize_sample(items[0])
+              except Exception as exc:
+                  result["status"] = "ERROR"
+                  result["error"] = repr(exc)
+              finally:
+                  result["elapsed_sec"] = round(time.time() - started, 1)
+              results.append(result)
+              print(json.dumps(result, ensure_ascii=False, indent=2))
+
+          with open("actor-compare-results.json", "w", encoding="utf-8") as f:
+              json.dump(results, f, ensure_ascii=False, indent=2)
+          PY
+
+      - name: Upload comparison result
+        uses: actions/upload-artifact@v5
+        with:
+          name: actor-compare-results
+          path: actor-compare-results.json
