@@ -59,7 +59,13 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
     for f in files[: days * 2]:
         try:
             with open(f, "r", encoding="utf-8") as fh:
-                results.append(json.load(fh))
+                analysis = json.load(fh)
+                base = os.path.basename(f).rsplit(".json", 1)[0]
+                if len(base) >= 10:
+                    analysis["_display_date"] = base[:10]
+                if "_" in base:
+                    analysis["_display_slot"] = base.rsplit("_", 1)[1]
+                results.append(analysis)
         except (json.JSONDecodeError, OSError):
             continue
     return results
@@ -158,8 +164,9 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 
 
 def _render_latest(a: dict) -> str:
-    slot_label = "朝便" if a.get("slot") == "morning" else "夕便"
-    run_date = (a.get("run_time", ""))[:10]
+    display_slot = a.get("_display_slot") or a.get("slot")
+    slot_label = "朝便" if display_slot == "morning" else "夕便"
+    run_date = a.get("_display_date") or (a.get("run_time", ""))[:10]
 
     parts: list[str] = []
 
@@ -311,7 +318,7 @@ def _render_history(history: list[dict]) -> str:
 
     counts = []
     for h in reversed(history[:14]):
-        date = (h.get("run_time", ""))[:10]
+        date = h.get("_display_date") or (h.get("run_time", ""))[:10]
         n = h.get("item_count", 0)
         counts.append((date, n))
 
