@@ -1,398 +1,342 @@
 {
-  "trend_summary": "今日のAI業界は、OpenAIとAnthropicによる大規模な発表が相次ぎ、熾烈な競争が展開されました。OpenAIは、ChatGPTの新モデル「GPT-5.5 Instant」や音声AI「GPT-Realtime-2」を投入し、さらにエンタープライズ向けの「OpenAI Deployment Company」を設立するなど、製品とビジネスの両面で攻勢を強めています。対するAnthropicも、AIの自己改善を可能にする「dreaming」機能や、モデルの思考を可視化する「Natural Language Autoencoders」研究を発表し、技術的深化をアピールしました。また、xAIとAnthropicのコンピューティング提携も大きな注目を集め、AI開発の根幹をなす計算資源の確保が競争の鍵であることを改めて印象付けました。",
+  "trend_summary": "本日のAI業界はAnthropicが中心となり、AIエージェントの自己改善機能「dreaming」や金融特化型エージェント群を発表し、技術革新を強く印象付けました。並行して、Appleが次期OSでSiriにGemini、ChatGPT、Claudeを選択可能にするとの噂が浮上し、大手プラットフォームにおけるAIモデルの主導権争いが激化しています。さらに、Metaが著作権侵害で大手出版社から提訴されるなど、AI開発と知財権の対立も深刻化しており、技術、ビジネス、規制の各方面で重要な動きが同時に進行する一日となりました。",
   "trend_evolution": {
-    "since_last": "初回実行のため比較データなし",
+    "since_last": "前回のOpenAIによる新モデル発表の波から一転し、本日はAnthropicが新機能や金融向けエージェントの発表で市場の注目を独占しました。新たに、AppleのSiriへのサードパーティAI統合の噂や、Metaに対する大規模な著作権訴訟が浮上し、議論の焦点がモデル性能競争からプラットフォーム統合と法的リスクへと拡大しています。OpenAIに関する話題は、従業員の株式売却という内部動向にシフトしており、AI業界の競争と成長の複雑な側面が浮き彫りになっています。",
     "tracked_topics": [
       {
-        "topic": "OpenAIの製品・事業拡大",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "GPT-5.5 Instantのロールアウト、リアルタイム音声API、サイバーセキュリティツール「Daybreak」、エンタープライズ向け新会社設立など、多岐にわたる発表が同時に行われました。"
+        "topic": "Anthropicの製品攻勢（Dreaming, 金融エージェント）",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "スーパーコンピュータ提携の報道から、具体的な新機能や業界特化エージェントの発表へと進展し、市場への影響力を強化している。"
       },
       {
-        "topic": "Anthropicの技術的進展",
+        "topic": "AppleのAI戦略とサードパーティ統合",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "AIエージェントの自己改善機能「dreaming」や、モデルの思考を可視化する「Natural Language Autoencoders」といった基礎研究に関する発表が相次ぎました。"
+        "evolution": "次期OS「iOS 27」のSiriでGemini, ChatGPT, Claudeを選択可能にするという噂が初めて報じられた。"
       },
       {
-        "topic": "xAIとAnthropicの計算資源提携",
+        "topic": "AIの著作権侵害訴訟（Meta）",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "xAIが巨大AIスーパーコンピュータ「Colossus 1」をAnthropicに提供するという、競合間の異例の提携が発表されました。"
+        "evolution": "大手出版社らがMetaとザッカーバーグCEOを著作権侵害で提訴し、AI学習データに関する法的問題が再び大きく注目された。"
       },
       {
-        "topic": "エンタープライズAIの本格展開",
+        "topic": "OpenAIの内部動向（従業員株式売却）",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "OpenAIがコンサルティング会社や投資会社と連携して「OpenAI Deployment Company」を設立し、大企業へのAI導入支援を本格化させました。"
+        "evolution": "従業員による66億ドル相当の株式売却が報じられ、AIバブルへの懸念や内部の動向に注目が集まった。"
       },
       {
-        "topic": "AIの安全性と解釈可能性の研究",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "Anthropicがモデルの思考プロセスを人間が読めるテキストに変換する研究や、不適切な行動の除去に関する研究を発表し、AIの透明性向上に向けた取り組みが注目されました。"
+        "topic": "AIエージェントの実用化と開発",
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "OpenAI Codexによるバグ発見事例やClaude Codeを活用した開発事例が報告され、エージェント技術の具体的なユースケースが増加している。"
       },
       {
-        "topic": "Googleの静かなモデル展開とプライバシー懸念",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "Google Chromeがユーザーの明確な同意なしに大規模なAIモデルをダウンロードしているとの指摘が広まり、プライバシーに関する議論が巻き起こりました。"
-      },
-      {
-        "topic": "AIネットワーキング技術の進化",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "OpenAIが主要テック企業と共同で、大規模AIクラスタ向けの新しいオープンネットワーキングプロトコル「MRC」を発表しました。"
+        "topic": "AI半導体・インフラ市場の活況",
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "Micronの利益予測や東京応化工業の好決算が報じられ、AIブームが半導体関連企業に与える好影響が継続して示されている。"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "7a379c2d7b347a0f",
+      "id": "8d4509a3bebcd9f3",
       "rank": 1,
-      "title": "GPT-5.5 Instant is starting to roll out in ChatGPT.",
-      "url": "https://x.com/OpenAI/status/2051709028250915275",
-      "summary": "OpenAIが、ChatGPTに新モデル「GPT-5.5 Instant」の展開を開始したことを発表しました。このアップグレードにより、よりスマートで明確、パーソナライズされた回答を、より自然なトーンで提供できるとしています。",
-      "importance_reason": "OpenAIのフラッグシップモデルのメジャーアップデートであり、業界全体の性能基準を引き上げる可能性が高い最重要ニュースです。",
-      "category": "モデル/ツール",
-      "source_label": "x:@OpenAI"
+      "title": "JUST IN: Anthropic unveils 10 new AI agents built for banks, insurers, & financial firms.",
+      "url": "https://x.com/Polymarket/status/2051681814159241333",
+      "summary": "Anthropicが、銀行、保険会社、金融機関向けに特化して構築された10種類の新しいAIエージェントを発表しました。これは、AIの業界特化型ソリューションへのシフトを象徴する動きです。",
+      "importance_reason": "これまで汎用的であったAIエージェントが、金融という規制が厳しく専門性の高い分野に本格的に進出するマイルストーンであり、企業のAI導入を加速させる可能性があるため。",
+      "category": "企業動向",
+      "source_label": "x:@Polymarket"
     },
     {
-      "id": "b9e801fb3386f9de",
+      "id": "f1c8bbf65a31d6e8",
       "rank": 2,
-      "title": "Introducing GPT-Realtime-2 in the API: our most intelligent voice model yet, bringing GPT-5-class reasoning to voice agents.",
-      "url": "https://x.com/OpenAI/status/2052438194625593804",
-      "summary": "OpenAIは、APIで利用可能な新しい音声モデル「GPT-Realtime-2」を発表しました。GPT-5クラスの推論能力を音声エージェントにもたらし、リアルタイムでの対話、推論、問題解決が可能になります。",
-      "importance_reason": "リアルタイム音声対話AIの能力を飛躍的に向上させる発表であり、音声インターフェースの普及を加速させる可能性があります。",
+      "title": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
+      "url": "https://x.com/Polymarket/status/2052078010056982933",
+      "summary": "Anthropicは、AIエージェントがセッションの合間に自己改善を行う新機能「dreaming」をClaudeに導入しました。これにより、AIは継続的に学習し、パフォーマンスを向上させることが可能になります。",
+      "importance_reason": "AIがタスク実行時だけでなく、アイドル時間にも自律的に学習・改善する能力を持つことを示しており、AIエージェントの自律性と性能向上に大きなブレークスルーをもたらす可能性があるため。",
       "category": "モデル/ツール",
-      "source_label": "x:@OpenAI"
+      "source_label": "x:@Polymarket"
     },
     {
-      "id": "60f87a2ef3dca4a8",
+      "id": "a98b53499c5a1e31",
       "rank": 3,
-      "title": "SpaceXAI will provide @AnthropicAI with access to Colossus 1, one of the world’s largest and fastest-deployed AI supercomputers, to provide additional capacity for Claude",
-      "url": "https://x.com/xai/status/2052060350770515978",
-      "summary": "xAIは、世界最大級のAIスーパーコンピュータ「Colossus 1」へのアクセスをAnthropicに提供し、Claudeモデルの追加キャパシティを支援します。",
-      "importance_reason": "AI開発競争の鍵である計算資源を、競合であるxAIがAnthropicに提供するという異例の提携であり、業界の力学に大きな影響を与える可能性があります。",
+      "title": "Apple is saying that Siri in iOS 27 will let you choose your own AI model between Gemini, ChatGPT, or Claude. There's noticeably someone missing from this list... 😢",
+      "url": "https://x.com/AutismCapital/status/2051838872729088369",
+      "summary": "Appleが次期OS「iOS 27」において、Siriで利用するAIモデルをGemini、ChatGPT、Claudeからユーザーが選択できるようにするとの噂が報じられています。",
+      "importance_reason": "世界最大のプラットフォームの一つであるApple製品に主要なAIモデルが統合される可能性を示唆しており、AIの普及とモデル間の競争を決定づける極めて重要な動きであるため。",
       "category": "企業動向",
-      "source_label": "x:@xai"
+      "source_label": "x:@AutismCapital"
     },
     {
-      "id": "95769c2eab4c523e",
+      "id": "4dd1b9b60ebd6dc4",
       "rank": 4,
-      "title": "Today we’re launching the OpenAI Deployment Company to help businesses build and deploy AI.",
-      "url": "https://x.com/OpenAI/status/2053824997777457651",
-      "summary": "OpenAIは、企業のAI構築・導入を支援する新会社「OpenAI Deployment Company」の設立を発表しました。OpenAIが過半数を所有・管理し、19の主要な投資会社やコンサルティング会社が参画します。",
-      "importance_reason": "AIのエンタープライズ利用を本格化させるための戦略的な動きであり、OpenAIのビジネスモデルが研究開発から実社会への導入支援へと拡大していることを示しています。",
-      "category": "企業動向",
-      "source_label": "x:@OpenAI"
+      "title": "Meta and CEO Mark Zuckerberg are being sued by five publishers and author Scott Turow, who allege the tech company illegally copied millions of books, articles and other works to train Meta’s AI syste",
+      "url": "https://x.com/Variety/status/2051721056847831514",
+      "summary": "MetaとそのCEOマーク・ザッカーバーグが、5つの出版社と作家から著作権侵害で提訴されました。訴訟では、MetaがAIの学習のために数百万点の書籍や記事を違法にコピーしたと主張されています。",
+      "importance_reason": "AI開発における学習データの著作権問題が、大手テック企業に対する大規模な訴訟に発展した事例であり、今後のAI開発の法的リスクとコンプライアンスのあり方に大きな影響を与えるため。",
+      "category": "規制/政策",
+      "source_label": "x:@Variety"
     },
     {
-      "id": "b2e634fd6c796cc5",
+      "id": "0e7875381108ec93",
       "rank": 5,
-      "title": "We’ve partnered with @AMD, @Broadcom, @Intel, @Microsoft, and @NVIDIA, to release Multipath Reliable Connection (MRC), a new open networking protocol that helps large AI training clusters run faster a",
-      "url": "https://x.com/OpenAI/status/2052025532485902368",
-      "summary": "OpenAIは、AMD、Broadcom、Intel、Microsoft、NVIDIAと提携し、大規模AI学習クラスタの高速化と信頼性向上を目的とした新しいオープンネットワーキングプロトコル「MRC」をリリースしました。",
-      "importance_reason": "AI開発のボトルネックであるインフラ技術に関して、業界の主要プレイヤーが連携してオープンな標準を策定する動きであり、今後の大規模モデル開発に不可欠な基盤となります。",
-      "category": "研究論文",
-      "source_label": "x:@OpenAI"
+      "title": "Claude Opus 4.7, Sonnet 4.6, GPT-5.5 (Thinking + Pro), Gemini 3.1 Pro, DeepSeek V4 Pro, and Kimi 2.6 Thinking. All running inside Abacus AI ChatLLM",
+      "url": "https://x.com/abacusai/status/2051715799333687381",
+      "summary": "Abacus AIが、Claude、GPT、Geminiなどの最新フロンティアモデルを一つのワークスペースで利用・比較できるプラットフォーム「ChatLLM」を発表しました。これにより、ユーザーはツールを切り替えることなく最適なモデルにアクセスできます。",
+      "importance_reason": "多数の高性能モデルが登場する中で、それらを統合的に管理・活用する「メタ・プラットフォーム」の需要が高まっていることを示しており、AI利用の効率化と普及を促進するため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@abacusai"
     },
     {
-      "id": "9e868506e80845b5",
+      "id": "2982ea2293b05cb4",
       "rank": 6,
-      "title": "New Anthropic research: Natural Language Autoencoders.",
-      "url": "https://x.com/AnthropicAI/status/2052435436157452769",
-      "summary": "Anthropicは、AIモデルの内部的な思考（活性化）を、人間が読める自然言語のテキストに翻訳する新技術「Natural Language Autoencoders」に関する研究を発表しました。",
-      "importance_reason": "AIの「ブラックボックス」問題に取り組む画期的な研究であり、モデルの解釈可能性と安全性を向上させる上で大きな一歩となります。",
-      "category": "研究論文",
-      "source_label": "x:@AnthropicAI"
-    },
-    {
-      "id": "d5407e0d23972b88",
-      "rank": 7,
-      "title": "OpenAI is launching Daybreak, our effort to accelerate cyber defense and continuously secure software.",
-      "url": "https://x.com/sama/status/2053951874408276193",
-      "summary": "OpenAIは、サイバー防衛を加速し、ソフトウェアの継続的なセキュリティを確保するための取り組み「Daybreak」を発表しました。最先端のAIモデルを活用して、セキュリティチームを支援します。",
-      "importance_reason": "AIをサイバーセキュリティという重要な分野に応用する具体的な製品・イニシアチブであり、AIの社会実装における新たなユースケースを示しています。",
-      "category": "ユースケース",
-      "source_label": "x:@sama"
-    },
-    {
-      "id": "da43fe95853a99f7",
-      "rank": 8,
-      "title": "Introducing Daybreak: frontier AI for cyber defenders.",
-      "url": "https://x.com/OpenAI/status/2053939702110269822",
-      "summary": "OpenAIは、サイバー防衛者向けの最先端AIツール「Daybreak」を発表しました。最も高性能なOpenAIモデルやCodexを統合し、サイバー防衛の加速とソフトウェアの継続的な保護を目指します。",
-      "importance_reason": "ユースケース特化型のAIツールの発表であり、OpenAIが汎用モデルだけでなく、特定ドメインでのソリューション提供にも力を入れ始めたことを示唆しています。",
-      "category": "モデル/ツール",
-      "source_label": "x:@OpenAI"
-    },
-    {
-      "id": "3d32dccb485f416a",
-      "rank": 9,
-      "title": "Introducing the OpenAI Deployment Company, which will help businesses maximally succeed with their deployments of AI.",
-      "url": "https://x.com/gdb/status/2053884619695730745",
-      "summary": "OpenAIのCOOであるBrad Lightcap氏が、企業のAI導入を最大限に成功させるための「OpenAI Deployment Company」を紹介。初期段階で150人の専門エンジニアと、19のパートナーから40億ドルの初期投資を得ています。",
-      "importance_reason": "OpenAIの公式発表を補完する幹部からの発信であり、新会社の規模と本気度を具体的に示す情報です。",
+      "title": "THIS IS VERY CONCERNING 🚨 OpenAI employees just sold $6.6 billion worth of shares. While new investors keep pouring money into AI, early insiders are already cashing out.",
+      "url": "https://x.com/cryptorover/status/2053830239076200826",
+      "summary": "OpenAIの従業員が66億ドル相当の自社株を売却したことが報じられています。投資家がAI分野に資金を注ぎ込む一方で、初期からの関係者が利益確定に動いていることが示唆されています。",
+      "importance_reason": "AI業界のリーダーであるOpenAIの内部関係者が大規模な株式売却を行ったことは、市場の過熱感や将来性に対する見方を示す可能性があり、投資家心理に影響を与えるため。",
       "category": "企業動向",
-      "source_label": "x:@gdb"
+      "source_label": "x:@cryptorover"
     },
     {
-      "id": "f4ea596e0c300808",
-      "rank": 10,
-      "title": "Codex now works directly in Chrome on macOS and Windows.",
-      "url": "https://x.com/OpenAI/status/2052480800004956323",
-      "summary": "OpenAIは、AIコーディングアシスタント「Codex」がChrome上で直接動作するようになったことを発表しました。ブラウザ内のアプリやサイトとの連携が強化され、バックグラウンドでの並列作業も可能になります。",
-      "importance_reason": "開発者のワークフローに深く統合される重要なアップデートであり、AIによるプログラミング支援の利便性を大幅に向上させます。",
+      "id": "a2ce427b6c0e104f",
+      "rank": 7,
+      "title": "I think this is bigger than it sounds at first glance. Thinking Machines hasn't just unveiled \"ChatGPT, but better.\" Instead, they've introduced something that addresses a much deeper issue: the very",
+      "url": "https://x.com/kimmonismus/status/2053952846064767384",
+      "summary": "Thinking Machinesが、従来のターン制の対話モデルとは異なり、同時に聞き、見て、話し、割り込むことができる新しいインタラクションモデルを発表しました。これにより、より自然で人間らしいAIとの対話が可能になると期待されています。",
+      "importance_reason": "現在のAIインタラクションの基本的な制約（ターン制）を克服しようとする試みであり、実現すればヒューマン・コンピュータ・インタラクションのパラダイムを大きく変える可能性があるため。",
       "category": "モデル/ツール",
-      "source_label": "x:@OpenAI"
+      "source_label": "x:@kimmonismus"
+    },
+    {
+      "id": "c46cac7b64a4359d",
+      "rank": 8,
+      "title": "OpenAI Codex was given one task: find a bug bounty. It searched open-source projects, found a vulnerability, submitted a PR, worked with maintainers, passed verification… and earned real money 💰",
+      "url": "https://x.com/MervinPraison/status/2053763500586020895",
+      "summary": "OpenAI Codexが、自律的にオープンソースプロジェクトから脆弱性を発見し、修正プルリクエストを提出、メンテナーと協力して検証をパスし、実際に報奨金を獲得した事例が報告されました。",
+      "importance_reason": "AIエージェントが、単なるアシスタントではなく、複雑なタスクを自律的に実行し、経済的価値を生み出す能力を持つことを具体的に示した画期的な事例であるため。",
+      "category": "ユースケース",
+      "source_label": "x:@MervinPraison"
+    },
+    {
+      "id": "39fbe3e27d43586f",
+      "rank": 9,
+      "title": "$MU quarterly profit is expected to expand from ~$2B to nearly $36B in just over two years.",
+      "url": "https://x.com/StockSavvyShay/status/2053490267681132805",
+      "summary": "Micron Technology（$MU）の四半期利益が、AIによるHBM、DRAM、ストレージ需要の急増により、2年強で約20億ドルから360億ドル近くまで拡大すると予測されています。",
+      "importance_reason": "次世代AIモデル開発がメモリをボトルネックにしており、半導体メモリ市場に爆発的な成長をもたらしていることを示しており、AIインフラの経済的インパクトの大きさを示しているため。",
+      "category": "企業動向",
+      "source_label": "x:@StockSavvyShay"
+    },
+    {
+      "id": "145e2b45786eb1ee",
+      "rank": 10,
+      "title": "東京応化工業（4186）がS高で上場来高値。",
+      "url": "https://x.com/mameyama_kun/status/2053817030336475359",
+      "summary": "半導体フォトレジストで世界首位の東京応化工業が、生成AI関連の旺盛な需要を背景に第1四半期で大幅な増益を達成し、株価がストップ高で上場来高値を更新しました。",
+      "importance_reason": "AIブームが半導体メーカーだけでなく、素材を提供する化学メーカーにまで大きな好影響を及ぼしていることを示す具体例であり、サプライチェーン全体での経済効果の広がりを示しているため。",
+      "category": "企業動向",
+      "source_label": "x:@mameyama_kun"
     }
   ],
   "category_summaries": [
     {
       "category": "モデル/ツール",
-      "summary": "OpenAIが「GPT-5.5 Instant」や音声AI「GPT-Realtime-2」を発表し、性能競争をリード。AnthropicはAIエージェントの自己改善機能「dreaming」で対抗。Googleも低コストモデル「gemini 3.1 flash-lite」を投入するなど、各社が新モデルやツールを次々と発表し、競争が激化しています。",
-      "count": 16,
+      "summary": "Anthropicが、AIエージェントの自己改善機能「dreaming」を発表し、技術的なリーダーシップを強調しました。複数の最新モデルを統合的に利用できるAbacus AIのようなプラットフォームも登場し、ユーザー体験の向上が進んでいます。AIコーディングツールとしてのClaudeの進化も注目されており、開発現場での生産性向上への期待が高まっています。",
+      "count": 12,
       "key_articles": [
         {
-          "title": "GPT-5.5 Instant is starting to roll out in ChatGPT.",
-          "url": "https://x.com/OpenAI/status/2051709028250915275"
+          "title": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
+          "url": "https://x.com/Polymarket/status/2052078010056982933"
         },
         {
-          "title": "Introducing GPT-Realtime-2 in the API: our most intelligent voice model yet, bringing GPT-5-class reasoning to voice agents.",
-          "url": "https://x.com/OpenAI/status/2052438194625593804"
+          "title": "Claude Opus 4.7, Sonnet 4.6, GPT-5.5 (Thinking + Pro), Gemini 3.1 Pro, DeepSeek V4 Pro, and Kimi 2.6 Thinking.",
+          "url": "https://x.com/abacusai/status/2051715799333687381"
         },
         {
-          "title": "BREAKING: Anthropic has released a feature called \"dreaming\" which allows AI agents to self-improve",
-          "url": "https://x.com/unusual_whales/status/2052068619635589466"
+          "title": "I think this is bigger than it sounds at first glance.",
+          "url": "https://x.com/kimmonismus/status/2053952846064767384"
         },
         {
-          "title": "Introducing Daybreak: frontier AI for cyber defenders.",
-          "url": "https://x.com/OpenAI/status/2053939702110269822"
-        },
-        {
-          "title": "Codex now works directly in Chrome on macOS and Windows.",
-          "url": "https://x.com/OpenAI/status/2052480800004956323"
+          "title": "do you understand what happened to Claude Code..",
+          "url": "https://x.com/k1rallik/status/2053946261246459950"
         }
       ]
     },
     {
       "category": "企業動向",
-      "summary": "OpenAIがエンタープライズ導入支援の新会社を設立し、ビジネス展開を加速。一方、xAIがAnthropicに計算資源を提供するという異例の提携が発表され、業界の協力と競争の構図が複雑化しています。また、Google ChromeによるAIモデルの自動ダウンロードがプライバシー懸念を呼び、議論となっています。",
-      "count": 19,
+      "summary": "Anthropicが金融特化型AIエージェント群を発表し、業界特化戦略を鮮明にしました。AppleがSiriにサードパーティAIを統合するとの噂は、市場の勢力図を塗り替える可能性を秘めています。一方、OpenAI従業員による大規模な株式売却は、市場の過熱感を巡る議論を呼んでいます。AIブームを背景に、Micronや東京応化工業など半導体関連企業の好調な業績も目立ちました。",
+      "count": 11,
       "key_articles": [
         {
-          "title": "SpaceXAI will provide @AnthropicAI with access to Colossus 1, one of the world’s largest and fastest-deployed AI supercomputers, to provide additional capacity for Claude → https://t.co/nfDR9S822L htt",
-          "url": "https://x.com/xai/status/2052060350770515978"
+          "title": "JUST IN: Anthropic unveils 10 new AI agents built for banks, insurers, & financial firms.",
+          "url": "https://x.com/Polymarket/status/2051681814159241333"
         },
         {
-          "title": "Today we’re launching the OpenAI Deployment Company to help businesses build and deploy AI.",
-          "url": "https://x.com/OpenAI/status/2053824997777457651"
+          "title": "Apple is saying that Siri in iOS 27 will let you choose your own AI model between Gemini, ChatGPT, or Claude. There's noticeably someone missing from this list... 😢",
+          "url": "https://x.com/AutismCapital/status/2051838872729088369"
         },
         {
-          "title": "Google Chrome is quietly downloading a roughly 4 GB AI model to many users’ computers without clear upfront consent.",
-          "url": "https://x.com/Pirat_Nation/status/2051679058124210673"
+          "title": "THIS IS VERY CONCERNING 🚨 OpenAI employees just sold $6.6 billion worth of shares.",
+          "url": "https://x.com/cryptorover/status/2053830239076200826"
         },
         {
-          "title": "Two frontier labs. One accelerated computing platform. Congrats to @SpaceX and @AnthropicAI on the new compute partnership, powered by 220,000+ NVIDIA GPUs inside Colossus 1. The future of AI runs on ",
-          "url": "https://x.com/nvidia/status/2052091408643756296"
+          "title": "$MU quarterly profit is expected to expand from ~$2B to nearly $36B in just over two years.",
+          "url": "https://x.com/StockSavvyShay/status/2053490267681132805"
         },
         {
-          "title": "We’re also agreed to acquire Tomoro, which will bring 150 experienced Forward Deployed Engineers and Deployment Specialists to the OpenAI Deployment Company from day one.",
-          "url": "https://x.com/OpenAI/status/2053824999736410415"
-        }
-      ]
-    },
-    {
-      "category": "研究論文",
-      "summary": "Anthropicがモデルの思考プロセスを可視化する「Natural Language Autoencoders」や、不適切な行動を排除する研究など、AIの安全性と解釈可能性に関する論文を複数発表。OpenAIは業界大手と共同でAIクラスタ向けネットワークプロトコル「MRC」を開発。Google DeepMindもゲームAIやアルゴリズム最適化エージェントの研究成果を公開しました。",
-      "count": 13,
-      "key_articles": [
-        {
-          "title": "We’ve partnered with @AMD, @Broadcom, @Intel, @Microsoft, and @NVIDIA, to release Multipath Reliable Connection (MRC), a new open networking protocol that helps large AI training clusters run faster a",
-          "url": "https://x.com/OpenAI/status/2052025532485902368"
-        },
-        {
-          "title": "New Anthropic research: Natural Language Autoencoders.",
-          "url": "https://x.com/AnthropicAI/status/2052435436157452769"
-        },
-        {
-          "title": "Algorithms are part of nearly every aspect of life, from the physics of the natural world to planning shipping routes.",
-          "url": "https://x.com/GoogleDeepMind/status/2052403306257940967"
-        },
-        {
-          "title": "We’re partnering with the developers of @EveOnline to explore the next frontier of AI research in games.",
-          "url": "https://x.com/GoogleDeepMind/status/2052011542707630461"
-        },
-        {
-          "title": "New Anthropic research: Teaching Claude why.",
-          "url": "https://x.com/AnthropicAI/status/2052808787514228772"
-        }
-      ]
-    },
-    {
-      "category": "ユースケース",
-      "summary": "OpenAIがサイバー防衛ツール「Daybreak」を発表し、AIの応用分野を拡大。また、ChatGPTに精神的危機にあるユーザーを支援する機能を追加するなど、安全な利用に向けた取り組みも進んでいます。一方で、Googleはサイバー攻撃におけるAIの悪用が本格化していると警告しており、攻防両面でのAI活用が活発化しています。",
-      "count": 12,
-      "key_articles": [
-        {
-          "title": "OpenAI is launching Daybreak, our effort to accelerate cyber defense and continuously secure software.",
-          "url": "https://x.com/sama/status/2053951874408276193"
-        },
-        {
-          "title": "サイバー攻撃、生成AIは自律的な「実行主体」に　米グーグル報告書 https://t.co/AT3ZDTMuIw",
-          "url": "https://x.com/asahi/status/2053823450649915897"
-        },
-        {
-          "title": ".@Carbon_Robotics eliminates weeds with AI-guided lasers to ensure healthier, chemical-free harvests. https://t.co/eq7c0DJNGY",
-          "url": "https://x.com/nvidia/status/2052845453176181025"
-        },
-        {
-          "title": "We’re rolling out Trusted Contact in ChatGPT, a new optional safety feature that helps eligible users connect with someone they trust during moments of emotional crisis.",
-          "url": "https://x.com/OpenAINewsroom/status/2052449215322964411"
-        },
-        {
-          "title": "【AIと脅威インテリジェンス】Googleが警告する「AIを武器にした産業規模のサイバー攻撃」、実環境で初のAI生成ゼロデイ悪用を確認",
-          "url": "https://x.com/nakajimeeee/status/2053893402316652603"
+          "title": "東京応化工業（4186）がS高で上場来高値。",
+          "url": "https://x.com/mameyama_kun/status/2053817030336475359"
         }
       ]
     },
     {
       "category": "規制/政策",
-      "summary": "日本の自民党が新たなAIホワイトペーパーを公開し、「AI主権」の確立を目指す方針を示しました。一方、EUではAI法に関して「高リスク」分野への適用延期が合意されるなど、規制の具体化に向けた動きが進んでいます。また、ディープフェイクポルノの生成を禁止する方針も固まりました。",
-      "count": 6,
+      "summary": "MetaとそのCEOが、大手出版社や作家から著作権侵害で提訴されたというニュースが最大のトピックとなりました。生成AIの学習データに利用されるコンテンツの権利問題が、再び法廷闘争の焦点となっています。この訴訟の行方は、今後のAI開発におけるコンプライアンスやデータ収集のあり方に大きな影響を与えるでしょう。",
+      "count": 1,
       "key_articles": [
         {
-          "title": "AI関連の仕事に就いている人は読んでおきたい、AIホワイトペーパー。今年のVerが自民党から公開されてたので気になった点を二つ紹介。",
-          "url": "https://x.com/usutaku_channel/status/2052318862306394532"
+          "title": "Meta and CEO Mark Zuckerberg are being sued by five publishers and author Scott Turow, who allege the tech company illegally copied millions of books, articles and other works to train Meta’s AI syste",
+          "url": "https://x.com/Variety/status/2051721056847831514"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AIエージェントが自律的にバグを発見し報奨金を得る事例や、Ray-BanのAIグラスが汚職を告発する映像を撮影するなど、AIの実社会での応用がより高度かつ多様化しています。一方で、ChatGPTが生成する文章の画一的なスタイルに対する嫌悪感を示す意見も多く見られ、AI生成コンテンツの質の向上が課題となっています。開発やマーケティング、コンテンツ制作など、様々な分野でAIツールの活用が報告されています。",
+      "count": 15,
+      "key_articles": [
+        {
+          "title": "OpenAI Codex was given one task: find a bug bounty.",
+          "url": "https://x.com/MervinPraison/status/2053763500586020895"
         },
         {
-          "title": "EU Commission in talks with OpenAI and Anthropic over AI models https://t.co/FAQmVkhlmk https://t.co/FAQmVkhlmk",
-          "url": "https://x.com/Reuters/status/2053864000639631864"
+          "title": "A traveller has used Ray-Ban Meta AI glasses to expose security operatives allegedly extorting ₦200,000 on an Imo highway. The footage reportedly shows officers assaulting the man and forcing transfer",
+          "url": "https://x.com/Naija_PR/status/2052654372828414311"
         },
         {
-          "title": "EU、ディープフェイクポルノの生成AI禁止へ　「AI法」を修正 https://t.co/y9zTxSEgxH",
-          "url": "https://x.com/asahi/status/2052715651631034695"
+          "title": "I hate Chat GPT so much that I will stop reading a long post when I realize it’s AI generated. Even if the story itself is authentic, I hate the voice and style of Chat GPT so much.",
+          "url": "https://x.com/zellieimani/status/2053082207875379314"
         },
         {
-          "title": "EUのAI法、「高リスク」分野への適用延期　性的画像の生成は禁止 https://t.co/vgbq4EqYF6",
-          "url": "https://x.com/asahi/status/2052366349113139440"
-        },
-        {
-          "title": "安定電源、原発への期待7割　中東緊迫化で再エネにも注目",
-          "url": "https://x.com/Sankei_news/status/2052361009311223827"
+          "title": "SOMEONE JUST VIBE CODED A FULL 3D FLIGHT SIMULATOR IN A SINGLE WEEKEND USING CLAUDE CODE.",
+          "url": "https://x.com/Nafees_Ai/status/2053717178994794611"
         }
       ]
     }
   ],
   "action_items": [
-    "OpenAIが新会社を設立しエンタープライズ導入支援を本格化させるため、自社の業務プロセスにAIをどのように統合できるか、具体的な導入計画の検討を開始すべきです。",
-    "OpenAIの「GPT-Realtime-2」など、リアルタイム音声AIの進化が著しいため、顧客サポートや音声アシスタントなど、音声インターフェースを活用した新しいサービスや業務効率化の可能性を再評価してください。",
-    "Anthropicの研究に見られるように、AIの解釈可能性や安全性を高める技術が進展しています。自社でAIを利用する際は、これらの技術動向を注視し、透明性と信頼性を確保する方策を検討することが重要です。",
-    "xAIとAnthropicの提携は、計算資源がAI開発の生命線であることを示しています。AI戦略を推進する上で、自社に必要な計算資源の確保（クラウド利用、自社インフラ構築など）について中長期的な計画を策定すべきです。",
-    "Google Chromeの事例のように、AI機能の展開がユーザーのプライバシー懸念を引き起こす可能性があります。AIサービスを提供する際は、ユーザーへの透明性を確保し、明確な同意を得るプロセスを設計することが不可欠です。"
+    "Anthropicが金融特化エージェントを投入したことを受け、自社の業界でも同様の特化型AIソリューションの導入や開発の可能性を検討する。",
+    "AppleがSiriにサードパーティAIを統合する動きに備え、自社アプリやサービスが主要AIモデルと連携できるようなAPI戦略や技術的準備を進める。",
+    "Metaへの著作権訴訟を教訓に、自社でのAI開発や活用における学習データの権利処理プロセスを再点検し、法務・コンプライアンス体制を強化する。",
+    "AIコーディングツール（Claude Code, Copilot等）の導入を本格化させ、開発チームの生産性向上と開発サイクルの短縮を目指す。",
+    "複数の高性能AIモデルが登場する中、Abacus AIのような統合プラットフォームを活用し、タスクに応じて最適なモデルを使い分けるワークフローを構築する。"
   ],
   "x_trends": [
     {
-      "topic": "Google ChromeによるAIモデルの自動ダウンロード問題",
-      "description": "Google Chromeがユーザーに明確な通知や同意なしに、4GBもの大規模なAIモデル（weights.bin）をPCにダウンロードしているという指摘がX上で急速に拡散しました。ユーザーからは「ストレージの無駄遣い」「プライバシーの侵害」「勝手なことをするな」といった否定的な反応が殺到しています。この機能はGemini Nanoをオンデバイスで動作させるためのものですが、その手法がユーザーの不信感を招き、大きな騒動へと発展しています。",
+      "topic": "AnthropicのClaude新機能・新製品発表",
+      "description": "Anthropicが「dreaming（自己改善機能）」と「金融特化AIエージェント」を立て続けに発表したことで、X上では同社の技術力と事業展開の速さに対する驚きと称賛の声が広がっています。特に、AIが自律的に賢くなる「dreaming」はSF的だと話題になり、金融エージェントはAIの実用化が新たなステージに入ったことを示すと受け止められています。ユーザーはOpenAIとの競争がさらに激化することを期待しています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@Polymarket",
+          "text": "JUST IN: Anthropic unveils 10 new AI agents built for banks, insurers, & financial firms.",
+          "url": "https://x.com/Polymarket/status/2051681814159241333",
+          "likes": 6329,
+          "retweets": 525
+        },
+        {
+          "author": "@Polymarket",
+          "text": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
+          "url": "https://x.com/Polymarket/status/2052078010056982933",
+          "likes": 2802,
+          "retweets": 162
+        }
+      ]
+    },
+    {
+      "topic": "ChatGPT生成文章への嫌悪感",
+      "description": "「ChatGPTが生成したと分かった瞬間に長文を読むのをやめる」という投稿が、2万件近い「いいね」を集めるなど、大きな共感を呼んでいます。多くのユーザーが、ChatGPT特有の無味乾燥で定型的な文体や「声」にうんざりしていると表明しており、AIが生成するコンテンツの質の画一性が大きな課題であることを示しています。この議論は、より人間らしい、あるいは個性的な文章を生成できるAIへの需要を示唆しています。",
       "buzz_level": "high",
       "sentiment": "negative",
       "representative_tweets": [
         {
-          "author": "@k1rallik",
-          "text": "do you understand what just happened to your computer..\n\nGoogle Chrome secretly downloaded a 4GB AI model onto your device. Without asking.. Without telling you..\n\nIt's called weights.bin. It lives de",
-          "url": "https://x.com/k1rallik/status/2051745051894522198",
-          "likes": 55087,
-          "retweets": 18534
-        },
-        {
-          "author": "@Pirat_Nation",
-          "text": "Google Chrome is quietly downloading a roughly 4 GB AI model to many users’ computers without clear upfront consent. \n\nThe file, called weights.bin, is part of Google’s Gemini Nano on-device language ",
-          "url": "https://x.com/Pirat_Nation/status/2051679058124210673",
-          "likes": 18370,
-          "retweets": 4768
+          "author": "@zellieimani",
+          "text": "I hate Chat GPT so much that I will stop reading a long post when I realize it’s AI generated. Even if the story itself is authentic, I hate the voice and style of Chat GPT so much.",
+          "url": "https://x.com/zellieimani/status/2053082207875379314",
+          "likes": 17209,
+          "retweets": 1795
         }
       ]
     },
     {
-      "topic": "xAIとAnthropicのスーパーコンピュータ提携",
-      "description": "xAIが自社の巨大AIスーパーコンピュータ「Colossus 1」を、競合であるAnthropicに提供するというニュースは、業界に大きな衝撃を与えました。NVIDIAの公式アカウントもこの提携を祝福する投稿を行い、その影響力の大きさを裏付けています。ユーザーからは「敵に塩を送るのか？」「Elon Muskの狙いは何だ？」「AI業界の協力と競争は複雑だ」といった驚きや、背景を推測する声が多数上がっています。この動きは、計算資源の確保が最優先課題であることを示す象徴的な出来事として受け止められています。",
-      "buzz_level": "high",
-      "sentiment": "neutral",
-      "representative_tweets": [
-        {
-          "author": "@xai",
-          "text": "SpaceXAI will provide @AnthropicAI with access to Colossus 1, one of the world’s largest and fastest-deployed AI supercomputers, to provide additional capacity for Claude → https://t.co/nfDR9S822L https://t.co/EQAz0S84m2",
-          "url": "https://x.com/xai/status/2052060350770515978",
-          "likes": 25176,
-          "retweets": 3334
-        },
-        {
-          "author": "@nvidia",
-          "text": "Two frontier labs. One accelerated computing platform. Congrats to @SpaceX and @AnthropicAI on the new compute partnership, powered by 220,000+ NVIDIA GPUs inside Colossus 1. The future of AI runs on NVIDIA.",
-          "url": "https://x.com/nvidia/status/2052091408643756296",
-          "likes": 12882,
-          "retweets": 1122
-        }
-      ]
-    },
-    {
-      "topic": "OpenAIの新モデル「GPT-5.5 Instant」と「GPT-Realtime-2」発表",
-      "description": "OpenAIが立て続けに発表した新モデルが大きな話題となりました。「GPT-5.5 Instant」はChatGPTの性能向上を、「GPT-Realtime-2」は音声AIのリアルタイム推論能力の飛躍的向上を約束するもので、ユーザーからは期待の声が多数寄せられています。特に音声AIの進化については、「SFの世界が現実に」「通話の常識が変わりそう」といった興奮の声が多く見られ、新しいアプリケーションへの期待が高まっています。",
-      "buzz_level": "high",
+      "topic": "AppleのSiriへのAIモデル選択機能の噂",
+      "description": "Appleが次期OSでSiriにGemini、ChatGPT、ClaudeからAIモデルを選択できる機能を搭載するという噂が大きな話題となっています。この動きは、Appleが特定のAI企業に依存せず、オープンなエコシステムを構築しようとしていると好意的に受け止められています。一方で、Apple自身のAIモデルが含まれていないことへの指摘や、どのモデルがデフォルトになるかなど、実装の詳細に関心が集まっています。",
+      "buzz_level": "medium",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@OpenAI",
-          "text": "Introducing GPT-Realtime-2 in the API: our most intelligent voice model yet, bringing GPT-5-class reasoning to voice agents.\n\nVoice agents are now real-time collaborators that can listen, reason, and solve complex problems as conversations unfold.\n\nNow available in the API alongside streaming models GPT-Realtime-Translate and GPT-Realtime-Whisper — a new set of audio capabilities for the next generation of voice interfaces.",
-          "url": "https://x.com/OpenAI/status/2052438194625593804",
-          "likes": 14619,
-          "retweets": 1430
-        },
-        {
-          "author": "@OpenAI",
-          "text": "GPT-5.5 Instant is starting to roll out in ChatGPT.\n\nIt’s a big upgrade, giving you smarter, clearer, and more personalized answers in a warmer, more natural tone.\n\nAnd it's also more concise, which we heard you wanted. We think you'll love chatting with it. https://t.co/HSQOhjqxp7",
-          "url": "https://x.com/OpenAI/status/2051709028250915275",
-          "likes": 10714,
-          "retweets": 1083
+          "author": "@AutismCapital",
+          "text": "Apple is saying that Siri in iOS 27 will let you choose your own AI model between Gemini, ChatGPT, or Claude. There's noticeably someone missing from this list... 😢 https://t.co/UqH3dGDDFX",
+          "url": "https://x.com/AutismCapital/status/2051838872729088369",
+          "likes": 3845,
+          "retweets": 84
         }
       ]
     },
     {
-      "topic": "Anthropicの新研究「Natural Language Autoencoders」",
-      "description": "Anthropicが発表した、AIの「思考」を人間が読める言葉に翻訳するという研究は、技術者や研究者層から非常に高い関心を集めました。AIのブラックボックス問題への画期的なアプローチとして、「解釈可能性の聖杯だ」「これでAIの安全性が大きく前進するかもしれない」と絶賛されています。この発表は、Anthropicが単なるモデル開発競争だけでなく、AIの基礎的な安全性研究においても業界をリードする存在であることを強く印象付けました。",
-      "buzz_level": "high",
-      "sentiment": "positive",
+      "topic": "Metaの著作権侵害訴訟",
+      "description": "MetaがAIの学習データのために書籍などを無断で使用したとして提訴されたニュースは、AI倫理と法律に関心のある層から広く注目されています。多くのユーザーは出版社の主張に理解を示し、大手テック企業の「Move Fast and Break Things（速く動き、破壊せよ）」という文化を批判しています。この訴訟は、AI開発における「フェアユース」の範囲を問う重要な事例と見なされており、今後の判決が業界に与える影響が議論されています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
       "representative_tweets": [
         {
-          "author": "@AnthropicAI",
-          "text": "New Anthropic research: Natural Language Autoencoders.\n\nModels like Claude talk in words but think in numbers. The numbers—called activations—encode Claude’s thoughts, but not in a language we can read.\n\nHere, we train Claude to translate its activations into human-readable text. https://t.co/pMLsxM2VAO",
-          "url": "https://x.com/AnthropicAI/status/2052435436157452769",
-          "likes": 16449,
-          "retweets": 1698
+          "author": "@Variety",
+          "text": "Meta and CEO Mark Zuckerberg are being sued by five publishers and author Scott Turow, who allege the tech company illegally copied millions of books, articles and other works to train Meta’s AI syste",
+          "url": "https://x.com/Variety/status/2051721056847831514",
+          "likes": 3326,
+          "retweets": 896
         }
       ]
     },
     {
-      "topic": "OpenAIのエンタープライズ向け新会社設立",
-      "description": "OpenAIが、企業のAI導入を支援するための専門会社「OpenAI Deployment Company」を設立したという発表も大きな注目を集めました。特に、名だたる投資会社やコンサルティングファームがパートナーとして名を連ねていることから、その本気度が伺えます。ユーザーからは「ついにAIのビジネス利用が本格化する」「技術だけでなく導入支援までやるのか」といった反応があり、AIが研究段階から産業応用のフェーズへ移行していることを実感させるニュースとして受け止められています。",
+      "topic": "AIによる汚職告発（Ray-Ban Metaグラス）",
+      "description": "旅行者がRay-Ban Meta AIグラスを使って、路上で金銭を強要する治安部隊員の様子を撮影し、告発したというナイジェリアでの事件が衝撃を与えています。この投稿は、ウェアラブルAIデバイスが市民ジャーナリズムや権力乱用の監視ツールとして強力な武器になりうることを示し、多くのリツイートと共に拡散されています。ユーザーからは、テクノロジーが正義の実現に貢献する可能性を称賛する声が上がっています。",
       "buzz_level": "high",
-      "sentiment": "positive",
+      "sentiment": "mixed",
       "representative_tweets": [
         {
-          "author": "@OpenAI",
-          "text": "Today we’re launching the OpenAI Deployment Company to help businesses build and deploy AI.\n\nIt's majority-owned and controlled by OpenAI. It brings together 19 leading investment firms, consultancies, and system integrators to help organizations deploy frontier AI to production for business impact. https://t.co/GnyjGFaLLA",
-          "url": "https://x.com/OpenAI/status/2053824997777457651",
-          "likes": 7099,
-          "retweets": 808
+          "author": "@Naija_PR",
+          "text": "A traveller has used Ray-Ban Meta AI glasses to expose security operatives allegedly extorting ₦200,000 on an Imo highway. The footage reportedly shows officers assaulting the man and forcing transfers from his OPay and crypto wallets after accusing him of being an IPOB agent. https://t.co/nPlIoHiDBZ",
+          "url": "https://x.com/Naija_PR/status/2052654372828414311",
+          "likes": 6340,
+          "retweets": 2204
+        }
+      ]
+    },
+    {
+      "topic": "OpenAI従業員の株式売却への懸念",
+      "description": "OpenAI従業員による66億ドルもの株式売却のニュースに対し、XユーザーからはAIバブルのピークアウトを懸念する声が多く上がっています。「インサイダーが売り抜けている」と見なされ、新規投資家の熱狂とは対照的な動きとして тревога を掻き立てています。この動きが、純粋な利益確定なのか、あるいは同社の将来性に対する懸念の表れなのか、様々な憶測を呼んでいます。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "@cryptorover",
+          "text": "THIS IS VERY CONCERNING 🚨\n\nOpenAI employees just sold $6.6 billion worth of shares.\n\nWhile new investors keep pouring money into AI, early insiders are already cashing out.\n\nAre they expecting the bubble to burst? https://t.co/FmjB6EHNCW",
+          "url": "https://x.com/cryptorover/status/2053830239076200826",
+          "likes": 764,
+          "retweets": 111
         }
       ]
     }
   ],
-  "run_time": "2026-05-11T21:55:09.767983+00:00",
+  "run_time": "2026-05-11T22:04:00.829196+00:00",
   "slot": "morning",
-  "item_count": 248,
+  "item_count": 41,
   "fallback_used_stages": []
 }
