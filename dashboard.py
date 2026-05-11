@@ -3,7 +3,7 @@
 import json
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from glob import glob
 from html import escape
 
@@ -72,7 +72,8 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
 
 
 def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | None = None) -> str:
-    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    JST = timezone(timedelta(hours=9))
+    now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
 
     diagrams = diagrams or []
     if not latest:
@@ -351,12 +352,12 @@ def _render_history(history: list[dict]) -> str:
 
 
 def generate_strategy_page(output_path: str) -> None:
-    """data/analysis/ の最新 strategy フィールドから docs/strategy.html を生成"""
-    analyses = _load_recent_analyses(days=1)
+    """data/analysis/ の全履歴 strategy データから docs/strategy.html を生成"""
+    analyses = _load_recent_analyses(days=30)
     latest = analyses[0] if analyses else None
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    html = _render_strategy_html(latest)
+    html = _render_strategy_html(latest, analyses)
     tmp = output_path + ".tmp"
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(html)
@@ -364,19 +365,21 @@ def generate_strategy_page(output_path: str) -> None:
     logger.info("Strategy page written → %s", output_path)
 
 
-def _render_strategy_html(latest: dict | None) -> str:
-    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+def _render_strategy_html(latest: dict | None, all_analyses: list[dict] | None = None) -> str:
+    JST = timezone(timedelta(hours=9))
+    now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
+    all_analyses = all_analyses or []
 
     if not latest:
         body = '<p class="empty">まだデータがありません。初回実行をお待ちください。</p>'
         heading = "AI 施策提案"
+        selector_html = ""
     else:
         display_date = latest.get("_display_date") or (latest.get("run_time", ""))[:10]
         display_slot = latest.get("_display_slot") or latest.get("slot", "")
-        slot_label = "朝便" if display_slot == "morning" else "夕便"
-        heading = f"AI 施策提案 — {display_date} {slot_label}"
-        strategy = latest.get("strategy") or {}
-        body = _render_strategy_body(strategy, latest)
+        heading = "AI 施策提案"
+        body = ""
+        selector_html = _render_strategy_selector(all_analyses, display_date, display_slot)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -399,12 +402,19 @@ header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
 .nav-link {{ display: inline-block; margin-top: 0.8rem; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
 .nav-link:hover {{ background: #475569; }}
+.selector-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.5rem; }}
+.selector-item {{ display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0.9rem; background: var(--surface2); border-radius: 8px; text-decoration: none; color: var(--text); font-size: 0.9rem; cursor: pointer; }}
+.selector-item:hover {{ background: #475569; }}
+.selector-item.active {{ background: var(--accent); color: #fff; }}
+.slot-tag {{ display: inline-block; padding: 1px 8px; border-radius: 4px; background: #ffffff22; font-size: 0.75rem; font-weight: 600; }}
+.selector-item.active .slot-tag {{ background: #ffffff33; }}
+.section-body {{ display: none; }}
+.section-body.active {{ display: block; }}
 .card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
 .card h2 {{ font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
 .idea-item {{ padding: 1rem; background: var(--surface2); border-radius: 8px; margin-bottom: 0.8rem; }}
 .idea-item:last-child {{ margin-bottom: 0; }}
 .idea-title {{ font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }}
-.idea-title a {{ color: var(--text); text-decoration: none; }}
 .idea-meta {{ display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }}
 .badge {{ display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; }}
 .badge-high {{ background: #dc262633; color: var(--red); }}
@@ -431,14 +441,67 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 <body>
 <div class="container">
 <header>
-  <h1>🎯 {escape(heading)}</h1>
+  <h1>🎯 AI 施策提案</h1>
   <div class="updated">Last updated: {now_str}</div>
   <a class="nav-link" href="index.html">← ニュースダッシュボードへ</a>
 </header>
+{selector_html}
+<div id="strategy-content">
 {body}
 </div>
+</div>
+<script>
+document.querySelectorAll('.selector-item').forEach(function(el) {{
+  el.addEventListener('click', function(e) {{
+    e.preventDefault();
+    var key = this.dataset.key;
+    document.querySelectorAll('.selector-item').forEach(function(x) {{ x.classList.remove('active'); }});
+    this.classList.add('active');
+    document.querySelectorAll('.section-body').forEach(function(x) {{ x.classList.remove('active'); }});
+    var target = document.getElementById('section-' + key);
+    if (target) target.classList.add('active');
+  }});
+}});
+</script>
 </body>
 </html>"""
+
+
+def _render_strategy_selector(analyses: list[dict], active_date: str, active_slot: str) -> str:
+    """日付・スロット選択グリッドと全セクションのHTMLを生成"""
+    if not analyses:
+        return ""
+
+    items_html: list[str] = []
+    sections_html: list[str] = []
+
+    for a in analyses:
+        date = a.get("_display_date") or (a.get("run_time", ""))[:10]
+        slot = a.get("_display_slot") or a.get("slot", "")
+        slot_label = "朝便" if slot == "morning" else "夕便"
+        key = f"{date}-{slot}"
+        is_active = (date == active_date and slot == active_slot)
+        active_cls = " active" if is_active else ""
+
+        items_html.append(
+            f'<a class="selector-item{active_cls}" data-key="{escape(key)}" href="#">'
+            f'<span>{escape(date)}</span>'
+            f'<span class="slot-tag">{slot_label}</span></a>'
+        )
+
+        strategy = a.get("strategy") or {}
+        section_active = " active" if is_active else ""
+        sections_html.append(
+            f'<div class="section-body{section_active}" id="section-{escape(key)}">'
+            f'{_render_strategy_body(strategy, a)}'
+            f'</div>'
+        )
+
+    selector = (
+        '<div class="card"><h2>📅 日付を選ぶ</h2>'
+        f'<div class="selector-grid">{"".join(items_html)}</div></div>'
+    )
+    return selector + "\n" + "\n".join(sections_html)
 
 
 def _render_strategy_body(strategy: dict, analysis: dict) -> str:
