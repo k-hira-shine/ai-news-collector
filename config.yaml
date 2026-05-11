@@ -6,10 +6,17 @@ collection:
 
 x_twitter:
   search_queries:
-    - "ChatGPT OR Claude OR Gemini OR GPT OR OpenAI OR Anthropic OR DeepMind OR Meta AI OR LLM -filter:replies lang:en"
-    - "生成AI OR 人工知能 OR AI活用 lang:ja"
-    - "Claude Code OR Cursor AI OR GitHub Copilot OR Devin OR AI coding -filter:replies"
-  max_results_per_query: 120
+    # 英語：主要モデル・企業・トレンド
+    - "ChatGPT OR Claude OR Gemini OR GPT-5 OR OpenAI OR Anthropic OR LLM OR AI agent -filter:replies lang:en min_faves:100"
+    # 英語：開発・ツール系
+    - "Claude Code OR Cursor AI OR GitHub Copilot OR Devin OR MCP OR AI coding OR vibe coding -filter:replies lang:en"
+    # 英語：研究・業界動向
+    - "AI safety OR AI alignment OR AGI OR foundation model OR multimodal OR AI regulation -filter:replies lang:en min_faves:50"
+    # 日本語：生成AI全般
+    - "生成AI OR 大規模言語モデル OR AI活用 OR ChatGPT OR クロード -filter:replies lang:ja"
+    # 日本語：開発・ビジネス活用
+    - "Claude Code OR AIエージェント OR AI自動化 OR プロンプト OR AI副業 -filter:replies lang:ja"
+  max_results_per_query: 80
   must_follow_accounts:
     - handle: "OpenAI"
       label: "OpenAI公式"
@@ -23,7 +30,7 @@ x_twitter:
     - handle: "GoogleAI"
       label: "Google AI公式"
       priority: critical
-    - handle: "MetaAI"
+    - handle: "AIatMeta"
       label: "Meta AI公式"
       priority: critical
     - handle: "nvidia"
