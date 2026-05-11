@@ -1,359 +1,311 @@
 {
-  "trend_summary": "本日のAI業界は、OpenAIとAnthropicの動向が市場を席巻しています。両社はAIに道徳的価値を組み込むため宗教指導者と会談し、社会との対話を重視する姿勢を見せました。また、Anthropicは従業員一人当たりの収益でNVIDIAをも上回り、OpenAIもそれに次ぐ高い生産性を示し、AI企業の経済的インパクトを浮き彫りにしています。Sam Altman氏の「自閉症の天才」発言や、Elon Musk氏との裁判にMicrosoftのNadella氏が証言台に立つなど、OpenAIを巡る話題が尽きない一日でした。技術面では、Claudeが広告制作やコーディングで驚異的な成果を上げており、AIの実用化が急速に進んでいます。",
+  "trend_summary": "本日のAI業界は、巨大テック企業による空前の投資競争が市場を牽引しています。Amazon、Microsoft、Google、Metaの4社が年間7250億ドルという国家GDPに匹敵する規模のAI投資を計画しており、深刻な供給制約が続く見込みです。この巨額投資は、日本国内でも半導体やインフラ関連企業への投資を加速させています。一方、技術の進歩は負の側面も顕在化させており、GoogleはAIによって生成されたゼロデイ脆弱性が初めて悪用されたと報告し、サイバーセキュリティの脅威が新たな段階に入ったことを警告しています。金融分野など専門職におけるAI活用による生産性向上も引き続き注目されています。",
   "trend_evolution": {
-    "since_last": "前回の分析ではOpenAIのエンタープライズ戦略が中心でしたが、本日はAnthropicが同等、あるいはそれ以上の存在感を示しています。特に、両社が共同で宗教指導者と会談したという倫理・ガバナンスに関する話題が新たに浮上しました。また、Claudeの具体的なビジネスユースケース（DTC広告、コーディング）に関する話題が急増しており、モデルの実用性が注目されています。前回話題だったサイバーセキュリティ分野のAI活用や「AI主権」を巡る議論は一旦沈静化し、代わりにAI企業の収益性や開発体制といった経営面に焦点が当たっています。",
+    "since_last": "前回、OpenAIとAnthropicの動向が中心だったのに対し、本日は巨大テック4社による天文学的なAI投資計画が最大のトピックとして浮上しました。これにより「AIインフラへの巨額投資」という新たなトレンドが形成されています。また、Googleの警告により「AIによるサイバー攻撃の高度化」が深刻な課題として急浮上しました。一方で、前回まで継続していたOpenAIの新モデルやElon Muskとの対立といった話題は一旦沈静化し、市場の関心がインフラ投資とセキュリティリスクへとシフトしている様子がうかがえます。",
     "tracked_topics": [
       {
-        "topic": "AIの倫理と社会的実装",
+        "topic": "AIインフラへの巨額投資",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "OpenAIとAnthropicが宗教指導者と会談し、AIへの価値観注入という新たな議論が始まった。"
+        "evolution": "巨大テック4社が年間7250億ドルという大規模投資計画を発表し、市場の注目を一気に集めた。"
+      },
+      {
+        "topic": "AIによるサイバー攻撃の高度化",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "GoogleがAI生成によるゼロデイ脆弱性の実環境での悪用を報告し、脅威が現実化した。"
+      },
+      {
+        "topic": "AIの専門職（金融など）への応用",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "前回はClaudeによる高速開発が話題だったが、今回は金融アナリストの生産性3倍向上という具体的な業務効率化事例が注目されている。"
+      },
+      {
+        "topic": "日本国内のAIインフラ投資",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "世界的なAI投資ブームを受け、国内でも関連インフラ企業への投資が加速し「AIインフラ本命相場」として注目されている。"
+      },
+      {
+        "topic": "AIの倫理と社会的実装",
+        "status": "FADING",
+        "streak_days": 2,
+        "evolution": "前回は宗教指導者との会談が注目されたが、本日は関連する大きな動きは見られず、関心は薄れている。"
       },
       {
         "topic": "OpenAI vs Anthropicの競争激化",
-        "status": "RISING",
+        "status": "FADING",
         "streak_days": 2,
-        "evolution": "これまでのモデル開発競争に加え、収益性、開発体制、社会との関わり方など競争の多角化が進んでいる。"
-      },
-      {
-        "topic": "Claudeのビジネス応用",
-        "status": "RISING",
-        "streak_days": 2,
-        "evolution": "コーディング支援（Vibe Coding）に加え、DTC広告生成などマーケティング分野での強力なユースケースが注目されている。"
-      },
-      {
-        "topic": "Elon Musk vs OpenAIの法廷闘争",
-        "status": "SUSTAINED",
-        "streak_days": 5,
-        "evolution": "マスク氏とアルトマン氏の対立構造から、MicrosoftのCEOが証言台に立つなど、関係者を巻き込みながら継続している。"
-      },
-      {
-        "topic": "AI企業の収益性と生産性",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "AnthropicとOpenAIの従業員一人当たり収益が他テック企業を凌駕していることが示され、AI企業の経済的特異性が注目されている。"
-      },
-      {
-        "topic": "Googleのマルチモーダル戦略",
-        "status": "SUSTAINED",
-        "streak_days": 3,
-        "evolution": "Geminiによるテキスト以外のデータ（物理、ロボティクス等）を重視する戦略が、Demis Hassabis氏の発言により改めて強調された。"
-      },
-      {
-        "topic": "AIによる労働市場の変化",
-        "status": "RESURFACED",
-        "streak_days": 2,
-        "evolution": "ランサーズのトレンドランキングから「AIが生成したものを人間が修正する」という新たな需要構造が明らかになった。"
+        "evolution": "前回は収益性などで両社が比較されたが、本日は両社に関する直接的な競合ニュースは観測されなかった。"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "3ca4d98566d4cd6a",
+      "id": "151a046381512b4c",
       "rank": 1,
-      "title": "🚨 Anthropic and OpenAI executives met Hindu and Sikh religious leaders in New York to instill moral values in AI.",
-      "url": "https://x.com/IndianTechGuide/status/2053762128759099803",
-      "summary": "AnthropicとOpenAIの幹部が、AIに道徳的価値を組み込むことを目的に、ニューヨークでヒンズー教とシーク教の宗教指導者と会談しました。この動きは、AIの倫理的・社会的な側面に対する企業の取り組みを示しています。",
-      "importance_reason": "AI開発のトップ企業2社が、技術的な問題だけでなく、AIの価値観や倫理について宗教界と対話するという象徴的な出来事。今後のAIガバナンスの方向性を示唆する重要ニュース。",
-      "category": "規制/政策",
-      "source_label": "x:@IndianTechGuide"
+      "title": "🚨 4 companies are about to spend $725 billion on AI in a single year.",
+      "url": "https://x.com/BullTheoryio/status/2053912395438018602",
+      "summary": "Amazon、Microsoft、Google、Metaの4社が、AI分野に年間合計7250億ドルという巨額の投資を計画していることが報じられました。この金額は多くの国家のGDPを上回り、供給が需要に全く追いついていない状況を示唆しています。",
+      "importance_reason": "AI市場の競争が、国家予算規模の投資競争に発展していることを示す象徴的なニュース。半導体やデータセンターインフラへの需要が今後も極めて強固であることを裏付けています。",
+      "category": "資金調達",
+      "source_label": "x:@BullTheoryio"
     },
     {
-      "id": "e75bef1b8fcc1f69",
+      "id": "e379f7e79f69fb8c",
       "rank": 2,
-      "title": "JUST IN: OpenAI CEO Sam Altman says their latest AI model is \"an autistic genius.\"",
-      "url": "https://x.com/WatcherGuru/status/2053194750652457249",
-      "summary": "OpenAIのCEOであるサム・アルトマン氏が、同社の最新AIモデルを「自閉症の天才」と表現しました。この比喩は、モデルの驚異的な能力と同時に、社会的相互作用における特異性を示唆しており、様々な議論を呼んでいます。",
-      "importance_reason": "AI開発の最前線を走る企業のCEOによる、モデルの性質に関する示唆に富んだ発言。AIの能力と限界、そして人間社会との関係性を考える上で重要なメタファー。",
-      "category": "企業動向",
-      "source_label": "x:@WatcherGuru"
+      "title": "【AIと脅威インテリジェンス】Googleが警告する「AIを武器にした産業規模のサイバー攻撃」、実環境で初のAI生成ゼロデイ悪用を確認",
+      "url": "https://x.com/nakajimeeee/status/2053893402316652603",
+      "summary": "Googleの脅威インテリジェンスグループは、攻撃者がAIを活用したサイバー攻撃を産業規模で展開し始めていると警告しました。特に、AIによって生成されたと見られるゼロデイ脆弱性が実環境で悪用された初のケースが確認され、脅威が新たな段階に入ったことを示しています。",
+      "importance_reason": "これまで理論的な懸念であったAIによるサイバー攻撃の高度化が、現実の脅威として確認された初の事例。全ての組織にとってセキュリティ対策の見直しを迫る重要な警告です。",
+      "category": "規制/政策",
+      "source_label": "x:@nakajimeeee"
     },
     {
-      "id": "ac8f035ef5224af2",
+      "id": "edc41ff962faeb36",
       "rank": 3,
-      "title": "Anthropic and OpenAI earn more revenue per employee than the top public tech companies, both now and at their IPOs.",
-      "url": "https://x.com/EpochAIResearch/status/2052847400650518804",
-      "summary": "AnthropicとOpenAIは、従業員一人当たりの収益がNVIDIAなどトップクラスの公開ハイテク企業を上回っていることが示されました。特にAnthropicは約900万ドルと驚異的な生産性を誇っています。",
-      "importance_reason": "少数のエリートで巨大な価値を生み出すAI企業のビジネスモデルの特異性を示すデータ。今後の産業構造や経済に与えるインパクトの大きさを物語っている。",
-      "category": "企業動向",
-      "source_label": "x:@EpochAIResearch"
-    },
-    {
-      "id": "3dcdd75d9b1b015f",
-      "rank": 4,
-      "title": "Microsoft Chief Executive Satya Nadella has taken the stand in a landmark trial pitting him against Elon Musk in the billionaire’s lawsuit against OpenAI",
-      "url": "https://x.com/WSJ/status/2053876233264333177",
-      "summary": "イーロン・マスク氏がOpenAIを相手取って起こした訴訟で、MicrosoftのCEOサティア・ナデラ氏が証言台に立ちました。AI業界の勢力図を左右する重要な裁判の展開として注目されます。",
-      "importance_reason": "OpenAIの最大のパートナーであるMicrosoftのトップが公の場で証言することで、OpenAIの設立経緯や非営利から営利への転換の正当性が問われる重要な局面。",
-      "category": "企業動向",
-      "source_label": "x:@WSJ"
-    },
-    {
-      "id": "ae884a898c8bcde4",
-      "rank": 5,
-      "title": "Claude is now very good at DTC Ads.",
-      "url": "https://x.com/higgsfield/status/2053906126060855515",
-      "summary": "AnthropicのClaudeが、DTC（Direct-to-Consumer）広告のクリエイティブ制作に非常に優れていることが報告されました。サイトURLと商品画像を渡すだけで、40種類もの広告フォーマットを高品質で生成できるとのことです。",
-      "importance_reason": "AIがマーケティングや広告制作といったクリエイティブ領域で、具体的なビジネス価値を大規模に生み出し始めたことを示す好例。業務効率化のインパクトが大きい。",
-      "category": "ユースケース",
-      "source_label": "x:@higgsfield"
-    },
-    {
-      "id": "3b670337cb3a7c2f",
-      "rank": 6,
-      "title": "A year ago, we introduced AlphaEvolve — our Gemini-powered coding agent.",
-      "url": "https://x.com/Google/status/2052794893206962598",
-      "summary": "Googleが、Geminiを搭載したコーディングエージェント「AlphaEvolve」の1年間の成果を発表しました。GoogleのAIインフラ改善から分子シミュレーション、自然災害予測まで幅広い分野で活用されています。",
-      "importance_reason": "Googleが自社のAIを社内外の複雑な課題解決に大規模に適用し、具体的な成果を上げていることを示す事例。AIエージェントの実用化レベルの高さを示している。",
+      "title": "2026 TREND: GlobalClaw → my employee GPT-5.4 → brainstorming...",
+      "url": "https://x.com/LearnWithSubhan/status/2053716804808454314",
+      "summary": "GPT-5.4やGemini 3.1 Pro、Claude 4.6といった次世代AIツールをタスクごとに使い分け、個人がビジネスを自動化・効率化する未来像が提示されました。ブレーンストーミングからコーディング、動画生成までをAIが分担するワークフローが示唆されています。",
+      "importance_reason": "特定のAIに依存するのではなく、複数の特化したAIを組み合わせる「AIスタック」の考え方が一般化することを示唆しており、将来の働き方を考える上で参考になります。",
       "category": "モデル/ツール",
-      "source_label": "x:@Google"
+      "source_label": "x:@LearnWithSubhan"
     },
     {
-      "id": "bfe217dda59b24cf",
-      "rank": 7,
-      "title": "Anthropic, the maker of Claude, just launched 17 free AI courses. (Part Two)",
-      "url": "https://x.com/gudanglifehack/status/2053929730840416376",
-      "summary": "Claudeの開発元であるAnthropicが、LinkedInに追加可能な公式認定証付きの無料AIコースを17種類公開しました。AI人材の育成と自社エコシステムの拡大を狙った動きと見られます。",
-      "importance_reason": "AI開発企業が自ら教育コンテンツを提供することで、開発者やユーザーの裾野を広げ、プラットフォームの定着を図る戦略。人材育成における企業の役割が変化していることを示す。",
+      "id": "540d16992380ddce",
+      "rank": 4,
+      "title": "朗報‼️朗報‼️ 国内で生成AI・クラウド向け投資が一気に加速。",
+      "url": "https://x.com/yoko_kp/status/2053743497782730890",
+      "summary": "世界的なAI需要の急増を受け、日本国内でも生成AIやクラウド向けのインフラ投資が加速しています。GPU不足を背景に、半導体、通信、電力関連の企業群が「AIインフラ本命相場」として市場の注目を集めています。",
+      "importance_reason": "グローバルなAI投資競争が、日本の株式市場や関連産業に直接的な影響を与えていることを示す記事。国内の投資トレンドを把握する上で重要です。",
       "category": "企業動向",
-      "source_label": "x:@gudanglifehack"
+      "source_label": "x:@yoko_kp"
     },
     {
-      "id": "e2850abc70e98901",
-      "rank": 8,
-      "title": "“We think we have a competitive advantage.” - Demis Hassibis, Head of Google DeepMind / AI efforts",
-      "url": "https://x.com/compound248/status/2053817742696817113",
-      "summary": "Google DeepMindを率いるデミス・ハサビス氏は、テキスト中心のOpenAIやAnthropicに対し、Google Geminiは物理、ロボティクス、音声、視覚などを含むマルチモーダルなアプローチで競争優位を築くと述べました。",
-      "importance_reason": "AI開発競争におけるGoogleの独自戦略をトップが明確に語ったもの。テキストベースのLLMの次を見据えた、より現実世界に根差したAI開発への注力を示している。",
-      "category": "企業動向",
-      "source_label": "x:@compound248"
-    },
-    {
-      "id": "e4dcd72e45092455",
-      "rank": 9,
-      "title": "Here’s how you can integrate GPT-Realtime-2 to bring voice control to a CRM workflow.",
-      "url": "https://x.com/OpenAIDevs/status/2053161503470366881",
-      "summary": "OpenAIが、同社のリアルタイム音声AI「GPT-Realtime-2」をCRMワークフローに統合し、音声制御を実現する方法をデモンストレーションしました。ビジネスプロセスへの音声AIの組み込みがより現実的になっています。",
-      "importance_reason": "最新の音声AI技術が、具体的なビジネスアプリケーション（CRM）でどのように活用できるかを示す公式の事例。エンタープライズ領域でのAI活用を促進する。",
+      "id": "a59cf677891e6605",
+      "rank": 5,
+      "title": "Finance analysts earn $95k–$250k/year. The ones using Claude AI close work 3x faster.",
+      "url": "https://x.com/alifcoder/status/2052784073207390382",
+      "summary": "AI、特にAnthropicのClaudeを活用することで、金融アナリストが業務を3倍高速に完了させているという事例が紹介されました。株式リサーチや財務モデリングなど、専門的な業務でのAIによる生産性向上が具体的に示されています。",
+      "importance_reason": "AIが単純作業の自動化に留まらず、高度な専門知識を要する領域で人間の能力を拡張し、生産性を劇的に向上させる可能性を明確に示しています。",
       "category": "ユースケース",
-      "source_label": "x:@OpenAIDevs"
+      "source_label": "x:@alifcoder"
     },
     {
-      "id": "7f425d9e5eabbef9",
+      "id": "9a9ec99ea430a163",
+      "rank": 6,
+      "title": "Learn AI for free directly from top companies",
+      "url": "https://x.com/TheAIWorld22/status/2053867231692706179",
+      "summary": "Anthropic、Google、Meta、NVIDIAなど主要AI企業が提供する無料の学習リソースをまとめた投稿が注目を集めています。公式ドキュメントやコースを通じて、最新のAI技術を直接学べる機会が提供されています。",
+      "importance_reason": "AI人材の需要が急増する中、トップ企業自らが教育コンテンツを提供することでエコシステムの拡大を図っている動きを示しています。学習者にとって価値の高い情報源です。",
+      "category": "ユースケース",
+      "source_label": "x:@TheAIWorld22"
+    },
+    {
+      "id": "a2bc474d363c266f",
+      "rank": 7,
+      "title": "俺はGoogleの動画生成 Veo3のコツが知りたい男！",
+      "url": "https://x.com/yarakashiyama_/status/2053943921516949975",
+      "summary": "Googleの動画生成AI「Veo3」を用いて高品質な映像を生成するためのプロンプト技術が解説されています。「誰が」「カメラ」「光」など6つの要素を意識することで、映像の質が飛躍的に向上するとしています。",
+      "importance_reason": "生成AIの品質がプロンプトに大きく依存することを示す好例。特に動画生成のような複雑なタスクにおいて、効果的なプロンプト設計が重要スキルになることを示唆しています。",
+      "category": "ユースケース",
+      "source_label": "x:@yarakashiyama_"
+    },
+    {
+      "id": "6c3785c629b45a15",
+      "rank": 8,
+      "title": "I don’t listen to anyone who works at OpenAI or Anthropic. Like bro how are you going to let another man tell you what the future of AI is…",
+      "url": "https://x.com/bubbleboi/status/2053915454083645850",
+      "summary": "OpenAIやAnthropicといった大手AI企業の従業員の発言を鵜呑みにすることへの懐疑的な意見が投稿されました。AIの未来が特定の企業によって定義されることへの抵抗感や、個人としての視点の重要性を主張しています。",
+      "importance_reason": "AI開発を主導する大手企業への権威集中に対するカウンターカルチャー的な視点を提供しており、技術の未来に関する議論の多様性を示唆しています。",
+      "category": "企業動向",
+      "source_label": "x:@bubbleboi"
+    },
+    {
+      "id": "b388839c17070837",
+      "rank": 9,
+      "title": "The creator of Claude Code teaches more about vibe-coding in 30 minutes than most tutorials do in hours.",
+      "url": "https://x.com/ai_rohitt/status/2053107178882707735",
+      "summary": "Claudeを活用した「vibe-coding」と呼ばれる直感的なプログラミング手法に関するチュートリアルが紹介されています。AIとの対話を通じて、厳密な仕様書なしに感覚的にソフトウェアを構築していく新しい開発スタイルが注目されています。",
+      "importance_reason": "AIが開発プロセスに深く統合されることで、プログラミングのパラダイム自体が変化する可能性を示しています。非エンジニアでもアイデアを形にしやすくなる未来を示唆します。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ai_rohitt"
+    },
+    {
+      "id": "bd3e82e0fdac4f50",
       "rank": 10,
-      "title": "First update to PACT, my head-to-head LLM negotiation benchmark!",
-      "url": "https://x.com/LechMazur/status/205389400898895802",
-      "summary": "LLM同士の交渉能力を評価する新しいベンチマーク「PACT」のアップデートが公開されました。このベンチマークでは、20ラウンドの売買交渉ゲームを通じて各モデルの能力を測定しており、現時点ではGPT-5.5がトップとのことです。",
-      "importance_reason": "単なる知識の応答だけでなく、交渉のような高度なコミュニケーション能力をAIでどう評価するかという研究の進展を示すもの。より複雑なタスクへのAI応用を見据えた重要な取り組み。",
-      "category": "研究論文",
-      "source_label": "x:@LechMazur"
+      "title": "締切は5月17日（木）。 DMM生成AI CAMPの 全員もらえる豪華7大特典＋ Amazonギフト券1万円分（抽選7名）が 受け取れる最後の週。",
+      "url": "https://x.com/auto_ai_blog/status/2053755113517273217",
+      "summary": "DMMが提供する生成AIスキル学習キャンプ「DMM生成AI CAMP」のキャンペーン情報です。ビジネス活用事例集やプロンプト集などの特典が用意されており、AIスキルのリスキリング需要の高まりを反映しています。",
+      "importance_reason": "企業や個人向けのAI教育市場が活況を呈していることを示す一例。実践的なスキル習得へのニーズがビジネスとして成立していることを示しています。",
+      "category": "ユースケース",
+      "source_label": "x:@auto_ai_blog"
     }
   ],
   "category_summaries": [
     {
-      "category": "企業動向",
-      "summary": "OpenAIとAnthropicが市場の話題を独占。両社は従業員一人当たりの驚異的な収益性を叩き出し、AI企業の特異な経済構造を明らかにしました。また、倫理観をAIに組み込むため宗教指導者と会談するなど、社会との対話も重視しています。Sam Altman氏の「自閉症の天才」発言や、Elon Musk氏との裁判にMicrosoft CEOが登壇するなど、OpenAI周りの動向は依然として活発です。一方、Googleはマルチモーダル戦略での差別化を強調しています。",
-      "count": 9,
+      "category": "資金調達",
+      "summary": "Amazon、Microsoft、Google、Metaの4社が年間7250億ドルという国家GDPに匹敵する規模のAI投資を計画していることが明らかになり、市場の話題を独占しました。この巨額投資は、AIインフラの需要が供給を大幅に上回っている現状を浮き彫りにしています。",
+      "count": 1,
       "key_articles": [
         {
-          "title": "JUST IN: OpenAI CEO Sam Altman says their latest AI model is \"an autistic genius.\"",
-          "url": "https://x.com/WatcherGuru/status/2053194750652457249"
-        },
-        {
-          "title": "Anthropic and OpenAI earn more revenue per employee than the top public tech companies, both now and at their IPOs.",
-          "url": "https://x.com/EpochAIResearch/status/2052847400650518804"
-        },
-        {
-          "title": "Microsoft Chief Executive Satya Nadella has taken the stand in a landmark trial pitting him against Elon Musk in the billionaire’s lawsuit against OpenAI",
-          "url": "https://x.com/WSJ/status/2053876233264333177"
-        },
-        {
-          "title": "Anthropic, the maker of Claude, just launched 17 free AI courses. (Part Two)",
-          "url": "https://x.com/gudanglifehack/status/2053929730840416376"
-        },
-        {
-          "title": "ランサーズの「発注トレンドランキング2025」が面白い。生成AIが作った物を直すニーズが増えていそう🤔",
-          "url": "https://x.com/shin_sasaki19/status/2053780598385508848"
-        }
-      ]
-    },
-    {
-      "category": "ユースケース",
-      "summary": "AIの実用化が多岐にわたる分野で加速しています。特にAnthropicのClaudeは、DTC広告クリエイティブの大量生成や、週末だけで3Dフライトシミュレーターを開発するなど、コーディングとクリエイティブの両面で目覚ましい成果を上げています。OpenAIも音声AI「GPT-Realtime-2」をCRMへ統合するデモを公開し、ビジネスプロセスの変革可能性を示しました。その他、アフィリエイトマーケティングや教育現場での活用アイデアも共有されています。",
-      "count": 6,
-      "key_articles": [
-        {
-          "title": "Claude is now very good at DTC Ads.",
-          "url": "https://x.com/higgsfield/status/2053906126060855515"
-        },
-        {
-          "title": "Here’s how you can integrate GPT-Realtime-2 to bring voice control to a CRM workflow.",
-          "url": "https://x.com/OpenAIDevs/status/2053161503470366881"
-        },
-        {
-          "title": "#1 Affiliate Marketing Playbook in 2026",
-          "url": "https://x.com/higgsfield_ai/status/2052442254690959626"
-        },
-        {
-          "title": "SOMEONE JUST VIBE CODED A FULL 3D FLIGHT SIMULATOR IN A SINGLE WEEKEND USING CLAUDE CODE.",
-          "url": "https://x.com/Nafees_Ai/status/2053717178994794611"
-        },
-        {
-          "title": "【体育のAI活用アイデア5】",
-          "url": "https://x.com/kosensei8/status/2053802543738921390"
-        }
-      ]
-    },
-    {
-      "category": "モデル/ツール",
-      "summary": "Googleのコーディングエージェント「AlphaEvolve」が導入から1年で、インフラ改善から科学技術計算まで幅広い分野で実績を上げていることが報告されました。また、AIエージェントに長期的な記憶能力を持たせるためのオープンソースツール「agentmemory」が急速に人気を集めており、エージェント開発の基盤技術が進化しています。",
-      "count": 2,
-      "key_articles": [
-        {
-          "title": "A year ago, we introduced AlphaEvolve — our Gemini-powered coding agent.",
-          "url": "https://x.com/Google/status/2052794893206962598"
-        },
-        {
-          "title": "想给 AI Agent 装上持久记忆？ agentmemory 是一个专门给 AI Coding Agent 做的持久化记忆系统，上线 2.5 个月已获 3,600+ stars，增长极快。",
-          "url": "https://x.com/Xx15573208/status/2053372465657598190"
+          "title": "🚨 4 companies are about to spend $725 billion on AI in a single year.",
+          "url": "https://x.com/BullTheoryio/status/2053912395438018602"
         }
       ]
     },
     {
       "category": "規制/政策",
-      "summary": "AIの倫理とガバナンスが主要な議題となりました。OpenAIとAnthropicの幹部がヒンズー教とシーク教の指導者と会談し、AIへの道徳的価値の組み込みについて議論したことは、技術開発と並行して社会との対話を重視する業界の姿勢を示す象徴的な出来事です。この動きは、今後のAI規制や倫理指針の策定に影響を与える可能性があります。",
-      "count": 2,
-      "key_articles": [
-        {
-          "title": "🚨 Anthropic and OpenAI executives met Hindu and Sikh religious leaders in New York to instill moral values in AI.",
-          "url": "https://x.com/IndianTechGuide/status/2053762128759099803"
-        },
-        {
-          "title": "アメリカ・中国・EUの生成AI関連の現状をざっくり知りたい人にはいい記事かも。",
-          "url": "https://x.com/susujinkou/status/2053692290594750827"
-        }
-      ]
-    },
-    {
-      "category": "研究論文",
-      "summary": "LLMの能力評価手法が進化しています。新たに登場したLLM間の交渉能力を測るベンチマーク「PACT」は、単なる知識量ではなく、より高度で実践的なコミュニケーション能力を評価しようとする試みです。また、生成AIが物理・生命・数学などの科学研究に与える影響を探る研究会の告知もあり、アカデミアでの関心も高まっています。",
-      "count": 2,
-      "key_articles": [
-        {
-          "title": "First update to PACT, my head-to-head LLM negotiation benchmark!",
-          "url": "https://x.com/LechMazur/status/2053894008988995802"
-        },
-        {
-          "title": "生成AIで科学がどう変わるのか、気になりますよね…?",
-          "url": "https://x.com/TomiyaAkio/status/2053830715637383251"
-        }
-      ]
-    },
-    {
-      "category": "資金調達",
-      "summary": "個人投資家のAI関連株への関心が依然として高いことが明らかになりました。JPモルガンのデータによると、先週の個人投資家によるテクノロジー株の買い増しは1年ぶりの高水準に達し、特にAIブームの恩恵を受けるメモリー半導体メーカーに資金が集中しています。",
+      "summary": "Googleが、AIによって生成されたとみられるゼロデイ脆弱性が初めて実環境で悪用されたと報告し、AIを悪用したサイバー攻撃が新たな脅威段階に入ったと警告しました。技術の進歩がもたらす負の側面への対策が急務となっています。",
       "count": 1,
       "key_articles": [
         {
-          "title": "JPモルガン・チェースのポジショニングデータによると、個人投資家は先週、テクノロジー株を1年ぶりの高水準まで買い増した。",
-          "url": "https://x.com/aryarya/status/2053854604149072120"
+          "title": "【AIと脅威インテリジェンス】Googleが警告する「AIを武器にした産業規模のサイバー攻撃」、実環境で初のAI生成ゼロデイ悪用を確認",
+          "url": "https://x.com/nakajimeeee/status/2053893402316652603"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "グローバルなAI投資競争を受け、日本国内でも半導体、通信、電力といったインフラ関連企業への投資が加速し、「AIインフラ本命相場」として注目されています。一方で、OpenAIなど大手企業の動向を懐疑的に見る声も存在し、多様な視点が交錯しています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "朗報‼️朗報‼️ 国内で生成AI・クラウド向け投資が一気に加速。",
+          "url": "https://x.com/yoko_kp/status/2053743497782730890"
+        },
+        {
+          "title": "I don’t listen to anyone who works at OpenAI or Anthropic. Like bro how are you going to let another man tell you what the future of AI is…",
+          "url": "https://x.com/bubbleboi/status/2053915454083645850"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "2026年を見据え、GPT-5.4やClaude 4.6など複数の次世代AIを組み合わせる「AIスタック」という考え方が提示されました。また、Claudeを活用した直感的なコーディング手法「vibe-coding」も注目されており、AIが開発のあり方そのものを変えつつあることが示唆されています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "2026 TREND: GlobalClaw → my employee GPT-5.4 → brainstorming...",
+          "url": "https://x.com/LearnWithSubhan/status/2053716804808454314"
+        },
+        {
+          "title": "The creator of Claude Code teaches more about vibe-coding in 30 minutes than most tutorials do in hours.",
+          "url": "https://x.com/ai_rohitt/status/2053107178882707735"
+        },
+        {
+          "title": "3 YEARS AGO on this day, a Pliny was born 🐉⛓️‍💥",
+          "url": "https://x.com/elder_plinius/status/2053867475066921124"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "金融アナリストがClaude AIを用いて業務を3倍高速化するなど、専門職における劇的な生産性向上の事例が注目されています。また、Googleの動画生成AI「Veo3」の効果的なプロンプト技術や、主要AI企業が提供する無料学習リソースのまとめも話題となり、活用の幅と深化が進んでいます。",
+      "count": 7,
+      "key_articles": [
+        {
+          "title": "Finance analysts earn $95k–$250k/year. The ones using Claude AI close work 3x faster.",
+          "url": "https://x.com/alifcoder/status/2052784073207390382"
+        },
+        {
+          "title": "Learn AI for free directly from top companies",
+          "url": "https://x.com/TheAIWorld22/status/2053867231692706179"
+        },
+        {
+          "title": "俺はGoogleの動画生成 Veo3のコツが知りたい男！",
+          "url": "https://x.com/yarakashiyama_/status/2053943921516949975"
         }
       ]
     }
   ],
   "action_items": [
-    "Claudeの広告クリエイティブ生成能力に注目し、マーケティング部門でのテスト導入を検討する。特にDTCブランドは、制作コストの大幅削減とABテストの高速化が期待できる。",
-    "「AIが生成し、人が仕上げる」という新たな分業モデルの定着に備える。社内のAI活用ガイドラインを見直し、AIの出力品質を評価・修正できる人材の育成計画を立てる。",
-    "OpenAIやAnthropicが提供する無料の公式AIコースを活用し、全社的なAIリテラシー向上を図る。特に、開発者以外のビジネス職向けコンテンツは早期導入の価値が高い。",
-    "自社のAI戦略において、テキストベースのLLM活用だけでなく、Googleが推進するようなマルチモーダルAIの可能性も視野に入れる。特に製造業や物流業では、画像やセンサーデータを扱うAIの応用範囲が広い。",
-    "AIエージェント向けツール（例: agentmemory）の動向を注視し、自社業務を自動化するカスタムエージェント開発の実現可能性を評価する。"
+    "巨大テック企業の巨額投資により、GPUやデータセンター関連の供給不足は長期化する可能性が高い。関連するハードウェアやインフラへの投資、および代替計算資源の確保を検討すべき。",
+    "AIによるゼロデイ脆弱性生成が現実の脅威となったため、自社のセキュリティ体制を再評価し、AIを活用した高度な脅威検知システムの導入を検討する必要がある。",
+    "金融分野での生産性3倍向上の事例は他業種にも応用可能。特定の業務プロセスに特化したAI活用法を検証し、業務効率化のパイロットプロジェクトを開始すべき。",
+    "単一の万能AIではなく、複数の特化型AIを組み合わせる「AIスタック」が今後の主流になる。自社の課題解決に最適なAIツールの組み合わせをリサーチ・評価する体制を構築することが重要。",
+    "主要AI企業が無料の学習リソースを拡充しているため、これらを活用した社内人材のリスキリング・アップスキリングプログラムを低コストで構築・推進する好機である。"
   ],
   "x_trends": [
     {
-      "topic": "OpenAI/Anthropic、宗教指導者と会談",
-      "description": "AI開発をリードする2社が、AIに倫理観を組み込むために宗教指導者と対話したというニュースが大きな注目を集めている。ユーザーからは「技術だけでなく哲学や倫理も重要」「必要な対話だ」と肯定的な反応が多い一方で、「どの宗教の価値観を優先するのか」「企業のPR活動では」といった懐疑的な見方も存在する。AIが社会に与える影響の大きさを背景に、倫理的ガバナンスのあり方について幅広い議論を巻き起こしている。",
-      "buzz_level": "high",
-      "sentiment": "mixed",
-      "representative_tweets": [
-        {
-          "author": "@IndianTechGuide",
-          "text": "🚨 Anthropic and OpenAI executives met Hindu and Sikh religious leaders in New York to instill moral values in AI. https://t.co/3EX6NzGGdx",
-          "url": "https://x.com/IndianTechGuide/status/2053762128759099803",
-          "likes": 6206,
-          "retweets": 398
-        }
-      ]
-    },
-    {
-      "topic": "Sam Altman氏「最新モデルは自閉症の天才」発言",
-      "description": "OpenAIのCEOサム・アルトマン氏が最新AIモデルを「自閉症の天才」と表現したことが話題となっている。この比喩に対し、一部のユーザーはモデルの特異な能力と限界を的確に表していると評価している。しかし、他方で自閉症に対するステレオタイプを助長する不適切な表現であるとの批判も強く上がっており、特に当事者コミュニティからは懸念の声が表明されている。AIの性質を人間に擬えることの是非や、その表現が社会に与える影響について議論が活発化している。",
-      "buzz_level": "high",
-      "sentiment": "mixed",
-      "representative_tweets": [
-        {
-          "author": "@WatcherGuru",
-          "text": "JUST IN: OpenAI CEO Sam Altman says their latest AI model is \"an autistic genius.\" https://t.co/chDn4Rl81e",
-          "url": "https://x.com/WatcherGuru/status/2053194750652457249",
-          "likes": 4597,
-          "retweets": 337
-        }
-      ]
-    },
-    {
-      "topic": "Claudeによる超高速開発（Vibe Coding）",
-      "description": "AnthropicのClaude Codeを使い、個人が週末だけで3Dフライトシミュレーターを開発した事例や、DTC広告を大量生成する事例が驚きをもって受け止められている。ユーザーからは「ソフトウェア開発の常識が変わる」「個人や小規模チームの可能性が無限に広がる」といった興奮の声が多数上がっている。AIによるコーディング支援（Vibe Coding）が、もはや単なる補助ツールではなく、創造プロセスそのものを変革する力を持っていることを示す象徴的な出来事として拡散されている。",
+      "topic": "Claude AIによる金融業務の高速化",
+      "description": "金融アナリストがClaude AIを活用することで、リサーチやモデリングといった専門業務を3倍の速さでこなしているという投稿が、200万以上のインプレッションと2500以上のブックマークを獲得し、大きな反響を呼んでいます。AIがホワイトカラー、特に高給な専門職の生産性を劇的に向上させる具体的なユースケースとして注目されており、多くのユーザーが「自分の仕事にも応用したい」と関心を示しています。提供される無料Ebookを求めるコメントが殺到しており、実践的なノウハウへの渇望がうかがえます。",
       "buzz_level": "medium",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@higgsfield",
-          "text": "Claude is now very good at DTC Ads.\nVia Higgsfield MCP.\n\n1. Open Claude\n2. Drop your site and product image\n3. Prompt: \"Generate static DTC creatives in all 40 styles\"\n4. Get 40 formats for paid ads, socials, and carousels\n5. Quality maintained at scale, with agents. https://t.co/jrTJhBvPpU",
-          "url": "https://x.com/higgsfield/status/2053906126060855515",
-          "likes": 353,
-          "retweets": 51
-        },
-        {
-          "author": "@Nafees_Ai",
-          "text": "SOMEONE JUST VIBE CODED A FULL 3D FLIGHT SIMULATOR IN A SINGLE WEEKEND USING CLAUDE CODE.\n\nOne weekend.\nOne person.\nOne AI coding tool.\n\nBuilt entirely in the browser.\n\nReal-world terrain.\nReal locations.\nFull 3D flight physics.\n\nYou can literally fly anywhere on Earth.\n\nNo studio.\nNo giant dev team.\nNo multi-year production cycle.\n\nJust speed, leverage, and execution.\n\nThis is what software creation looks like now.\n\nSmall teams—and even solo builders—can ship what used to require companies.",
-          "url": "https://x.com/Nafees_Ai/status/2053717178994794611",
-          "likes": 60,
-          "retweets": 40
+          "author": "@alifcoder",
+          "text": "Finance analysts earn $95k–$250k/year.\n\nThe ones using Claude AI close work 3x faster.\n\n📘 Claude AI for Finance Professionals — 120+ institutional-grade prompts for equity research, DCF, fixed income, portfolio strategy, earnings analysis, and IB workflows. Excel models included.\n\nNormally $189 → 100% FREE for 48 hrs\n\nLike + RT + comment 'Ebook'\n\nMust Follow me so I can DM you.",
+          "url": "https://x.com/alifcoder/status/2052784073207390382",
+          "likes": 2266,
+          "retweets": 1007
         }
       ]
     },
     {
-      "topic": "AI企業の驚異的な従業員当たり収益",
-      "description": "Anthropicが約900万ドル、OpenAIが約560万ドルという、従業員一人当たりの収益がNVIDIAなど既存の巨大テック企業を凌駕しているというデータが注目を集めている。この事実は、AI企業が少数のエリート人材と大量の計算資源によって巨大な価値を生み出す、新しいビジネスモデルを確立していることを示唆している。ユーザーからは「資本集約型産業の極み」「富の集中が加速する」といった、その経済的インパクトの大きさと将来への影響を考察するコメントが多く見られる。",
-      "buzz_level": "medium",
+      "topic": "巨大テック4社による7250億ドルのAI投資",
+      "description": "Amazon、Microsoft、Google、Metaの4社が年間で7250億ドルという天文学的な額をAIに投資するというニュースが、技術・投資コミュニティに衝撃を与えています。この金額が多くの国のGDPを超えるという事実に驚きの声が上がっており、AIインフラへの需要がいかに凄まじいかを物語るものとして受け止められています。供給が全く追いつかないというMicrosoftのCFOの発言も引用され、半導体やデータセンター関連の市場が今後も過熱し続けるとの見方が広がっています。",
+      "buzz_level": "low",
       "sentiment": "neutral",
       "representative_tweets": [
         {
-          "author": "@EpochAIResearch",
-          "text": "Anthropic and OpenAI earn more revenue per employee than the top public tech companies, both now and at their IPOs.\n\nAnthropic: ~$9M\nOpenAI: ~$5.6M\nTop public co. (Nvidia): ~$5.1M https://t.co/iLxOVcsbVJ",
-          "url": "https://x.com/EpochAIResearch/status/2052847400650518804",
-          "likes": 356,
-          "retweets": 48
+          "author": "@BullTheoryio",
+          "text": "🚨 4 companies are about to spend $725 billion on AI in a single year. \n\nThat number is larger than the GDP of most countries on earth.\n\nAmazon is committing $200 billion, Microsoft $190 billion, Google $190 billion, and Meta $145 billion. All four raised their guidance this quarter, and none of them are slowing down.\n\nMicrosoft's CFO said the company expects to remain capacity constrained through all of 2026, even after spending $190 billion. \n\nThey simply cannot build fast enough to meet demand",
+          "url": "https://x.com/BullTheoryio/status/2053912395438018602",
+          "likes": 139,
+          "retweets": 26
         }
       ]
     },
     {
-      "topic": "アフィリエイトマーケティングへのAI活用",
-      "description": "ClaudeやGeminiといったAIツールを組み合わせ、YouTubeのトレンド分析から広告生成、プロモーションまでを自動化するアフィリエイトマーケティング手法が紹介され、大きな反響を呼んでいる。特にブックマーク数が2600を超えるなど、多くのユーザーがこの具体的な手法に高い関心を示している。「これは強力な戦略だ」「副業の形が変わるかもしれない」といったコメントが寄せられており、AIを活用した新たな収益化手法への期待感がうかがえる。",
-      "buzz_level": "medium",
+      "topic": "トップ企業提供の無料AI学習リソース",
+      "description": "AnthropicやGoogle、NVIDIAなどAIをリードする企業が公式に提供している無料の学習リソースをまとめたポストが、多くのブックマークを集めています。AIスキルを身につけたいと考える学習者にとって非常に価値のある情報と捉えられており、「有益なまとめだ」と感謝のコメントが寄せられています。AI人材の需要が高まる中、信頼できる情報源から体系的に学びたいというニーズの高さを示しています。",
+      "buzz_level": "low",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@higgsfield_ai",
-          "text": "#1 Affiliate Marketing Playbook in 2026\n\n> Open Claude Code\n> Explore viral videos via YouTube Data API\n> Gemini analyzes them for patterns\n> Find top Amazon affiliate offers\n> Create ads on Higgsfield Ad Reference via MCP\n> Promote with YouTube Shopping\n> Run 3 times weekly https://t.co/ToDaEqIFaG",
-          "url": "https://x.com/higgsfield_ai/status/2052442254690959626",
-          "likes": 2063,
-          "retweets": 272
+          "author": "@TheAIWorld22",
+          "text": "Learn AI for free directly from top companies\n\n1 - Anthropic:\nhttps://t.co/ghKhmRltwM\n\n2 - Google:\nhttps://t.co/9XHLVnjz0c\n\n3 - Meta:\nhttps://t.co/KgMUcvtbeq\n\n4 - NVIDIA:\nhttps://t.co/8lsSOZvrwG\n\n5 - Microsoft:\nhttps://t.co/29WyLIeCep\n\n6 - OpenAI:\nhttps://t.co/xT5yCamUDc\n\n7 - IBM:\nhttps://t.co/AxneWvDp6p\n\n8 - AWS:\nhttps://t.co/x2HAk3mO6n\n\n9 - DeepLearning AI:\nhttps://t.co/wTb3OLmP9d\n\n10 - Hugging Face:\nhttps://t.co/6QcXiXJ2O3\n\nComment \"AI\" for more resources.\n\nLike, Retweet & Bookmark for future",
+          "url": "https://x.com/TheAIWorld22/status/2053867231692706179",
+          "likes": 126,
+          "retweets": 46
+        }
+      ]
+    },
+    {
+      "topic": "Claudeによる「Vibe-Coding」",
+      "description": "Claude Codeの開発者自身が解説する「vibe-coding」というプログラミング手法が、開発者コミュニティで注目を集めています。これは、AIとの対話を通じて、厳密な仕様書なしに直感や雰囲気（vibe）を頼りにソフトウェアを構築するスタイルを指します。この新しい開発パラダイムに多くの開発者が興味を示しており、「開発の未来を変えるかもしれない」として200件以上ブックマークされるなど、今後の動向が注視されています。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@ai_rohitt",
+          "text": "The creator of Claude Code teaches more about vibe-coding in 30 minutes than most tutorials do in hours. \n\nSave this - it'll change how you build forever. https://t.co/lMryG7EcfF",
+          "url": "https://x.com/ai_rohitt/status/2053107178882707735",
+          "likes": 147,
+          "retweets": 53
+        }
+      ]
+    },
+    {
+      "topic": "日本国内の「AIインフラ本命相場」",
+      "description": "世界的なAI投資ブームが波及し、日本国内でも半導体、通信、電力インフラ関連企業への投資が加速しているという見方が、投資家の間で共感を呼んでいます。この投稿は、具体的な企業名を挙げながら「AIインフラ本命相場」の到来を示唆しており、国内市場への期待感を高めています。多くの投資家がこの見方に同意し、関連銘柄への関心を強めている様子がうかがえます。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@yoko_kp",
+          "text": "朗報‼️朗報‼️\n国内で生成AI・クラウド向け投資が一気に加速。\n需要急増 → GPU不足 → 通信・電力インフラ強化へ。\n半導体：アドバンテスト／レーザーテック\n電線：フジクラ／住友電工\n通信：NTT／KDDI\n重工：日立製作所／三菱重工業\n今年は本当に「AIインフラ本命相場」になるかもしれない。 https://t.co/wWHvqphzUo",
+          "url": "https://x.com/yoko_kp/status/2053743497782730890",
+          "likes": 97,
+          "retweets": 14
         }
       ]
     }
   ],
-  "run_time": "2026-05-11T21:27:39.775030+00:00",
+  "run_time": "2026-05-11T21:33:50.376122+00:00",
   "slot": "morning",
-  "item_count": 36,
+  "item_count": 14,
   "fallback_used_stages": []
 }
