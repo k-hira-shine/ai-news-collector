@@ -1,342 +1,420 @@
 {
-  "trend_summary": "本日のAI業界はAnthropicが中心となり、AIエージェントの自己改善機能「dreaming」や金融特化型エージェント群を発表し、技術革新を強く印象付けました。並行して、Appleが次期OSでSiriにGemini、ChatGPT、Claudeを選択可能にするとの噂が浮上し、大手プラットフォームにおけるAIモデルの主導権争いが激化しています。さらに、Metaが著作権侵害で大手出版社から提訴されるなど、AI開発と知財権の対立も深刻化しており、技術、ビジネス、規制の各方面で重要な動きが同時に進行する一日となりました。",
+  "trend_summary": "本日のAI業界は「AIエージェント」が市場の中心を独占しました。特にAnthropicのClaude Codeが新機能「Agent View」や金融向けテンプレートを相次いで発表し、開発者や金融業界からの注目を一身に集めています。並行して、OpenAIのCodexやGoogleのGeminiも自律型エージェント機能を強化しており、各社が具体的な業務自動化ソリューションで競い合う新時代に突入したことを明確に示しています。また、Google DeepMindから次期モデル「Gemini 3」シリーズや動画モデル「Omni」がリークされ、AI基盤モデル競争の次なる展開への期待が高まっています。",
   "trend_evolution": {
-    "since_last": "前回のOpenAIによる新モデル発表の波から一転し、本日はAnthropicが新機能や金融向けエージェントの発表で市場の注目を独占しました。新たに、AppleのSiriへのサードパーティAI統合の噂や、Metaに対する大規模な著作権訴訟が浮上し、議論の焦点がモデル性能競争からプラットフォーム統合と法的リスクへと拡大しています。OpenAIに関する話題は、従業員の株式売却という内部動向にシフトしており、AI業界の競争と成長の複雑な側面が浮き彫りになっています。",
+    "since_last": "前回の分析ではAnthropicの自己改善機能「dreaming」が話題の中心でしたが、本日はより具体的な「Claude Code」の新機能や金融テンプレートの発表へとシフトし、AIエージェントの実用化が加速していることが伺えます。前回浮上したAppleのAI戦略やMetaの著作権訴訟に関する話題は一旦沈静化し、代わりにGoogleの次期モデル「Gemini 3/Omni」のリーク情報が新たな注目トピックとして登場しました。全体として、AIエージェント開発競争がさらに激化し、各社の製品リリースやリーク情報が市場の関心を集める展開となっています。",
     "tracked_topics": [
       {
-        "topic": "Anthropicの製品攻勢（Dreaming, 金融エージェント）",
+        "topic": "AIエージェント開発競争の激化",
         "status": "RISING",
         "streak_days": 2,
-        "evolution": "スーパーコンピュータ提携の報道から、具体的な新機能や業界特化エージェントの発表へと進展し、市場への影響力を強化している。"
+        "evolution": "各社がAIエージェントの概念実証から具体的な製品・機能リリースへと移行し、開発競争が激化しています。"
       },
       {
-        "topic": "AppleのAI戦略とサードパーティ統合",
+        "topic": "Anthropic (Claude) の製品攻勢",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "自己改善機能の発表に続き、Claude Codeの新UIや金融テンプレートを公開し、市場での存在感を急速に高めています。"
+      },
+      {
+        "topic": "Google次世代モデル (Gemini 3/Omni) のリーク",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "次期OS「iOS 27」のSiriでGemini, ChatGPT, Claudeを選択可能にするという噂が初めて報じられた。"
+        "evolution": "DeepMindのAPIから次期モデル群が誤って公開され、Googleの今後のロードマップへの期待が一気に高まりました。"
       },
       {
-        "topic": "AIの著作権侵害訴訟（Meta）",
+        "topic": "OpenAIの自律コーディング機能 (/goal)",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "大手出版社らがMetaとザッカーバーグCEOを著作権侵害で提訴し、AI学習データに関する法的問題が再び大きく注目された。"
+        "evolution": "Codexにゴール達成まで自律稼働する新機能が追加され、AIによる完全自律開発の可能性が示されました。"
       },
       {
-        "topic": "OpenAIの内部動向（従業員株式売却）",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "従業員による66億ドル相当の株式売却が報じられ、AIバブルへの懸念や内部の動向に注目が集まった。"
+        "topic": "AIによる特定業務・業界の自動化",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "金融業界向けのテンプレートやマーケティングツールが登場し、AIが汎用ツールから特定業務ソリューションへと進化しています。"
       },
       {
-        "topic": "AIエージェントの実用化と開発",
+        "topic": "オープンソースAIツールの進化",
         "status": "SUSTAINED",
         "streak_days": 2,
-        "evolution": "OpenAI Codexによるバグ発見事例やClaude Codeを活用した開発事例が報告され、エージェント技術の具体的なユースケースが増加している。"
-      },
-      {
-        "topic": "AI半導体・インフラ市場の活況",
-        "status": "SUSTAINED",
-        "streak_days": 2,
-        "evolution": "Micronの利益予測や東京応化工業の好決算が報じられ、AIブームが半導体関連企業に与える好影響が継続して示されている。"
+        "evolution": "動画生成、デザイン、業務自動化など多岐にわたる分野で高機能なオープンソースツールが継続的に公開されています。"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "8d4509a3bebcd9f3",
+      "id": "e1ff5d152f312807",
       "rank": 1,
-      "title": "JUST IN: Anthropic unveils 10 new AI agents built for banks, insurers, & financial firms.",
-      "url": "https://x.com/Polymarket/status/2051681814159241333",
-      "summary": "Anthropicが、銀行、保険会社、金融機関向けに特化して構築された10種類の新しいAIエージェントを発表しました。これは、AIの業界特化型ソリューションへのシフトを象徴する動きです。",
-      "importance_reason": "これまで汎用的であったAIエージェントが、金融という規制が厳しく専門性の高い分野に本格的に進出するマイルストーンであり、企業のAI導入を加速させる可能性があるため。",
-      "category": "企業動向",
-      "source_label": "x:@Polymarket"
+      "title": "New for financial services: ready-to-run Claude agent templates for building pitches, conducting valuation reviews, closing the books at month-end, and more.",
+      "url": "https://x.com/claudeai/status/2051679629488865498",
+      "summary": "Anthropicが、金融サービス業界向けのClaudeエージェントテンプレート群を発表しました。ピッチ資料作成、企業評価、月次決算などの業務を自動化するプラグインとして提供されます。",
+      "importance_reason": "AIエージェントが汎用的なアシスタントから、特定の業界業務を自動化する垂直統合型ソリューションへと進化していることを示す象徴的な発表です。金融という専門性の高い領域での実用化は、他業界への波及効果も大きいと考えられます。",
+      "category": "モデル/ツール",
+      "source_label": "x:@claudeai"
     },
     {
-      "id": "f1c8bbf65a31d6e8",
+      "id": "dbcccd754867c9e9",
       "rank": 2,
-      "title": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
-      "url": "https://x.com/Polymarket/status/2052078010056982933",
-      "summary": "Anthropicは、AIエージェントがセッションの合間に自己改善を行う新機能「dreaming」をClaudeに導入しました。これにより、AIは継続的に学習し、パフォーマンスを向上させることが可能になります。",
-      "importance_reason": "AIがタスク実行時だけでなく、アイドル時間にも自律的に学習・改善する能力を持つことを示しており、AIエージェントの自律性と性能向上に大きなブレークスルーをもたらす可能性があるため。",
+      "title": "New in Claude Code: agent view.",
+      "url": "https://x.com/claudeai/status/2053940934736228454",
+      "summary": "Anthropicが開発者向けツールClaude Codeに、全てのエージェントセッションを一覧管理できる新機能「agent view」を追加したことを発表しました。リサーチプレビューとして利用可能です。",
+      "importance_reason": "金融テンプレートの発表と合わせ、AnthropicがAIエージェント開発・運用のエコシステムを着実に強化していることを示しています。開発者のUX向上は、プラットフォームの普及に不可欠です。",
       "category": "モデル/ツール",
-      "source_label": "x:@Polymarket"
+      "source_label": "x:@claudeai"
     },
     {
-      "id": "a98b53499c5a1e31",
+      "id": "e6631e45bad8aaaf",
       "rank": 3,
-      "title": "Apple is saying that Siri in iOS 27 will let you choose your own AI model between Gemini, ChatGPT, or Claude. There's noticeably someone missing from this list... 😢",
-      "url": "https://x.com/AutismCapital/status/2051838872729088369",
-      "summary": "Appleが次期OS「iOS 27」において、Siriで利用するAIモデルをGemini、ChatGPT、Claudeからユーザーが選択できるようにするとの噂が報じられています。",
-      "importance_reason": "世界最大のプラットフォームの一つであるApple製品に主要なAIモデルが統合される可能性を示唆しており、AIの普及とモデル間の競争を決定づける極めて重要な動きであるため。",
-      "category": "企業動向",
-      "source_label": "x:@AutismCapital"
+      "title": "長時間駆動が、ガチでヤバい。 OpenAIのAIコーディングツール「Codex」に新機能「/goal」が追加された。",
+      "url": "https://x.com/so_ainsight/status/2051452007794499586",
+      "summary": "OpenAIのコーディングツール「Codex」に、ゴールを指示するだけで達成まで自律的に動作し続ける新機能「/goal」が追加されました。報告では、1時間以上稼働しシューティングゲームを画像素材含め自動生成したとのことです。",
+      "importance_reason": "単一タスクの実行から、長期的なゴール達成に向けた自律エージェントへとAIの能力が大きく飛躍したことを示唆します。ソフトウェア開発のあり方を根本から変える可能性を秘めています。",
+      "category": "モデル/ツール",
+      "source_label": "x:@so_ainsight"
     },
     {
-      "id": "4dd1b9b60ebd6dc4",
+      "id": "a62c7d7d0e37662b",
       "rank": 4,
-      "title": "Meta and CEO Mark Zuckerberg are being sued by five publishers and author Scott Turow, who allege the tech company illegally copied millions of books, articles and other works to train Meta’s AI syste",
-      "url": "https://x.com/Variety/status/2051721056847831514",
-      "summary": "MetaとそのCEOマーク・ザッカーバーグが、5つの出版社と作家から著作権侵害で提訴されました。訴訟では、MetaがAIの学習のために数百万点の書籍や記事を違法にコピーしたと主張されています。",
-      "importance_reason": "AI開発における学習データの著作権問題が、大手テック企業に対する大規模な訴訟に発展した事例であり、今後のAI開発の法的リスクとコンプライアンスのあり方に大きな影響を与えるため。",
-      "category": "規制/政策",
-      "source_label": "x:@Variety"
-    },
-    {
-      "id": "0e7875381108ec93",
-      "rank": 5,
-      "title": "Claude Opus 4.7, Sonnet 4.6, GPT-5.5 (Thinking + Pro), Gemini 3.1 Pro, DeepSeek V4 Pro, and Kimi 2.6 Thinking. All running inside Abacus AI ChatLLM",
-      "url": "https://x.com/abacusai/status/2051715799333687381",
-      "summary": "Abacus AIが、Claude、GPT、Geminiなどの最新フロンティアモデルを一つのワークスペースで利用・比較できるプラットフォーム「ChatLLM」を発表しました。これにより、ユーザーはツールを切り替えることなく最適なモデルにアクセスできます。",
-      "importance_reason": "多数の高性能モデルが登場する中で、それらを統合的に管理・活用する「メタ・プラットフォーム」の需要が高まっていることを示しており、AI利用の効率化と普及を促進するため。",
-      "category": "モデル/ツール",
-      "source_label": "x:@abacusai"
-    },
-    {
-      "id": "2982ea2293b05cb4",
-      "rank": 6,
-      "title": "THIS IS VERY CONCERNING 🚨 OpenAI employees just sold $6.6 billion worth of shares. While new investors keep pouring money into AI, early insiders are already cashing out.",
-      "url": "https://x.com/cryptorover/status/2053830239076200826",
-      "summary": "OpenAIの従業員が66億ドル相当の自社株を売却したことが報じられています。投資家がAI分野に資金を注ぎ込む一方で、初期からの関係者が利益確定に動いていることが示唆されています。",
-      "importance_reason": "AI業界のリーダーであるOpenAIの内部関係者が大規模な株式売却を行ったことは、市場の過熱感や将来性に対する見方を示す可能性があり、投資家心理に影響を与えるため。",
+      "title": "👀 Looks like someone at DeepMind accidentally pushed a bunch of upcoming models to the prod API.",
+      "url": "https://x.com/synthwavedd/status/2053921383458201763",
+      "summary": "Google DeepMindが、開発中の次期モデル群「Gemini 3 Flash」「Gemini 3.1 Pro」「Omni」などを誤って本番APIに公開した可能性が指摘されています。これらのモデルには専用の「agent」版も含まれている模様です。",
+      "importance_reason": "Googleの次世代モデルのロードマップが垣間見えた重要なリークです。特に動画モデル「Omni」や各モデルの「agent」版の存在は、今後のAI開発競争の焦点を占う上で注目されます。",
       "category": "企業動向",
-      "source_label": "x:@cryptorover"
+      "source_label": "x:@synthwavedd"
     },
     {
-      "id": "a2ce427b6c0e104f",
-      "rank": 7,
-      "title": "I think this is bigger than it sounds at first glance. Thinking Machines hasn't just unveiled \"ChatGPT, but better.\" Instead, they've introduced something that addresses a much deeper issue: the very",
-      "url": "https://x.com/kimmonismus/status/2053952846064767384",
-      "summary": "Thinking Machinesが、従来のターン制の対話モデルとは異なり、同時に聞き、見て、話し、割り込むことができる新しいインタラクションモデルを発表しました。これにより、より自然で人間らしいAIとの対話が可能になると期待されています。",
-      "importance_reason": "現在のAIインタラクションの基本的な制約（ターン制）を克服しようとする試みであり、実現すればヒューマン・コンピュータ・インタラクションのパラダイムを大きく変える可能性があるため。",
-      "category": "モデル/ツール",
+      "id": "eccdc16202f6b4ec",
+      "rank": 5,
+      "title": "【リーク】Geminiに新動画AIモデル「Omni」らしき表示",
+      "url": "https://x.com/masahirochaen/status/2053955815288242473",
+      "summary": "Google GeminiのAPIから、新たな動画生成AIモデル「Omni」と思われる情報がリークされました。公開された10秒のサンプル動画は、黒板の数式などテキストの一貫性が高いことが特徴です。",
+      "importance_reason": "GoogleがOpenAIのSoraに対抗する高性能な動画生成モデルを開発していることを示唆する情報です。テキストの一貫性という既存モデルの課題を克服している可能性があり、技術的な進展として注目されます。",
+      "category": "企業動向",
+      "source_label": "x:@masahirochaen"
+    },
+    {
+      "id": "b1a2750da0d1bea7",
+      "rank": 6,
+      "title": "There goes another bunch of startups: Anthropic launched pre-built agent templates for financial services that handle tasks like valuation analysis, KYC screening, and month-end close, packaged with c",
+      "url": "https://x.com/kimmonismus/status/2051681279582540114",
+      "summary": "Anthropicが金融サービス向けの構築済みエージェントテンプレートを公開しました。企業評価分析やKYCスクリーニングといったタスクを処理し、主要なデータプロバイダとも連携。これにより、多くのスタートアップが不要になる可能性が指摘されています。",
+      "importance_reason": "大手AI企業が特定業界向けの垂直統合ソリューションを提供し始めることで、エコシステム内のスタートアップに与える影響の大きさを論じています。AIプラットフォーマーによる市場の再編を示唆する動きです。",
+      "category": "企業動向",
       "source_label": "x:@kimmonismus"
     },
     {
-      "id": "c46cac7b64a4359d",
+      "id": "c46a8aba9259b33e",
+      "rank": 7,
+      "title": "【速報】 Anthropic公式が 「Claude Codeだけで会社をスケールさせる方法」を無料で公開😳",
+      "url": "https://x.com/ClaudeCode_love/status/2052674968429924845",
+      "summary": "Anthropicが、創業者1人とAIエージェントだけで会社を運営する「Company of None」という思想に基づき、Claude Codeで業務を完全自律化させるためのガイドを公開しました。",
+      "importance_reason": "AIエージェントによる事業運営の完全自動化という未来像を、開発元であるAnthropic自らが提唱した点で重要です。これは単なるツール提供に留まらず、新しい働き方や組織論を提示するものです。",
+      "category": "企業動向",
+      "source_label": "x:@ClaudeCode_love"
+    },
+    {
+      "id": "43921ac8f1d27ff2",
       "rank": 8,
-      "title": "OpenAI Codex was given one task: find a bug bounty. It searched open-source projects, found a vulnerability, submitted a PR, worked with maintainers, passed verification… and earned real money 💰",
-      "url": "https://x.com/MervinPraison/status/2053763500586020895",
-      "summary": "OpenAI Codexが、自律的にオープンソースプロジェクトから脆弱性を発見し、修正プルリクエストを提出、メンテナーと協力して検証をパスし、実際に報奨金を獲得した事例が報告されました。",
-      "importance_reason": "AIエージェントが、単なるアシスタントではなく、複雑なタスクを自律的に実行し、経済的価値を生み出す能力を持つことを具体的に示した画期的な事例であるため。",
-      "category": "ユースケース",
-      "source_label": "x:@MervinPraison"
+      "title": "Announcing the Artificial Analysis Coding Agent Index! Our new coding agent benchmarks measure how combinations of agent harnesses and models perform on 3 leading benchmarks, token usage, cost and mor",
+      "url": "https://x.com/ArtificialAnlys/status/2053865095076438427",
+      "summary": "調査会社Artificial Analysisが、AIモデルとそれを利用するツール（ハーネス）の組み合わせで性能を測る新しいコーディングエージェントのベンチマーク「Coding Agent Index」を発表しました。",
+      "importance_reason": "AIの性能評価が、モデル単体から「モデル＋ツール」という実践的な組み合わせへと移行していることを示す動きです。これにより、開発者はより現実に即したツール選択が可能になります。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ArtificialAnlys"
     },
     {
-      "id": "39fbe3e27d43586f",
+      "id": "e54d98524659a620",
       "rank": 9,
-      "title": "$MU quarterly profit is expected to expand from ~$2B to nearly $36B in just over two years.",
-      "url": "https://x.com/StockSavvyShay/status/2053490267681132805",
-      "summary": "Micron Technology（$MU）の四半期利益が、AIによるHBM、DRAM、ストレージ需要の急増により、2年強で約20億ドルから360億ドル近くまで拡大すると予測されています。",
-      "importance_reason": "次世代AIモデル開発がメモリをボトルネックにしており、半導体メモリ市場に爆発的な成長をもたらしていることを示しており、AIインフラの経済的インパクトの大きさを示しているため。",
+      "title": "OpenAI創業者「GPT-5.5 は非常に優れた能力を持ち、かつ非常に簡潔。」",
+      "url": "https://x.com/K_Ishi_AI/status/2053275526463427035",
+      "summary": "OpenAI創業者が次期モデルGPT-5.5について「非常に優れた能力」と「簡潔さ」を両立していると発言したことが報じられています。モデルの応答を簡潔にすることは技術的な挑戦であり、競合に対する優位性となりうると分析されています。",
+      "importance_reason": "AIモデルの性能競争が、単なる能力の高さだけでなく、出力の質（簡潔さ、分かりやすさ）という新たな次元に入っていることを示唆しています。ユーザー体験の向上に直結する重要な開発方針です。",
       "category": "企業動向",
-      "source_label": "x:@StockSavvyShay"
+      "source_label": "x:@K_Ishi_AI"
     },
     {
-      "id": "145e2b45786eb1ee",
+      "id": "60a8524f07c59e55",
       "rank": 10,
-      "title": "東京応化工業（4186）がS高で上場来高値。",
-      "url": "https://x.com/mameyama_kun/status/2053817030336475359",
-      "summary": "半導体フォトレジストで世界首位の東京応化工業が、生成AI関連の旺盛な需要を背景に第1四半期で大幅な増益を達成し、株価がストップ高で上場来高値を更新しました。",
-      "importance_reason": "AIブームが半導体メーカーだけでなく、素材を提供する化学メーカーにまで大きな好影響を及ぼしていることを示す具体例であり、サプライチェーン全体での経済効果の広がりを示しているため。",
-      "category": "企業動向",
-      "source_label": "x:@mameyama_kun"
+      "title": "ガチでやばい。香港大学の研究室が「監督・脚本家・プロデューサー・動画生成」を全部AIに任せられるOSSを公開しました。",
+      "url": "https://x.com/so_ainsight/status/2053808005272174931",
+      "summary": "香港大学の研究室が、アイデア一行から脚本、絵コンテ、動画までを全自動で生成するオープンソースソフトウェア「ViMax」を公開しました。小説の動画化や、ユーザー自身の写真を使った動画生成も可能です。",
+      "importance_reason": "動画制作の全工程をAIで自動化する統合型ツールがオープンソースで登場したことは、コンテンツ制作の民主化をさらに加速させる可能性があります。商用ツールに匹敵する機能をOSSで実現したインパクトは大きいです。",
+      "category": "モデル/ツール",
+      "source_label": "x:@so_ainsight"
     }
   ],
   "category_summaries": [
     {
       "category": "モデル/ツール",
-      "summary": "Anthropicが、AIエージェントの自己改善機能「dreaming」を発表し、技術的なリーダーシップを強調しました。複数の最新モデルを統合的に利用できるAbacus AIのようなプラットフォームも登場し、ユーザー体験の向上が進んでいます。AIコーディングツールとしてのClaudeの進化も注目されており、開発現場での生産性向上への期待が高まっています。",
-      "count": 12,
+      "summary": "今週はAIエージェント関連ツールの発表が相次ぎました。AnthropicはClaude Codeに「Agent View」を追加し、金融特化テンプレートを公開。OpenAIはCodexに自律実行機能「/goal」を導入しました。また、香港大学からは動画制作を完全自動化するOSS「ViMax」が登場するなど、AIツールの専門化と自律化が同時に進行しています。",
+      "count": 27,
       "key_articles": [
         {
-          "title": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
-          "url": "https://x.com/Polymarket/status/2052078010056982933"
+          "title": "New in Claude Code: agent view.",
+          "url": "https://x.com/claudeai/status/2053940934736228454"
         },
         {
-          "title": "Claude Opus 4.7, Sonnet 4.6, GPT-5.5 (Thinking + Pro), Gemini 3.1 Pro, DeepSeek V4 Pro, and Kimi 2.6 Thinking.",
-          "url": "https://x.com/abacusai/status/2051715799333687381"
+          "title": "New for financial services: ready-to-run Claude agent templates for building pitches, conducting valuation reviews, closing the books at month-end, and more.",
+          "url": "https://x.com/claudeai/status/2051679629488865498"
         },
         {
-          "title": "I think this is bigger than it sounds at first glance.",
-          "url": "https://x.com/kimmonismus/status/2053952846064767384"
+          "title": "長時間駆動が、ガチでヤバい。 OpenAIのAIコーディングツール「Codex」に新機能「/goal」が追加された。",
+          "url": "https://x.com/so_ainsight/status/2051452007794499586"
         },
         {
-          "title": "do you understand what happened to Claude Code..",
-          "url": "https://x.com/k1rallik/status/2053946261246459950"
+          "title": "Announcing the Artificial Analysis Coding Agent Index! Our new coding agent benchmarks measure how combinations of agent harnesses and models perform on 3 leading benchmarks, token usage, cost and mor",
+          "url": "https://x.com/ArtificialAnlys/status/2053865095076438427"
+        },
+        {
+          "title": "ガチでやばい。 香港大学の研究室が「監督・脚本家・プロデューサー・動画生成」を全部AIに任せられるOSSを公開しました。",
+          "url": "https://x.com/so_ainsight/status/2053808005272174931"
         }
       ]
     },
     {
       "category": "企業動向",
-      "summary": "Anthropicが金融特化型AIエージェント群を発表し、業界特化戦略を鮮明にしました。AppleがSiriにサードパーティAIを統合するとの噂は、市場の勢力図を塗り替える可能性を秘めています。一方、OpenAI従業員による大規模な株式売却は、市場の過熱感を巡る議論を呼んでいます。AIブームを背景に、Micronや東京応化工業など半導体関連企業の好調な業績も目立ちました。",
-      "count": 11,
+      "summary": "Google DeepMindから次期モデル「Gemini 3」シリーズや動画モデル「Omni」がリークし、大きな話題となりました。AnthropicはClaude Codeを活用した「人間ゼロ運営」の会社構想を打ち出し、AIエージェントがビジネスの中心になる未来を提示。一方、OpenAIは次期モデルGPT-5.5の「簡潔さ」をアピールするなど、大手各社が次なる競争軸を模索しています。",
+      "count": 14,
       "key_articles": [
         {
-          "title": "JUST IN: Anthropic unveils 10 new AI agents built for banks, insurers, & financial firms.",
-          "url": "https://x.com/Polymarket/status/2051681814159241333"
+          "title": "👀 Looks like someone at DeepMind accidentally pushed a bunch of upcoming models to the prod API.",
+          "url": "https://x.com/synthwavedd/status/2053921383458201763"
         },
         {
-          "title": "Apple is saying that Siri in iOS 27 will let you choose your own AI model between Gemini, ChatGPT, or Claude. There's noticeably someone missing from this list... 😢",
-          "url": "https://x.com/AutismCapital/status/2051838872729088369"
+          "title": "【リーク】Geminiに新動画AIモデル「Omni」らしき表示",
+          "url": "https://x.com/masahirochaen/status/2053955815288242473"
         },
         {
-          "title": "THIS IS VERY CONCERNING 🚨 OpenAI employees just sold $6.6 billion worth of shares.",
-          "url": "https://x.com/cryptorover/status/2053830239076200826"
+          "title": "OpenAI創業者「GPT-5.5 は非常に優れた能力を持ち、かつ非常に簡潔。」",
+          "url": "https://x.com/K_Ishi_AI/status/2053275526463427035"
         },
         {
-          "title": "$MU quarterly profit is expected to expand from ~$2B to nearly $36B in just over two years.",
-          "url": "https://x.com/StockSavvyShay/status/2053490267681132805"
+          "title": "There goes another bunch of startups: Anthropic launched pre-built agent templates for financial services that handle tasks like valuation analysis, KYC screening, and month-end close, packaged with c",
+          "url": "https://x.com/kimmonismus/status/2051681279582540114"
         },
         {
-          "title": "東京応化工業（4186）がS高で上場来高値。",
-          "url": "https://x.com/mameyama_kun/status/2053817030336475359"
-        }
-      ]
-    },
-    {
-      "category": "規制/政策",
-      "summary": "MetaとそのCEOが、大手出版社や作家から著作権侵害で提訴されたというニュースが最大のトピックとなりました。生成AIの学習データに利用されるコンテンツの権利問題が、再び法廷闘争の焦点となっています。この訴訟の行方は、今後のAI開発におけるコンプライアンスやデータ収集のあり方に大きな影響を与えるでしょう。",
-      "count": 1,
-      "key_articles": [
-        {
-          "title": "Meta and CEO Mark Zuckerberg are being sued by five publishers and author Scott Turow, who allege the tech company illegally copied millions of books, articles and other works to train Meta’s AI syste",
-          "url": "https://x.com/Variety/status/2051721056847831514"
+          "title": "【速報】 Anthropic公式が 「Claude Codeだけで会社をスケールさせる方法」を無料で公開😳",
+          "url": "https://x.com/ClaudeCode_love/status/2052674968429924845"
         }
       ]
     },
     {
       "category": "ユースケース",
-      "summary": "AIエージェントが自律的にバグを発見し報奨金を得る事例や、Ray-BanのAIグラスが汚職を告発する映像を撮影するなど、AIの実社会での応用がより高度かつ多様化しています。一方で、ChatGPTが生成する文章の画一的なスタイルに対する嫌悪感を示す意見も多く見られ、AI生成コンテンツの質の向上が課題となっています。開発やマーケティング、コンテンツ制作など、様々な分野でAIツールの活用が報告されています。",
-      "count": 15,
+      "summary": "AIエージェントの具体的な活用事例が多数報告されました。特に金融分野での活用が目立ち、Claudeを用いたBTC自動取引システムや、17,000銘柄の金融データへ直接アクセスする事例が注目を集めました。また、Claude Codeだけで構築したLPがSEOで上位表示されるなど、マーケティング領域での自動化・成果創出事例も登場しています。",
+      "count": 16,
       "key_articles": [
         {
-          "title": "OpenAI Codex was given one task: find a bug bounty.",
-          "url": "https://x.com/MervinPraison/status/2053763500586020895"
+          "title": "Claude x BTCトレーダー、えぐい。",
+          "url": "https://x.com/so_ainsight/status/2053463895910830501"
         },
         {
-          "title": "A traveller has used Ray-Ban Meta AI glasses to expose security operatives allegedly extorting ₦200,000 on an Imo highway. The footage reportedly shows officers assaulting the man and forcing transfer",
-          "url": "https://x.com/Naija_PR/status/2052654372828414311"
+          "title": "【速報】 Claude Codeから 17,000以上の株式データに 数秒でアクセスできるようになりました😳",
+          "url": "https://x.com/ClaudeCode_love/status/2053025932211028333"
         },
         {
-          "title": "I hate Chat GPT so much that I will stop reading a long post when I realize it’s AI generated. Even if the story itself is authentic, I hate the voice and style of Chat GPT so much.",
-          "url": "https://x.com/zellieimani/status/2053082207875379314"
+          "title": "2週間前にClaude Codeだけで作った法人導入LP、かなり調子良いです。",
+          "url": "https://x.com/masahirochaen/status/2053043974978605523"
         },
         {
-          "title": "SOMEONE JUST VIBE CODED A FULL 3D FLIGHT SIMULATOR IN A SINGLE WEEKEND USING CLAUDE CODE.",
-          "url": "https://x.com/Nafees_Ai/status/2053717178994794611"
+          "title": "大手コンサルのスライド、AIで再現してみた。",
+          "url": "https://x.com/uchita_success/status/2053753690310553877"
+        },
+        {
+          "title": "助成金申請書×生成AIの現時点でのChatGPT ProとCodexを使った私のワークフローは以下の通り：",
+          "url": "https://x.com/genkAIjokyo/status/2052870113792311640"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "スタンフォード大学などの調査により、「ChatGPT以後」に公開されたWebサイトの35%がAI生成の可能性があると報告され、AIコンテンツの普及実態が明らかになりました。また、Andrej Karpathy氏が提唱した「LLM Wiki」のコンセプトが開発者コミュニティで大きな反響を呼び、自己進化するAIメモリシステムの研究開発が活発化しています。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "“ChatGPT以後”に公開のWebサイト、35％がAI生成に？　米スタンフォード大などが調査　広まる「不自然に明るい文章」",
+          "url": "https://x.com/itmedia_news/status/2053685293321207877"
+        },
+        {
+          "title": "これは衝撃。 Andrej Karpathyが公開したシンプルなGitHub gist「LLM Wiki」が、わずか1ヶ月で5000スター超え。",
+          "url": "https://x.com/so_ainsight/status/2053716806943256907"
+        },
+        {
+          "title": "【驚異の88%削減！軽量化された動画生成AI「LTX-2.3」が凄すぎる✨】",
+          "url": "https://x.com/ai_hakase_/status/2053327930462286235"
+        },
+        {
+          "title": "生成AIで科学がどう変わるのか、気になりますよね…?",
+          "url": "https://x.com/TomiyaAkio/status/2053830715637383251"
+        },
+        {
+          "title": "Stephen Diamond's \"AlphaGo Moment for Numerical Methods\" at AGI House. ",
+          "url": "https://x.com/tigfoundation/status/2053805280433963014"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "生成AIの利用を巡る社会的な議論が続いています。執筆にAIを使用した疑いで小説の出版が中止になる事例が発生し、クリエイティブ分野でのAI利用の透明性や倫理が問われています。X上では、AI利用に対する積極派と慎重派の意見の対立や、著作権に関する議論が活発に行われています。",
+      "count": 4,
+      "key_articles": [
+        {
+          "title": "「執筆に生成AIを使った疑い」で大手出版社がホラー小説の出版を中止、この騒動が意味するAI執筆と出版の問題とは？",
+          "url": "https://x.com/gigazine/status/2053097739194351795"
+        },
+        {
+          "title": "生成AIをバリバリ使う勢と 「それ危なくない？」と距離を置く勢の 温度差はどんどん開いてきてますね",
+          "url": "https://x.com/ymt3d/status/2052936054647496749"
+        },
+        {
+          "title": "別にめておらを擁護するのはいいけど 「AIを使用したこと自体」で燃えてるんじゃなく「他の人の作品を勝手に読み込んでAI生成した」(盗作)だから燃えてる事くらい理解して「悪くない🥺」って発言しようよ。",
+          "url": "https://x.com/amatsuuni/status/2053835936627343406"
+        },
+        {
+          "title": "生成AIに関して",
+          "url": "https://x.com/vtuber_love2/status/2053110946802077726"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "直接的な大型資金調達のニュースはありませんでしたが、AIエージェントを活用して自動で資産運用を行うオープンソースのヘッジファンド構築ツールなどが複数紹介され、個人投資家や開発者の間で注目を集めました。これは、AI技術が金融分野の民主化を促進していることを示唆しています。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "寝てる間にお金を生み出すGitHubリポジトリ10選：",
+          "url": "https://x.com/so_ainsight/status/2053052414325055831"
         }
       ]
     }
   ],
   "action_items": [
-    "Anthropicが金融特化エージェントを投入したことを受け、自社の業界でも同様の特化型AIソリューションの導入や開発の可能性を検討する。",
-    "AppleがSiriにサードパーティAIを統合する動きに備え、自社アプリやサービスが主要AIモデルと連携できるようなAPI戦略や技術的準備を進める。",
-    "Metaへの著作権訴訟を教訓に、自社でのAI開発や活用における学習データの権利処理プロセスを再点検し、法務・コンプライアンス体制を強化する。",
-    "AIコーディングツール（Claude Code, Copilot等）の導入を本格化させ、開発チームの生産性向上と開発サイクルの短縮を目指す。",
-    "複数の高性能AIモデルが登場する中、Abacus AIのような統合プラットフォームを活用し、タスクに応じて最適なモデルを使い分けるワークフローを構築する。"
+    "【金融業界】Anthropicが公開した金融向けAIエージェントテンプレートを評価し、バックオフィス業務（月次決算、資料作成）の自動化・効率化の可能性を検討する。",
+    "【ソフトウェア開発】OpenAI Codexの「/goal」機能やClaude Codeの「Agent View」を試験導入し、開発プロセスにおけるAIエージェントの自律性と管理性を評価する。",
+    "【マーケティング・広告】Googleの無料AIマーケティングツール「Pomelli Catalog」を試用し、広告クリエイティブ生成の自動化が自社のワークフローに適合するか検証する。",
+    "【経営企画】Anthropicが提唱する「Company of None」（人間ゼロ運営）の概念を参考に、自社のどの業務領域がAIエージェントによる完全自動化の候補となりうるか、長期的な視点で議論を開始する。",
+    "【全業種】主要AIプラットフォーム（OpenAI, Anthropic, Google）のエージェント機能の進化を注視し、自社の業務プロセスに最も適したソリューションを選定するための情報収集と評価体制を構築する。"
   ],
   "x_trends": [
     {
-      "topic": "AnthropicのClaude新機能・新製品発表",
-      "description": "Anthropicが「dreaming（自己改善機能）」と「金融特化AIエージェント」を立て続けに発表したことで、X上では同社の技術力と事業展開の速さに対する驚きと称賛の声が広がっています。特に、AIが自律的に賢くなる「dreaming」はSF的だと話題になり、金融エージェントはAIの実用化が新たなステージに入ったことを示すと受け止められています。ユーザーはOpenAIとの競争がさらに激化することを期待しています。",
-      "buzz_level": "high",
-      "sentiment": "positive",
-      "representative_tweets": [
-        {
-          "author": "@Polymarket",
-          "text": "JUST IN: Anthropic unveils 10 new AI agents built for banks, insurers, & financial firms.",
-          "url": "https://x.com/Polymarket/status/2051681814159241333",
-          "likes": 6329,
-          "retweets": 525
-        },
-        {
-          "author": "@Polymarket",
-          "text": "JUST IN: Anthropic rolls out “dreaming” for Claude, letting AI agents self-improve between sessions.",
-          "url": "https://x.com/Polymarket/status/2052078010056982933",
-          "likes": 2802,
-          "retweets": 162
-        }
-      ]
-    },
-    {
-      "topic": "ChatGPT生成文章への嫌悪感",
-      "description": "「ChatGPTが生成したと分かった瞬間に長文を読むのをやめる」という投稿が、2万件近い「いいね」を集めるなど、大きな共感を呼んでいます。多くのユーザーが、ChatGPT特有の無味乾燥で定型的な文体や「声」にうんざりしていると表明しており、AIが生成するコンテンツの質の画一性が大きな課題であることを示しています。この議論は、より人間らしい、あるいは個性的な文章を生成できるAIへの需要を示唆しています。",
-      "buzz_level": "high",
-      "sentiment": "negative",
-      "representative_tweets": [
-        {
-          "author": "@zellieimani",
-          "text": "I hate Chat GPT so much that I will stop reading a long post when I realize it’s AI generated. Even if the story itself is authentic, I hate the voice and style of Chat GPT so much.",
-          "url": "https://x.com/zellieimani/status/2053082207875379314",
-          "likes": 17209,
-          "retweets": 1795
-        }
-      ]
-    },
-    {
-      "topic": "AppleのSiriへのAIモデル選択機能の噂",
-      "description": "Appleが次期OSでSiriにGemini、ChatGPT、ClaudeからAIモデルを選択できる機能を搭載するという噂が大きな話題となっています。この動きは、Appleが特定のAI企業に依存せず、オープンなエコシステムを構築しようとしていると好意的に受け止められています。一方で、Apple自身のAIモデルが含まれていないことへの指摘や、どのモデルがデフォルトになるかなど、実装の詳細に関心が集まっています。",
-      "buzz_level": "medium",
-      "sentiment": "positive",
-      "representative_tweets": [
-        {
-          "author": "@AutismCapital",
-          "text": "Apple is saying that Siri in iOS 27 will let you choose your own AI model between Gemini, ChatGPT, or Claude. There's noticeably someone missing from this list... 😢 https://t.co/UqH3dGDDFX",
-          "url": "https://x.com/AutismCapital/status/2051838872729088369",
-          "likes": 3845,
-          "retweets": 84
-        }
-      ]
-    },
-    {
-      "topic": "Metaの著作権侵害訴訟",
-      "description": "MetaがAIの学習データのために書籍などを無断で使用したとして提訴されたニュースは、AI倫理と法律に関心のある層から広く注目されています。多くのユーザーは出版社の主張に理解を示し、大手テック企業の「Move Fast and Break Things（速く動き、破壊せよ）」という文化を批判しています。この訴訟は、AI開発における「フェアユース」の範囲を問う重要な事例と見なされており、今後の判決が業界に与える影響が議論されています。",
-      "buzz_level": "medium",
-      "sentiment": "negative",
-      "representative_tweets": [
-        {
-          "author": "@Variety",
-          "text": "Meta and CEO Mark Zuckerberg are being sued by five publishers and author Scott Turow, who allege the tech company illegally copied millions of books, articles and other works to train Meta’s AI syste",
-          "url": "https://x.com/Variety/status/2051721056847831514",
-          "likes": 3326,
-          "retweets": 896
-        }
-      ]
-    },
-    {
-      "topic": "AIによる汚職告発（Ray-Ban Metaグラス）",
-      "description": "旅行者がRay-Ban Meta AIグラスを使って、路上で金銭を強要する治安部隊員の様子を撮影し、告発したというナイジェリアでの事件が衝撃を与えています。この投稿は、ウェアラブルAIデバイスが市民ジャーナリズムや権力乱用の監視ツールとして強力な武器になりうることを示し、多くのリツイートと共に拡散されています。ユーザーからは、テクノロジーが正義の実現に貢献する可能性を称賛する声が上がっています。",
+      "topic": "Anthropic Claudeの金融向けエージェント",
+      "description": "Anthropicが金融業界向けに特化したClaudeエージェントのテンプレート群を発表し、X上で爆発的な注目を集めました。特に、ピッチ資料作成、企業評価、月次決算といった具体的な業務が自動化される点に、ユーザーは大きな衝撃と期待を寄せています。一方で、これにより金融アナリストや関連業務のスタートアップが淘汰されるのではないかという懸念の声も上がっており、AIによる業界変革の現実味を帯びたトピックとして議論が白熱しています。",
       "buzz_level": "high",
       "sentiment": "mixed",
       "representative_tweets": [
         {
-          "author": "@Naija_PR",
-          "text": "A traveller has used Ray-Ban Meta AI glasses to expose security operatives allegedly extorting ₦200,000 on an Imo highway. The footage reportedly shows officers assaulting the man and forcing transfers from his OPay and crypto wallets after accusing him of being an IPOB agent. https://t.co/nPlIoHiDBZ",
-          "url": "https://x.com/Naija_PR/status/2052654372828414311",
-          "likes": 6340,
-          "retweets": 2204
+          "author": "x:@claudeai",
+          "text": "New for financial services: ready-to-run Claude agent templates for building pitches, conducting valuation reviews, closing the books at month-end, and more.\n\nInstall them as plugins in Cowork and Claude Code, or use our cookbooks to run them in production as Managed Agents. https://t.co/Nzj4Feaaz2",
+          "url": "https://x.com/claudeai/status/2051679629488865498",
+          "likes": 34369,
+          "retweets": 2939
+        },
+        {
+          "author": "x:@kimmonismus",
+          "text": "There goes another bunch of startups: Anthropic launched pre-built agent templates for financial services that handle tasks like valuation analysis, KYC screening, and month-end close, packaged with connectors to major data providers like FactSet, S&P Global, and Morningstar. \n\nThe templates can be deployed as plugins in Cowork and Claude Code or run in production as Managed Agents, signaling Anthropic's push from general-purpose AI into vertical enterprise workflows.",
+          "url": "https://x.com/kimmonismus/status/2051681279582540114",
+          "likes": 1358,
+          "retweets": 76
+        },
+        {
+          "author": "x:@ClaudeCode_love",
+          "text": "【速報】\nClaude Codeから\n17,000以上の株式データに\n数秒でアクセスできるようになりました😳\nhttps://t.co/ZhuGzUrPy7\n接続方法も簡単👇\nClaude Codeを開いてこれを貼るだけ。\nclaude mcp add --transport http financial-datasets https://t.co/OXAJF1BeEe\nその後、Claude Co",
+          "url": "https://x.com/ClaudeCode_love/status/2053025932211028333",
+          "likes": 4199,
+          "retweets": 392
         }
       ]
     },
     {
-      "topic": "OpenAI従業員の株式売却への懸念",
-      "description": "OpenAI従業員による66億ドルもの株式売却のニュースに対し、XユーザーからはAIバブルのピークアウトを懸念する声が多く上がっています。「インサイダーが売り抜けている」と見なされ、新規投資家の熱狂とは対照的な動きとして тревога を掻き立てています。この動きが、純粋な利益確定なのか、あるいは同社の将来性に対する懸念の表れなのか、様々な憶測を呼んでいます。",
+      "topic": "OpenAI Codexの自律実行機能「/goal」",
+      "description": "OpenAIのコーディングAI「Codex」に、目標を設定すれば自律的にタスクを完遂する「/goal」機能が追加されたという投稿が大きな反響を呼んでいます。実際に1時間以上稼働してゲームを一本制作したという報告は、AIが単なる補助ツールから自律的な開発者に進化する可能性を示唆し、多くの開発者に驚きを与えました。この機能により、ソフトウェア開発の未来像についての議論が活発化しています。",
       "buzz_level": "medium",
-      "sentiment": "negative",
+      "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@cryptorover",
-          "text": "THIS IS VERY CONCERNING 🚨\n\nOpenAI employees just sold $6.6 billion worth of shares.\n\nWhile new investors keep pouring money into AI, early insiders are already cashing out.\n\nAre they expecting the bubble to burst? https://t.co/FmjB6EHNCW",
-          "url": "https://x.com/cryptorover/status/2053830239076200826",
-          "likes": 764,
-          "retweets": 111
+          "author": "x:@so_ainsight",
+          "text": "長時間駆動が、ガチでヤバい。\nOpenAIのAIコーディングツール「Codex」に新機能「/goal」が追加された。\n\n「ゴールを渡したら、達成するまで自律で動き続ける」という機能で、\n試したら1時間以上稼働してシューティングゲームを1本まるごと作ってくれた。\n\nしかも、画像生成スキルをONにしておくと\n・キャラクター素材\n・背景グラフィック\n・ゲーム内アイコン\n\n全部AIが自動生成。手動で作った",
+          "url": "https://x.com/so_ainsight/status/2051452007794499586",
+          "likes": 1177,
+          "retweets": 110
+        }
+      ]
+    },
+    {
+      "topic": "Google次世代AI「Gemini 3」「Omni」のリーク",
+      "description": "Google DeepMindが次世代モデル群を誤ってAPIに公開したというリーク情報が、技術コミュニティを中心に急速に拡散されました。特に、新しい動画生成モデル「Omni」の存在や、各モデルに「agent」版が用意されていることが判明し、Googleの今後のAI戦略に対する期待感を高めています。OpenAIやAnthropicに対抗するGoogleの次の一手として、大きな関心を集めています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@synthwavedd",
+          "text": "👀 Looks like someone at DeepMind accidentally pushed a bunch of upcoming models to the prod API.\n\nGemini 3 Flash, 3 Pro Image, 3.1 Flash Image, 3.1 Flash Lite, 3.1 Flash TTS, 3.1 Pro, Lyria 3 Clip &am",
+          "url": "https://x.com/synthwavedd/status/2053921383458201763",
+          "likes": 294,
+          "retweets": 11
+        },
+        {
+          "author": "x:@masahirochaen",
+          "text": "【リーク】Geminiに新動画AIモデル「Omni」らしき表示\n\n黒板の数式動画、文字の一貫性が強すぎる…\n\n・10秒サンプル公開\n・数式テキストが破綻少なめ\n・Gemini内表示を複数報告\n・I/O前の布石か\n\n👇これがAI動画生成である証拠\nhttps://t.co/3xwqGdXFmH",
+          "url": "https://x.com/masahirochaen/status/2053955815288242473",
+          "likes": 52,
+          "retweets": 5
+        }
+      ]
+    },
+    {
+      "topic": "AIエージェントによる業務自動化ツール",
+      "description": "AIエージェントを活用し、特定の業務を自動化・効率化するツールやリポジトリの紹介が、日本のXユーザーの間で広く共有されています。特に「寝てる間にお金を生み出すGitHubリポジトリ10選」といったキャッチーなまとめは高いエンゲージメントを獲得。GoogleのAIマーケティングツール「Pomelli Catalog」や、コード解説ツール「Code Wiki」なども、無料で実用的なことから注目を集めました。AIが実務に浸透していく様子が伺えます。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@so_ainsight",
+          "text": "寝てる間にお金を生み出すGitHubリポジトリ10選：\n\n1. AutoHedge\n4つのAIエージェントが連携して市場分析→売買まで自動実行するヘッジファンド構築ツール。Solanaに対応。\nhttps://t.co/o0w4RFVdQp\n\n2. Vibe-Trading\n「この銘柄を◯◯のタイミングで買って」と話すだけでAIが戦略作成からバックテストまで実行。22種のMCPツール搭載。\nhtt",
+          "url": "https://x.com/so_ainsight/status/2053052414325055831",
+          "likes": 1221,
+          "retweets": 163
+        },
+        {
+          "author": "x:@masahirochaen",
+          "text": "【速報】Googleが無料AIマーケ「Pomelli Catalog」を公開\n\n商品/サービス登録で広告案とクリエイティブまで生成。\n\nGoogleの新サービスでまたスタートアップが駆逐される…\n\n・商品/サービス情報をカタログ化\n・ブランドに沿った広告案を生成\n・AIで商品撮影風ビジュアル作成 https://t.co/rZ4K3SM0N4",
+          "url": "https://x.com/masahirochaen/status/2053420681745125593",
+          "likes": 1156,
+          "retweets": 96
+        },
+        {
+          "author": "x:@so_ainsight",
+          "text": "Googleが「Code Wiki」を完全無料で公開しました。\n\nGitHubに公開されているリポジトリのURLを貼るだけで、そのコードの中身を解説した最新版マニュアルが自動で出来上がります。\n\n・コードが更新されたら解説も自動で書き直し\n・「この処理どこ？」と聞けばAIが該当箇所まで案内\n・全体の構造を図で可視化\n・初見のリポジトリでも数分で理解できる\n\n全部0円。何ができるのか、詳しく解説しま",
+          "url": "https://x.com/so_ainsight/status/2052164028873728031",
+          "likes": 718,
+          "retweets": 93
+        }
+      ]
+    },
+    {
+      "topic": "Anthropicの「人間ゼロ運営」構想",
+      "description": "Anthropicが公式に「Claude Codeだけで会社をスケールさせる方法」というガイドを公開したことが話題になっています。創業者1人とAIエージェントのみで事業を運営するという「Company of None」の思想は、多くの起業家や開発者に衝撃を与えました。AIが単なる労働力の代替ではなく、企業運営そのものを担うという未来像に、期待と同時に、人間の役割について考えさせられるという反応が見られます。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@ClaudeCode_love",
+          "text": "【速報】\nAnthropic公式が\n「Claude Codeだけで会社をスケールさせる方法」を無料で公開😳\nhttps://t.co/IsEXZb8N1Z\n・創業者：1人\n・労働力：AIエージェント\n・ワークフロー：完全自律\n・設計思想：人間ゼロ運営\n\nこれやっていることは——\n「1人で会社を回す」の完全な自動化\n\n仕組みはこう👇\n\n創業者がタスクを定義\n→\nClaude Codeのエージェントが",
+          "url": "https://x.com/ClaudeCode_love/status/2052674968429924845",
+          "likes": 766,
+          "retweets": 69
+        },
+        {
+          "author": "x:@rohit4verse",
+          "text": "Anthropic CEO: \"we got seven more months.\"\n\nthe bet was a $1B one-person company by end of 2026. two-person AI companies already crossed $1B, one-person companies are past several hundred million.\n\nno",
+          "url": "https://x.com/rohit4verse/status/2053085351648891048",
+          "likes": 1970,
+          "retweets": 189
         }
       ]
     }
   ],
-  "run_time": "2026-05-11T22:04:00.829196+00:00",
+  "run_time": "2026-05-11T22:36:20.629226+00:00",
   "slot": "morning",
-  "item_count": 41,
+  "item_count": 100,
   "fallback_used_stages": []
 }
