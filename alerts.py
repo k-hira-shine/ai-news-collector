@@ -65,12 +65,16 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
     if auth_errors > 0:
         alerts.append({
             "severity": "critical",
-            "title": "X Cookie 認証エラー検出",
+            "title": "X Cookie 認証エラー検出 — 手動更新が必要",
             "detail": (
-                f"{auth_errors} 件の Apify run ログに auth エラー。"
-                "X_COOKIES が失効している可能性大。\n"
-                "→ ブラウザで auth_token + ct0 を再取得 → "
-                "`gh secret set X_COOKIES --repo k-hira-shine/ai-news-collector`"
+                f"{auth_errors} 件の Apify run ログに auth エラー（Cookie health check FAILED / ProxyAuthRequired 等）。"
+                "X_COOKIES が失効しています。\n"
+                "【更新手順】\n"
+                "1. Chrome で x.com にログイン\n"
+                "2. DevTools (F12) → Application → Cookies → https://x.com\n"
+                "3. auth_token と ct0 の値をコピー\n"
+                "4. gh secret set X_COOKIES --repo k-hira-shine/ai-news-collector\n"
+                '   --body \'auth_token=<値>; ct0=<値>\''
             ),
         })
 
@@ -100,38 +104,6 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             "detail": "timeline batch がエラー終了。Cookie か Actor 側の問題。",
         })
 
-    # ── RSS 関連 ──────────────────────────────────────────────────────
-    rss_meta = stats.get("rss_meta") or {}
-    rss_configured = rss_meta.get("feeds_configured", 0)
-    rss_errors = rss_meta.get("feed_error_count", 0)
-    if rss_configured > 0:
-        fail_rate = rss_errors / rss_configured
-        threshold = alerts_cfg.get("rss_failure_rate_threshold", 0.3)
-        if fail_rate >= threshold:
-            alerts.append({
-                "severity": "critical" if fail_rate >= 0.5 else "warning",
-                "title": f"RSS 取得失敗率 {fail_rate * 100:.0f}%",
-                "detail": (
-                    f"{rss_errors}/{rss_configured} フィードが失敗。"
-                    "ネットワーク不調またはフィード URL 変更の可能性。"
-                ),
-            })
-
-    # ── YouTube 関連 ──────────────────────────────────────────────────
-    if alerts_cfg.get("youtube_zero_results_alert", True):
-        yt_meta = stats.get("youtube_meta") or {}
-        yt_configured = yt_meta.get("keywords_configured", 0)
-        yt_total = stats.get("youtube_count", 0)
-        # 初回実行や重複排除で 0 になるケースは正常なので、
-        # 「キーワードが設定されていて APIキーがあるのに raw 取得 0」だけを拾う
-        yt_raw_total = yt_meta.get("raw_total", None)
-        if yt_configured > 0 and yt_raw_total is not None and yt_raw_total == 0:
-            alerts.append({
-                "severity": "warning",
-                "title": "YouTube 収集が 0 件",
-                "detail": f"{yt_configured} キーワードで収集 0 件。API Quota 切れ or キー失効の可能性。",
-            })
-
     # ── Analyzer 関連（Gemini フォールバック使用 = 品質劣化の可能性）────
     analysis_meta = stats.get("analysis_meta") or {}
     fallback_stages = analysis_meta.get("fallback_used_stages") or []
@@ -151,28 +123,6 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             "title": "分析 JSON の保存に失敗",
             "detail": f"data/analysis/ への書き込み失敗。ディスク or パーミッションを確認。\n{err}",
         })
-
-    # ── 前回 Discord 配信（data/runtime/discord_state.json から）────────
-    if alerts_cfg.get("discord_prev_run_alert", True):
-        prev = (stats.get("discord_meta") or {}).get("prev_run") or {}
-        if (
-            prev
-            and not prev.get("skipped")
-            and int(prev.get("total", 0) or 0) > 0
-            and not prev.get("ok", True)
-        ):
-            fail = prev.get("failed_parts") or []
-            part = ", ".join(str(p) for p in fail[:8])
-            if len(fail) > 8:
-                part += "…"
-            alerts.append({
-                "severity": "warning",
-                "title": "前回の Discord 配信に失敗箇所あり",
-                "detail": (
-                    f"{len(fail)} 区画未送信: {part}\n"
-                    "Webhook / Discord 障害、または 429/5xx。Actions ログの stderr も参照。"
-                ),
-            })
 
     # ── Diagram 生成関連 ─────────────────────────────────────────────
     diagram_meta = stats.get("diagram_meta") or {}

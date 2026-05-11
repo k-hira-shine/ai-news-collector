@@ -20,7 +20,6 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="AI News Collector")
     parser.add_argument("--dry-run", action="store_true", help="Collect only, skip analysis/notification")
     parser.add_argument("--analyze-only", action="store_true", help="Skip collection, reuse latest daily JSONL")
-    parser.add_argument("--skip-x", action="store_true", help="Skip X/Twitter collection (saves Apify credits)")
     args = parser.parse_args()
 
     logger = setup_logging()
@@ -30,43 +29,33 @@ def main() -> None:
     config = load_config()
 
     # ── Step 1: Collect ───────────────────────────────────────────────
-    x_runtime: dict = {}
-    runtime_meta: dict = {"x": {}, "rss": {}, "youtube": {}}
+    x_meta: dict = {}
     if args.analyze_only:
         from collector import _load_latest_daily
         items = _load_latest_daily()
         logger.info("Analyze-only: loaded %d items from latest JSONL", len(items))
     else:
         from collector import _should_warn_x_cookies, collect_all
-        skip_sources: set[str] = set()
-        if args.skip_x:
-            skip_sources.add("x")
-        items, runtime_meta = collect_all(config, skip_sources=skip_sources)
-        x_runtime = runtime_meta.get("x", {})
+        items, x_meta = collect_all(config)
 
-    x_items = [i for i in items if i["source"] == "x"]
     stats = {
         "total": len(items),
-        "x_count": len(x_items),
-        "rss_count": sum(1 for i in items if i["source"] == "rss"),
-        "youtube_count": sum(1 for i in items if i["source"] == "youtube"),
+        "x_count": len(items),
         "official_count": sum(1 for i in items if i.get("is_official")),
         "must_follow_count": sum(1 for i in items if i.get("is_must_follow")),
-        "apify_cost_usd": x_runtime.get("apify_cost_usd", 0),
-        "apify_runs": x_runtime.get("apify_runs", 0),
-        "apify_cycle_total_usd": x_runtime.get("apify_cycle_total_usd", 0),
-        "apify_cycle_end": x_runtime.get("apify_cycle_end", ""),
+        "apify_cost_usd": x_meta.get("apify_cost_usd", 0),
+        "apify_runs": x_meta.get("apify_runs", 0),
+        "apify_cycle_total_usd": x_meta.get("apify_cycle_total_usd", 0),
+        "apify_cycle_end": x_meta.get("apify_cycle_end", ""),
         "apify_monthly_budget_usd": config.get("x_twitter", {}).get("apify_monthly_budget_usd", 29.0),
         "apify_warning_threshold": config.get("x_twitter", {}).get("apify_warning_threshold", 0.8),
-        "x_meta": x_runtime,
-        "rss_meta": runtime_meta.get("rss", {}),
-        "youtube_meta": runtime_meta.get("youtube", {}),
+        "x_meta": x_meta,
     }
     logger.info("Collected: %s", {k: v for k, v in stats.items() if not k.endswith("_meta")})
 
     cookies_may_be_expired = False
-    if not args.analyze_only and not args.skip_x:
-        cookies_may_be_expired = _should_warn_x_cookies(x_runtime)
+    if not args.analyze_only:
+        cookies_may_be_expired = _should_warn_x_cookies(x_meta)
         if cookies_may_be_expired:
             logger.warning("⚠️ X_COOKIES may be expired — search returned 0 before filters/dedup")
 
@@ -136,37 +125,14 @@ def main() -> None:
             diagram_png = None
             diagram_meta["error"] = str(e)[:200]
     stats["diagram_meta"] = diagram_meta
-    from discord_state import load_discord_state, merge_delivery_results, save_discord_state
-    stats["discord_meta"] = {"prev_run": load_discord_state()}
 
-    # diagram_meta / 前回 Discord 配信ログ が揃った後に再検知
+    # diagram_meta が揃った後に再検知
     anomalies = detect_anomalies(stats, config)
     stats["anomalies"] = anomalies
     for a in anomalies:
         logger.warning("ALERT [%s] %s — %s", a["severity"], a["title"], a["detail"])
 
-    # ── Step 3: Notify ────────────────────────────────────────────────
-    from notifier import DiscordNotifier
-
-    stats["elapsed_sec"] = time.time() - t0
-    discord_cfg = config.get("discord", {})
-    notifier = DiscordNotifier(
-        delay=discord_cfg.get("message_delay_sec", 0.5),
-        ranking_top=discord_cfg.get("ranking_top", 10),
-        max_items_per_category=discord_cfg.get("max_items_per_category", 5),
-    )
-
-    delivery_parts: list[dict] = []
-    if analysis.get("top_articles"):
-        delivery_parts.append(notifier.notify(analysis, stats, diagram_png=diagram_png))
-    else:
-        if anomalies:
-            delivery_parts.append(notifier.send_alerts(anomalies))
-        delivery_parts.append(
-            notifier.send_status("⚠️ 本日の AI ニュースは 0 件でした。")
-        )
-
-    # ── Step 4: Dashboard ─────────────────────────────────────────────
+    # ── Step 3: Dashboard ─────────────────────────────────────────────
     try:
         from dashboard import generate_dashboard
 
@@ -179,26 +145,11 @@ def main() -> None:
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)
     status_icon = "⚠️" if anomalies else "✅"
-    status_msg = f"{status_icon} AI News Collector 完了 ({elapsed:.0f}秒, {stats['total']}件収集)"
+    logger.info("%s AI News Collector 完了 (%ds, %d件収集)", status_icon, int(elapsed), stats["total"])
     if anomalies:
-        status_msg += f"\n⚠️ 健全性アラート {len(anomalies)} 件（上の Embed を確認）"
+        logger.warning("⚠️ 健全性アラート %d 件", len(anomalies))
     elif cookies_may_be_expired:
-        status_msg += "\n⚠️ X_COOKIES が期限切れの可能性があります。検索結果が 0 件でした。GitHub Secrets を更新してください。"
-    d_final = notifier.send_status(status_msg)
-    delivery_parts.append(d_final)
-    d_agg = merge_delivery_results(*delivery_parts)
-    if (not d_agg.get("ok")) and (not d_agg.get("skipped")) and d_agg.get("total", 0) > 0:
-        fail = d_agg.get("failed_parts") or []
-        tot = d_agg.get("total", 0)
-        short = ", ".join(fail[:6])
-        if len(fail) > 6:
-            short += "…"
-        delivery_parts.append(
-            notifier.send_status(
-                f"⚠️ Discord 配信の失敗: {len(fail)}/{tot} 区画未送信（{short}）"
-            )
-        )
-    save_discord_state(merge_delivery_results(*delivery_parts))
+        logger.warning("⚠️ X_COOKIES が期限切れの可能性があります。検索結果が 0 件でした。GitHub Secrets を更新してください。")
 
 
 if __name__ == "__main__":

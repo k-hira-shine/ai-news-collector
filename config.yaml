@@ -46,70 +46,14 @@ x_twitter:
       priority: high
   min_engagement: 10
   apify_actor: "get-leads/all-in-one-x-scraper"
+  apify_actor_build: "0.1.97"
   apify_monthly_budget_usd: 29.0
   apify_warning_threshold: 0.8
 
-# Silent Failure 検知: 成功 exit した実行でも内部劣化があれば Discord へ警告
+# Silent Failure 検知: 成功 exit した実行でも内部劣化があればログへ警告
 alerts:
   enabled: true
-  rss_failure_rate_threshold: 0.3      # この割合以上のフィードが失敗で警告
-  youtube_zero_results_alert: true     # キーワード設定ありで raw 収集 0 なら警告
-  analysis_json_save_alert: true        # data/analysis への JSON 保存失敗で critical
-  discord_prev_run_alert: true         # 前回保存した Discord 配信ログに失敗があれば warning
-
-rss_feeds:
-  official:
-    - name: "OpenAI Blog"
-      url: "https://openai.com/blog/rss.xml"
-      priority: critical
-    - name: "Google AI Blog"
-      url: "https://blog.google/technology/ai/rss/"
-      priority: critical
-    - name: "DeepMind Blog"
-      url: "https://deepmind.google/blog/rss.xml"
-      priority: critical
-    # Meta AI Blog: RSS なし (2026-04 確認)。@MetaAI の X で代替収集。
-    - name: "Hugging Face Blog"
-      url: "https://huggingface.co/blog/feed.xml"
-      priority: high
-    - name: "NVIDIA AI Blog"
-      url: "https://blogs.nvidia.com/feed/"
-      priority: high
-  international:
-    - name: "TechCrunch AI"
-      url: "https://techcrunch.com/category/artificial-intelligence/feed/"
-    - name: "The Verge AI"
-      url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
-    - name: "Ars Technica"
-      url: "https://feeds.arstechnica.com/arstechnica/index"
-    - name: "MIT Technology Review"
-      url: "https://www.technologyreview.com/feed/"
-    - name: "Wired AI"
-      url: "https://www.wired.com/feed/tag/ai/latest/rss"
-    - name: "VentureBeat AI"
-      url: "https://venturebeat.com/category/ai/feed/"
-    - name: "Hacker News AI"
-      url: "https://hnrss.org/frontpage?points=100&q=AI+OR+LLM+OR+GPT"
-    - name: "arXiv cs.AI"
-      url: "https://rss.arxiv.org/rss/cs.AI"
-      max_entries: 50
-  domestic:
-    - name: "ITmedia AI+"
-      url: "https://rss.itmedia.co.jp/rss/2.0/aiplus.xml"
-    - name: "GIGAZINE"
-      url: "https://gigazine.net/news/rss_2.0/"
-    - name: "Publickey"
-      url: "https://www.publickey1.jp/atom.xml"
-
-youtube:
-  search_keywords:
-    - "AI news"
-    - "AI ニュース"
-    - "生成AI 最新"
-    - "LLM update"
-    - "ChatGPT update"
-  must_follow_channels: []
-  max_results_per_keyword: 20
+  analysis_json_save_alert: true       # data/analysis への JSON 保存失敗で critical
 
 analysis:
   models:
@@ -147,11 +91,6 @@ scoring:
       bonus: 1.0
     - likes: 500
       bonus: 0.5
-
-discord:
-  ranking_top: 10
-  max_items_per_category: 5
-  message_delay_sec: 0.5
 
 cache:
   seen_urls_retention_days: 7

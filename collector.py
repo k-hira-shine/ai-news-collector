@@ -1,21 +1,15 @@
-"""3ソースから AI ニュースを収集し、重複排除して JSONL に保存"""
+"""X/Twitter から AI ニュースを収集し、重複排除して JSONL に保存"""
 
 import json
 import logging
 import os
 import re
-import ssl
 import urllib.request
-from calendar import timegm
 from datetime import datetime, timedelta, timezone
-
-import feedparser
 
 from utils import data_dir, hash_url, now_iso, parse_datetime, retry, today_str
 
 logger = logging.getLogger("ai-news.collector")
-
-_UNVERIFIED_SSL_CONTEXT = ssl._create_unverified_context()
 
 
 # ━━━━━━━━━━━━━━━━ X/Twitter (Apify) ━━━━━━━━━━━━━━━━
@@ -56,15 +50,22 @@ def _default_x_runtime_meta() -> dict:
 
 
 _AUTH_ERROR_PATTERN = re.compile(
-    r"(?i)\b("
-    r"login\s*required|login\s*failed|"
-    r"not\s*logged\s*in|session\s*expired|"
-    r"unauthori[sz]ed|authentication\s*(failed|required)|"
-    r"invalid\s*(auth|token|cookie|session)|"
-    r"auth_token|ct0\s*(missing|invalid)|"
-    r"403\s*forbidden|401\s*unauthori[sz]ed|"
-    r"cookies?\s*(expired|invalid|missing)"
-    r")\b"
+    r"(?i)("
+    # Apify all-in-one-x-scraper の明示メッセージ
+    r"Cookie health check[:\s]+FAILED|"
+    r"Refresh the cookies|"
+    r"Authenticated modes will fail|"
+    r"ProxyAuthRequired|"
+    r"proxy\s*auth\s*required|"
+    # 一般的な認証エラー
+    r"\blogin\s*required|\blogin\s*failed|"
+    r"\bnot\s*logged\s*in|\bsession\s*expired|"
+    r"\bunauthori[sz]ed|\bauthentication\s*(failed|required)|"
+    r"\binvalid\s*(auth|token|cookie|session)|"
+    r"\bauth_token\b|\bct0\s*(missing|invalid)|"
+    r"\b403\s*forbidden|\b401\s*unauthori[sz]ed|"
+    r"\bcookies?\s*(expired|invalid|missing)"
+    r")"
 )
 
 
@@ -129,10 +130,14 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     client = ApifyClient(token)
     x_cfg = config.get("x_twitter", {})
     actor_id = x_cfg.get("apify_actor", "get-leads/all-in-one-x-scraper")
+    actor_build = x_cfg.get("apify_actor_build") or None
     search_queries = x_cfg.get("search_queries", [])
     meta["search_queries_configured"] = len(search_queries)
     items: list[dict] = []
     has_cookies = meta["has_cookies"]
+
+    if actor_build:
+        logger.info("Using pinned Actor build: %s", actor_build)
 
     if has_cookies and search_queries:
         # 3 クエリ × 個別起動 → 1 run にバッチ化（2026-04-23 テスト:
@@ -146,7 +151,10 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 "loginCookies": cookies,
             }
 
-            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
+            call_kwargs: dict = {"run_input": run_input, "timeout_secs": 300}
+            if actor_build:
+                call_kwargs["build"] = actor_build
+            run = client.actor(actor_id).call(**call_kwargs)
             meta["apify_runs"] += 1
             meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
             run_status = (run or {}).get("status", "")
@@ -165,9 +173,16 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     count += 1
                 meta["search_total"] += count
                 logger.info("X search batch (%d queries): %d tweets", len(search_queries), count)
-                if count == 0 and run_id and _run_log_has_auth_error(client, run_id):
+                # SUCCEEDED でも結果が極端に少なく auth エラーがある場合は実質失敗扱い
+                few_results = count < len(search_queries)
+                if (count == 0 or few_results) and run_id and _run_log_has_auth_error(client, run_id):
                     meta["auth_error_count"] += 1
-                    logger.warning("X search batch: 0 results + auth error in run log")
+                    meta["search_error_count"] += len(search_queries)
+                    logger.warning(
+                        "X search batch: SUCCEEDED but %d results with auth error in log"
+                        " — treating as cookie failure",
+                        count,
+                    )
         except Exception as e:
             meta["search_error_count"] += len(search_queries)
             logger.error("X search batch failed: %s", e)
@@ -189,7 +204,10 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 "loginCookies": cookies,
             }
 
-            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
+            call_kwargs = {"run_input": run_input, "timeout_secs": 300}
+            if actor_build:
+                call_kwargs["build"] = actor_build
+            run = client.actor(actor_id).call(**call_kwargs)
             meta["apify_runs"] += 1
             meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
             run_status = (run or {}).get("status", "")
@@ -213,9 +231,16 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     mf_count += 1
                 meta["must_follow_items"] = mf_count
                 logger.info("X must-follow batch (%d profiles): %d tweets", len(handles), mf_count)
-                if mf_count == 0 and run_id and _run_log_has_auth_error(client, run_id):
+                # SUCCEEDED でも結果が少なく auth エラーがある場合は must_follow_error を立てる
+                few_results = mf_count < len(handles)
+                if (mf_count == 0 or few_results) and run_id and _run_log_has_auth_error(client, run_id):
                     meta["auth_error_count"] += 1
-                    logger.warning("X must-follow: 0 results + auth error in run log")
+                    meta["must_follow_error"] = True
+                    logger.warning(
+                        "X must-follow: SUCCEEDED but %d results with auth error in log"
+                        " — treating as cookie failure",
+                        mf_count,
+                    )
         except Exception as e:
             meta["must_follow_error"] = True
             logger.error("X must-follow batch failed: %s", e)
@@ -268,211 +293,6 @@ def _normalize_tweet(tweet: dict) -> dict:
             "quotes": tweet.get("quoteCount") or tweet.get("quotes") or 0,
         },
         "source_name": f"@{username}",
-        "priority": "normal",
-        "is_official": False,
-        "is_must_follow": False,
-    }
-
-
-# ━━━━━━━━━━━━━━━━ RSS ━━━━━━━━━━━━━━━━
-
-
-def collect_rss(config: dict, runtime_meta: dict | None = None) -> list[dict]:
-    """RSS フィードから収集 (直近 24h)"""
-    items: list[dict] = []
-    feeds_config = config.get("rss_feeds", {})
-    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
-
-    all_feeds: list[dict] = []
-    for group_name, feeds in feeds_config.items():
-        for feed in feeds:
-            all_feeds.append({**feed, "_group": group_name})
-
-    error_count = 0
-    for fi in all_feeds:
-        try:
-            entries = _fetch_rss_feed(fi, cutoff)
-            items.extend(entries)
-            logger.info("RSS '%s': %d entries", fi["name"], len(entries))
-        except Exception as e:
-            error_count += 1
-            logger.error("RSS '%s' failed: %s", fi["name"], e)
-
-    if runtime_meta is not None:
-        runtime_meta["feeds_configured"] = len(all_feeds)
-        runtime_meta["feed_error_count"] = error_count
-        runtime_meta["raw_total"] = len(items)
-
-    logger.info("RSS total: %d items (errors: %d/%d)", len(items), error_count, len(all_feeds))
-    return items
-
-
-@retry(max_retries=2, base_delay=3)
-def _fetch_rss_feed(feed_info: dict, cutoff: datetime) -> list[dict]:
-    url = feed_info["url"]
-    req = urllib.request.Request(url, headers={"User-Agent": "AI-News-Collector/1.0"})
-    try:
-        with urllib.request.urlopen(req, timeout=15) as resp:
-            content = resp.read()
-    except (ssl.SSLError, urllib.error.URLError) as e:
-        is_ssl = isinstance(e, ssl.SSLError) or "SSL" in str(getattr(e, "reason", ""))
-        if not is_ssl:
-            raise
-        logger.warning(
-            "RSS '%s' SSL verify failed, retrying with unverified context: %s",
-            feed_info.get("name", url), e,
-        )
-        with urllib.request.urlopen(req, timeout=15, context=_UNVERIFIED_SSL_CONTEXT) as resp:
-            content = resp.read()
-
-    parsed = feedparser.parse(content)
-    is_official = feed_info.get("_group") == "official"
-    priority = feed_info.get("priority", "normal")
-    items: list[dict] = []
-
-    max_entries = feed_info.get("max_entries", 0)
-    for entry in parsed.entries:
-        if max_entries and len(items) >= max_entries:
-            break
-        pub_date = _parse_feed_date(entry)
-        if pub_date and pub_date < cutoff:
-            continue
-
-        entry_url = entry.get("link", "")
-        raw = getattr(entry, "summary", "") or getattr(entry, "description", "")
-        content_text = re.sub(r"<[^>]+>", "", raw)
-
-        items.append(
-            {
-                "id": hash_url(entry_url),
-                "source": "rss",
-                "url": entry_url,
-                "title": entry.get("title", ""),
-                "content": content_text[:2000],
-                "author": entry.get("author", ""),
-                "published_at": pub_date.isoformat() if pub_date else "",
-                "collected_at": now_iso(),
-                "engagement": {},
-                "source_name": feed_info["name"],
-                "priority": priority,
-                "is_official": is_official,
-                "is_must_follow": False,
-            }
-        )
-    return items
-
-
-def _parse_feed_date(entry) -> datetime | None:
-    for attr in ("published_parsed", "updated_parsed"):
-        t = getattr(entry, attr, None)
-        if t:
-            try:
-                return datetime.fromtimestamp(timegm(t), tz=timezone.utc)
-            except (ValueError, OverflowError):
-                pass
-    return None
-
-
-# ━━━━━━━━━━━━━━━━ YouTube ━━━━━━━━━━━━━━━━
-
-
-def collect_youtube(config: dict, runtime_meta: dict | None = None) -> list[dict]:
-    """YouTube Data API で AI 関連動画を収集"""
-    yt_cfg = config.get("youtube", {})
-    keywords = yt_cfg.get("search_keywords", [])
-    channels = yt_cfg.get("must_follow_channels", [])
-    if runtime_meta is not None:
-        runtime_meta["keywords_configured"] = len(keywords)
-        runtime_meta["channels_configured"] = len(channels)
-        runtime_meta["search_error_count"] = 0
-        runtime_meta["channel_error_count"] = 0
-        runtime_meta["raw_total"] = 0
-
-    api_key = os.environ.get("YOUTUBE_API_KEY")
-    if not api_key:
-        logger.warning("YOUTUBE_API_KEY not set — skipping YouTube")
-        return []
-
-    try:
-        from googleapiclient.discovery import build
-    except ImportError:
-        logger.warning("google-api-python-client not installed — skipping YouTube")
-        return []
-
-    youtube = build("youtube", "v3", developerKey=api_key)
-    items: list[dict] = []
-    published_after = (datetime.now(timezone.utc) - timedelta(hours=24)).isoformat()
-
-    for kw in keywords:
-        try:
-            resp = (
-                youtube.search()
-                .list(
-                    q=kw,
-                    type="video",
-                    publishedAfter=published_after,
-                    maxResults=yt_cfg.get("max_results_per_keyword", 20),
-                    part="snippet",
-                    order="viewCount",
-                    relevanceLanguage="en",
-                )
-                .execute()
-            )
-            for it in resp.get("items", []):
-                items.append(_normalize_video(it))
-            logger.info("YouTube '%s': %d videos", kw, len(resp.get("items", [])))
-        except Exception as e:
-            if runtime_meta is not None:
-                runtime_meta["search_error_count"] += 1
-            logger.error("YouTube search '%s' failed: %s", kw, e)
-
-    for ch in channels:
-        try:
-            resp = (
-                youtube.search()
-                .list(
-                    channelId=ch["id"],
-                    type="video",
-                    publishedAfter=published_after,
-                    maxResults=10,
-                    part="snippet",
-                    order="date",
-                )
-                .execute()
-            )
-            for it in resp.get("items", []):
-                v = _normalize_video(it)
-                v["is_must_follow"] = True
-                v["source_name"] = ch.get("name", v["source_name"])
-                v["priority"] = "high"
-                items.append(v)
-        except Exception as e:
-            if runtime_meta is not None:
-                runtime_meta["channel_error_count"] += 1
-            logger.error("YouTube channel %s failed: %s", ch.get("name", ch["id"]), e)
-
-    if runtime_meta is not None:
-        runtime_meta["raw_total"] = len(items)
-
-    logger.info("YouTube total: %d items", len(items))
-    return items
-
-
-def _normalize_video(item: dict) -> dict:
-    vid = item["id"]["videoId"]
-    sn = item["snippet"]
-    url = f"https://www.youtube.com/watch?v={vid}"
-    return {
-        "id": hash_url(url),
-        "source": "youtube",
-        "url": url,
-        "title": sn.get("title", ""),
-        "content": sn.get("description", "")[:2000],
-        "author": sn.get("channelTitle", ""),
-        "published_at": sn.get("publishedAt", ""),
-        "collected_at": now_iso(),
-        "engagement": {},
-        "source_name": sn.get("channelTitle", ""),
         "priority": "normal",
         "is_official": False,
         "is_must_follow": False,
@@ -584,42 +404,22 @@ def _load_latest_daily() -> list[dict]:
 # ━━━━━━━━━━━━━━━━ オーケストレータ ━━━━━━━━━━━━━━━━
 
 
-def collect_all(config: dict, skip_sources: set[str] | None = None) -> tuple[list[dict], dict]:
-    """全ソースから収集し、重複排除して保存"""
-    skip = skip_sources or set()
+def collect_all(config: dict) -> tuple[list[dict], dict]:
+    """X/Twitter から収集し、重複排除して保存"""
     cache = SeenURLsCache(
         retention_days=config.get("cache", {}).get("seen_urls_retention_days", 7)
     )
 
     items: list[dict] = []
-    runtime_meta: dict = {
-        "x": _default_x_runtime_meta(),
-        "rss": {},
-        "youtube": {},
-    }
-    sources = [
-        ("x", "X/Twitter", lambda: _collect_x_twitter_with_meta(config)),
-        ("rss", "RSS", lambda: collect_rss(config, runtime_meta=runtime_meta["rss"])),
-        ("youtube", "YouTube", lambda: collect_youtube(config, runtime_meta=runtime_meta["youtube"])),
-    ]
-
-    for key, name, source_fn in sources:
-        if key in skip:
-            logger.info("Skipping %s (--skip-%s)", name, key)
-            continue
-        try:
-            collected = source_fn()
-            if key == "x":
-                source_items, runtime_meta["x"] = collected
-            else:
-                source_items = collected
-            items.extend(source_items)
-        except Exception as e:
-            logger.error("%s collection completely failed: %s", name, e)
-            runtime_meta.setdefault(key, {})["fatal_error"] = str(e)[:200]
+    x_meta = _default_x_runtime_meta()
+    try:
+        items, x_meta = _collect_x_twitter_with_meta(config)
+    except Exception as e:
+        logger.error("X/Twitter collection completely failed: %s", e)
+        x_meta["fatal_error"] = str(e)[:200]
 
     items = deduplicate(items, cache)
     items = _filter_old_items(items, max_age_days=config.get("collection", {}).get("max_age_days", 7))
     save_daily_jsonl(items)
     cache.save()
-    return items, runtime_meta
+    return items, x_meta
