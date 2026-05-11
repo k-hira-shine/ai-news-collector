@@ -63,6 +63,10 @@ jobs:
         env:
           PAGES_DEPLOY_TOKEN: ${{ secrets.PAGES_DEPLOY_TOKEN }}
         run: |
+          if [ -z "${PAGES_DEPLOY_TOKEN}" ]; then
+            echo "PAGES_DEPLOY_TOKEN is not set; skipping GitHub Pages deploy."
+            exit 0
+          fi
           cd docs
           git init
           git config user.name "github-actions[bot]"
