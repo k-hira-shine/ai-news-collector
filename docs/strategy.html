@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 施策提案</title>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #818cf8;
+  --green: #34d399; --red: #f87171; --yellow: #fbbf24; --blue: #60a5fa;
+  --purple: #c084fc; --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
+header { text-align: center; margin-bottom: 2rem; }
+header h1 { font-size: 1.8rem; color: var(--accent); }
+header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+.nav-link { display: inline-block; margin-top: 0.8rem; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }
+.nav-link:hover { background: #475569; }
+.card { background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }
+.card h2 { font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }
+.idea-item { padding: 1rem; background: var(--surface2); border-radius: 8px; margin-bottom: 0.8rem; }
+.idea-item:last-child { margin-bottom: 0; }
+.idea-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.idea-title a { color: var(--text); text-decoration: none; }
+.idea-meta { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
+.badge { display: inline-block; padding: 2px 10px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; }
+.badge-high { background: #dc262633; color: var(--red); }
+.badge-medium { background: #f59e0b33; color: var(--yellow); }
+.badge-low { background: #1e40af33; color: var(--blue); }
+.badge-now { background: #dc262633; color: var(--red); }
+.badge-week { background: #f59e0b33; color: var(--yellow); }
+.badge-month { background: #1e40af33; color: var(--blue); }
+.idea-row { margin-top: 0.4rem; font-size: 0.92rem; }
+.idea-row .label { color: var(--muted); font-size: 0.82rem; margin-right: 0.3rem; }
+.draft-box { background: #0f172a; border: 1px solid var(--surface2); border-radius: 6px; padding: 0.8rem 1rem; margin-top: 0.5rem; font-size: 0.92rem; white-space: pre-wrap; word-break: break-word; }
+.forecast-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }
+@media (max-width: 600px) { .forecast-grid { grid-template-columns: 1fr; } }
+.forecast-block h3 { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.5rem; }
+.forecast-block ul { padding-left: 1.2rem; }
+.forecast-block li { font-size: 0.92rem; margin-bottom: 0.3rem; }
+.watch li { color: var(--green); }
+.fading li { color: var(--muted); text-decoration: line-through; }
+.next-big { background: var(--surface2); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 1rem; }
+.next-big .label { color: var(--yellow); font-weight: 700; margin-right: 0.5rem; }
+.empty { text-align: center; color: var(--muted); padding: 4rem 0; font-size: 1.1rem; }
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>🎯 AI 施策提案 — 2026-05-12 朝便</h1>
+  <div class="updated">Last updated: 2026-05-11 23:44 UTC</div>
+  <a class="nav-link" href="index.html">← ニュースダッシュボードへ</a>
+</header>
+<div class="card"><h2>🎬 YouTube企画案</h2><div class="idea-item"><div class="idea-title">【緊急解説】Anthropicの新機能「Claude Code」がヤバすぎる。創業者直伝の3つの神ワザであなたの仕事を自動化します。</div><div class="idea-meta"><span class="badge badge-high">🔥 今週中</span></div><div class="idea-row"><span class="label">フック</span>「また新しいAIツールか…」そう思ったあなた、この動画は5分で閉じてOKです。でも、もしあなたが日々のコーディングや面倒なPC作業をAIに丸投げしたいなら、今話題のClaude Code、特に新機能「/goal」と「agent view」は絶対に知っておくべきです。今日は開発者本人が語ったテクニックを、非エンジニアにも分かるように噛み砕いて解説します。</div><div class="idea-row"><span class="label">なぜ今？</span>今日のトレンドは「Claude Code」一色です。特に創業者自らが解説するマスタークラスが公開されたことで、信頼性と注目度が最高潮に達しています。この熱狂的なトレンドに乗り、新機能「/goal」「agent view」の具体的な使い方を解説することで、爆発的な再生数が期待できます。</div><div class="idea-row"><span class="label">差別化</span>他のチャンネルが機能の表層的な紹介に留まる中、本動画では「創業者本人の解説」という権威性をフックに、非エンジニアでも実践可能な具体的なワークフロー（例: ブログ記事の自動生成、市場調査レポートの作成）に落とし込んで解説することで差別化します。</div></div><div class="idea-item"><div class="idea-title">【Google参戦】無料AIマーケツール「Pomelli Catalog」の使い方。中小企業は今すぐ導入しないと損します。</div><div class="idea-meta"><span class="badge badge-high">🔥 今週中</span></div><div class="idea-row"><span class="label">フック</span>「広告運用って難しくてお金がかかる…」そんな悩み、今日で終わりです。なんとGoogleが、無料で使えるAIマーケティングツール「Pomelli Catalog」をリリースしました。商品情報を入れるだけで広告文やバナーを自動生成してくれるこの神ツール、まだ誰も知らない今のうちに使い方をマスターしましょう。</div><div class="idea-row"><span class="label">なぜ今？</span>本日発表されたGoogleの新ツール「Pomelli Catalog」は、特に中小企業や個人事業主という巨大なターゲット層に刺さるトピックです。無料で使えるという点が強力なフックとなり、新しいもの好きのアーリーアダプター層からの高いクリック率が見込めます。</div><div class="idea-row"><span class="label">差別化</span>単なる機能紹介ではなく、「中小企業のマーケターが明日からどう使うか」という具体的な視点で解説します。実際に架空のECサイトの商品を登録し、広告クリエイティブが生成されるまでをライブで実演することで、視聴者が自分事として捉えられるように構成します。</div></div><div class="idea-item"><div class="idea-title">もうググるな。GitHubリポジトリをAIに質問攻めできる神ツール「Knowledge Graph」が開発者の常識を変える。</div><div class="idea-meta"><span class="badge badge-medium">📅 今月中</span></div><div class="idea-row"><span class="label">フック</span>複雑なプログラムのコードを読むとき、どこから手をつけていいか分からず挫折した経験、ありませんか？今日紹介するツールは、どんなGitHubリポジトリも一瞬で『会話できる知識マップ』に変えてしまいます。コードが読めなくても、自然言語でAIに質問するだけで、プロジェクトの全貌が理解できてしまうんです。</div><div class="idea-row"><span class="label">なぜ今？</span>Xで話題になっている「GitHubリポジトリのナレッジグラフ化ツール」は、今日のトレンドである「AIによる開発プロセスの革新」という大きな文脈に合致します。Claude Codeに少し隠れがちですが、コアな開発者層には非常に響くテーマであり、専門性の高い視聴者を獲得できます。</div><div class="idea-row"><span class="label">差別化</span>「コーディングエージェント」がコードを書くAIなら、こちらは「コードを読むAI」という対比で切り込みます。ツールのインストール方法から、実際に有名なオープンソースプロジェクトを読み込ませ、AIに「この機能はどう実装されてる？」と質問するデモまで見せることで、実践的な価値を提示します。</div></div></div>
+<div class="card"><h2>🐦 X投稿ネタ</h2><div class="idea-item"><div class="idea-title">Claude Code新機能の速報と所感</div><div class="idea-meta"><span class="badge badge-high">📈 高リーチ期待</span><span class="badge badge-low">単発</span></div><div class="draft-box">🚨【速報】AIエージェントの歴史が変わる…かも。
+
+AnthropicのClaude Codeに新機能「/goal」と「agent view」が追加！
+
+✅ /goal：長期的なタスクをAIに丸投げ
+✅ agent view：複数タスクを同時管理
+
+これ、もう人間がやるのは「ゴール設定」だけになる未来が見える…。創業者本人のマスタークラス動画も公開されてて、Anthropicの本気度がすごい。みんな、この波に乗り遅れないで！🌊
+
+#ClaudeCode #AIエージェント</div></div><div class="idea-item"><div class="idea-title">Googleの無料AIマーケツール「Pomelli Catalog」紹介</div><div class="idea-meta"><span class="badge badge-high">📈 高リーチ期待</span><span class="badge badge-low">画像付き</span></div><div class="draft-box">Googleさん、これはやりすぎ…！😳
+
+無料で使えるAIマーケティングツール「Pomelli Catalog」をリリース。
+
+商品情報を登録するだけで、
+・広告コピー
+・SNS投稿文
+・バナー画像
+をAIが自動で生成してくれるらしい。
+
+中小企業や個人事業主のマーケティング担当者は、今すぐチェックしないと損するレベル。特定領域でのAIツール戦争が激化してきたな…。
+
+#PomelliCatalog #AIマーケティング</div></div><div class="idea-item"><div class="idea-title">AIエージェント時代のスキルの変化</div><div class="idea-meta"><span class="badge badge-medium">👍 中リーチ</span><span class="badge badge-low">スレッド</span></div><div class="draft-box">最近のClaude Codeの進化を見てると、いよいよ「AIをどう使うか」の重要性が増してる。
+
+AIはコードや文章を『生成』はしてくれる。
+でも、そのアウトプットが良いか悪いか『評価』し、的確な『指示』を与えるのは人間の役目。
+
+これからの時代に求められるのは、プログラミングスキルよりも「AIへの的確なゴール設定能力」と「生成物の良し悪しを判断する目利き力」なのかもしれない。</div></div></div>
+<div class="card"><h2>💼 ビジネス活用</h2><div class="idea-item"><div class="idea-title">AnthropicのClaude Codeが単なるコード補完ツールから、長期タスクを実行する「AIエージェント」へと進化し、市場の期待値を大きく引き上げた。これにより、AIエージェントを活用したコンサルティングや業務自動化サービスの需要が急増する可能性がある。</div><div class="idea-meta"><span class="badge badge-week">今週中</span><span class="badge badge-high">💥 高インパクト</span></div><div class="idea-row"><span class="label">アクション</span>「Claude Code専門の業務自動化コンサルティング」サービスを企画・立ち上げる。まずは自身のYouTubeやXで新機能を使った業務自動化事例（例: 競合調査レポートの自動作成）を発信し、モニタークライアントを募集する。</div></div><div class="idea-item"><div class="idea-title">Googleが「Pomelli Catalog」で中小企業向けAIマーケティング市場に参入したことで、この領域の競争が激化し、価格破壊や高機能化が進む。既存のマーケティングツール提供企業は対応を迫られる一方、ユーザーにとっては選択肢が増えるチャンスとなる。</div><div class="idea-meta"><span class="badge badge-month">今月中</span><span class="badge badge-medium">✅ 中インパクト</span></div><div class="idea-row"><span class="label">アクション</span>「中小企業向けAIマーケティングツール徹底比較」のコンテンツ（動画、ブログ記事）を制作する。Pomelli Catalogと既存ツールを機能、価格、使いやすさの観点から比較し、アフィリエイト収益やコンサルティングへの導線を設計する。</div></div><div class="idea-item"><div class="idea-title">Claude Code創設者のマスタークラス公開のように、開発者や創業者自らが製品の思想や使い方を語るコンテンツの価値が非常に高まっている。これは「誰が言っているか」という情報の発信源に対する信頼性をユーザーが重視している証拠である。</div><div class="idea-meta"><span class="badge badge-now">今すぐ</span><span class="badge badge-medium">✅ 中インパクト</span></div><div class="idea-row"><span class="label">アクション</span>自身の情報発信において、単なるニュース解説だけでなく、「なぜこの機能が重要なのか」「開発者は何を考えているのか」といった背景や思想を読み解く考察を増やす。可能であれば、AIツールの開発者に直接インタビューする企画を立てる。</div></div></div>
+<div class="card"><h2>🔭 トレンド予測</h2><div class="next-big"><span class="label">🔮 次に来るテーマ</span>単機能のAIツールは淘汰され、自律的に長期タスクをこなす「AIエージェント」がビジネスの中心になる。各業界の専門知識を学習した特化型エージェントの開発競争が本格化するだろう。</div><div class="forecast-grid"><div class="forecast-block watch"><h3>👀 要注目トピック</h3><ul><li>自律型AIエージェントの進化と普及</li><li>特定業務特化型AIツールの競争激化（マーケティング、法務など）</li><li>マルチモーダルAIのビジネス応用</li><li>AIによるソフトウェア開発プロセスの完全自動化</li><li>AI生成物の品質を評価・管理する新技術（AIガードレール）</li></ul></div><div class="forecast-block fading"><h3>📉 下火になりそう</h3><ul><li>単純なプロンプトエンジニアリングのテクニック論</li><li>OpenAI（GPT-4）一強という市場認識</li><li>汎用的な大規模言語モデルの性能比較</li></ul></div></div></div>
+</div>
+</body>
+</html>
