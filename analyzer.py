@@ -33,6 +33,63 @@ STAGE1_SCHEMA = {
     "required": ["scored_items"],
 }
 
+STAGE3_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "youtube_ideas": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "title": {"type": "string"},
+                    "hook": {"type": "string"},
+                    "reason": {"type": "string"},
+                    "angle": {"type": "string"},
+                    "urgency": {"type": "string"},
+                },
+                "required": ["title", "hook", "reason", "angle", "urgency"],
+            },
+        },
+        "x_post_ideas": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "theme": {"type": "string"},
+                    "draft": {"type": "string"},
+                    "format": {"type": "string"},
+                    "expected_reach": {"type": "string"},
+                },
+                "required": ["theme", "draft", "format", "expected_reach"],
+            },
+        },
+        "business_insights": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "insight": {"type": "string"},
+                    "action": {"type": "string"},
+                    "timeframe": {"type": "string"},
+                    "impact": {"type": "string"},
+                },
+                "required": ["insight", "action", "timeframe", "impact"],
+            },
+        },
+        "trend_forecast": {
+            "type": "object",
+            "properties": {
+                "next_big_thing": {"type": "string"},
+                "watch_topics": {"type": "array", "items": {"type": "string"}},
+                "fading_topics": {"type": "array", "items": {"type": "string"}},
+            },
+            "required": ["next_big_thing", "watch_topics", "fading_topics"],
+        },
+    },
+    "required": ["youtube_ideas", "x_post_ideas", "business_insights", "trend_forecast"],
+}
+
+
 STAGE2_SCHEMA = {
     "type": "object",
     "properties": {
@@ -188,6 +245,14 @@ class NewsAnalyzer:
         # Stage 2: 深層分析
         recent_analyses = self._load_recent_analyses(count=5)
         analysis = self._stage2_analyze(top_items, items_by_id, recent_analyses)
+
+        # Stage 3: 施策提案
+        time.sleep(15)
+        try:
+            analysis["strategy"] = self._stage3_strategy(analysis)
+        except Exception as e:
+            logger.warning("Stage 3 (strategy) failed, skipping: %s", e)
+            analysis["strategy"] = {}
 
         # メタデータ付与
         analysis["run_time"] = now_iso()
@@ -346,6 +411,75 @@ AI/ML と無関係な記事はスキップしてください。
                 src = item.get("source", "")
                 art["source_label"] = f"{src}: {item.get('source_name', '')}"
 
+        return result
+
+    def _stage3_strategy(self, analysis: dict) -> dict:
+        """Stage 3: 分析結果をもとにYouTube・X・ビジネス施策を提案"""
+        model = self.models.get("stage2_analysis", "gemini-2.5-pro")
+        budget = self.thinking.get("stage3", 256)
+
+        trend_summary = analysis.get("trend_summary", "")
+        top_articles = analysis.get("top_articles", [])[:10]
+        x_trends = analysis.get("x_trends", [])[:5]
+        trend_evolution = analysis.get("trend_evolution", {})
+
+        articles_text = "\n".join(
+            f"- [{a.get('category','')}] {a.get('title','')} ({a.get('source_label','')})"
+            for a in top_articles
+        )
+        x_trends_text = "\n".join(
+            f"- {t.get('topic','')} [{t.get('buzz_level','')}] {t.get('sentiment','')}: {t.get('description','')[:100]}"
+            for t in x_trends
+        )
+        tracked = trend_evolution.get("tracked_topics", [])
+        evolution_text = "\n".join(
+            f"- {t.get('topic','')} [{t.get('status','')}]"
+            for t in tracked[:6]
+        )
+
+        prompt = f"""あなたはAI領域に強いYouTubeクリエイター兼情報発信コンサルタントです。
+以下の本日のAIニュース分析結果をもとに、具体的な施策・アクションプランを提案してください。
+
+===== 本日のトレンドサマリー =====
+{trend_summary}
+
+===== 注目記事TOP10 =====
+{articles_text}
+
+===== X/Twitterで話題 =====
+{x_trends_text}
+
+===== トレンド推移 =====
+{evolution_text}
+
+===== 出力要件（すべて日本語）=====
+
+1. youtube_ideas: YouTube動画企画案を3件
+   - title: 視聴者が思わずクリックしたくなる具体的なタイトル案（数字・固有名詞を入れる）
+   - hook: 冒頭30秒で視聴者を引き込むフックの内容（具体的に）
+   - reason: なぜ今この動画が伸びるか（今日のトレンドとの接続を必ず入れる）
+   - angle: 他のAI系チャンネルとの差別化ポイント・独自アングル
+   - urgency: "high"（今週中）/ "medium"（今月中）/ "low"
+
+2. x_post_ideas: X投稿ネタを3件
+   - theme: 投稿テーマ
+   - draft: 実際に投稿できる文案（日本語280文字以内。改行・絵文字も含めてよい）
+   - format: "スレッド" / "単発" / "画像付き"
+   - expected_reach: "high" / "medium" / "low"
+
+3. business_insights: ビジネス活用・マネタイズの示唆を3件
+   - insight: 今日のニュースから読み取れるビジネスチャンスや市場の変化
+   - action: 具体的なアクション（何を・いつまでに・どうやって）
+   - timeframe: "今すぐ" / "今週中" / "今月中"
+   - impact: "high" / "medium" / "low"
+
+4. trend_forecast: 今後の予測
+   - next_big_thing: 次に大きく来そうなテーマ（1〜2文）
+   - watch_topics: 今後注目すべきトピック（3〜5件のリスト）
+   - fading_topics: 下火になりそうなトピック（1〜3件のリスト）
+"""
+        fallback = self.models.get("fallback", "gemini-2.5-flash")
+        result = self._call_gemini(model, prompt, STAGE3_SCHEMA, budget, fallback_model=fallback, stage_label="stage3")
         return result
 
     def _format_items_for_stage2(self, top_items: list[dict], items_by_id: dict) -> str:

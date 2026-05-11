@@ -142,6 +142,16 @@ def main() -> None:
     except Exception as e:
         logger.error("Dashboard generation failed: %s", e)
 
+    # ── Step 3.5: Strategy Page ────────────────────────────────────────
+    try:
+        from dashboard import generate_strategy_page
+
+        strategy_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "strategy.html")
+        generate_strategy_page(strategy_output)
+        logger.info("Strategy page generated → %s", strategy_output)
+    except Exception as e:
+        logger.error("Strategy page generation failed: %s", e)
+
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)
     status_icon = "⚠️" if anomalies else "✅"
