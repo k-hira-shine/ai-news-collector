@@ -12,10 +12,10 @@ x_twitter:
     - "Claude Code OR Cursor AI OR GitHub Copilot OR Devin OR MCP OR AI coding OR vibe coding -filter:replies lang:en"
     # 英語：研究・業界動向
     - "AI safety OR AI alignment OR AGI OR foundation model OR multimodal OR AI regulation -filter:replies lang:en min_faves:50"
-    # 日本語：生成AI全般
-    - "生成AI OR 大規模言語モデル OR AI活用 OR ChatGPT OR クロード -filter:replies lang:ja"
-    # 日本語：開発・ビジネス活用
-    - "Claude Code OR AIエージェント OR AI自動化 OR プロンプト OR AI副業 -filter:replies lang:ja"
+    # 日本語：主要モデル名（カタカナ・英語混在）
+    - "ChatGPT OR ジェミニ OR Gemini OR クロード OR Claude OR GPT OR 生成AI -filter:replies lang:ja"
+    # 日本語：AI活用・開発・ビジネス
+    - "AIエージェント OR AI自動化 OR AI副業 OR Claude Code OR プロンプト OR 大規模言語モデル -filter:replies lang:ja"
   max_results_per_query: 80
   must_follow_accounts:
     - handle: "OpenAI"
@@ -38,7 +38,7 @@ x_twitter:
       priority: high
     - handle: "huggingface"
       label: "Hugging Face公式"
-      priority: high
+      priority: critical
     - handle: "rute1203d"
       label: "てる@AIエージェントマフィア"
       priority: high
