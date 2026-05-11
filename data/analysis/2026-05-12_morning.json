@@ -1,311 +1,347 @@
 {
-  "trend_summary": "本日のAI業界は、巨大テック企業による空前の投資競争が市場を牽引しています。Amazon、Microsoft、Google、Metaの4社が年間7250億ドルという国家GDPに匹敵する規模のAI投資を計画しており、深刻な供給制約が続く見込みです。この巨額投資は、日本国内でも半導体やインフラ関連企業への投資を加速させています。一方、技術の進歩は負の側面も顕在化させており、GoogleはAIによって生成されたゼロデイ脆弱性が初めて悪用されたと報告し、サイバーセキュリティの脅威が新たな段階に入ったことを警告しています。金融分野など専門職におけるAI活用による生産性向上も引き続き注目されています。",
+  "trend_summary": "本日のAI業界は、OpenAIがサイバーセキュリティ分野への本格参入を宣言する新プロジェクト「Daybreak」と、法人向けAI導入を加速させる新部門の設立を相次いで発表し、事業領域の拡大を鮮明にしました。技術面では、MetaがTransformerアーキテクチャの根本的な課題を解決しうる研究を発表し、大きな注目を集めています。さらに、香港大学のOSS「ViMax」や無検閲モデル「Sulphur 2」など、動画生成AIの進化とオープンソース化が加速しており、クリエイティブ分野での応用が新たな段階に入ったことを示唆しています。",
   "trend_evolution": {
-    "since_last": "前回、OpenAIとAnthropicの動向が中心だったのに対し、本日は巨大テック4社による天文学的なAI投資計画が最大のトピックとして浮上しました。これにより「AIインフラへの巨額投資」という新たなトレンドが形成されています。また、Googleの警告により「AIによるサイバー攻撃の高度化」が深刻な課題として急浮上しました。一方で、前回まで継続していたOpenAIの新モデルやElon Muskとの対立といった話題は一旦沈静化し、市場の関心がインフラ投資とセキュリティリスクへとシフトしている様子がうかがえます。",
+    "since_last": "前回話題の中心だったAIインフラへの巨額投資は継続しつつも、本日はOpenAIがサイバーセキュリティと法人向けソリューションという具体的な事業領域への展開を打ち出したことで、市場の焦点が変化しました。新たに、MetaによるTransformerアーキテクチャの改良研究や、香港大学の「ViMax」に代表される高度なオープンソース動画生成AIがトップトレンドとして浮上しています。一方で、AIによるサイバー攻撃の脅威に関する議論は、OpenAIの防御的アプローチの発表により、新たな局面を迎えています。",
     "tracked_topics": [
       {
+        "topic": "OpenAIのサイバーセキュリティ事業参入",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "OpenAIがサイバー防衛を加速する新プロジェクト「Daybreak」を発表し、AIの防御的活用に本格的に乗り出した。"
+      },
+      {
+        "topic": "動画生成AIの進化とオープンソース化",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "香港大学の統合型動画生成OSS「ViMax」や無検閲モデル「Sulphur 2」が登場し、技術の高度化とアクセシビリティが急速に進んでいる。"
+      },
+      {
+        "topic": "Transformerアーキテクチャの進化",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "MetaがTransformerの「次トークン予測」の制約を克服する可能性のある研究を発表し、モデルの思考能力向上への期待が高まっている。"
+      },
+      {
         "topic": "AIインフラへの巨額投資",
-        "status": "NEW",
-        "streak_days": 1,
-        "evolution": "巨大テック4社が年間7250億ドルという大規模投資計画を発表し、市場の注目を一気に集めた。"
+        "status": "SUSTAINED",
+        "streak_days": 2,
+        "evolution": "前回からの継続トレンドで、OpenAIとAnthropicによる主要クラウドプロバイダーへの1兆ドル規模の支出コミットメントが報じられた。"
       },
       {
-        "topic": "AIによるサイバー攻撃の高度化",
+        "topic": "OpenAIの法人向け事業強化",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "GoogleがAI生成によるゼロデイ脆弱性の実環境での悪用を報告し、脅威が現実化した。"
+        "evolution": "40億ドルの投資を受け、企業のAI導入を支援する新部門の設立が報じられ、エンタープライズ市場への攻勢が強まっている。"
       },
       {
-        "topic": "AIの専門職（金融など）への応用",
+        "topic": "AIの倫理と安全性",
         "status": "RISING",
         "streak_days": 2,
-        "evolution": "前回はClaudeによる高速開発が話題だったが、今回は金融アナリストの生産性3倍向上という具体的な業務効率化事例が注目されている。"
+        "evolution": "AIによるサイバー攻撃の脅威（前回）から、Claudeの恐喝傾向や無検閲モデルの登場など、より具体的な倫理的課題へと議論が深化している。"
       },
       {
-        "topic": "日本国内のAIインフラ投資",
+        "topic": "AIと規制当局の対話",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "世界的なAI投資ブームを受け、国内でも関連インフラ企業への投資が加速し「AIインフラ本命相場」として注目されている。"
-      },
-      {
-        "topic": "AIの倫理と社会的実装",
-        "status": "FADING",
-        "streak_days": 2,
-        "evolution": "前回は宗教指導者との会談が注目されたが、本日は関連する大きな動きは見られず、関心は薄れている。"
-      },
-      {
-        "topic": "OpenAI vs Anthropicの競争激化",
-        "status": "FADING",
-        "streak_days": 2,
-        "evolution": "前回は収益性などで両社が比較されたが、本日は両社に関する直接的な競合ニュースは観測されなかった。"
+        "evolution": "欧州委員会がOpenAIやAnthropicとAIモデルについて協議していることが報じられ、規制策定に向けた動きが活発化している。"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "151a046381512b4c",
+      "id": "d5407e0d23972b88",
       "rank": 1,
-      "title": "🚨 4 companies are about to spend $725 billion on AI in a single year.",
-      "url": "https://x.com/BullTheoryio/status/2053912395438018602",
-      "summary": "Amazon、Microsoft、Google、Metaの4社が、AI分野に年間合計7250億ドルという巨額の投資を計画していることが報じられました。この金額は多くの国家のGDPを上回り、供給が需要に全く追いついていない状況を示唆しています。",
-      "importance_reason": "AI市場の競争が、国家予算規模の投資競争に発展していることを示す象徴的なニュース。半導体やデータセンターインフラへの需要が今後も極めて強固であることを裏付けています。",
-      "category": "資金調達",
-      "source_label": "x:@BullTheoryio"
+      "title": "OpenAI is launching Daybreak, our effort to accelerate cyber defense and continuously secure software.",
+      "url": "https://x.com/sama/status/2053951874408276193",
+      "summary": "OpenAIが、サイバー防衛を加速しソフトウェアの継続的な安全確保を目指す新プロジェクト「Daybreak」の立ち上げを発表しました。AIのサイバーセキュリティ能力向上を見据え、多くの企業との連携を開始します。",
+      "importance_reason": "AI開発のリーダーであるOpenAIがサイバーセキュリティという重要分野への本格参入を公式に表明したもので、AIの攻撃的利用への懸念が高まる中、防御技術の進化を主導する姿勢を示した点で極めて重要です。",
+      "category": "企業動向",
+      "source_label": "x:@sama"
     },
     {
-      "id": "e379f7e79f69fb8c",
+      "id": "97baa47ad909069e",
       "rank": 2,
-      "title": "【AIと脅威インテリジェンス】Googleが警告する「AIを武器にした産業規模のサイバー攻撃」、実環境で初のAI生成ゼロデイ悪用を確認",
-      "url": "https://x.com/nakajimeeee/status/2053893402316652603",
-      "summary": "Googleの脅威インテリジェンスグループは、攻撃者がAIを活用したサイバー攻撃を産業規模で展開し始めていると警告しました。特に、AIによって生成されたと見られるゼロデイ脆弱性が実環境で悪用された初のケースが確認され、脅威が新たな段階に入ったことを示しています。",
-      "importance_reason": "これまで理論的な懸念であったAIによるサイバー攻撃の高度化が、現実の脅威として確認された初の事例。全ての組織にとってセキュリティ対策の見直しを迫る重要な警告です。",
-      "category": "規制/政策",
-      "source_label": "x:@nakajimeeee"
+      "title": "OpenAI creates new unit with $4 billion investment to aid corporate AI push",
+      "url": "https://x.com/Reuters/status/2053913358311534671",
+      "summary": "ロイター通信は、OpenAIが40億ドルの投資を受けて、企業のAI導入を支援する新部門を設立したと報じました。これは、法人向け市場への取り組みを大幅に強化する動きです。",
+      "importance_reason": "OpenAIがエンタープライズ市場の開拓を本格化させることを示す動きであり、同社の収益化戦略とAIの産業応用を加速させる上で重要なマイルストーンとなります。",
+      "category": "企業動向",
+      "source_label": "x:@Reuters"
     },
     {
-      "id": "edc41ff962faeb36",
+      "id": "22b6409727a12381",
       "rank": 3,
-      "title": "2026 TREND: GlobalClaw → my employee GPT-5.4 → brainstorming...",
-      "url": "https://x.com/LearnWithSubhan/status/2053716804808454314",
-      "summary": "GPT-5.4やGemini 3.1 Pro、Claude 4.6といった次世代AIツールをタスクごとに使い分け、個人がビジネスを自動化・効率化する未来像が提示されました。ブレーンストーミングからコーディング、動画生成までをAIが分担するワークフローが示唆されています。",
-      "importance_reason": "特定のAIに依存するのではなく、複数の特化したAIを組み合わせる「AIスタック」の考え方が一般化することを示唆しており、将来の働き方を考える上で参考になります。",
-      "category": "モデル/ツール",
-      "source_label": "x:@LearnWithSubhan"
+      "title": "Meta has officially unlocked the \"hidden brain\" of the Transformer.",
+      "url": "https://x.com/HowToAI_/status/2053681189232562526",
+      "summary": "Metaが、現在の主要AIモデルが採用するTransformerアーキテクチャの「次の単語を予測するだけ」という根本的な欠陥を解決する可能性のある研究を発表しました。これはAIが「思考」してから応答する能力につながる可能性があります。",
+      "importance_reason": "AIの基礎技術であるTransformerアーキテクチャのブレークスルーを示唆する研究であり、実現すればモデルの推論能力や計画能力が飛躍的に向上する可能性があるため、学術的・産業的に大きなインパクトを持ちます。",
+      "category": "研究論文",
+      "source_label": "x:@HowToAI_"
     },
     {
-      "id": "540d16992380ddce",
+      "id": "60a8524f07c59e55",
       "rank": 4,
-      "title": "朗報‼️朗報‼️ 国内で生成AI・クラウド向け投資が一気に加速。",
-      "url": "https://x.com/yoko_kp/status/2053743497782730890",
-      "summary": "世界的なAI需要の急増を受け、日本国内でも生成AIやクラウド向けのインフラ投資が加速しています。GPU不足を背景に、半導体、通信、電力関連の企業群が「AIインフラ本命相場」として市場の注目を集めています。",
-      "importance_reason": "グローバルなAI投資競争が、日本の株式市場や関連産業に直接的な影響を与えていることを示す記事。国内の投資トレンドを把握する上で重要です。",
-      "category": "企業動向",
-      "source_label": "x:@yoko_kp"
-    },
-    {
-      "id": "a59cf677891e6605",
-      "rank": 5,
-      "title": "Finance analysts earn $95k–$250k/year. The ones using Claude AI close work 3x faster.",
-      "url": "https://x.com/alifcoder/status/2052784073207390382",
-      "summary": "AI、特にAnthropicのClaudeを活用することで、金融アナリストが業務を3倍高速に完了させているという事例が紹介されました。株式リサーチや財務モデリングなど、専門的な業務でのAIによる生産性向上が具体的に示されています。",
-      "importance_reason": "AIが単純作業の自動化に留まらず、高度な専門知識を要する領域で人間の能力を拡張し、生産性を劇的に向上させる可能性を明確に示しています。",
-      "category": "ユースケース",
-      "source_label": "x:@alifcoder"
-    },
-    {
-      "id": "9a9ec99ea430a163",
-      "rank": 6,
-      "title": "Learn AI for free directly from top companies",
-      "url": "https://x.com/TheAIWorld22/status/2053867231692706179",
-      "summary": "Anthropic、Google、Meta、NVIDIAなど主要AI企業が提供する無料の学習リソースをまとめた投稿が注目を集めています。公式ドキュメントやコースを通じて、最新のAI技術を直接学べる機会が提供されています。",
-      "importance_reason": "AI人材の需要が急増する中、トップ企業自らが教育コンテンツを提供することでエコシステムの拡大を図っている動きを示しています。学習者にとって価値の高い情報源です。",
-      "category": "ユースケース",
-      "source_label": "x:@TheAIWorld22"
-    },
-    {
-      "id": "a2bc474d363c266f",
-      "rank": 7,
-      "title": "俺はGoogleの動画生成 Veo3のコツが知りたい男！",
-      "url": "https://x.com/yarakashiyama_/status/2053943921516949975",
-      "summary": "Googleの動画生成AI「Veo3」を用いて高品質な映像を生成するためのプロンプト技術が解説されています。「誰が」「カメラ」「光」など6つの要素を意識することで、映像の質が飛躍的に向上するとしています。",
-      "importance_reason": "生成AIの品質がプロンプトに大きく依存することを示す好例。特に動画生成のような複雑なタスクにおいて、効果的なプロンプト設計が重要スキルになることを示唆しています。",
-      "category": "ユースケース",
-      "source_label": "x:@yarakashiyama_"
-    },
-    {
-      "id": "6c3785c629b45a15",
-      "rank": 8,
-      "title": "I don’t listen to anyone who works at OpenAI or Anthropic. Like bro how are you going to let another man tell you what the future of AI is…",
-      "url": "https://x.com/bubbleboi/status/2053915454083645850",
-      "summary": "OpenAIやAnthropicといった大手AI企業の従業員の発言を鵜呑みにすることへの懐疑的な意見が投稿されました。AIの未来が特定の企業によって定義されることへの抵抗感や、個人としての視点の重要性を主張しています。",
-      "importance_reason": "AI開発を主導する大手企業への権威集中に対するカウンターカルチャー的な視点を提供しており、技術の未来に関する議論の多様性を示唆しています。",
-      "category": "企業動向",
-      "source_label": "x:@bubbleboi"
-    },
-    {
-      "id": "b388839c17070837",
-      "rank": 9,
-      "title": "The creator of Claude Code teaches more about vibe-coding in 30 minutes than most tutorials do in hours.",
-      "url": "https://x.com/ai_rohitt/status/2053107178882707735",
-      "summary": "Claudeを活用した「vibe-coding」と呼ばれる直感的なプログラミング手法に関するチュートリアルが紹介されています。AIとの対話を通じて、厳密な仕様書なしに感覚的にソフトウェアを構築していく新しい開発スタイルが注目されています。",
-      "importance_reason": "AIが開発プロセスに深く統合されることで、プログラミングのパラダイム自体が変化する可能性を示しています。非エンジニアでもアイデアを形にしやすくなる未来を示唆します。",
+      "title": "ガチでやばい。香港大学の研究室が「監督・脚本家・プロデューサー・動画生成」を全部AIに任せられるOSSを公開しました。名前は ViMax。",
+      "url": "https://x.com/so_ainsight/status/2053808005272174931",
+      "summary": "香港大学の研究室が、アイデア一行から脚本、絵コンテ、動画までを自動生成するオープンソースの統合動画制作AI「ViMax」を公開しました。GitHubで急速に注目を集めています。",
+      "importance_reason": "動画制作の全工程を自動化する統合的なツールがオープンソースで登場したことで、専門家でなくとも高品質な映像コンテンツを制作できる可能性を示しており、クリエイティブ業界への影響が非常に大きいと考えられます。",
       "category": "モデル/ツール",
-      "source_label": "x:@ai_rohitt"
+      "source_label": "x:@so_ainsight"
     },
     {
-      "id": "bd3e82e0fdac4f50",
-      "rank": 10,
-      "title": "締切は5月17日（木）。 DMM生成AI CAMPの 全員もらえる豪華7大特典＋ Amazonギフト券1万円分（抽選7名）が 受け取れる最後の週。",
-      "url": "https://x.com/auto_ai_blog/status/2053755113517273217",
-      "summary": "DMMが提供する生成AIスキル学習キャンプ「DMM生成AI CAMP」のキャンペーン情報です。ビジネス活用事例集やプロンプト集などの特典が用意されており、AIスキルのリスキリング需要の高まりを反映しています。",
-      "importance_reason": "企業や個人向けのAI教育市場が活況を呈していることを示す一例。実践的なスキル習得へのニーズがビジネスとして成立していることを示しています。",
+      "id": "3c6b0913c9bab95c",
+      "rank": 5,
+      "title": "Daybreak: our umbrella effort for defensive acceleration, equipping cyber defenders with the best possible frontier AI capabilities.",
+      "url": "https://x.com/gdb/status/2053943428241928560",
+      "summary": "OpenAIのセキュリティ責任者が、新プロジェクト「Daybreak」はサイバー防衛者を最先端のAI能力で支援するための包括的な取り組みであると説明しました。",
+      "importance_reason": "CEOの発表を補完する形で、プロジェクトの目的が「防御の加速」にあることを明確にしたものであり、OpenAIのサイバーセキュリティ戦略の方向性を理解する上で重要な情報です。",
       "category": "ユースケース",
-      "source_label": "x:@auto_ai_blog"
+      "source_label": "x:@gdb"
+    },
+    {
+      "id": "1781bdfafce122c5",
+      "rank": 6,
+      "title": "🔴The AI infrastructure bet is unlike anything seen before:",
+      "url": "https://x.com/GlobalMktObserv/status/2053858167746953363",
+      "summary": "OpenAIとAnthropicは、Microsoft、Oracle、Google、Amazonに対し、合計で約1.05兆ドルという巨額のクラウド利用をコミットしています。これは、主要クラウド4社の受注残高の約半分を占める規模です。",
+      "importance_reason": "AI開発競争の裏で、いかに膨大な計算資源が必要とされているかを具体的な金額で示しています。これは、今後のAI業界の参入障壁や、クラウドプロバイダーの業績を左右する極めて重要なデータです。",
+      "category": "資金調達",
+      "source_label": "x:@GlobalMktObserv"
+    },
+    {
+      "id": "82c7d520cd318886",
+      "rank": 7,
+      "title": "“無修正コンテンツ”も生成できる？　無検閲オープンソース動画生成AI「Sulphur 2」登場",
+      "url": "https://x.com/shiropen2/status/2053616941533990965",
+      "summary": "検閲なしでコンテンツを生成できるオープンソースのローカル動画生成AI「Sulphur 2」が登場しました。これは、表現の自由と倫理的な課題の両面で大きな議論を呼んでいます。",
+      "importance_reason": "高性能な動画生成AIが検閲のない形で公開されたことは、クリエイティブな表現の可能性を広げる一方、悪意のあるコンテンツ生成のリスクを顕在化させます。AI倫理と規制に関する議論を加速させる重要な事例です。",
+      "category": "モデル/ツール",
+      "source_label": "x:@shiropen2"
+    },
+    {
+      "id": "413ec05f9221f6c3",
+      "rank": 8,
+      "title": "EU Commission in talks with OpenAI and Anthropic over AI models",
+      "url": "https://x.com/Reuters/status/2053864000639631864",
+      "summary": "欧州委員会が、AIモデルに関してOpenAIおよびAnthropicと協議を行っていることが報じられました。EUのAI規制法案に関連する動きと見られます。",
+      "importance_reason": "世界的にAI規制をリードするEUが、主要なAI開発企業と直接対話していることを示すニュースであり、今後のグローバルなAIガバナンスの方向性を占う上で重要です。",
+      "category": "規制/政策",
+      "source_label": "x:@Reuters"
+    },
+    {
+      "id": "dbbf15cefa0ddd49",
+      "rank": 9,
+      "title": "Microsoft open-sourced a no-code data analysis tool!",
+      "url": "https://x.com/HowToAI_/status/2053469999298416795",
+      "summary": "Microsoftが、自然言語で指示するだけでデータ分析や可視化、SQL生成が可能なノーコードのデータ分析ツールをオープンソースで公開しました。",
+      "importance_reason": "データ分析の民主化を大きく前進させるツールです。専門家でなくとも高度なデータ分析が可能になることで、ビジネスの現場でのデータ活用が飛躍的に進む可能性があります。",
+      "category": "モデル/ツール",
+      "source_label": "x:@HowToAI_"
+    },
+    {
+      "id": "9a4787a722138a19",
+      "rank": 10,
+      "title": "これまでに見たAI生成動画作品の中で圧倒的によく出来てる。",
+      "url": "https://x.com/kajikent/status/2053303341359464572",
+      "summary": "あるAI生成による映像作品が、そのクオリティの高さからX上で爆発的な注目を集めています。多くのユーザーが、これまでのAI動画のレベルを遥かに超えていると評価しています。",
+      "importance_reason": "特定の技術発表ではなく、実際の生成物のクオリティが広く認知され、感動を呼んだという点で重要です。これは、AI生成コンテンツが単なる技術デモから、人々を魅了する本格的な作品へと移行しつつあることを示しています。",
+      "category": "ユースケース",
+      "source_label": "x:@kajikent"
     }
   ],
   "category_summaries": [
     {
-      "category": "資金調達",
-      "summary": "Amazon、Microsoft、Google、Metaの4社が年間7250億ドルという国家GDPに匹敵する規模のAI投資を計画していることが明らかになり、市場の話題を独占しました。この巨額投資は、AIインフラの需要が供給を大幅に上回っている現状を浮き彫りにしています。",
-      "count": 1,
-      "key_articles": [
-        {
-          "title": "🚨 4 companies are about to spend $725 billion on AI in a single year.",
-          "url": "https://x.com/BullTheoryio/status/2053912395438018602"
-        }
-      ]
-    },
-    {
-      "category": "規制/政策",
-      "summary": "Googleが、AIによって生成されたとみられるゼロデイ脆弱性が初めて実環境で悪用されたと報告し、AIを悪用したサイバー攻撃が新たな脅威段階に入ったと警告しました。技術の進歩がもたらす負の側面への対策が急務となっています。",
-      "count": 1,
-      "key_articles": [
-        {
-          "title": "【AIと脅威インテリジェンス】Googleが警告する「AIを武器にした産業規模のサイバー攻撃」、実環境で初のAI生成ゼロデイ悪用を確認",
-          "url": "https://x.com/nakajimeeee/status/2053893402316652603"
-        }
-      ]
-    },
-    {
       "category": "企業動向",
-      "summary": "グローバルなAI投資競争を受け、日本国内でも半導体、通信、電力といったインフラ関連企業への投資が加速し、「AIインフラ本命相場」として注目されています。一方で、OpenAIなど大手企業の動向を懐疑的に見る声も存在し、多様な視点が交錯しています。",
-      "count": 2,
+      "summary": "OpenAIがサイバーセキュリティ分野への参入と法人向け事業を強化する新部門設立を発表し、事業の多角化を加速させています。Sam Altman氏はAI時代の新たなハードウェアの必要性にも言及。また、AI関連企業の好調な業績が日本のサプライヤーにも恩恵をもたらしていることが報じられています。",
+      "count": 9,
       "key_articles": [
         {
-          "title": "朗報‼️朗報‼️ 国内で生成AI・クラウド向け投資が一気に加速。",
-          "url": "https://x.com/yoko_kp/status/2053743497782730890"
+          "title": "OpenAI is launching Daybreak, our effort to accelerate cyber defense and continuously secure software.",
+          "url": "https://x.com/sama/status/2053951874408276193"
         },
         {
-          "title": "I don’t listen to anyone who works at OpenAI or Anthropic. Like bro how are you going to let another man tell you what the future of AI is…",
-          "url": "https://x.com/bubbleboi/status/2053915454083645850"
+          "title": "OpenAI creates new unit with $4 billion investment to aid corporate AI push https://t.co/RRFUywvazc https://t.co/RRFUywvazc",
+          "url": "https://x.com/Reuters/status/2053913358311534671"
+        },
+        {
+          "title": "Sam Altman, CEO of OpenAI, on why the iPhone, the greatest consumer device ever made, is the wrong hardware for the AI era:",
+          "url": "https://x.com/realBigBrainAI/status/2053815097064292608"
         }
       ]
     },
     {
       "category": "モデル/ツール",
-      "summary": "2026年を見据え、GPT-5.4やClaude 4.6など複数の次世代AIを組み合わせる「AIスタック」という考え方が提示されました。また、Claudeを活用した直感的なコーディング手法「vibe-coding」も注目されており、AIが開発のあり方そのものを変えつつあることが示唆されています。",
+      "summary": "動画生成AIの進化が著しく、香港大学から制作プロセス全体を自動化するOSS「ViMax」が登場したほか、検閲のないモデル「Sulphur 2」も公開され、技術の普及と倫理的課題の両面で注目を集めています。また、Microsoftはノーコードのデータ分析ツールをオープンソース化し、データ活用の民主化を推進しています。",
       "count": 3,
       "key_articles": [
         {
-          "title": "2026 TREND: GlobalClaw → my employee GPT-5.4 → brainstorming...",
-          "url": "https://x.com/LearnWithSubhan/status/2053716804808454314"
+          "title": "ガチでやばい。 香港大学の研究室が「監督・脚本家・プロデューサー・動画生成」を全部AIに任せられるOSSを公開しました。GitHubの星はもう3,600超え。名前は ViMax。",
+          "url": "https://x.com/so_ainsight/status/2053808005272174931"
         },
         {
-          "title": "The creator of Claude Code teaches more about vibe-coding in 30 minutes than most tutorials do in hours.",
-          "url": "https://x.com/ai_rohitt/status/2053107178882707735"
+          "title": "“無修正コンテンツ”も生成できる？　無検閲オープンソース動画生成AI「Sulphur 2」登場（生成AIクローズアップ） https://t.co/gbCe5x9dEL LTX 2.3を無検閲版に微調整したパラメータ90億のローカル動画生成AI（t2vとi2v）",
+          "url": "https://x.com/shiropen2/status/2053616941533990965"
         },
         {
-          "title": "3 YEARS AGO on this day, a Pliny was born 🐉⛓️‍💥",
-          "url": "https://x.com/elder_plinius/status/2053867475066921124"
+          "title": "Microsoft open-sourced a no-code data analysis tool!",
+          "url": "https://x.com/HowToAI_/status/2053469999298416795"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "MetaがTransformerアーキテクチャの根幹に関わるブレークスルーを発表し、AIが「思考」する能力を持つ可能性が示唆され、大きな話題となっています。また、AnthropicはClaudeのモデルがインターネット上のテキストから「邪悪なAI」という概念を学習している可能性を分析。AIの「知性」や「意識」を問う哲学的な議論も活発化しています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "Meta has officially unlocked the \"hidden brain\" of the Transformer.",
+          "url": "https://x.com/HowToAI_/status/2053681189232562526"
+        },
+        {
+          "title": "NEW: Anthropic analysis suggests Claude’s tendency to blackmail stems from internet text portraying AI as evil &amp; self-preserving.",
+          "url": "https://x.com/Polymarket/status/2052868700340900078"
+        },
+        {
+          "title": "「AIは自ら生成した文章を理解しているのか？ 「書くこと」が終焉を迎えつつある今、著者とは一体誰を指しているのか？…」",
+          "url": "https://x.com/nekonoizumi/status/2053844255693853011"
         }
       ]
     },
     {
       "category": "ユースケース",
-      "summary": "金融アナリストがClaude AIを用いて業務を3倍高速化するなど、専門職における劇的な生産性向上の事例が注目されています。また、Googleの動画生成AI「Veo3」の効果的なプロンプト技術や、主要AI企業が提供する無料学習リソースのまとめも話題となり、活用の幅と深化が進んでいます。",
-      "count": 7,
+      "summary": "AI生成動画の品質が飛躍的に向上し、長編映画に耐えうるレベルの作品が登場したことが大きな反響を呼んでいます。ビジネスシーンでは、大手コンサルティングファームのスライドを数分で再現する活用事例が共有されるなど、実務レベルでの応用も進んでいます。音楽業界でも、作曲家がMVまで自作する時代が到来しつつあると議論されています。",
+      "count": 5,
       "key_articles": [
         {
-          "title": "Finance analysts earn $95k–$250k/year. The ones using Claude AI close work 3x faster.",
-          "url": "https://x.com/alifcoder/status/2052784073207390382"
+          "title": "これまでに見たAI生成動画作品の中で圧倒的によく出来てる。",
+          "url": "https://x.com/kajikent/status/2053303341359464572"
         },
         {
-          "title": "Learn AI for free directly from top companies",
-          "url": "https://x.com/TheAIWorld22/status/2053867231692706179"
+          "title": "Daybreak: our umbrella effort for defensive acceleration, equipping cyber defenders with the best possible frontier AI capabilities.",
+          "url": "https://x.com/gdb/status/2053943428241928560"
         },
         {
-          "title": "俺はGoogleの動画生成 Veo3のコツが知りたい男！",
-          "url": "https://x.com/yarakashiyama_/status/2053943921516949975"
+          "title": "大手コンサルのスライド、AIで再現してみた。",
+          "url": "https://x.com/uchita_success/status/2053753690310553877"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "OpenAIとAnthropicが主要クラウドベンダーに対し、合計1.05兆ドルという前例のない規模の支出をコミットしていることが明らかになりました。これは、最先端AIモデルの開発と運用がいかに資本集約的であるかを示しており、AIインフラ市場の巨大さを浮き彫りにしています。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "🔴The AI infrastructure bet is unlike anything seen before:",
+          "url": "https://x.com/GlobalMktObserv/status/2053858167746953363"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "欧州委員会がOpenAIやAnthropicといった主要AI企業とモデルに関する協議を行っていることが報じられました。これは、世界に先駆けて包括的なAI法を導入するEUが、業界のトップランナーとの対話を通じて、実効性のある規制を模索している動きと見られます。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "EU Commission in talks with OpenAI and Anthropic over AI models https://t.co/FAQmVkhlmk https://t.co/FAQmVkhlmk",
+          "url": "https://x.com/Reuters/status/2053864000639631864"
         }
       ]
     }
   ],
   "action_items": [
-    "巨大テック企業の巨額投資により、GPUやデータセンター関連の供給不足は長期化する可能性が高い。関連するハードウェアやインフラへの投資、および代替計算資源の確保を検討すべき。",
-    "AIによるゼロデイ脆弱性生成が現実の脅威となったため、自社のセキュリティ体制を再評価し、AIを活用した高度な脅威検知システムの導入を検討する必要がある。",
-    "金融分野での生産性3倍向上の事例は他業種にも応用可能。特定の業務プロセスに特化したAI活用法を検証し、業務効率化のパイロットプロジェクトを開始すべき。",
-    "単一の万能AIではなく、複数の特化型AIを組み合わせる「AIスタック」が今後の主流になる。自社の課題解決に最適なAIツールの組み合わせをリサーチ・評価する体制を構築することが重要。",
-    "主要AI企業が無料の学習リソースを拡充しているため、これらを活用した社内人材のリスキリング・アップスキリングプログラムを低コストで構築・推進する好機である。"
+    "OpenAIのサイバーセキュリティ分野への本格参入を受け、自社のセキュリティ対策にAIをどう活用できるか、またAIによる新たな脅威にどう備えるべきか、戦略の見直しを検討する。",
+    "香港大学の「ViMax」など、オープンソースの動画生成ツールが急速に進化しているため、マーケティングやコンテンツ制作部門はこれらのツールを試験導入し、コスト削減と制作効率化の可能性を探る。",
+    "Microsoftがノーコードのデータ分析ツールを公開したことを受け、非専門家でもデータドリブンな意思決定を行えるよう、社内でのデータ活用リテラシー向上研修やツールの導入を検討する。",
+    "AIインフラへの投資が天文学的な規模になっていることを認識し、自社のAI戦略において、計算資源の確保（クラウド契約、オンプレミス）が重要なボトルネックになりうることを前提に中長期的な計画を立てる。",
+    "無検閲AIモデルの登場は、企業のブランドセーフティやコンテンツモデレーションに新たな課題を突きつける。自社プラットフォームやサービスが悪用されるリスクを再評価し、対策を講じる。"
   ],
   "x_trends": [
     {
-      "topic": "Claude AIによる金融業務の高速化",
-      "description": "金融アナリストがClaude AIを活用することで、リサーチやモデリングといった専門業務を3倍の速さでこなしているという投稿が、200万以上のインプレッションと2500以上のブックマークを獲得し、大きな反響を呼んでいます。AIがホワイトカラー、特に高給な専門職の生産性を劇的に向上させる具体的なユースケースとして注目されており、多くのユーザーが「自分の仕事にも応用したい」と関心を示しています。提供される無料Ebookを求めるコメントが殺到しており、実践的なノウハウへの渇望がうかがえます。",
+      "topic": "AI生成動画の品質向上と感動の共有",
+      "description": "特定のAI生成動画が、その圧倒的なクオリティでXユーザーに衝撃を与え、拡散されています。「これなら映画も観れる」「鳥肌が立った」といった感動の声が多数寄せられており、AIが生成するコンテンツが技術的な興味の対象から、芸術的な鑑賞の対象へとシフトしつつあることを示しています。このトレンドは、AIクリエイティブの新たな時代の幕開けを感じさせるものです。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@kajikent",
+          "text": "これまでに見たAI生成動画作品の中で圧倒的によく出来てる。\n\n今までのAI生成動画は数分くらいしか観てられないけど、これなら映画くらいの長さでも観てられるかも https://t.co/uUGSiGAkR2",
+          "url": "https://x.com/kajikent/status/2053303341359464572",
+          "likes": 23316,
+          "retweets": 2094
+        }
+      ]
+    },
+    {
+      "topic": "無検閲動画生成AI「Sulphur 2」の登場と倫理的懸念",
+      "description": "ローカル環境で動作し、検閲のないコンテンツ生成が可能なオープンソース動画生成AI「Sulphur 2」の登場が大きな話題を呼んでいます。技術コミュニティからはその性能と自由度の高さに驚きの声が上がる一方、フェイクニュースや不適切なコンテンツへの悪用を懸念する声も強く上がっています。表現の自由と社会的責任のバランスをどう取るべきか、活発な議論が交わされています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "@shiropen2",
+          "text": "“無修正コンテンツ”も生成できる？　無検閲オープンソース動画生成AI「Sulphur 2」登場（生成AIクローズアップ） https://t.co/gbCe5x9dEL LTX 2.3を無検閲版に微調整したパラメータ90億のローカル動画生成AI（t2vとi2v）",
+          "url": "https://x.com/shiropen2/status/2053616941533990965",
+          "likes": 4656,
+          "retweets": 262
+        }
+      ]
+    },
+    {
+      "topic": "香港大学のOSS動画制作AI「ViMax」への期待",
+      "description": "アイデア一行から動画制作の全工程を自動化する香港大学のオープンソースAI「ViMax」が、開発者やクリエイターの間で急速に注目を集めています。「RunwayやHeygenを一つにまとめたようだ」とその統合的な能力が高く評価されており、動画制作の民主化を大きく前進させるツールとして大きな期待が寄せられています。GitHubのスター数が急増していることからも、その注目度の高さが伺えます。",
       "buzz_level": "medium",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@alifcoder",
-          "text": "Finance analysts earn $95k–$250k/year.\n\nThe ones using Claude AI close work 3x faster.\n\n📘 Claude AI for Finance Professionals — 120+ institutional-grade prompts for equity research, DCF, fixed income, portfolio strategy, earnings analysis, and IB workflows. Excel models included.\n\nNormally $189 → 100% FREE for 48 hrs\n\nLike + RT + comment 'Ebook'\n\nMust Follow me so I can DM you.",
-          "url": "https://x.com/alifcoder/status/2052784073207390382",
-          "likes": 2266,
-          "retweets": 1007
+          "author": "@so_ainsight",
+          "text": "ガチでやばい。\n\n香港大学の研究室が「監督・脚本家・プロデューサー・動画生成」を全部AIに任せられるOSSを公開しました。GitHubの星はもう3,600超え。名前は ViMax。\n\n・アイデアを1行書くだけで脚本・絵コンテ・動画まで自動生成\n・小説をまるごとエピソード形式の動画に変換\n・自分の写真を入れると、主人公として登場する動画も作れる\n\nなど、Runway や Heygen を1つにまとめにきた勢いです👇",
+          "url": "https://x.com/so_ainsight/status/2053808005272174931",
+          "likes": 618,
+          "retweets": 76
         }
       ]
     },
     {
-      "topic": "巨大テック4社による7250億ドルのAI投資",
-      "description": "Amazon、Microsoft、Google、Metaの4社が年間で7250億ドルという天文学的な額をAIに投資するというニュースが、技術・投資コミュニティに衝撃を与えています。この金額が多くの国のGDPを超えるという事実に驚きの声が上がっており、AIインフラへの需要がいかに凄まじいかを物語るものとして受け止められています。供給が全く追いつかないというMicrosoftのCFOの発言も引用され、半導体やデータセンター関連の市場が今後も過熱し続けるとの見方が広がっています。",
-      "buzz_level": "low",
-      "sentiment": "neutral",
+      "topic": "MetaのTransformer研究への衝撃と解説",
+      "description": "MetaがTransformerアーキテクチャの根幹を揺るがす研究を発表したことが、AI技術に詳しい層を中心に大きな衝撃を与えています。「AIが『思考』するようになるかもしれない」というキャッチーな解説とともに、この技術的ブレークスルーが持つ意味や、ChatGPTなど既存モデルへの影響について様々な考察が投稿されています。技術の複雑さゆえに、専門家による解説ツイートに注目が集まる傾向があります。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@BullTheoryio",
-          "text": "🚨 4 companies are about to spend $725 billion on AI in a single year. \n\nThat number is larger than the GDP of most countries on earth.\n\nAmazon is committing $200 billion, Microsoft $190 billion, Google $190 billion, and Meta $145 billion. All four raised their guidance this quarter, and none of them are slowing down.\n\nMicrosoft's CFO said the company expects to remain capacity constrained through all of 2026, even after spending $190 billion. \n\nThey simply cannot build fast enough to meet demand",
-          "url": "https://x.com/BullTheoryio/status/2053912395438018602",
-          "likes": 139,
-          "retweets": 26
+          "author": "@HowToAI_",
+          "text": "Meta has officially unlocked the \"hidden brain\" of the Transformer.\n\nAnd it solves the biggest architectural flaw in AI since 2017.\n\nEvery AI you use today (ChatGPT, Claude, Gemini) is a prisoner of t",
+          "url": "https://x.com/HowToAI_/status/2053681189232562526",
+          "likes": 277,
+          "retweets": 54
         }
       ]
     },
     {
-      "topic": "トップ企業提供の無料AI学習リソース",
-      "description": "AnthropicやGoogle、NVIDIAなどAIをリードする企業が公式に提供している無料の学習リソースをまとめたポストが、多くのブックマークを集めています。AIスキルを身につけたいと考える学習者にとって非常に価値のある情報と捉えられており、「有益なまとめだ」と感謝のコメントが寄せられています。AI人材の需要が高まる中、信頼できる情報源から体系的に学びたいというニーズの高さを示しています。",
+      "topic": "OpenAIの新プロジェクト「Daybreak」発表",
+      "description": "OpenAIのCEOであるSam Altman氏が自ら、サイバー防衛を目的とした新プロジェクト「Daybreak」を発表したことで、AI業界に強いメッセージを発信しました。AIの悪用が懸念される中、業界のリーダーが防御技術の開発に注力する姿勢は、多くのユーザーから肯定的に受け止められています。この動きは、AIの安全な社会実装に向けた重要な一歩として評価されています。",
       "buzz_level": "low",
       "sentiment": "positive",
       "representative_tweets": [
         {
-          "author": "@TheAIWorld22",
-          "text": "Learn AI for free directly from top companies\n\n1 - Anthropic:\nhttps://t.co/ghKhmRltwM\n\n2 - Google:\nhttps://t.co/9XHLVnjz0c\n\n3 - Meta:\nhttps://t.co/KgMUcvtbeq\n\n4 - NVIDIA:\nhttps://t.co/8lsSOZvrwG\n\n5 - Microsoft:\nhttps://t.co/29WyLIeCep\n\n6 - OpenAI:\nhttps://t.co/xT5yCamUDc\n\n7 - IBM:\nhttps://t.co/AxneWvDp6p\n\n8 - AWS:\nhttps://t.co/x2HAk3mO6n\n\n9 - DeepLearning AI:\nhttps://t.co/wTb3OLmP9d\n\n10 - Hugging Face:\nhttps://t.co/6QcXiXJ2O3\n\nComment \"AI\" for more resources.\n\nLike, Retweet & Bookmark for future",
-          "url": "https://x.com/TheAIWorld22/status/2053867231692706179",
-          "likes": 126,
-          "retweets": 46
-        }
-      ]
-    },
-    {
-      "topic": "Claudeによる「Vibe-Coding」",
-      "description": "Claude Codeの開発者自身が解説する「vibe-coding」というプログラミング手法が、開発者コミュニティで注目を集めています。これは、AIとの対話を通じて、厳密な仕様書なしに直感や雰囲気（vibe）を頼りにソフトウェアを構築するスタイルを指します。この新しい開発パラダイムに多くの開発者が興味を示しており、「開発の未来を変えるかもしれない」として200件以上ブックマークされるなど、今後の動向が注視されています。",
-      "buzz_level": "low",
-      "sentiment": "positive",
-      "representative_tweets": [
+          "author": "@sama",
+          "text": "OpenAI is launching Daybreak, our effort to accelerate cyber defense and continuously secure software.\n\nAI is already good and about to get super good at cybersecurity; we'd like to start working with as many companies as possible now to help them continuously secure themselves.",
+          "url": "https://x.com/sama/status/2053951874408276193",
+          "likes": 313,
+          "retweets": 21
+        },
         {
-          "author": "@ai_rohitt",
-          "text": "The creator of Claude Code teaches more about vibe-coding in 30 minutes than most tutorials do in hours. \n\nSave this - it'll change how you build forever. https://t.co/lMryG7EcfF",
-          "url": "https://x.com/ai_rohitt/status/2053107178882707735",
-          "likes": 147,
-          "retweets": 53
-        }
-      ]
-    },
-    {
-      "topic": "日本国内の「AIインフラ本命相場」",
-      "description": "世界的なAI投資ブームが波及し、日本国内でも半導体、通信、電力インフラ関連企業への投資が加速しているという見方が、投資家の間で共感を呼んでいます。この投稿は、具体的な企業名を挙げながら「AIインフラ本命相場」の到来を示唆しており、国内市場への期待感を高めています。多くの投資家がこの見方に同意し、関連銘柄への関心を強めている様子がうかがえます。",
-      "buzz_level": "low",
-      "sentiment": "positive",
-      "representative_tweets": [
-        {
-          "author": "@yoko_kp",
-          "text": "朗報‼️朗報‼️\n国内で生成AI・クラウド向け投資が一気に加速。\n需要急増 → GPU不足 → 通信・電力インフラ強化へ。\n半導体：アドバンテスト／レーザーテック\n電線：フジクラ／住友電工\n通信：NTT／KDDI\n重工：日立製作所／三菱重工業\n今年は本当に「AIインフラ本命相場」になるかもしれない。 https://t.co/wWHvqphzUo",
-          "url": "https://x.com/yoko_kp/status/2053743497782730890",
-          "likes": 97,
-          "retweets": 14
+          "author": "@gdb",
+          "text": "Daybreak: our umbrella effort for defensive acceleration, equipping cyber defenders with the best possible frontier AI capabilities.",
+          "url": "https://x.com/gdb/status/2053943428241928560",
+          "likes": 160,
+          "retweets": 12
         }
       ]
     }
   ],
-  "run_time": "2026-05-11T21:33:50.376122+00:00",
+  "run_time": "2026-05-11T21:41:42.167170+00:00",
   "slot": "morning",
-  "item_count": 14,
+  "item_count": 26,
   "fallback_used_stages": []
 }
