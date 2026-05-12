@@ -234,8 +234,9 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     {tabs_nav}
       <div class="add-account">
       <div class="add-account-title">＋ アカウント追加</div>
+      <div class="add-note" style="margin-bottom:6px;color:#94a3b8;font-size:11px;">@handle・URLどちらでもOK</div>
       <div class="add-form">
-        <input class="add-input" id="addHandle" placeholder="@handle または URL" />
+        <input class="add-input" id="addHandle" placeholder="@handle or https://x.com/..." />
         <button class="add-btn" onclick="addAccount()">今すぐ追加</button>
         <div class="add-note" id="addStatus"></div>
       </div>
