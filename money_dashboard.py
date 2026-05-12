@@ -107,6 +107,7 @@ def _render_money_html(cases: list[dict]) -> str:
     </div>
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
+      <a href="buzz.html">🔥 バズりランキング</a>
       <a href="strategy.html">🎯 施策提案</a>
     </nav>
   </div>
