@@ -106,12 +106,25 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 - 動画コンテンツを使ったビジネス・副業・フリーランスの具体的な手法紹介
 - 「この人が動画でこうやって稼いでいる」という事例紹介・まとめ（本人発信でなくてもOK）
 - 動画制作代行・動画編集サービスで稼いでいる事例
+- ライブ配信・スパチャ・サブスク・投げ銭などで収益を得た事例
+- Twitch・YouTube Live・TikTok Live での収益化事例
+
+## 海外投稿の判定ポイント（英語投稿で見落としやすい表現）
+以下の英語表現は「動画で稼いでいる事例」として is_money_case: true にする：
+- "made $X from YouTube/TikTok", "earned $X", "my channel makes $X/month"
+- "I make money with faceless YouTube", "passive income from shorts"
+- "got paid $X for UGC", "brand deal", "sponsored content income"
+- "video editing client", "freelance video editor making $X"
+- "Twitch income", "streaming revenue", "super chat", "bits earned"
+- "TikTok creator fund payout", "Reels bonus program"
+- 具体的な金額（$X, £X, €X）が含まれていれば高確率でtrue
 
 ## 除外するもの（is_money_case: false）
 - 動画ツールの単なる紹介・感想（稼ぎに無関係）
-- 「動画で稼ごう」という呼びかけのみで実例なし
+- 「動画で稼ごう」という呼びかけのみで実例なし（具体的金額や手法がない）
 - リポスト（RTで始まるもの）
 - 動画と無関係な事例（コーディング代行・テキスト副業など）
+- 質問・相談のみ（「How do I monetize?」など）
 
 ## 分析フィールド
 各ポストについて：
