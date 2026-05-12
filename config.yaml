@@ -179,8 +179,8 @@ money_collection:
     - "creator economy income case -filter:retweets lang:en"
     - "content creator revenue how much -filter:retweets lang:en"
     - "monetizing content video income -filter:retweets lang:en"
-  # 1クエリあたりの最大取得件数（英語強化のため200に増加）
-  max_items_per_query: 200
+  # 1バッチ（3クエリ）あたりの最大取得件数
+  max_items_per_query: 50
 
 # ── バズりランキング収集アカウント（run_buzz.py 専用） ──────
 buzz_accounts:

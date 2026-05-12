@@ -55,7 +55,7 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
             # since なし → 期間制限なし（長期蓄積）
         }
         logger.info("Money collection [%s]: %d queries × up to %d posts", label, len(search_terms), max_items_each)
-        run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
+        run = client.actor(actor_id).call(run_input=run_input, timeout_secs=120)
         with _meta_lock:
             meta["apify_runs"] += 1
             meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
