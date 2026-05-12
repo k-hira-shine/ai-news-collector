@@ -379,7 +379,7 @@ AI/ML と無関係な記事はスキップしてください。
      - streak_days: 何日連続で話題になっているか (初登場は1)
      - evolution: 時系列でどう変化したか (1文。例: "初報→米当局が動く→規制議論に発展")
    (過去データがない場合は since_last を "初回実行のため比較データなし" とし、全トピックを NEW にする)
-3. top_articles: 重要度上位{self.top_n}件。各記事に rank, id, title, url, summary (1〜2文), importance_reason, category, source_label を含める
+3. top_articles: 重要度上位{self.top_n}件。各記事に rank, id, title（日本語で簡潔に20字以内）, url, summary (1〜2文), importance_reason, category, source_label を含める
 4. category_summaries: カテゴリ({categories_str})別の要約と主要記事 (最大5件)
 5. action_items: ビジネスへの示唆・アクションアイテムを3〜5件
 6. x_trends: X/Twitter で特に盛り上がっているトピックを5〜7件抽出。これは本レポートの重要セクションです。

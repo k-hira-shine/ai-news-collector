@@ -126,10 +126,19 @@ class DiagramBuilder:
     @staticmethod
     def _normalize_article(a: dict) -> dict:
         cat = a.get("category", "")
+        raw_title = (a.get("title", "") or "").strip()
+        summary = (a.get("summary", "") or "").strip()
+        # title が英語のままの場合（ツイート原文）は summary の先頭40字で代替
+        def _is_english(text: str) -> bool:
+            if not text:
+                return False
+            ascii_chars = sum(1 for c in text if ord(c) < 128)
+            return ascii_chars / len(text) > 0.8
+        title = raw_title if not _is_english(raw_title) else (summary[:40] + "…" if len(summary) > 40 else summary)
         return {
             "rank": a.get("rank", 0),
-            "title": (a.get("title", "") or "").strip(),
-            "summary": (a.get("summary", "") or "").strip(),
+            "title": title,
+            "summary": summary,
             "category": cat,
             "category_class": CATEGORY_CLASS.get(cat, ""),
             "source_label": a.get("source_label", ""),
