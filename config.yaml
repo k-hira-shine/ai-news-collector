@@ -16,8 +16,9 @@ x_twitter:
     - "ChatGPT OR ジェミニ OR Gemini OR クロード OR Claude OR GPT OR 生成AI -filter:replies lang:ja"
     # 日本語：AI活用・開発・ビジネス
     - "AIエージェント OR AI自動化 OR AI副業 OR Claude Code OR プロンプト OR 大規模言語モデル -filter:replies lang:ja"
-  max_results_per_query: 80
+  max_results_per_query: 150
   must_follow_accounts:
+    # ── 公式アカウント ──────────────────────────────
     - handle: "OpenAI"
       label: "OpenAI公式"
       priority: critical
@@ -39,6 +40,26 @@ x_twitter:
     - handle: "huggingface"
       label: "Hugging Face公式"
       priority: critical
+    # ── 海外トップ研究者・CEO ────────────────────────
+    - handle: "sama"
+      label: "Sam Altman (OpenAI CEO)"
+      priority: critical
+    - handle: "DarioAmodei"
+      label: "Dario Amodei (Anthropic CEO)"
+      priority: critical
+    - handle: "demishassabis"
+      label: "Demis Hassabis (DeepMind CEO)"
+      priority: high
+    - handle: "karpathy"
+      label: "Andrej Karpathy"
+      priority: high
+    - handle: "ylecun"
+      label: "Yann LeCun (Meta Chief AI Scientist)"
+      priority: high
+    - handle: "simonw"
+      label: "Simon Willison"
+      priority: high
+    # ── 日本語インフルエンサー ──────────────────────
     - handle: "rute1203d"
       label: "てる@AIエージェントマフィア"
       priority: high
@@ -51,8 +72,14 @@ x_twitter:
     - handle: "aonboaonbo"
       label: "あおんぼ@総合WEBマーケプロデューサー"
       priority: high
+    - handle: "shota7180"
+      label: "木内翔大@SHIFT AI代表"
+      priority: high
+    - handle: "umiyuki_ai"
+      label: "うみゆき@AI研究"
+      priority: high
   min_engagement: 10
-  max_results_per_account: 10
+  max_results_per_account: 20
   apify_actor: "xquik/x-tweet-scraper"
   apify_monthly_budget_usd: 29.0
   apify_warning_threshold: 0.8
