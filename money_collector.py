@@ -47,12 +47,14 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
 
     def _run_apify(search_terms: list[str], max_items_each: int, label: str) -> list[dict]:
         """Apifyを1回起動してツイートを取得し正規化して返す"""
+        from datetime import timedelta
+        since_date = (datetime.now(timezone.utc) - timedelta(days=180)).strftime("%Y-%m-%d")
         run_input = {
             "searchTerms": search_terms,
             "queryType": "Latest",
             "maxItems": max_items_each,
             "includeSearchTerms": True,
-            # since なし → 期間制限なし（長期蓄積）
+            "since": since_date,   # 180日前まで遡って取得
         }
         logger.info("Money collection [%s]: %d queries × up to %d posts", label, len(search_terms), max_items_each)
         run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
