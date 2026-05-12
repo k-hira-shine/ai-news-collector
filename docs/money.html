@@ -42,6 +42,9 @@
     .engagement { display: flex; gap: 10px; }
     .empty-state { text-align: center; padding: 60px 20px; color: #555; }
     .empty-state .emoji { font-size: 3rem; margin-bottom: 16px; }
+    .criteria-box { background: #0f172a; border: 1px solid #2a4060; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; font-size: 0.82rem; color: #94a3b8; line-height: 1.8; }
+    .criteria-box strong { color: #7aa0d4; }
+    .criteria-box .criteria-title { font-size: 0.88rem; font-weight: 700; color: #f0c060; margin-bottom: 8px; }
     section.cat-section { margin-bottom: 32px; }
     .cat-title { font-size: 1.1rem; font-weight: 700; color: #f0c060; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #2a2a4a; }
     footer { text-align: center; padding: 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #1a1a2e; margin-top: 40px; }
@@ -51,7 +54,7 @@
 <header>
   <div class="header-inner">
     <div>
-      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: 2026-05-12 13:35 JST</span></div>
+      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: 2026-05-12 13:43 JST</span></div>
     </div>
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
@@ -62,6 +65,14 @@
 </header>
 
 <div class="main">
+  <!-- 収集基準の説明 -->
+  <div class="criteria-box">
+    <div class="criteria-title">📋 収集・掲載基準</div>
+    <strong>収集元：</strong>指定アカウント（@fiction_log）＋ 日英8種の検索クエリ &nbsp;|&nbsp;
+    <strong>フォロワー：</strong>1,000人以上の投稿のみ採用 &nbsp;|&nbsp;
+    <strong>判定：</strong>Gemini AIが「動画を使って稼いでいる・稼げた」具体的事例を自動フィルタリング &nbsp;|&nbsp;
+    <strong>蓄積期間：</strong>過去90日分を継続収集（since制限なし）
+  </div>
   <!-- 統計バー -->
   <div class="stats-bar">
     <div class="stat-card">

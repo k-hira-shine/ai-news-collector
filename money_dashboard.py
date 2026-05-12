@@ -26,16 +26,24 @@ CATEGORY_ICONS = {
 
 def generate_money_page(output_path: str) -> None:
     from money_analyzer import load_all_money_analyses
+    import yaml
+    config = {}
+    try:
+        with open(os.path.join(os.path.dirname(__file__) or ".", "config.yaml"), encoding="utf-8") as f:
+            config = yaml.safe_load(f) or {}
+    except Exception:
+        pass
 
     cases = load_all_money_analyses()
-    html = _render_money_html(cases)
+    html = _render_money_html(cases, config)
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
     logger.info("Money page generated → %s (%d cases)", output_path, len(cases))
 
 
-def _render_money_html(cases: list[dict]) -> str:
+def _render_money_html(cases: list[dict], config: dict = None) -> str:
+    config = config or {}
     now_jst = datetime.now(JST)
     now_str = now_jst.strftime("%Y-%m-%d %H:%M JST")
 
@@ -50,6 +58,14 @@ def _render_money_html(cases: list[dict]) -> str:
     global_count = len(cases) - jp_count
 
     total = len(cases)
+
+    # 収集基準の設定値
+    money_cfg = config.get("money_collection", {})
+    min_followers = money_cfg.get("min_followers", 1000)
+    accounts = money_cfg.get("accounts", [])
+    account_labels = "、".join(f'@{a["handle"]}' for a in accounts) if accounts else "なし"
+    search_query_count = len(money_cfg.get("search_queries", []))
+    cache_days = money_cfg.get("cache_retention_days", 90)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -95,6 +111,9 @@ def _render_money_html(cases: list[dict]) -> str:
     .engagement {{ display: flex; gap: 10px; }}
     .empty-state {{ text-align: center; padding: 60px 20px; color: #555; }}
     .empty-state .emoji {{ font-size: 3rem; margin-bottom: 16px; }}
+    .criteria-box {{ background: #0f172a; border: 1px solid #2a4060; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; font-size: 0.82rem; color: #94a3b8; line-height: 1.8; }}
+    .criteria-box strong {{ color: #7aa0d4; }}
+    .criteria-box .criteria-title {{ font-size: 0.88rem; font-weight: 700; color: #f0c060; margin-bottom: 8px; }}
     section.cat-section {{ margin-bottom: 32px; }}
     .cat-title {{ font-size: 1.1rem; font-weight: 700; color: #f0c060; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #2a2a4a; }}
     footer {{ text-align: center; padding: 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #1a1a2e; margin-top: 40px; }}
@@ -115,6 +134,14 @@ def _render_money_html(cases: list[dict]) -> str:
 </header>
 
 <div class="main">
+  <!-- 収集基準の説明 -->
+  <div class="criteria-box">
+    <div class="criteria-title">📋 収集・掲載基準</div>
+    <strong>収集元：</strong>指定アカウント（{account_labels}）＋ 日英{search_query_count}種の検索クエリ &nbsp;|&nbsp;
+    <strong>フォロワー：</strong>{min_followers:,}人以上の投稿のみ採用 &nbsp;|&nbsp;
+    <strong>判定：</strong>Gemini AIが「動画を使って稼いでいる・稼げた」具体的事例を自動フィルタリング &nbsp;|&nbsp;
+    <strong>蓄積期間：</strong>過去{cache_days}日分を継続収集（since制限なし）
+  </div>
   <!-- 統計バー -->
   <div class="stats-bar">
     <div class="stat-card">
