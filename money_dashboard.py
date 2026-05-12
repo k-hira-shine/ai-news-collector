@@ -208,7 +208,7 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
         </select>
       </div>
       <div class="select-group">
-        <label for="incomeSelect">💰 月収：</label>
+        <label for="incomeSelect">💰 金額：</label>
         <select id="incomeSelect" onchange="applyFilters()">
           <option value="0">制限なし</option>
           <option value="-1">金額記載あり</option>
