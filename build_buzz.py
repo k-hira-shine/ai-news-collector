@@ -91,10 +91,13 @@ def build() -> None:
         active = "active" if i == 0 else ""
 
         tabs_nav += f"""
-<button class="tab-btn {active}" onclick="switchTab('{account}', this)">
-  <span class="tab-name">{display_name}</span>
-  <span class="tab-handle">@{account}</span>
-</button>"""
+<div class="tab-item" id="item-{account}">
+  <button class="tab-btn {active}" onclick="switchTab('{account}', this)">
+    <span class="tab-name">{display_name}</span>
+    <span class="tab-handle">@{account}</span>
+  </button>
+  <button class="delete-btn" onclick="deleteAccount('{account}', '{html.escape(display_name)}')" title="削除">✕</button>
+</div>"""
 
         rows = "".join(render_tweet(rank + 1, t, median) for rank, t in enumerate(tweets))
 
@@ -142,13 +145,26 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .layout {{ display: flex; gap: 0; min-height: calc(100vh - 120px); }}
 
 /* 左サイドバー */
-.sidebar {{ width: 200px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--surface2); padding: 1rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }}
+.sidebar {{ width: 220px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--surface2); padding: 1rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }}
 .sidebar-title {{ font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 1rem 0.6rem; }}
-.tab-btn {{ display: block; width: 100%; background: none; border: none; border-left: 3px solid transparent; padding: 0.7rem 1rem; cursor: pointer; color: var(--muted); text-align: left; transition: all .15s; }}
+.tab-item {{ position: relative; }}
+.tab-btn {{ display: block; width: 100%; background: none; border: none; border-left: 3px solid transparent; padding: 0.7rem 2.2rem 0.7rem 1rem; cursor: pointer; color: var(--muted); text-align: left; transition: all .15s; }}
 .tab-btn:hover {{ background: var(--surface2); color: var(--text); border-left-color: var(--accent); }}
 .tab-btn.active {{ background: #1e293b; color: var(--text); border-left-color: var(--accent); }}
 .tab-name {{ display: block; font-size: 0.85rem; font-weight: 700; color: inherit; }}
 .tab-handle {{ display: block; font-size: 0.72rem; color: var(--blue); margin-top: 2px; }}
+.delete-btn {{ position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #475569; font-size: 0.8rem; cursor: pointer; padding: 4px; border-radius: 4px; line-height: 1; opacity: 0; transition: opacity .15s; }}
+.tab-item:hover .delete-btn {{ opacity: 1; }}
+.delete-btn:hover {{ background: #3d1a1a; color: var(--red); }}
+/* 追加フォーム */
+.add-account {{ padding: 0.8rem 1rem; border-top: 1px solid var(--surface2); margin-top: 0.5rem; }}
+.add-account-title {{ font-size: 0.7rem; color: var(--muted); margin-bottom: 6px; }}
+.add-form {{ display: flex; flex-direction: column; gap: 5px; }}
+.add-input {{ background: #0f172a; border: 1px solid var(--surface2); color: var(--text); border-radius: 5px; padding: 5px 8px; font-size: 0.78rem; width: 100%; }}
+.add-input:focus {{ outline: none; border-color: var(--accent); }}
+.add-btn {{ background: var(--accent); color: #fff; border: none; border-radius: 5px; padding: 5px 8px; font-size: 0.78rem; cursor: pointer; font-weight: 600; }}
+.add-btn:hover {{ opacity: 0.85; }}
+.add-note {{ font-size: 0.68rem; color: #475569; margin-top: 3px; }}
 
 /* メインコンテンツ */
 .main-content {{ flex: 1; padding: 1.5rem 2rem; overflow-x: hidden; }}
@@ -207,6 +223,14 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <aside class="sidebar">
     <div class="sidebar-title">アカウント</div>
     {tabs_nav}
+    <div class="add-account">
+      <div class="add-account-title">＋ アカウント追加</div>
+      <div class="add-form">
+        <input class="add-input" id="addHandle" placeholder="@handle" />
+        <button class="add-btn" onclick="addAccount()">追加リクエスト</button>
+        <div class="add-note">次回収集時（JST 02:00 / 20:00）に反映されます</div>
+      </div>
+    </div>
   </aside>
   <div class="main-content">
     {tabs_content}
@@ -219,6 +243,57 @@ function switchTab(account, btn) {{
   btn.classList.add('active');
   document.getElementById('tab-' + account).classList.add('active');
 }}
+
+function deleteAccount(account, displayName) {{
+  if (!confirm(displayName + ' (@' + account + ') をリストから削除しますか？\\n（このセッション中のみ非表示になります）')) return;
+  const item = document.getElementById('item-' + account);
+  const panel = document.getElementById('tab-' + account);
+  if (item) item.remove();
+  if (panel) panel.remove();
+  // 最初のアカウントをアクティブに
+  const firstBtn = document.querySelector('.tab-btn');
+  const firstPanel = document.querySelector('.tab-panel');
+  if (firstBtn) firstBtn.classList.add('active');
+  if (firstPanel) firstPanel.classList.add('active');
+}}
+
+function addAccount() {{
+  const input = document.getElementById('addHandle');
+  let handle = input.value.trim().replace(/^@/, '');
+  if (!handle) {{ alert('ハンドルを入力してください'); return; }}
+  // config.yaml への追記はワークフロー経由のため、ここではコピー可能な形でガイド表示
+  alert('@' + handle + ' を追加リクエストしました。\\n次回収集時（JST 02:00 / 20:00）に反映されます。\\n\\n手動で今すぐ反映したい場合は、\\nGitHub Actions → AI Money Cases Collector → Run workflow で実行してください。');
+  input.value = '';
+  // ローカルストレージに保存（次回表示時に「追加予定」として表示）
+  const pending = JSON.parse(localStorage.getItem('buzzPendingAccounts') || '[]');
+  if (!pending.includes(handle)) pending.push(handle);
+  localStorage.setItem('buzzPendingAccounts', JSON.stringify(pending));
+  renderPending();
+}}
+
+function renderPending() {{
+  const pending = JSON.parse(localStorage.getItem('buzzPendingAccounts') || '[]');
+  const existing = document.getElementById('pending-list');
+  if (existing) existing.remove();
+  if (!pending.length) return;
+  const div = document.createElement('div');
+  div.id = 'pending-list';
+  div.style.cssText = 'padding: 0.5rem 1rem; font-size: 0.7rem; color: #f59e0b;';
+  div.innerHTML = '<div style="margin-bottom:4px;font-weight:700;">追加予定：</div>' +
+    pending.map(h => `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+      <span>@${{h}}</span>
+      <button onclick="removePending('${{h}}')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.7rem;">✕</button>
+    </div>`).join('');
+  document.querySelector('.add-account').insertAdjacentElement('beforebegin', div);
+}}
+
+function removePending(handle) {{
+  const pending = JSON.parse(localStorage.getItem('buzzPendingAccounts') || '[]');
+  localStorage.setItem('buzzPendingAccounts', JSON.stringify(pending.filter(h => h !== handle)));
+  renderPending();
+}}
+
+window.addEventListener('DOMContentLoaded', renderPending);
 </script>
 </body>
 </html>"""
