@@ -328,9 +328,8 @@ def _render_diagrams(diagrams: list[dict]) -> str:
         if d.get("png_path"):
             png = escape(d["png_path"])
             items.append(
-                f'<div class="diagram-card" onclick="openDiagram(\'{png}\',\'{href}\',\'{date} {slot}\')" style="cursor:pointer">'
-                f'<img src="{png}" alt="{date} {slot}" loading="lazy">'
-                f'<div class="diagram-card-footer"><span>{date}</span><span class="slot-tag">{slot}</span></div>'
+                f'<div class="diagram-item" onclick="openDiagram(\'{png}\',\'{href}\',\'{date} {slot}\')" style="cursor:pointer">'
+                f'<span>{date}</span><span class="slot-tag">{slot}</span>'
                 f'</div>'
             )
         else:
