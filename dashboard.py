@@ -450,6 +450,19 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .fading li {{ color: var(--muted); text-decoration: line-through; }}
 .next-big {{ background: var(--surface2); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 1rem; font-size: 1rem; }}
 .next-big .label {{ color: var(--yellow); font-weight: 700; margin-right: 0.5rem; }}
+.trend-detail-section {{ margin: 1rem 0; }}
+.trend-subhead {{ font-size: 0.95rem; color: var(--muted); margin-bottom: 0.8rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--surface2); }}
+.trend-detail {{ padding: 0.9rem; background: var(--surface2); border-radius: 8px; margin-bottom: 0.7rem; }}
+.trend-detail:last-child {{ margin-bottom: 0; }}
+.trend-detail-header {{ display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; flex-wrap: wrap; }}
+.trend-topic {{ font-weight: 700; font-size: 1rem; }}
+.trend-desc {{ font-size: 0.9rem; color: var(--muted); margin-bottom: 0.5rem; line-height: 1.6; }}
+.trend-tweet {{ background: #0f172a; border-radius: 6px; padding: 0.6rem 0.8rem; margin-top: 0.4rem; }}
+.tw-header {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.3rem; }}
+.tw-author {{ color: var(--blue); font-weight: 600; font-size: 0.85rem; text-decoration: none; }}
+.tw-author:hover {{ color: var(--accent); }}
+.tw-eng {{ color: var(--muted); font-size: 0.8rem; }}
+.tw-body {{ font-size: 0.88rem; color: var(--text); line-height: 1.5; }}
 .empty {{ text-align: center; color: var(--muted); padding: 4rem 0; font-size: 1.1rem; }}
 </style>
 </head>
@@ -602,22 +615,81 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
 
     # ── トレンド予測 ───────────────────────────────────────────────
     forecast = strategy.get("trend_forecast", {})
-    if forecast:
-        next_big = escape(forecast.get("next_big_thing", ""))
-        next_big_html = f'<div class="next-big"><span class="label">🔮 次に来るテーマ</span>{next_big}</div>' if next_big else ""
+    x_trends = analysis.get("x_trends", [])
+    if forecast or x_trends:
+        trend_parts: list[str] = []
 
-        watch = forecast.get("watch_topics", [])
-        fading = forecast.get("fading_topics", [])
-        watch_html = "".join(f"<li>{escape(t)}</li>" for t in watch)
-        fading_html = "".join(f"<li>{escape(t)}</li>" for t in fading)
+        # 次に来るテーマ
+        next_big = escape(forecast.get("next_big_thing", "")) if forecast else ""
+        if next_big:
+            trend_parts.append(f'<div class="next-big"><span class="label">🔮 次に来るテーマ</span>{next_big}</div>')
+
+        # 今ホットな話題（x_trendsから深掘り）
+        if x_trends:
+            buzz_labels = {"high": "🔥 急上昇", "medium": "📈 注目", "low": "💬 話題"}
+            buzz_css = {"high": "buzz-high", "medium": "buzz-medium", "low": "buzz-low"}
+            sentiment_icons = {"positive": "😊", "negative": "😟", "neutral": "😐", "mixed": "🤔"}
+            xt_html: list[str] = []
+            for tr in x_trends:
+                topic = escape(tr.get("topic", ""))
+                desc = escape(tr.get("description", ""))
+                bl = tr.get("buzz_level", "medium")
+                sent = sentiment_icons.get(tr.get("sentiment", ""), "")
+                buzz_tag = f'<span class="buzz {buzz_css.get(bl, "buzz-medium")}">{buzz_labels.get(bl, bl)}</span>'
+
+                tw_html = ""
+                for tw in tr.get("representative_tweets", [])[:1]:
+                    tw_url = escape(tw.get("url", ""))
+                    tw_text = escape(tw.get("text", "")[:180])
+                    tw_author = escape(tw.get("author", ""))
+                    tw_likes = tw.get("likes", 0)
+                    tw_rts = tw.get("retweets", 0)
+                    eng_parts = []
+                    if tw_likes:
+                        eng_parts.append(f"❤️ {tw_likes:,}")
+                    if tw_rts:
+                        eng_parts.append(f"🔁 {tw_rts:,}")
+                    eng = f'<span class="tw-eng">{" · ".join(eng_parts)}</span>' if eng_parts else ""
+                    author_link = f'<a href="{tw_url}" target="_blank" rel="noopener" class="tw-author">{tw_author}</a>' if tw_url else f'<span class="tw-author">{tw_author}</span>'
+                    tw_html = (
+                        f'<div class="trend-tweet">'
+                        f'<div class="tw-header">{author_link}{eng}</div>'
+                        f'<div class="tw-body">{tw_text}</div>'
+                        f'</div>'
+                    )
+                xt_html.append(
+                    f'<div class="trend-detail">'
+                    f'<div class="trend-detail-header">'
+                    f'<span class="trend-topic">{sent} {topic}</span>{buzz_tag}'
+                    f'</div>'
+                    f'<div class="trend-desc">{desc}</div>'
+                    f'{tw_html}'
+                    f'</div>'
+                )
+            trend_parts.append(
+                f'<div class="trend-detail-section">'
+                f'<h3 class="trend-subhead">📡 今日の注目トピック詳細</h3>'
+                f'{"".join(xt_html)}'
+                f'</div>'
+            )
+
+        # 要注目 / 下火
+        if forecast:
+            watch = forecast.get("watch_topics", [])
+            fading = forecast.get("fading_topics", [])
+            watch_html = "".join(f"<li>{escape(t)}</li>" for t in watch)
+            fading_html = "".join(f"<li>{escape(t)}</li>" for t in fading)
+            trend_parts.append(
+                f'<div class="forecast-grid">'
+                f'<div class="forecast-block watch"><h3>👀 これから来る</h3><ul>{watch_html}</ul></div>'
+                f'<div class="forecast-block fading"><h3>📉 下火になりそう</h3><ul>{fading_html}</ul></div>'
+                f'</div>'
+            )
 
         parts.append(
             f'<div class="card"><h2>🔭 トレンド予測</h2>'
-            f'{next_big_html}'
-            f'<div class="forecast-grid">'
-            f'<div class="forecast-block watch"><h3>👀 要注目トピック</h3><ul>{watch_html}</ul></div>'
-            f'<div class="forecast-block fading"><h3>📉 下火になりそう</h3><ul>{fading_html}</ul></div>'
-            f'</div></div>'
+            f'{"".join(trend_parts)}'
+            f'</div>'
         )
 
     return "\n".join(parts) if parts else '<p class="empty">施策データがありません。</p>'
