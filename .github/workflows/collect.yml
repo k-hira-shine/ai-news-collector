@@ -71,6 +71,14 @@ print('Dashboard regenerated')
             python main.py
           fi
 
+      - name: Build buzz ranking page
+        run: |
+          if [ -f "data/buzz.json" ]; then
+            python build_buzz.py
+          else
+            echo "data/buzz.json not found, skipping buzz page build"
+          fi
+
       - name: Commit & push data
         run: |
           git config user.name "github-actions[bot]"
