@@ -47,7 +47,8 @@ HTTP_STATUS=$(curl -s -o /tmp/gh_trigger_resp.txt -w "%{http_code}" \
   -d "{\"ref\":\"main\",\"inputs\":{\"mode\":\"${MODE}\"}}")
 
 if [ "$HTTP_STATUS" = "204" ]; then
-  echo "✅ 起動成功 (HTTP 204)"
+  JST_NOW=$(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M JST')
+  echo "✅ 起動成功 ($JST_NOW)"
   echo "   確認: https://github.com/${REPO}/actions"
 else
   echo "❌ 失敗 (HTTP $HTTP_STATUS)"
