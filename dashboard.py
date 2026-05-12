@@ -281,7 +281,7 @@ def _render_latest(a: dict) -> str:
             f'{importance_html}</div>'
         )
 
-    parts.append(f'<div class="card"><h2>⭐ 注目記事 TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
+    parts.append(f'<div class="card"><h2>⭐ 注目ポスト TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
 
     # Category summaries
     cats_html: list[str] = []
@@ -460,7 +460,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <div class="updated">Last updated: {now_str}</div>
   <div class="nav-links">
     <a class="nav-link" href="index.html">← ニュース</a>
-    <a class="nav-link" href="cost.html">💰 コスト</a>
   </div>
 </header>
 {selector_html}
@@ -554,18 +553,12 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
     youtube_ideas = strategy.get("youtube_ideas", [])
     if youtube_ideas:
         items_html: list[str] = []
-        urgency_labels = {"high": "🔥 今週中", "medium": "📅 今月中", "low": "🗂️ 後日"}
-        urgency_css = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}
         for i, idea in enumerate(youtube_ideas):
-            urgency = idea.get("urgency", "medium")
-            badge = f'<span class="badge {urgency_css.get(urgency, "badge-medium")}">{urgency_labels.get(urgency, urgency)}</span>'
-            # 企画ごとにtop_articlesをローテーション（3件ずつずらして根拠を分散）
             offset = i * 3
             related = top_articles[offset:offset + 3] or top_articles[:3]
             items_html.append(
                 f'<div class="idea-item">'
                 f'<div class="idea-title">{escape(idea.get("title", ""))}</div>'
-                f'<div class="idea-meta">{badge}</div>'
                 f'<div class="idea-row"><span class="label">フック</span>{escape(idea.get("hook", ""))}</div>'
                 f'<div class="idea-row"><span class="label">なぜ今？</span>{escape(idea.get("reason", ""))}</div>'
                 f'<div class="idea-row"><span class="label">差別化</span>{escape(idea.get("angle", ""))}</div>'
@@ -574,24 +567,17 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
             )
         parts.append(f'<div class="card"><h2>🎬 YouTube企画案</h2>{"".join(items_html)}</div>')
 
-    # ── X投稿ネタ ──────────────────────────────────────────────────
-    x_ideas = strategy.get("x_post_ideas", [])
+    # ── X投稿ネタ（5件表示）──────────────────────────────────────
+    x_ideas = strategy.get("x_post_ideas", [])[:5]
     if x_ideas:
         items_html = []
-        reach_labels = {"high": "📈 高リーチ期待", "medium": "👍 中リーチ", "low": "🔹 低リーチ"}
-        reach_css = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}
         for i, idea in enumerate(x_ideas):
-            reach = idea.get("expected_reach", "medium")
-            fmt = escape(idea.get("format", ""))
-            badge_r = f'<span class="badge {reach_css.get(reach, "badge-medium")}">{reach_labels.get(reach, reach)}</span>'
-            badge_f = f'<span class="badge badge-low">{fmt}</span>'
             draft = escape(idea.get("draft", ""))
             offset = i * 3
             related = top_articles[offset:offset + 3] or top_articles[:3]
             items_html.append(
                 f'<div class="idea-item">'
                 f'<div class="idea-title">{escape(idea.get("theme", ""))}</div>'
-                f'<div class="idea-meta">{badge_r}{badge_f}</div>'
                 f'<div class="draft-box">{draft}</div>'
                 f'{_source_links_html(related)}'
                 f'</div>'
@@ -602,20 +588,12 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
     biz_items = strategy.get("business_insights", [])
     if biz_items:
         items_html = []
-        tf_labels = {"今すぐ": "badge-now", "今週中": "badge-week", "今月中": "badge-month"}
-        impact_labels = {"high": "💥 高インパクト", "medium": "✅ 中インパクト", "low": "📌 低インパクト"}
-        impact_css = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}
         for i, item in enumerate(biz_items):
-            tf = item.get("timeframe", "今週中")
-            impact = item.get("impact", "medium")
-            badge_tf = f'<span class="badge {tf_labels.get(tf, "badge-week")}">{escape(tf)}</span>'
-            badge_imp = f'<span class="badge {impact_css.get(impact, "badge-medium")}">{impact_labels.get(impact, impact)}</span>'
             offset = i * 3
             related = top_articles[offset:offset + 3] or top_articles[:3]
             items_html.append(
                 f'<div class="idea-item">'
                 f'<div class="idea-title">{escape(item.get("insight", ""))}</div>'
-                f'<div class="idea-meta">{badge_tf}{badge_imp}</div>'
                 f'<div class="idea-row"><span class="label">アクション</span>{escape(item.get("action", ""))}</div>'
                 f'{_source_links_html(related)}'
                 f'</div>'
