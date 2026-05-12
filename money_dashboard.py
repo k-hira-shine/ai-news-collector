@@ -77,8 +77,9 @@ def _render_money_html(cases: list[dict]) -> str:
     .filter-btn.active, .filter-btn:hover {{ background: #f0c060; color: #1a1a2e; border-color: #f0c060; font-weight: 600; }}
     .filter-label {{ color: #666; font-size: 0.8rem; margin-right: 4px; }}
     .cases-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }}
-    .case-card {{ background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s; }}
-    .case-card:hover {{ border-color: #f0c060; }}
+    .case-card {{ background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }}
+    .case-card:hover {{ border-color: #f0c060; box-shadow: 0 0 12px rgba(240,192,96,0.15); }}
+    .case-card a {{ color: inherit; text-decoration: none; }}
     .case-header {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }}
     .case-category {{ font-size: 0.75rem; background: #2a2a4a; color: #aaa; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }}
     .case-income {{ font-size: 0.85rem; font-weight: 700; color: #4ade80; background: #0f2a1a; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }}
@@ -216,12 +217,12 @@ def _render_case_card(case: dict) -> str:
     income_html = f'<span class="case-income">💰 {income}</span>' if income else ""
     views_str = f"{views:,}" if views else ""
 
-    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}">
+    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" onclick="window.open('{url}','_blank')">
   <div class="case-header">
     <span class="case-category">{icon} {category}</span>
     {income_html}
   </div>
-  <div class="case-summary">{summary}</div>
+  <div class="case-summary"><a href="{url}" target="_blank" rel="noopener">{summary}</a></div>
   {f'<div class="case-method">📌 {method}</div>' if method else ''}
   {f'<div class="case-tools">{tools_html}</div>' if tools_html else ''}
   <div class="case-footer">
@@ -229,7 +230,7 @@ def _render_case_card(case: dict) -> str:
     <div class="engagement">
       {f'❤️ {likes:,}' if likes else ''}
       {f'👁 {views_str}' if views_str else ''}
-      <a href="{url}" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="{url}" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
 </div>"""
