@@ -85,6 +85,7 @@ def _render_money_html(cases: list[dict]) -> str:
     .case-income {{ font-size: 0.85rem; font-weight: 700; color: #4ade80; background: #0f2a1a; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }}
     .case-summary {{ font-size: 0.95rem; font-weight: 600; color: #e0e0f0; margin-bottom: 8px; line-height: 1.5; }}
     .case-method {{ font-size: 0.85rem; color: #aaa; margin-bottom: 8px; }}
+    .case-body {{ font-size: 0.82rem; color: #94a3b8; background: #0f172a; border-left: 3px solid #2a4060; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 10px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }}
     .case-tools {{ display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }}
     .tool-tag {{ font-size: 0.75rem; background: #16213e; color: #7aa0d4; border: 1px solid #2a4060; padding: 2px 8px; border-radius: 10px; }}
     .case-footer {{ display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding-top: 8px; border-top: 1px solid #2a2a4a; font-size: 0.78rem; color: #666; }}
@@ -230,15 +231,20 @@ def _render_case_card(case: dict) -> str:
     tools_html = "".join(f'<span class="tool-tag">{t}</span>' for t in tools[:6])
     income_html = f'<span class="case-income">💰 {income}</span>' if income else ""
     views_str = f"{views:,}" if views else ""
+    # 元ポスト本文（最大200文字）
+    raw_content = case.get("content") or case.get("title") or ""
+    content_short = raw_content[:200] + "…" if len(raw_content) > 200 else raw_content
+    content_escaped = content_short.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
-    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" onclick="window.open('{url}','_blank')">
+    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}">
   <div class="case-header">
     <span class="case-category">{icon} {category}</span>
     {income_html}
   </div>
-  <div class="case-summary"><a href="{url}" target="_blank" rel="noopener">{summary}</a></div>
+  <div class="case-summary">{summary}</div>
   {f'<div class="case-method">📌 {method}</div>' if method else ''}
   {f'<div class="case-tools">{tools_html}</div>' if tools_html else ''}
+  {f'<div class="case-body">"{content_escaped}"</div>' if content_escaped else ''}
   <div class="case-footer">
     <span>{flag} @{author} · {pub_date}</span>
     <div class="engagement">
