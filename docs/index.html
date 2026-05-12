@@ -102,12 +102,11 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
-  <div class="updated">Last updated: 2026-05-13 02:53 JST</div>
+  <div class="updated">Last updated: 2026-05-13 07:53 JST</div>
   <div class="nav-links">
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
-    <a class="nav-link" href="hn.html">📡 英語一次情報</a>
   </div>
 </header>
 <div class="card"><h2>🖼️ 図解版アーカイブ</h2><div class="diagram-grid"><div class="diagram-item" onclick="openDiagram('diagrams/2026-05-13-morning.png','diagrams/2026-05-13-morning.html','2026-05-13 朝便')" style="cursor:pointer"><span>2026-05-13</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-05-12-morning.png','diagrams/2026-05-12-morning.html','2026-05-12 朝便')" style="cursor:pointer"><span>2026-05-12</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-05-12-evening.png','diagrams/2026-05-12-evening.html','2026-05-12 夕便')" style="cursor:pointer"><span>2026-05-12</span><span class="slot-tag">夕便</span></div></div></div>
@@ -226,7 +225,13 @@ These experimental demos show how people can intuitively direct Gemini on their 
       }
       const errWfs = Object.entries(data.workflows || {})
         .filter(([, v]) => v.status !== 'success')
-        .map(([k, v]) => `${k}: ${v.error || v.status}`);
+        .map(([k, v]) => {
+          const base = k + ': ';
+          if (v.cost_usd != null && v.cost_usd >= 1.0) {
+            return base + `コスト異常 $${parseFloat(v.cost_usd).toFixed(3)}`;
+          }
+          return base + (v.error || v.status);
+        });
       detail.textContent = errWfs.join(' / ') || data.updated_at;
       banner.style.display = 'block';
     });
