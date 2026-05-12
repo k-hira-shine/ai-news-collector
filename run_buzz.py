@@ -39,26 +39,46 @@ def load_config() -> dict:
         return yaml.safe_load(f)
 
 
-def fetch_account_tweets(client, actor_id: str, handle: str, days: int = 30, max_items: int = 200) -> list[dict]:
-    """指定アカウントの直近N日のポストを取得"""
+def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 30, max_items: int = 100) -> dict[str, list[dict]]:
+    """複数アカウントを1回のApify起動でまとめて取得"""
     since_date = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
+    search_terms = [f"from:{h} -filter:retweets" for h in handles]
     run_input = {
-        "searchTerms": [f"from:{handle} -filter:retweets"],
+        "searchTerms": search_terms,
         "queryType": "Latest",
-        "maxItems": max_items,
+        "maxItems": max_items,  # アカウントごとの上限
         "includeSearchTerms": True,
         "since": since_date,
     }
-    logger.info("Fetching @%s (last %d days, max %d) ...", handle, days, max_items)
+    logger.info("Fetching %d accounts in 1 batch (last %d days, max %d each) ...", len(handles), days, max_items)
     run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
     cost = float((run or {}).get("usageTotalUsd") or 0)
     status = (run or {}).get("status", "")
     if status != "SUCCEEDED":
-        logger.error("@%s: run status=%s", handle, status)
-        return []
-    items = list(client.dataset(run["defaultDatasetId"]).iterate_items())
-    logger.info("@%s: %d tweets fetched (cost=$%.4f)", handle, len(items), cost)
-    return items
+        logger.error("Batch run status=%s", status)
+        return {}
+
+    # アカウントごとに仕分け
+    result: dict[str, list[dict]] = {h: [] for h in handles}
+    total = 0
+    for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+        author = (tweet.get("author") or {}).get("userName") or tweet.get("userName") or tweet.get("username") or ""
+        author_lower = author.lower()
+        for h in handles:
+            if h.lower() == author_lower:
+                result[h].append(tweet)
+                break
+        total += 1
+    logger.info("Batch done: %d tweets total, cost=$%.4f", total, cost)
+    for h in handles:
+        logger.info("  @%s: %d tweets", h, len(result[h]))
+    return result
+
+
+def fetch_account_tweets(client, actor_id: str, handle: str, days: int = 30, max_items: int = 100) -> list[dict]:
+    """単一アカウント取得（追加時などに使用）"""
+    result = fetch_accounts_batch(client, actor_id, [handle], days=days, max_items=max_items)
+    return result.get(handle, [])
 
 
 def normalize_tweet(tweet: dict) -> dict:
@@ -169,17 +189,17 @@ def main() -> None:
         existing["accounts"] = list(existing_map.values())
 
     else:
-        # config.yaml の buzz_accounts を全取得
+        # config.yaml の buzz_accounts を全取得（1回のApify起動でまとめて）
         buzz_accounts = config.get("buzz_accounts", [])
         if not buzz_accounts:
             logger.warning("buzz_accounts not configured in config.yaml")
             sys.exit(0)
-        for ac in buzz_accounts:
-            handle = ac["handle"].lstrip("@")
-            display_name = ac.get("display_name", handle)
-            tweets = fetch_account_tweets(client, actor_id, handle, days=args.days, max_items=args.max_items)
+        handles = [ac["handle"].lstrip("@") for ac in buzz_accounts]
+        display_map = {ac["handle"].lstrip("@"): ac.get("display_name", ac["handle"]) for ac in buzz_accounts}
+        batch_result = fetch_accounts_batch(client, actor_id, handles, days=args.days, max_items=args.max_items)
+        for handle, tweets in batch_result.items():
             if tweets:
-                existing_map[handle] = build_account_data(handle, display_name, tweets)
+                existing_map[handle] = build_account_data(handle, display_map.get(handle, handle), tweets)
         existing["accounts"] = list(existing_map.values())
 
     save_buzz(existing)
