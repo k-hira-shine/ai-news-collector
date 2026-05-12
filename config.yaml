@@ -140,6 +140,20 @@ money_collection:
   max_items_per_account: 500
   # 重複排除キャッシュの保持日数（長期蓄積）
   cache_retention_days: 90
+  # 検索クエリ（アカウント指定以外の広域収集）
+  search_queries:
+    # 日本語
+    - "動画編集 収益化 (月収 OR 稼ぐ OR 副業) -filter:retweets"
+    - "ショート動画 (稼ぐ OR 収益 OR マネタイズ) 事例 -filter:retweets"
+    - "AI動画 (稼ぐ OR 収益化 OR マネタイズ) -filter:retweets"
+    - "YouTube 収益化 (やり方 OR 事例 OR 月収) -filter:retweets"
+    - "切り抜き動画 (収益 OR 稼ぐ OR 運用代行) -filter:retweets"
+    # 英語
+    - "AI video monetization income case -filter:retweets lang:en"
+    - "YouTube automation channel revenue -filter:retweets lang:en"
+    - "short video TikTok Reels earning income -filter:retweets lang:en"
+  # 1クエリあたりの最大取得件数
+  max_items_per_query: 100
 
 # ── バズりランキング収集アカウント（run_buzz.py 専用） ──────
 buzz_accounts:

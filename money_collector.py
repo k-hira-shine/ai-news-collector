@@ -37,50 +37,58 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
 
     accounts = money_cfg.get("accounts", [{"handle": "fiction_log", "label": "ろじん|Levela CXO"}])
     max_items = money_cfg.get("max_items_per_account", 500)
+    search_queries = money_cfg.get("search_queries", [])
+    max_items_per_query = money_cfg.get("max_items_per_query", 100)
 
     meta = {"apify_runs": 0, "apify_cost_usd": 0.0, "total_fetched": 0}
     all_items: list[dict] = []
 
-    # アカウントごとに取得（リポスト除外: -filter:retweets）
-    account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
-
-    try:
+    def _run_apify(search_terms: list[str], max_items_each: int, label: str) -> list[dict]:
+        """Apifyを1回起動してツイートを取得し正規化して返す"""
         run_input = {
-            "searchTerms": account_queries,
+            "searchTerms": search_terms,
             "queryType": "Latest",
-            "maxItems": max_items,
+            "maxItems": max_items_each,
             "includeSearchTerms": True,
-            # since なし → 期間制限なし
+            # since なし → 期間制限なし（長期蓄積）
         }
-        logger.info("Money collection: fetching %d accounts × up to %d posts", len(accounts), max_items)
+        logger.info("Money collection [%s]: %d queries × up to %d posts", label, len(search_terms), max_items_each)
         run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
         meta["apify_runs"] += 1
         meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
-
         run_status = (run or {}).get("status", "")
         if run_status != "SUCCEEDED":
-            logger.error("Money collection run status=%s", run_status)
-            meta["error"] = f"run_status={run_status}"
-            return [], meta
-
+            logger.error("Money collection [%s] run status=%s", label, run_status)
+            return []
+        items = []
         for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
             item = _normalize_tweet(tweet)
             item["money_source"] = True
-            # 投稿者情報を保持
             author_obj = tweet.get("author") or {}
             item["author_display"] = author_obj.get("name") or item["author"]
             item["author_followers"] = author_obj.get("followers") or author_obj.get("followersCount") or 0
-            # 画像・動画のURLを保持
             media = []
             for m in tweet.get("media") or []:
-                url = m.get("url") or m.get("previewUrl") or ""
-                if url:
-                    media.append({"type": m.get("type", "photo"), "url": url})
+                murl = m.get("url") or m.get("previewUrl") or ""
+                if murl:
+                    media.append({"type": m.get("type", "photo"), "url": murl})
             item["media"] = media
-            all_items.append(item)
+            items.append(item)
+        logger.info("Money collection [%s]: got %d posts", label, len(items))
+        return items
+
+    try:
+        # ① アカウント指定収集（リポスト除外・since制限なし）
+        if accounts:
+            account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
+            all_items += _run_apify(account_queries, max_items, "accounts")
+
+        # ② 検索クエリ収集（広域）
+        if search_queries:
+            all_items += _run_apify(search_queries, max_items_per_query, "search_queries")
 
         meta["total_fetched"] = len(all_items)
-        logger.info("Money collection: fetched %d posts (cost=$%.4f)", len(all_items), meta["apify_cost_usd"])
+        logger.info("Money collection total: %d posts (cost=$%.4f)", len(all_items), meta["apify_cost_usd"])
 
     except Exception as e:
         logger.error("Money collection failed: %s", e)
