@@ -24,8 +24,9 @@
     .filter-btn.active, .filter-btn:hover { background: #f0c060; color: #1a1a2e; border-color: #f0c060; font-weight: 600; }
     .filter-label { color: #666; font-size: 0.8rem; margin-right: 4px; }
     .cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
-    .case-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s; }
-    .case-card:hover { border-color: #f0c060; }
+    .case-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .case-card:hover { border-color: #f0c060; box-shadow: 0 0 12px rgba(240,192,96,0.15); }
+    .case-card a { color: inherit; text-decoration: none; }
     .case-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
     .case-category { font-size: 0.75rem; background: #2a2a4a; color: #aaa; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }
     .case-income { font-size: 0.85rem; font-weight: 700; color: #4ade80; background: #0f2a1a; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }
@@ -49,7 +50,7 @@
 <header>
   <div class="header-inner">
     <div>
-      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: 2026-05-12 11:31 JST</span></div>
+      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: 2026-05-12 11:36 JST</span></div>
     </div>
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
@@ -90,12 +91,12 @@
 
   <!-- 事例グリッド -->
   <div class="cases-grid" id="casesGrid">
-    <div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+    <div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051954916835398006','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
   </div>
-  <div class="case-summary">AI美女アカウントを量産し、ショート動画を投稿。バズった動画の顔を別キャラに変え他アカウントで展開し、サブスク課金で収益化する手法。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051954916835398006" target="_blank" rel="noopener">AI美女アカウントを量産し、ショート動画を投稿。バズった動画の顔を別キャラに変え他アカウントで展開し、サブスク課金で収益化する手法。</a></div>
   <div class="case-method">📌 AI美女のショート動画投稿からのサブスク課金</div>
   <div class="case-tools"><span class="tool-tag">swaptok</span></div>
   <div class="case-footer">
@@ -103,15 +104,15 @@
     <div class="engagement">
       ❤️ 302
       👁 62,782
-      <a href="https://x.com/fiction_log/status/2051954916835398006" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051954916835398006" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2049392835896672423','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">長尺動画から切り抜き動画を作成する「切り抜き職人」はマーケターとして確固たる地位を築いていると解説。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2049392835896672423" target="_blank" rel="noopener">長尺動画から切り抜き動画を作成する「切り抜き職人」はマーケターとして確固たる地位を築いていると解説。</a></div>
   <div class="case-method">📌 長尺動画からの切り抜き制作</div>
   
   <div class="case-footer">
@@ -119,15 +120,15 @@
     <div class="engagement">
       ❤️ 13
       👁 4,800
-      <a href="https://x.com/fiction_log/status/2049392835896672423" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2049392835896672423" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2049392779122634821','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
   </div>
-  <div class="case-summary">長尺動画の素材があれば、切り抜き運用でInstagram Reelsを伸ばすことが可能だと解説。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2049392779122634821" target="_blank" rel="noopener">長尺動画の素材があれば、切り抜き運用でInstagram Reelsを伸ばすことが可能だと解説。</a></div>
   <div class="case-method">📌 切り抜き動画でInstagram運用</div>
   
   <div class="case-footer">
@@ -135,15 +136,15 @@
     <div class="engagement">
       ❤️ 23
       👁 6,641
-      <a href="https://x.com/fiction_log/status/2049392779122634821" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2049392779122634821" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2049392651892568117','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">切り抜きマーケターはX, Instagram, YouTube shortsの運用代行ができると解説。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2049392651892568117" target="_blank" rel="noopener">切り抜きマーケターはX, Instagram, YouTube shortsの運用代行ができると解説。</a></div>
   <div class="case-method">📌 切り抜き動画でのSNS運用代行</div>
   
   <div class="case-footer">
@@ -151,15 +152,15 @@
     <div class="engagement">
       ❤️ 33
       👁 6,329
-      <a href="https://x.com/fiction_log/status/2049392651892568117" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2049392651892568117" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051591767393489258','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
   </div>
-  <div class="case-summary">AIで生成した美女の動画を使い、サブスクリプション課金で収益を得ている事例を紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051591767393489258" target="_blank" rel="noopener">AIで生成した美女の動画を使い、サブスクリプション課金で収益を得ている事例を紹介。</a></div>
   <div class="case-method">📌 AI美女動画でのサブスク課金</div>
   
   <div class="case-footer">
@@ -167,15 +168,15 @@
     <div class="engagement">
       ❤️ 1,196
       👁 1,633,559
-      <a href="https://x.com/fiction_log/status/2051591767393489258" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051591767393489258" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="その他" data-jp="true">
+</div><div class="case-card" data-category="その他" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2049050135070658811','_blank')">
   <div class="case-header">
     <span class="case-category">💡 その他</span>
     <span class="case-income">💰 1000億</span>
   </div>
-  <div class="case-summary">動画でAI活用できていない企業へのアプローチ方法と、それによって1000億企業になった事例を紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2049050135070658811" target="_blank" rel="noopener">動画でAI活用できていない企業へのアプローチ方法と、それによって1000億企業になった事例を紹介。</a></div>
   <div class="case-method">📌 YouTube動画での事例紹介・解説</div>
   
   <div class="case-footer">
@@ -183,15 +184,15 @@
     <div class="engagement">
       ❤️ 141
       👁 29,534
-      <a href="https://x.com/fiction_log/status/2049050135070658811" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2049050135070658811" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2046438095059636730','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">金融（士業系）ジャンルに特化したショート動画の運用代行が稼ぎやすいという手法の紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2046438095059636730" target="_blank" rel="noopener">金融（士業系）ジャンルに特化したショート動画の運用代行が稼ぎやすいという手法の紹介。</a></div>
   <div class="case-method">📌 金融ジャンル特化のショート動画運用代行</div>
   
   <div class="case-footer">
@@ -199,15 +200,15 @@
     <div class="engagement">
       ❤️ 19
       👁 3,776
-      <a href="https://x.com/fiction_log/status/2046438095059636730" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2046438095059636730" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2046438058971861036','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 年商1億</span>
   </div>
-  <div class="case-summary">美容・フィットネス系に特化したショート動画運用代行で年商1億を目指す手法の紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2046438058971861036" target="_blank" rel="noopener">美容・フィットネス系に特化したショート動画運用代行で年商1億を目指す手法の紹介。</a></div>
   <div class="case-method">📌 美容・フィットネス系特化のショート動画運用代行</div>
   
   <div class="case-footer">
@@ -215,15 +216,15 @@
     <div class="engagement">
       ❤️ 124
       👁 40,964
-      <a href="https://x.com/fiction_log/status/2046438058971861036" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2046438058971861036" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2052340032326017354','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 年8000万</span>
   </div>
-  <div class="case-summary">「AIで年8000万稼ぐ方法」が説明された動画を紹介し、同様の事例をまとめていると報告。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2052340032326017354" target="_blank" rel="noopener">「AIで年8000万稼ぐ方法」が説明された動画を紹介し、同様の事例をまとめていると報告。</a></div>
   <div class="case-method">📌 AIを活用した動画コンテンツによる収益化</div>
   
   <div class="case-footer">
@@ -231,15 +232,15 @@
     <div class="engagement">
       ❤️ 162
       👁 27,787
-      <a href="https://x.com/fiction_log/status/2052340032326017354" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2052340032326017354" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2052330745176404424','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">ホワイトカラー業務効率化の一例として、AIを活用した動画編集での収益化パターンを紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2052330745176404424" target="_blank" rel="noopener">ホワイトカラー業務効率化の一例として、AIを活用した動画編集での収益化パターンを紹介。</a></div>
   <div class="case-method">📌 AIを活用した動画編集</div>
   
   <div class="case-footer">
@@ -247,15 +248,15 @@
     <div class="engagement">
       ❤️ 90
       👁 36,227
-      <a href="https://x.com/fiction_log/status/2052330745176404424" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2052330745176404424" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2053395184101036113','_blank')">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 年収12億円</span>
   </div>
-  <div class="case-summary">8歳の子どもがYouTubeのおもちゃ開封動画で年収12億円を達成し、物販や番組化で事業を拡大した事例。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2053395184101036113" target="_blank" rel="noopener">8歳の子どもがYouTubeのおもちゃ開封動画で年収12億円を達成し、物販や番組化で事業を拡大した事例。</a></div>
   <div class="case-method">📌 YouTubeのおもちゃ開封動画投稿</div>
   
   <div class="case-footer">
@@ -263,15 +264,15 @@
     <div class="engagement">
       ❤️ 51
       👁 18,307
-      <a href="https://x.com/fiction_log/status/2053395184101036113" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2053395184101036113" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2048362804814729325','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 年8000万</span>
   </div>
-  <div class="case-summary">添付された動画コンテンツで紹介されている「AIで年8000万稼ぐ方法」について言及。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2048362804814729325" target="_blank" rel="noopener">添付された動画コンテンツで紹介されている「AIで年8000万稼ぐ方法」について言及。</a></div>
   <div class="case-method">📌 動画コンテンツでのノウハウ紹介</div>
   <div class="case-tools"><span class="tool-tag">AI</span></div>
   <div class="case-footer">
@@ -279,15 +280,15 @@
     <div class="engagement">
       ❤️ 219
       👁 38,638
-      <a href="https://x.com/fiction_log/status/2048362804814729325" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2048362804814729325" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2053037083409973375','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 950万</span>
   </div>
-  <div class="case-summary">タトゥーシールのデモ動画がバズり、1週間で950万円の売上を達成した事例。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2053037083409973375" target="_blank" rel="noopener">タトゥーシールのデモ動画がバズり、1週間で950万円の売上を達成した事例。</a></div>
   <div class="case-method">📌 商品デモ動画のSNS投稿によるEC販売促進</div>
   
   <div class="case-footer">
@@ -295,15 +296,15 @@
     <div class="engagement">
       ❤️ 45
       👁 14,362
-      <a href="https://x.com/fiction_log/status/2053037083409973375" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2053037083409973375" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2053003252309115019','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
   </div>
-  <div class="case-summary">TikTokの広告収益について言及。月500万再生でXと同等の収益が得られると分析。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2053003252309115019" target="_blank" rel="noopener">TikTokの広告収益について言及。月500万再生でXと同等の収益が得られると分析。</a></div>
   <div class="case-method">📌 TikTokの1分以上の動画による広告収益</div>
   <div class="case-tools"><span class="tool-tag">TikTok</span></div>
   <div class="case-footer">
@@ -311,15 +312,15 @@
     <div class="engagement">
       ❤️ 45
       👁 5,633
-      <a href="https://x.com/fiction_log/status/2053003252309115019" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2053003252309115019" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2050533011993858477','_blank')">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
   </div>
-  <div class="case-summary">YouTubeで「◯◯で◯万稼げる」というテーマの動画構成が良いという分析。事例紹介が多く真似しやすい。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2050533011993858477" target="_blank" rel="noopener">YouTubeで「◯◯で◯万稼げる」というテーマの動画構成が良いという分析。事例紹介が多く真似しやすい。</a></div>
   <div class="case-method">📌 YouTubeで稼げる系テーマの動画配信</div>
   
   <div class="case-footer">
@@ -327,15 +328,15 @@
     <div class="engagement">
       ❤️ 18
       👁 4,786
-      <a href="https://x.com/fiction_log/status/2050533011993858477" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2050533011993858477" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2050532930422972572','_blank')">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
   </div>
-  <div class="case-summary">YouTube動画の冒頭で興味付けしLINE誘導する構成の紹介。稼ぐ手法を教えるコンテンツとして有効。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2050532930422972572" target="_blank" rel="noopener">YouTube動画の冒頭で興味付けしLINE誘導する構成の紹介。稼ぐ手法を教えるコンテンツとして有効。</a></div>
   <div class="case-method">📌 YouTube動画からLINEへ誘導しコンテンツ販売</div>
   
   <div class="case-footer">
@@ -343,15 +344,15 @@
     <div class="engagement">
       ❤️ 18
       👁 4,023
-      <a href="https://x.com/fiction_log/status/2050532930422972572" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2050532930422972572" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2050532809983615304','_blank')">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
   </div>
-  <div class="case-summary">LINE友達5万人のYouTubeチャンネルの構成が良いという投稿。稼ぐ系の情報発信事例。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2050532809983615304" target="_blank" rel="noopener">LINE友達5万人のYouTubeチャンネルの構成が良いという投稿。稼ぐ系の情報発信事例。</a></div>
   <div class="case-method">📌 YouTubeでの情報発信によるリストマーケティング</div>
   
   <div class="case-footer">
@@ -359,15 +360,15 @@
     <div class="engagement">
       ❤️ 200
       👁 41,508
-      <a href="https://x.com/fiction_log/status/2050532809983615304" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2050532809983615304" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="その他" data-jp="true">
+</div><div class="case-card" data-category="その他" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2048025053917561155','_blank')">
   <div class="case-header">
     <span class="case-category">💡 その他</span>
     <span class="case-income">💰 月30万</span>
   </div>
-  <div class="case-summary">運用開始3ヶ月で広告収益だけで月30万円を稼いだ事例。動画関連かは不明だが文脈的に可能性あり。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2048025053917561155" target="_blank" rel="noopener">運用開始3ヶ月で広告収益だけで月30万円を稼いだ事例。動画関連かは不明だが文脈的に可能性あり。</a></div>
   <div class="case-method">📌 広告収益</div>
   
   <div class="case-footer">
@@ -375,15 +376,15 @@
     <div class="engagement">
       ❤️ 90
       👁 28,965
-      <a href="https://x.com/fiction_log/status/2048025053917561155" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2048025053917561155" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2047976686927695929','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 121万着</span>
   </div>
-  <div class="case-summary">TikTokでAI画像を大量投稿し、アフィリエイトで服を121万着売ったアカウントの事例紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2047976686927695929" target="_blank" rel="noopener">TikTokでAI画像を大量投稿し、アフィリエイトで服を121万着売ったアカウントの事例紹介。</a></div>
   <div class="case-method">📌 TikTokにAI画像を大量投稿しアフィリエイト誘導</div>
   
   <div class="case-footer">
@@ -391,15 +392,15 @@
     <div class="engagement">
       ❤️ 15
       👁 4,871
-      <a href="https://x.com/fiction_log/status/2047976686927695929" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2047976686927695929" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2047976593155613108','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 121万着</span>
   </div>
-  <div class="case-summary">AI画像生成を活用しTikTokで11万フォロワーを獲得し、服を121万着売ったアカウントの戦略解説。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2047976593155613108" target="_blank" rel="noopener">AI画像生成を活用しTikTokで11万フォロワーを獲得し、服を121万着売ったアカウントの戦略解説。</a></div>
   <div class="case-method">📌 AI画像生成によるTikTokアフィリエイト</div>
   
   <div class="case-footer">
@@ -407,15 +408,15 @@
     <div class="engagement">
       ❤️ 512
       👁 64,491
-      <a href="https://x.com/fiction_log/status/2047976593155613108" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2047976593155613108" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ライブ配信" data-jp="true">
+</div><div class="case-card" data-category="ライブ配信" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051301618713608417','_blank')">
   <div class="case-header">
     <span class="case-category">🔴 ライブ配信</span>
     
   </div>
-  <div class="case-summary">AIインフルエンサーによるライブ配信の収益化の可能性を示唆。将来的には完全自動化も可能になると言及。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051301618713608417" target="_blank" rel="noopener">AIインフルエンサーによるライブ配信の収益化の可能性を示唆。将来的には完全自動化も可能になると言及。</a></div>
   <div class="case-method">📌 AIインフルエンサーによるライブ配信</div>
   
   <div class="case-footer">
@@ -423,15 +424,15 @@
     <div class="engagement">
       ❤️ 212
       👁 34,717
-      <a href="https://x.com/fiction_log/status/2051301618713608417" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051301618713608417" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051272229527134678','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
   </div>
-  <div class="case-summary">AIツールを使い15秒リールを1日3本、月90本生産する手法。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051272229527134678" target="_blank" rel="noopener">AIツールを使い15秒リールを1日3本、月90本生産する手法。</a></div>
   <div class="case-method">📌 AIツールによるリール動画の量産</div>
   <div class="case-tools"><span class="tool-tag">Kling</span><span class="tool-tag">Runway</span><span class="tool-tag">ElevenLabs</span><span class="tool-tag">Hedra</span></div>
   <div class="case-footer">
@@ -439,15 +440,15 @@
     <div class="engagement">
       ❤️ 34
       👁 16,832
-      <a href="https://x.com/fiction_log/status/2051272229527134678" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051272229527134678" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051271849385079083','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
   </div>
-  <div class="case-summary">AIツールでビジュアルと動画を生成し、Instagramからファンサイトへ誘導して収益化する手法。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051271849385079083" target="_blank" rel="noopener">AIツールでビジュアルと動画を生成し、Instagramからファンサイトへ誘導して収益化する手法。</a></div>
   <div class="case-method">📌 AIコンテンツをInstagramで公開しファンサイトへ誘導</div>
   <div class="case-tools"><span class="tool-tag">Gemini</span><span class="tool-tag">Google Sheets</span><span class="tool-tag">Kling</span><span class="tool-tag">Runway</span><span class="tool-tag">ElevenLabs</span><span class="tool-tag">Hedra</span></div>
   <div class="case-footer">
@@ -455,15 +456,15 @@
     <div class="engagement">
       ❤️ 125
       👁 55,653
-      <a href="https://x.com/fiction_log/status/2051271849385079083" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051271849385079083" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051271756946792544','_blank')">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 月300万</span>
   </div>
-  <div class="case-summary">InstagramでAIの架空女性アカウントを運営し、サブスクで月300万円を稼いでいる事例の紹介。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051271756946792544" target="_blank" rel="noopener">InstagramでAIの架空女性アカウントを運営し、サブスクで月300万円を稼いでいる事例の紹介。</a></div>
   <div class="case-method">📌 AI美女動画でInstagramサブスク</div>
   
   <div class="case-footer">
@@ -471,15 +472,15 @@
     <div class="engagement">
       ❤️ 1,061
       👁 1,679,032
-      <a href="https://x.com/fiction_log/status/2051271756946792544" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051271756946792544" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2051196865786556498','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 1年で4.5億</span>
   </div>
-  <div class="case-summary">音楽経験ゼロの人がAIで楽曲を量産し、音楽配信サービスからの再生数収益で1年で4.5億円稼いだ事例。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2051196865786556498" target="_blank" rel="noopener">音楽経験ゼロの人がAIで楽曲を量産し、音楽配信サービスからの再生数収益で1年で4.5億円稼いだ事例。</a></div>
   <div class="case-method">📌 AIで楽曲を量産し配信サービスで収益化</div>
   <div class="case-tools"><span class="tool-tag">Suno</span><span class="tool-tag">DistroKid</span></div>
   <div class="case-footer">
@@ -487,15 +488,15 @@
     <div class="engagement">
       ❤️ 902
       👁 82,324
-      <a href="https://x.com/fiction_log/status/2051196865786556498" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2051196865786556498" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2048722589091316223','_blank')">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
   </div>
-  <div class="case-summary">ゲーム実況YouTubeチャンネルが1年半で登録者10万人を達成した事例を紹介し、その成功要因を分析している。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2048722589091316223" target="_blank" rel="noopener">ゲーム実況YouTubeチャンネルが1年半で登録者10万人を達成した事例を紹介し、その成功要因を分析している。</a></div>
   <div class="case-method">📌 YouTubeゲーム実況</div>
   
   <div class="case-footer">
@@ -503,15 +504,15 @@
     <div class="engagement">
       ❤️ 274
       👁 56,838
-      <a href="https://x.com/fiction_log/status/2048722589091316223" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2048722589091316223" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="その他" data-jp="true">
+</div><div class="case-card" data-category="その他" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2048712668757012708','_blank')">
   <div class="case-header">
     <span class="case-category">💡 その他</span>
     
   </div>
-  <div class="case-summary">ビデオポッドキャストの長尺動画からバズる瞬間を切り抜き、拡散させるテクニックについて言及している。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2048712668757012708" target="_blank" rel="noopener">ビデオポッドキャストの長尺動画からバズる瞬間を切り抜き、拡散させるテクニックについて言及している。</a></div>
   <div class="case-method">📌 長尺動画の切り抜きによる拡散</div>
   
   <div class="case-footer">
@@ -519,15 +520,15 @@
     <div class="engagement">
       ❤️ 14
       👁 2,055
-      <a href="https://x.com/fiction_log/status/2048712668757012708" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2048712668757012708" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2048712633017077807','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">ビデオポッドキャスト撮影代行ビジネスのチャンスについて、その強みとともに解説している。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2048712633017077807" target="_blank" rel="noopener">ビデオポッドキャスト撮影代行ビジネスのチャンスについて、その強みとともに解説している。</a></div>
   <div class="case-method">📌 ビデオポッドキャスト撮影代行</div>
   
   <div class="case-footer">
@@ -535,15 +536,15 @@
     <div class="engagement">
       ❤️ 19
       👁 2,558
-      <a href="https://x.com/fiction_log/status/2048712633017077807" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2048712633017077807" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2048712549299015875','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">ビデオポッドキャストと、その撮影代行ビジネスにチャンスがあると提唱している。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2048712549299015875" target="_blank" rel="noopener">ビデオポッドキャストと、その撮影代行ビジネスにチャンスがあると提唱している。</a></div>
   <div class="case-method">📌 ビデオポッドキャスト撮影代行</div>
   
   <div class="case-footer">
@@ -551,15 +552,15 @@
     <div class="engagement">
       ❤️ 53
       👁 19,255
-      <a href="https://x.com/fiction_log/status/2048712549299015875" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2048712549299015875" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2050212672495562839','_blank')">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
   </div>
-  <div class="case-summary">AIで作成された映像を見て、「AIクリエイター」という職業の可能性に言及している。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2050212672495562839" target="_blank" rel="noopener">AIで作成された映像を見て、「AIクリエイター」という職業の可能性に言及している。</a></div>
   <div class="case-method">📌 AI動画制作</div>
   
   <div class="case-footer">
@@ -567,15 +568,15 @@
     <div class="engagement">
       ❤️ 5,653
       👁 3,769,684
-      <a href="https://x.com/fiction_log/status/2050212672495562839" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2050212672495562839" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" onclick="window.open('https://x.com/fiction_log/status/2045035665159811532','_blank')">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
   </div>
-  <div class="case-summary">オタク動画制作者は市場価値が高く、スキルをAIで拡張しながら稼ぎ続けることができるという指摘。</div>
+  <div class="case-summary"><a href="https://x.com/fiction_log/status/2045035665159811532" target="_blank" rel="noopener">オタク動画制作者は市場価値が高く、スキルをAIで拡張しながら稼ぎ続けることができるという指摘。</a></div>
   <div class="case-method">📌 専門スキルを活かした動画制作</div>
   <div class="case-tools"><span class="tool-tag">AI</span></div>
   <div class="case-footer">
@@ -583,7 +584,7 @@
     <div class="engagement">
       ❤️ 77
       👁 10,708
-      <a href="https://x.com/fiction_log/status/2045035665159811532" target="_blank" rel="noopener">元ポスト →</a>
+      <a href="https://x.com/fiction_log/status/2045035665159811532" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
 </div>
