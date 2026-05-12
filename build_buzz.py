@@ -195,7 +195,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .date {{ color: var(--muted); }}
 .ago {{ color: #475569; }}
 .buzz-badge {{ background: #3d1a1a; color: var(--red); font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; }}
-.tweet-stats {{ margin-left: auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }}
+.tweet-stats {{ display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }}
 .likes {{ color: var(--red); font-weight: 600; }}
 .eng {{ color: var(--green); }}
 .mult {{ color: var(--blue); }}
