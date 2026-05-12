@@ -209,7 +209,8 @@ def _render_case_card(case: dict) -> str:
     flag = "🇯🇵" if is_jp else "🌍"
     url = case.get("url") or "#"
     author = case.get("author_display") or case.get("author") or ""
-    pub_date = (case.get("published_at") or "")[:10]
+    pub_date_raw = (case.get("published_at") or "")[:10]
+    pub_date = pub_date_raw.replace("-", "/") if pub_date_raw else ""
     likes = case.get("engagement", {}).get("likes", 0)
     views = case.get("engagement", {}).get("views", 0)
 
