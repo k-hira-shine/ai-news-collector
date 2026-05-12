@@ -2,6 +2,16 @@ name: AI Money Cases Collector
 
 on:
   workflow_dispatch:          # 手動実行のみ（まずはテスト用）
+    inputs:
+      mode:
+        description: '実行モード'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full           # 収集 → 分析 → ページ生成
+          - analyze-only   # 収集済みデータの分析のみ（再分析用）
+          - page-only      # ページ生成のみ
   # 本運用時は以下をコメントアウト解除して既存ワークフローと同じスケジュールで動かす
   # schedule:
   #   - cron: '0 17 * * *'   # JST 02:00
@@ -35,7 +45,15 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python run_money.py
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          if [ "$MODE" = "analyze-only" ]; then
+            python run_money.py --analyze-only
+          elif [ "$MODE" = "page-only" ]; then
+            python run_money.py --page-only
+          else
+            python run_money.py
+          fi
 
       - name: Commit & push data
         run: |
