@@ -12,10 +12,8 @@ on:
           - full           # 収集 → 分析 → ページ生成
           - analyze-only   # 収集済みデータの分析のみ（再分析用）
           - page-only      # ページ生成のみ
-  # 本運用時は以下をコメントアウト解除して既存ワークフローと同じスケジュールで動かす
-  # schedule:
-  #   - cron: '0 17 * * *'   # JST 02:00
-  #   - cron: '0 11 * * *'   # JST 20:00
+  schedule:
+    - cron: '0 11 * * *'     # JST 20:00（1日1回）
 
 concurrency:
   group: ai-money-collector
