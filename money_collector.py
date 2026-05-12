@@ -40,7 +40,9 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
     search_queries = money_cfg.get("search_queries", [])
     max_items_per_query = money_cfg.get("max_items_per_query", 100)
 
+    import threading
     meta = {"apify_runs": 0, "apify_cost_usd": 0.0, "total_fetched": 0}
+    _meta_lock = threading.Lock()
     all_items: list[dict] = []
 
     def _run_apify(search_terms: list[str], max_items_each: int, label: str) -> list[dict]:
@@ -54,8 +56,9 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
         }
         logger.info("Money collection [%s]: %d queries × up to %d posts", label, len(search_terms), max_items_each)
         run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
-        meta["apify_runs"] += 1
-        meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
+        with _meta_lock:
+            meta["apify_runs"] += 1
+            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
         run_status = (run or {}).get("status", "")
         if run_status != "SUCCEEDED":
             logger.error("Money collection [%s] run status=%s", label, run_status)
@@ -83,25 +86,35 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
             account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
             all_items += _run_apify(account_queries, max_items, "accounts")
 
-        # ② 検索クエリ収集（広域）— 日英を分けて別々に実行
+        # ② 検索クエリ収集（広域）— 日英を分けて並列実行
         if search_queries:
+            from concurrent.futures import ThreadPoolExecutor, as_completed
+
             ja_queries = [q for q in search_queries if "lang:en" not in q]
             en_queries = [q for q in search_queries if "lang:en" in q]
 
-            # 日本語クエリ（まとめて1回）
-            if ja_queries:
-                # 日本語は各クエリ単位でバッチ処理（1クエリ = max_items_per_query件）
-                batch_size = 3
-                for i in range(0, len(ja_queries), batch_size):
-                    batch = ja_queries[i:i + batch_size]
-                    all_items += _run_apify(batch, max_items_per_query, f"ja_search_{i//batch_size+1}")
+            # バッチリストを作成
+            batches: list[tuple[list[str], int, str]] = []
 
-            # 英語クエリ（3本ずつバッチ化して確実に取得）
-            if en_queries:
-                en_batch_size = 3
-                for i in range(0, len(en_queries), en_batch_size):
-                    batch = en_queries[i:i + en_batch_size]
-                    all_items += _run_apify(batch, max_items_per_query, f"en_search_{i//en_batch_size+1}")
+            # 日本語クエリ（3本ずつバッチ）
+            batch_size = 3
+            for i in range(0, len(ja_queries), batch_size):
+                batches.append((ja_queries[i:i + batch_size], max_items_per_query, f"ja_{i//batch_size+1}"))
+
+            # 英語クエリ（3本ずつバッチ）
+            en_batch_size = 3
+            for i in range(0, len(en_queries), en_batch_size):
+                batches.append((en_queries[i:i + en_batch_size], max_items_per_query, f"en_{i//en_batch_size+1}"))
+
+            # 最大4並列で実行（Apify側への過負荷を避ける）
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                futures = {pool.submit(_run_apify, q, n, lbl): lbl for q, n, lbl in batches}
+                for fut in as_completed(futures):
+                    lbl = futures[fut]
+                    try:
+                        all_items += fut.result()
+                    except Exception as e:
+                        logger.error("Batch %s failed: %s", lbl, e)
 
         meta["total_fetched"] = len(all_items)
         logger.info("Money collection total: %d posts (cost=$%.4f)", len(all_items), meta["apify_cost_usd"])
