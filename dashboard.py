@@ -128,6 +128,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .article a:hover {{ color: var(--accent); text-decoration: underline; }}
 .article .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }}
 .article .summary {{ font-size: 0.95rem; margin-top: 0.3rem; }}
+.article-importance {{ font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; padding: 0.4rem 0.6rem; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--accent); }}
 .cat-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }}
 .cat-card {{ background: var(--surface2); border-radius: 8px; padding: 1rem; }}
 .cat-card h3 {{ font-size: 1rem; margin-bottom: 0.5rem; }}
@@ -162,7 +163,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <div class="updated">Last updated: {now_str}</div>
   <div class="nav-links">
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
-    <a class="nav-link" href="cost.html">💰 コスト</a>
   </div>
 </header>
 {body}
@@ -218,66 +218,30 @@ def _render_latest(a: dict) -> str:
         f"{since_html}{evo_html}</div>"
     )
 
-    # X Trends (TOP 記事の前に配置)
-    x_trends = a.get("x_trends", [])
-    if x_trends:
-        trends_html: list[str] = []
-        buzz_labels = {"high": "🔥 HIGH", "medium": "🔥 MEDIUM", "low": "LOW"}
-        buzz_css = {"high": "buzz-high", "medium": "buzz-medium", "low": "buzz-low"}
-        sentiment_icons = {"positive": "😊", "negative": "😟", "neutral": "😐", "mixed": "🤔"}
-
-        for tr in x_trends:
-            topic = escape(tr.get("topic", ""))
-            desc = escape(tr.get("description", ""))
-            bl = tr.get("buzz_level", "")
-            sent = sentiment_icons.get(tr.get("sentiment", ""), "")
-            buzz_tag = f'<span class="buzz {buzz_css.get(bl, "")}">{buzz_labels.get(bl, bl)}</span>'
-
-            tweets_html = ""
-            for tw in tr.get("representative_tweets", [])[:2]:
-                tw_author = escape(tw.get("author", ""))
-                tw_text = escape(tw.get("text", "")[:200])
-                tw_url = escape(tw.get("url", ""))
-                tw_likes = tw.get("likes", 0)
-                tw_rts = tw.get("retweets", 0)
-                author_link = f'<a href="{tw_url}" target="_blank" rel="noopener">@{tw_author}</a>' if tw_url else f"@{tw_author}"
-                eng_parts = []
-                if tw_likes:
-                    eng_parts.append(f"❤️ {tw_likes:,}")
-                if tw_rts:
-                    eng_parts.append(f"🔁 {tw_rts:,}")
-                eng_html = f'<div class="eng">{" · ".join(eng_parts)}</div>' if eng_parts else ""
-                tweets_html += f'<div class="tweet"><span class="author">{author_link}</span> {tw_text}{eng_html}</div>'
-
-            trends_html.append(
-                f'<div class="x-trend">'
-                f'<span class="topic">{sent} {topic}</span>{buzz_tag}'
-                f'<div class="desc">{desc}</div>'
-                f'{tweets_html}</div>'
-            )
-
-        parts.append(f'<div class="card"><h2>🐦 X/Twitter で話題</h2>{"".join(trends_html)}</div>')
-
-    # Top articles
+    # Top articles（全件・詳細表示）
+    all_articles = a.get("top_articles", [])
     articles_html: list[str] = []
-    for art in a.get("top_articles", [])[:10]:
+    for art in all_articles:
         rank = art.get("rank", 0)
         cls = {1: " gold", 2: " silver", 3: " bronze"}.get(rank, "")
         title = escape(art.get("title", ""))
         url = escape(art.get("url", ""))
         summary = escape(art.get("summary", ""))
+        importance = escape(art.get("importance_reason", ""))
         cat = escape(art.get("category", ""))
         src = escape(art.get("source_label", ""))
 
         link = f'<a href="{url}" target="_blank" rel="noopener">{title}</a>' if url else title
+        importance_html = f'<div class="article-importance">📌 {importance}</div>' if importance else ""
         articles_html.append(
             f'<div class="article">'
             f'<span class="rank{cls}">{rank}</span>{link}'
             f'<div class="meta">{cat} · {src}</div>'
-            f'<div class="summary">{summary}</div></div>'
+            f'<div class="summary">{summary}</div>'
+            f'{importance_html}</div>'
         )
 
-    parts.append(f'<div class="card"><h2>⭐ TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
+    parts.append(f'<div class="card"><h2>⭐ 注目記事 TOP {len(articles_html)}</h2>{"".join(articles_html)}</div>')
 
     # Category summaries
     cats_html: list[str] = []
@@ -431,6 +395,12 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .idea-row {{ margin-top: 0.4rem; font-size: 0.92rem; }}
 .idea-row .label {{ color: var(--muted); font-size: 0.82rem; margin-right: 0.3rem; }}
 .draft-box {{ background: #0f172a; border: 1px solid var(--surface2); border-radius: 6px; padding: 0.8rem 1rem; margin-top: 0.5rem; font-size: 0.92rem; white-space: pre-wrap; word-break: break-word; }}
+.source-links {{ margin-top: 0.7rem; padding-top: 0.6rem; border-top: 1px dashed var(--surface2); }}
+.source-links .source-label {{ display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 0.3rem; }}
+.source-link {{ display: flex; align-items: baseline; gap: 0.4rem; padding: 0.3rem 0; color: var(--blue); text-decoration: none; font-size: 0.83rem; line-height: 1.4; }}
+.source-link:hover {{ color: var(--accent); }}
+.source-icon {{ flex-shrink: 0; }}
+.source-from {{ color: var(--muted); font-size: 0.78rem; margin-left: auto; white-space: nowrap; }}
 .forecast-grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 0.5rem; }}
 @media (max-width: 600px) {{ .forecast-grid {{ grid-template-columns: 1fr; }} }}
 .forecast-block h3 {{ font-size: 0.95rem; color: var(--muted); margin-bottom: 0.5rem; }}
@@ -512,10 +482,32 @@ def _render_strategy_selector(analyses: list[dict], active_date: str, active_slo
     return selector + "\n" + "\n".join(sections_html)
 
 
+def _source_links_html(top_articles: list[dict], count: int = 3) -> str:
+    """top_articles の上位N件を根拠リンクとして返す"""
+    if not top_articles:
+        return ""
+    links = []
+    for art in top_articles[:count]:
+        url = art.get("url", "")
+        title = art.get("title", "")
+        src = art.get("source_label", "")
+        if url:
+            short_title = title[:40] + "…" if len(title) > 40 else title
+            links.append(
+                f'<a href="{escape(url)}" target="_blank" rel="noopener" class="source-link">'
+                f'<span class="source-icon">🔗</span>{escape(short_title)}'
+                f'<span class="source-from">{escape(src)}</span></a>'
+            )
+    if not links:
+        return ""
+    return f'<div class="source-links"><span class="source-label">根拠ポスト</span>{"".join(links)}</div>'
+
+
 def _render_strategy_body(strategy: dict, analysis: dict) -> str:
     if not strategy:
         return '<p class="empty">施策データがありません。次回の収集後に表示されます。</p>'
 
+    top_articles = analysis.get("top_articles", [])
     parts: list[str] = []
 
     # ── YouTube企画案 ──────────────────────────────────────────────
@@ -524,9 +516,12 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
         items_html: list[str] = []
         urgency_labels = {"high": "🔥 今週中", "medium": "📅 今月中", "low": "🗂️ 後日"}
         urgency_css = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}
-        for idea in youtube_ideas:
+        for i, idea in enumerate(youtube_ideas):
             urgency = idea.get("urgency", "medium")
             badge = f'<span class="badge {urgency_css.get(urgency, "badge-medium")}">{urgency_labels.get(urgency, urgency)}</span>'
+            # 企画ごとにtop_articlesをローテーション（3件ずつずらして根拠を分散）
+            offset = i * 3
+            related = top_articles[offset:offset + 3] or top_articles[:3]
             items_html.append(
                 f'<div class="idea-item">'
                 f'<div class="idea-title">{escape(idea.get("title", ""))}</div>'
@@ -534,6 +529,7 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
                 f'<div class="idea-row"><span class="label">フック</span>{escape(idea.get("hook", ""))}</div>'
                 f'<div class="idea-row"><span class="label">なぜ今？</span>{escape(idea.get("reason", ""))}</div>'
                 f'<div class="idea-row"><span class="label">差別化</span>{escape(idea.get("angle", ""))}</div>'
+                f'{_source_links_html(related)}'
                 f'</div>'
             )
         parts.append(f'<div class="card"><h2>🎬 YouTube企画案</h2>{"".join(items_html)}</div>')
@@ -544,17 +540,20 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
         items_html = []
         reach_labels = {"high": "📈 高リーチ期待", "medium": "👍 中リーチ", "low": "🔹 低リーチ"}
         reach_css = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}
-        for idea in x_ideas:
+        for i, idea in enumerate(x_ideas):
             reach = idea.get("expected_reach", "medium")
             fmt = escape(idea.get("format", ""))
             badge_r = f'<span class="badge {reach_css.get(reach, "badge-medium")}">{reach_labels.get(reach, reach)}</span>'
             badge_f = f'<span class="badge badge-low">{fmt}</span>'
             draft = escape(idea.get("draft", ""))
+            offset = i * 3
+            related = top_articles[offset:offset + 3] or top_articles[:3]
             items_html.append(
                 f'<div class="idea-item">'
                 f'<div class="idea-title">{escape(idea.get("theme", ""))}</div>'
                 f'<div class="idea-meta">{badge_r}{badge_f}</div>'
                 f'<div class="draft-box">{draft}</div>'
+                f'{_source_links_html(related)}'
                 f'</div>'
             )
         parts.append(f'<div class="card"><h2>🐦 X投稿ネタ</h2>{"".join(items_html)}</div>')
@@ -566,16 +565,19 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
         tf_labels = {"今すぐ": "badge-now", "今週中": "badge-week", "今月中": "badge-month"}
         impact_labels = {"high": "💥 高インパクト", "medium": "✅ 中インパクト", "low": "📌 低インパクト"}
         impact_css = {"high": "badge-high", "medium": "badge-medium", "low": "badge-low"}
-        for item in biz_items:
+        for i, item in enumerate(biz_items):
             tf = item.get("timeframe", "今週中")
             impact = item.get("impact", "medium")
             badge_tf = f'<span class="badge {tf_labels.get(tf, "badge-week")}">{escape(tf)}</span>'
             badge_imp = f'<span class="badge {impact_css.get(impact, "badge-medium")}">{impact_labels.get(impact, impact)}</span>'
+            offset = i * 3
+            related = top_articles[offset:offset + 3] or top_articles[:3]
             items_html.append(
                 f'<div class="idea-item">'
                 f'<div class="idea-title">{escape(item.get("insight", ""))}</div>'
                 f'<div class="idea-meta">{badge_tf}{badge_imp}</div>'
                 f'<div class="idea-row"><span class="label">アクション</span>{escape(item.get("action", ""))}</div>'
+                f'{_source_links_html(related)}'
                 f'</div>'
             )
         parts.append(f'<div class="card"><h2>💼 ビジネス活用</h2>{"".join(items_html)}</div>')

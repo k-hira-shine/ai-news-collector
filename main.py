@@ -169,15 +169,6 @@ def main() -> None:
     except Exception as e:
         logger.error("Strategy page generation failed: %s", e)
 
-    # ── Step 3.6: Cost Page ────────────────────────────────────────────
-    try:
-        from dashboard import generate_cost_page
-
-        cost_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "cost.html")
-        generate_cost_page(cost_output)
-        logger.info("Cost page generated → %s", cost_output)
-    except Exception as e:
-        logger.error("Cost page generation failed: %s", e)
 
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)
