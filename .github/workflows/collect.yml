@@ -2,6 +2,16 @@ name: AI News Collector
 
 on:
   workflow_dispatch:          # 手動実行
+    inputs:
+      mode:
+        description: '実行モード'
+        required: false
+        default: 'full'
+        type: choice
+        options:
+          - full            # 収集 → 分析 → ダッシュボード生成
+          - analyze-only    # 収集スキップ、既存データで分析＋ページ生成
+          - dashboard-only  # ページ生成のみ（高速）
   schedule:
     - cron: '0 17 * * *'     # JST 02:00 (UTC 17:00 前日)
     - cron: '0 11 * * *'     # JST 20:00 (UTC 11:00)
@@ -43,7 +53,23 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python main.py
+        run: |
+          MODE="${{ github.event.inputs.mode || 'full' }}"
+          if [ "$MODE" = "analyze-only" ]; then
+            python main.py --analyze-only
+          elif [ "$MODE" = "dashboard-only" ]; then
+            python main.py --analyze-only --dry-run 2>/dev/null || true
+            python -c "
+import os, sys
+sys.path.insert(0, '.')
+from dashboard import generate_dashboard, generate_strategy_page
+generate_dashboard('docs/index.html')
+generate_strategy_page('docs/strategy.html')
+print('Dashboard regenerated')
+"
+          else
+            python main.py
+          fi
 
       - name: Commit & push data
         run: |
