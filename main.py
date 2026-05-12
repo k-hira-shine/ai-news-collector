@@ -74,6 +74,23 @@ def main() -> None:
 
     analyzer = NewsAnalyzer(config)
     analysis = analyzer.analyze(items)
+
+    # コスト情報を analysis に付与して再保存（analysis_save は analyzer 内で先に保存済み）
+    analysis["cost"] = {
+        "apify_usd": x_meta.get("apify_cost_usd", 0),
+        "apify_runs": x_meta.get("apify_runs", 0),
+        "apify_cycle_total_usd": x_meta.get("apify_cycle_total_usd", 0),
+        "apify_cycle_end": x_meta.get("apify_cycle_end", ""),
+        "apify_monthly_budget_usd": config.get("x_twitter", {}).get("apify_monthly_budget_usd", 29.0),
+        "gemini_usd": 0,  # 無料枠内のため0
+        "github_actions_usd": 0,  # パブリックリポジトリのため0
+    }
+    # コスト情報を含む形で上書き保存
+    try:
+        analyzer._try_save_analysis(analysis)
+    except Exception as e:
+        logger.warning("Cost re-save failed: %s", e)
+
     a_save = analysis.get("analysis_save") or {}
     stats["analysis_meta"] = {
         "top_articles_count": len(analysis.get("top_articles") or []),
@@ -151,6 +168,16 @@ def main() -> None:
         logger.info("Strategy page generated → %s", strategy_output)
     except Exception as e:
         logger.error("Strategy page generation failed: %s", e)
+
+    # ── Step 3.6: Cost Page ────────────────────────────────────────────
+    try:
+        from dashboard import generate_cost_page
+
+        cost_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "cost.html")
+        generate_cost_page(cost_output)
+        logger.info("Cost page generated → %s", cost_output)
+    except Exception as e:
+        logger.error("Cost page generation failed: %s", e)
 
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)

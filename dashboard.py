@@ -99,7 +99,8 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
-.nav-link {{ display: inline-block; margin-top: 0.8rem; padding: 0.4rem 1.2rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
+.nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
+.nav-link {{ display: inline-block; padding: 0.4rem 1.2rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
 .nav-link:hover {{ background: #475569; }}
 .card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
 .card h2 {{ font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
@@ -159,7 +160,10 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 <header>
   <h1>🤖 AI News Dashboard</h1>
   <div class="updated">Last updated: {now_str}</div>
-  <a class="nav-link" href="strategy.html">🎯 施策提案ページへ →</a>
+  <div class="nav-links">
+    <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+    <a class="nav-link" href="cost.html">💰 コスト</a>
+  </div>
 </header>
 {body}
 </div>
@@ -400,7 +404,8 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
-.nav-link {{ display: inline-block; margin-top: 0.8rem; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
+.nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
+.nav-link {{ display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
 .nav-link:hover {{ background: #475569; }}
 .selector-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.5rem; }}
 .selector-item {{ display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0.9rem; background: var(--surface2); border-radius: 8px; text-decoration: none; color: var(--text); font-size: 0.9rem; cursor: pointer; }}
@@ -443,7 +448,10 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 <header>
   <h1>🎯 AI 施策提案</h1>
   <div class="updated">Last updated: {now_str}</div>
-  <a class="nav-link" href="index.html">← ニュースダッシュボードへ</a>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">← ニュース</a>
+    <a class="nav-link" href="cost.html">💰 コスト</a>
+  </div>
 </header>
 {selector_html}
 <div id="strategy-content">
@@ -593,3 +601,186 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
         )
 
     return "\n".join(parts) if parts else '<p class="empty">施策データがありません。</p>'
+
+
+# ━━━━━━━━━━━━━━━━ コストページ (cost.html) ━━━━━━━━━━━━━━━━
+# 既存ページには手を加えない。この関数のみが docs/cost.html を生成する
+
+
+def generate_cost_page(output_path: str) -> None:
+    """data/analysis/ の全履歴 cost データから docs/cost.html を生成"""
+    analyses = _load_recent_analyses(days=60)
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    html = _render_cost_html(analyses)
+    tmp = output_path + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        f.write(html)
+    os.replace(tmp, output_path)
+    logger.info("Cost page written → %s", output_path)
+
+
+def _render_cost_html(analyses: list[dict]) -> str:
+    JST = timezone(timedelta(hours=9))
+    now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
+
+    # 実行ごとのコスト行を組み立て
+    rows_html = ""
+    total_apify = 0.0
+    monthly: dict[str, float] = {}
+
+    for a in reversed(analyses):  # 古い順に積算
+        cost = a.get("cost", {})
+        apify = cost.get("apify_usd", 0) or 0
+        total_apify += apify
+        date = a.get("_display_date", a.get("run_time", "")[:10])
+        raw_slot = a.get("_display_slot") or a.get("slot", "")
+        slot_label = {"morning": "朝便", "evening": "夕便"}.get(raw_slot, raw_slot)
+        month = date[:7] if date else "不明"
+        monthly[month] = monthly.get(month, 0) + apify
+        budget = cost.get("apify_monthly_budget_usd", 29.0) or 29.0
+        cycle_total = cost.get("apify_cycle_total_usd", 0) or 0
+        cycle_pct = round(cycle_total / budget * 100, 1) if budget else 0
+        bar_w = min(int(cycle_pct), 100)
+        bar_color = "#34d399" if cycle_pct < 60 else "#fbbf24" if cycle_pct < 80 else "#f87171"
+        rows_html += f"""
+<tr>
+  <td>{escape(date)}</td>
+  <td><span class="slot-tag">{escape(slot_label)}</span></td>
+  <td class="num">${apify:.4f}</td>
+  <td class="num">¥{apify * 150:.1f}</td>
+  <td>
+    <div class="bar-wrap"><div class="bar" style="width:{bar_w}%;background:{bar_color}"></div></div>
+    <span class="bar-label">{cycle_pct}% / ${cycle_total:.2f}</span>
+  </td>
+</tr>"""
+
+    # 月別サマリー
+    monthly_html = ""
+    for month in sorted(monthly.keys(), reverse=True):
+        amt = monthly[month]
+        monthly_html += f'<div class="month-row"><span class="month-label">{escape(month)}</span><span class="month-val">${amt:.4f} &nbsp;≈ ¥{amt*150:.0f}</span></div>'
+
+    # 最新エントリのサイクル情報
+    latest_cost = analyses[0].get("cost", {}) if analyses else {}
+    budget = latest_cost.get("apify_monthly_budget_usd", 29.0) or 29.0
+    cycle_total = latest_cost.get("apify_cycle_total_usd", 0) or 0
+    cycle_end_raw = latest_cost.get("apify_cycle_end", "")
+    cycle_end = cycle_end_raw[:10] if cycle_end_raw else "不明"
+    cycle_pct = round(cycle_total / budget * 100, 1) if budget else 0
+    remaining = budget - cycle_total
+    gauge_w = min(int(cycle_pct), 100)
+    gauge_color = "#34d399" if cycle_pct < 60 else "#fbbf24" if cycle_pct < 80 else "#f87171"
+    run_count = len(analyses)
+    avg_apify = total_apify / run_count if run_count else 0
+
+    no_data = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">まだデータがありません。初回実行後に表示されます。</td></tr>' if not analyses else ""
+
+    return f"""<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News — コスト管理</title>
+<style>
+:root {{
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #818cf8;
+  --green: #34d399; --red: #f87171; --yellow: #fbbf24; --blue: #60a5fa;
+}}
+* {{ margin: 0; padding: 0; box-sizing: border-box; }}
+body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
+.container {{ max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }}
+header {{ text-align: center; margin-bottom: 2rem; }}
+header h1 {{ font-size: 1.8rem; color: var(--accent); }}
+header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
+.nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
+.nav-link {{ display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
+.nav-link:hover {{ background: #475569; }}
+.card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
+.card h2 {{ font-size: 1.1rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
+.summary-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; }}
+.summary-item {{ background: var(--surface2); border-radius: 8px; padding: 1rem; text-align: center; }}
+.summary-item .val {{ font-size: 1.6rem; font-weight: 700; color: var(--green); }}
+.summary-item .lbl {{ font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }}
+.gauge-wrap {{ background: var(--surface2); border-radius: 999px; height: 14px; overflow: hidden; margin: 0.8rem 0 0.3rem; }}
+.gauge {{ height: 100%; border-radius: 999px; transition: width 0.3s; }}
+.gauge-info {{ display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--muted); }}
+table {{ width: 100%; border-collapse: collapse; font-size: 0.9rem; }}
+th {{ text-align: left; padding: 0.5rem 0.6rem; color: var(--muted); border-bottom: 1px solid var(--surface2); font-weight: 500; }}
+td {{ padding: 0.55rem 0.6rem; border-bottom: 1px solid var(--surface2); }}
+td.num {{ text-align: right; font-variant-numeric: tabular-nums; }}
+.slot-tag {{ font-size: 0.78rem; padding: 0.1rem 0.5rem; border-radius: 4px; background: var(--surface2); color: var(--muted); }}
+.bar-wrap {{ background: var(--surface2); border-radius: 999px; height: 6px; overflow: hidden; width: 100%; }}
+.bar {{ height: 100%; border-radius: 999px; }}
+.bar-label {{ font-size: 0.78rem; color: var(--muted); }}
+.month-row {{ display: flex; justify-content: space-between; padding: 0.5rem 0; border-bottom: 1px solid var(--surface2); }}
+.month-label {{ color: var(--text); font-weight: 500; }}
+.month-val {{ color: var(--green); font-variant-numeric: tabular-nums; }}
+.free-badge {{ display: inline-block; padding: 0.2rem 0.6rem; border-radius: 6px; background: #14532d; color: var(--green); font-size: 0.8rem; margin-left: 0.5rem; }}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>💰 コスト管理</h1>
+  <div class="updated">Last updated: {now_str}</div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">← ニュース</a>
+    <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+  </div>
+</header>
+
+<div class="card">
+  <h2>📊 今サイクルの使用状況（Apify）</h2>
+  <div class="summary-grid">
+    <div class="summary-item">
+      <div class="val">${cycle_total:.2f}</div>
+      <div class="lbl">今サイクル累計</div>
+    </div>
+    <div class="summary-item">
+      <div class="val">${remaining:.2f}</div>
+      <div class="lbl">残り予算</div>
+    </div>
+    <div class="summary-item">
+      <div class="val">${avg_apify:.4f}</div>
+      <div class="lbl">1回あたり平均</div>
+    </div>
+    <div class="summary-item">
+      <div class="val">{run_count}回</div>
+      <div class="lbl">総実行回数</div>
+    </div>
+  </div>
+  <div class="gauge-wrap" style="margin-top:1.2rem">
+    <div class="gauge" style="width:{gauge_w}%;background:{gauge_color}"></div>
+  </div>
+  <div class="gauge-info">
+    <span>使用率 {cycle_pct}%</span>
+    <span>上限 ${budget:.0f} / サイクル終了 {escape(cycle_end)}</span>
+  </div>
+</div>
+
+<div class="card">
+  <h2>🆓 その他のコスト</h2>
+  <div style="display:flex;flex-direction:column;gap:0.6rem">
+    <div>Gemini API <span class="free-badge">無料枠内（$0）</span> <span style="color:var(--muted);font-size:0.85rem">1日50リクエスト、現在1日6回</span></div>
+    <div>GitHub Actions <span class="free-badge">無料（パブリック）</span></div>
+    <div>GitHub Pages <span class="free-badge">無料（パブリック）</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>📅 月別コスト（Apify）</h2>
+  {monthly_html if monthly_html else '<p style="color:var(--muted)">データがありません</p>'}
+</div>
+
+<div class="card">
+  <h2>🗒 実行ログ（直近60日）</h2>
+  <table>
+    <thead><tr><th>日付</th><th>便</th><th>Apify</th><th>円換算</th><th>サイクル消費</th></tr></thead>
+    <tbody>{rows_html or no_data}</tbody>
+  </table>
+</div>
+
+</div>
+</body>
+</html>"""
