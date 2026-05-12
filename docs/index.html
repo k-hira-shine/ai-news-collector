@@ -24,17 +24,18 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 .trend { font-size: 1rem; }
 .since-last { margin-top: 1rem; padding: 0.8rem; background: var(--surface2); border-radius: 8px; font-size: 0.95rem; }
 .trend-evo { margin-top: 1rem; }
-.trend-evo .evo-item { padding: 0.5rem 0; border-bottom: 1px solid var(--surface2); display: flex; align-items: baseline; gap: 0.5rem; }
-.trend-evo .evo-item:last-child { border-bottom: none; }
+.trend-evo .evo-item { padding: 0.6rem 0.8rem; border-radius: 8px; background: var(--surface2); margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.trend-evo .evo-item:last-child { margin-bottom: 0; }
 .trend-evo .status-badge { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
 .trend-evo .st-NEW { background: #16a34a33; color: var(--green); }
 .trend-evo .st-RISING { background: #dc262633; color: var(--red); }
 .trend-evo .st-SUSTAINED { background: #1e40af33; color: var(--blue); }
 .trend-evo .st-FADING { background: #6b728033; color: var(--muted); }
 .trend-evo .st-RESURFACED { background: #f59e0b33; color: var(--yellow); }
-.trend-evo .evo-topic { font-weight: 600; }
-.trend-evo .evo-streak { color: var(--muted); font-size: 0.85rem; }
-.trend-evo .evo-desc { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }
+.trend-evo .evo-topic { font-weight: 600; font-size: 0.95rem; }
+.trend-evo .evo-header { display: flex; align-items: center; gap: 0.5rem; }
+.trend-evo .evo-streak { color: var(--muted); font-size: 0.82rem; }
+.trend-evo .evo-desc { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--surface); padding-top: 0.3rem; margin-top: 0.1rem; }
 .article { padding: 0.8rem 0; border-bottom: 1px solid var(--surface2); }
 .article:last-child { border-bottom: none; }
 .article .rank { display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; margin-right: 0.5rem; vertical-align: top; }
@@ -92,7 +93,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
   .x-trend .topic { font-size: 0.95rem; }
   .x-trend .desc { font-size: 0.88rem; }
   .x-trend .tweet { font-size: 0.83rem; padding: 0.5rem 0.6rem; }
-  .trend-evo .evo-item { flex-wrap: wrap; gap: 0.3rem; }
+  .trend-evo .evo-item { gap: 0.2rem; }
   .history-chart { height: 70px; }
   .history-bar .label { font-size: 0.6rem; }
 }
@@ -102,7 +103,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
-  <div class="updated">Last updated: 2026-05-13 08:19 JST</div>
+  <div class="updated">Last updated: 2026-05-13 08:21 JST</div>
   <div class="nav-links">
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
@@ -164,7 +165,7 @@ function closeDiagramModal() {
   document.getElementById('diagramZoomView').style.display = 'none';
   document.body.style.overflow = '';
 }
-</script><div class="card"><h2>📊 2026-05-13 朝便</h2><div class="trend">本日のAI業界は、GoogleがAIネイティブな新ノートPC「Googlebook」と、OSに深く統合された「Gemini Intelligence」を発表し、ハードウェアとソフトウェアの両面からAI体験の革新を主導する動きが鮮明になりました。カーソルをAI化する新しいUIの提案もなされ、AIがより直感的な操作で利用可能になる未来を示唆しています。並行して、OpenAI元CTO設立のThinking Machines Labが人間とリアルタイムで協働する「Interaction Models」を発表し、AIとの対話形式が根本的に変わる可能性を示しています。AIエージェントの社会実装も進み、金融取引から日常業務まで、その活用範囲が急速に拡大しています。</div><div class="since-last">🔄 前回の分析ではAIの体験を「リアルタイム協調」や「マルチエージェント」へと変革する動きが主題でしたが、本日はGoogleが「Googlebook」や「Gemini Intelligence」を発表し、AIのOS・ハードウェア統合という形でその流れを具体化しました。これにより「AIのパーソナル活用」のトレンドがより明確な製品像を伴って加速しています。また、Thinking Machines Labの登場は「リアルタイム協調」の概念をさらに推し進めるものであり、AIエージェント開発競争は継続して活況を呈しています。一方で、前回注目されたサイバーセキュリティや日本の法規制に関する議論はやや落ち着きを見せています。</div><div class="trend-evo"><div class="evo-item"><span class="status-badge st-RISING">📈 RISING</span><span class="evo-topic">AIのOS・ハードウェア統合</span><span class="evo-streak">(2日目)</span><div class="evo-desc">AIのパーソナルOS化という概念的な議論から、Googleの「Googlebook」発表により具体的な製品レベルの話題へと発展した。</div></div><div class="evo-item"><span class="status-badge st-SUSTAINED">➡️ SUSTAINED</span><span class="evo-topic">AIエージェント開発競争</span><span class="evo-streak">(4日目)</span><div class="evo-desc">各社がエージェント機能を追加し続ける中、本日は金融取引やOS自動化など、より専門的で実用的なエージェントのユースケースが多数報告されている。</div></div><div class="evo-item"><span class="status-badge st-RISING">📈 RISING</span><span class="evo-topic">次世代HCI（ヒューマン・コンピュータ・インタラクション）</span><span class="evo-streak">(2日目)</span><div class="evo-desc">前回のAIマウスカーソルの研究発表に続き、本日も同テーマが注目を集め、AIをより直感的に操作する新しいUI/UXの模索が本格化している。</div></div><div class="evo-item"><span class="status-badge st-RISING">📈 RISING</span><span class="evo-topic">リアルタイム協調型AIモデル</span><span class="evo-streak">(2日目)</span><div class="evo-desc">Mira Murati氏の新会社が提唱した概念が、本日は具体的なモデル「Interaction Models」として発表され、期待感を高めている。</div></div><div class="evo-item"><span class="status-badge st-SUSTAINED">➡️ SUSTAINED</span><span class="evo-topic">Claude Codeの機能強化とエコシステム拡大</span><span class="evo-streak">(3日目)</span><div class="evo-desc">新機能「Agent View」の発表以来、開発者からの支持が続き、本日は高速化モードの提供やCLIの改善など、継続的なアップデートが報告された。</div></div><div class="evo-item"><span class="status-badge st-NEW">⚡ NEW</span><span class="evo-topic">AIとロボティクスの融合</span><div class="evo-desc">Unitreeによる世界初の量産型有人ロボットの発表により、AI制御による物理的な実体を持つロボットの商用化が新たな話題として浮上した。</div></div><div class="evo-item"><span class="status-badge st-SUSTAINED">➡️ SUSTAINED</span><span class="evo-topic">AIのガバナンスと安全性</span><span class="evo-streak">(3日目)</span><div class="evo-desc">OpenAIとElon Musk氏の裁判に関する報道が続く中、NVIDIAのCEOがAIの賢明な誘導の重要性を説き、業界リーダーによる安全利用への言及が続いている。</div></div></div></div>
+</script><div class="card"><h2>📊 2026-05-13 朝便</h2><div class="trend">本日のAI業界は、GoogleがAIネイティブな新ノートPC「Googlebook」と、OSに深く統合された「Gemini Intelligence」を発表し、ハードウェアとソフトウェアの両面からAI体験の革新を主導する動きが鮮明になりました。カーソルをAI化する新しいUIの提案もなされ、AIがより直感的な操作で利用可能になる未来を示唆しています。並行して、OpenAI元CTO設立のThinking Machines Labが人間とリアルタイムで協働する「Interaction Models」を発表し、AIとの対話形式が根本的に変わる可能性を示しています。AIエージェントの社会実装も進み、金融取引から日常業務まで、その活用範囲が急速に拡大しています。</div><div class="since-last">🔄 前回の分析ではAIの体験を「リアルタイム協調」や「マルチエージェント」へと変革する動きが主題でしたが、本日はGoogleが「Googlebook」や「Gemini Intelligence」を発表し、AIのOS・ハードウェア統合という形でその流れを具体化しました。これにより「AIのパーソナル活用」のトレンドがより明確な製品像を伴って加速しています。また、Thinking Machines Labの登場は「リアルタイム協調」の概念をさらに推し進めるものであり、AIエージェント開発競争は継続して活況を呈しています。一方で、前回注目されたサイバーセキュリティや日本の法規制に関する議論はやや落ち着きを見せています。</div><div class="trend-evo"><div class="evo-item"><div class="evo-header"><span class="status-badge st-RISING">📈 RISING</span><span class="evo-streak">(2日目)</span></div><div class="evo-topic">AIのOS・ハードウェア統合</div><div class="evo-desc">AIのパーソナルOS化という概念的な議論から、Googleの「Googlebook」発表により具体的な製品レベルの話題へと発展した。</div></div><div class="evo-item"><div class="evo-header"><span class="status-badge st-SUSTAINED">➡️ SUSTAINED</span><span class="evo-streak">(4日目)</span></div><div class="evo-topic">AIエージェント開発競争</div><div class="evo-desc">各社がエージェント機能を追加し続ける中、本日は金融取引やOS自動化など、より専門的で実用的なエージェントのユースケースが多数報告されている。</div></div><div class="evo-item"><div class="evo-header"><span class="status-badge st-RISING">📈 RISING</span><span class="evo-streak">(2日目)</span></div><div class="evo-topic">次世代HCI（ヒューマン・コンピュータ・インタラクション）</div><div class="evo-desc">前回のAIマウスカーソルの研究発表に続き、本日も同テーマが注目を集め、AIをより直感的に操作する新しいUI/UXの模索が本格化している。</div></div><div class="evo-item"><div class="evo-header"><span class="status-badge st-RISING">📈 RISING</span><span class="evo-streak">(2日目)</span></div><div class="evo-topic">リアルタイム協調型AIモデル</div><div class="evo-desc">Mira Murati氏の新会社が提唱した概念が、本日は具体的なモデル「Interaction Models」として発表され、期待感を高めている。</div></div><div class="evo-item"><div class="evo-header"><span class="status-badge st-SUSTAINED">➡️ SUSTAINED</span><span class="evo-streak">(3日目)</span></div><div class="evo-topic">Claude Codeの機能強化とエコシステム拡大</div><div class="evo-desc">新機能「Agent View」の発表以来、開発者からの支持が続き、本日は高速化モードの提供やCLIの改善など、継続的なアップデートが報告された。</div></div><div class="evo-item"><div class="evo-header"><span class="status-badge st-NEW">⚡ NEW</span></div><div class="evo-topic">AIとロボティクスの融合</div><div class="evo-desc">Unitreeによる世界初の量産型有人ロボットの発表により、AI制御による物理的な実体を持つロボットの商用化が新たな話題として浮上した。</div></div><div class="evo-item"><div class="evo-header"><span class="status-badge st-SUSTAINED">➡️ SUSTAINED</span><span class="evo-streak">(3日目)</span></div><div class="evo-topic">AIのガバナンスと安全性</div><div class="evo-desc">OpenAIとElon Musk氏の裁判に関する報道が続く中、NVIDIAのCEOがAIの賢明な誘導の重要性を説き、業界リーダーによる安全利用への言及が続いている。</div></div></div></div>
 <div class="card"><h2>🐦 Xで話題</h2><div class="x-trend"><span class="topic">😊 Googleの新PC「Googlebook」と「Gemini Intelligence」への期待</span><span class="buzz buzz-medium">🔥 MEDIUM</span><div class="desc">GoogleがAIネイティブな新ノートPC「Googlebook」とOS統合機能「Gemini Intelligence」を発表したことで、X上では大きな期待が寄せられています。特に、カーソルを動かすだけでAIが提案を行う、プロンプトでウィジェットを作成するといった直感的な操作性は、PCの使い方が根本的に変わる可能性を秘めていると好意的に受け止められています。AppleのVision Proのような空間コンピューティングとは異なる、既存のPC体験をAIで拡張するアプローチに現実味を感じるユーザーが多いようです。</div><div class="tweet"><span class="author"><a href="https://x.com/demishassabis/status/2054326444189253655" target="_blank" rel="noopener">@demishassabis</a></span> Really cool work from the team reimagining the mouse pointer to be intelligent! Try the prototype in @GoogleAIStudio it&#x27;s pretty magical.<div class="eng">❤️ 211 · 🔁 16</div></div><div class="tweet"><span class="author"><a href="https://x.com/Google/status/2054263722353569880" target="_blank" rel="noopener">@Google</a></span> With Gemini Intelligence on @Android, you’ll be able to:
 
 ✨ Automate multi-step tasks across your apps, like finding your class syllabus in Gmail and putting the books you need in your cart
