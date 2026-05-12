@@ -172,10 +172,9 @@ def main() -> None:
         handle = args.add.lstrip("@")
         display_name = get_display_name(handle, config)
         tweets = fetch_account_tweets(client, actor_id, handle, days=args.days, max_items=args.max_items)
-        if tweets:
-            existing_map[handle] = build_account_data(handle, display_name, tweets)
-            # config.yaml に未登録なら追加
-            _ensure_in_config(handle, display_name)
+        # ツイートが0件でもアカウント自体は登録する
+        existing_map[handle] = build_account_data(handle, display_name, tweets)
+        _ensure_in_config(handle, display_name)
         existing["accounts"] = list(existing_map.values())
 
     elif args.accounts:
@@ -184,8 +183,7 @@ def main() -> None:
             handle = handle.lstrip("@")
             display_name = get_display_name(handle, config)
             tweets = fetch_account_tweets(client, actor_id, handle, days=args.days, max_items=args.max_items)
-            if tweets:
-                existing_map[handle] = build_account_data(handle, display_name, tweets)
+            existing_map[handle] = build_account_data(handle, display_name, tweets)
         existing["accounts"] = list(existing_map.values())
 
     else:
