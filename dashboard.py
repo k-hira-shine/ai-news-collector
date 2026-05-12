@@ -326,16 +326,14 @@ def _render_diagrams(diagrams: list[dict]) -> str:
         date = escape(d["date"])
         slot = escape(d["slot"])
         if d.get("png_path"):
-            # PNG がある場合はタップでモーダル表示
             png = escape(d["png_path"])
             items.append(
-                f'<div class="diagram-card" onclick="openDiagramModal(\'{png}\',\'{date} {slot}\')" style="cursor:pointer">'
+                f'<div class="diagram-card" onclick="openDiagram(\'{png}\',\'{href}\',\'{date} {slot}\')" style="cursor:pointer">'
                 f'<img src="{png}" alt="{date} {slot}" loading="lazy">'
                 f'<div class="diagram-card-footer"><span>{date}</span><span class="slot-tag">{slot}</span></div>'
                 f'</div>'
             )
         else:
-            # PNG なし → テキストリンク
             items.append(
                 f'<a class="diagram-item" href="{href}" target="_blank" rel="noopener">'
                 f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
@@ -351,11 +349,20 @@ def _render_diagrams(diagrams: list[dict]) -> str:
   </div>
 </div>
 <script>
-function openDiagramModal(src, title) {
-  document.getElementById('diagramModalImg').src = src;
-  document.getElementById('diagramModalTitle').textContent = title;
-  document.getElementById('diagramModal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+function isMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+}
+function openDiagram(pngSrc, htmlHref, title) {
+  if (isMobile()) {
+    // スマホ → PNG をモーダル表示
+    document.getElementById('diagramModalImg').src = pngSrc;
+    document.getElementById('diagramModalTitle').textContent = title;
+    document.getElementById('diagramModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  } else {
+    // PC → HTML を新タブで開く
+    window.open(htmlHref, '_blank', 'noopener');
+  }
 }
 function closeDiagramModal() {
   document.getElementById('diagramModal').style.display = 'none';

@@ -82,14 +82,14 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
-  <div class="updated">Last updated: 2026-05-12 13:58 JST</div>
+  <div class="updated">Last updated: 2026-05-12 14:03 JST</div>
   <div class="nav-links">
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
   </div>
 </header>
-<div class="card"><h2>🖼️ 図解版アーカイブ</h2><div class="diagram-grid"><div class="diagram-card" onclick="openDiagramModal('diagrams/2026-05-12-morning.png','2026-05-12 朝便')" style="cursor:pointer"><img src="diagrams/2026-05-12-morning.png" alt="2026-05-12 朝便" loading="lazy"><div class="diagram-card-footer"><span>2026-05-12</span><span class="slot-tag">朝便</span></div></div></div></div>
+<div class="card"><h2>🖼️ 図解版アーカイブ</h2><div class="diagram-grid"><div class="diagram-card" onclick="openDiagram('diagrams/2026-05-12-morning.png','diagrams/2026-05-12-morning.html','2026-05-12 朝便')" style="cursor:pointer"><img src="diagrams/2026-05-12-morning.png" alt="2026-05-12 朝便" loading="lazy"><div class="diagram-card-footer"><span>2026-05-12</span><span class="slot-tag">朝便</span></div></div></div></div>
 <div id="diagramModal" onclick="closeDiagramModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
   <div style="padding:16px;min-height:100%;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -100,11 +100,20 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
   </div>
 </div>
 <script>
-function openDiagramModal(src, title) {
-  document.getElementById('diagramModalImg').src = src;
-  document.getElementById('diagramModalTitle').textContent = title;
-  document.getElementById('diagramModal').style.display = 'block';
-  document.body.style.overflow = 'hidden';
+function isMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth < 768;
+}
+function openDiagram(pngSrc, htmlHref, title) {
+  if (isMobile()) {
+    // スマホ → PNG をモーダル表示
+    document.getElementById('diagramModalImg').src = pngSrc;
+    document.getElementById('diagramModalTitle').textContent = title;
+    document.getElementById('diagramModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  } else {
+    // PC → HTML を新タブで開く
+    window.open(htmlHref, '_blank', 'noopener');
+  }
 }
 function closeDiagramModal() {
   document.getElementById('diagramModal').style.display = 'none';
