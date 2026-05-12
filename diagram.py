@@ -67,7 +67,7 @@ class DiagramBuilder:
         return template.render(
             date=date_str,
             slot_label=slot_label,
-            trend_summary=_clip(analysis.get("trend_summary", ""), 240),
+            trend_summary=(analysis.get("trend_summary", "") or "").strip(),
             top_articles=top_articles,
             tracked_topics=tracked_topics,
             category_summaries=category_summaries,
@@ -128,8 +128,8 @@ class DiagramBuilder:
         cat = a.get("category", "")
         return {
             "rank": a.get("rank", 0),
-            "title": _clip(a.get("title", ""), 120),
-            "summary": _clip(a.get("summary", ""), 180),
+            "title": (a.get("title", "") or "").strip(),
+            "summary": (a.get("summary", "") or "").strip(),
             "category": cat,
             "category_class": CATEGORY_CLASS.get(cat, ""),
             "source_label": a.get("source_label", ""),
@@ -140,7 +140,7 @@ class DiagramBuilder:
     def _normalize_topic(t: dict) -> dict:
         status = t.get("status", "")
         return {
-            "topic": _clip(t.get("topic", ""), 40),
+            "topic": (t.get("topic", "") or "").strip(),
             "status": status,
             "status_icon": STATUS_ICONS.get(status, "•"),
             "streak_days": t.get("streak_days", 0),
@@ -153,15 +153,15 @@ class DiagramBuilder:
             "category": cat,
             "category_class": CATEGORY_CLASS.get(cat, ""),
             "count": c.get("count", 0),
-            "summary": _clip(c.get("summary", ""), 120),
+            "summary": (c.get("summary", "") or "").strip(),
         }
 
     @staticmethod
     def _normalize_x_trend(x: dict) -> dict:
         buzz = x.get("buzz_level", "")
         return {
-            "topic": _clip(x.get("topic", ""), 40),
-            "description": _clip(x.get("description", ""), 100),
+            "topic": (x.get("topic", "") or "").strip(),
+            "description": (x.get("description", "") or "").strip(),
             "buzz_icon": BUZZ_ICONS.get(buzz, "🔥"),
         }
 

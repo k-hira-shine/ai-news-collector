@@ -396,15 +396,6 @@
   }
   .footer a { color: var(--accent); text-decoration: none; }
 
-  
-    .top-grid { grid-template-columns: 1fr !important; }
-    .trend-grid { grid-template-columns: 1fr !important; }
-    .hero { padding: 14px 12px; }
-    .hero-title { font-size: 1.1rem; }
-    .topic-title { font-size: 0.95rem; }
-    .rank-num { font-size: 1.4rem !important; }
-    .medal { width: 36px !important; height: 36px !important; }
-  }
   /* スマホ対応 */
   @media (max-width: 600px) {
     .page { padding: 16px 12px 24px; }
@@ -517,7 +508,7 @@
     <div class="section-title"><span class="num">02</span>今日のトレンド</div>
     
     <div class="trend-box">
-      <p>本日のAI業界は、OpenAIとAnthropicが市場を牽引する動きが顕著です。OpenAIはサイバーセキュリティに特化した「Daybreak」と、企業導入を支援する「OpenAI Deployment Company」を立て続けに発表し、事業領域の拡大を加速させています。一方、Anthropicも「Claude Code」に新機能「Agent View」を追加し、開発者体験の向上を図っています。全体として、単なるモデル開発競争から、AIを実世界のタスクに適用する「AIエ…</p>
+      <p>本日のAI業界は、OpenAIとAnthropicが市場を牽引する動きが顕著です。OpenAIはサイバーセキュリティに特化した「Daybreak」と、企業導入を支援する「OpenAI Deployment Company」を立て続けに発表し、事業領域の拡大を加速させています。一方、Anthropicも「Claude Code」に新機能「Agent View」を追加し、開発者体験の向上を図っています。全体として、単なるモデル開発競争から、AIを実世界のタスクに適用する「AIエージェント」の開発と、そのエコシステム構築へと競争の主戦場がシフトしていることが明確になりました。</p>
     </div>
     
     
@@ -525,7 +516,7 @@
       
       <div class="topic-chip">
         <span class="status st-NEW">⚡ NEW</span>
-        <span class="topic-name">OpenAIの事業拡大（Daybreak, Deployment Compan…</span>
+        <span class="topic-name">OpenAIの事業拡大（Daybreak, Deployment Company）</span>
         
       </div>
       
@@ -569,7 +560,7 @@
           <span class="name">企業動向</span>
           <span class="count">17</span>
         </div>
-        <div class="summary">OpenAIがサイバーセキュリティ事業「Daybreak」と法人導入支援会社「Deployment Company」を同時発表し、事業ポートフォリオを急拡大。AnthropicもAWSとの連携強化を発表するなど、大手AI企業によるエコシス…</div>
+        <div class="summary">OpenAIがサイバーセキュリティ事業「Daybreak」と法人導入支援会社「Deployment Company」を同時発表し、事業ポートフォリオを急拡大。AnthropicもAWSとの連携強化を発表するなど、大手AI企業によるエコシステム構築と市場支配に向けた動きが加速している。また、日本企業でも生成AIの導入が本格化しており、生産性向上事例が報告され始めている。</div>
       </div>
       
       <div class="cat-card cat-model">
@@ -577,7 +568,7 @@
           <span class="name">モデル/ツール</span>
           <span class="count">33</span>
         </div>
-        <div class="summary">Anthropicが「Claude Code」にセッション管理機能「Agent View」を追加。Googleからは次世代モデル「Gemini Omni」などの情報がリークし、新モデルへの期待が高まる。また、検閲のない動画生成AI「Sul…</div>
+        <div class="summary">Anthropicが「Claude Code」にセッション管理機能「Agent View」を追加。Googleからは次世代モデル「Gemini Omni」などの情報がリークし、新モデルへの期待が高まる。また、検閲のない動画生成AI「Sulphur 2」が登場し、技術の可能性と倫理的課題の両面で話題に。AIエージェントの性能を向上させるための周辺ツールやハーネス（実行環境）に関する議論も活発化している。</div>
       </div>
       
       <div class="cat-card cat-reg">
@@ -585,7 +576,7 @@
           <span class="name">規制/政策</span>
           <span class="count">7</span>
         </div>
-        <div class="summary">日本政府がサイバー攻撃対策としてAnthropicの最新AIモデルへのアクセスを求める動きが報じられ、AIが国家の安全保障ツールとして認識されている実態が浮き彫りになった。Anthropicは自社のAI倫理原則「Claude's Cons…</div>
+        <div class="summary">日本政府がサイバー攻撃対策としてAnthropicの最新AIモデルへのアクセスを求める動きが報じられ、AIが国家の安全保障ツールとして認識されている実態が浮き彫りになった。Anthropicは自社のAI倫理原則「Claude's Constitution」をオーディオブックで公開し、透明性確保の姿勢を強調。一方で、X(旧Twitter)のAI生成ラベルが誤って付与される問題も発生し、プラットフォーム側の課題も露呈した。</div>
       </div>
       
       <div class="cat-card cat-research">
@@ -593,7 +584,7 @@
           <span class="name">研究論文</span>
           <span class="count">7</span>
         </div>
-        <div class="summary">画像生成モデルを視覚理解タスクに応用し、専用モデルを凌駕する性能を達成した研究が注目を集めている。これは、大規模生成モデルが多様なタスクを統一的に扱える可能性を示すもので、LLMがNLP分野にもたらした変革が、画像処理分野でも起きる予兆と…</div>
+        <div class="summary">画像生成モデルを視覚理解タスクに応用し、専用モデルを凌駕する性能を達成した研究が注目を集めている。これは、大規模生成モデルが多様なタスクを統一的に扱える可能性を示すもので、LLMがNLP分野にもたらした変革が、画像処理分野でも起きる予兆と見られている。また、AIエージェントの記憶（メモリ）機構に関するサーベイ論文も複数共有されており、より高度なエージェント実現に向けた基礎研究が進んでいることが伺える。</div>
       </div>
       
       <div class="cat-card cat-usecase">
@@ -601,7 +592,7 @@
           <span class="name">ユースケース</span>
           <span class="count">13</span>
         </div>
-        <div class="summary">Andrej Karpathy氏が共有した「LLMの出力をHTMLで構造化する」というプロンプトテクニックが大きな反響を呼んだ。また、Shopify社がAIエージェントの利用をSlackのパブリックチャンネルに限定し、全社的な学習を促すと…</div>
+        <div class="summary">Andrej Karpathy氏が共有した「LLMの出力をHTMLで構造化する」というプロンプトテクニックが大きな反響を呼んだ。また、Shopify社がAIエージェントの利用をSlackのパブリックチャンネルに限定し、全社的な学習を促すという組織的な取り組みも注目されている。BTCの自動取引や広告運用など、より具体的で高度なタスクにAIエージェントを活用する事例も増えており、AIの実用化が深化している。</div>
       </div>
       
     </div>
@@ -619,7 +610,7 @@
           <span class="buzz">🔥🔥🔥</span>
           <span class="topic">OpenAIの新事業発表（Daybreak & Deployment Co.）</span>
         </div>
-        <div class="desc">OpenAIが法人向け導入支援会社とサイバーセキュリティ事業を立て続けに発表し、X上で大きな話題となった。ユーザーからは、AIの社会実装を加速させる動きとして肯定的な反応が多い一方、AGIの実現とい…</div>
+        <div class="desc">OpenAIが法人向け導入支援会社とサイバーセキュリティ事業を立て続けに発表し、X上で大きな話題となった。ユーザーからは、AIの社会実装を加速させる動きとして肯定的な反応が多い一方、AGIの実現という当初の理想から、収益化へと舵を切ったとの指摘も見られる。2つの発表はSam Altman氏のアカウントからも発信され、エンゲージメントを増幅させた。</div>
       </div>
       
       <div class="x-card">
@@ -627,7 +618,7 @@
           <span class="buzz">🔥🔥🔥</span>
           <span class="topic">Claude Codeの新機能「Agent View」</span>
         </div>
-        <div class="desc">AnthropicがコーディングAI「Claude Code」に新機能「Agent View」を追加したことを発表し、開発者コミュニティから大きな歓迎を受けた。複数の開発タスク（セッション）を一覧で…</div>
+        <div class="desc">AnthropicがコーディングAI「Claude Code」に新機能「Agent View」を追加したことを発表し、開発者コミュニティから大きな歓迎を受けた。複数の開発タスク（セッション）を一覧で管理できる機能は、tmuxのように使えると評され、AIエージェントの実用性を高めるものとして高く評価されている。公式発表のエンゲージメントが非常に高く、関心の高さがうかがえる。</div>
       </div>
       
       <div class="x-card">
@@ -635,7 +626,7 @@
           <span class="buzz">🔥🔥🔥</span>
           <span class="topic">LLMの出力形式をHTMLにするハック</span>
         </div>
-        <div class="desc">著名なAI研究者Andrej Karpathy氏が投稿した「LLMにHTML形式で出力させる」という簡単なテクニックが、1万以上のいいねを集めるなど爆発的に拡散された。多くのユーザーが「目から鱗」「…</div>
+        <div class="desc">著名なAI研究者Andrej Karpathy氏が投稿した「LLMにHTML形式で出力させる」という簡単なテクニックが、1万以上のいいねを集めるなど爆発的に拡散された。多くのユーザーが「目から鱗」「なぜ今まで気づかなかったのか」と反応し、実際に試した結果を共有している。このテクニックは、情報の可視性を高め、LLMの活用範囲を広げるシンプルかつ強力な方法として受け入れられている。</div>
       </div>
       
     </div>
@@ -643,7 +634,7 @@
   
 
   <div class="footer">
-    Generated 2026-05-12 01:11 UTC · AI News Collector
+    Generated 2026-05-12 05:09 UTC · AI News Collector
     
   </div>
 
