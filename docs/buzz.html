@@ -132,7 +132,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
       <div class="add-account">
       <div class="add-account-title">＋ アカウント追加</div>
       <div class="add-form">
-        <input class="add-input" id="addHandle" placeholder="@handle" />
+        <input class="add-input" id="addHandle" placeholder="@handle または URL" />
         <button class="add-btn" onclick="addAccount()">今すぐ追加</button>
         <div class="add-note" id="addStatus"></div>
       </div>
@@ -19824,7 +19824,10 @@ function deleteAccount(account, displayName) {
 async function addAccount() {
   const handleInput = document.getElementById('addHandle');
   const status = document.getElementById('addStatus');
-  let handle = handleInput.value.trim().replace(/^@/, '');
+  let raw = handleInput.value.trim();
+  // URL形式（https://x.com/handle や twitter.com/handle）からハンドル抽出
+  const urlMatch = raw.match(/(?:x\.com|twitter\.com)\/([A-Za-z0-9_]+)/);
+  let handle = urlMatch ? urlMatch[1] : raw.replace(/^@/, '');
   if (!handle) { status.textContent = '⚠️ ハンドルを入力してください'; status.style.color='#f59e0b'; return; }
   if (!GH_PAT) { status.textContent = '⚠️ 設定が必要です（管理者にお知らせください）'; status.style.color='#f87171'; return; }
 
