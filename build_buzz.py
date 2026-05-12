@@ -227,8 +227,9 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
       <div class="add-account-title">＋ アカウント追加</div>
       <div class="add-form">
         <input class="add-input" id="addHandle" placeholder="@handle" />
-        <button class="add-btn" onclick="addAccount()">追加リクエスト</button>
-        <div class="add-note">次回収集時（JST 02:00 / 20:00）に反映されます</div>
+        <input class="add-input" id="addPat" type="password" placeholder="GitHub PAT" />
+        <button class="add-btn" onclick="addAccount()">今すぐ追加</button>
+        <div class="add-note" id="addStatus"></div>
       </div>
     </div>
   </aside>
@@ -257,43 +258,46 @@ function deleteAccount(account, displayName) {{
   if (firstPanel) firstPanel.classList.add('active');
 }}
 
-function addAccount() {{
-  const input = document.getElementById('addHandle');
-  let handle = input.value.trim().replace(/^@/, '');
-  if (!handle) {{ alert('ハンドルを入力してください'); return; }}
-  // config.yaml への追記はワークフロー経由のため、ここではコピー可能な形でガイド表示
-  alert('@' + handle + ' を追加リクエストしました。\\n次回収集時（JST 02:00 / 20:00）に反映されます。\\n\\n手動で今すぐ反映したい場合は、\\nGitHub Actions → AI Money Cases Collector → Run workflow で実行してください。');
-  input.value = '';
-  // ローカルストレージに保存（次回表示時に「追加予定」として表示）
-  const pending = JSON.parse(localStorage.getItem('buzzPendingAccounts') || '[]');
-  if (!pending.includes(handle)) pending.push(handle);
-  localStorage.setItem('buzzPendingAccounts', JSON.stringify(pending));
-  renderPending();
-}}
+async function addAccount() {{
+  const handleInput = document.getElementById('addHandle');
+  const patInput = document.getElementById('addPat');
+  const status = document.getElementById('addStatus');
+  let handle = handleInput.value.trim().replace(/^@/, '');
+  const pat = patInput.value.trim();
+  if (!handle) {{ status.textContent = '⚠️ ハンドルを入力してください'; status.style.color='#f59e0b'; return; }}
+  if (!pat) {{ status.textContent = '⚠️ GitHub PAT を入力してください'; status.style.color='#f59e0b'; return; }}
 
-function renderPending() {{
-  const pending = JSON.parse(localStorage.getItem('buzzPendingAccounts') || '[]');
-  const existing = document.getElementById('pending-list');
-  if (existing) existing.remove();
-  if (!pending.length) return;
-  const div = document.createElement('div');
-  div.id = 'pending-list';
-  div.style.cssText = 'padding: 0.5rem 1rem; font-size: 0.7rem; color: #f59e0b;';
-  div.innerHTML = '<div style="margin-bottom:4px;font-weight:700;">追加予定：</div>' +
-    pending.map(h => `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
-      <span>@${{h}}</span>
-      <button onclick="removePending('${{h}}')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.7rem;">✕</button>
-    </div>`).join('');
-  document.querySelector('.add-account').insertAdjacentElement('beforebegin', div);
-}}
+  status.textContent = '⏳ 収集ワークフローを起動中...';
+  status.style.color = '#60a5fa';
 
-function removePending(handle) {{
-  const pending = JSON.parse(localStorage.getItem('buzzPendingAccounts') || '[]');
-  localStorage.setItem('buzzPendingAccounts', JSON.stringify(pending.filter(h => h !== handle)));
-  renderPending();
+  try {{
+    const res = await fetch(
+      'https://api.github.com/repos/k-hira-shine/ai-news-collector/actions/workflows/buzz-collect.yml/dispatches',
+      {{
+        method: 'POST',
+        headers: {{
+          'Authorization': 'Bearer ' + pat,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json',
+        }},
+        body: JSON.stringify({{ ref: 'main', inputs: {{ account: handle, days: '30' }} }}),
+      }}
+    );
+    if (res.status === 204) {{
+      status.textContent = '✅ @' + handle + ' の収集を開始しました！約2〜3分で反映されます。';
+      status.style.color = '#34d399';
+      handleInput.value = '';
+      // PATはセッション保持（再利用できるようlocalStorageには保存しない）
+    }} else {{
+      const body = await res.text();
+      status.textContent = '❌ エラー ' + res.status + ': ' + body;
+      status.style.color = '#f87171';
+    }}
+  }} catch(e) {{
+    status.textContent = '❌ ' + e.message;
+    status.style.color = '#f87171';
+  }}
 }}
-
-window.addEventListener('DOMContentLoaded', renderPending);
 </script>
 </body>
 </html>"""
