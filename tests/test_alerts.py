@@ -16,8 +16,6 @@ def _stats(**overrides) -> dict:
             "must_follow_items": 20,
             "must_follow_error": False,
         },
-        "rss_meta": {"feeds_configured": 10, "feed_error_count": 0, "raw_total": 100},
-        "youtube_meta": {"keywords_configured": 5, "raw_total": 40},
         "analysis_meta": {
             "top_articles_count": 5,
             "fallback_used_stages": [],
@@ -25,15 +23,19 @@ def _stats(**overrides) -> dict:
             "save_path": "",
             "save_error": "",
         },
-        "discord_meta": {"prev_run": {}},
+        "diagram_meta": {
+            "attempted": False,
+            "html_saved": False,
+            "png_generated": False,
+            "error": "",
+        },
         "apify_runs": 2,
-        "youtube_count": 40,
         "apify_cycle_total_usd": 5.0,
         "apify_monthly_budget_usd": 29.0,
         "apify_warning_threshold": 0.8,
     }
     for k, v in overrides.items():
-        if k in ("x_meta", "rss_meta", "youtube_meta", "analysis_meta", "discord_meta") and isinstance(v, dict):
+        if k in ("x_meta", "analysis_meta", "diagram_meta") and isinstance(v, dict):
             base[k] = {**base[k], **v}
         else:
             base[k] = v
@@ -44,10 +46,7 @@ def _cfg(**overrides) -> dict:
     base = {
         "alerts": {
             "enabled": True,
-            "rss_failure_rate_threshold": 0.3,
-            "youtube_zero_results_alert": True,
             "analysis_json_save_alert": True,
-            "discord_prev_run_alert": True,
         }
     }
     base["alerts"].update(overrides)
@@ -78,30 +77,6 @@ class DetectAnomaliesTests(unittest.TestCase):
         alerts = detect_anomalies(_stats(x_meta={"must_follow_error": True}), _cfg())
         self.assertTrue(any(a["severity"] == "critical" and "タイムライン" in a["title"] for a in alerts))
 
-    def test_rss_high_failure_rate_is_critical(self) -> None:
-        alerts = detect_anomalies(_stats(rss_meta={"feed_error_count": 6}), _cfg())  # 60%
-        matched = [a for a in alerts if "RSS" in a["title"]]
-        self.assertEqual(len(matched), 1)
-        self.assertEqual(matched[0]["severity"], "critical")
-
-    def test_rss_moderate_failure_rate_is_warning(self) -> None:
-        alerts = detect_anomalies(_stats(rss_meta={"feed_error_count": 4}), _cfg())  # 40%
-        matched = [a for a in alerts if "RSS" in a["title"]]
-        self.assertEqual(matched[0]["severity"], "warning")
-
-    def test_youtube_zero_raw_triggers_alert(self) -> None:
-        alerts = detect_anomalies(
-            _stats(youtube_meta={"raw_total": 0}, youtube_count=0), _cfg()
-        )
-        self.assertTrue(any("YouTube" in a["title"] for a in alerts))
-
-    def test_youtube_zero_dedup_is_not_alert(self) -> None:
-        # raw_total > 0 だけど重複排除で youtube_count=0 になったケース
-        alerts = detect_anomalies(
-            _stats(youtube_meta={"raw_total": 5}, youtube_count=0), _cfg()
-        )
-        self.assertFalse(any("YouTube" in a["title"] for a in alerts))
-
     def test_budget_80pct_is_warning(self) -> None:
         alerts = detect_anomalies(_stats(apify_cycle_total_usd=24.0), _cfg())
         self.assertTrue(any("予算" in a["title"] for a in alerts))
@@ -122,31 +97,6 @@ class DetectAnomaliesTests(unittest.TestCase):
             [a for a in alerts if "分析 JSON" in a["title"]][0]["severity"],
             "critical",
         )
-
-    def test_discord_prev_run_failure_is_warning(self) -> None:
-        alerts = detect_anomalies(
-            _stats(
-                discord_meta={
-                    "prev_run": {
-                        "ok": False,
-                        "skipped": False,
-                        "total": 2,
-                        "failed_parts": ["msg0", "send_status"],
-                    }
-                }
-            ),
-            _cfg(),
-        )
-        self.assertTrue(any("前回の Discord" in a["title"] for a in alerts))
-
-    def test_discord_prev_skipped_no_alert(self) -> None:
-        alerts = detect_anomalies(
-            _stats(
-                discord_meta={"prev_run": {"ok": False, "skipped": True, "total": 0}}
-            ),
-            _cfg(),
-        )
-        self.assertFalse(any("前回の Discord" in a["title"] for a in alerts))
 
     def test_gemini_fallback_is_warning(self) -> None:
         alerts = detect_anomalies(

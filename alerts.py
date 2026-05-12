@@ -1,8 +1,8 @@
 """収集実行結果の健全性チェック（Silent Failure 検知）
 
 GitHub Actions としては success で終わっても、内部で劣化しているケース
-（Actor API 変更・Cookie 失効・RSS 大量失敗など）を拾って Discord へ
-警告 Embed を送る。
+（Actor API 変更・Cookie 失効・Gemini フォールバックなど）を拾って
+ログと健全性アラートに反映する。
 """
 
 from __future__ import annotations

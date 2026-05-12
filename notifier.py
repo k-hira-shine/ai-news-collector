@@ -354,7 +354,7 @@ class DiscordNotifier:
                 lines.append(f"　> {link}: {text}… {eng}")
 
         return [{
-            "title": "🐦 X/Twitter で話題",
+            "title": "🐦 Xで話題",
             "description": "\n\n".join(lines)[:4096],
             "color": COLORS["x_trends"],
         }]
@@ -374,14 +374,7 @@ class DiscordNotifier:
 
         parts: list[str] = []
         if stats.get("total"):
-            src_line = " / ".join(
-                f"{k}: {v}"
-                for k, v in [
-                    ("X", stats.get("x_count", 0)),
-                    ("RSS", stats.get("rss_count", 0)),
-                    ("YouTube", stats.get("youtube_count", 0)),
-                ]
-            )
+            src_line = f"X: {stats.get('x_count', 0)}"
             parts.append(f"収集: {stats['total']}件 ({src_line})")
         if stats.get("official_count"):
             parts.append(f"公式ソース: {stats['official_count']}件")

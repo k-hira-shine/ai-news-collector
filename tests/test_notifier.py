@@ -15,7 +15,7 @@ class StatsEmbedTests(unittest.TestCase):
     def test_apify_cost_zero_shows_measurement_lag(self) -> None:
         # apify_cost_usd=0 でも runs>0 なら行が出る（反映ラグ表示）
         embed = self.n._build_stats_embed({
-            "total": 10, "x_count": 5, "rss_count": 3, "youtube_count": 2,
+            "total": 10, "x_count": 10,
             "apify_runs": 2, "apify_cost_usd": 0,
         })
         self.assertIn("測定不可", embed["description"])
@@ -23,7 +23,7 @@ class StatsEmbedTests(unittest.TestCase):
 
     def test_apify_cost_formatted(self) -> None:
         embed = self.n._build_stats_embed({
-            "total": 10, "x_count": 5, "rss_count": 3, "youtube_count": 2,
+            "total": 10, "x_count": 10,
             "apify_runs": 2, "apify_cost_usd": 0.0456,
         })
         self.assertIn("$0.0456", embed["description"])
@@ -39,10 +39,10 @@ class StatsEmbedTests(unittest.TestCase):
 
     def test_collection_breakdown_included(self) -> None:
         embed = self.n._build_stats_embed({
-            "total": 10, "x_count": 5, "rss_count": 3, "youtube_count": 2,
+            "total": 10, "x_count": 10,
         })
         self.assertIn("10件", embed["description"])
-        self.assertIn("X: 5", embed["description"])
+        self.assertIn("X: 10", embed["description"])
 
 
 class SendPayloadRetryTests(unittest.TestCase):
