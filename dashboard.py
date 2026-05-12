@@ -326,13 +326,13 @@ def _render_diagrams(diagrams: list[dict]) -> str:
         date = escape(d["date"])
         slot = escape(d["slot"])
         if d.get("png_path"):
-            # PNG がある場合は画像カードで表示
+            # PNG がある場合はタップでモーダル表示
             png = escape(d["png_path"])
             items.append(
-                f'<a class="diagram-card" href="{href}" target="_blank" rel="noopener">'
+                f'<div class="diagram-card" onclick="openDiagramModal(\'{png}\',\'{date} {slot}\')" style="cursor:pointer">'
                 f'<img src="{png}" alt="{date} {slot}" loading="lazy">'
                 f'<div class="diagram-card-footer"><span>{date}</span><span class="slot-tag">{slot}</span></div>'
-                f'</a>'
+                f'</div>'
             )
         else:
             # PNG なし → テキストリンク
@@ -340,9 +340,32 @@ def _render_diagrams(diagrams: list[dict]) -> str:
                 f'<a class="diagram-item" href="{href}" target="_blank" rel="noopener">'
                 f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
             )
+    modal = '''
+<div id="diagramModal" onclick="closeDiagramModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="padding:16px;min-height:100%;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+      <span id="diagramModalTitle" style="color:#fff;font-size:0.95rem;font-weight:600;"></span>
+      <button onclick="closeDiagramModal()" style="background:none;border:1px solid #555;color:#fff;padding:4px 12px;border-radius:6px;font-size:0.9rem;cursor:pointer;">✕ 閉じる</button>
+    </div>
+    <img id="diagramModalImg" src="" style="width:100%;height:auto;border-radius:8px;display:block;" onclick="event.stopPropagation()">
+  </div>
+</div>
+<script>
+function openDiagramModal(src, title) {
+  document.getElementById('diagramModalImg').src = src;
+  document.getElementById('diagramModalTitle').textContent = title;
+  document.getElementById('diagramModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeDiagramModal() {
+  document.getElementById('diagramModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+</script>'''
     return (
         '<div class="card"><h2>🖼️ 図解版アーカイブ</h2>'
         f'<div class="diagram-grid">{"".join(items)}</div></div>'
+        + modal
     )
 
 
