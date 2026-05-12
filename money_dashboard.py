@@ -208,10 +208,15 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
         </select>
       </div>
       <div class="select-group">
-        <label for="incomeSelect">💰 金額：</label>
+        <label for="incomeSelect">💰 月収：</label>
         <select id="incomeSelect" onchange="applyFilters()">
-          <option value="all">すべて</option>
-          <option value="has">金額あり</option>
+          <option value="0">制限なし</option>
+          <option value="-1">金額記載あり</option>
+          <option value="30000">3万円以上/月</option>
+          <option value="100000">10万円以上/月</option>
+          <option value="300000">30万円以上/月</option>
+          <option value="1000000">100万円以上/月</option>
+          <option value="5000000">500万円以上/月</option>
         </select>
       </div>
       <div class="select-group">
@@ -277,7 +282,7 @@ function setSort(mode, btn) {{
 function applyFilters() {{
   const grid = document.getElementById('casesGrid');
   const engMin = parseFloat(document.getElementById('engSelect').value) || 0;
-  const incomeFilter = document.getElementById('incomeSelect').value;
+  const incomeFilter = parseInt(document.getElementById('incomeSelect').value) || 0;
   const diffFilter = document.getElementById('diffSelect').value;
   const allCards = Array.from(grid.querySelectorAll('.case-card'));
 
@@ -287,7 +292,10 @@ function applyFilters() {{
       (activeRegion === 'jp' && card.dataset.jp === 'true') ||
       (activeRegion === 'global' && card.dataset.jp === 'false');
     const engMatch = parseFloat(card.dataset.eng || '0') >= engMin;
-    const incomeMatch = incomeFilter === 'all' || (incomeFilter === 'has' && card.dataset.income === 'true');
+    const incomeVal = parseInt(card.dataset.incomeVal || '0');
+    const incomeMatch = incomeFilter === 0 ||
+      (incomeFilter === -1 && incomeVal > 0) ||
+      (incomeFilter > 0 && incomeVal >= incomeFilter);
     const diffMatch = diffFilter === 'all' || card.dataset.difficulty === diffFilter;
     return catMatch && regionMatch && engMatch && incomeMatch && diffMatch;
   }});
@@ -319,6 +327,63 @@ def _render_all_cases(cases: list[dict]) -> str:
     for case in sorted_cases:
         html += _render_case_card(case)
     return html
+
+
+def _parse_income_monthly_jpy(income_str: str) -> int:
+    """金額文字列を月次円換算（概算）して返す。不明な場合は0。"""
+    if not income_str:
+        return 0
+    import re
+    s = income_str.replace(",", "").replace("，", "").replace("、", "").replace(" ", "")
+
+    # 億 → 円
+    m = re.search(r"([\d.]+)億", s)
+    if m:
+        base = float(m.group(1)) * 100_000_000
+        if "年" in s:
+            return int(base / 12)
+        return int(base)
+
+    # 千万 → 円
+    m = re.search(r"([\d.]+)千万", s)
+    if m:
+        base = float(m.group(1)) * 10_000_000
+        if "年" in s:
+            return int(base / 12)
+        return int(base)
+
+    # 万 → 円
+    m = re.search(r"([\d.]+)万", s)
+    if m:
+        base = float(m.group(1)) * 10_000
+        if "年" in s:
+            return int(base / 12)
+        return int(base)
+
+    # $K → 円（1ドル=150円換算）
+    m = re.search(r"\$([\d.]+)[Kk]", s)
+    if m:
+        base = float(m.group(1)) * 1000 * 150
+        if "/mo" in s.lower() or "month" in s.lower():
+            return int(base)
+        if "year" in s.lower() or "yearly" in s.lower():
+            return int(base / 12)
+        return int(base)
+
+    # $数値 → 円
+    m = re.search(r"\$([\d.]+)", s)
+    if m:
+        base = float(m.group(1)) * 150
+        if "year" in s.lower() or "yearly" in s.lower():
+            return int(base / 12)
+        return int(base)
+
+    # 数値のみ（円と仮定）
+    m = re.search(r"(\d{4,})", s)
+    if m:
+        return int(m.group(1))
+
+    return 0
 
 
 def _render_case_card(case: dict) -> str:
@@ -364,11 +429,11 @@ def _render_case_card(case: dict) -> str:
         except ValueError:
             date_val = raw_date[:19].replace("-", "").replace(":", "").replace("T", "").replace(" ", "")
     difficulty = case.get("difficulty") or "intermediate"
-    has_income = "true" if income else "false"
+    income_monthly_jpy = _parse_income_monthly_jpy(income)
     diff_labels = {"beginner": "🟢 初心者向け", "intermediate": "🟡 中級者向け", "advanced": "🔴 上級者向け"}
     diff_label = diff_labels.get(difficulty, "")
 
-    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-income="{has_income}" data-difficulty="{difficulty}">
+    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-income-val="{income_monthly_jpy}" data-difficulty="{difficulty}">
   <div class="case-header">
     <span class="case-category">{icon} {category}</span>
     <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
