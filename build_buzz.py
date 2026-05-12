@@ -218,7 +218,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <div class="updated">最終更新: {updated_at}</div>
   <nav class="nav-links">
     <a href="index.html" class="nav-link">📰 ニュース</a>
-    <a href="buzz.html" class="nav-link active">🔥 バズりランキング</a>
     <a href="strategy.html" class="nav-link">🎯 施策提案</a>
     <a href="money.html" class="nav-link">🎬 動画マネタイズ事例</a>
   </nav>
