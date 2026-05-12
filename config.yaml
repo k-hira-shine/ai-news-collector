@@ -130,6 +130,37 @@ scoring:
 cache:
   seen_urls_retention_days: 2
 
+# ── HackerNews 収集（collect_all() 経由、data/hn/ に保存） ────────────
+hackernews:
+  enabled: true
+  min_score: 10          # HN ポイント数の足切り（Python側でフィルタ）
+  max_age_hours: 48      # 何時間前まで取得するか
+  max_items: 30          # 最大取得件数（AI関連フィルタ後）
+  filter_keywords:       # タイトルにこれらを含む記事のみ収集
+    - ai
+    - llm
+    - chatgpt
+    - claude
+    - gemini
+    - openai
+    - anthropic
+    - gpt
+    - deepmind
+    - mistral
+    - llama
+    - machine learning
+    - neural
+
+# ── arxiv 収集（collect_all() 経由、data/hn/ に保存） ─────────────────
+arxiv:
+  enabled: true
+  categories:
+    - cs.AI
+    - cs.LG
+    - cs.CL
+  max_results_per_category: 10   # カテゴリごとの最大取得件数
+  max_age_days: 2                # 何日前まで取得するか
+
 # ── AIマネタイズ事例収集（run_money.py 専用） ──────────────
 money_collection:
   # 取得するアカウント（リポスト除外・since制限なし）
@@ -156,31 +187,29 @@ money_collection:
     - "TikTok (収益 OR 稼ぐ OR マネタイズ OR バズる) -filter:retweets lang:ja"
     - "ライブ配信 (投げ銭 OR 収益 OR スパチャ OR 月収) -filter:retweets lang:ja"
     - "動画クリエイター (収益 OR 稼ぐ OR 案件 OR PR) -filter:retweets lang:ja"
-    # 英語：収益報告・自然な言い方（広め）
-    - "my YouTube channel makes per month -filter:retweets lang:en"
-    - "I earn from my channel -filter:retweets lang:en"
-    - "made from YouTube TikTok this month -filter:retweets lang:en"
-    - "YouTube channel income reveal -filter:retweets lang:en"
-    - "how much I make as a creator -filter:retweets lang:en"
-    # 英語：faceless / automation
-    - "faceless YouTube channel making money -filter:retweets lang:en"
-    - "AI generated video channel passive income -filter:retweets lang:en"
-    - "YouTube automation income per month -filter:retweets lang:en"
-    # 英語：ショート動画・Reels・TikTok
-    - "TikTok payout earnings this month -filter:retweets lang:en"
-    - "YouTube Shorts revenue earning -filter:retweets lang:en"
-    - "Reels bonus monetization earned -filter:retweets lang:en"
-    # 英語：ライブ配信
-    - "Twitch income made streaming -filter:retweets lang:en"
-    - "YouTube live super chat earnings -filter:retweets lang:en"
-    # 英語：動画編集・UGC・副業
-    - "video editing freelance making money -filter:retweets lang:en"
-    - "UGC creator paid brand deal -filter:retweets lang:en"
-    - "video side hustle income -filter:retweets lang:en"
-    # 英語：クリエイターエコノミー広め
-    - "creator economy income case -filter:retweets lang:en"
-    - "content creator revenue how much -filter:retweets lang:en"
-    - "monetizing content video income -filter:retweets lang:en"
+    # 日本語：AI活用収益化
+    - "AI副業 (月収 OR 稼いだ OR 収益) -filter:retweets lang:ja"
+    - "生成AI (稼ぐ OR 収益化 OR マネタイズ OR 副業) 事例 -filter:retweets lang:ja"
+    # 英語：収益報告・公開
+    - "YouTube earnings this month income -filter:retweets lang:en"
+    - "I made my channel per month -filter:retweets lang:en"
+    - "YouTube channel income case study -filter:retweets lang:en"
+    # 英語：faceless / AI動画
+    - "faceless YouTube channel income -filter:retweets lang:en"
+    - "AI video channel passive income -filter:retweets lang:en"
+    - "AI generated YouTube channel making money -filter:retweets lang:en"
+    # 英語：ショート・TikTok・Reels
+    - "YouTube Shorts earnings revenue -filter:retweets lang:en"
+    - "TikTok creator fund earnings payout -filter:retweets lang:en"
+    # 英語：ライブ・メンバーシップ
+    - "YouTube super chat membership income -filter:retweets lang:en"
+    # 英語：編集・UGC・副業
+    - "video editing client income freelance -filter:retweets lang:en"
+    - "UGC creator brand deal payment -filter:retweets lang:en"
+    # 英語：AI活用収益化
+    - "AI tools side hustle income made -filter:retweets lang:en"
+    - "made money using AI content creation -filter:retweets lang:en"
+    - "ChatGPT Claude AI earning passive income -filter:retweets lang:en"
   # 1クエリあたりの最大取得件数（英語強化のため200に増加）
   max_items_per_query: 200
 

@@ -1,10 +1,13 @@
-"""X/Twitter から AI ニュースを収集し、重複排除して JSONL に保存"""
+"""X/Twitter・HackerNews・arxiv から AI ニュースを収集し、重複排除して JSONL に保存"""
 
 import json
 import logging
 import os
 import re
+import time
+import urllib.parse
 import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 
 from utils import data_dir, hash_url, now_iso, parse_datetime, retry, today_str
@@ -294,6 +297,208 @@ def _normalize_tweet(tweet: dict) -> dict:
     }
 
 
+# ━━━━━━━━━━━━━━━━ HackerNews (Algolia API) ━━━━━━━━━━━━━━━━
+
+
+def collect_hackernews(config: dict) -> list[dict]:
+    """Algolia HN Search API で直近 AI 関連記事を収集（認証不要・無料）"""
+    hn_cfg = config.get("hackernews", {})
+    if not hn_cfg.get("enabled", False):
+        return []
+
+    max_age_hours = hn_cfg.get("max_age_hours", 48)
+    min_score = hn_cfg.get("min_score", 10)
+    max_items = hn_cfg.get("max_items", 30)
+    # AI関連キーワードでPython側フィルタ用
+    keywords = [kw.lower() for kw in hn_cfg.get(
+        "filter_keywords",
+        ["ai", "llm", "chatgpt", "claude", "gemini", "openai", "anthropic",
+         "gpt", "deepmind", "mistral", "llama", "machine learning", "neural"]
+    )]
+
+    since_ts = int((datetime.now(timezone.utc) - timedelta(hours=max_age_hours)).timestamp())
+    # search_by_date で日付順取得、クエリなしで全件取得してPython側でフィルタ
+    url = (
+        "https://hn.algolia.com/api/v1/search_by_date"
+        "?tags=story"
+        f"&numericFilters=created_at_i%3E{since_ts}"
+        "&hitsPerPage=200"
+    )
+
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "ai-news-collector/1.0"})
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read())
+    except Exception as e:
+        logger.warning("HackerNews API failed: %s", e)
+        return []
+
+    items: list[dict] = []
+    for hit in data.get("hits", []):
+        title = hit.get("title", "")
+        points = hit.get("points") or 0
+
+        # スコア足切り
+        if points < min_score:
+            continue
+        # AI関連キーワードフィルタ
+        title_lower = title.lower()
+        if not any(kw in title_lower for kw in keywords):
+            continue
+
+        hn_url = hit.get("url") or f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+        hn_id = hash_url(hn_url)
+        comments = hit.get("num_comments") or 0
+        author = hit.get("author", "")
+        created_at = hit.get("created_at", "")
+        hn_item_url = f"https://news.ycombinator.com/item?id={hit.get('objectID', '')}"
+
+        items.append({
+            "id": hn_id,
+            "source": "hn",
+            "url": hn_url,
+            "hn_item_url": hn_item_url,
+            "title": title,
+            "content": title,
+            "author": author,
+            "published_at": created_at,
+            "collected_at": now_iso(),
+            "engagement": {
+                "likes": points,
+                "retweets": 0,
+                "replies": comments,
+                "views": 0,
+                "bookmarks": 0,
+                "quotes": 0,
+            },
+            "source_name": "HackerNews",
+            "priority": "normal",
+            "is_official": False,
+            "is_must_follow": False,
+        })
+        if len(items) >= max_items:
+            break
+
+    logger.info("HackerNews: %d items (min_score=%d, last %dh)", len(items), min_score, max_age_hours)
+    return items
+
+
+# ━━━━━━━━━━━━━━━━ arxiv API ━━━━━━━━━━━━━━━━
+
+
+def collect_arxiv(config: dict) -> list[dict]:
+    """arxiv Atom API で cs.AI/cs.LG/cs.CL の新着論文を収集（認証不要・無料）"""
+    arxiv_cfg = config.get("arxiv", {})
+    if not arxiv_cfg.get("enabled", False):
+        return []
+
+    categories = arxiv_cfg.get("categories", ["cs.AI", "cs.LG", "cs.CL"])
+    max_results = arxiv_cfg.get("max_results_per_category", 10)
+    max_age_days = arxiv_cfg.get("max_age_days", 2)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+
+    items: list[dict] = []
+    ns = {"atom": "http://www.w3.org/2005/Atom"}
+
+    for i, cat in enumerate(categories):
+        if i > 0:
+            time.sleep(3)  # arxiv のリクエスト制限を尊重
+        url = (
+            "http://export.arxiv.org/api/query"
+            f"?search_query=cat:{cat}"
+            f"&sortBy=submittedDate&sortOrder=descending"
+            f"&max_results={max_results}"
+        )
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "ai-news-collector/1.0"})
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                root = ET.fromstring(resp.read())
+        except Exception as e:
+            logger.warning("arxiv API failed for %s: %s", cat, e)
+            continue
+
+        for entry in root.findall("atom:entry", ns):
+            title_el = entry.find("atom:title", ns)
+            summary_el = entry.find("atom:summary", ns)
+            published_el = entry.find("atom:published", ns)
+            link_el = entry.find("atom:link[@rel='alternate']", ns)
+            if link_el is None:
+                link_el = entry.find("atom:link", ns)
+            authors = [
+                a.find("atom:name", ns).text
+                for a in entry.findall("atom:author", ns)
+                if a.find("atom:name", ns) is not None
+            ]
+
+            title = (title_el.text or "").strip().replace("\n", " ") if title_el is not None else ""
+            summary = (summary_el.text or "").strip().replace("\n", " ")[:300] if summary_el is not None else ""
+            published_at = published_el.text or "" if published_el is not None else ""
+            paper_url = (link_el.get("href") or "") if link_el is not None else ""
+
+            # 期間フィルタ
+            pub_dt = parse_datetime(published_at)
+            if pub_dt and pub_dt < cutoff:
+                continue
+
+            arxiv_id = hash_url(paper_url)
+            items.append({
+                "id": arxiv_id,
+                "source": "arxiv",
+                "url": paper_url,
+                "title": title,
+                "content": f"{title}\n{summary}",
+                "author": ", ".join(authors[:3]),
+                "published_at": published_at,
+                "collected_at": now_iso(),
+                "arxiv_category": cat,
+                "arxiv_summary": summary,
+                "engagement": {
+                    "likes": 0,
+                    "retweets": 0,
+                    "replies": 0,
+                    "views": 0,
+                    "bookmarks": 0,
+                    "quotes": 0,
+                },
+                "source_name": f"arxiv:{cat}",
+                "priority": "normal",
+                "is_official": False,
+                "is_must_follow": False,
+            })
+
+        logger.info("arxiv %s: %d papers (last %dd)", cat, len([x for x in items if x.get("arxiv_category") == cat]), max_age_days)
+
+    logger.info("arxiv total: %d papers", len(items))
+    return items
+
+
+# ━━━━━━━━━━━━━━━━ HN/arxiv 専用保存 ━━━━━━━━━━━━━━━━
+
+
+def save_hn_jsonl(items: list[dict]) -> str:
+    """data/hn/YYYY-MM-DD.jsonl に追記保存"""
+    hn_dir = data_dir("hn")
+    os.makedirs(hn_dir, exist_ok=True)
+    path = os.path.join(hn_dir, f"{today_str()}.jsonl")
+    # source ごとに既存エントリの重複を避けるため既存IDを読み込む
+    existing_ids: set[str] = set()
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        existing_ids.add(json.loads(line)["id"])
+                    except Exception:
+                        pass
+    new_items = [it for it in items if it["id"] not in existing_ids]
+    with open(path, "a", encoding="utf-8") as f:
+        for item in new_items:
+            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+    logger.info("Saved %d hn/arxiv items → %s", len(new_items), path)
+    return path
+
+
 # ━━━━━━━━━━━━━━━━ 重複排除 & 永続化 ━━━━━━━━━━━━━━━━
 
 
@@ -400,7 +605,7 @@ def _load_latest_daily() -> list[dict]:
 
 
 def collect_all(config: dict) -> tuple[list[dict], dict]:
-    """X/Twitter から収集し、重複排除して保存"""
+    """X/Twitter から収集し、重複排除して保存。HN/arxiv は data/hn/ に別途保存"""
     cache = SeenURLsCache(
         retention_days=config.get("cache", {}).get("seen_urls_retention_days", 7)
     )
@@ -417,4 +622,15 @@ def collect_all(config: dict) -> tuple[list[dict], dict]:
     items = _filter_old_items(items, max_age_days=config.get("collection", {}).get("max_age_days", 7))
     save_daily_jsonl(items)
     cache.save()
+
+    # HN・arxiv は独立して data/hn/ に保存（X分析パイプラインには混ぜない）
+    hn_items: list[dict] = []
+    try:
+        hn_items += collect_hackernews(config)
+        hn_items += collect_arxiv(config)
+        if hn_items:
+            save_hn_jsonl(hn_items)
+    except Exception as e:
+        logger.error("HN/arxiv collection failed: %s", e)
+
     return items, x_meta

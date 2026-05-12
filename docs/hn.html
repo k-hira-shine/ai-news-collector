@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 英語一次情報 (HN + arxiv)</title>
+<style>
+:root {
+  --bg: #0f172a; --surface: #1e293b; --surface2: #334155;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #818cf8;
+  --green: #34d399; --red: #f87171; --yellow: #fbbf24; --blue: #60a5fa;
+  --orange: #fb923c;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
+header { text-align: center; margin-bottom: 2rem; }
+header h1 { font-size: 1.8rem; color: var(--accent); }
+header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
+.nav-links { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }
+.nav-link { display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }
+.nav-link:hover { background: #475569; }
+.stats-bar { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.stat-badge { background: var(--surface); border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 0.9rem; color: var(--muted); }
+.stat-badge span { color: var(--text); font-weight: 700; margin-right: 0.3rem; }
+.columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media (max-width: 760px) { .columns { grid-template-columns: 1fr; } }
+.col-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 2px solid var(--surface2); }
+.col-header h2 { font-size: 1.15rem; color: var(--accent); }
+.col-header .col-count { font-size: 0.85rem; color: var(--muted); }
+.item-card { background: var(--surface); border-radius: 10px; padding: 1rem 1.1rem; margin-bottom: 0.8rem; }
+.item-card:last-child { margin-bottom: 0; }
+.item-title { font-size: 0.97rem; font-weight: 600; margin-bottom: 0.5rem; line-height: 1.5; }
+.item-title a { color: var(--text); text-decoration: none; }
+.item-title a:hover { color: var(--accent); }
+.item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; font-size: 0.82rem; }
+.badge { display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: 600; }
+.badge-score { background: #f59e0b22; color: var(--yellow); }
+.badge-comments { background: #3b82f622; color: var(--blue); }
+.badge-cat { background: #818cf822; color: var(--accent); }
+.meta-author { color: var(--muted); }
+.meta-age { color: var(--muted); margin-left: auto; }
+.hn-link { color: var(--orange); text-decoration: none; font-size: 0.8rem; white-space: nowrap; }
+.hn-link:hover { color: var(--accent); }
+.item-summary { margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
+.empty { text-align: center; color: var(--muted); padding: 3rem 0; font-size: 1rem; }
+@media (max-width: 640px) {
+  header h1 { font-size: 1.3rem; }
+  .nav-link { padding: 0.35rem 0.7rem; font-size: 0.82rem; }
+  .item-card { padding: 0.8rem; }
+  .item-title { font-size: 0.9rem; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>AI 英語一次情報</h1>
+  <div class="updated">Last updated: 2026-05-12 22:42 JST</div>
+  <div class="nav-links">
+    <a class="nav-link" href="index.html">📰 ニュース</a>
+    <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
+    <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
+  </div>
+</header>
+<div class="stats-bar">
+  <div class="stat-badge"><span>4</span>HN 記事</div>
+  <div class="stat-badge"><span>24</span>arxiv 論文</div>
+</div>
+<div class="columns">
+  <div>
+    <div class="col-header">
+      <h2>HackerNews</h2>
+      <span class="col-count">スコア順 · 直近48時間</span>
+    </div>
+    
+<div class="item-card">
+  <div class="item-title"><a href="https://www.reuters.com/sustainability/society-equity/meta-us-employees-organize-protest-against-mouse-tracking-tech-2026-05-12/" target="_blank" rel="noopener">Meta employees protest against mouse tracking tech at US offices</a></div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 50</span>
+    <span class="badge badge-comments">💬 47</span>
+    <span class="meta-author">by delichon</span>
+    <span class="meta-age">1時間前</span>
+    <a href="https://news.ycombinator.com/item?id=48114461" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://decrypt.co/367431/kash-patel-ai-overhaul-fbi-crime-fighting-operations" target="_blank" rel="noopener">Kash Patel Touts AI Overhaul of FBI Crime-Fighting Operations</a></div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 14</span>
+    <span class="badge badge-comments">💬 2</span>
+    <span class="meta-author">by jethronethro</span>
+    <span class="meta-age">2時間前</span>
+    <a href="https://news.ycombinator.com/item?id=48113484" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arstechnica.com/tech-policy/2026/05/will-i-be-ok-teen-died-after-chatgpt-pushed-deadly-mix-of-drugs-lawsuit-says/" target="_blank" rel="noopener">&quot;Will I be OK?&quot; Teen died after ChatGPT pushed deadly mix of drugs, lawsuit says</a></div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 12</span>
+    <span class="badge badge-comments">💬 2</span>
+    <span class="meta-author">by ndr42</span>
+    <span class="meta-age">3時間前</span>
+    <a href="https://news.ycombinator.com/item?id=48113197" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://fortune.com/2026/05/11/ai-automation-layoffs-gartner-study-roi/" target="_blank" rel="noopener">AI isn&#x27;t paying off in the way companies think according to Gartner study</a></div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 12</span>
+    <span class="badge badge-comments">💬 3</span>
+    <span class="meta-author">by 1vuio0pswjnm7</span>
+    <span class="meta-age">3時間前</span>
+    <a href="https://news.ycombinator.com/item?id=48112799" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+  </div>
+  <div>
+    <div class="col-header">
+      <h2>arxiv 新着論文</h2>
+      <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+    </div>
+    
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10938v1" target="_blank" rel="noopener">ELF: Embedded Language Flows</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Keya Hu, Linlu Qiu, Yiyang Lu</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Diffusion and flow-based models have become the de facto approaches for generating continuous data, e.g., in domains such as images and videos. Their success has attracted growing interest in applying them to language modeling. Unlike their image-domain counterparts, today&#x27;s leading diffusion langua</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10934v1" target="_blank" rel="noopener">Variational Inference for Lévy Process-Driven SDEs via Neural Tilting</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Yaman Kindap, Manfred Opper, Benjamin Dupuis</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Modelling extreme events and heavy-tailed phenomena is central to building reliable predictive systems in domains such as finance, climate science, and safety-critical AI. While Lévy processes provide a natural mathematical framework for capturing jumps and heavy tails, Bayesian inference for Lévy-d</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10933v1" target="_blank" rel="noopener">DECO: Sparse Mixture-of-Experts with Dense-Comparable Performance on End-Side Devices</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Chenyang Song, Weilin Zhao, Xu Han</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">While Mixture-of-Experts (MoE) scales model capacity without proportionally increasing computation, its massive total parameter footprint creates significant storage and memory-access bottlenecks, which hinder efficient end-side deployment that simultaneously requires high performance, low computati</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10931v1" target="_blank" rel="noopener">Quantifying Concentration Phenomena of Mean-Field Transformers in the Low-Temperature Regime</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Albert Alcalde, Leon Bungert, Konstantin Riedl</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Transformers with self-attention modules as their core components have become an integral architecture in modern large language and foundation models. In this paper, we study the evolution of tokens in deep encoder-only transformers at inference time which is described in the large-token limit by a </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10923v1" target="_blank" rel="noopener">Dynamic Skill Lifecycle Management for Agentic Reinforcement Learning</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Junhao Shen, Teng Zhang, Xiaoyan Zhao</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Large language model agents increasingly rely on external skills to solve complex tasks, where skills act as modular units that extend their capabilities beyond what parametric memory alone supports. Existing methods assume external skills either accumulate as persistent guidance or internalized int</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10917v1" target="_blank" rel="noopener">Optimal and Scalable MAPF via Multi-Marginal Optimal Transport and Schrödinger Bridges</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Usman A. Khan, Joseph W. Durham</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">We consider anonymous multi-agent path finding (MAPF) where a set of robots is tasked to travel to a set of targets on a finite, connected graph. We show that MAPF can be cast as a special class of multi-marginal optimal transport (MMOT) problems with an underlying Markovian structure, under which t</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10916v1" target="_blank" rel="noopener">Confidence-Guided Diffusion Augmentation for Enhanced Bangla Compound Character Recognition</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Md. Sultan Al Rayhan, Maheen Islam</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Recognition of handwritten Bangla compound characters remains a challenging problem due to complex character structures, large intra-class variation, and limited availability of high-quality annotated data. Existing Bangla handwritten character recognition systems often struggle to generalize across</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10913v1" target="_blank" rel="noopener">Shepherd: A Runtime Substrate Empowering Meta-Agents with a Formalized Execution Trace</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Simon Yu, Derek Chong, Ananjan Nandi</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">We introduce Shepherd, a functional programming model that formalizes meta-agent operations on target agents as functions, with core operations mechanized in Lean. Shepherd records every agent-environment interaction as a typed event in a Git-like execution trace, enabling any past state to be forke</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10912v1" target="_blank" rel="noopener">WildClawBench: A Benchmark for Real-World, Long-Horizon Agent Evaluation</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Shuangrui Ding, Xuanlang Dai, Long Xing</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Large language and vision-language models increasingly power agents that act on a user&#x27;s behalf through command-line interface (CLI) harnesses. However, most agent benchmarks still rely on synthetic sandboxes, short-horizon tasks, mock-service APIs, and final-answer checks, leaving open whether agen</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10910v1" target="_blank" rel="noopener">Equivariant Reinforcement Learning for Clifford Quantum Circuit Synthesis</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Richie Yeung, Aleks Kissinger, Rob Cornish</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">We consider the problem of synthesizing Clifford quantum circuits for devices with all-to-all qubit connectivity. We approach this task as a reinforcement learning problem in which an agent learns to discover a sequence of elementary Clifford gates that reduces a given symplectic matrix representati</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10909v1" target="_blank" rel="noopener">Revisiting Policy Gradients for Restricted Policy Classes: Escaping Myopic Local Optima with $k$-step Policy Gradients</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Alex DeWeese, Guannan Qu</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">This work revisits standard policy gradient methods used on restricted policy classes, which are known to get stuck in suboptimal critical points. We identify an important cause for this phenomenon to be that the policy gradient is itself fundamentally myopic, i.e. it only improves the policy based </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10907v1" target="_blank" rel="noopener">Engineering Robustness into Personal Agents with the AI Workflow Store</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Roxana Geambasu, Mariana Raykova, Pierre Tholoniat</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">The dominant paradigm for AI agents is an &quot;on-the-fly&quot; loop in which agents synthesize plans and execute actions within seconds or minutes in response to user prompts. We argue that this paradigm short-circuits disciplined software engineering (SE) processes -- iterative design, rigorous testing, ad</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10906v1" target="_blank" rel="noopener">DataMaster: Towards Autonomous Data Engineering for Machine Learning</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Yaxin Du, Xiyuan Yang, Zhifan Zhou</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">As model families, training recipes, and compute budgets become increasingly standardized, further gains in machine learning systems depend increasingly on data. Yet data engineering remains largely manual and ad hoc: practitioners repeatedly search for external datasets, adapt them to existing pipe</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10901v1" target="_blank" rel="noopener">Beyond Red-Teaming: Formal Guarantees of LLM Guardrail Classifiers</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Nikita Kezins, Urbas Ekka, Pascal Berrang</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Guardrail Classifiers defend production language models against harmful behavior, but although results seem promising in testing, they provide no formal guarantees. Providing formal guarantees for such models is hard because &quot;harmful behavior&quot; has no natural specification in a discrete input space: </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10899v1" target="_blank" rel="noopener">RubricEM: Meta-RL with Rubric-guided Policy Decomposition beyond Verifiable Rewards</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Gaotang Li, Bhavana Dalvi Mishra, Zifeng Wang</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Training deep research agents, namely systems that plan, search, evaluate evidence, and synthesize long-form reports, pushes reinforcement learning beyond the regime of verifiable rewards. Their outputs lack ground-truth answers, their trajectories span many tool-augmented decisions, and standard po</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10893v1" target="_blank" rel="noopener">Grounded or Guessing? LVLM Confidence Estimation via Blind-Image Contrastive Ranking</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Reza Khanmohammadi, Erfan Miahi, Simerjot Kaur</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Large vision-language models suffer from visual ungroundedness: they can produce a fluent, confident, and even correct response driven entirely by language priors, with the image contributing nothing to the prediction. Existing confidence estimation methods cannot detect this, as they observe model </div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10889v1" target="_blank" rel="noopener">Unmasking On-Policy Distillation: Where It Helps, Where It Hurts, and Why</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Mohammadreza Armandpour, Fatih Ilhan, David Harrison</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">On-policy distillation offers dense, per-token supervision for training reasoning models; however, it remains unclear under which conditions this signal is beneficial and under which it is detrimental. Which teacher model should be used, and in the case of self-distillation, which specific context s</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10888v1" target="_blank" rel="noopener">Shields to Guarantee Probabilistic Safety in MDPs</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Linus Heck, Filip Macák, Roman Andriushchenko</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Shielding is a prominent model-based technique to ensure safety of autonomous agents. Classical shielding aims to ensure that nothing bad ever happens and comes with strong guarantees about safety and maximal permissiveness. However, shielding systems for probabilistic safety, where something bad is</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10886v1" target="_blank" rel="noopener">LoKA: Low-precision Kernel Applications for Recommendation Models At Scale</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Liang Luo, Yinbin Ma, Quanyu Zhu</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Recent GPU generations deliver significantly higher FLOPs using lower-precision arithmetic, such as FP8. While successfully applied to large language models (LLMs), its adoption in large recommendation models (LRMs) has been limited. This is because LRMs are numerically sensitive, dominated by small</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10877v1" target="_blank" rel="noopener">Neural at ArchEHR-QA 2026: One Method Fits All: Unified Prompt Optimization for Clinical QA over EHRs</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Abrar Majeedi, Viswanatha Reddy Gajjala, Sai Prasanna Teja Reddy Bogireddy</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Automated question answering (QA) over electronic health records (EHRs) demands precise evidence retrieval, faithful answer generation, and explicit grounding of answers in clinical notes. In this work, we present Neural1.5, our method for the ArchEHR-QA 2026 shared task at CL4Health@LREC 2026, whic</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10876v1" target="_blank" rel="noopener">AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Edward De Brouwer, Carl Edwards, Alexander Wu</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Recent advances in machine learning and large-scale biological data collections have revived the prospect of building a virtual cell, a computational model of cellular behavior that could accelerate biological discovery. One of the most compelling promises of this vision is the ability to perform in</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10875v1" target="_blank" rel="noopener">Compute Where it Counts: Self Optimizing Language Models</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Yash Akhauri, Mohamed S. Abdelfattah</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Efficient LLM inference research has largely focused on reducing the cost of each decoding step (e.g., using quantization, pruning, or sparse attention), typically applying a uniform computation budget to every generated token. In practice, token difficulty varies widely, so static compression can o</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10863v1" target="_blank" rel="noopener">DGPO: Beyond Pairwise Preferences with Directional Consistent Groupwise Optimization</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Mengyi Deng, Zhiwei Li, Xin Li</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">Although Large Language Models (LLMs) have made remarkable progress, current preference optimization methods still struggle to align directional consistency while preserving reasoning diversity. To address this limitation, we propose Directional-Groupwise Preference Optimization (DGPO), a lightweigh</div>
+</div>
+<div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.10862v1" target="_blank" rel="noopener">RUBEN: Rule-Based Explanations for Retrieval-Augmented LLM Systems</a></div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Joel Rorseth, Parke Godfrey, Lukasz Golab</span>
+    <span class="meta-age">1日前</span>
+  </div>
+  <div class="item-summary">This paper demonstrates RUBEN, an interactive tool for discovering minimal rules to explain the outputs of retrieval-augmented large language models (LLMs) in data-driven applications. We leverage novel pruning strategies to efficiently identify a minimal set of rules that subsume all others. We fur</div>
+</div>
+  </div>
+</div>
+</div>
+</body>
+</html>
