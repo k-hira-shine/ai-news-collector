@@ -144,16 +144,23 @@ money_collection:
   min_followers: 1000
   # 検索クエリ（アカウント指定以外の広域収集）
   search_queries:
-    # 日本語
+    # 日本語：動画収益化
     - "動画編集 収益化 (月収 OR 稼ぐ OR 副業) -filter:retweets"
     - "ショート動画 (稼ぐ OR 収益 OR マネタイズ) 事例 -filter:retweets"
     - "AI動画 (稼ぐ OR 収益化 OR マネタイズ) -filter:retweets"
     - "YouTube 収益化 (やり方 OR 事例 OR 月収) -filter:retweets"
     - "切り抜き動画 (収益 OR 稼ぐ OR 運用代行) -filter:retweets"
-    # 英語
-    - "AI video monetization income case -filter:retweets lang:en"
-    - "YouTube automation channel revenue -filter:retweets lang:en"
-    - "short video TikTok Reels earning income -filter:retweets lang:en"
+    # 日本語：幅広い動画系
+    - "TikTok (収益 OR 稼ぐ OR マネタイズ OR バズる) -filter:retweets lang:ja"
+    - "ライブ配信 (投げ銭 OR 収益 OR スパチャ OR 月収) -filter:retweets lang:ja"
+    - "動画クリエイター (収益 OR 稼ぐ OR 案件 OR PR) -filter:retweets lang:ja"
+    # 英語：faceless channel・automation
+    - "faceless YouTube channel income revenue -filter:retweets lang:en"
+    - "YouTube automation channel monetization -filter:retweets lang:en"
+    - "AI video creator income case study -filter:retweets lang:en"
+    - "TikTok creator fund earning monetize -filter:retweets lang:en"
+    - "short form video revenue Reels TikTok income -filter:retweets lang:en"
+    - "video editing freelance income client -filter:retweets lang:en"
   # 1クエリあたりの最大取得件数
   max_items_per_query: 100
 

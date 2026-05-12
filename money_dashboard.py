@@ -92,6 +92,11 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
     .filter-btn {{ background: #1a1a2e; border: 1px solid #2a2a4a; color: #aaa; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }}
     .filter-btn.active, .filter-btn:hover {{ background: #f0c060; color: #1a1a2e; border-color: #f0c060; font-weight: 600; }}
     .filter-label {{ color: #666; font-size: 0.8rem; margin-right: 4px; }}
+    .sort-bar {{ display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }}
+    .sort-btn {{ background: #1a1a2e; border: 1px solid #2a2a4a; color: #aaa; padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s; }}
+    .sort-btn.active {{ background: #334155; color: #e0e0f0; border-color: #556; font-weight: 600; }}
+    .eng-filter {{ display: flex; align-items: center; gap: 8px; margin-left: auto; font-size: 0.82rem; color: #888; }}
+    .eng-filter select {{ background: #1a1a2e; border: 1px solid #2a2a4a; color: #e0e0f0; padding: 4px 10px; border-radius: 6px; font-size: 0.82rem; cursor: pointer; }}
     .cases-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }}
     .case-card {{ background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }}
     .case-card:hover {{ border-color: #f0c060; box-shadow: 0 0 12px rgba(240,192,96,0.15); }}
@@ -181,6 +186,23 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
     </div>
   </div>
 
+  <!-- 並べ替え・エンゲ率フィルター -->
+  <div class="sort-bar">
+    <span class="filter-label">並べ替え：</span>
+    <button class="sort-btn active" id="sortEngBtn" onclick="setSort('eng', this)">📈 エンゲ率順</button>
+    <button class="sort-btn" id="sortDateBtn" onclick="setSort('date', this)">🕐 新着順</button>
+    <div class="eng-filter">
+      <label for="engSelect">エンゲ率下限：</label>
+      <select id="engSelect" onchange="applyFilters()">
+        <option value="0">制限なし</option>
+        <option value="0.001">0.1% 以上</option>
+        <option value="0.003">0.3% 以上</option>
+        <option value="0.005">0.5% 以上</option>
+        <option value="0.01">1% 以上</option>
+        <option value="0.03">3% 以上</option>
+      </select>
+    </div>
+  </div>
   <!-- フィルターバー -->
   <div class="filter-bar" id="filterBar">
     <span class="filter-label">カテゴリ：</span>
@@ -199,9 +221,9 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
 <footer>動画マネタイズ事例集 — 収集データをもとにGeminiが自動分類</footer>
 
 <script>
-const allCards = document.querySelectorAll('.case-card');
 let activeCategory = 'all';
 let activeRegion = 'all';
+let activeSort = 'eng';
 
 function filterCategory(cat, btn) {{
   activeCategory = cat;
@@ -223,14 +245,40 @@ function filterRegion(region, btn) {{
   applyFilters();
 }}
 
+function setSort(mode, btn) {{
+  activeSort = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}}
+
 function applyFilters() {{
-  allCards.forEach(card => {{
+  const grid = document.getElementById('casesGrid');
+  const engMin = parseFloat(document.getElementById('engSelect').value) || 0;
+  const allCards = Array.from(grid.querySelectorAll('.case-card'));
+
+  // フィルタリング
+  const visible = allCards.filter(card => {{
     const catMatch = activeCategory === 'all' || card.dataset.category === activeCategory;
     const regionMatch = activeRegion === 'all' ||
       (activeRegion === 'jp' && card.dataset.jp === 'true') ||
       (activeRegion === 'global' && card.dataset.jp === 'false');
-    card.style.display = (catMatch && regionMatch) ? '' : 'none';
+    const engMatch = parseFloat(card.dataset.eng || '0') >= engMin;
+    return catMatch && regionMatch && engMatch;
   }});
+
+  // 並べ替え
+  visible.sort((a, b) => {{
+    if (activeSort === 'date') {{
+      return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+    }} else {{
+      return parseFloat(b.dataset.eng || '0') - parseFloat(a.dataset.eng || '0');
+    }}
+  }});
+
+  // DOM更新（非表示はhide、表示は並べ替えた順に）
+  allCards.forEach(c => c.style.display = 'none');
+  visible.forEach(c => {{ c.style.display = ''; grid.appendChild(c); }});
 }}
 </script>
 </body>
@@ -282,7 +330,18 @@ def _render_case_card(case: dict) -> str:
     content_short = raw_content[:200] + "…" if len(raw_content) > 200 else raw_content
     content_escaped = content_short.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
-    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}">
+    # エンゲ率（数値）と日付のdata属性を計算
+    followers = case.get("author_followers") or 1
+    eng_rate = likes / followers
+    date_val = ""
+    if raw_date:
+        try:
+            dt2 = datetime.strptime(raw_date, "%a %b %d %H:%M:%S %z %Y")
+            date_val = dt2.strftime("%Y%m%d%H%M%S")
+        except ValueError:
+            date_val = raw_date[:19].replace("-", "").replace(":", "").replace("T", "").replace(" ", "")
+
+    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}">
   <div class="case-header">
     <span class="case-category">{icon} {category}</span>
     {income_html}

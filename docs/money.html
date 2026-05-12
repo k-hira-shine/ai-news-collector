@@ -23,6 +23,11 @@
     .filter-btn { background: #1a1a2e; border: 1px solid #2a2a4a; color: #aaa; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
     .filter-btn.active, .filter-btn:hover { background: #f0c060; color: #1a1a2e; border-color: #f0c060; font-weight: 600; }
     .filter-label { color: #666; font-size: 0.8rem; margin-right: 4px; }
+    .sort-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+    .sort-btn { background: #1a1a2e; border: 1px solid #2a2a4a; color: #aaa; padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s; }
+    .sort-btn.active { background: #334155; color: #e0e0f0; border-color: #556; font-weight: 600; }
+    .eng-filter { display: flex; align-items: center; gap: 8px; margin-left: auto; font-size: 0.82rem; color: #888; }
+    .eng-filter select { background: #1a1a2e; border: 1px solid #2a2a4a; color: #e0e0f0; padding: 4px 10px; border-radius: 6px; font-size: 0.82rem; cursor: pointer; }
     .cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
     .case-card { background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }
     .case-card:hover { border-color: #f0c060; box-shadow: 0 0 12px rgba(240,192,96,0.15); }
@@ -73,7 +78,7 @@
 <header>
   <div class="header-inner">
     <div>
-      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: 2026-05-12 14:18 JST</span></div>
+      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: 2026-05-12 14:25 JST</span></div>
     </div>
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
@@ -87,7 +92,7 @@
   <!-- 収集基準の説明 -->
   <div class="criteria-box">
     <div class="criteria-title">📋 収集・掲載基準</div>
-    <strong>収集元：</strong>指定アカウント（@fiction_log）＋ 日英8種の検索クエリ &nbsp;|&nbsp;
+    <strong>収集元：</strong>指定アカウント（@fiction_log）＋ 日英14種の検索クエリ &nbsp;|&nbsp;
     <strong>フォロワー：</strong>1,000人以上の投稿のみ採用 &nbsp;|&nbsp;
     <strong>判定：</strong>Gemini AIが「動画を使って稼いでいる・稼げた」具体的事例を自動フィルタリング &nbsp;|&nbsp;
     <strong>蓄積期間：</strong>過去90日分を継続収集（since制限なし）
@@ -112,6 +117,23 @@
     </div>
   </div>
 
+  <!-- 並べ替え・エンゲ率フィルター -->
+  <div class="sort-bar">
+    <span class="filter-label">並べ替え：</span>
+    <button class="sort-btn active" id="sortEngBtn" onclick="setSort('eng', this)">📈 エンゲ率順</button>
+    <button class="sort-btn" id="sortDateBtn" onclick="setSort('date', this)">🕐 新着順</button>
+    <div class="eng-filter">
+      <label for="engSelect">エンゲ率下限：</label>
+      <select id="engSelect" onchange="applyFilters()">
+        <option value="0">制限なし</option>
+        <option value="0.001">0.1% 以上</option>
+        <option value="0.003">0.3% 以上</option>
+        <option value="0.005">0.5% 以上</option>
+        <option value="0.01">1% 以上</option>
+        <option value="0.03">3% 以上</option>
+      </select>
+    </div>
+  </div>
   <!-- フィルターバー -->
   <div class="filter-bar" id="filterBar">
     <span class="filter-label">カテゴリ：</span>
@@ -123,7 +145,7 @@
 
   <!-- 事例グリッド -->
   <div class="cases-grid" id="casesGrid">
-    <div class="case-card" data-category="AI動画生成" data-jp="true">
+    <div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.785684" data-date="20260112064848">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -150,7 +172,7 @@
       <a href="https://x.com/Kaito___AI/status/2010604860132184276" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.136899" data-date="20260115110147">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月30万</span>
@@ -176,7 +198,7 @@ Geminiで月30万を稼ぐ手順。
       <a href="https://x.com/manami_x21/status/2011755688993910815" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.121302" data-date="20251123232550">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 累計1000万円以上</span>
@@ -209,7 +231,7 @@ Geminiで月30万を稼ぐ手順。
       <a href="https://x.com/henik_bisma27/status/1992736380297138444" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.074826" data-date="20260305114007">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月数十万</span>
@@ -240,7 +262,7 @@ Geminiで月30万を稼ぐ手順。
       <a href="https://x.com/aimin_bkh/status/2029522342150615397" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.069277" data-date="20260105123304">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -261,7 +283,7 @@ Here’s how people are…"</div>
       <a href="https://x.com/Oluwabeecroft/status/2008154782649729360" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.055556" data-date="20260511090523">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月100万</span>
@@ -282,7 +304,7 @@ Here’s how people are…"</div>
       <a href="https://x.com/wancoro_xx/status/2053763388795400635" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.051691" data-date="20260302133100">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 日に9万円</span>
@@ -301,7 +323,7 @@ Here’s how people are…"</div>
       <a href="https://x.com/L_go_mrk/status/2028463081807114295" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.033818" data-date="20260508210004">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 月5万円</span>
@@ -332,7 +354,7 @@ Here’s how people are…"</div>
       <a href="https://x.com/manekiti_money/status/2052856079424631019" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.033207" data-date="20260428142845">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -363,7 +385,7 @@ Here’s how people are…"</div>
       <a href="https://x.com/sarasa_take/status/2049133725330333708" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.028583" data-date="20260217084621">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月30万</span>
@@ -388,7 +410,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/yuxtukuri12092/status/2023680406701436995" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.025666" data-date="20260510100001">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月商500万円</span>
@@ -412,7 +434,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/ackey_youtube/status/2053414748608201097" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.022831" data-date="20260511044924">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -444,7 +466,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/okojo_YouTube/status/2053698965938520500" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.022447" data-date="20260423033510">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -462,7 +484,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/Colorfulbldra/status/2047157305775702413" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.020839" data-date="20260206090507">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月収1000万円</span>
@@ -479,7 +501,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/ytk_matsuda/status/2019698860009123877" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.018579" data-date="20260221055339">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -500,7 +522,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/sellthefact2/status/2025086494088782055" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.018166" data-date="20260511021500">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月580万円</span>
@@ -528,7 +550,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/shinrigakulike/status/2053660110678048773" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.017576" data-date="20260427140617">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -547,7 +569,7 @@ Geminiで月30万稼ぐ方法。
       <a href="https://x.com/kuroneko_mikoo/status/2048765683769692612" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.016009" data-date="20260511235157">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 1000万</span>
@@ -578,7 +600,7 @@ Ominiが発表されたらどんな
       <a href="https://x.com/yurunbo/status/2053986500115923029" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.014533" data-date="20260316103200">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     
@@ -600,7 +622,7 @@ Ominiが発表されたらどんな
       <a href="https://x.com/statistics1012/status/2033491464529797389" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.013566" data-date="20260508020307">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 月30万</span>
@@ -635,7 +657,7 @@ YouTubeで収益化までいけた！
       <a href="https://x.com/yuse_75/status/2052569959633744341" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="false">
+</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="false" data-eng="0.013301" data-date="20260212092645">
   <div class="case-header">
     <span class="case-category">📚 動画×教育/コンサル</span>
     <span class="case-income">💰 $100k-500k yearly</span>
@@ -658,7 +680,7 @@ this is the BIGGEST info pro…"</div>
       <a href="https://x.com/imsehej/status/2021878631610593647" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.012814" data-date="20260510230001">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月10万円</span>
@@ -685,7 +707,7 @@ this is the BIGGEST info pro…"</div>
       <a href="https://x.com/osam__AI/status/2053611043692183863" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.012103" data-date="20260421111700">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 月100万〜300万</span>
@@ -718,7 +740,7 @@ this is the BIGGEST info pro…"</div>
       <a href="https://x.com/YMikosawa41094/status/2046548752459014171" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.011822" data-date="20260421211009">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月30万円</span>
@@ -752,7 +774,7 @@ this is the BIGGEST info pro…"</div>
       <a href="https://x.com/yuna_ai115/status/2046698026199286197" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.009265" data-date="20260506090539">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 月15万〜</span>
@@ -779,7 +801,7 @@ YouTube切り抜き　　 35万〜/月
       <a href="https://x.com/tsuntsun2914/status/2051951516744036576" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true">
+</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true" data-eng="0.008999" data-date="20260129221000">
   <div class="case-header">
     <span class="case-category">📚 動画×教育/コンサル</span>
     <span class="case-income">💰 年商約3億円</span>
@@ -805,7 +827,7 @@ YouTube切り抜き　　 35万〜/月
       <a href="https://x.com/ohno_katsuya/status/2016997280981696724" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.008988" data-date="20251231072234">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 年収推定約6億円</span>
@@ -828,7 +850,7 @@ AI動画量産の破壊力がえぐい活用事例をまとめました👇🧵 
       <a href="https://x.com/SuguruKun_ai/status/2006264704961032618" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.008116" data-date="20260423215907">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -861,7 +883,7 @@ AI動画量産の破壊力がえぐい活用事例をまとめました👇🧵 
       <a href="https://x.com/ho_chan_2525/status/2047435121960333450" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.007564" data-date="20260124090535">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月30万</span>
@@ -881,7 +903,7 @@ Geminiで月30万を稼ぐ手順。
       <a href="https://x.com/genkai_syatikuu/status/2014987937688220022" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.006217" data-date="20260510223020">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -906,7 +928,7 @@ https://t.co/2A9OFGNooj"</div>
       <a href="https://x.com/dragonninottayo/status/2053603572802297915" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="false">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="false" data-eng="0.005835" data-date="20251204110447">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 multi 6-figs</span>
@@ -929,7 +951,7 @@ just slides → telegram → $…"</div>
       <a href="https://x.com/fromzerotomill/status/1996536153496035772" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.005088" data-date="20260508040938">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -951,7 +973,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/toteiiiris/status/2052601795583865115" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.004331" data-date="20260511090615">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -982,7 +1004,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/wancoro_xx/status/2053763605620011479" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.004043" data-date="20260510104231">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -1023,7 +1045,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/Naoki_GPT/status/2053425442963767705" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.003702" data-date="20260421101940">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -1048,7 +1070,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/penginadaafi/status/2046534326926573813" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.003515" data-date="20260309085358">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 月10万円 / 月20万</span>
@@ -1080,7 +1102,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/kkk_cun/status/2030930078553808897" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.003457" data-date="20260309093408">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 月商1000万円</span>
@@ -1102,7 +1124,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/ss_uemoto/status/2030940188415861034" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true">
+</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true" data-eng="0.003316" data-date="20260218114829">
   <div class="case-header">
     <span class="case-category">📚 動画×教育/コンサル</span>
     <span class="case-income">💰 月1500~2000万</span>
@@ -1136,7 +1158,7 @@ TikTokフォローよろしくお願いします🙇"</div>
       <a href="https://x.com/Maruo_0314/status/2024088626980946344" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="false">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="false" data-eng="0.003018" data-date="20260402183040">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     
@@ -1159,7 +1181,7 @@ Here's w…"</div>
       <a href="https://x.com/aryanXmahajan/status/2039772519255912940" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.003009" data-date="20251209024600">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 月1.5億円</span>
@@ -1177,7 +1199,7 @@ https://t.co/pFQSOirAWE"</div>
       <a href="https://x.com/statistics1012/status/1998222568789303518" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.002838" data-date="20260508030113">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 月1〜3万円</span>
@@ -1214,7 +1236,7 @@ CapCut/Vrew → 編集
       <a href="https://x.com/kenichi_egao/status/2052584578888675792" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.002774" data-date="20260506093235">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     
@@ -1233,7 +1255,7 @@ https://t.co/3gkgbwdWD7"</div>
       <a href="https://x.com/hirox246/status/2051958294663561605" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.002471" data-date="20260422110637">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -1253,7 +1275,7 @@ https://t.co/3gkgbwdWD7"</div>
       <a href="https://x.com/doga_yabu_s/status/2046908529391669471" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.002290" data-date="20260401104104">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -1272,7 +1294,7 @@ https://t.co/3gkgbwdWD7"</div>
       <a href="https://x.com/Ytautomation6/status/2039291954421215715" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.002238" data-date="20260217030007">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 月500万円</span>
@@ -1297,7 +1319,7 @@ https://t.co/3gkgbwdWD7"</div>
       <a href="https://x.com/ryuzo_jp/status/2023593272250429740" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.002235" data-date="20260501112256">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -1327,7 +1349,7 @@ https://t.co/3gkgbwdWD7"</div>
       <a href="https://x.com/andyoutubeMA/status/2050174123704500389" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.002157" data-date="20251227093000">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 ARR100万円</span>
@@ -1352,7 +1374,7 @@ https://t.co/3gkgbwdWD7"</div>
       <a href="https://x.com/statistics1012/status/2004847222698152287" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.001685" data-date="20260415140345">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 $8k</span>
@@ -1379,7 +1401,7 @@ A viral video with 1M views mig…"</div>
       <a href="https://x.com/MuteeAutomation/status/2044416389398561125" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.001450" data-date="20260510151923">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -1396,7 +1418,7 @@ A viral video with 1M views mig…"</div>
       <a href="https://x.com/ai_kairos_jp/status/2053495120562118936" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.001381" data-date="20260508030735">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -1420,7 +1442,7 @@ A viral video with 1M views mig…"</div>
       <a href="https://x.com/Sterrite_sub/status/2052586181033124148" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.001369" data-date="20260427110006">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 月の粗利100万越え</span>
@@ -1450,7 +1472,7 @@ A viral video with 1M views mig…"</div>
       <a href="https://x.com/firekiboudesu/status/2048718828268650708" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.001313" data-date="20260429143719">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -1478,7 +1500,7 @@ A viral video with 1M views mig…"</div>
       <a href="https://x.com/4610_hotel/status/2049498266719637980" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.001277" data-date="20260511081935">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -1500,7 +1522,7 @@ A viral video with 1M views mig…"</div>
       <a href="https://x.com/take_freelance/status/2053751863087108473" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.001270" data-date="20260104212803">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -1534,7 +1556,7 @@ AIアフィリをやるなら全員これ一択でいい。
       <a href="https://x.com/tyarinrin397/status/2007927025550651850" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true">
+</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true" data-eng="0.001148" data-date="20260407092500">
   <div class="case-header">
     <span class="case-category">📚 動画×教育/コンサル</span>
     <span class="case-income">💰 1億円超</span>
@@ -1566,7 +1588,7 @@ YouTube×コンテンツ販売の組み合わせが
       <a href="https://x.com/tassy_youtube/status/2041447136454189411" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.001037" data-date="20260403234126">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 $5K/month</span>
@@ -1589,7 +1611,7 @@ YouTube×コンテンツ販売の組み合わせが
       <a href="https://x.com/grundstromleo/status/2040213112805093444" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.000979" data-date="20260504070821">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     
@@ -1614,7 +1636,7 @@ YouTube×コンテンツ販売の組み合わせが
       <a href="https://x.com/sorsan_Twitch/status/2051197220142428594" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.000972" data-date="20260421153755">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -1638,7 +1660,7 @@ YouTube×コンテンツ販売の組み合わせが
       <a href="https://x.com/MKzK417/status/2046614414896545960" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.000931" data-date="20260510122434">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -1670,7 +1692,7 @@ https://t.co/MGjUu9lJpz"</div>
       <a href="https://x.com/oku_hashi/status/2053451125404418386" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.000824" data-date="20260422110010">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 月28万</span>
@@ -1691,7 +1713,7 @@ https://t.co/MGjUu9lJpz"</div>
       <a href="https://x.com/doga_yabu_s/status/2046906903507390551" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.000779" data-date="20260506134829">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 半年で40〜60万</span>
@@ -1720,7 +1742,7 @@ SNSでキャバ嬢集客して店舗に紹介する方法なら実績なくて�
       <a href="https://x.com/notermind/status/2052022694343041508" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.000733" data-date="20260510131213">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -1738,7 +1760,7 @@ SNSでキャバ嬢集客して店舗に紹介する方法なら実績なくて�
       <a href="https://x.com/kincade1918/status/2053463117947130206" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.000725" data-date="20251220230102">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 月30万</span>
@@ -1766,7 +1788,7 @@ SNSでキャバ嬢集客して店舗に紹介する方法なら実績なくて�
       <a href="https://x.com/kentyyyy01/status/2002514608754442245" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true">
+</div><div class="case-card" data-category="動画×教育/コンサル" data-jp="true" data-eng="0.000723" data-date="20260503111818">
   <div class="case-header">
     <span class="case-category">📚 動画×教育/コンサル</span>
     <span class="case-income">💰 初月から30万円以上</span>
@@ -1791,7 +1813,7 @@ https://t.co/5Mhlf3BwV3 https://t.co/94oXYlCalj"</div>
       <a href="https://x.com/Mountain_cb/status/2050897734182519151" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.000709" data-date="20260502000601">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -1818,7 +1840,7 @@ https://t.co/5Mhlf3BwV3 https://t.co/94oXYlCalj"</div>
       <a href="https://x.com/amiiii_714/status/2050366161649623071" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.000674" data-date="20260419085952">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -1843,7 +1865,7 @@ https://t.co/5Mhlf3BwV3 https://t.co/94oXYlCalj"</div>
       <a href="https://x.com/vc_koyori/status/2045789465940258870" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.000634" data-date="20260418161734">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -1866,7 +1888,7 @@ The channel's own ad revenue pays the remaining balance. Ov…"</div>
       <a href="https://x.com/williambeaird_/status/2045537230823797202" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.000568" data-date="20251208215300">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 月300万円</span>
@@ -1884,7 +1906,7 @@ https://t.co/4hbg4rOlzp"</div>
       <a href="https://x.com/statistics1012/status/1998148833185026515" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.000561" data-date="20260506142210">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -1903,7 +1925,7 @@ https://t.co/4hbg4rOlzp"</div>
       <a href="https://x.com/3DVR3/status/2052031169294905680" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.000441" data-date="20260423010516">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -1934,7 +1956,7 @@ AIより人間の方がまだ強い領域。
       <a href="https://x.com/tsuntsun2914/status/2047119582096507280" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.000372" data-date="20260511215423">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月14,850ドル</span>
@@ -1961,7 +1983,7 @@ AIより人間の方がまだ強い領域。
       <a href="https://x.com/ingridiasdesou1/status/2053956914133029158" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画編集代行" data-jp="true">
+</div><div class="case-card" data-category="動画編集代行" data-jp="true" data-eng="0.000349" data-date="20260511033721">
   <div class="case-header">
     <span class="case-category">✂️ 動画編集代行</span>
     <span class="case-income">💰 月収100万</span>
@@ -1987,7 +2009,7 @@ AIより人間の方がまだ強い領域。
       <a href="https://x.com/kazumarudrive/status/2053680835317141525" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.000284" data-date="20251220095630">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 月間9000万円以上</span>
@@ -2005,7 +2027,7 @@ https://t.co/BDIyeD8vD3"</div>
       <a href="https://x.com/statistics1012/status/2002317174267126121" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="その他" data-jp="true">
+</div><div class="case-card" data-category="その他" data-jp="true" data-eng="0.000209" data-date="20260402025126">
   <div class="case-header">
     <span class="case-category">💡 その他</span>
     <span class="case-income">💰 月数千円～50億円以上</span>
@@ -2027,7 +2049,7 @@ https://t.co/BDIyeD8vD3"</div>
       <a href="https://x.com/TANANY_VC/status/2039536155310665831" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.000078" data-date="20260216070619">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 年収2倍/2週間で100万円</span>
@@ -2048,7 +2070,7 @@ https://t.co/BDIyeD8vD3"</div>
       <a href="https://x.com/NorichikaHorie/status/2023292844354715753" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="その他" data-jp="true">
+</div><div class="case-card" data-category="その他" data-jp="true" data-eng="0.000071" data-date="20260424004410">
   <div class="case-header">
     <span class="case-category">💡 その他</span>
     <span class="case-income">💰 月100万</span>
@@ -2068,7 +2090,7 @@ https://t.co/BDIyeD8vD3"</div>
       <a href="https://x.com/misojiyuu/status/2047476660308738555" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true">
+</div><div class="case-card" data-category="動画×SaaS/プロダクト" data-jp="true" data-eng="0.000057" data-date="20251219234854">
   <div class="case-header">
     <span class="case-category">💻 動画×SaaS/プロダクト</span>
     <span class="case-income">💰 月80万ドル</span>
@@ -2093,7 +2115,7 @@ https://t.co/BDIyeD8vD3"</div>
       <a href="https://x.com/statistics1012/status/2002164267630408187" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.000052" data-date="20260428125849">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     
@@ -2112,7 +2134,7 @@ https://t.co/BDIyeD8vD3"</div>
       <a href="https://x.com/kureakurea01/status/2049111090991435776" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.000044" data-date="20260417082333">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -2133,7 +2155,7 @@ Instead of being the personali…"</div>
       <a href="https://x.com/saimagnate/status/2045055553689555081" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="false">
+</div><div class="case-card" data-category="AI動画生成" data-jp="false" data-eng="0.000029" data-date="20260409224739">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2151,7 +2173,7 @@ Instead of being the personali…"</div>
       <a href="https://x.com/JulianGoldieSEO/status/2042373906183700983" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="false">
+</div><div class="case-card" data-category="AI動画生成" data-jp="false" data-eng="0.000012" data-date="20260409155317">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2169,7 +2191,7 @@ You don't need to code, sell on the phone, or show your face on camera to earn�
       <a href="https://x.com/JulianGoldieSEO/status/2042269627074675082" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="false">
+</div><div class="case-card" data-category="AI動画生成" data-jp="false" data-eng="0.000006" data-date="20260409110602">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2188,7 +2210,7 @@ This is the last post I'm making about this. 60 minutes from now, The Wednesday 
       <a href="https://x.com/JulianGoldieSEO/status/2042197338199109920" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="false">
+</div><div class="case-card" data-category="AI動画生成" data-jp="false" data-eng="0.000006" data-date="20260409032132">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2205,7 +2227,7 @@ This is the last post I'm making about this. 60 minutes from now, The Wednesday 
       <a href="https://x.com/JulianGoldieSEO/status/2042080442984317092" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="false">
+</div><div class="case-card" data-category="AI動画生成" data-jp="false" data-eng="0.000006" data-date="20260409013922">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2224,7 +2246,7 @@ You don't need another AI tutorial. You need a system that puts money in your po
       <a href="https://x.com/JulianGoldieSEO/status/2042054731892453464" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.000006" data-date="20260405160925">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 $3K–$8K/Mo</span>
@@ -2243,7 +2265,7 @@ Never show your face. Never record your voice. Still earn $3,000–$8,000/month 
       <a href="https://x.com/JulianGoldieSEO/status/2040824134532510168" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true">
+</div><div class="case-card" data-category="ショート動画/Reels/TikTok" data-jp="true" data-eng="0.000000" data-date="20260504100732">
   <div class="case-header">
     <span class="case-category">📱 ショート動画/Reels/TikTok</span>
     <span class="case-income">💰 月10万円</span>
@@ -2277,7 +2299,7 @@ Never show your face. Never record your voice. Still earn $3,000–$8,000/month 
       <a href="https://x.com/Oc4Um/status/2051242313737994274" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.000000" data-date="20260420065339">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2300,7 +2322,7 @@ New episode！
       <a href="https://x.com/beBit_Japan/status/2046120089293094993" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="true">
+</div><div class="case-card" data-category="AI動画生成" data-jp="true" data-eng="0.000000" data-date="20260510064054">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     <span class="case-income">💰 月3万</span>
@@ -2324,7 +2346,7 @@ New episode！
       <a href="https://x.com/ROSE_6682_/status/2053364638671376743" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="その他" data-jp="true">
+</div><div class="case-card" data-category="その他" data-jp="true" data-eng="0.000000" data-date="20260508074757">
   <div class="case-header">
     <span class="case-category">💡 その他</span>
     
@@ -2341,7 +2363,7 @@ New episode！
       <a href="https://x.com/_______KAGAMI/status/2052656737245938058" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.000000" data-date="20260430142840">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 月収益20万円</span>
@@ -2367,7 +2389,7 @@ https://t.co/IKSj31rVWj"</div>
       <a href="https://x.com/rakkomacom/status/2049858476802003297" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="true">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="true" data-eng="0.000000" data-date="20260426023059">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     <span class="case-income">💰 月収50万円</span>
@@ -2396,7 +2418,7 @@ https://t.co/IKSj31rVWj"</div>
       <a href="https://x.com/gassy_bakuro/status/2048228316994498627" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="YouTube収益化" data-jp="false">
+</div><div class="case-card" data-category="YouTube収益化" data-jp="false" data-eng="0.000000" data-date="20260210181846">
   <div class="case-header">
     <span class="case-category">▶️ YouTube収益化</span>
     
@@ -2419,7 +2441,7 @@ What makes a niche "good" for faceless channels:
       <a href="https://x.com/SirBusayoAmusan/status/2021287744513716261" target="_blank" rel="noopener" onclick="event.stopPropagation()">ポストを見る →</a>
     </div>
   </div>
-</div><div class="case-card" data-category="AI動画生成" data-jp="false">
+</div><div class="case-card" data-category="AI動画生成" data-jp="false" data-eng="0.000000" data-date="20260409081709">
   <div class="case-header">
     <span class="case-category">🎬 AI動画生成</span>
     
@@ -2445,9 +2467,9 @@ What makes a niche "good" for faceless channels:
 <footer>動画マネタイズ事例集 — 収集データをもとにGeminiが自動分類</footer>
 
 <script>
-const allCards = document.querySelectorAll('.case-card');
 let activeCategory = 'all';
 let activeRegion = 'all';
+let activeSort = 'eng';
 
 function filterCategory(cat, btn) {
   activeCategory = cat;
@@ -2469,14 +2491,40 @@ function filterRegion(region, btn) {
   applyFilters();
 }
 
+function setSort(mode, btn) {
+  activeSort = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
 function applyFilters() {
-  allCards.forEach(card => {
+  const grid = document.getElementById('casesGrid');
+  const engMin = parseFloat(document.getElementById('engSelect').value) || 0;
+  const allCards = Array.from(grid.querySelectorAll('.case-card'));
+
+  // フィルタリング
+  const visible = allCards.filter(card => {
     const catMatch = activeCategory === 'all' || card.dataset.category === activeCategory;
     const regionMatch = activeRegion === 'all' ||
       (activeRegion === 'jp' && card.dataset.jp === 'true') ||
       (activeRegion === 'global' && card.dataset.jp === 'false');
-    card.style.display = (catMatch && regionMatch) ? '' : 'none';
+    const engMatch = parseFloat(card.dataset.eng || '0') >= engMin;
+    return catMatch && regionMatch && engMatch;
   });
+
+  // 並べ替え
+  visible.sort((a, b) => {
+    if (activeSort === 'date') {
+      return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+    } else {
+      return parseFloat(b.dataset.eng || '0') - parseFloat(a.dataset.eng || '0');
+    }
+  });
+
+  // DOM更新（非表示はhide、表示は並べ替えた順に）
+  allCards.forEach(c => c.style.display = 'none');
+  visible.forEach(c => { c.style.display = ''; grid.appendChild(c); });
 }
 </script>
 </body>
