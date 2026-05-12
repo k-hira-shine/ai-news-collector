@@ -58,14 +58,7 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
     analysis_dir = data_dir("analysis")
     if not os.path.isdir(analysis_dir):
         return []
-    def _sort_key(p: str) -> tuple:
-        base = os.path.basename(p).rsplit(".json", 1)[0]
-        date = base[:10]
-        slot = base.rsplit("_", 1)[-1] if "_" in base else ""
-        slot_order = {"evening": 1, "morning": 0}.get(slot, -1)
-        return (date, slot_order)
-
-    files = sorted(glob(os.path.join(analysis_dir, "*.json")), key=_sort_key, reverse=True)
+    files = sorted(glob(os.path.join(analysis_dir, "*.json")), key=os.path.getmtime, reverse=True)
     results: list[dict] = []
     for f in files[: days * 2]:
         try:
