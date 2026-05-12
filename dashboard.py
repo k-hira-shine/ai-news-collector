@@ -344,7 +344,9 @@ def _render_diagrams(diagrams: list[dict]) -> str:
       <span id="diagramModalTitle" style="color:#fff;font-size:0.95rem;font-weight:600;"></span>
       <button onclick="closeDiagramModal()" style="background:none;border:1px solid #555;color:#fff;padding:4px 12px;border-radius:6px;font-size:0.9rem;cursor:pointer;">✕ 閉じる</button>
     </div>
-    <img id="diagramModalImg" src="" style="width:100%;height:auto;border-radius:8px;display:block;" onclick="event.stopPropagation()">
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;" onclick="event.stopPropagation()">
+      <img id="diagramModalImg" src="" style="max-width:none;width:900px;height:auto;border-radius:8px;display:block;">
+    </div>
   </div>
 </div>
 <script>

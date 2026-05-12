@@ -82,7 +82,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
-  <div class="updated">Last updated: 2026-05-12 14:05 JST</div>
+  <div class="updated">Last updated: 2026-05-12 14:13 JST</div>
   <div class="nav-links">
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
@@ -96,7 +96,9 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
       <span id="diagramModalTitle" style="color:#fff;font-size:0.95rem;font-weight:600;"></span>
       <button onclick="closeDiagramModal()" style="background:none;border:1px solid #555;color:#fff;padding:4px 12px;border-radius:6px;font-size:0.9rem;cursor:pointer;">✕ 閉じる</button>
     </div>
-    <img id="diagramModalImg" src="" style="width:100%;height:auto;border-radius:8px;display:block;" onclick="event.stopPropagation()">
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;" onclick="event.stopPropagation()">
+      <img id="diagramModalImg" src="" style="max-width:none;width:900px;height:auto;border-radius:8px;display:block;">
+    </div>
   </div>
 </div>
 <script>

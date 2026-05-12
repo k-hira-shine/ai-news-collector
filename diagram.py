@@ -118,7 +118,7 @@ class DiagramBuilder:
     ) -> tuple[str, bytes | None]:
         """HTML と PNG を一括生成 (PNG は Playwright 依存なので失敗可)"""
         html = self.build_html(analysis, slot=slot, date=date, dashboard_url=dashboard_url)
-        png = self.build_png(html, width=390) if render_png else None
+        png = self.build_png(html, width=900) if render_png else None
         return html, png
 
     # ── 正規化ヘルパ ─────────────────────────────────────────────
