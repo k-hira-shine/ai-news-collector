@@ -57,13 +57,11 @@ def analyze_money_cases(items: list[dict], config: dict) -> list[dict]:
         return []
 
     try:
-        import google.generativeai as genai
-        from google.generativeai.types import GenerationConfig
+        from google import genai  # noqa: F401
     except ImportError:
-        logger.warning("google-generativeai not installed")
+        logger.warning("google-genai not installed")
         return []
 
-    genai.configure(api_key=api_key)
     model_name = config.get("analysis", {}).get("models", {}).get("stage1_filter", "gemini-2.5-pro")
 
     # バッチサイズを50件に分割して処理
@@ -80,9 +78,11 @@ def analyze_money_cases(items: list[dict], config: dict) -> list[dict]:
 
 
 def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
-    """50件以下のバッチをGeminiで分析"""
-    import google.generativeai as genai
-    from google.generativeai.types import GenerationConfig
+    """50件以下のバッチをGeminiで分析（google-genai 新SDK使用）"""
+    from google import genai
+    from google.genai import types
+
+    client = genai.Client(api_key=api_key)
 
     posts_text = ""
     for item in items:
@@ -127,19 +127,21 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 """
 
     try:
-        model = genai.GenerativeModel(
-            model_name,
-            generation_config=GenerationConfig(
-                response_mime_type="application/json",
-                response_schema=MONEY_CASE_SCHEMA,
-            ),
+        thinking_budget = config.get("analysis", {}).get("thinking_budget", {}).get("stage1", 128)
+        response = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config={
+                "thinking_config": {"thinking_budget": thinking_budget},
+                "response_mime_type": "application/json",
+                "response_json_schema": MONEY_CASE_SCHEMA,
+                "http_options": types.HttpOptions(timeout=300_000),
+            },
         )
-        response = model.generate_content(prompt)
         result = json.loads(response.text)
         raw_cases = result.get("cases", [])
 
-        # is_money_case=True のものだけ返す
-        # post_id を元に元データを紐付ける
+        # is_money_case=True のものだけ返す・post_id で元データを紐付ける
         id_to_item = {item["id"]: item for item in items}
         money_cases = []
         for case in raw_cases:
