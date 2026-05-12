@@ -71,6 +71,14 @@ def render_tweet(rank: int, t: dict, median: float | None) -> str:
 
 def build(gh_pat: str = "") -> None:
     gh_pat = gh_pat or os.environ.get("GH_PAT", "")
+
+    try:
+        import sys as _sys
+        _sys.path.insert(0, str(Path(__file__).parent))
+        from utils import STATUS_BANNER_HTML as STATUS_BANNER  # noqa: F401
+    except Exception:
+        STATUS_BANNER = ""
+
     if not BUZZ_JSON.exists():
         print(f"buzz.json が見つかりません: {BUZZ_JSON}")
         return
@@ -334,6 +342,7 @@ async function addAccount() {{
   }}
 }}
 </script>
+{STATUS_BANNER}
 </body>
 </html>"""
 

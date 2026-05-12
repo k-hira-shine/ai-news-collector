@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 from glob import glob
 from html import escape
 
-from utils import data_dir
+from utils import data_dir, STATUS_BANNER_HTML
 
 logger = logging.getLogger("ai-news.dashboard")
 
@@ -78,6 +78,7 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
 def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | None = None) -> str:
     JST = timezone(timedelta(hours=9))
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
+    STATUS_BANNER = STATUS_BANNER_HTML
 
     diagrams = diagrams or []
     if not latest:
@@ -198,6 +199,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </header>
 {body}
 </div>
+{STATUS_BANNER}
 </body>
 </html>"""
 
@@ -471,6 +473,7 @@ def generate_strategy_page(output_path: str) -> None:
 def _render_strategy_html(latest: dict | None, all_analyses: list[dict] | None = None) -> str:
     JST = timezone(timedelta(hours=9))
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
+    STATUS_BANNER = STATUS_BANNER_HTML
     all_analyses = all_analyses or []
 
     if not latest:
@@ -608,6 +611,7 @@ document.querySelectorAll('.selector-item').forEach(function(el) {{
   }});
 }});
 </script>
+{STATUS_BANNER}
 </body>
 </html>"""
 

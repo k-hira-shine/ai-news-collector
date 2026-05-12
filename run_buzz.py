@@ -228,11 +228,14 @@ def main() -> None:
 
     # 実行ログ記録
     try:
-        from utils import log_run
+        from utils import log_run, write_run_status
         total_tweets = sum(len(ac.get("tweets", [])) for ac in existing.get("accounts", []))
+        accounts_count = len(existing.get("accounts", []))
         log_run("buzz", "success",
                 items_collected=total_tweets,
-                extra={"accounts": len(existing.get("accounts", []))})
+                extra={"accounts": accounts_count})
+        write_run_status("buzz", "success",
+                         extra={"items_collected": total_tweets, "accounts": accounts_count})
     except Exception as e:
         logger.warning("log_run failed: %s", e)
 

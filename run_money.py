@@ -40,7 +40,7 @@ def main() -> None:
 
     config = load_config()
     t0 = time.time()
-    from utils import log_run
+    from utils import log_run, write_run_status
 
     # ── ページ生成のみ ─────────────────────────────────
     if args.page_only:
@@ -116,6 +116,8 @@ def main() -> None:
         mode = "analyze-only" if args.analyze_only else "full"
         log_run("money", "success", elapsed_sec=elapsed, items_collected=collected,
                 items_analyzed=analyzed, apify_cost_usd=apify_cost, extra={"mode": mode})
+        write_run_status("money", "success",
+                         extra={"items_collected": collected, "items_analyzed": analyzed, "mode": mode})
         logger.info("=== Complete in %.1fs ===", elapsed)
 
     except Exception as e:
@@ -123,6 +125,7 @@ def main() -> None:
         logger.exception("Unexpected error: %s", e)
         log_run("money", "error", elapsed_sec=elapsed, items_collected=collected,
                 apify_cost_usd=apify_cost, error=str(e))
+        write_run_status("money", "error", error=str(e)[:200])
         sys.exit(1)
 
 

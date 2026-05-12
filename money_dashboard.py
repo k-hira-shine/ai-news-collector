@@ -7,6 +7,7 @@ docs/money.html を生成する。
 import json
 import logging
 import os
+import sys
 from datetime import datetime, timedelta, timezone
 
 logger = logging.getLogger("ai-news.money_dashboard")
@@ -46,6 +47,13 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
     config = config or {}
     now_jst = datetime.now(JST)
     now_str = now_jst.strftime("%Y-%m-%d %H:%M JST")
+
+    try:
+        _script_dir = os.path.dirname(os.path.abspath(__file__))
+        sys.path.insert(0, _script_dir)
+        from utils import STATUS_BANNER_HTML as STATUS_BANNER  # noqa: F401
+    except Exception:
+        STATUS_BANNER = ""
 
     # カテゴリ別に集計
     by_category: dict[str, list[dict]] = {}
@@ -312,6 +320,7 @@ function applyFilters() {{
   visible.forEach(c => {{ c.style.display = ''; grid.appendChild(c); }});
 }}
 </script>
+{STATUS_BANNER}
 </body>
 </html>"""
 

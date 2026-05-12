@@ -151,6 +151,102 @@ def _purge_old_logs(log_dir: str, keep_days: int = 30) -> None:
             logging.getLogger("ai-news").info("Purged old log: %s", fname)
 
 
+STATUS_BANNER_HTML = """
+<div id="runStatusBanner" style="display:none;position:fixed;bottom:16px;right:16px;z-index:8888;max-width:340px;">
+  <div id="runStatusInner" style="border-radius:10px;padding:10px 14px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;" onclick="document.getElementById('runStatusBanner').style.display='none'">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span id="runStatusIcon" style="font-size:1.1rem;"></span>
+      <div>
+        <div id="runStatusTitle" style="font-weight:700;"></div>
+        <div id="runStatusDetail" style="opacity:0.8;font-size:0.78rem;margin-top:2px;"></div>
+      </div>
+      <span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  fetch('run_status.json?_=' + Date.now())
+    .then(r => r.ok ? r.json() : null)
+    .catch(() => null)
+    .then(data => {
+      if (!data) return;
+      const banner = document.getElementById('runStatusBanner');
+      const inner = document.getElementById('runStatusInner');
+      const icon = document.getElementById('runStatusIcon');
+      const title = document.getElementById('runStatusTitle');
+      const detail = document.getElementById('runStatusDetail');
+      const overall = data.overall || 'success';
+      if (overall === 'success') return; // 正常時は非表示
+      if (overall === 'error') {
+        inner.style.background = '#2d1515';
+        inner.style.border = '1px solid #f87171';
+        inner.style.color = '#fecaca';
+        icon.textContent = '🚨';
+        title.textContent = 'エラーが発生しています';
+      } else {
+        inner.style.background = '#2d2510';
+        inner.style.border = '1px solid #fbbf24';
+        inner.style.color = '#fef3c7';
+        icon.textContent = '⚠️';
+        title.textContent = '警告があります';
+      }
+      const errWfs = Object.entries(data.workflows || {})
+        .filter(([, v]) => v.status !== 'success')
+        .map(([k, v]) => `${k}: ${v.error || v.status}`);
+      detail.textContent = errWfs.join(' / ') || data.updated_at;
+      banner.style.display = 'block';
+    });
+})();
+</script>
+"""
+
+
+def write_run_status(workflow: str, status: str, *, error: str = "", extra: dict | None = None) -> None:
+    """docs/run_status.json に最新の実行状態を書き出す（ブラウザ側で読み込む用）"""
+    status_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "docs", "run_status.json"
+    )
+    JST = zoneinfo.ZoneInfo("Asia/Tokyo")
+    now = datetime.now(JST)
+
+    # 既存のステータスを読み込んでマージ
+    existing: dict = {}
+    try:
+        if os.path.exists(status_path):
+            with open(status_path, encoding="utf-8") as f:
+                existing = _json.load(f)
+    except Exception:
+        pass
+
+    workflows = existing.get("workflows", {})
+    workflows[workflow] = {
+        "status": status,           # "success" | "warning" | "error"
+        "ts": now.isoformat(),
+        "time": now.strftime("%Y-%m-%d %H:%M JST"),
+        "error": error,
+        **(extra or {}),
+    }
+
+    # 全体のステータス（1つでもerrorがあればerror、warningがあればwarning）
+    all_statuses = [v["status"] for v in workflows.values()]
+    if "error" in all_statuses:
+        overall = "error"
+    elif "warning" in all_statuses:
+        overall = "warning"
+    else:
+        overall = "success"
+
+    output = {
+        "overall": overall,
+        "updated_at": now.strftime("%Y-%m-%d %H:%M JST"),
+        "workflows": workflows,
+    }
+    os.makedirs(os.path.dirname(status_path), exist_ok=True)
+    with open(status_path, "w", encoding="utf-8") as f:
+        _json.dump(output, f, ensure_ascii=False, indent=2)
+
+
 def read_run_logs(days: int = 7) -> list[dict]:
     """直近 days 日分のログレコードを新しい順で返す"""
     log_dir = data_dir("logs")

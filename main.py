@@ -7,7 +7,7 @@ import time
 
 import yaml
 
-from utils import log_run, setup_logging, time_slot, today_str
+from utils import log_run, setup_logging, time_slot, today_str, write_run_status
 
 
 def load_config(path: str = "config.yaml") -> dict:
@@ -182,13 +182,14 @@ def main() -> None:
     logger.info("%s AI News Collector 完了 (%ds, %d件収集)", status_icon, int(elapsed), stats["total"])
 
     log_status = "warning" if anomalies else "success"
+    error_msg = "; ".join(a["title"] for a in anomalies) if anomalies else ""
     log_run(
         "collect",
         log_status,
         elapsed_sec=elapsed,
         items_collected=stats["total"],
         apify_cost_usd=stats["apify_cost_usd"],
-        error="; ".join(a["title"] for a in anomalies) if anomalies else "",
+        error=error_msg,
         extra={
             "mode": "analyze-only" if args.analyze_only else "full",
             "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0),
@@ -196,6 +197,9 @@ def main() -> None:
             "anomalies": len(anomalies),
         },
     )
+    write_run_status("collect", log_status, error=error_msg,
+                     extra={"items_collected": stats["total"],
+                            "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0)})
 
     if anomalies:
         logger.warning("⚠️ 健全性アラート %d 件", len(anomalies))
