@@ -60,15 +60,10 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          STASH_CREATED=0
-          if [ -n "$(git status --porcelain -- data docs config.yaml)" ]; then
-            git stash push --include-untracked --message "buzz-data" -- data docs config.yaml
-            STASH_CREATED=1
-          fi
-          git pull --rebase
-          if [ "$STASH_CREATED" -eq 1 ]; then
-            git stash pop
-          fi
           git add data/buzz.json docs/buzz.html config.yaml
           git diff --staged --quiet || git commit -m "buzz: $(date -u +%Y-%m-%d_%H%M) ${{ github.event.inputs.account }}"
-          git push
+          for i in 1 2 3; do
+            git push && break
+            echo "Push failed (attempt $i), retrying after pull --rebase..."
+            git pull --rebase
+          done

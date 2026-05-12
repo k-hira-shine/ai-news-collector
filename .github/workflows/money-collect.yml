@@ -59,15 +59,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          STASH_CREATED=0
-          if [ -n "$(git status --porcelain -- data docs)" ]; then
-            git stash push --include-untracked --message "money-data" -- data docs
-            STASH_CREATED=1
-          fi
-          git pull --rebase
-          if [ "$STASH_CREATED" -eq 1 ]; then
-            git stash pop
-          fi
           git add data/ docs/
           git diff --staged --quiet || git commit -m "money: $(date -u +%Y-%m-%d_%H%M)"
-          git push
+          # push失敗時は pull --rebase して最大3回リトライ
+          for i in 1 2 3; do
+            git push && break
+            echo "Push failed (attempt $i), retrying after pull --rebase..."
+            git pull --rebase
+          done
