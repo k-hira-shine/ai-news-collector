@@ -556,7 +556,7 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
                 f'{_source_links_html(related)}'
                 f'</div>'
             )
-        parts.append(f'<div class="card"><h2>🐦 X投稿ネタ</h2>{"".join(items_html)}</div>')
+        parts.append(f'<div class="card"><h2>📣 投稿ネタ</h2>{"".join(items_html)}</div>')
 
     # ── ビジネス活用 ───────────────────────────────────────────────
     biz_items = strategy.get("business_insights", [])
