@@ -143,6 +143,7 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
         raw_cases = result.get("cases", [])
 
         # is_money_case=True のものだけ返す・post_id で元データを紐付ける
+        min_followers = config.get("money_collection", {}).get("min_followers", 1000)
         id_to_item = {item["id"]: item for item in items}
         money_cases = []
         for case in raw_cases:
@@ -151,6 +152,10 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
             post_id = case.get("post_id", "")
             original = id_to_item.get(post_id, {})
             if not original:
+                continue
+            # フォロワー数フィルター
+            followers = original.get("author_followers") or 0
+            if followers < min_followers:
                 continue
             merged = {**original, **case}
             money_cases.append(merged)
