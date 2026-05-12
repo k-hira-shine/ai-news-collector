@@ -358,13 +358,21 @@ def _render_diagrams(diagrams: list[dict]) -> str:
                 f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
             )
     modal = '''
-<div id="diagramModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;touch-action:pan-x pan-y pinch-zoom;">
-  <div style="position:absolute;top:12px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 16px;z-index:10000;">
-    <span id="diagramModalTitle" style="color:#fff;font-size:0.9rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.8);"></span>
-    <button onclick="closeDiagramModal()" style="background:rgba(0,0,0,0.6);border:1px solid #888;color:#fff;padding:6px 14px;border-radius:6px;font-size:0.9rem;cursor:pointer;">✕ 閉じる</button>
+<div id="diagramModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:9999;">
+  <div style="position:absolute;top:10px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 14px;z-index:10000;pointer-events:none;">
+    <span id="diagramModalTitle" style="color:#fff;font-size:0.85rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.9);pointer-events:none;"></span>
+    <button id="diagramCloseBtn" onclick="closeDiagramModal()" style="pointer-events:all;background:rgba(0,0,0,0.7);border:1px solid #888;color:#fff;padding:5px 12px;border-radius:6px;font-size:0.85rem;cursor:pointer;">✕ 閉じる</button>
   </div>
-  <div id="diagramModalScroll" style="position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;padding-top:52px;padding-bottom:16px;padding-left:16px;padding-right:16px;">
-    <img id="diagramModalImg" src="" style="width:100%;max-width:900px;height:auto;border-radius:8px;display:block;margin:0 auto;">
+  <!-- 初期表示: 全体fit表示 -->
+  <div id="diagramFitView" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-top:44px;padding-bottom:8px;">
+    <img id="diagramModalImg" src="" alt="" style="max-width:100%;max-height:100%;width:auto;height:auto;border-radius:6px;display:block;cursor:zoom-in;" onclick="enterZoomMode()" title="タップで拡大">
+  </div>
+  <!-- ズームモード: スクロール表示 -->
+  <div id="diagramZoomView" style="display:none;position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;padding-top:44px;">
+    <img id="diagramZoomImg" src="" alt="" style="width:900px;height:auto;display:block;border-radius:6px;cursor:zoom-out;" onclick="exitZoomMode()" title="タップで縮小">
+  </div>
+  <div style="position:absolute;bottom:10px;left:0;right:0;text-align:center;pointer-events:none;">
+    <span id="diagramHint" style="color:#aaa;font-size:0.75rem;text-shadow:0 1px 2px rgba(0,0,0,0.9);">タップで拡大 / ピンチズーム可</span>
   </div>
 </div>
 <script>
@@ -373,18 +381,34 @@ function isMobile() {
 }
 function openDiagram(pngSrc, htmlHref, title) {
   if (isMobile()) {
-    // スマホ → PNG をモーダル表示
-    document.getElementById('diagramModalImg').src = pngSrc;
+    var img = document.getElementById('diagramModalImg');
+    var zimg = document.getElementById('diagramZoomImg');
+    img.src = pngSrc;
+    zimg.src = pngSrc;
     document.getElementById('diagramModalTitle').textContent = title;
+    document.getElementById('diagramFitView').style.display = 'flex';
+    document.getElementById('diagramZoomView').style.display = 'none';
+    document.getElementById('diagramHint').textContent = 'タップで拡大 / ピンチズーム可';
     document.getElementById('diagramModal').style.display = 'block';
     document.body.style.overflow = 'hidden';
   } else {
-    // PC → HTML を新タブで開く
     window.open(htmlHref, '_blank', 'noopener');
   }
 }
+function enterZoomMode() {
+  document.getElementById('diagramFitView').style.display = 'none';
+  document.getElementById('diagramZoomView').style.display = 'block';
+  document.getElementById('diagramHint').textContent = 'タップで全体表示に戻る';
+}
+function exitZoomMode() {
+  document.getElementById('diagramZoomView').style.display = 'none';
+  document.getElementById('diagramFitView').style.display = 'flex';
+  document.getElementById('diagramHint').textContent = 'タップで拡大 / ピンチズーム可';
+}
 function closeDiagramModal() {
   document.getElementById('diagramModal').style.display = 'none';
+  document.getElementById('diagramFitView').style.display = 'flex';
+  document.getElementById('diagramZoomView').style.display = 'none';
   document.body.style.overflow = '';
 }
 </script>'''
