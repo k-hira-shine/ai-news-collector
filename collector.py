@@ -380,6 +380,10 @@ def collect_hackernews(config: dict) -> list[dict]:
             break
 
     logger.info("HackerNews: %d items (min_score=%d, last %dh)", len(items), min_score, max_age_hours)
+
+    if items:
+        _translate_hn_items(items)
+
     return items
 
 
@@ -475,6 +479,44 @@ def collect_arxiv(config: dict) -> list[dict]:
         _translate_arxiv_items(items)
 
     return items
+
+
+def _translate_hn_items(items: list[dict]) -> None:
+    """Gemini Flash でHNタイトルをまとめて日本語訳（in-place）"""
+    gemini_key = os.environ.get("GEMINI_API_KEY")
+    if not gemini_key:
+        return
+    try:
+        from google import genai
+        client = genai.Client(api_key=gemini_key)
+    except Exception as e:
+        logger.warning("Gemini import failed — skipping HN translation: %s", e)
+        return
+
+    lines = [f"[{i}] {item.get('title', '')}" for i, item in enumerate(items)]
+    prompt = (
+        "以下のHackerNewsの英語記事タイトルを日本語に翻訳してください。\n"
+        "各タイトルを [番号] 翻訳タイトル の形式で返してください。\n"
+        "番号・形式は必ず元と一致させてください。余計な説明は不要です。\n\n"
+        + "\n".join(lines)
+    )
+
+    try:
+        resp = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
+        text = resp.text or ""
+        import re as _re
+        pattern = _re.compile(r'\[(\d+)\]\s*(.+)')
+        for m in pattern.finditer(text):
+            idx = int(m.group(1))
+            if 0 <= idx < len(items):
+                items[idx]["title_ja"] = m.group(2).strip()
+        translated = sum(1 for it in items if it.get("title_ja"))
+        logger.info("HN translation: %d/%d items translated", translated, len(items))
+    except Exception as e:
+        logger.warning("HN translation failed: %s", e)
 
 
 def _translate_arxiv_items(items: list[dict]) -> None:

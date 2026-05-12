@@ -77,7 +77,11 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
     hn_cards_html = ""
     if hn_items:
         for item in hn_items:
-            title = escape(item.get("title", ""))
+            title_ja = item.get("title_ja", "")
+            title_en = escape(item.get("title", ""))
+            title_display = escape(title_ja) if title_ja else title_en
+            sub_title_html = f'<div class="item-title-en">{title_en}</div>' if title_ja else ""
+
             url = escape(item.get("url", "#"))
             hn_url = escape(item.get("hn_item_url", "#"))
             author = escape(item.get("author", ""))
@@ -86,7 +90,8 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
             age = _fmt_date(item.get("published_at", ""))
             hn_cards_html += f"""
 <div class="item-card">
-  <div class="item-title"><a href="{url}" target="_blank" rel="noopener">{title}</a></div>
+  <div class="item-title"><a href="{url}" target="_blank" rel="noopener">{title_display}</a></div>
+  {sub_title_html}
   <div class="item-meta">
     <span class="badge badge-score">▲ {points}</span>
     <span class="badge badge-comments">💬 {comments}</span>
