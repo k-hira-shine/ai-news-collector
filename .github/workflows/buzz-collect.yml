@@ -14,7 +14,7 @@ on:
   repository_dispatch:
     types: [buzz-add-account]
   schedule:
-    - cron: '0 17 * * *'     # JST 02:00（毎日全アカウント更新）
+    - cron: '10 17 * * *'    # JST 02:10（毎日全アカウント更新）
 
 concurrency:
   group: buzz-collector
@@ -67,5 +67,5 @@ jobs:
           for i in 1 2 3; do
             git push && break
             echo "Push failed (attempt $i), retrying after pull --rebase..."
-            git pull --rebase
+            git pull --rebase && sleep 5
           done
