@@ -411,7 +411,21 @@ def _render_case_card(case: dict) -> str:
     views = case.get("engagement", {}).get("views", 0)
 
     tools_html = "".join(f'<span class="tool-tag">{t}</span>' for t in tools[:6])
-    income_html = f'<span class="case-income">💰 {income}</span>' if income else ""
+    # ドル表記は円換算を併記
+    income_display = income
+    if income:
+        import re as _re
+        if _re.search(r'\$|USD|dollar', income, _re.I):
+            jpy = _parse_income_monthly_jpy(income)
+            if jpy > 0:
+                if jpy >= 100_000_000:
+                    jpy_str = f"約{jpy//100_000_000}億円"
+                elif jpy >= 10_000:
+                    jpy_str = f"約{jpy//10_000}万円"
+                else:
+                    jpy_str = f"約{jpy:,}円"
+                income_display = f"{income}（{jpy_str}/月）"
+    income_html = f'<span class="case-income">💰 {income_display}</span>' if income_display else ""
     views_str = f"{views:,}" if views else ""
     # 元ポスト本文（最大200文字）
     raw_content = case.get("content") or case.get("title") or ""
