@@ -15,32 +15,32 @@ logger = logging.getLogger("ai-news.build_hn")
 HN_DATA_DIR = data_dir("hn")
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "docs", "hn.html")
 
+CAT_LABELS = {"cs.AI": "AI全般", "cs.LG": "機械学習", "cs.CL": "自然言語処理"}
 
-def load_hn_items(days: int = 7) -> list[dict]:
-    """data/hn/ から直近 days 日分を読み込んで返す"""
+
+def load_all_dates(days: int = 14) -> dict[str, list[dict]]:
+    """data/hn/ から直近 days 日分を日付ごとに返す {date_str: [items]}"""
     if not os.path.isdir(HN_DATA_DIR):
-        return []
+        return {}
     files = sorted(glob(os.path.join(HN_DATA_DIR, "*.jsonl")), reverse=True)
-    items: list[dict] = []
-    seen_ids: set[str] = set()
+    result: dict[str, list[dict]] = {}
     for f in files[:days]:
+        date_str = os.path.basename(f).replace(".jsonl", "")
+        items: list[dict] = []
         with open(f, encoding="utf-8") as fh:
             for line in fh:
                 line = line.strip()
                 if not line:
                     continue
                 try:
-                    item = json.loads(line)
-                    if item["id"] not in seen_ids:
-                        seen_ids.add(item["id"])
-                        items.append(item)
+                    items.append(json.loads(line))
                 except Exception:
                     continue
-    return items
+        result[date_str] = items
+    return result
 
 
 def _fmt_date(iso: str) -> str:
-    """ISO文字列を表示用の短い形式に変換"""
     try:
         dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
         now = datetime.now(timezone.utc)
@@ -50,46 +50,23 @@ def _fmt_date(iso: str) -> str:
             return "1時間以内"
         if hours < 24:
             return f"{hours}時間前"
-        days = diff.days
-        return f"{days}日前"
+        return f"{diff.days}日前"
     except Exception:
         return iso[:10] if iso else ""
 
 
-def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
-    items = load_hn_items(days=7)
-    hn_items = sorted(
-        [i for i in items if i.get("source") == "hn"],
-        key=lambda x: x["engagement"].get("likes", 0),
-        reverse=True,
-    )
-    arxiv_items = sorted(
-        [i for i in items if i.get("source") == "arxiv"],
-        key=lambda x: x.get("published_at", ""),
-        reverse=True,
-    )
-
-    now_jst = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M JST")
-    hn_count = len(hn_items)
-    arxiv_count = len(arxiv_items)
-
-    # ── HN カード HTML ────────────────────────────────
-    hn_cards_html = ""
-    if hn_items:
-        for item in hn_items:
-            title_ja = item.get("title_ja", "")
-            title_en = escape(item.get("title", ""))
-            title_display = escape(title_ja) if title_ja else title_en
-            sub_title_html = f'<div class="item-title-en">{title_en}</div>' if title_ja else ""
-
-            url = escape(item.get("url", "#"))
-            hn_url = escape(item.get("hn_item_url", "#"))
-            author = escape(item.get("author", ""))
-            points = item["engagement"].get("likes", 0)
-            comments = item["engagement"].get("replies", 0)
-            age = _fmt_date(item.get("published_at", ""))
-            hn_cards_html += f"""
-<div class="item-card">
+def _hn_card(item: dict) -> str:
+    title_ja = item.get("title_ja", "")
+    title_en = escape(item.get("title", ""))
+    title_display = escape(title_ja) if title_ja else title_en
+    sub_title_html = f'<div class="item-title-en">{title_en}</div>' if title_ja else ""
+    url = escape(item.get("url", "#"))
+    hn_url = escape(item.get("hn_item_url", "#"))
+    author = escape(item.get("author", ""))
+    points = item.get("engagement", {}).get("likes", 0)
+    comments = item.get("engagement", {}).get("replies", 0)
+    age = _fmt_date(item.get("published_at", ""))
+    return f"""<div class="item-card">
   <div class="item-title"><a href="{url}" target="_blank" rel="noopener">{title_display}</a></div>
   {sub_title_html}
   <div class="item-meta">
@@ -100,33 +77,23 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
     <a href="{hn_url}" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
   </div>
 </div>"""
-    else:
-        hn_cards_html = '<div class="empty">データなし（次回の収集をお待ちください）</div>'
 
-    # ── arxiv カード HTML ─────────────────────────────
-    arxiv_cards_html = ""
-    cat_labels = {"cs.AI": "AI全般", "cs.LG": "機械学習", "cs.CL": "自然言語処理"}
-    if arxiv_items:
-        for item in arxiv_items:
-            # 日本語訳があれば優先、なければ英語をそのまま表示
-            title_ja = item.get("title_ja", "")
-            title_en = escape(item.get("title", ""))
-            title_display = escape(title_ja) if title_ja else title_en
-            summary_ja = item.get("arxiv_summary_ja", "")
-            summary_en = item.get("arxiv_summary", "")
-            summary_display = escape(summary_ja) if summary_ja else escape(summary_en)
 
-            url = escape(item.get("url", "#"))
-            author = escape(item.get("author", ""))
-            cat = item.get("arxiv_category", "")
-            cat_label = escape(cat_labels.get(cat, cat))
-            age = _fmt_date(item.get("published_at", ""))
-
-            # 英語タイトルは小さくサブ表示
-            sub_title_html = f'<div class="item-title-en">{title_en}</div>' if title_ja else ""
-
-            arxiv_cards_html += f"""
-<div class="item-card">
+def _arxiv_card(item: dict) -> str:
+    title_ja = item.get("title_ja", "")
+    title_en = escape(item.get("title", ""))
+    title_display = escape(title_ja) if title_ja else title_en
+    sub_title_html = f'<div class="item-title-en">{title_en}</div>' if title_ja else ""
+    summary_ja = item.get("arxiv_summary_ja", "")
+    summary_en = item.get("arxiv_summary", "")
+    summary_display = escape(summary_ja) if summary_ja else escape(summary_en)
+    url = escape(item.get("url", "#"))
+    author = escape(item.get("author", ""))
+    cat = item.get("arxiv_category", "")
+    cat_label = escape(CAT_LABELS.get(cat, cat))
+    age = _fmt_date(item.get("published_at", ""))
+    summary_html = f'<div class="item-summary">{summary_display}</div>' if summary_display else ""
+    return f"""<div class="item-card">
   <div class="item-title"><a href="{url}" target="_blank" rel="noopener">{title_display}</a></div>
   {sub_title_html}
   <div class="item-meta">
@@ -134,12 +101,85 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
     <span class="meta-author">{author}</span>
     <span class="meta-age">{age}</span>
   </div>
-  {f'<div class="item-summary">{summary_display}</div>' if summary_display else ''}
+  {summary_html}
 </div>"""
-    else:
-        arxiv_cards_html = '<div class="empty">データなし（次回の収集をお待ちください）</div>'
 
-    # ── HTML 生成 ─────────────────────────────────────
+
+def _date_label(date_str: str) -> str:
+    """2026-05-13 → 5/13"""
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return f"{dt.month}/{dt.day}"
+    except Exception:
+        return date_str
+
+
+def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
+    all_dates = load_all_dates(days=14)
+    if not all_dates:
+        logger.warning("No HN data found")
+        all_dates = {}
+
+    sorted_dates = sorted(all_dates.keys(), reverse=True)
+    now_jst = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M JST")
+
+    # 各日付のパネル HTML を生成
+    panels_html = ""
+    tabs_html = ""
+    total_hn = 0
+    total_arxiv = 0
+
+    for i, date_str in enumerate(sorted_dates):
+        items = all_dates[date_str]
+        hn_items = sorted(
+            [it for it in items if it.get("source") == "hn"],
+            key=lambda x: x.get("engagement", {}).get("likes", 0),
+            reverse=True,
+        )
+        arxiv_items = sorted(
+            [it for it in items if it.get("source") == "arxiv"],
+            key=lambda x: x.get("published_at", ""),
+            reverse=True,
+        )
+
+        if i == 0:
+            total_hn = len(hn_items)
+            total_arxiv = len(arxiv_items)
+
+        hn_cards = "".join(_hn_card(it) for it in hn_items) or '<div class="empty">データなし</div>'
+        arxiv_cards = "".join(_arxiv_card(it) for it in arxiv_items) or '<div class="empty">データなし</div>'
+
+        active_class = " active" if i == 0 else ""
+        label = _date_label(date_str)
+        is_today = i == 0
+        today_mark = " <small>今日</small>" if is_today else ""
+
+        tabs_html += f'<button class="date-tab{active_class}" data-panel="panel-{date_str}">{label}{today_mark}</button>\n'
+
+        panels_html += f"""<div class="date-panel{active_class}" id="panel-{date_str}">
+  <div class="stats-bar">
+    <div class="stat-badge"><span>{len(hn_items)}</span>HN 記事</div>
+    <div class="stat-badge"><span>{len(arxiv_items)}</span>arxiv 論文</div>
+  </div>
+  <div class="columns">
+    <div>
+      <div class="col-header">
+        <h2>HackerNews</h2>
+        <span class="col-count">スコア順 · 直近48時間</span>
+      </div>
+      {hn_cards}
+    </div>
+    <div>
+      <div class="col-header">
+        <h2>arxiv 新着論文</h2>
+        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+      </div>
+      {arxiv_cards}
+    </div>
+  </div>
+</div>
+"""
+
     html = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -156,12 +196,24 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
 .container {{ max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }}
-header {{ text-align: center; margin-bottom: 2rem; }}
+header {{ text-align: center; margin-bottom: 1.5rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
 .nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
 .nav-link {{ display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
 .nav-link:hover {{ background: #475569; }}
+.date-tabs {{ display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem; }}
+.date-tab {{
+  padding: 0.4rem 1rem; border-radius: 8px; border: 1px solid var(--surface2);
+  background: var(--surface); color: var(--muted); cursor: pointer;
+  font-size: 0.88rem; transition: all 0.15s;
+}}
+.date-tab small {{ font-size: 0.75rem; color: var(--accent); margin-left: 0.3rem; }}
+.date-tab:hover {{ background: var(--surface2); color: var(--text); }}
+.date-tab.active {{ background: var(--accent); color: #fff; border-color: var(--accent); }}
+.date-tab.active small {{ color: #fff; }}
+.date-panel {{ display: none; }}
+.date-panel.active {{ display: block; }}
 .stats-bar {{ display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }}
 .stat-badge {{ background: var(--surface); border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 0.9rem; color: var(--muted); }}
 .stat-badge span {{ color: var(--text); font-weight: 700; margin-right: 0.3rem; }}
@@ -207,27 +259,21 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
   </div>
 </header>
-<div class="stats-bar">
-  <div class="stat-badge"><span>{hn_count}</span>HN 記事</div>
-  <div class="stat-badge"><span>{arxiv_count}</span>arxiv 論文</div>
+<div class="date-tabs">
+{tabs_html}</div>
+{panels_html}
 </div>
-<div class="columns">
-  <div>
-    <div class="col-header">
-      <h2>HackerNews</h2>
-      <span class="col-count">スコア順 · 直近48時間</span>
-    </div>
-    {hn_cards_html}
-  </div>
-  <div>
-    <div class="col-header">
-      <h2>arxiv 新着論文</h2>
-      <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
-    </div>
-    {arxiv_cards_html}
-  </div>
-</div>
-</div>
+<script>
+document.querySelectorAll('.date-tab').forEach(tab => {{
+  tab.addEventListener('click', () => {{
+    document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.date-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById(tab.dataset.panel);
+    if (panel) panel.classList.add('active');
+  }});
+}});
+</script>
 </body>
 </html>"""
 
@@ -236,7 +282,10 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(html)
     os.replace(tmp, output_path)
-    logger.info("hn.html written → %s (%d HN + %d arxiv)", output_path, hn_count, arxiv_count)
+    logger.info(
+        "hn.html written → %s (%d dates, today: %d HN + %d arxiv)",
+        output_path, len(sorted_dates), total_hn, total_arxiv,
+    )
 
 
 if __name__ == "__main__":

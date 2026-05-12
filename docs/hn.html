@@ -14,12 +14,24 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
 .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }
-header { text-align: center; margin-bottom: 2rem; }
+header { text-align: center; margin-bottom: 1.5rem; }
 header h1 { font-size: 1.8rem; color: var(--accent); }
 header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 .nav-links { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }
 .nav-link { display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }
 .nav-link:hover { background: #475569; }
+.date-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem; }
+.date-tab {
+  padding: 0.4rem 1rem; border-radius: 8px; border: 1px solid var(--surface2);
+  background: var(--surface); color: var(--muted); cursor: pointer;
+  font-size: 0.88rem; transition: all 0.15s;
+}
+.date-tab small { font-size: 0.75rem; color: var(--accent); margin-left: 0.3rem; }
+.date-tab:hover { background: var(--surface2); color: var(--text); }
+.date-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.date-tab.active small { color: #fff; }
+.date-panel { display: none; }
+.date-panel.active { display: block; }
 .stats-bar { display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem; flex-wrap: wrap; }
 .stat-badge { background: var(--surface); border-radius: 8px; padding: 0.5rem 1.2rem; font-size: 0.9rem; color: var(--muted); }
 .stat-badge span { color: var(--text); font-weight: 700; margin-right: 0.3rem; }
@@ -57,7 +69,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>AI 英語一次情報</h1>
-  <div class="updated">Last updated: 2026-05-12 23:40 JST</div>
+  <div class="updated">Last updated: 2026-05-12 23:45 JST</div>
   <div class="nav-links">
     <a class="nav-link" href="index.html">📰 ニュース</a>
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
@@ -65,18 +77,21 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
   </div>
 </header>
-<div class="stats-bar">
-  <div class="stat-badge"><span>3</span>HN 記事</div>
-  <div class="stat-badge"><span>24</span>arxiv 論文</div>
+<div class="date-tabs">
+<button class="date-tab active" data-panel="panel-2026-05-13">5/13 <small>今日</small></button>
 </div>
-<div class="columns">
-  <div>
-    <div class="col-header">
-      <h2>HackerNews</h2>
-      <span class="col-count">スコア順 · 直近48時間</span>
-    </div>
-    
-<div class="item-card">
+<div class="date-panel active" id="panel-2026-05-13">
+  <div class="stats-bar">
+    <div class="stat-badge"><span>3</span>HN 記事</div>
+    <div class="stat-badge"><span>24</span>arxiv 論文</div>
+  </div>
+  <div class="columns">
+    <div>
+      <div class="col-header">
+        <h2>HackerNews</h2>
+        <span class="col-count">スコア順 · 直近48時間</span>
+      </div>
+      <div class="item-card">
   <div class="item-title"><a href="https://www.reuters.com/sustainability/society-equity/meta-us-employees-organize-protest-against-mouse-tracking-tech-2026-05-12/" target="_blank" rel="noopener">Metaの従業員が米国オフィスでのママウストラッキング技術に抗議</a></div>
   <div class="item-title-en">Meta employees protest against mouse tracking tech at US offices</div>
   <div class="item-meta">
@@ -86,8 +101,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">2時間前</span>
     <a href="https://news.ycombinator.com/item?id=48114461" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
   </div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://decrypt.co/367431/kash-patel-ai-overhaul-fbi-crime-fighting-operations" target="_blank" rel="noopener">カッシュ・パテル氏、FBIの犯罪捜査活動におけるAIによる全面刷新を宣伝</a></div>
   <div class="item-title-en">Kash Patel Touts AI Overhaul of FBI Crime-Fighting Operations</div>
   <div class="item-meta">
@@ -97,8 +111,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">3時間前</span>
     <a href="https://news.ycombinator.com/item?id=48113484" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
   </div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arstechnica.com/tech-policy/2026/05/will-i-be-ok-teen-died-after-chatgpt-pushed-deadly-mix-of-drugs-lawsuit-says/" target="_blank" rel="noopener">「私は大丈夫だろうか？」ChatGPTが致死量の薬物混合摂取を推奨した後にティーンが死亡、と訴訟は述べる</a></div>
   <div class="item-title-en">&quot;Will I be OK?&quot; Teen died after ChatGPT pushed deadly mix of drugs, lawsuit says</div>
   <div class="item-meta">
@@ -109,14 +122,13 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <a href="https://news.ycombinator.com/item?id=48113197" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
   </div>
 </div>
-  </div>
-  <div>
-    <div class="col-header">
-      <h2>arxiv 新着論文</h2>
-      <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
     </div>
-    
-<div class="item-card">
+    <div>
+      <div class="col-header">
+        <h2>arxiv 新着論文</h2>
+        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+      </div>
+      <div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10938v1" target="_blank" rel="noopener">ELF: 埋め込み型言語フロー</a></div>
   <div class="item-title-en">ELF: Embedded Language Flows</div>
   <div class="item-meta">
@@ -125,8 +137,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">拡散モデルとフローベースモデルは、画像や動画のような領域で連続データを生成するためのデファクトスタンダードなアプローチとなっている。その成功は、これらを言語モデリングに応用することへの関心を高めている。画像領域の対応物とは異なり、今日の主要な拡散言語モデルは</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10934v1" target="_blank" rel="noopener">ニューラル傾斜を用いたレヴィ過程駆動SDEの変分推論</a></div>
   <div class="item-title-en">Variational Inference for Lévy Process-Driven SDEs via Neural Tilting</div>
   <div class="item-meta">
@@ -135,8 +146,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">極端な事象やヘビーテイル現象のモデリングは、金融、気候科学、安全性が重要なAIといった分野で信頼性の高い予測システムを構築する上で不可欠である。レヴィ過程はジャンプやヘビーテイルを捉える自然な数学的フレームワークを提供するが、レヴィ過程駆動SDEのベイズ推論は</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10933v1" target="_blank" rel="noopener">DECO: エンドサイドデバイス上で密モデルに匹敵する性能を持つ疎なMixture-of-Experts</a></div>
   <div class="item-title-en">DECO: Sparse Mixture-of-Experts with Dense-Comparable Performance on End-Side Devices</div>
   <div class="item-meta">
@@ -145,8 +155,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">Mixture-of-Experts (MoE) は、計算量を比例的に増加させることなくモデル容量をスケーリングするが、その巨大な総パラメータフットプリントは、ストレージとメモリアクセスの重大なボトルネックを生み出す。これは、高い性能、低い計算量、を同時に必要とする効率的なエンドサイド展開を妨げ</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10931v1" target="_blank" rel="noopener">低温領域における平均場トランスフォーマーの集中現象の定量化</a></div>
   <div class="item-title-en">Quantifying Concentration Phenomena of Mean-Field Transformers in the Low-Temperature Regime</div>
   <div class="item-meta">
@@ -155,8 +164,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">自己注意モジュールをコアコンポーネントとするトランスフォーマーは、現代の大規模言語モデルや基盤モデルにおいて不可欠なアーキテクチャとなっている。本論文では、推論時における深いエンコーダーオンリートランスフォーマーにおけるトークンの進化を研究する。これは、大規模トークン限界において…によって記述される。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10923v1" target="_blank" rel="noopener">エージェント強化学習のための動的スキルライフサイクル管理</a></div>
   <div class="item-title-en">Dynamic Skill Lifecycle Management for Agentic Reinforcement Learning</div>
   <div class="item-meta">
@@ -165,8 +173,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">大規模言語モデルエージェントは、複雑なタスクを解決するために外部スキルへの依存度を高めている。スキルは、パラメトリックメモリ単独でサポートできる範囲を超えて、エージェントの能力を拡張するモジュール式の単位として機能する。既存の手法では、外部スキルが永続的なガイダンスとして蓄積されるか、または内部化されると仮定している。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10917v1" target="_blank" rel="noopener">多辺縁最適輸送とシュレーディンガーブリッジによる最適かつスケーラブルなMAPF</a></div>
   <div class="item-title-en">Optimal and Scalable MAPF via Multi-Marginal Optimal Transport and Schrödinger Bridges</div>
   <div class="item-meta">
@@ -175,8 +182,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">我々は、有限かつ連結なグラフ上で一連のロボットが一連のターゲットへ移動する匿名マルチエージェント経路探索（MAPF）を考察する。MAPFが、基礎となるマルコフ構造を持つ多辺縁最適輸送（MMOT）問題の特殊なクラスとして定式化できることを示す。その下で</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10916v1" target="_blank" rel="noopener">バングラ複合文字認識を強化するための信頼度誘導型拡散拡張</a></div>
   <div class="item-title-en">Confidence-Guided Diffusion Augmentation for Enhanced Bangla Compound Character Recognition</div>
   <div class="item-meta">
@@ -185,8 +191,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">手書きのバングラ複合文字の認識は、複雑な文字構造、大きなクラス内変動、および高品質な注釈付きデータの入手可能性が限られているため、依然として困難な問題である。既存のバングラ手書き文字認識システムは、しばしば汎化に苦労しており</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10913v1" target="_blank" rel="noopener">Shepherd: 形式化された実行トレースでメタエージェントを強化するランタイム基盤</a></div>
   <div class="item-title-en">Shepherd: A Runtime Substrate Empowering Meta-Agents with a Formalized Execution Trace</div>
   <div class="item-meta">
@@ -195,8 +200,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">我々は、ターゲットエージェント上でのメタエージェント操作を関数として形式化し、主要な操作をLeanで機械化した関数型プログラミングモデルであるShepherdを紹介する。Shepherdは、すべてのエージェントと環境の相互作用を型付けされたイベントとしてGitライクな実行トレースに記録し、過去のどの状態もフォークできるようにする。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10912v1" target="_blank" rel="noopener">WildClawBench: 実世界の長期的エージェント評価のためのベンチマーク</a></div>
   <div class="item-title-en">WildClawBench: A Benchmark for Real-World, Long-Horizon Agent Evaluation</div>
   <div class="item-meta">
@@ -205,8 +209,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">大規模言語モデルと視覚言語モデルは、コマンドラインインターフェース（CLI）ハーネスを介してユーザーに代わって動作するエージェントの力をますます高めている。しかし、ほとんどのエージェントベンチマークは依然として、合成サンドボックス、短期間のタスク、モックサービスAPI、および最終回答チェックに依存しており、エージェントが</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10910v1" target="_blank" rel="noopener">クリフォード量子回路合成のための同変強化学習</a></div>
   <div class="item-title-en">Equivariant Reinforcement Learning for Clifford Quantum Circuit Synthesis</div>
   <div class="item-meta">
@@ -215,8 +218,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">全結合キュービット接続性を持つデバイスのためのクリフォード量子回路合成の問題を考察する。我々はこのタスクを強化学習問題として扱う。この問題では、エージェントは与えられたシンプレクティック行列表現を削減する一連の基本的なクリフォードゲートを発見することを学習する。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10909v1" target="_blank" rel="noopener">制限されたポリシー選択肢に対するポリシー勾配の再検討：kステップポリシー勾配による近視眼的な局所最適からの脱却</a></div>
   <div class="item-title-en">Revisiting Policy Gradients for Restricted Policy Classes: Escaping Myopic Local Optima with $k$-step Policy Gradients</div>
   <div class="item-meta">
@@ -225,8 +227,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">本研究は、準最適臨界点に陥ることが知られている、制限されたポリシー選択肢に用いられる標準的なポリシー勾配法を再検討する。この現象の重要な原因として、ポリシー勾配自体が根本的に近視眼的であること、すなわちポリシーを…に基づいてのみ改善することであることを特定する。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10907v1" target="_blank" rel="noopener">AIワークフローストアでパーソナルエージェントにロバスト性を組み込む</a></div>
   <div class="item-title-en">Engineering Robustness into Personal Agents with the AI Workflow Store</div>
   <div class="item-meta">
@@ -235,8 +236,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">AIエージェントの支配的なパラダイムは、「その場限り」のループであり、エージェントはユーザーのプロンプトに応じて数秒または数分以内に計画を合成し、アクションを実行する。我々はこのパラダイムが、反復設計、厳密なテスト、などの規律あるソフトウェア工学（SE）プロセスを迂回していると主張する。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10906v1" target="_blank" rel="noopener">DataMaster: 機械学習のための自律的なデータエンジニアリングに向けて</a></div>
   <div class="item-title-en">DataMaster: Towards Autonomous Data Engineering for Machine Learning</div>
   <div class="item-meta">
@@ -245,8 +245,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">モデルファミリー、訓練レシピ、計算予算がますます標準化されるにつれて、機械学習システムのさらなる進歩はデータにますます依存するようになる。しかし、データエンジニアリングは依然として主に手動でアドホックである。実務者は繰り返し外部データセットを検索し、既存のパイプに適合させ</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10901v1" target="_blank" rel="noopener">レッドチームを超えて：LLMガードレール分類器の形式的保証</a></div>
   <div class="item-title-en">Beyond Red-Teaming: Formal Guarantees of LLM Guardrail Classifiers</div>
   <div class="item-meta">
@@ -255,8 +254,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">ガードレール分類器は、有害な行動からプロダクション言語モデルを防御するが、テストでは有望な結果を示すものの、形式的な保証は提供しない。「有害な行動」が離散的な入力空間で自然な仕様を持たないため、このようなモデルに形式的な保証を提供することは難しい。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10899v1" target="_blank" rel="noopener">RubricEM: 検証可能な報酬を超えたルーブリック誘導型ポリシー分解を用いたメタRL</a></div>
   <div class="item-title-en">RubricEM: Meta-RL with Rubric-guided Policy Decomposition beyond Verifiable Rewards</div>
   <div class="item-meta">
@@ -265,8 +263,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">深層研究エージェント、すなわち計画、探索、証拠評価、長文レポートの合成を行うシステムを訓練することは、強化学習を検証可能な報酬の領域を超えたものにする。彼らの出力には真の答えがなく、彼らの軌跡は多くのツール拡張された決定に及び、標準的なポリシー</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10893v1" target="_blank" rel="noopener">根拠があるのか、推測なのか？盲画像対照ランキングによるLVLMの信頼度推定</a></div>
   <div class="item-title-en">Grounded or Guessing? LVLM Confidence Estimation via Blind-Image Contrastive Ranking</div>
   <div class="item-meta">
@@ -275,8 +272,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">大規模視覚言語モデルは、視覚的な根拠の欠如に悩まされている。画像が予測に全く貢献せず、言語の事前情報のみによって流暢で自信に満ちた、さらには正しい応答を生成できることがある。既存の信頼度推定方法は、モデルが…を観察するため、これを検出できない。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10889v1" target="_blank" rel="noopener">オンポリシー蒸留の解明: どこで役立ち、どこで有害か、そしてその理由</a></div>
   <div class="item-title-en">Unmasking On-Policy Distillation: Where It Helps, Where It Hurts, and Why</div>
   <div class="item-meta">
@@ -285,8 +281,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">オンポリシー蒸留は、推論モデルのトレーニングのために密な、トークンごとの教師信号を提供する。しかし、この信号がどのような条件下で有益であり、どのような条件下で有害であるかは不明確なままである。どの教師モデルを使用すべきか、そして自己蒸留の場合、どの特定のコンテキストが</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10888v1" target="_blank" rel="noopener">MDPにおける確率的安全性保証のためのシールド</a></div>
   <div class="item-title-en">Shields to Guarantee Probabilistic Safety in MDPs</div>
   <div class="item-meta">
@@ -295,8 +290,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">シールドは、自律エージェントの安全性を確保するための著名なモデルベース手法である。古典的なシールドは、何も悪いことが起こらないことを保証し、安全性と最大の許容性について強力な保証を提供する。しかし、確率的安全性（何か悪いことが起こる可能性がある）のためのシールドシステムは</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10886v1" target="_blank" rel="noopener">LoKA: 大規模推薦モデルのための低精度カーネルアプリケーション</a></div>
   <div class="item-title-en">LoKA: Low-precision Kernel Applications for Recommendation Models At Scale</div>
   <div class="item-meta">
@@ -305,8 +299,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">最新のGPU世代は、FP8などの低精度演算を使用して大幅に高いFLOPsを提供する。大規模言語モデル（LLM）には成功裏に適用されているが、大規模推薦モデル（LRM）での採用は限定的である。これは、LRMが数値的に敏感であり、小さな</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10877v1" target="_blank" rel="noopener">ArchEHR-QA 2026におけるNeural: すべてに適合する単一手法: EHRにおける臨床QAのための統合プロンプト最適化</a></div>
   <div class="item-title-en">Neural at ArchEHR-QA 2026: One Method Fits All: Unified Prompt Optimization for Clinical QA over EHRs</div>
   <div class="item-meta">
@@ -315,8 +308,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">電子健康記録（EHR）に対する自動質問応答（QA）は、正確な証拠検索、忠実な回答生成、および臨床ノートにおける回答の明示的な根拠付けを必要とする。本研究では、CL4Health@LREC 2026におけるArchEHR-QA 2026共有タスクのための我々の手法であるNeural1.5を提示する。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10876v1" target="_blank" rel="noopener">AssayBench: LLMとエージェントのためのアッセイレベル仮想細胞ベンチマーク</a></div>
   <div class="item-title-en">AssayBench: An Assay-Level Virtual Cell Benchmark for LLMs and Agents</div>
   <div class="item-meta">
@@ -325,8 +317,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">機械学習と大規模生物学的データ収集における最近の進歩は、生物学的発見を加速しうる細胞行動の計算モデルである仮想細胞を構築する可能性を再び高めている。このビジョンの最も魅力的な約束の一つは、…の能力である。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10875v1" target="_blank" rel="noopener">重要な箇所で計算する：自己最適化言語モデル</a></div>
   <div class="item-title-en">Compute Where it Counts: Self Optimizing Language Models</div>
   <div class="item-meta">
@@ -335,8 +326,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">効率的なLLM推論の研究は、主に各デコードステップのコスト削減（例：量子化、プルーニング、疎なアテンションの使用）に焦点を当てており、通常、生成されるすべてのトークンに一様な計算予算を適用している。実際には、トークンの難易度は大きく異なるため、静的な圧縮では</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10863v1" target="_blank" rel="noopener">DGPO: 方向性の一貫性を持つグループワイズ最適化によるペアワイズ嗜好を超えて</a></div>
   <div class="item-title-en">DGPO: Beyond Pairwise Preferences with Directional Consistent Groupwise Optimization</div>
   <div class="item-meta">
@@ -345,8 +335,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">1日前</span>
   </div>
   <div class="item-summary">大規模言語モデル（LLM）は目覚ましい進歩を遂げているが、現在の嗜好最適化手法は、推論の多様性を保持しつつ方向性の一貫性を整合させるのに依然として苦戦している。この制限に対処するため、我々は軽量な方向性グループワイズ嗜好最適化（DGPO）を提案する。</div>
-</div>
-<div class="item-card">
+</div><div class="item-card">
   <div class="item-title"><a href="https://arxiv.org/abs/2605.10862v1" target="_blank" rel="noopener">RUBEN: 検索拡張型LLMシステムのためのルールベースの解説</a></div>
   <div class="item-title-en">RUBEN: Rule-Based Explanations for Retrieval-Augmented LLM Systems</div>
   <div class="item-meta">
@@ -356,8 +345,21 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
   </div>
   <div class="item-summary">本論文では、データ駆動型アプリケーションにおける検索拡張型大規模言語モデル（LLM）の出力を説明するための最小限のルールを発見する対話型ツールRUBENを紹介する。我々は、新しいプルーニング戦略を活用して、他のすべてのルールを包含する最小限のルールセットを効率的に特定する。さらに、我々は</div>
 </div>
+    </div>
   </div>
 </div>
+
 </div>
+<script>
+document.querySelectorAll('.date-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.date-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById(tab.dataset.panel);
+    if (panel) panel.classList.add('active');
+  });
+});
+</script>
 </body>
 </html>
