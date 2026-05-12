@@ -226,6 +226,16 @@ def main() -> None:
     except Exception as e:
         logger.warning("build_buzz failed: %s", e)
 
+    # 実行ログ記録
+    try:
+        from utils import log_run
+        total_tweets = sum(len(ac.get("tweets", [])) for ac in existing.get("accounts", []))
+        log_run("buzz", "success",
+                items_collected=total_tweets,
+                extra={"accounts": len(existing.get("accounts", []))})
+    except Exception as e:
+        logger.warning("log_run failed: %s", e)
+
 
 def _ensure_in_config(handle: str, display_name: str) -> None:
     """config.yaml の buzz_accounts に未登録なら追記する"""

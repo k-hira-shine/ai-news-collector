@@ -40,67 +40,90 @@ def main() -> None:
 
     config = load_config()
     t0 = time.time()
+    from utils import log_run
 
     # ── ページ生成のみ ─────────────────────────────────
     if args.page_only:
         logger.info("Page-only mode: generating money.html from existing data")
         _generate_page()
-        logger.info("Done in %.1fs", time.time() - t0)
+        elapsed = time.time() - t0
+        log_run("money", "success", elapsed_sec=elapsed, extra={"mode": "page-only"})
+        logger.info("Done in %.1fs", elapsed)
         return
 
     # ── 収集 ──────────────────────────────────────────
     new_items = []
-    if not args.analyze_only:
-        from money_collector import collect_money_cases, deduplicate_money, save_money_jsonl
+    apify_cost = 0.0
+    collected = 0
+    try:
+        if not args.analyze_only:
+            from money_collector import collect_money_cases, deduplicate_money, save_money_jsonl
 
-        logger.info("=== Step 1: Collecting money cases ===")
-        items, meta = collect_money_cases(config)
-        logger.info("Fetched %d posts (cost=$%.4f)", len(items), meta.get("apify_cost_usd", 0))
+            logger.info("=== Step 1: Collecting money cases ===")
+            items, meta = collect_money_cases(config)
+            apify_cost = meta.get("apify_cost_usd", 0)
+            logger.info("Fetched %d posts (cost=$%.4f)", len(items), apify_cost)
 
-        if meta.get("error"):
-            logger.error("Collection error: %s", meta["error"])
-            if not items:
-                sys.exit(1)
+            if meta.get("error"):
+                logger.error("Collection error: %s", meta["error"])
+                if not items:
+                    log_run("money", "error", elapsed_sec=time.time()-t0, error=str(meta["error"]), extra={"mode": "full"})
+                    sys.exit(1)
 
-        new_items = deduplicate_money(items)
-        logger.info("New (deduplicated) posts: %d", len(new_items))
+            new_items = deduplicate_money(items)
+            collected = len(new_items)
+            logger.info("New (deduplicated) posts: %d", collected)
 
+            if new_items:
+                save_money_jsonl(new_items)
+
+            if args.dry_run:
+                elapsed = time.time() - t0
+                log_run("money", "success", elapsed_sec=elapsed, items_collected=collected, apify_cost_usd=apify_cost, extra={"mode": "dry-run"})
+                logger.info("Dry-run: skipping analysis. Done in %.1fs", elapsed)
+                return
+
+        # ── 分析 ──────────────────────────────────────────
+        logger.info("=== Step 2: Analyzing money cases with Gemini ===")
+
+        if args.analyze_only:
+            from money_collector import load_all_money_items
+            from money_analyzer import load_all_money_analyses
+            all_items = load_all_money_items()
+            analyzed_ids = {c["id"] for c in load_all_money_analyses()}
+            new_items = [i for i in all_items if i.get("id") not in analyzed_ids]
+            logger.info("Unanalyzed posts: %d", len(new_items))
+
+        analyzed = 0
         if new_items:
-            save_money_jsonl(new_items)
+            from money_analyzer import analyze_money_cases, save_money_analysis
+            from utils import time_slot, today_str
 
-        if args.dry_run:
-            logger.info("Dry-run: skipping analysis. Done in %.1fs", time.time() - t0)
-            return
+            cases = analyze_money_cases(new_items, config)
+            analyzed = len(cases)
+            logger.info("Found %d money cases out of %d posts", analyzed, len(new_items))
 
-    # ── 分析 ──────────────────────────────────────────
-    logger.info("=== Step 2: Analyzing money cases with Gemini ===")
+            if cases:
+                save_money_analysis(cases, today_str(), time_slot())
+        else:
+            logger.info("No new posts to analyze")
 
-    if args.analyze_only:
-        # 未分析の全ポストを対象に
-        from money_collector import load_all_money_items
-        from money_analyzer import load_all_money_analyses
-        all_items = load_all_money_items()
-        analyzed_ids = {c["id"] for c in load_all_money_analyses()}
-        new_items = [i for i in all_items if i.get("id") not in analyzed_ids]
-        logger.info("Unanalyzed posts: %d", len(new_items))
+        # ── ページ生成 ────────────────────────────────────
+        logger.info("=== Step 3: Generating money.html ===")
+        _generate_page()
 
-    if new_items:
-        from money_analyzer import analyze_money_cases, save_money_analysis
-        from utils import time_slot, today_str
+        elapsed = time.time() - t0
+        mode = "analyze-only" if args.analyze_only else "full"
+        log_run("money", "success", elapsed_sec=elapsed, items_collected=collected,
+                items_analyzed=analyzed, apify_cost_usd=apify_cost, extra={"mode": mode})
+        logger.info("=== Complete in %.1fs ===", elapsed)
 
-        cases = analyze_money_cases(new_items, config)
-        logger.info("Found %d money cases out of %d posts", len(cases), len(new_items))
-
-        if cases:
-            save_money_analysis(cases, today_str(), time_slot())
-    else:
-        logger.info("No new posts to analyze")
-
-    # ── ページ生成 ────────────────────────────────────
-    logger.info("=== Step 3: Generating money.html ===")
-    _generate_page()
-
-    logger.info("=== Complete in %.1fs ===", time.time() - t0)
+    except Exception as e:
+        elapsed = time.time() - t0
+        logger.exception("Unexpected error: %s", e)
+        log_run("money", "error", elapsed_sec=elapsed, items_collected=collected,
+                apify_cost_usd=apify_cost, error=str(e))
+        sys.exit(1)
 
 
 def _generate_page() -> None:

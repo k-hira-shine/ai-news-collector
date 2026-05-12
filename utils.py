@@ -87,3 +87,88 @@ def parse_datetime(s: str) -> datetime | None:
 def data_dir(*parts: str) -> str:
     base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
     return os.path.join(base, *parts)
+
+
+# ── 実行ログ ──────────────────────────────────────────────────────────
+import json as _json
+
+
+def log_run(
+    workflow: str,
+    status: str,
+    *,
+    elapsed_sec: float = 0,
+    items_collected: int = 0,
+    items_analyzed: int = 0,
+    apify_cost_usd: float = 0,
+    error: str = "",
+    extra: dict | None = None,
+) -> None:
+    """実行結果を data/logs/YYYY-MM-DD.jsonl に追記（1行1レコード）。
+
+    Args:
+        workflow: "collect" | "money" | "buzz" など
+        status:   "success" | "error" | "warning"
+        ...
+    """
+    JST = zoneinfo.ZoneInfo("Asia/Tokyo")
+    now = datetime.now(JST)
+    log_dir = data_dir("logs")
+    os.makedirs(log_dir, exist_ok=True)
+
+    record = {
+        "ts": now.isoformat(),
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%H:%M JST"),
+        "workflow": workflow,
+        "status": status,
+        "elapsed_sec": round(elapsed_sec, 1),
+        "items_collected": items_collected,
+        "items_analyzed": items_analyzed,
+        "apify_cost_usd": round(apify_cost_usd, 4),
+        "error": error,
+    }
+    if extra:
+        record.update(extra)
+
+    log_path = os.path.join(log_dir, f"{now.strftime('%Y-%m-%d')}.jsonl")
+    with open(log_path, "a", encoding="utf-8") as f:
+        f.write(_json.dumps(record, ensure_ascii=False) + "\n")
+
+    # 30日より古いログを削除
+    _purge_old_logs(log_dir, keep_days=30)
+
+
+def _purge_old_logs(log_dir: str, keep_days: int = 30) -> None:
+    from datetime import timezone as _tz
+    cutoff = datetime.now(_tz.utc).timestamp() - keep_days * 86400
+    for fname in os.listdir(log_dir):
+        if not fname.endswith(".jsonl"):
+            continue
+        fpath = os.path.join(log_dir, fname)
+        if os.path.getmtime(fpath) < cutoff:
+            os.remove(fpath)
+            logging.getLogger("ai-news").info("Purged old log: %s", fname)
+
+
+def read_run_logs(days: int = 7) -> list[dict]:
+    """直近 days 日分のログレコードを新しい順で返す"""
+    log_dir = data_dir("logs")
+    if not os.path.isdir(log_dir):
+        return []
+    records: list[dict] = []
+    for fname in sorted(os.listdir(log_dir), reverse=True):
+        if not fname.endswith(".jsonl"):
+            continue
+        fpath = os.path.join(log_dir, fname)
+        with open(fpath, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line:
+                    try:
+                        records.append(_json.loads(line))
+                    except Exception:
+                        pass
+        if len(records) >= days * 20:  # 1日最大20件想定
+            break
+    return records

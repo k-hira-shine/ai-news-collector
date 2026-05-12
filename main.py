@@ -7,7 +7,7 @@ import time
 
 import yaml
 
-from utils import setup_logging, time_slot, today_str
+from utils import log_run, setup_logging, time_slot, today_str
 
 
 def load_config(path: str = "config.yaml") -> dict:
@@ -180,6 +180,23 @@ def main() -> None:
     logger.info("=== Complete in %.1fs ===", elapsed)
     status_icon = "⚠️" if anomalies else "✅"
     logger.info("%s AI News Collector 完了 (%ds, %d件収集)", status_icon, int(elapsed), stats["total"])
+
+    log_status = "warning" if anomalies else "success"
+    log_run(
+        "collect",
+        log_status,
+        elapsed_sec=elapsed,
+        items_collected=stats["total"],
+        apify_cost_usd=stats["apify_cost_usd"],
+        error="; ".join(a["title"] for a in anomalies) if anomalies else "",
+        extra={
+            "mode": "analyze-only" if args.analyze_only else "full",
+            "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0),
+            "diagram_png": diagram_meta.get("png_generated", False),
+            "anomalies": len(anomalies),
+        },
+    )
+
     if anomalies:
         logger.warning("⚠️ 健全性アラート %d 件", len(anomalies))
     elif cookies_may_be_expired:
