@@ -469,7 +469,61 @@ def collect_arxiv(config: dict) -> list[dict]:
         logger.info("arxiv %s: %d papers (last %dd)", cat, len([x for x in items if x.get("arxiv_category") == cat]), max_age_days)
 
     logger.info("arxiv total: %d papers", len(items))
+
+    # Gemini で タイトル・要旨を日本語訳（APIキーがある場合のみ）
+    if items:
+        _translate_arxiv_items(items)
+
     return items
+
+
+def _translate_arxiv_items(items: list[dict]) -> None:
+    """Gemini Flash でタイトル・要旨をまとめて日本語訳（in-place）"""
+    gemini_key = os.environ.get("GEMINI_API_KEY")
+    if not gemini_key:
+        return
+    try:
+        from google import genai
+        client = genai.Client(api_key=gemini_key)
+    except Exception as e:
+        logger.warning("Gemini import failed — skipping arxiv translation: %s", e)
+        return
+
+    # タイトル+要旨をまとめて1リクエストで翻訳
+    lines = []
+    for i, item in enumerate(items):
+        title = item.get("title", "")
+        summary = item.get("arxiv_summary", "")
+        lines.append(f"[{i}] TITLE: {title}\nSUMMARY: {summary}")
+
+    prompt = (
+        "以下の英語論文リストのタイトルと要旨を日本語に翻訳してください。\n"
+        "各論文を [番号] TITLE: 翻訳タイトル\\nSUMMARY: 翻訳要旨 の形式で返してください。\n"
+        "番号・形式は必ず元と一致させてください。余計な説明は不要です。\n\n"
+        + "\n\n".join(lines)
+    )
+
+    try:
+        resp = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+        )
+        text = resp.text or ""
+        # パース: [番号] TITLE: ... SUMMARY: ... を抽出
+        import re as _re
+        pattern = _re.compile(
+            r'\[(\d+)\]\s*TITLE:\s*(.+?)\s*\n\s*SUMMARY:\s*(.+?)(?=\n\[|\Z)',
+            _re.DOTALL,
+        )
+        for m in pattern.finditer(text):
+            idx = int(m.group(1))
+            if 0 <= idx < len(items):
+                items[idx]["title_ja"] = m.group(2).strip()
+                items[idx]["arxiv_summary_ja"] = m.group(3).strip()
+        translated = sum(1 for it in items if it.get("title_ja"))
+        logger.info("arxiv translation: %d/%d items translated", translated, len(items))
+    except Exception as e:
+        logger.warning("arxiv translation failed: %s", e)
 
 
 # ━━━━━━━━━━━━━━━━ HN/arxiv 専用保存 ━━━━━━━━━━━━━━━━

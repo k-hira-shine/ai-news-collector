@@ -103,22 +103,33 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
     cat_labels = {"cs.AI": "AI全般", "cs.LG": "機械学習", "cs.CL": "自然言語処理"}
     if arxiv_items:
         for item in arxiv_items:
-            title = escape(item.get("title", ""))
+            # 日本語訳があれば優先、なければ英語をそのまま表示
+            title_ja = item.get("title_ja", "")
+            title_en = escape(item.get("title", ""))
+            title_display = escape(title_ja) if title_ja else title_en
+            summary_ja = item.get("arxiv_summary_ja", "")
+            summary_en = item.get("arxiv_summary", "")
+            summary_display = escape(summary_ja) if summary_ja else escape(summary_en)
+
             url = escape(item.get("url", "#"))
             author = escape(item.get("author", ""))
             cat = item.get("arxiv_category", "")
             cat_label = escape(cat_labels.get(cat, cat))
-            summary = escape(item.get("arxiv_summary", ""))
             age = _fmt_date(item.get("published_at", ""))
+
+            # 英語タイトルは小さくサブ表示
+            sub_title_html = f'<div class="item-title-en">{title_en}</div>' if title_ja else ""
+
             arxiv_cards_html += f"""
 <div class="item-card">
-  <div class="item-title"><a href="{url}" target="_blank" rel="noopener">{title}</a></div>
+  <div class="item-title"><a href="{url}" target="_blank" rel="noopener">{title_display}</a></div>
+  {sub_title_html}
   <div class="item-meta">
     <span class="badge badge-cat">{cat_label}</span>
     <span class="meta-author">{author}</span>
     <span class="meta-age">{age}</span>
   </div>
-  {f'<div class="item-summary">{summary}</div>' if summary else ''}
+  {f'<div class="item-summary">{summary_display}</div>' if summary_display else ''}
 </div>"""
     else:
         arxiv_cards_html = '<div class="empty">データなし（次回の収集をお待ちください）</div>'
@@ -169,6 +180,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .hn-link {{ color: var(--orange); text-decoration: none; font-size: 0.8rem; white-space: nowrap; }}
 .hn-link:hover {{ color: var(--accent); }}
 .item-summary {{ margin-top: 0.5rem; font-size: 0.85rem; color: var(--muted); line-height: 1.5; }}
+.item-title-en {{ margin-top: 0.2rem; font-size: 0.78rem; color: var(--muted); line-height: 1.4; }}
 .empty {{ text-align: center; color: var(--muted); padding: 3rem 0; font-size: 1rem; }}
 @media (max-width: 640px) {{
   header h1 {{ font-size: 1.3rem; }}
