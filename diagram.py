@@ -153,6 +153,7 @@ class DiagramBuilder:
             "status": status,
             "status_icon": STATUS_ICONS.get(status, "•"),
             "streak_days": t.get("streak_days", 0),
+            "evolution": (t.get("evolution", "") or "").strip(),
         }
 
     @staticmethod

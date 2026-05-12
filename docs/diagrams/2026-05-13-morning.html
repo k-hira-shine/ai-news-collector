@@ -269,13 +269,19 @@
   }
   .topic-chip {
     display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
     border: 1.5px solid var(--line);
     border-radius: 10px;
     background: #fafbfc;
     min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
   .topic-chip .status {
     display: inline-flex;
@@ -287,6 +293,7 @@
     font-weight: 800;
     color: #fff;
     white-space: nowrap;
+    flex-shrink: 0;
   }
   .status.st-NEW { background: var(--st-new); }
   .status.st-RISING { background: var(--st-rising); }
@@ -294,18 +301,24 @@
   .status.st-FADING { background: var(--st-fading); }
   .status.st-RESURFACED { background: var(--st-resurfaced); }
   .topic-chip .topic-name {
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     color: var(--ink);
-    flex: 1;
-    min-width: 0;
-    overflow-wrap: break-word;
-    word-break: break-word;
+    line-height: 1.4;
   }
   .topic-chip .streak {
     font-size: 10px;
     color: var(--muted);
     white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
   }
 
   /* ── セクション03: カテゴリ分布（補助） ───────── */
@@ -515,39 +528,57 @@
     <div class="topic-grid">
       
       <div class="topic-chip">
-        <span class="status st-RISING">📈 RISING</span>
-        <span class="topic-name">AIのOS・ハードウェア統合</span>
-        <span class="streak">2日目</span>
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">AIのOS・ハードウェア統合</div>
+        <div class="evolution">AIのパーソナルOS化という概念的な議論から、Googleの「Googlebook」発表により具体的な製品レベルの話題へと発展した。</div>
       </div>
       
       <div class="topic-chip">
-        <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
-        <span class="topic-name">AIエージェント開発競争</span>
-        <span class="streak">4日目</span>
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">AIエージェント開発競争</div>
+        <div class="evolution">各社がエージェント機能を追加し続ける中、本日は金融取引やOS自動化など、より専門的で実用的なエージェントのユースケースが多数報告されている。</div>
       </div>
       
       <div class="topic-chip">
-        <span class="status st-RISING">📈 RISING</span>
-        <span class="topic-name">次世代HCI（ヒューマン・コンピュータ・インタラクション）</span>
-        <span class="streak">2日目</span>
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">次世代HCI（ヒューマン・コンピュータ・インタラクション）</div>
+        <div class="evolution">前回のAIマウスカーソルの研究発表に続き、本日も同テーマが注目を集め、AIをより直感的に操作する新しいUI/UXの模索が本格化している。</div>
       </div>
       
       <div class="topic-chip">
-        <span class="status st-RISING">📈 RISING</span>
-        <span class="topic-name">リアルタイム協調型AIモデル</span>
-        <span class="streak">2日目</span>
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">リアルタイム協調型AIモデル</div>
+        <div class="evolution">Mira Murati氏の新会社が提唱した概念が、本日は具体的なモデル「Interaction Models」として発表され、期待感を高めている。</div>
       </div>
       
       <div class="topic-chip">
-        <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
-        <span class="topic-name">Claude Codeの機能強化とエコシステム拡大</span>
-        <span class="streak">3日目</span>
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">3日目</span>
+        </div>
+        <div class="topic-name">Claude Codeの機能強化とエコシステム拡大</div>
+        <div class="evolution">新機能「Agent View」の発表以来、開発者からの支持が続き、本日は高速化モードの提供やCLIの改善など、継続的なアップデートが報告された。</div>
       </div>
       
       <div class="topic-chip">
-        <span class="status st-NEW">⚡ NEW</span>
-        <span class="topic-name">AIとロボティクスの融合</span>
-        
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">AIとロボティクスの融合</div>
+        <div class="evolution">Unitreeによる世界初の量産型有人ロボットの発表により、AI制御による物理的な実体を持つロボットの商用化が新たな話題として浮上した。</div>
       </div>
       
     </div>
@@ -648,7 +679,7 @@
   
 
   <div class="footer">
-    Generated 2026-05-12 23:06 UTC · AI News Collector
+    Generated 2026-05-12 23:11 UTC · AI News Collector
     
   </div>
 
