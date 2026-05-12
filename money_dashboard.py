@@ -113,9 +113,9 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
     .case-card {{ background: #1a1a2e; border: 1px solid #2a2a4a; border-radius: 12px; padding: 16px; transition: border-color 0.2s, box-shadow 0.2s; cursor: pointer; }}
     .case-card:hover {{ border-color: #f0c060; box-shadow: 0 0 12px rgba(240,192,96,0.15); }}
     .case-card a {{ color: inherit; text-decoration: none; }}
-    .case-header {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }}
-    .case-category {{ font-size: 0.75rem; background: #2a2a4a; color: #aaa; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }}
-    .case-income {{ font-size: 0.85rem; font-weight: 700; color: #4ade80; background: #0f2a1a; padding: 3px 8px; border-radius: 12px; white-space: nowrap; }}
+    .case-header {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }}
+    .case-category {{ font-size: 0.75rem; background: #2a2a4a; color: #aaa; padding: 3px 8px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }}
+    .case-income {{ font-size: 0.8rem; font-weight: 700; color: #4ade80; background: #0f2a1a; padding: 3px 8px; border-radius: 12px; white-space: normal; word-break: break-word; max-width: 200px; line-height: 1.4; }}
     .case-summary {{ font-size: 0.95rem; font-weight: 600; color: #e0e0f0; margin-bottom: 8px; line-height: 1.5; }}
     .case-method {{ font-size: 0.85rem; color: #aaa; margin-bottom: 8px; }}
     .case-body {{ font-size: 0.82rem; color: #94a3b8; background: #0f172a; border-left: 3px solid #2a4060; padding: 8px 12px; border-radius: 0 6px 6px 0; margin-bottom: 10px; line-height: 1.6; white-space: pre-wrap; word-break: break-word; }}
@@ -459,8 +459,8 @@ def _render_case_card(case: dict) -> str:
     return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-income-val="{income_monthly_jpy}" data-difficulty="{difficulty}">
   <div class="case-header">
     <span class="case-category">{icon} {category}</span>
-    <div style="display:flex;gap:4px;flex-wrap:wrap;align-items:center;">
-      {f'<span style="font-size:0.72rem;color:#aaa;">{diff_label}</span>' if diff_label else ''}
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:0;">
+      {f'<span style="font-size:0.72rem;color:#aaa;white-space:nowrap;">{diff_label}</span>' if diff_label else ''}
       {income_html}
     </div>
   </div>
