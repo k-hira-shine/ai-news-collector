@@ -25,6 +25,7 @@ MONEY_CASE_SCHEMA = {
                     "tools": {"type": "array", "items": {"type": "string"}},
                     "income_mentioned": {"type": "string"},
                     "category": {"type": "string"},
+                    "difficulty": {"type": "string"},
                     "is_japanese": {"type": "boolean"},
                 },
                 "required": ["post_id", "is_money_case"],
@@ -121,6 +122,10 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 - tools: 使用ツール（例：["Kling", "Runway", "ElevenLabs", "HeyGen"]）
 - income_mentioned: 言及された収益額（例：「月300万」「年6000万」、なければ空文字）
 - category: カテゴリ（{', '.join(CATEGORIES)} から1つ選ぶ）
+- difficulty: 手軽さ・難易度（以下の3段階から1つ選ぶ）
+  - "beginner": スマホのみ・無料ツール・初心者でも即始められる・特別なスキル不要
+  - "intermediate": 一定の学習や機材投資が必要・副業として取り組める・数週間〜数ヶ月で収益化可能
+  - "advanced": 高い専門スキル・大きな初期投資・事業として本格的に取り組む必要がある
 - is_japanese: 日本語の投稿かどうか
 
 ## ポスト一覧
