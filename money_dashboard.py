@@ -117,6 +117,25 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
     section.cat-section {{ margin-bottom: 32px; }}
     .cat-title {{ font-size: 1.1rem; font-weight: 700; color: #f0c060; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid #2a2a4a; }}
     footer {{ text-align: center; padding: 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #1a1a2e; margin-top: 40px; }}
+    @media (max-width: 640px) {{
+      header {{ padding: 14px 12px; }}
+      .header-title {{ font-size: 1.1rem; }}
+      .header-title span {{ display: block; margin-left: 0; margin-top: 2px; font-size: 0.78rem; }}
+      .nav-links {{ gap: 6px; flex-wrap: wrap; }}
+      .nav-links a {{ font-size: 0.78rem; padding: 3px 7px; }}
+      .main {{ padding: 16px 10px; }}
+      .stats-bar {{ gap: 8px; }}
+      .stat-card {{ padding: 10px 12px; min-width: 100px; }}
+      .stat-number {{ font-size: 1.5rem; }}
+      .cases-grid {{ grid-template-columns: 1fr; gap: 12px; }}
+      .case-card {{ padding: 12px; }}
+      .case-summary {{ font-size: 0.9rem; }}
+      .case-body {{ font-size: 0.8rem; padding: 6px 10px; }}
+      .filter-bar {{ gap: 6px; }}
+      .filter-btn {{ font-size: 0.8rem; padding: 5px 10px; }}
+      .cat-title {{ font-size: 0.97rem; }}
+      .criteria-box {{ padding: 10px 12px; font-size: 0.8rem; }}
+    }}
   </style>
 </head>
 <body>

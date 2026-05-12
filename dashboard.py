@@ -163,6 +163,26 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .diagram-card img {{ width: 100%; height: auto; display: block; }}
 .diagram-card .diagram-card-footer {{ display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 0.85rem; }}
 .diagram-card .slot-tag {{ display: inline-block; padding: 1px 8px; border-radius: 4px; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; }}
+@media (max-width: 640px) {{
+  .container {{ padding: 1rem 0.75rem; }}
+  header h1 {{ font-size: 1.3rem; }}
+  .nav-links {{ gap: 0.4rem; }}
+  .nav-link {{ padding: 0.35rem 0.7rem; font-size: 0.82rem; }}
+  .card {{ padding: 1rem 0.9rem; margin-bottom: 1rem; border-radius: 10px; }}
+  .card h2 {{ font-size: 1rem; }}
+  .cat-grid {{ grid-template-columns: 1fr; }}
+  .diagram-grid {{ grid-template-columns: 1fr; }}
+  .article {{ padding: 0.6rem 0; }}
+  .article .rank {{ width: 24px; height: 24px; line-height: 24px; font-size: 0.78rem; }}
+  .article a {{ font-size: 0.92rem; }}
+  .article .summary {{ font-size: 0.88rem; }}
+  .x-trend .topic {{ font-size: 0.95rem; }}
+  .x-trend .desc {{ font-size: 0.88rem; }}
+  .x-trend .tweet {{ font-size: 0.83rem; padding: 0.5rem 0.6rem; }}
+  .trend-evo .evo-item {{ flex-wrap: wrap; gap: 0.3rem; }}
+  .history-chart {{ height: 70px; }}
+  .history-bar .label {{ font-size: 0.6rem; }}
+}}
 </style>
 </head>
 <body>
@@ -338,15 +358,13 @@ def _render_diagrams(diagrams: list[dict]) -> str:
                 f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
             )
     modal = '''
-<div id="diagramModal" onclick="closeDiagramModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="padding:16px;min-height:100%;">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-      <span id="diagramModalTitle" style="color:#fff;font-size:0.95rem;font-weight:600;"></span>
-      <button onclick="closeDiagramModal()" style="background:none;border:1px solid #555;color:#fff;padding:4px 12px;border-radius:6px;font-size:0.9rem;cursor:pointer;">✕ 閉じる</button>
-    </div>
-    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;" onclick="event.stopPropagation()">
-      <img id="diagramModalImg" src="" style="max-width:none;width:900px;height:auto;border-radius:8px;display:block;">
-    </div>
+<div id="diagramModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;touch-action:pan-x pan-y pinch-zoom;">
+  <div style="position:absolute;top:12px;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:0 16px;z-index:10000;">
+    <span id="diagramModalTitle" style="color:#fff;font-size:0.9rem;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,0.8);"></span>
+    <button onclick="closeDiagramModal()" style="background:rgba(0,0,0,0.6);border:1px solid #888;color:#fff;padding:6px 14px;border-radius:6px;font-size:0.9rem;cursor:pointer;">✕ 閉じる</button>
+  </div>
+  <div id="diagramModalScroll" style="position:absolute;inset:0;overflow:auto;-webkit-overflow-scrolling:touch;padding-top:52px;padding-bottom:16px;padding-left:16px;padding-right:16px;">
+    <img id="diagramModalImg" src="" style="width:100%;max-width:900px;height:auto;border-radius:8px;display:block;margin:0 auto;">
   </div>
 </div>
 <script>
@@ -517,6 +535,24 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .tw-eng {{ color: var(--muted); font-size: 0.8rem; }}
 .tw-body {{ font-size: 0.88rem; color: var(--text); line-height: 1.5; }}
 .empty {{ text-align: center; color: var(--muted); padding: 4rem 0; font-size: 1.1rem; }}
+@media (max-width: 640px) {{
+  .container {{ padding: 1rem 0.75rem; }}
+  header h1 {{ font-size: 1.3rem; }}
+  .nav-links {{ gap: 0.4rem; }}
+  .nav-link {{ padding: 0.35rem 0.7rem; font-size: 0.82rem; }}
+  .card {{ padding: 1rem 0.9rem; margin-bottom: 1rem; border-radius: 10px; }}
+  .card h2 {{ font-size: 1rem; }}
+  .selector-grid {{ grid-template-columns: 1fr; }}
+  .idea-item {{ padding: 0.8rem; }}
+  .idea-title {{ font-size: 0.97rem; }}
+  .idea-row {{ font-size: 0.86rem; }}
+  .draft-box {{ font-size: 0.86rem; padding: 0.6rem 0.8rem; }}
+  .source-link {{ font-size: 0.8rem; }}
+  .tw-body {{ font-size: 0.84rem; }}
+  .trend-detail {{ padding: 0.7rem; }}
+  .trend-topic {{ font-size: 0.93rem; }}
+  .trend-desc {{ font-size: 0.85rem; }}
+}}
 </style>
 </head>
 <body>

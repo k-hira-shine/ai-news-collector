@@ -214,6 +214,28 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .tweet-meta {{ display: flex; gap: 14px; padding-left: 38px; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }}
 .tweet-text {{ font-size: 0.85rem; color: #94a3b8; line-height: 1.6; padding-left: 38px; white-space: pre-wrap; word-break: break-word; }}
 .empty {{ text-align: center; color: var(--muted); padding: 3rem; }}
+@media (max-width: 640px) {{
+  header {{ padding: 1rem 0.75rem 0.75rem; }}
+  header h1 {{ font-size: 1.3rem; }}
+  .nav-link {{ padding: 0.35rem 0.7rem; font-size: 0.82rem; }}
+  .layout {{ flex-direction: column; min-height: unset; }}
+  .sidebar {{ width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--surface2); padding: 0.6rem 0 0; overflow-y: visible; overflow-x: hidden; }}
+  .sidebar-title {{ padding: 0 0.75rem 0.4rem; }}
+  .tabs-scroll-wrap {{ flex-direction: row !important; overflow-x: auto; overflow-y: visible; -webkit-overflow-scrolling: touch; white-space: nowrap; padding-bottom: 2px; }}
+  .tab-item {{ display: inline-block !important; }}
+  .tab-btn {{ border-left: none; border-bottom: 3px solid transparent; padding: 0.5rem 0.8rem; white-space: nowrap; width: auto; }}
+  .tab-btn.active {{ border-left-color: transparent; border-bottom-color: var(--accent); }}
+  .tab-btn:hover {{ border-left-color: transparent; border-bottom-color: var(--accent); }}
+  .delete-btn {{ opacity: 1; top: 4px; right: 4px; transform: none; }}
+  .add-account {{ border-top: 1px solid var(--surface2); padding: 0.6rem 0.75rem; }}
+  .main-content {{ padding: 1rem 0.75rem; }}
+  .account-header {{ gap: 8px; margin-bottom: 0.8rem; }}
+  .account-display {{ font-size: 0.97rem; }}
+  .tweet-row {{ padding: 10px 0; }}
+  .tweet-text {{ padding-left: 0; font-size: 0.82rem; }}
+  .tweet-meta {{ padding-left: 0; }}
+  .tweet-stats {{ gap: 7px; }}
+}}
 </style>
 </head>
 <body>
@@ -231,7 +253,9 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 <div class="layout">
   <aside class="sidebar">
     <div class="sidebar-title">アカウント</div>
+    <div class="tabs-scroll-wrap" style="display:flex;flex-direction:column;">
     {tabs_nav}
+    </div>
       <div class="add-account">
       <div class="add-account-title">＋ アカウント追加</div>
       <div class="add-note" style="margin-bottom:6px;color:#94a3b8;font-size:11px;">@handle・URLどちらでもOK</div>
