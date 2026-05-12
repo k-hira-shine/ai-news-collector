@@ -52,7 +52,7 @@ def _default_x_runtime_meta() -> dict:
 
 _AUTH_ERROR_PATTERN = re.compile(
     r"(?i)("
-    # Apify all-in-one-x-scraper の明示メッセージ
+    # Apify系Actorの認証/プロキシ失敗メッセージ
     r"Cookie health check[:\s]+FAILED|"
     r"Refresh the cookies|"
     r"Authenticated modes will fail|"
