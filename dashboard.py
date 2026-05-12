@@ -92,7 +92,7 @@ def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | Non
     if not latest:
         body = '<p class="empty">まだ分析データがありません。初回実行をお待ちください。</p>'
     else:
-        body = _render_diagrams(diagrams) + _render_latest(latest) + _render_history(history)
+        body = _render_diagrams(diagrams) + _render_news_tabs(history) + _render_history(history)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -212,6 +212,67 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 {STATUS_BANNER}
 </body>
 </html>"""
+
+
+def _render_news_tabs(history: list[dict]) -> str:
+    """日付・スロットのタブ切り替えで各便のニュースを表示"""
+    if not history:
+        return ""
+
+    tabs_html = ""
+    panels_html = ""
+    slot_labels = {"morning": "朝便", "evening": "夕便"}
+
+    for i, a in enumerate(history):
+        date = a.get("_display_date") or (a.get("run_time", ""))[:10]
+        slot = a.get("_display_slot") or a.get("slot", "")
+        slot_label = slot_labels.get(slot, slot)
+        key = f"{date}-{slot}"
+        active_class = " active" if i == 0 else ""
+        is_today = i == 0
+        today_mark = " <small>最新</small>" if is_today else ""
+
+        tabs_html += f'<button class="news-tab{active_class}" data-panel="news-panel-{escape(key)}">{date[5:]} {slot_label}{today_mark}</button>\n'
+
+        panel_content = _render_latest(a)
+        panels_html += f'<div class="news-panel{active_class}" id="news-panel-{escape(key)}">{panel_content}</div>\n'
+
+    tab_css = """
+<style>
+.news-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.news-tab {
+  padding: 0.4rem 1rem; border-radius: 8px; border: 1px solid var(--surface2);
+  background: var(--surface); color: var(--muted); cursor: pointer;
+  font-size: 0.88rem; transition: all 0.15s;
+}
+.news-tab small { font-size: 0.75rem; color: var(--accent); margin-left: 0.3rem; }
+.news-tab:hover { background: var(--surface2); color: var(--text); }
+.news-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.news-tab.active small { color: #fff; }
+.news-panel { display: none; }
+.news-panel.active { display: block; }
+</style>
+<script>
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.news-tab').forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.news-tab').forEach(function(t) { t.classList.remove('active'); });
+        document.querySelectorAll('.news-panel').forEach(function(p) { p.classList.remove('active'); });
+        tab.classList.add('active');
+        var panel = document.getElementById(tab.dataset.panel);
+        if (panel) panel.classList.add('active');
+      });
+    });
+  });
+})();
+</script>"""
+
+    return (
+        tab_css
+        + f'<div class="news-tabs">\n{tabs_html}</div>\n'
+        + panels_html
+    )
 
 
 def _render_latest(a: dict) -> str:
