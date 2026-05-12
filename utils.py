@@ -193,7 +193,13 @@ STATUS_BANNER_HTML = """
       }
       const errWfs = Object.entries(data.workflows || {})
         .filter(([, v]) => v.status !== 'success')
-        .map(([k, v]) => `${k}: ${v.error || v.status}`);
+        .map(([k, v]) => {
+          const base = k + ': ';
+          if (v.cost_usd != null && v.cost_usd >= 1.0) {
+            return base + `コスト異常 $${parseFloat(v.cost_usd).toFixed(3)}`;
+          }
+          return base + (v.error || v.status);
+        });
       detail.textContent = errWfs.join(' / ') || data.updated_at;
       banner.style.display = 'block';
     });

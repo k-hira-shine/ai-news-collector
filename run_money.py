@@ -116,8 +116,18 @@ def main() -> None:
         mode = "analyze-only" if args.analyze_only else "full"
         log_run("money", "success", elapsed_sec=elapsed, items_collected=collected,
                 items_analyzed=analyzed, apify_cost_usd=apify_cost, extra={"mode": mode})
-        write_run_status("money", "success",
-                         extra={"items_collected": collected, "items_analyzed": analyzed, "mode": mode})
+
+        COST_ALERT_THRESHOLD = 1.0
+        if apify_cost >= COST_ALERT_THRESHOLD:
+            run_status = "warning"
+            run_error = f"Apifyコストが異常値: ${apify_cost:.3f} (閾値 ${COST_ALERT_THRESHOLD:.2f})"
+            logger.warning(run_error)
+        else:
+            run_status = "success"
+            run_error = ""
+        write_run_status("money", run_status, error=run_error,
+                         extra={"items_collected": collected, "items_analyzed": analyzed,
+                                "mode": mode, "cost_usd": round(apify_cost, 4)})
         logger.info("=== Complete in %.1fs ===", elapsed)
 
     except Exception as e:
