@@ -7,6 +7,7 @@ x-research の run.py が data/buzz.json を書き出した後に実行。
 
 import html
 import json
+import os
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -68,7 +69,8 @@ def render_tweet(rank: int, t: dict, median: float | None) -> str:
 </div>"""
 
 
-def build() -> None:
+def build(gh_pat: str = "") -> None:
+    gh_pat = gh_pat or os.environ.get("GH_PAT", "")
     if not BUZZ_JSON.exists():
         print(f"buzz.json が見つかりません: {BUZZ_JSON}")
         return
@@ -118,6 +120,9 @@ def build() -> None:
     {rows if rows else '<div class="empty">データがありません</div>'}
   </div>
 </div>"""
+
+    # GH_PAT を埋め込む（ビルド時のみ参照、公開リポジトリのため注意）
+    pat_js = f'const GH_PAT = "{gh_pat}";' if gh_pat else 'const GH_PAT = "";'
 
     html_out = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -223,11 +228,10 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <aside class="sidebar">
     <div class="sidebar-title">アカウント</div>
     {tabs_nav}
-    <div class="add-account">
+      <div class="add-account">
       <div class="add-account-title">＋ アカウント追加</div>
       <div class="add-form">
         <input class="add-input" id="addHandle" placeholder="@handle" />
-        <input class="add-input" id="addPat" type="password" placeholder="GitHub PAT" />
         <button class="add-btn" onclick="addAccount()">今すぐ追加</button>
         <div class="add-note" id="addStatus"></div>
       </div>
@@ -238,6 +242,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   </div>
 </div>
 <script>
+{pat_js}
 function switchTab(account, btn) {{
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -260,12 +265,10 @@ function deleteAccount(account, displayName) {{
 
 async function addAccount() {{
   const handleInput = document.getElementById('addHandle');
-  const patInput = document.getElementById('addPat');
   const status = document.getElementById('addStatus');
   let handle = handleInput.value.trim().replace(/^@/, '');
-  const pat = patInput.value.trim();
   if (!handle) {{ status.textContent = '⚠️ ハンドルを入力してください'; status.style.color='#f59e0b'; return; }}
-  if (!pat) {{ status.textContent = '⚠️ GitHub PAT を入力してください'; status.style.color='#f59e0b'; return; }}
+  if (!GH_PAT) {{ status.textContent = '⚠️ 設定が必要です（管理者にお知らせください）'; status.style.color='#f87171'; return; }}
 
   status.textContent = '⏳ 収集ワークフローを起動中...';
   status.style.color = '#60a5fa';
@@ -276,7 +279,7 @@ async function addAccount() {{
       {{
         method: 'POST',
         headers: {{
-          'Authorization': 'Bearer ' + pat,
+          'Authorization': 'Bearer ' + GH_PAT,
           'Accept': 'application/vnd.github+json',
           'Content-Type': 'application/json',
         }},

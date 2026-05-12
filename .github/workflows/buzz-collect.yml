@@ -11,6 +11,8 @@ on:
         description: '何日前まで遡るか'
         required: false
         default: '30'
+  repository_dispatch:
+    types: [buzz-add-account]
 
 concurrency:
   group: buzz-collector
@@ -40,13 +42,19 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: |
-          ACCOUNT="${{ github.event.inputs.account }}"
-          DAYS="${{ github.event.inputs.days || '30' }}"
+          # workflow_dispatch か repository_dispatch かで引数を分岐
+          ACCOUNT="${{ github.event.inputs.account || github.event.client_payload.account }}"
+          DAYS="${{ github.event.inputs.days || github.event.client_payload.days || '30' }}"
           if [ -n "$ACCOUNT" ]; then
             python run_buzz.py --add "$ACCOUNT" --days "$DAYS"
           else
             python run_buzz.py --days "$DAYS"
           fi
+
+      - name: Rebuild buzz.html with PAT embedded
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python build_buzz.py
 
       - name: Commit & push
         run: |
