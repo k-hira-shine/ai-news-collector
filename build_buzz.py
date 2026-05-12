@@ -130,8 +130,7 @@ def build() -> None:
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
-.container {{ max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }}
-header {{ text-align: center; margin-bottom: 2rem; }}
+header {{ text-align: center; padding: 1.5rem 1rem 1rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
 .nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
@@ -139,13 +138,20 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .nav-link:hover {{ background: #475569; }}
 .nav-link.active {{ background: var(--accent); color: #fff; }}
 
-/* タブ */
-.tabs-nav {{ display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }}
-.tab-btn {{ background: var(--surface); border: 1px solid var(--surface2); border-radius: 10px; padding: 0.6rem 1rem; cursor: pointer; color: var(--muted); text-align: left; transition: all .15s; }}
-.tab-btn:hover {{ border-color: var(--accent); color: var(--text); }}
-.tab-btn.active {{ background: var(--surface2); border-color: var(--accent); color: var(--text); }}
-.tab-name {{ display: block; font-size: 0.85rem; font-weight: 700; color: var(--text); }}
-.tab-handle {{ display: block; font-size: 0.72rem; color: var(--blue); margin-top: 1px; }}
+/* レイアウト */
+.layout {{ display: flex; gap: 0; min-height: calc(100vh - 120px); }}
+
+/* 左サイドバー */
+.sidebar {{ width: 200px; flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--surface2); padding: 1rem 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }}
+.sidebar-title {{ font-size: 0.72rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; padding: 0 1rem 0.6rem; }}
+.tab-btn {{ display: block; width: 100%; background: none; border: none; border-left: 3px solid transparent; padding: 0.7rem 1rem; cursor: pointer; color: var(--muted); text-align: left; transition: all .15s; }}
+.tab-btn:hover {{ background: var(--surface2); color: var(--text); border-left-color: var(--accent); }}
+.tab-btn.active {{ background: #1e293b; color: var(--text); border-left-color: var(--accent); }}
+.tab-name {{ display: block; font-size: 0.85rem; font-weight: 700; color: inherit; }}
+.tab-handle {{ display: block; font-size: 0.72rem; color: var(--blue); margin-top: 2px; }}
+
+/* メインコンテンツ */
+.main-content {{ flex: 1; padding: 1.5rem 2rem; overflow-x: hidden; }}
 .tab-panel {{ display: none; }}
 .tab-panel.active {{ display: block; }}
 
@@ -190,18 +196,21 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <h1>🔥 バズりランキング</h1>
   <div class="updated">最終更新: {updated_at}</div>
   <nav class="nav-links">
-    <a href="index.html" class="nav-link">📊 ニュース</a>
+    <a href="index.html" class="nav-link">📰 ニュース</a>
     <a href="buzz.html" class="nav-link active">🔥 バズりランキング</a>
-    <a href="strategy.html" class="nav-link">📁 図解アーカイブ</a>
+    <a href="strategy.html" class="nav-link">🎯 施策提案</a>
+    <a href="money.html" class="nav-link">🎬 動画マネタイズ事例</a>
   </nav>
 </header>
 
-<div class="tabs-nav">
-{tabs_nav}
-</div>
-
-{tabs_content}
-
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-title">アカウント</div>
+    {tabs_nav}
+  </aside>
+  <div class="main-content">
+    {tabs_content}
+  </div>
 </div>
 <script>
 function switchTab(account, btn) {{

@@ -163,6 +163,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <div class="updated">Last updated: {now_str}</div>
   <div class="nav-links">
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
   </div>
 </header>
@@ -473,7 +474,8 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <h1>🎯 AI 施策提案</h1>
   <div class="updated">Last updated: {now_str}</div>
   <div class="nav-links">
-    <a class="nav-link" href="index.html">← ニュース</a>
+    <a class="nav-link" href="index.html">📰 ニュース</a>
+    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
   </div>
 </header>
