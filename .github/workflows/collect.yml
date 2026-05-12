@@ -13,8 +13,8 @@ on:
           - analyze-only    # 収集スキップ、既存データで分析＋ページ生成
           - dashboard-only  # ページ生成のみ（高速）
   schedule:
-    - cron: '0 17 * * *'     # JST 02:00 (UTC 17:00 前日)
-    - cron: '0 11 * * *'     # JST 20:00 (UTC 11:00)
+    - cron: '0 18 * * *'     # JST 03:00 (UTC 18:00 前日)
+    - cron: '0 7 * * *'      # JST 16:00 (UTC 07:00)
 
 concurrency:
   group: ai-news-collector
