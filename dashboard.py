@@ -30,7 +30,7 @@ def generate_dashboard(output_path: str) -> None:
 
 
 def _list_recent_diagrams(diagrams_dir: str, limit: int = 14) -> list[dict]:
-    """docs/diagrams/*.html を新しい順に返す"""
+    """docs/diagrams/*.html を新しい順に返す（PNGがあれば png_path も付与）"""
     if not os.path.isdir(diagrams_dir):
         return []
     files = sorted(glob(os.path.join(diagrams_dir, "*.html")), reverse=True)
@@ -41,12 +41,16 @@ def _list_recent_diagrams(diagrams_dir: str, limit: int = 14) -> list[dict]:
         date_part = base[:10] if len(base) >= 10 else base
         slot_part = base[11:] if len(base) > 11 else ""
         slot_label = {"morning": "朝便", "evening": "夕便"}.get(slot_part, slot_part)
-        results.append({
+        png_path = os.path.join(diagrams_dir, f"{base}.png")
+        entry = {
             "name": name,
             "date": date_part,
             "slot": slot_label,
             "rel_path": f"diagrams/{name}",
-        })
+        }
+        if os.path.exists(png_path):
+            entry["png_path"] = f"diagrams/{base}.png"
+        results.append(entry)
     return results
 
 
@@ -150,10 +154,15 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .history-bar {{ flex: 1; background: var(--accent); border-radius: 4px 4px 0 0; min-width: 24px; position: relative; }}
 .history-bar .label {{ position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; color: var(--muted); white-space: nowrap; }}
 .empty {{ text-align: center; color: var(--muted); padding: 4rem 0; font-size: 1.1rem; }}
-.diagram-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.75rem; margin-top: 0.5rem; }}
+.diagram-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin-top: 0.5rem; }}
 .diagram-item {{ display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.6rem 0.9rem; background: var(--surface2); border-radius: 8px; text-decoration: none; color: var(--text); font-size: 0.9rem; }}
 .diagram-item:hover {{ background: #475569; }}
 .diagram-item .slot-tag {{ display: inline-block; padding: 1px 8px; border-radius: 4px; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; }}
+.diagram-card {{ display: block; background: var(--surface2); border-radius: 10px; overflow: hidden; text-decoration: none; color: var(--text); transition: transform 0.15s; }}
+.diagram-card:hover {{ transform: translateY(-2px); }}
+.diagram-card img {{ width: 100%; height: auto; display: block; }}
+.diagram-card .diagram-card-footer {{ display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; font-size: 0.85rem; }}
+.diagram-card .slot-tag {{ display: inline-block; padding: 1px 8px; border-radius: 4px; background: var(--accent); color: #fff; font-size: 0.75rem; font-weight: 600; }}
 </style>
 </head>
 <body>
@@ -316,10 +325,21 @@ def _render_diagrams(diagrams: list[dict]) -> str:
         href = escape(d["rel_path"])
         date = escape(d["date"])
         slot = escape(d["slot"])
-        items.append(
-            f'<a class="diagram-item" href="{href}" target="_blank" rel="noopener">'
-            f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
-        )
+        if d.get("png_path"):
+            # PNG がある場合は画像カードで表示
+            png = escape(d["png_path"])
+            items.append(
+                f'<a class="diagram-card" href="{href}" target="_blank" rel="noopener">'
+                f'<img src="{png}" alt="{date} {slot}" loading="lazy">'
+                f'<div class="diagram-card-footer"><span>{date}</span><span class="slot-tag">{slot}</span></div>'
+                f'</a>'
+            )
+        else:
+            # PNG なし → テキストリンク
+            items.append(
+                f'<a class="diagram-item" href="{href}" target="_blank" rel="noopener">'
+                f'<span>{date}</span><span class="slot-tag">{slot}</span></a>'
+            )
     return (
         '<div class="card"><h2>🖼️ 図解版アーカイブ</h2>'
         f'<div class="diagram-grid">{"".join(items)}</div></div>'

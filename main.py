@@ -135,6 +135,12 @@ def main() -> None:
             with open(html_path, "w", encoding="utf-8") as f:
                 f.write(html)
             diagram_meta["html_saved"] = True
+            # PNG を保存
+            if diagram_png:
+                png_path = os.path.join(diagrams_dir, f"{diagram_filename}.png")
+                with open(png_path, "wb") as f:
+                    f.write(diagram_png)
+                diagram_meta["png_path"] = f"diagrams/{diagram_filename}.png"
             diagram_meta["png_generated"] = diagram_png is not None
             logger.info("Diagram HTML saved → %s (png=%s bytes)", html_path, len(diagram_png) if diagram_png else 0)
         except Exception as e:
