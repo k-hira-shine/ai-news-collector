@@ -192,8 +192,12 @@ function applyFilters() {{
 
 def _render_all_cases(cases: list[dict]) -> str:
     html = ""
-    # いいね数の多い順にソート
-    sorted_cases = sorted(cases, key=lambda c: c.get("engagement", {}).get("likes", 0), reverse=True)
+    # エンゲージメント率（いいね÷フォロワー）の高い順にソート
+    def _eng_rate(c):
+        likes = c.get("engagement", {}).get("likes", 0)
+        followers = c.get("author_followers") or 1
+        return likes / followers
+    sorted_cases = sorted(cases, key=_eng_rate, reverse=True)
     for case in sorted_cases:
         html += _render_case_card(case)
     return html
