@@ -83,9 +83,25 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
             account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
             all_items += _run_apify(account_queries, max_items, "accounts")
 
-        # ② 検索クエリ収集（広域）
+        # ② 検索クエリ収集（広域）— 日英を分けて別々に実行
         if search_queries:
-            all_items += _run_apify(search_queries, max_items_per_query, "search_queries")
+            ja_queries = [q for q in search_queries if "lang:en" not in q]
+            en_queries = [q for q in search_queries if "lang:en" in q]
+
+            # 日本語クエリ（まとめて1回）
+            if ja_queries:
+                # 日本語は各クエリ単位でバッチ処理（1クエリ = max_items_per_query件）
+                batch_size = 3
+                for i in range(0, len(ja_queries), batch_size):
+                    batch = ja_queries[i:i + batch_size]
+                    all_items += _run_apify(batch, max_items_per_query, f"ja_search_{i//batch_size+1}")
+
+            # 英語クエリ（3本ずつバッチ化して確実に取得）
+            if en_queries:
+                en_batch_size = 3
+                for i in range(0, len(en_queries), en_batch_size):
+                    batch = en_queries[i:i + en_batch_size]
+                    all_items += _run_apify(batch, max_items_per_query, f"en_search_{i//en_batch_size+1}")
 
         meta["total_fetched"] = len(all_items)
         logger.info("Money collection total: %d posts (cost=$%.4f)", len(all_items), meta["apify_cost_usd"])
