@@ -59,9 +59,9 @@ def today_str() -> str:
 
 
 def time_slot() -> str:
-    """JST で朝(05-13時)は morning、それ以外は evening"""
+    """JST で 00-13時は morning（朝便）、14時以降は evening（夕便）"""
     jst = datetime.now(zoneinfo.ZoneInfo("Asia/Tokyo"))
-    return "morning" if 5 <= jst.hour < 14 else "evening"
+    return "morning" if jst.hour < 14 else "evening"
 
 
 def parse_datetime(s: str) -> datetime | None:
