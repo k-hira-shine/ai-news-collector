@@ -14,6 +14,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -62,7 +63,23 @@ def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 
     result: dict[str, list[dict]] = {h: [] for h in handles}
     total = 0
     for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
-        author = (tweet.get("author") or {}).get("userName") or tweet.get("userName") or tweet.get("username") or ""
+        # author フィールドは構造が揺れるため複数パターンで取得
+        author_obj = tweet.get("author") or {}
+        author = (
+            author_obj.get("userName")
+            or author_obj.get("username")
+            or tweet.get("userName")
+            or tweet.get("username")
+            or tweet.get("user", {}).get("screen_name")
+            or tweet.get("authorName")
+            or ""
+        )
+        # searchTerm から from:handle を抽出してフォールバック
+        if not author:
+            st = tweet.get("searchTerm") or tweet.get("searchTerms") or ""
+            m = re.search(r"from:(\w+)", st)
+            if m:
+                author = m.group(1)
         author_lower = author.lower()
         for h in handles:
             if h.lower() == author_lower:
