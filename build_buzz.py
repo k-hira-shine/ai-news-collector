@@ -255,6 +255,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     <a href="index.html" class="nav-link">📰 ニュース</a>
     <a href="strategy.html" class="nav-link">🎯 施策提案</a>
     <a href="money.html" class="nav-link">🎬 動画マネタイズ事例</a>
+    <a href="hn.html" class="nav-link">📡 英語一次情報</a>
   </nav>
 </header>
 
