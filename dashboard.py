@@ -120,17 +120,18 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .trend {{ font-size: 1rem; }}
 .since-last {{ margin-top: 1rem; padding: 0.8rem; background: var(--surface2); border-radius: 8px; font-size: 0.95rem; }}
 .trend-evo {{ margin-top: 1rem; }}
-.trend-evo .evo-item {{ padding: 0.5rem 0; border-bottom: 1px solid var(--surface2); display: flex; align-items: baseline; gap: 0.5rem; }}
-.trend-evo .evo-item:last-child {{ border-bottom: none; }}
+.trend-evo .evo-item {{ padding: 0.6rem 0.8rem; border-radius: 8px; background: var(--surface2); margin-bottom: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem; }}
+.trend-evo .evo-item:last-child {{ margin-bottom: 0; }}
 .trend-evo .status-badge {{ display: inline-block; padding: 1px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }}
 .trend-evo .st-NEW {{ background: #16a34a33; color: var(--green); }}
 .trend-evo .st-RISING {{ background: #dc262633; color: var(--red); }}
 .trend-evo .st-SUSTAINED {{ background: #1e40af33; color: var(--blue); }}
 .trend-evo .st-FADING {{ background: #6b728033; color: var(--muted); }}
 .trend-evo .st-RESURFACED {{ background: #f59e0b33; color: var(--yellow); }}
-.trend-evo .evo-topic {{ font-weight: 600; }}
-.trend-evo .evo-streak {{ color: var(--muted); font-size: 0.85rem; }}
-.trend-evo .evo-desc {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; }}
+.trend-evo .evo-topic {{ font-weight: 600; font-size: 0.95rem; }}
+.trend-evo .evo-header {{ display: flex; align-items: center; gap: 0.5rem; }}
+.trend-evo .evo-streak {{ color: var(--muted); font-size: 0.82rem; }}
+.trend-evo .evo-desc {{ color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--surface); padding-top: 0.3rem; margin-top: 0.1rem; }}
 .article {{ padding: 0.8rem 0; border-bottom: 1px solid var(--surface2); }}
 .article:last-child {{ border-bottom: none; }}
 .article .rank {{ display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: var(--accent); color: #fff; font-weight: 700; font-size: 0.85rem; margin-right: 0.5rem; vertical-align: top; }}
@@ -188,7 +189,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   .x-trend .topic {{ font-size: 0.95rem; }}
   .x-trend .desc {{ font-size: 0.88rem; }}
   .x-trend .tweet {{ font-size: 0.83rem; padding: 0.5rem 0.6rem; }}
-  .trend-evo .evo-item {{ flex-wrap: wrap; gap: 0.3rem; }}
+  .trend-evo .evo-item {{ gap: 0.2rem; }}
   .history-chart {{ height: 70px; }}
   .history-bar .label {{ font-size: 0.6rem; }}
 }}
@@ -247,8 +248,11 @@ def _render_latest(a: dict) -> str:
             evo_desc = f'<div class="evo-desc">{evolution}</div>' if evolution else ""
             evo_items.append(
                 f'<div class="evo-item">'
+                f'<div class="evo-header">'
                 f'<span class="status-badge st-{status}">{icon} {status}</span>'
-                f'<span class="evo-topic">{topic}</span>{streak_str}'
+                f'{streak_str}'
+                f'</div>'
+                f'<div class="evo-topic">{topic}</div>'
                 f'{evo_desc}</div>'
             )
         evo_html = f'<div class="trend-evo">{"".join(evo_items)}</div>'
