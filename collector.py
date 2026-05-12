@@ -572,26 +572,28 @@ def _translate_arxiv_items(items: list[dict]) -> None:
 
 
 def save_hn_jsonl(items: list[dict]) -> str:
-    """data/hn/YYYY-MM-DD.jsonl に追記保存"""
+    """data/hn/YYYY-MM-DD.jsonl に保存（既存エントリは翻訳済みデータで上書き）"""
     hn_dir = data_dir("hn")
     os.makedirs(hn_dir, exist_ok=True)
     path = os.path.join(hn_dir, f"{today_str()}.jsonl")
-    # source ごとに既存エントリの重複を避けるため既存IDを読み込む
-    existing_ids: set[str] = set()
+    # 既存エントリをIDをキーに読み込み、新データで上書きマージ
+    existing: dict[str, dict] = {}
     if os.path.exists(path):
         with open(path, encoding="utf-8") as f:
             for line in f:
                 line = line.strip()
                 if line:
                     try:
-                        existing_ids.add(json.loads(line)["id"])
+                        entry = json.loads(line)
+                        existing[entry["id"]] = entry
                     except Exception:
                         pass
-    new_items = [it for it in items if it["id"] not in existing_ids]
-    with open(path, "a", encoding="utf-8") as f:
-        for item in new_items:
+    for item in items:
+        existing[item["id"]] = item
+    with open(path, "w", encoding="utf-8") as f:
+        for item in existing.values():
             f.write(json.dumps(item, ensure_ascii=False) + "\n")
-    logger.info("Saved %d hn/arxiv items → %s", len(new_items), path)
+    logger.info("Saved %d hn/arxiv items → %s", len(existing), path)
     return path
 
 
