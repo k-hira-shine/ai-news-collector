@@ -129,3 +129,14 @@ scoring:
 
 cache:
   seen_urls_retention_days: 2
+
+# ── AIマネタイズ事例収集（run_money.py 専用） ──────────────
+money_collection:
+  # 取得するアカウント（リポスト除外・since制限なし）
+  accounts:
+    - handle: "fiction_log"
+      label: "ろじん|Levela CXO"
+  # 1アカウントあたりの最大取得件数
+  max_items_per_account: 500
+  # 重複排除キャッシュの保持日数（長期蓄積）
+  cache_retention_days: 90
