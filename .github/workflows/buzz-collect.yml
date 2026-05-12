@@ -13,6 +13,8 @@ on:
         default: '30'
   repository_dispatch:
     types: [buzz-add-account]
+  schedule:
+    - cron: '0 17 * * *'     # JST 02:00（毎日全アカウント更新）
 
 concurrency:
   group: buzz-collector
