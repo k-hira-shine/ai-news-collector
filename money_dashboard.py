@@ -1,4 +1,4 @@
-"""AIマネタイズ事例ダッシュボード生成
+"""動画マネタイズ事例ダッシュボード生成
 
 docs/money.html を生成する。
 既存の index.html / strategy.html には一切触れない。
@@ -13,13 +13,13 @@ logger = logging.getLogger("ai-news.money_dashboard")
 
 JST = timezone(timedelta(hours=9))
 CATEGORY_ICONS = {
-    "コンテンツ生成": "🎬",
-    "SaaS/プロダクト": "💻",
-    "副業/フリーランス": "💼",
-    "自動化/効率化": "⚙️",
-    "投資/トレード": "📈",
-    "AI代行サービス": "🤝",
-    "教育/コンサル": "📚",
+    "YouTube収益化": "▶️",
+    "ショート動画/Reels/TikTok": "📱",
+    "AI動画生成": "🎬",
+    "ライブ配信": "🔴",
+    "動画編集代行": "✂️",
+    "動画×教育/コンサル": "📚",
+    "動画×SaaS/プロダクト": "💻",
     "その他": "💡",
 }
 
@@ -56,7 +56,7 @@ def _render_money_html(cases: list[dict]) -> str:
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AIで稼ぐ事例集</title>
+  <title>動画マネタイズ事例集</title>
   <style>
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
     body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0f0; min-height: 100vh; }}
@@ -102,7 +102,7 @@ def _render_money_html(cases: list[dict]) -> str:
 <header>
   <div class="header-inner">
     <div>
-      <div class="header-title">💰 AIで稼ぐ事例集 <span>Last updated: {now_str}</span></div>
+      <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: {now_str}</span></div>
     </div>
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
@@ -147,7 +147,7 @@ def _render_money_html(cases: list[dict]) -> str:
   </div>
 </div>
 
-<footer>AIで稼ぐ事例集 — 収集データをもとにGeminiが自動分類</footer>
+<footer>動画マネタイズ事例集 — 収集データをもとにGeminiが自動分類</footer>
 
 <script>
 const allCards = document.querySelectorAll('.case-card');
