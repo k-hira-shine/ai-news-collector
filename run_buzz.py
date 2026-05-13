@@ -43,7 +43,7 @@ def load_config() -> dict:
 def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 30, max_items: int = 100) -> dict[str, list[dict]]:
     """複数アカウントを1回のApify起動でまとめて取得"""
     since_date = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
-    search_terms = [f"from:{h} -filter:retweets" for h in handles]
+    search_terms = [f"from:{h} -filter:retweets min_faves:5" for h in handles]
     run_input = {
         "searchTerms": search_terms,
         "queryType": "Latest",
