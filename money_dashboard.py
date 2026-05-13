@@ -237,6 +237,17 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
           <option value="advanced">🔴 上級者向け</option>
         </select>
       </div>
+      <div class="select-group">
+        <label for="mediaSelect">🖼️ メディア：</label>
+        <select id="mediaSelect" onchange="applyFilters()">
+          <option value="all">すべて</option>
+          <option value="image">画像あり</option>
+          <option value="video">動画あり</option>
+          <option value="no-image">画像なし</option>
+          <option value="no-video">動画なし</option>
+          <option value="none">メディアなし</option>
+        </select>
+      </div>
     </div>
   </div>
   <!-- カテゴリ・地域フィルター -->
@@ -293,6 +304,7 @@ function applyFilters() {{
   const engMin = parseFloat(document.getElementById('engSelect').value) || 0;
   const incomeFilter = parseInt(document.getElementById('incomeSelect').value) || 0;
   const diffFilter = document.getElementById('diffSelect').value;
+  const mediaFilter = document.getElementById('mediaSelect').value;
   const allCards = Array.from(grid.querySelectorAll('.case-card'));
 
   const visible = allCards.filter(card => {{
@@ -306,7 +318,15 @@ function applyFilters() {{
       (incomeFilter === -1 && incomeVal > 0) ||
       (incomeFilter > 0 && incomeVal >= incomeFilter);
     const diffMatch = diffFilter === 'all' || card.dataset.difficulty === diffFilter;
-    return catMatch && regionMatch && engMatch && incomeMatch && diffMatch;
+    const hasImage = card.dataset.hasImage === 'true';
+    const hasVideo = card.dataset.hasVideo === 'true';
+    const mediaMatch = mediaFilter === 'all' ||
+      (mediaFilter === 'image' && hasImage) ||
+      (mediaFilter === 'video' && hasVideo) ||
+      (mediaFilter === 'no-image' && !hasImage) ||
+      (mediaFilter === 'no-video' && !hasVideo) ||
+      (mediaFilter === 'none' && !hasImage && !hasVideo);
+    return catMatch && regionMatch && engMatch && incomeMatch && diffMatch && mediaMatch;
   }});
 
   visible.sort((a, b) => {{
@@ -396,6 +416,25 @@ def _parse_income_monthly_jpy(income_str: str) -> int:
     return 0
 
 
+def _media_flags(case: dict) -> tuple[bool, bool]:
+    """Xのmedia配列から画像/動画の有無を判定する。"""
+    media = case.get("media") or []
+    has_image = False
+    has_video = False
+    for item in media:
+        media_type = str(item.get("type", "")).lower()
+        url = str(item.get("url", "")).lower()
+        if media_type in {"video", "animated_gif", "gif"} or "video" in media_type:
+            has_video = True
+        elif media_type in {"photo", "image"}:
+            has_image = True
+        elif any(ext in url for ext in (".jpg", ".jpeg", ".png", ".webp")):
+            has_image = True
+        elif any(ext in url for ext in (".mp4", ".mov", ".m3u8")):
+            has_video = True
+    return has_image, has_video
+
+
 def _render_case_card(case: dict) -> str:
     category = case.get("category") or "その他"
     icon = CATEGORY_ICONS.get(category, "💡")
@@ -456,8 +495,15 @@ def _render_case_card(case: dict) -> str:
     income_monthly_jpy = _parse_income_monthly_jpy(income)
     diff_labels = {"beginner": "🟢 初心者向け", "intermediate": "🟡 中級者向け", "advanced": "🔴 上級者向け"}
     diff_label = diff_labels.get(difficulty, "")
+    has_image, has_video = _media_flags(case)
+    media_badges = []
+    if has_image:
+        media_badges.append('<span class="tool-tag">🖼️ 画像あり</span>')
+    if has_video:
+        media_badges.append('<span class="tool-tag">🎥 動画あり</span>')
+    media_html = "".join(media_badges)
 
-    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-income-val="{income_monthly_jpy}" data-difficulty="{difficulty}">
+    return f"""<div class="case-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-income-val="{income_monthly_jpy}" data-difficulty="{difficulty}" data-has-image="{str(has_image).lower()}" data-has-video="{str(has_video).lower()}">
   <div class="case-header">
     <span class="case-category">{icon} {category}</span>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:0;">
@@ -467,7 +513,7 @@ def _render_case_card(case: dict) -> str:
   </div>
   <div class="case-summary">{summary}</div>
   {f'<div class="case-method">📌 {method}</div>' if method else ''}
-  {f'<div class="case-tools">{tools_html}</div>' if tools_html else ''}
+  {f'<div class="case-tools">{tools_html}{media_html}</div>' if tools_html or media_html else ''}
   {f'<div class="case-body">"{content_escaped}"</div>' if content_escaped else ''}
   <div class="case-footer">
     <span>{flag} @{author} · {pub_date}</span>
