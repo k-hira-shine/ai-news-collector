@@ -93,7 +93,7 @@ def render_tweet_overall(rank: int, t: dict, account: str, display_name: str, me
 <div class="tweet-row">
   <div class="tweet-header">
     <span class="rank {rank_cls}">#{rank}</span>
-    <span class="account-badge">@{html.escape(account)}</span>
+    <span class="account-badge">{html.escape(display_name)} @{html.escape(account)}</span>
     <span class="followers">フォロワー {followers_str}</span>
     <span class="date">{date_str}　<span class="ago">{ago_str}</span></span>
     <span class="tweet-stats">
