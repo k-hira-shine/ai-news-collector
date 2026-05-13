@@ -69,6 +69,102 @@ def render_tweet(rank: int, t: dict, median: float | None) -> str:
 </div>"""
 
 
+def render_tweet_overall(rank: int, t: dict, account: str, display_name: str, median: float | None, sort_mode: str) -> str:
+    """全体ランキング用カード（アカウントバッジ付き）"""
+    likes = t.get("likes", 0)
+    er = t.get("eng_rate")
+    er_str = f"{er:.4f}%" if er is not None else "—"
+    views = t.get("views", 0)
+    retweets = t.get("retweets", 0)
+    replies = t.get("replies", 0)
+    followers = t.get("author_followers")
+    followers_str = f"{followers:,}" if followers else "—"
+    buzz_mult = f"{round(likes / median, 1)}×" if median and median > 0 else "—"
+    url = t.get("url", "")
+    text = html.escape(t.get("text", ""))
+    date_str, ago_str = fmt_date(t.get("created_at", ""))
+    rank_cls = "gold" if rank == 1 else ("silver" if rank == 2 else ("bronze" if rank == 3 else ""))
+    open_link = f'<a href="{url}" target="_blank" class="open-link">↗ Xで開く</a>' if url else ""
+    # 全体ランキングでは注目指標を強調
+    highlight_likes = ' style="color:#f87171;font-weight:800;"' if sort_mode == "likes" else ""
+    highlight_eng = ' style="color:#34d399;font-weight:800;"' if sort_mode == "eng" else ""
+
+    return f"""
+<div class="tweet-row">
+  <div class="tweet-header">
+    <span class="rank {rank_cls}">#{rank}</span>
+    <span class="account-badge">@{html.escape(account)}</span>
+    <span class="followers">フォロワー {followers_str}</span>
+    <span class="date">{date_str}　<span class="ago">{ago_str}</span></span>
+    <span class="tweet-stats">
+      <span class="likes"{highlight_likes}>♥ {likes:,}</span>
+      <span class="eng"{highlight_eng}>エンゲ {er_str}</span>
+      <span class="mult">中央値比 {buzz_mult}</span>
+      {open_link}
+    </span>
+  </div>
+  <div class="tweet-meta">
+    <span>🔁 {retweets:,}</span>
+    <span>💬 {replies:,}</span>
+    <span>👁 {views:,}</span>
+  </div>
+  <div class="tweet-text">{text}</div>
+</div>"""
+
+
+def build_overall_panel(accounts: list[dict]) -> str:
+    """全アカウント横断・中央値2倍以上を いいね順/エンゲ率順 で表示"""
+    THRESHOLD = 2.0
+    likes_list: list[tuple] = []
+    eng_list: list[tuple] = []
+
+    for ac in accounts:
+        account = ac["account"]
+        display_name = ac.get("display_name", account)
+        median = ac.get("median_likes") or 0
+        for t in ac.get("tweets", []):
+            likes = t.get("likes", 0)
+            er = t.get("eng_rate")
+            if median > 0 and likes >= median * THRESHOLD:
+                likes_list.append((likes, t, account, display_name, median))
+            if er is not None and median > 0 and likes >= median * THRESHOLD:
+                eng_list.append((er, t, account, display_name, median))
+
+    likes_list.sort(key=lambda x: x[0], reverse=True)
+    eng_list.sort(key=lambda x: x[0], reverse=True)
+
+    likes_rows = "".join(
+        render_tweet_overall(i + 1, t, ac, dn, med, "likes")
+        for i, (_, t, ac, dn, med) in enumerate(likes_list)
+    ) or '<div class="empty">データがありません</div>'
+
+    eng_rows = "".join(
+        render_tweet_overall(i + 1, t, ac, dn, med, "eng")
+        for i, (_, t, ac, dn, med) in enumerate(eng_list)
+    ) or '<div class="empty">データがありません</div>'
+
+    total_accounts = len(accounts)
+    return f"""
+<div class="tab-panel active" id="tab-__overall__">
+  <div class="account-header">
+    <div class="account-info">
+      <span class="account-display">🏆 全体ランキング</span>
+    </div>
+    <div class="account-pills">
+      <span class="pill pill-gray">{total_accounts}アカウント合算</span>
+      <span class="pill pill-blue">中央値×{THRESHOLD:.0f}倍以上</span>
+      <span class="pill pill-green">いいね順 {len(likes_list)}件</span>
+    </div>
+  </div>
+  <div class="overall-sort-btns">
+    <button class="sort-btn active" id="sort-likes" onclick="switchSort('likes')">❤️ いいね順</button>
+    <button class="sort-btn" id="sort-eng" onclick="switchSort('eng')">📊 エンゲ率順</button>
+  </div>
+  <div id="overall-likes" class="overall-view">{likes_rows}</div>
+  <div id="overall-eng" class="overall-view" style="display:none">{eng_rows}</div>
+</div>"""
+
+
 def build(gh_pat: str = "") -> None:
     gh_pat = gh_pat or os.environ.get("GH_PAT", "")
 
@@ -87,9 +183,19 @@ def build(gh_pat: str = "") -> None:
     updated_at = data.get("updated_at", "—")
     accounts = data.get("accounts", [])
 
+    # 全体ランキングパネルを先頭に
+    overall_panel = build_overall_panel(accounts)
+    overall_nav = """
+<div class="tab-item" id="item-__overall__">
+  <button class="tab-btn active" onclick="switchTab('__overall__', this)">
+    <span class="tab-name">🏆 全体</span>
+    <span class="tab-handle">全アカウント</span>
+  </button>
+</div>"""
+
     # タブHTML生成
-    tabs_nav = ""
-    tabs_content = ""
+    tabs_nav = overall_nav
+    tabs_content = overall_panel
     for i, ac in enumerate(accounts):
         account = ac["account"]
         display_name = html.escape(ac.get("display_name", ""))
@@ -98,7 +204,7 @@ def build(gh_pat: str = "") -> None:
         median_str = str(int(median)) if median is not None else "—"
         tweets = ac.get("tweets", [])
         count = len(tweets)
-        active = "active" if i == 0 else ""
+        active = "" if i == 0 else ""  # 全体タブがデフォルトactiveなので全て非active
 
         tabs_nav += f"""
 <div class="tab-item" id="item-{account}">
@@ -222,6 +328,11 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .tweet-meta {{ display: flex; gap: 14px; padding-left: 38px; font-size: 0.72rem; color: var(--muted); margin-bottom: 4px; }}
 .tweet-text {{ font-size: 0.85rem; color: #94a3b8; line-height: 1.6; padding-left: 38px; white-space: pre-wrap; word-break: break-word; }}
 .empty {{ text-align: center; color: var(--muted); padding: 3rem; }}
+.overall-sort-btns {{ display: flex; gap: 0.5rem; margin-bottom: 1rem; }}
+.sort-btn {{ padding: 0.4rem 1.2rem; border-radius: 8px; border: 1px solid var(--surface2); background: var(--surface); color: var(--muted); cursor: pointer; font-size: 0.88rem; font-weight: 600; transition: all .15s; }}
+.sort-btn:hover {{ background: var(--surface2); color: var(--text); }}
+.sort-btn.active {{ background: var(--accent); color: #fff; border-color: var(--accent); }}
+.account-badge {{ background: var(--surface2); color: var(--blue); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px; white-space: nowrap; }}
 @media (max-width: 640px) {{
   header {{ padding: 1rem 0.75rem 0.75rem; }}
   header h1 {{ font-size: 1.3rem; }}
@@ -286,6 +397,13 @@ function switchTab(account, btn) {{
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('tab-' + account).classList.add('active');
+}}
+
+function switchSort(mode) {{
+  document.getElementById('sort-likes').classList.toggle('active', mode === 'likes');
+  document.getElementById('sort-eng').classList.toggle('active', mode === 'eng');
+  document.getElementById('overall-likes').style.display = mode === 'likes' ? '' : 'none';
+  document.getElementById('overall-eng').style.display = mode === 'eng' ? '' : 'none';
 }}
 
 function deleteAccount(account, displayName) {{
