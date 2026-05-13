@@ -64,6 +64,8 @@ jobs:
           fi
 
       - name: Build buzz ranking page
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           if [ -f "data/buzz.json" ]; then
             python build_buzz.py
