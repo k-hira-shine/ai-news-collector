@@ -58,15 +58,7 @@ jobs:
           if [ "$MODE" = "analyze-only" ]; then
             python main.py --analyze-only
           elif [ "$MODE" = "dashboard-only" ]; then
-            python -c "
-import sys; sys.path.insert(0,'.')
-from dashboard import generate_dashboard, generate_strategy_page
-generate_dashboard('docs/index.html')
-generate_strategy_page('docs/strategy.html')
-from money_dashboard import build_money_page
-build_money_page('docs/money.html')
-print('Dashboard regenerated')
-"
+            python -c "import sys; sys.path.insert(0,'.'); from dashboard import generate_dashboard, generate_strategy_page; generate_dashboard('docs/index.html'); generate_strategy_page('docs/strategy.html'); from money_dashboard import build_money_page; build_money_page('docs/money.html'); print('Dashboard regenerated')"
           else
             python main.py
           fi
