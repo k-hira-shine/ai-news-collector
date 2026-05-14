@@ -40,7 +40,7 @@ def load_config() -> dict:
         return yaml.safe_load(f)
 
 
-def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 30, max_items: int = 100) -> dict[str, list[dict]]:
+def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 30, max_items: int = 100) -> tuple[dict[str, list[dict]], float]:
     """複数アカウントを1回のApify起動でまとめて取得"""
     since_date = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
     search_terms = [f"from:{h} -filter:retweets min_faves:5" for h in handles]
@@ -57,7 +57,7 @@ def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 
     status = (run or {}).get("status", "")
     if status != "SUCCEEDED":
         logger.error("Batch run status=%s", status)
-        return {}
+        return {}, cost
 
     # アカウントごとに仕分け
     result: dict[str, list[dict]] = {h: [] for h in handles}
@@ -89,12 +89,12 @@ def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 
     logger.info("Batch done: %d tweets total, cost=$%.4f", total, cost)
     for h in handles:
         logger.info("  @%s: %d tweets", h, len(result[h]))
-    return result
+    return result, cost
 
 
 def fetch_account_tweets(client, actor_id: str, handle: str, days: int = 30, max_items: int = 100) -> list[dict]:
     """単一アカウント取得（追加時などに使用）"""
-    result = fetch_accounts_batch(client, actor_id, [handle], days=days, max_items=max_items)
+    result, _ = fetch_accounts_batch(client, actor_id, [handle], days=days, max_items=max_items)
     return result.get(handle, [])
 
 
@@ -183,6 +183,7 @@ def main() -> None:
 
     existing = load_existing_buzz()
     existing_map = {ac["account"]: ac for ac in existing.get("accounts", [])}
+    apify_cost = 0.0
 
     if args.add:
         # 1アカウントだけ追加・更新してマージ
@@ -211,7 +212,7 @@ def main() -> None:
             sys.exit(0)
         handles = [ac["handle"].lstrip("@") for ac in buzz_accounts]
         display_map = {ac["handle"].lstrip("@"): ac.get("display_name", ac["handle"]) for ac in buzz_accounts}
-        batch_result = fetch_accounts_batch(client, actor_id, handles, days=args.days, max_items=args.max_items)
+        batch_result, apify_cost = fetch_accounts_batch(client, actor_id, handles, days=args.days, max_items=args.max_items)
         for handle, tweets in batch_result.items():
             if tweets:
                 existing_map[handle] = build_account_data(handle, display_map.get(handle, handle), tweets)
@@ -233,6 +234,7 @@ def main() -> None:
         accounts_count = len(existing.get("accounts", []))
         log_run("buzz", "success",
                 items_collected=total_tweets,
+                apify_cost_usd=apify_cost,
                 extra={"accounts": accounts_count})
         write_run_status("buzz", "success",
                          extra={"items_collected": total_tweets, "accounts": accounts_count})
