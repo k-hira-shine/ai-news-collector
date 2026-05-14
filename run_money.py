@@ -151,6 +151,22 @@ def main() -> None:
                 new_sns_items = [i for i in all_sns if i.get("id") not in analyzed_sns_ids]
                 logger.info("Unanalyzed SNS posts: %d", len(new_sns_items))
 
+            # 通常実行時: 新規収集分 + 過去未分析から最大100件を追加処理
+            if new_sns_items and not args.analyze_only:
+                from sns_collector import load_all_sns_items
+                from sns_analyzer import load_all_sns_analyses
+                all_sns = load_all_sns_items()
+                analyzed_sns_ids = {p["id"] for p in load_all_sns_analyses()}
+                new_ids = {i["id"] for i in new_sns_items}
+                backlog = [
+                    i for i in all_sns
+                    if i.get("id") not in analyzed_sns_ids and i.get("id") not in new_ids
+                ]
+                BACKLOG_LIMIT = 100
+                if backlog:
+                    logger.info("Backlog: %d unanalyzed posts, processing up to %d", len(backlog), BACKLOG_LIMIT)
+                    new_sns_items = new_sns_items + backlog[:BACKLOG_LIMIT]
+
             if new_sns_items:
                 from sns_analyzer import analyze_sns_posts, save_sns_analysis
 
