@@ -191,15 +191,33 @@ def save_sns_analysis(posts: list[dict], date_str: str, slot: str) -> str:
     os.makedirs(sns_dir, exist_ok=True)
     path = os.path.join(sns_dir, f"{date_str}_{slot}_analysis.json")
 
+    merged_posts: dict[str, dict] = {}
+    if os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                existing = json.load(f)
+            for post in existing.get("posts", []):
+                post_id = post.get("id") or post.get("post_id")
+                if post_id:
+                    merged_posts[post_id] = post
+        except Exception as e:
+            logger.warning("Failed to merge existing SNS analysis %s: %s", path, e)
+
+    for post in posts:
+        post_id = post.get("id") or post.get("post_id")
+        if post_id:
+            merged_posts[post_id] = post
+
+    merged_list = list(merged_posts.values())
     output = {
         "date": date_str,
         "slot": slot,
-        "total_posts": len(posts),
-        "posts": posts,
+        "total_posts": len(merged_list),
+        "posts": merged_list,
     }
     with open(path, "w", encoding="utf-8") as f:
         json.dump(output, f, ensure_ascii=False, indent=2)
-    logger.info("SNS analysis saved → %s (%d posts)", path, len(posts))
+    logger.info("SNS analysis saved → %s (%d posts)", path, len(merged_list))
     return path
 
 
