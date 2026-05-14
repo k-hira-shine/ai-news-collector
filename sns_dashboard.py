@@ -71,6 +71,8 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     search_query_count = len(sns_cfg.get("search_queries", []))
     account_count = len(sns_cfg.get("accounts", []))
     cache_days = sns_cfg.get("cache_retention_days", 180)
+    search_since_days = sns_cfg.get("search_since_days", 90)
+    account_since_days = sns_cfg.get("account_since_days", 365)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -165,6 +167,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
   <div class="criteria-box">
     <div class="criteria-title">📋 収集・掲載基準</div>
     <strong>収集元：</strong>日英{search_query_count}種のキーワード検索＋追跡アカウント{account_count}件 &nbsp;|&nbsp;
+    <strong>対象期間：</strong>検索は過去{search_since_days}日・追跡アカウントは過去{account_since_days}日 &nbsp;|&nbsp;
     <strong>フォロワー：</strong>{min_followers:,}人以上の投稿のみ採用 &nbsp;|&nbsp;
     <strong>判定：</strong>GeminiがSNS成功者の思考法・習慣・マインドとして有益な投稿を自動フィルタリング &nbsp;|&nbsp;
     <strong>蓄積期間：</strong>過去{cache_days}日分を継続収集

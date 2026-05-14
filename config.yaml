@@ -223,6 +223,9 @@ sns_success:
   cache_retention_days: 180
   # 採用する投稿者の最低フォロワー数
   min_followers: 5000
+  # 広域検索は新しめに絞り、追跡アカウントは過去の良質投稿も拾う
+  search_since_days: 90
+  account_since_days: 365
   # 1クエリあたりの最大取得件数
   max_items_per_query: 150
   # 追跡アカウント1件あたりの最大取得件数
@@ -232,6 +235,26 @@ sns_success:
   accounts:
     - handle: "teihen_ns_fire"
       label: "低辺会社員からFIRE"
+    - handle: "fiction_log"
+      label: "fiction_log"
+    - handle: "gagarotai200"
+      label: "gagarotai200"
+    - handle: "iX00AI"
+      label: "iX00AI"
+    - handle: "AiFreak_tool"
+      label: "AiFreak_tool"
+    - handle: "keitowebai"
+      label: "keitowebai"
+    - handle: "usutaku_channel"
+      label: "usutaku_channel"
+    - handle: "taziku_co"
+      label: "田中義弘 | taziku CEO / AI × Creative"
+    - handle: "rute1203d"
+      label: "てる@AIエージェントマフィア"
+    - handle: "mercarioji"
+      label: "メルおじ | AI × X | FFFの民"
+    - handle: "masahirochaen"
+      label: "チャエン | デジライズ CEO"
 
   search_queries:
     # 日本語：成功体験・マインドセット

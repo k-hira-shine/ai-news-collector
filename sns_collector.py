@@ -39,6 +39,8 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     max_items_per_account = sns_cfg.get("max_items_per_account", 150)
     search_queries = sns_cfg.get("search_queries", [])
     max_items_per_query = sns_cfg.get("max_items_per_query", 100)
+    search_since_days = sns_cfg.get("search_since_days", 90)
+    account_since_days = sns_cfg.get("account_since_days", 365)
 
     if not accounts and not search_queries:
         logger.warning("No sns_success accounts or search_queries configured")
@@ -49,18 +51,21 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     _meta_lock = threading.Lock()
     all_items: list[dict] = []
 
-    def _run_apify(search_terms: list[str], max_items_each: int, label: str, query_type: str = "Top") -> list[dict]:
+    def _run_apify(search_terms: list[str], max_items_each: int, label: str, query_type: str = "Top", since_days: int | None = 90) -> list[dict]:
         """Apifyを1回起動してツイートを取得し正規化して返す"""
         from datetime import timedelta
-        since_date = (datetime.now(timezone.utc) - timedelta(days=90)).strftime("%Y-%m-%d")
         run_input = {
             "searchTerms": search_terms,
             "queryType": query_type,
             "maxItems": max_items_each,
             "includeSearchTerms": True,
-            "since": since_date,
         }
-        logger.info("SNS collection [%s]: %d queries × up to %d posts (%s)", label, len(search_terms), max_items_each, query_type)
+        if since_days:
+            run_input["since"] = (datetime.now(timezone.utc) - timedelta(days=since_days)).strftime("%Y-%m-%d")
+        logger.info(
+            "SNS collection [%s]: %d queries × up to %d posts (%s, since_days=%s)",
+            label, len(search_terms), max_items_each, query_type, since_days or "none",
+        )
         run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
         with _meta_lock:
             meta["apify_runs"] += 1
@@ -91,7 +96,13 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
 
         if accounts:
             account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
-            all_items += _run_apify(account_queries, max_items_per_account, "accounts", query_type="Latest")
+            all_items += _run_apify(
+                account_queries,
+                max_items_per_account,
+                "accounts",
+                query_type="Latest",
+                since_days=account_since_days,
+            )
 
         ja_queries = [q for q in search_queries if "lang:en" not in q]
         en_queries = [q for q in search_queries if "lang:en" in q]
@@ -106,7 +117,7 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
             batches.append((en_queries[i:i + batch_size], max_items_per_query, f"en_{i//batch_size+1}"))
 
         with ThreadPoolExecutor(max_workers=4) as pool:
-            futures = {pool.submit(_run_apify, q, n, lbl): lbl for q, n, lbl in batches}
+            futures = {pool.submit(_run_apify, q, n, lbl, "Top", search_since_days): lbl for q, n, lbl in batches}
             for fut in futures:
                 lbl = futures[fut]
                 try:
