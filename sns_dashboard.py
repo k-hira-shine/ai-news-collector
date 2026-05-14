@@ -191,6 +191,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
       <a href="post_generator.html">✍️ 投稿ジェネレーター</a>
       <a href="buzz.html">🔥 バズりランキング</a>
       <a href="strategy.html">🎯 施策提案</a>
+      <a href="tools.html">🔧 ツール追跡</a>
       <a href="hn.html">📡 英語一次情報</a>
     </nav>
   </div>

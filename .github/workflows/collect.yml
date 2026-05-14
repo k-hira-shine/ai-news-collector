@@ -76,6 +76,11 @@ jobs:
       - name: Build HN + arxiv page
         run: python build_hn.py
 
+      - name: Build tools tracking page
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python build_tools.py
+
       - name: Commit & push data
         run: |
           git config user.name "github-actions[bot]"

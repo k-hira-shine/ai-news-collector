@@ -175,6 +175,49 @@ def main() -> None:
     except Exception as e:
         logger.error("Strategy page generation failed: %s", e)
 
+    # ── Step 4: Tools Tracking ────────────────────────────────────────
+    try:
+        from tools_collector import (
+            collect_rss_feeds,
+            deduplicate_tools,
+            extract_from_hn,
+            extract_from_x,
+            load_all_tools_items,
+            save_tools_jsonl,
+        )
+        from tools_analyzer import analyze_tools_items, save_tools_analysis
+
+        tools_cfg = config.get("tools_tracking", {})
+        if tools_cfg.get("enabled", True):
+            # RSS収集
+            rss_items = collect_rss_feeds(config) if not args.analyze_only else []
+
+            # 既存X/HNデータからキーワード抽出
+            x_tool_items = extract_from_x(items) if items else []
+            from build_hn import load_all_dates as _load_hn
+            hn_raw = []
+            for date_items in _load_hn(days=2).values():
+                hn_raw.extend(date_items)
+            hn_tool_items = extract_from_hn(hn_raw)
+
+            # マージ・重複排除・JSONL保存
+            all_tool_candidates = deduplicate_tools(rss_items + x_tool_items + hn_tool_items)
+            if all_tool_candidates:
+                save_tools_jsonl(all_tool_candidates)
+                # Gemini分析
+                analyzed = analyze_tools_items(all_tool_candidates, config)
+                if analyzed:
+                    save_tools_analysis(analyzed)
+                    logger.info("Tools: %d items analyzed", len(analyzed))
+
+            # ページ生成
+            from build_tools import build_tools_page
+            tools_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "tools.html")
+            build_tools_page(tools_output)
+            logger.info("Tools page generated → %s", tools_output)
+    except Exception as e:
+        logger.error("Tools tracking failed: %s", e)
+
 
     elapsed = time.time() - t0
     logger.info("=== Complete in %.1fs ===", elapsed)

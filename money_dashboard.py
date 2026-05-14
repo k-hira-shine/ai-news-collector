@@ -164,6 +164,7 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
       <a href="buzz.html">🔥 バズりランキング</a>
+      <a href="tools.html">🔧 ツール追跡</a>
       <a href="sns_success.html">🧠 SNS成功者マインド</a>
       <a href="post_generator.html">✍️ 投稿ジェネレーター</a>
       <a href="strategy.html">🎯 施策提案</a>

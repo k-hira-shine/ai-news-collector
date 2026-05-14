@@ -205,6 +205,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
     <a class="nav-link" href="sns_success.html">🧠 SNS成功者マインド</a>
+    <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
     <a class="nav-link" href="hn.html">📡 英語一次情報</a>
   </div>
 </header>
@@ -667,6 +668,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
     <a class="nav-link" href="sns_success.html">🧠 SNS成功者マインド</a>
+    <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
     <a class="nav-link" href="hn.html">📡 英語一次情報</a>
   </div>
 </header>

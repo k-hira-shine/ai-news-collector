@@ -343,6 +343,28 @@ buzz_accounts:
   - handle: "ai_hakase_"
     display_name: "AI博士"
 
+# ── AIツール・機能リリース追跡 ────────────────────────────────
+tools_tracking:
+  enabled: true
+  max_age_days: 7          # 何日前までのRSSを取得するか
+  max_items_per_feed: 30   # 1フィードあたり最大取得件数
+
+  rss_feeds:
+    - url: "https://venturebeat.com/category/ai/feed/"
+      label: "VentureBeat AI"
+    - url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
+      label: "The Verge AI"
+    - url: "https://techcrunch.com/feed/"
+      label: "TechCrunch"
+    - url: "https://openai.com/news/rss/"
+      label: "OpenAI Blog"
+    - url: "https://www.anthropic.com/rss.xml"
+      label: "Anthropic Blog"
+    - url: "https://feeds.feedburner.com/blogspot/gJZg"
+      label: "Google AI Blog"
+    - url: "https://huggingface.co/blog/feed.xml"
+      label: "Hugging Face Blog"
+
 # ── SNS投稿ジェネレーター テンプレート定義 ─────────────────
 # テンプレートは https://k-hira-shine.github.io/fiction-log-buzz-report/templates.html の6型を使用
 post_templates:
