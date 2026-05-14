@@ -97,10 +97,11 @@ def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | Non
     STATUS_BANNER = STATUS_BANNER_HTML
 
     diagrams = diagrams or []
+    hn_items = _load_hn_today()
     if not latest:
         body = '<p class="empty">まだ分析データがありません。初回実行をお待ちください。</p>'
     else:
-        body = _render_diagrams(diagrams) + _render_news_tabs(history) + _render_history(history)
+        body = _render_diagrams(diagrams) + _render_news_tabs(history) + _render_history(history) + _render_hn_section(hn_items)
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -214,7 +215,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
   <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
   <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
 </nav>
 <div class="container">
 <header>
@@ -539,6 +539,72 @@ def _render_history(history: list[dict]) -> str:
     )
 
 
+def _load_hn_today() -> list[dict]:
+    """data/hn/ から直近2日分のデータを返す（最大50件）"""
+    import glob as _glob
+    hn_dir = data_dir("hn")
+    if not os.path.isdir(hn_dir):
+        return []
+    files = sorted(_glob.glob(os.path.join(hn_dir, "*.jsonl")), reverse=True)[:2]
+    items: list[dict] = []
+    seen: set[str] = set()
+    for f in files:
+        try:
+            for line in open(f, encoding="utf-8"):
+                d = json.loads(line)
+                url = d.get("url") or d.get("hn_item_url") or ""
+                if url and url in seen:
+                    continue
+                seen.add(url)
+                items.append(d)
+        except (json.JSONDecodeError, OSError):
+            continue
+    return items[:50]
+
+
+def _render_hn_section(items: list[dict]) -> str:
+    if not items:
+        return ""
+    hn_items = [i for i in items if i.get("source_name") == "HackerNews"]
+    arxiv_items = [i for i in items if i.get("source_name", "").startswith("arxiv")]
+
+    def _item_html(d: dict) -> str:
+        title = d.get("title_ja") or d.get("title") or ""
+        url = d.get("url") or d.get("hn_item_url") or "#"
+        hn_url = d.get("hn_item_url") or ""
+        score = (d.get("engagement") or {}).get("score", 0)
+        comments = (d.get("engagement") or {}).get("comments", 0)
+        src = d.get("source_name") or ""
+        badge = f'<span class="badge badge-score">{score}pt</span>' if score else ""
+        badge += f'<span class="badge badge-comments">{comments}💬</span>' if comments else ""
+        cat = src if src.startswith("arxiv") else ""
+        cat_badge = f'<span class="badge badge-cat">{cat}</span>' if cat else ""
+        hn_link = f' <a class="hn-link" href="{hn_url}" target="_blank" rel="noopener">HN↗</a>' if hn_url and hn_url != url else ""
+        return (
+            f'<div class="article">'
+            f'<div><a href="{url}" target="_blank" rel="noopener">{title}</a>{hn_link}</div>'
+            f'<div class="meta">{badge}{cat_badge}</div>'
+            f'</div>'
+        )
+
+    hn_html = "".join(_item_html(d) for d in hn_items[:15]) if hn_items else '<p class="empty" style="padding:1rem 0">データなし</p>'
+    arxiv_html = "".join(_item_html(d) for d in arxiv_items[:15]) if arxiv_items else '<p class="empty" style="padding:1rem 0">データなし</p>'
+
+    return f"""<div class="card">
+<h2>📡 HN / arxiv（英語一次情報）</h2>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+<div>
+<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;font-weight:600;">🔶 HackerNews</div>
+{hn_html}
+</div>
+<div>
+<div style="font-size:0.85rem;color:var(--muted);margin-bottom:0.5rem;font-weight:600;">📄 arxiv</div>
+{arxiv_html}
+</div>
+</div>
+</div>"""
+
+
 # ━━━━━━━━━━━━━━━━ 施策ページ (strategy.html) ━━━━━━━━━━━━━━━━
 # 既存の generate_dashboard() / index.html には一切手を加えない
 # この関数のみが docs/strategy.html を生成する
@@ -681,7 +747,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
   <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
   <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
 </nav>
 <div class="container">
 <header>

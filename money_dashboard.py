@@ -166,7 +166,6 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
   <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
   <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
   <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
 </nav>
 <header>
   <div class="header-inner">

@@ -44,7 +44,6 @@ NAV_LINKS = [
     ("post_generator.html", "✍️ 投稿ストック"),
     ("tools.html",          "🔧 ツール追跡"),
     ("reviews.html",        "📋 使ってみた"),
-    ("hn.html",             "📡 HN/arxiv"),
 ]
 
 

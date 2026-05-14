@@ -263,7 +263,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
   <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
   <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link active" href="hn.html">📡 HN/arxiv</a>
 </nav>
 <div class="container">
 <header>
