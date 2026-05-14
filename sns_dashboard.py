@@ -65,6 +65,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     )
 
     by_category: dict[str, list[dict]] = {}
+    # ポストデータをインデックス参照用にJS変数として埋め込む
     for post in posts:
         cat = post.get("category") or "その他"
         by_category.setdefault(cat, []).append(post)
@@ -269,7 +270,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
   </div>
 
   <div class="posts-grid" id="postsGrid">
-    {_render_all_posts(posts) if posts else _render_empty()}
+    {_render_all_posts(posts)[0] if posts else _render_empty()}
   </div>
 </div>
 
@@ -292,6 +293,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
 <script>
 const WORKER_URL = 'https://sns-post-generator.imokonoai.workers.dev';
 const TEMPLATES = {templates_js};
+const POST_DATA = {_render_all_posts(posts)[1] if posts else '[]'};
 const LS_KEY = 'sns_generated_ids';
 
 function getGeneratedIds() {{
@@ -302,12 +304,10 @@ function markAsGenerated(postId) {{
   const ids = getGeneratedIds();
   ids.add(postId);
   localStorage.setItem(LS_KEY, JSON.stringify([...ids]));
-  // ボタンにバッジを反映
   document.querySelectorAll('.gen-post-btn').forEach(btn => {{
-    try {{
-      const d = JSON.parse(btn.getAttribute('data-post').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
-      if (d.id === postId) applyGeneratedBadge(btn);
-    }} catch {{}}
+    const idx = parseInt(btn.getAttribute('data-idx'), 10);
+    const d = POST_DATA[idx];
+    if (d && d.id === postId) applyGeneratedBadge(btn);
   }});
 }}
 function applyGeneratedBadge(btn) {{
@@ -345,10 +345,9 @@ function initGeneratedBadges() {{
   const ids = getGeneratedIds();
   if (!ids.size) return;
   document.querySelectorAll('.gen-post-btn').forEach(btn => {{
-    try {{
-      const d = JSON.parse(btn.getAttribute('data-post').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
-      if (ids.has(d.id)) applyGeneratedBadge(btn);
-    }} catch {{}}
+    const idx = parseInt(btn.getAttribute('data-idx'), 10);
+    const d = POST_DATA[idx];
+    if (d && ids.has(d.id)) applyGeneratedBadge(btn);
   }});
 }}
 
@@ -417,7 +416,9 @@ function toggleBody(el) {{
 }}
 
 async function openGenerator(btn) {{
-  const postData = JSON.parse(btn.getAttribute('data-post').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
+  const idx = parseInt(btn.getAttribute('data-idx'), 10);
+  const postData = POST_DATA[idx];
+  if (!postData) return;
   const modal = document.getElementById('genModal');
   const modalTitle = document.getElementById('modalTitle');
   const modalSource = document.getElementById('modalSource');
@@ -491,17 +492,35 @@ initGeneratedBadges();
 </html>"""
 
 
-def _render_all_posts(posts: list[dict]) -> str:
+def _render_all_posts(posts: list[dict]) -> tuple[str, str]:
+    """(HTML文字列, JS用ポストデータJSON文字列) を返す"""
     def _eng_rate(p):
         likes = p.get("engagement", {}).get("likes", 0)
         followers = p.get("author_followers") or 1
         return likes / followers
 
     sorted_posts = sorted(posts, key=_eng_rate, reverse=True)
-    return "".join(_render_post_card(p) for p in sorted_posts)
+    html = "".join(_render_post_card(p, idx) for idx, p in enumerate(sorted_posts))
+
+    # JS用ポストデータ（インデックス順）
+    posts_js_data = []
+    for p in sorted_posts:
+        author = p.get("author_display") or p.get("author") or ""
+        posts_js_data.append({
+            "id": p.get("id", ""),
+            "author": p.get("author", ""),
+            "author_display": author,
+            "author_followers": p.get("author_followers", 0),
+            "content": (p.get("content") or "")[:800],
+            "summary": p.get("summary", ""),
+            "mind_theme": p.get("mind_theme", ""),
+            "key_insights": p.get("key_insights") or [],
+            "url": p.get("url", ""),
+        })
+    return html, json.dumps(posts_js_data, ensure_ascii=False)
 
 
-def _render_post_card(post: dict) -> str:
+def _render_post_card(post: dict, idx: int = 0) -> str:
     category = post.get("category") or "その他"
     icon = CATEGORY_ICONS.get(category, "💡")
     summary = post.get("summary") or ""
@@ -547,21 +566,7 @@ def _render_post_card(post: dict) -> str:
     target_html = f'<div class="post-target">👥 {target}</div>' if target else ""
     toggle_html = '<span class="post-body-toggle" onclick="toggleBody(this)">続きを読む ▼</span>' if has_more else ""
 
-    # 投稿文生成ボタン用にポストデータをJSON化（HTMLエスケープ）
-    post_data = {
-        "id": post.get("id", ""),
-        "author": post.get("author", ""),
-        "author_display": author,
-        "author_followers": post.get("author_followers", 0),
-        "content": raw_content[:800],
-        "summary": summary,
-        "mind_theme": theme,
-        "key_insights": insights,
-        "url": url,
-    }
-    post_data_json = json.dumps(post_data, ensure_ascii=False).replace("'", "&#39;").replace('"', "&quot;")
-
-    return f"""<div class="post-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-length="{content_length}">
+    return f"""<div class="post-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-length="{content_length}" data-idx="{idx}">
   <div class="post-header">
     <span class="post-category">{icon} {category}</span>
     {credibility_html}
@@ -579,7 +584,7 @@ def _render_post_card(post: dict) -> str:
       <a href="{url}" target="_blank" rel="noopener">ポストを見る →</a>
     </div>
   </div>
-  <button class="gen-post-btn" onclick="openGenerator(this)" data-post="{post_data_json}">✍️ 投稿文を作る</button>
+  <button class="gen-post-btn" onclick="openGenerator(this)" data-idx="{idx}">✍️ 投稿文を作る</button>
 </div>"""
 
 
