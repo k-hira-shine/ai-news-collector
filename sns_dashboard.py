@@ -204,6 +204,17 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
           <option value="0.03">3%以上</option>
         </select>
       </div>
+      <div class="select-group">
+        <label for="lengthSelect">本文量：</label>
+        <select id="lengthSelect" onchange="applyFilters()">
+          <option value="0">制限なし</option>
+          <option value="280">280字以上</option>
+          <option value="500">500字以上</option>
+          <option value="1000">1000字以上</option>
+          <option value="1500">1500字以上</option>
+          <option value="2000">2000字以上</option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -257,6 +268,7 @@ function setSort(mode, btn) {{
 function applyFilters() {{
   const grid = document.getElementById('postsGrid');
   const engMin = parseFloat(document.getElementById('engSelect').value) || 0;
+  const lengthMin = parseInt(document.getElementById('lengthSelect').value || '0', 10);
   const allCards = Array.from(grid.querySelectorAll('.post-card'));
 
   const visible = allCards.filter(card => {{
@@ -265,7 +277,8 @@ function applyFilters() {{
       (activeRegion === 'jp' && card.dataset.jp === 'true') ||
       (activeRegion === 'global' && card.dataset.jp === 'false');
     const engMatch = parseFloat(card.dataset.eng || '0') >= engMin;
-    return catMatch && regionMatch && engMatch;
+    const lengthMatch = parseInt(card.dataset.length || '0', 10) >= lengthMin;
+    return catMatch && regionMatch && engMatch && lengthMatch;
   }});
 
   visible.sort((a, b) => {{
@@ -337,8 +350,10 @@ def _render_post_card(post: dict) -> str:
     eng_rate = likes / followers
 
     raw_content = post.get("content") or ""
-    content_escaped = raw_content[:400].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-    has_more = len(raw_content) > 400
+    content_length = len(raw_content)
+    content_preview_limit = 1200
+    content_escaped = raw_content[:content_preview_limit].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    has_more = content_length > content_preview_limit
 
     insights_html = ""
     if insights:
@@ -350,7 +365,7 @@ def _render_post_card(post: dict) -> str:
     target_html = f'<div class="post-target">👥 {target}</div>' if target else ""
     toggle_html = '<span class="post-body-toggle" onclick="toggleBody(this)">続きを読む ▼</span>' if has_more else ""
 
-    return f"""<div class="post-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}">
+    return f"""<div class="post-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-length="{content_length}">
   <div class="post-header">
     <span class="post-category">{icon} {category}</span>
     {credibility_html}
