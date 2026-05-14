@@ -270,7 +270,9 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
   .source-summary {{ font-size: 0.9rem; color: var(--text); font-weight: 600; margin-bottom: 4px; }}
   .source-meta {{ font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
   .cards-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }}
-  .gen-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative; }}
+  .gen-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative; transition: opacity 0.2s; }}
+  .gen-card.posted {{ opacity: 0.4; border-color: var(--success); }}
+  .gen-card.posted .tmpl-label::after {{ content: ' ✓ 投稿済み'; color: var(--success); }}
   .tmpl-label {{ font-size: 0.74rem; color: var(--accent); font-weight: 600; }}
   .gen-card-date {{ font-size: 0.74rem; color: var(--muted); }}
   .gen-text {{ color: var(--text); font-size: 0.93rem; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }}
@@ -280,6 +282,9 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
   .gen-actions {{ display: flex; gap: 6px; align-items: center; }}
   .copy-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }}
   .copy-btn.copied {{ background: var(--success); }}
+  .posted-btn {{ background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }}
+  .posted-btn:hover {{ border-color: var(--success); color: var(--success); }}
+  .posted-btn.active {{ background: rgba(16,185,129,0.15); border-color: var(--success); color: var(--success); }}
   .del-btn {{ background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; cursor: pointer; }}
   .del-btn:hover {{ border-color: var(--error); color: var(--error); }}
   .source-link {{ color: var(--accent); font-size: 0.77rem; text-decoration: none; }}
@@ -314,6 +319,7 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
 <footer>投稿文はAI生成です。投稿前に内容を確認してください。</footer>
 <script>
 const LS_POSTS_KEY = 'sns_generated_posts';
+const LS_POSTED_KEY = 'sns_posted_ids';
 const TEMPLATE_NAMES = {template_names_js};
 
 function loadPosts() {{
@@ -321,6 +327,24 @@ function loadPosts() {{
 }}
 function savePosts(posts) {{
   localStorage.setItem(LS_POSTS_KEY, JSON.stringify(posts));
+}}
+function getPostedIds() {{
+  try {{ return new Set(JSON.parse(localStorage.getItem(LS_POSTED_KEY) || '[]')); }} catch {{ return new Set(); }}
+}}
+function togglePosted(id, cardEl, btn) {{
+  const ids = getPostedIds();
+  if (ids.has(id)) {{
+    ids.delete(id);
+    cardEl.classList.remove('posted');
+    btn.classList.remove('active');
+    btn.textContent = '投稿済みにする';
+  }} else {{
+    ids.add(id);
+    cardEl.classList.add('posted');
+    btn.classList.add('active');
+    btn.textContent = '✓ 投稿済み';
+  }}
+  localStorage.setItem(LS_POSTED_KEY, JSON.stringify([...ids]));
 }}
 
 function deletePost(id) {{
@@ -408,18 +432,22 @@ function render() {{
       return tmplOrder.indexOf(a.template_id) - tmplOrder.indexOf(b.template_id);
     }});
 
+    const postedIds = getPostedIds();
     const cards = sorted.map(p => {{
       const text = p.text || '';
       const chars = p.char_count || text.length;
       const overClass = chars > 140 ? ' over' : '';
       const textJson = JSON.stringify(text);
-      return `<div class="gen-card">
+      const isPosted = postedIds.has(p.id);
+      const cardId = 'card-' + p.id.replace(/[^a-zA-Z0-9]/g, '_');
+      return `<div class="gen-card${{isPosted ? ' posted' : ''}}" id="${{cardId}}">
   <div class="tmpl-label">${{esc(p.template_name || p.template_id)}}</div>
   <div class="gen-text">${{esc(text)}}</div>
   <div class="gen-footer">
     <span class="char-count${{overClass}}">${{chars}}文字</span>
     <div class="gen-actions">
       <button class="copy-btn" onclick="copyText(this, ${{textJson}})">コピー</button>
+      <button class="posted-btn${{isPosted ? ' active' : ''}}" onclick="togglePosted('${{p.id}}', document.getElementById('${{cardId}}'), this)">${{isPosted ? '✓ 投稿済み' : '投稿済みにする'}}</button>
       <button class="del-btn" onclick="deletePost('${{p.id}}')">削除</button>
     </div>
   </div>
