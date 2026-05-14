@@ -201,12 +201,15 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <h1>🤖 AI News Dashboard</h1>
   <div class="updated">Last updated: {now_str}</div>
   <div class="nav-links">
+    <a class="nav-link active" href="index.html">📰 ニュース</a>
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-    <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
-    <a class="nav-link" href="sns_success.html">🧠 SNS成功者マインド</a>
+    <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+    <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
     <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-    <a class="nav-link" href="hn.html">📡 英語一次情報</a>
+    <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+    <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+    <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
   </div>
 </header>
 {body}
@@ -665,11 +668,14 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   <div class="updated">Last updated: {now_str}</div>
   <div class="nav-links">
     <a class="nav-link" href="index.html">📰 ニュース</a>
+    <a class="nav-link active" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-    <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
-    <a class="nav-link" href="sns_success.html">🧠 SNS成功者マインド</a>
+    <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+    <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
     <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-    <a class="nav-link" href="hn.html">📡 英語一次情報</a>
+    <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+    <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+    <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
   </div>
 </header>
 {selector_html}

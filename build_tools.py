@@ -339,10 +339,13 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: {now_str}</span></div>
     <nav style="padding:0;border:none;background:none;">
       <a href="index.html">📰 ニュース</a>
-      <a href="sns_success.html">🧠 SNS成功者</a>
+      <a href="strategy.html">🎯 施策提案</a>
+      <a href="buzz.html">🔥 バズりランキング</a>
       <a href="money.html">🎬 マネタイズ</a>
+      <a href="sns_success.html">🧠 SNS成功者</a>
       <a href="tools.html" class="active">🔧 ツール追跡</a>
       <a href="reviews.html">📋 使ってみた</a>
+      <a href="post_generator.html">✍️ 投稿ストック</a>
       <a href="hn.html">📡 HN/arxiv</a>
     </nav>
   </div>

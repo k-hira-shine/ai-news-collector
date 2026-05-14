@@ -36,12 +36,15 @@ USE_FOR_LABELS = {
 }
 
 NAV_LINKS = [
-    ("index.html",      "📰 ニュース"),
-    ("sns_success.html","🧠 SNS成功者"),
-    ("money.html",      "🎬 マネタイズ"),
-    ("tools.html",      "🔧 ツール追跡"),
-    ("reviews.html",    "📋 使ってみた"),
-    ("hn.html",         "📡 HN/arxiv"),
+    ("index.html",          "📰 ニュース"),
+    ("strategy.html",       "🎯 施策提案"),
+    ("buzz.html",           "🔥 バズりランキング"),
+    ("money.html",          "🎬 マネタイズ"),
+    ("sns_success.html",    "🧠 SNS成功者"),
+    ("tools.html",          "🔧 ツール追跡"),
+    ("reviews.html",        "📋 使ってみた"),
+    ("post_generator.html", "✍️ 投稿ストック"),
+    ("hn.html",             "📡 HN/arxiv"),
 ]
 
 
