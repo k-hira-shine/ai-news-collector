@@ -205,9 +205,22 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 
     # 同一ツール名でグループ化（tool_nameを正規化してまとめる）
     from collections import defaultdict
+    import re as _re
+
+    def _normalize_tool_name(name: str) -> str:
+        n = name.strip().lower()
+        # 記号・表記ゆれを統一
+        n = n.replace("(", "").replace(")", "").replace("[", "").replace("]", "")
+        n = n.replace("+", " plus ").replace("＋", " plus ")
+        n = n.replace("&", "and").replace("／", "/")
+        n = _re.sub(r"\s+", " ", n).strip()
+        # バージョン番号の表記ゆれ（v1.0 → 1.0）
+        n = _re.sub(r"\bv(\d)", r"\1", n)
+        return n
+
     groups: dict[str, list[dict]] = defaultdict(list)
     for item in items:
-        key = (item.get("tool_name") or "").strip().lower()
+        key = _normalize_tool_name(item.get("tool_name") or "")
         groups[key].append(item)
     # グループ内最新のpublished_atで全体をソート
     def _group_latest(g: list[dict]) -> str:
