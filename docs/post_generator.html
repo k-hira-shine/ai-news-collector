@@ -27,13 +27,19 @@
   .clear-btn { background: none; border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; padding: 7px 16px; font-size: 0.82rem; cursor: pointer; }
   .clear-btn:hover { background: rgba(239,68,68,0.1); }
   .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 7px 16px; border-radius: 20px; cursor: pointer; font-size: 0.83rem; transition: all 0.2s; }
+  .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 7px 14px; border-radius: 10px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s; display: flex; align-items: center; gap: 6px; max-width: 200px; }
   .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
   .tab-btn.active { background: var(--accent2); border-color: var(--accent); color: #fff; }
+  .tab-label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tab-count { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 1px 7px; font-size: 0.74rem; flex-shrink: 0; }
   .tab-content { display: none; }
   .tab-content.active { display: block; }
+  .source-header { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; }
+  .source-summary { font-size: 0.9rem; color: var(--text); font-weight: 600; margin-bottom: 4px; }
+  .source-meta { font-size: 0.78rem; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
   .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
   .gen-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+  .tmpl-label { font-size: 0.74rem; color: var(--accent); font-weight: 600; }
   .gen-card-date { font-size: 0.74rem; color: var(--muted); }
   .gen-text { color: var(--text); font-size: 0.93rem; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
   .gen-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 8px; }
@@ -57,7 +63,7 @@
 <body>
 <header>
   <h1>📋 生成済み投稿ストック</h1>
-  <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: 2026/05/14 05:38 JST</p>
+  <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: 2026/05/14 06:09 JST</p>
 </header>
 <nav>
   <a href="index.html">📰 ニュース</a>
@@ -128,59 +134,75 @@ function render() {
     return;
   }
 
-  // テンプレートIDでグループ化
-  const byTemplate = {};
+  // 元ポストIDでグループ化（生成時刻降順）
+  const bySource = {};
   posts.forEach(p => {
-    const tid = p.template_id || 'other';
-    if (!byTemplate[tid]) byTemplate[tid] = [];
-    byTemplate[tid].push(p);
+    const sid = p.source_post_id || 'unknown';
+    if (!bySource[sid]) bySource[sid] = { posts: [], meta: p };
+    bySource[sid].posts.push(p);
   });
 
-  // テンプレート順（定義順 + その他）
-  const tmplOrder = Object.keys(TEMPLATE_NAMES);
-  const allTids = [...new Set([...tmplOrder, ...Object.keys(byTemplate)])].filter(t => byTemplate[t]);
-  const firstTab = allTids[0];
+  // 元ポストを生成日時の新しい順に並べる
+  const sourceIds = Object.keys(bySource).sort((a, b) => {
+    const ta = bySource[a].meta.created_at || '';
+    const tb = bySource[b].meta.created_at || '';
+    return tb.localeCompare(ta);
+  });
 
-  tabBar.innerHTML = allTids.map((tid, i) => {
-    const name = TEMPLATE_NAMES[tid] || tid;
-    const count = (byTemplate[tid] || []).length;
+  tabBar.innerHTML = sourceIds.map((sid, i) => {
+    const meta = bySource[sid].meta;
+    const label = (meta.source_summary || meta.source_author || sid).slice(0, 18) + ((meta.source_summary || '').length > 18 ? '…' : '');
+    const count = bySource[sid].posts.length;
     const active = i === 0 ? ' active' : '';
-    return `<button class="tab-btn${active}" id="tab-btn-${tid}" onclick="showTab('${tid}')">${name} <span style="opacity:0.6;font-size:0.76rem;">${count}</span></button>`;
+    return `<button class="tab-btn${active}" id="tab-btn-${i}" onclick="showTab(${i})">
+      <span class="tab-label">${esc(label)}</span>
+      <span class="tab-count">${count}</span>
+    </button>`;
   }).join('');
 
-  tabContents.innerHTML = allTids.map((tid, i) => {
-    const tposts = (byTemplate[tid] || []).slice().reverse(); // 新しい順
+  tabContents.innerHTML = sourceIds.map((sid, i) => {
+    const group = bySource[sid];
+    const meta = group.meta;
     const active = i === 0 ? ' active' : '';
-    const cards = tposts.map(p => {
+    const srcLink = meta.source_url ? `<a class="source-link" href="${esc(meta.source_url)}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
+    const sourceInfo = `<div class="source-header">
+      <div class="source-summary">${esc((meta.source_summary || '').slice(0, 80))}${(meta.source_summary || '').length > 80 ? '…' : ''}</div>
+      <div class="source-meta">@${esc(meta.source_author || '')} &nbsp;·&nbsp; ${formatDate(meta.created_at)} &nbsp; ${srcLink}</div>
+    </div>`;
+
+    // テンプレート定義順に並べ替え
+    const tmplOrder = Object.keys(TEMPLATE_NAMES);
+    const sorted = group.posts.slice().sort((a, b) => {
+      return tmplOrder.indexOf(a.template_id) - tmplOrder.indexOf(b.template_id);
+    });
+
+    const cards = sorted.map(p => {
       const text = p.text || '';
       const chars = p.char_count || text.length;
       const overClass = chars > 140 ? ' over' : '';
-      const srcLink = p.source_url ? `<a class="source-link" href="${esc(p.source_url)}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
-      const textEsc = esc(text);
       const textJson = JSON.stringify(text);
       return `<div class="gen-card">
-  <div class="gen-card-date">${formatDate(p.created_at)}</div>
-  <div class="gen-text">${textEsc}</div>
-  <div class="gen-source">${p.source_summary ? esc(p.source_summary.slice(0,50)) + (p.source_summary.length>50?'...':'') + ' @' + esc(p.source_author) : '@' + esc(p.source_author || '')}</div>
+  <div class="tmpl-label">${esc(p.template_name || p.template_id)}</div>
+  <div class="gen-text">${esc(text)}</div>
   <div class="gen-footer">
     <span class="char-count${overClass}">${chars}文字</span>
     <div class="gen-actions">
       <button class="copy-btn" onclick="copyText(this, ${textJson})">コピー</button>
-      ${srcLink}
       <button class="del-btn" onclick="deletePost('${p.id}')">削除</button>
     </div>
   </div>
 </div>`;
     }).join('');
-    return `<div class="tab-content${active}" id="tab-${tid}"><div class="cards-grid">${cards}</div></div>`;
+
+    return `<div class="tab-content${active}" id="tab-${i}">${sourceInfo}<div class="cards-grid">${cards}</div></div>`;
   }).join('');
 }
 
-function showTab(tid) {
+function showTab(i) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  const btn = document.getElementById('tab-btn-' + tid);
-  const content = document.getElementById('tab-' + tid);
+  const btn = document.getElementById('tab-btn-' + i);
+  const content = document.getElementById('tab-' + i);
   if (btn) btn.classList.add('active');
   if (content) content.classList.add('active');
 }
