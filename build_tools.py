@@ -112,7 +112,8 @@ def _tool_card(item: dict) -> str:
 
 def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     items = load_all_items()
-    now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    from zoneinfo import ZoneInfo
+    now_str = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M JST")
 
     # リリース種別・影響度・ソース一覧
     release_types = sorted(set(i.get("release_type", "その他") for i in items if i.get("release_type")))

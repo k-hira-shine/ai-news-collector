@@ -121,7 +121,8 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
         all_dates = {}
 
     sorted_dates = sorted(all_dates.keys(), reverse=True)
-    now_jst = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M JST")
+    from zoneinfo import ZoneInfo
+    now_jst = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M JST")
 
     # 各日付のパネル HTML を生成
     panels_html = ""

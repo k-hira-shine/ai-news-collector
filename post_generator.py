@@ -228,7 +228,8 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
         {t["id"]: t["name"] for t in templates},
         ensure_ascii=False,
     )
-    now_jst = datetime.now(timezone.utc).strftime("%Y/%m/%d %H:%M") + " JST"
+    from zoneinfo import ZoneInfo
+    now_jst = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y/%m/%d %H:%M") + " JST"
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
