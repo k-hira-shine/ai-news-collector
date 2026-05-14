@@ -221,39 +221,13 @@ def _load_all_generated() -> list[dict]:
     return posts
 
 
-WORKER_URL = "https://sns-post-generator.imokonoai.workers.dev"
-
-
 def generate_post_generator_page(output_path: str, config: dict) -> None:
-    """docs/post_generator.html を生成する（Cloudflare Worker経由でリアルタイム生成）"""
+    """docs/post_generator.html を生成する（localStorage に保存された生成済み投稿を表示）"""
     templates = config.get("post_templates", {}).get("templates", [])
-    sample_size = config.get("post_templates", {}).get("sample_size", 20)
-
-    # 分析済みポストをサンプリングしてJSに埋め込む
-    all_analyzed = _load_all_analyses()
-    sample_posts = _sample_posts(all_analyzed, sample_size) if all_analyzed else []
-
-    # JSに渡すポストデータ（必要なフィールドだけ）
-    posts_for_js = []
-    for p in sample_posts:
-        posts_for_js.append({
-            "id": p.get("id", ""),
-            "author": p.get("author", ""),
-            "author_display": p.get("author_display") or p.get("author", ""),
-            "author_followers": p.get("author_followers", 0),
-            "content": (p.get("content") or "")[:500],
-            "summary": p.get("summary", ""),
-            "mind_theme": p.get("mind_theme", ""),
-            "key_insights": p.get("key_insights") or [],
-            "url": p.get("url", ""),
-        })
-
-    posts_json = json.dumps(posts_for_js, ensure_ascii=False)
-    templates_json = json.dumps([
-        {"id": t["id"], "name": t["name"], "description": t.get("description", ""), "prompt_hint": t.get("prompt_hint", "")}
-        for t in templates
-    ], ensure_ascii=False)
-
+    template_names_js = json.dumps(
+        {t["id"]: t["name"] for t in templates},
+        ensure_ascii=False,
+    )
     now_jst = datetime.now(timezone.utc).strftime("%Y/%m/%d %H:%M") + " JST"
 
     html = f"""<!DOCTYPE html>
@@ -261,7 +235,7 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SNS投稿ジェネレーター</title>
+<title>生成済み投稿ストック</title>
 <style>
   :root {{
     --bg: #0a0f1e; --surface: #131929; --card: #1a2236;
@@ -279,149 +253,171 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
   nav a:hover {{ color: var(--accent); background: rgba(167,139,250,0.1); }}
   nav a.active {{ color: var(--accent); background: rgba(167,139,250,0.15); }}
   .container {{ max-width: 1100px; margin: 0 auto; padding: 24px 16px; }}
-  .tmpl-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }}
-  .tmpl-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }}
-  .tmpl-card:hover {{ border-color: var(--accent); }}
-  .tmpl-name {{ font-size: 1rem; font-weight: 600; color: var(--accent); }}
-  .tmpl-desc {{ font-size: 0.83rem; color: var(--muted); line-height: 1.5; }}
-  .gen-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 0.9rem; cursor: pointer; width: 100%; transition: opacity 0.2s; }}
-  .gen-btn:hover {{ opacity: 0.85; }}
-  .gen-btn:disabled {{ opacity: 0.5; cursor: not-allowed; }}
-  .result-area {{ margin-top: 12px; display: none; flex-direction: column; gap: 10px; }}
-  .result-area.visible {{ display: flex; }}
-  .gen-card {{ background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }}
-  .gen-text {{ color: var(--text); font-size: 0.92rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }}
-  .gen-footer {{ display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }}
+  .toolbar {{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }}
+  .stat-chip {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: var(--muted); }}
+  .stat-chip strong {{ color: var(--accent); }}
+  .clear-btn {{ background: none; border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; padding: 7px 16px; font-size: 0.82rem; cursor: pointer; }}
+  .clear-btn:hover {{ background: rgba(239,68,68,0.1); }}
+  .tabs {{ display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }}
+  .tab-btn {{ background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 7px 16px; border-radius: 20px; cursor: pointer; font-size: 0.83rem; transition: all 0.2s; }}
+  .tab-btn:hover {{ border-color: var(--accent); color: var(--accent); }}
+  .tab-btn.active {{ background: var(--accent2); border-color: var(--accent); color: #fff; }}
+  .tab-content {{ display: none; }}
+  .tab-content.active {{ display: block; }}
+  .cards-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }}
+  .gen-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative; }}
+  .gen-card-date {{ font-size: 0.74rem; color: var(--muted); }}
+  .gen-text {{ color: var(--text); font-size: 0.93rem; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }}
+  .gen-footer {{ display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 8px; }}
   .char-count {{ font-size: 0.76rem; color: var(--muted); }}
   .char-count.over {{ color: var(--warn); font-weight: bold; }}
-  .gen-actions {{ display: flex; gap: 8px; align-items: center; }}
-  .copy-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }}
+  .gen-actions {{ display: flex; gap: 6px; align-items: center; }}
+  .copy-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }}
   .copy-btn.copied {{ background: var(--success); }}
-  .source-link {{ color: var(--accent); font-size: 0.78rem; text-decoration: none; }}
+  .del-btn {{ background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; cursor: pointer; }}
+  .del-btn:hover {{ border-color: var(--error); color: var(--error); }}
+  .source-link {{ color: var(--accent); font-size: 0.77rem; text-decoration: none; }}
   .source-link:hover {{ text-decoration: underline; }}
-  .gen-source {{ font-size: 0.76rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 6px; }}
-  .loading {{ text-align: center; color: var(--muted); font-size: 0.85rem; padding: 16px; }}
-  .error-msg {{ color: var(--error); font-size: 0.85rem; padding: 8px; }}
-  .info-bar {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.83rem; color: var(--muted); }}
+  .gen-source {{ font-size: 0.76rem; color: var(--muted); }}
+  .empty-msg {{ text-align: center; padding: 60px 20px; color: var(--muted); }}
+  .empty-msg .icon {{ font-size: 3rem; margin-bottom: 16px; }}
+  .empty-msg a {{ color: var(--accent); text-decoration: none; }}
+  .empty-msg a:hover {{ text-decoration: underline; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; }}
 </style>
 </head>
 <body>
 <header>
-  <h1>✍️ SNS投稿ジェネレーター</h1>
-  <p>SNS成功者の知見を元にAIがリアルタイムで投稿文を生成 &nbsp;|&nbsp; ページ更新: {now_jst}</p>
+  <h1>📋 生成済み投稿ストック</h1>
+  <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: {now_jst}</p>
 </header>
 <nav>
   <a href="index.html">📰 ニュース</a>
   <a href="sns_success.html">🧠 SNS成功者マインド</a>
   <a href="money.html">🎬 マネタイズ事例</a>
-  <a href="post_generator.html" class="active">✍️ 投稿ジェネレーター</a>
+  <a href="post_generator.html" class="active">📋 投稿ストック</a>
 </nav>
 <div class="container">
-  <div class="info-bar">
-    参考ポスト: <strong>{len(sample_posts)}</strong>件 &nbsp;|&nbsp; テンプレート: <strong>{len(templates)}</strong>種 &nbsp;|&nbsp; 生成ボタンを押すとAIがその場で投稿文を作ります（約20秒）
+  <div class="toolbar">
+    <div class="stat-chip">保存済み: <strong id="totalCount">0</strong> 件</div>
+    <button class="clear-btn" onclick="clearAll()">🗑 全削除</button>
   </div>
-  <div class="tmpl-grid" id="tmplGrid"></div>
+  <div class="tabs" id="tabBar"></div>
+  <div id="tabContents"></div>
 </div>
-<footer>生成文はAIによるものです。投稿前に内容を確認してください。</footer>
+<footer>投稿文はAI生成です。投稿前に内容を確認してください。</footer>
 <script>
-const WORKER_URL = '{WORKER_URL}';
-const POSTS = {posts_json};
-const TEMPLATES = {templates_json};
+const LS_POSTS_KEY = 'sns_generated_posts';
+const TEMPLATE_NAMES = {template_names_js};
 
-function renderTemplates() {{
-  const grid = document.getElementById('tmplGrid');
-  TEMPLATES.forEach(tmpl => {{
-    const card = document.createElement('div');
-    card.className = 'tmpl-card';
-    card.id = 'card-' + tmpl.id;
-    card.innerHTML = `
-      <div class="tmpl-name">${{tmpl.name}}</div>
-      <div class="tmpl-desc">${{tmpl.description}}</div>
-      <button class="gen-btn" onclick="generate('${{tmpl.id}}')">✨ 生成する</button>
-      <div class="result-area" id="result-${{tmpl.id}}"></div>
-    `;
-    grid.appendChild(card);
-  }});
+function loadPosts() {{
+  try {{ return JSON.parse(localStorage.getItem(LS_POSTS_KEY) || '[]'); }} catch {{ return []; }}
+}}
+function savePosts(posts) {{
+  localStorage.setItem(LS_POSTS_KEY, JSON.stringify(posts));
 }}
 
-async function generate(templateId) {{
-  const tmpl = TEMPLATES.find(t => t.id === templateId);
-  if (!tmpl) return;
-
-  const btn = document.querySelector(`#card-${{templateId}} .gen-btn`);
-  const resultArea = document.getElementById('result-' + templateId);
-
-  btn.disabled = true;
-  btn.textContent = '生成中...';
-  resultArea.className = 'result-area visible';
-  resultArea.innerHTML = '<div class="loading">⏳ Geminiが生成中です（約20秒）...</div>';
-
-  try {{
-    const res = await fetch(WORKER_URL, {{
-      method: 'POST',
-      headers: {{ 'Content-Type': 'application/json' }},
-      body: JSON.stringify({{
-        template_id: tmpl.id,
-        template_name: tmpl.name,
-        prompt_hint: tmpl.prompt_hint,
-        posts: POSTS,
-      }}),
-    }});
-
-    if (!res.ok) {{
-      const err = await res.json().catch(() => ({{}}));
-      throw new Error(err.error || `HTTP ${{res.status}}`);
-    }}
-
-    const data = await res.json();
-    const generated = data.generated || [];
-
-    if (generated.length === 0) {{
-      resultArea.innerHTML = '<div class="error-msg">生成に失敗しました。もう一度お試しください。</div>';
-      return;
-    }}
-
-    resultArea.innerHTML = generated.map((g, i) => {{
-      const text = g.text || '';
-      const chars = text.length;
-      const overClass = chars > 140 ? 'over' : '';
-      const srcLink = g.source_url ? `<a class="source-link" href="${{g.source_url}}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
-      const srcInfo = g.source_summary ? `<div class="gen-source">参考: ${{g.source_summary.slice(0, 60)}}${{g.source_summary.length > 60 ? '...' : ''}} @${{g.source_author}}</div>` : '';
-      const textId = `gen-text-${{templateId}}-${{i}}`;
-      return `
-        <div class="gen-card">
-          <div class="gen-text" id="${{textId}}">${{text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</div>
-          <div class="gen-footer">
-            <span class="char-count ${{overClass}}">${{chars}}文字</span>
-            <div class="gen-actions">
-              <button class="copy-btn" onclick="copyText(this, '${{textId}}')">コピー</button>
-              ${{srcLink}}
-            </div>
-          </div>
-          ${{srcInfo}}
-        </div>`;
-    }}).join('');
-
-  }} catch (e) {{
-    resultArea.innerHTML = `<div class="error-msg">エラー: ${{e.message}}</div>`;
-  }} finally {{
-    btn.disabled = false;
-    btn.textContent = '✨ もう一度生成';
-  }}
+function deletePost(id) {{
+  const posts = loadPosts().filter(p => p.id !== id);
+  savePosts(posts);
+  render();
 }}
 
-function copyText(btn, elementId) {{
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  navigator.clipboard.writeText(el.innerText).then(() => {{
+function clearAll() {{
+  if (!confirm('保存済みの投稿文をすべて削除しますか？')) return;
+  localStorage.removeItem(LS_POSTS_KEY);
+  render();
+}}
+
+function copyText(btn, text) {{
+  navigator.clipboard.writeText(text).then(() => {{
     btn.textContent = 'コピー済み✓';
     btn.classList.add('copied');
     setTimeout(() => {{ btn.textContent = 'コピー'; btn.classList.remove('copied'); }}, 2000);
   }});
 }}
 
-renderTemplates();
+function formatDate(iso) {{
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('ja-JP', {{ month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }});
+}}
+
+function esc(s) {{
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}}
+
+function render() {{
+  const posts = loadPosts();
+  document.getElementById('totalCount').textContent = posts.length;
+
+  const tabBar = document.getElementById('tabBar');
+  const tabContents = document.getElementById('tabContents');
+
+  if (!posts.length) {{
+    tabBar.innerHTML = '';
+    tabContents.innerHTML = `<div class="empty-msg"><div class="icon">📭</div><p><a href="sns_success.html">SNS成功者マインド</a> のポストで「✍️ 投稿文を作る」を押すと、ここに保存されます。</p></div>`;
+    return;
+  }}
+
+  // テンプレートIDでグループ化
+  const byTemplate = {{}};
+  posts.forEach(p => {{
+    const tid = p.template_id || 'other';
+    if (!byTemplate[tid]) byTemplate[tid] = [];
+    byTemplate[tid].push(p);
+  }});
+
+  // テンプレート順（定義順 + その他）
+  const tmplOrder = Object.keys(TEMPLATE_NAMES);
+  const allTids = [...new Set([...tmplOrder, ...Object.keys(byTemplate)])].filter(t => byTemplate[t]);
+  const firstTab = allTids[0];
+
+  tabBar.innerHTML = allTids.map((tid, i) => {{
+    const name = TEMPLATE_NAMES[tid] || tid;
+    const count = (byTemplate[tid] || []).length;
+    const active = i === 0 ? ' active' : '';
+    return `<button class="tab-btn${{active}}" id="tab-btn-${{tid}}" onclick="showTab('${{tid}}')">${{name}} <span style="opacity:0.6;font-size:0.76rem;">${{count}}</span></button>`;
+  }}).join('');
+
+  tabContents.innerHTML = allTids.map((tid, i) => {{
+    const tposts = (byTemplate[tid] || []).slice().reverse(); // 新しい順
+    const active = i === 0 ? ' active' : '';
+    const cards = tposts.map(p => {{
+      const text = p.text || '';
+      const chars = p.char_count || text.length;
+      const overClass = chars > 140 ? ' over' : '';
+      const srcLink = p.source_url ? `<a class="source-link" href="${{esc(p.source_url)}}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
+      const textEsc = esc(text);
+      const textJson = JSON.stringify(text);
+      return `<div class="gen-card">
+  <div class="gen-card-date">${{formatDate(p.created_at)}}</div>
+  <div class="gen-text">${{textEsc}}</div>
+  <div class="gen-source">${{p.source_summary ? esc(p.source_summary.slice(0,50)) + (p.source_summary.length>50?'...':'') + ' @' + esc(p.source_author) : '@' + esc(p.source_author || '')}}</div>
+  <div class="gen-footer">
+    <span class="char-count${{overClass}}">${{chars}}文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, ${{textJson}})">コピー</button>
+      ${{srcLink}}
+      <button class="del-btn" onclick="deletePost('${{p.id}}')">削除</button>
+    </div>
+  </div>
+</div>`;
+    }}).join('');
+    return `<div class="tab-content${{active}}" id="tab-${{tid}}"><div class="cards-grid">${{cards}}</div></div>`;
+  }}).join('');
+}}
+
+function showTab(tid) {{
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const btn = document.getElementById('tab-btn-' + tid);
+  const content = document.getElementById('tab-' + tid);
+  if (btn) btn.classList.add('active');
+  if (content) content.classList.add('active');
+}}
+
+render();
 </script>
 </body>
 </html>"""
@@ -431,4 +427,4 @@ renderTemplates();
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(html)
     os.replace(tmp, output_path)
-    logger.info("Post generator page generated → %s (%d source posts embedded)", output_path, len(sample_posts))
+    logger.info("Post generator page (stock) generated → %s", output_path)

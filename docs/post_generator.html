@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SNS投稿ジェネレーター</title>
+<title>生成済み投稿ストック</title>
 <style>
   :root {
     --bg: #0a0f1e; --surface: #131929; --card: #1a2236;
@@ -21,149 +21,171 @@
   nav a:hover { color: var(--accent); background: rgba(167,139,250,0.1); }
   nav a.active { color: var(--accent); background: rgba(167,139,250,0.15); }
   .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
-  .tmpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }
-  .tmpl-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-  .tmpl-card:hover { border-color: var(--accent); }
-  .tmpl-name { font-size: 1rem; font-weight: 600; color: var(--accent); }
-  .tmpl-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
-  .gen-btn { background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 0.9rem; cursor: pointer; width: 100%; transition: opacity 0.2s; }
-  .gen-btn:hover { opacity: 0.85; }
-  .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-  .result-area { margin-top: 12px; display: none; flex-direction: column; gap: 10px; }
-  .result-area.visible { display: flex; }
-  .gen-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
-  .gen-text { color: var(--text); font-size: 0.92rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
-  .gen-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+  .stat-chip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: var(--muted); }
+  .stat-chip strong { color: var(--accent); }
+  .clear-btn { background: none; border: 1px solid #ef4444; color: #ef4444; border-radius: 8px; padding: 7px 16px; font-size: 0.82rem; cursor: pointer; }
+  .clear-btn:hover { background: rgba(239,68,68,0.1); }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 7px 16px; border-radius: 20px; cursor: pointer; font-size: 0.83rem; transition: all 0.2s; }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent2); border-color: var(--accent); color: #fff; }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 14px; }
+  .gen-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; position: relative; }
+  .gen-card-date { font-size: 0.74rem; color: var(--muted); }
+  .gen-text { color: var(--text); font-size: 0.93rem; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
+  .gen-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 8px; }
   .char-count { font-size: 0.76rem; color: var(--muted); }
   .char-count.over { color: var(--warn); font-weight: bold; }
-  .gen-actions { display: flex; gap: 8px; align-items: center; }
-  .copy-btn { background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }
+  .gen-actions { display: flex; gap: 6px; align-items: center; }
+  .copy-btn { background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; transition: background 0.2s; }
   .copy-btn.copied { background: var(--success); }
-  .source-link { color: var(--accent); font-size: 0.78rem; text-decoration: none; }
+  .del-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; cursor: pointer; }
+  .del-btn:hover { border-color: var(--error); color: var(--error); }
+  .source-link { color: var(--accent); font-size: 0.77rem; text-decoration: none; }
   .source-link:hover { text-decoration: underline; }
-  .gen-source { font-size: 0.76rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 6px; }
-  .loading { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 16px; }
-  .error-msg { color: var(--error); font-size: 0.85rem; padding: 8px; }
-  .info-bar { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.83rem; color: var(--muted); }
+  .gen-source { font-size: 0.76rem; color: var(--muted); }
+  .empty-msg { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-msg .icon { font-size: 3rem; margin-bottom: 16px; }
+  .empty-msg a { color: var(--accent); text-decoration: none; }
+  .empty-msg a:hover { text-decoration: underline; }
   footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; }
 </style>
 </head>
 <body>
 <header>
-  <h1>✍️ SNS投稿ジェネレーター</h1>
-  <p>SNS成功者の知見を元にAIがリアルタイムで投稿文を生成 &nbsp;|&nbsp; ページ更新: 2026/05/14 05:27 JST</p>
+  <h1>📋 生成済み投稿ストック</h1>
+  <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: 2026/05/14 05:38 JST</p>
 </header>
 <nav>
   <a href="index.html">📰 ニュース</a>
   <a href="sns_success.html">🧠 SNS成功者マインド</a>
   <a href="money.html">🎬 マネタイズ事例</a>
-  <a href="post_generator.html" class="active">✍️ 投稿ジェネレーター</a>
+  <a href="post_generator.html" class="active">📋 投稿ストック</a>
 </nav>
 <div class="container">
-  <div class="info-bar">
-    参考ポスト: <strong>20</strong>件 &nbsp;|&nbsp; テンプレート: <strong>6</strong>種 &nbsp;|&nbsp; 生成ボタンを押すとAIがその場で投稿文を作ります（約20秒）
+  <div class="toolbar">
+    <div class="stat-chip">保存済み: <strong id="totalCount">0</strong> 件</div>
+    <button class="clear-btn" onclick="clearAll()">🗑 全削除</button>
   </div>
-  <div class="tmpl-grid" id="tmplGrid"></div>
+  <div class="tabs" id="tabBar"></div>
+  <div id="tabContents"></div>
 </div>
-<footer>生成文はAIによるものです。投稿前に内容を確認してください。</footer>
+<footer>投稿文はAI生成です。投稿前に内容を確認してください。</footer>
 <script>
-const WORKER_URL = 'https://sns-post-generator.imokonoai.workers.dev';
-const POSTS = [{"id": "03e256c164cd3149", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "夜職の友達を見て感じたこと\n\n地味だった人ほど、美容に走り\nモテなかった人ほど、恋に溺れ\n貧乏だった人ほど、ハイブラで武装し\n孤独だった人ほど、SNSで承認を求め\n縛られていた人ほど、夜の世界にハマる\n\n人は『欠けていた過去』を、\n大人になってから埋め続けるんだよね。", "summary": "過去に欠けていたものを大人は埋めようとする、という人間心理を「夜職の友達」を例に鋭く分析している。", "mind_theme": "過去の欠乏感を埋める心理", "key_insights": ["人は過去に満たされなかった欲求を、大人になってから満たそうとする。", "貧乏だった人は富を、孤独だった人は承認を求める傾向がある。", "現在の行動は、過去の経験に大きく影響されている。"], "url": "https://x.com/teihen_ns_fire/status/2028763150905168237"}, {"id": "5912e0b0138d9578", "author": "tsugu1908", "author_display": "つぐ", "author_followers": 16902, "content": "人生を好転させた最強習慣\n\n①超早起き\n②週5でGYM\n③週6で英会話\n④月4冊の読書\n⑤副業で稼ぐ\n⑥定期で成功者に会う\n⑦無駄な誘いに乗らない\n⑧見栄をはった買い物をしない\n⑨付き合う人を厳選\n⑩やりたいことをやる\n\nまじでおすすめです", "summary": "早起き、運動、読書、副業、人付き合いの見直しなど、人生を好転させる10個の最強習慣。", "mind_theme": "人生を好転させる10の最強習慣", "key_insights": ["生活習慣（早起き、運動、読書）が基盤となる", "副業で稼ぐ経験や成功者に会うことでマインドが変わる", "無駄な付き合いや見栄をなくし、付き合う人を厳選することが重要"], "url": "https://x.com/tsugu1908/status/2046721758120857786"}, {"id": "bf3a9a717139da64", "author": "nittan_nittan", "author_display": "にったん🐏", "author_followers": 12935, "content": "引き寄せを10年以上実践してわかったのは、引き寄せは本当にシンプルだということ。\n\n引き寄せはとどのつまり\n「叶うと思ってるから叶う」の法則。\n\n叶うと思ってるから叶うし\n叶うわけないと思ってるから叶わない。\n\nつまり\n「叶うかも」という確信を得られれば勝ちだということ。", "summary": "引き寄せの本質は「叶うと思ってるから叶う」というシンプルな確信である。", "mind_theme": "引き寄せの核心＝確信の力", "key_insights": ["引き寄せの法則は結局のところ「叶うと思っているから叶う」という法則。", "「叶うわけない」と思っていれば叶わない。", "願望実現の鍵は「叶うかも」という確信を得ること。"], "url": "https://x.com/nittan_nittan/status/2048317154823483718"}, {"id": "b7738db0fa541476", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "【引き寄せの法則が働く方法】\n\nスタバで。隣の席から聞こえてきた。\n「最近、引き寄せがすごいんだよね」\n\nよくある会話だけど、なんか雰囲気が違う。どう見ても富裕層ぽい風貌。\n\n「1億の引き寄せとかあるんですよ本当に」って言ってるからよくよく聞いてみると、\n\n富裕層たちが実際やっている事は↓", "summary": "富裕層が実践する引き寄せは、1億円などを既に得た感覚をリアルに持つこと", "mind_theme": "富裕層の引き寄せ実践法", "key_insights": ["富裕層は具体的な金額（例：1億円）を引き寄せた後の感覚をリアルに体験している"], "url": "https://x.com/umitterx/status/2032268097068154921"}, {"id": "96882043dbe845ba", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "「今のままの人生でいいのかな…」と悩んでいる方へ\nおめでとうございます\nこの記事に出会ったことで今日から人生がガラッと変わり始めます\n恐らくこの記事を見る人方の多くが\n数えきれないくらいの「人生を変える方法・習慣」を見て\n愚直に実践して、挫折してきたと思います(実際に私もそのひとりでした）\n今日はそんな人にこそ\nたった30日で人生を変えるための\n効果的な『裏技習慣』を15個お伝えしていきます\n15個目が最も効果的で重要な習慣なので\n最後までしっかり目を通してください。\n1. 「やる気」の正体を理解する（作業興奮の活用）\n「やる気が出ないから動けない」というのは、\n脳の仕組みから見ると大きな間違いです。\nご存じかと思いますが、やる気は「動いた後にしか出てこない」ものなのです。\nこれを心理学で「作業興奮」と呼び、\n人間は行動を開始することで初めて脳からやる気を出す物質が分泌されます。\n掃除を5分だけやるつもりが、\n気づいたら1時間経っていた……という経験はありませんか？\n「とりあえず5分だけ」とハードルを極限まで下げて動き出すこと。\nこれが、やる気に左右されない最強のライフハックです。\n\n", "summary": "人生を30日で変えるための、やる気の仕組みや成功者の完コピなど15の効果的な『裏技習慣』を紹介した投稿。", "mind_theme": "人生を変えるための習慣術", "key_insights": ["「やる気」は動いた後に出る「作業興奮」という脳の仕組みを利用する。", "自己流を捨て、成功者の話を素直に完コピすることが最短ルートである。", "目標を紙に書き出し、毎日目にする場所に貼ることで脳に重要だと認識させる。"], "url": "https://x.com/teihen_ns_fire/status/2050885756693197021"}, {"id": "7be87b4ce1177712", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "スイスの金持ちが共有する『富の引き寄せ法則』を一つ教えます。有名な話ですが、自慢に聞こえたら恐縮。私も190万円ほど引き寄せました。夜、お風呂に浸かりながら20秒。お金の不安が消えた絶対的自由を感じると、マネーバイブレーションの共鳴が加速。オックスフォード大学による、正しいやり方は、", "summary": "スイスの富豪が実践する富の引き寄せは、夜20秒お風呂で自由を感じること", "mind_theme": "富豪の引き寄せ習慣", "key_insights": ["夜、お風呂でリラックスしながら20秒、お金の不安がない絶対的自由を感じる", "この習慣がマネーバイブレーションとの共鳴を加速させる"], "url": "https://x.com/umitterx/status/2042463640864112966"}, {"id": "9bc4d92d7e246399", "author": "fiction_log", "author_display": "ろじん｜Levela CXO", "author_followers": 54972, "content": "今、クオンツという職業の給与がとにかく高い。\n日本でも年収2000万以上が大量にいるし、海外だと5000万超えも普通にいる\n\nクオンツとは何なのか、そしてなぜ高給なのか　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n\nまずクオンツとは、数学・統計・プログラミングを使って金融市場を分析し、利益を生み出す人のことです。\n\nなぜ今需要が高く高給なのか\n\n現代の株式取引における約7割がアルゴリズムに基づく取引です。\nだから金融市場におけるトレーダー職よりもアルゴリズムを作るクオンツが出すインパクトが圧倒的に多い\n\nそしてその必要なスキルを兼ね備えた人材は世界に数千人しかいない。\n希少人材である彼らをヘッジファンドとGAFAM・AIラボが奪い合っている。\n\n当然、高給になる。\n\nそしてクオンツは↓の職に入っている", "summary": "高給職業「クオンツ」について、仕事内容と高年収である理由(市場での希少性)を解説。", "mind_theme": "希少性と市場価値の思考法", "key_insights": ["現代の株式取引の約7割はアルゴリズム取引であり、それを作るクオンツの価値が高い", "需要に対して供給が極端に少ない（世界で数千人）人材は高給になる", "自身のスキルを市場価値の高い分野とかけ合わせることが高収入につながる"], "url": "https://x.com/fiction_log/status/2053734802168410257"}, {"id": "84b354c3d7796b24", "author": "O__CEO", "author_display": "おーCEO", "author_followers": 12210, "content": "【心が腐ってる人の特徴】\n\n・他人の不幸が嬉しい\n・陰口や悪口が習慣\n・人の善意を当然だと思ってる\n・誰かの成功がムカつく\n・常に誰かと自分を比べてイライラ\n・人をコントロールしたがる\n・謝れない、感謝できない\n・被害者思考\n・注意されると逆ギレ\n・弱者にだけ強い\n\n生き方がダサいんよ。", "summary": "成功を遠ざける「心が腐っている人」の特徴。反面教師から学ぶべき思考法。", "mind_theme": "成功を妨げるネガティブマインド", "key_insights": ["他人の不幸を喜んだり、成功に嫉妬したりするネガティブな感情は成功を妨げる。", "謝罪や感謝ができない、被害者思考などの特徴は、人間関係を悪化させ成長を止める。", "このような特徴を反面教師とし、自分の行動を振り返ることが重要。"], "url": "https://x.com/O__CEO/status/2050163270565384385"}, {"id": "f88eadc63a5d65f5", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "人生一度くらいは徹底的な自己理解をした方がいい。\n30代に入って人生を見失ってる女性があまりにも多い。\n誰にも邪魔されずに自分の価値観を深掘りして、不安の根源を打ち消す作業を乗り越えると、他人に振り回されない自己承認の軸ができるんだよね。自分で自分を幸せにできる人はみんなこれを通ってきてる。加えて、その後のキャリアや人間関係でも使える精神的なタフさも手に入る。", "summary": "徹底的な自己理解を通して他人に振り回されない軸を作ることが、自分を幸せにする鍵であると主張。", "mind_theme": "自己理解による精神的自立", "key_insights": ["自分の価値観を深掘りし、不安の根源を知ることが重要。", "自己理解を乗り越えると、他人に振り回されない自己承認の軸ができる。", "精神的なタフさが手に入り、キャリアや人間関係にも活かせる。"], "url": "https://x.com/teihen_ns_fire/status/2030247338175013224"}, {"id": "c8ba35c793a87106", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "ぶっちゃけ人生ってなんとかなるんだよね。\n\n感謝して、謙虚に、ポジティブに生きてたら、\nどうにかなるように世界はできてる。\nうまくいかない時ほど、\n「今が伏線」だと思って過ごすことが大事。\n\n本気で生きてる人にはちゃんと奇跡起きるようになってる。", "summary": "人生がうまくいかない時は「今が伏線」と捉えポジティブに生きる", "mind_theme": "逆境を乗り越えるポジティブマインド", "key_insights": ["感謝、謙虚、ポジティブな姿勢でいれば、人生は好転する", "困難な時期は将来の成功への伏線だと捉えることが大切", "本気で生きる人には奇跡が起こるという信念を持つ"], "url": "https://x.com/teihen_ns_fire/status/2027348235329610071"}, {"id": "442e1284cad2f2d8", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "やなせたかしがアンパンマンで売れたのは69歳。『人生は満員電車みたいなもので、降りずに乗り続けてたらいつか席が空く。僕は終点近くだった』 結局、努力や挑戦の本質って才能より『諦めない覚悟』が大事だよね。", "summary": "やなせたかし氏のエピソードを引用し、才能よりも「諦めない覚悟」が努力や挑戦を成功に導く本質だと主張。", "mind_theme": "諦めないことの重要性", "key_insights": ["成功は才能よりも、諦めずに挑戦し続ける覚悟で決まる。", "人生は満員電車のように、乗り続ければいつかチャンスが来る。", "晩年に成功した偉人の例は、継続する勇気を与えてくれる。"], "url": "https://x.com/teihen_ns_fire/status/2032748569258537414"}, {"id": "2d7465b406e83aaa", "author": "gagarotai200", "author_display": "ガガロットAI", "author_followers": 5518, "content": "Claude Codeで1日を\n全自動化してるエンジニアの1日　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n\n7:00 起床。\n Slack、GitHub、Notion、\nメールをClaude Codeに読ませて、\n今日やるべきことを自動で整理。\n\n8:00 \n昨日のエラー内容をClaude Codeがログから要約。 人間はコーヒーを飲みながら、修正方針だけ確認。\n\n9:00 \n実装開始。 自分が書くのは\n「この機能をこうしたい」という指示だけ。\n 設計、コード作成、テスト、\nリファクタはClaude Codeが進める。\n\n11:00 \nPR作成。 変更内容、影響範囲、\nテスト結果、レビュー観点まで\n自動でまとめられている。\n\n12:00 \n昼休み。 その間にClaude Codeが\nドキュメント更新、型エラー修正、\n不要コード削除を進める。\n\n14:00 \nミーティング。 議事録はAIが整理。 \n", "summary": "AI「Claude Code」を活用し、エンジニア業務を全自動化する1日の流れ", "mind_theme": "AIによる業務自動化と人間がやるべきことの再定義", "key_insights": ["実装、テスト、ドキュメント作成など、開発工程の大部分をAIに任せることができる。", "人間の役割はAIへの指示出しや、AIが提案した複数案からの意思決定にシフトする。", "タスク整理から作業ログ生成まで、1日の業務全体をAIで効率化できる。"], "url": "https://x.com/gagarotai200/status/2052324994089369771"}, {"id": "24b7daf571734f26", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "5月6日、ついに来ました！\n\n1年に1度です\n2日連続の一粒万倍日に\n月徳日×天恩日×辰の日が重なる\n\nしかも、「ブルズゲート」のエネルギーが全開。\n\n今日は、金運上昇と\n引き寄せの法則が強烈に働く最強開運日。\n\n誕生月ごとに\n引き寄せの法則を加速させる方法があって。\n\n一目で簡単にわかる早見表は、", "summary": "最強開運日に誕生月別で引き寄せを加速させる方法がある", "mind_theme": "開運日を活用した引き寄せ", "key_insights": ["一粒万倍日などの開運日は、金運上昇と引き寄せの力が強まる", "誕生月ごとに引き寄せを加速させる独自の方法が存在する"], "url": "https://x.com/umitterx/status/2051851836248957231"}, {"id": "bb80e63b89387cf7", "author": "JamesClear", "author_display": "James Clear", "author_followers": 1200874, "content": "You are not your grand plans. You are your daily patterns.", "summary": "壮大な計画よりも日々の習慣がその人自身を形成する。", "mind_theme": "習慣の絶大な力", "key_insights": ["大きな計画よりも日々の小さな習慣が人間を作る", "成功は日々のパターンによって決まる"], "url": "https://x.com/JamesClear/status/2032203307247108551"}, {"id": "64f459033c75a3f0", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "宇多田ヒカルが「人はどうして誰かと別れると痛みを感じるのか」という問いに「元々、痛みがあってその存在が『痛み止め』になっていたから」と天才的な回答をしてたんだよね。自分がいま、痛みを感じずに過ごせているのは『周りにいる人たち』のおかげであることを絶対に忘れてはいけない。", "summary": "宇多田ヒカルの言葉を引用し、当たり前に感じる平穏は周りの人々のおかげであり、その存在に感謝すべきだと説く。", "mind_theme": "周囲への感謝の重要性", "key_insights": ["人がそばにいることで、人生の痛みが和らげられている。", "当たり前の日常は、周りの人の支えによって成り立っている。", "身近な人への感謝を忘れないことが大切である。"], "url": "https://x.com/teihen_ns_fire/status/2029856571120079303"}, {"id": "45aca5ac61e5ed7d", "author": "1222318thx", "author_display": "マグトロ@引き寄せの法則【マイルール】&【着地】", "author_followers": 10113, "content": "引き寄せのリセット癖。\n\n現実見ちゃったからまたやり直さなきゃ\nエゴにのまれたからまた決め直さなきゃ\nうまくいってないから新しい方法を探さなきゃ\n\nついやりがちなんだけど、本当はリセットしなくていいんです。\nブレてもいいしそのままでいい。\n\n最後に「それでも叶ってる」\nここに戻ってこれれば大丈夫。", "summary": "引き寄せ実践中にブレてもリセットは不要。「それでも叶ってる」と最後に思えれば良い。", "mind_theme": "引き寄せにおける「リセット癖」の克服", "key_insights": ["現実を見て落ち込んだり、エゴに飲まれたりしても、いちいちリセットする必要はない。", "うまくいかないからと新しい方法を探し続けるのは「リセット癖」。", "途中でブレても、最後に「それでも叶っている」という地点に戻れれば問題ない。"], "url": "https://x.com/1222318thx/status/2042869387510907373"}, {"id": "f442b04f1152ec08", "author": "09pauai", "author_display": "ぱうう", "author_followers": 9509, "content": "副業初心者が月1万円稼ぐ一番ラクな方法\n→テレビを見ること。テレビで紹介された商品ってビビるほど売れる。\n\n特に売れやすい番組↓\n・マ◯コの知らない世界\n・サタプラ\n・ラヴィット\n・ZIP\n・ヒルナンデス\n・家事ヤロウ\n\n番組表チェック\n↓\n紹介商品を調べる\n↓\nXでまとめ投稿\n\nこれで月10万売った https://t.co/tQ4Zzm5qez", "summary": "テレビ番組で紹介された商品をXでまとめるだけで、月10万円稼ぐことができる具体的なアフィリエイト手法。", "mind_theme": "テレビ番組連動型アフィリエイト戦略", "key_insights": ["テレビで紹介された商品は検索需要が急増し、非常に売れやすい。", "「マツコの知らない世界」など、特に売れやすい特定の番組が存在する。", "番組表を事前にチェックし、紹介商品を調べて投稿を準備するだけで収益化できる。"], "url": "https://x.com/09pauai/status/2031278888559743484"}, {"id": "f6da3c91312b2a9e", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "古代ローマの貴族から続く『引き寄せ法則』の裏ワザを教えます。自慢に聞こえたら恐縮ですが、私も80万円ほど引き寄せました。食事の最初。一口目の5秒。富を味わい尽くすように「至高の満足感」を堪能してください。ドーパミンで潜在意識の書き換えを加速。トロント大学の研究で、具体的なやり方は、", "summary": "食事の最初の一口を味わい尽くすことで潜在意識を書き換える方法を紹介。", "mind_theme": "食事習慣による潜在意識書き換え", "key_insights": ["食事の最初の一口で「至高の満足感」を5秒間堪能する。", "この行為がドーパミンを放出し、潜在意識の書き換えを加速させる。", "投稿者はこの方法で80万円を引き寄せたと主張している。"], "url": "https://x.com/umitterx/status/2044702761535897926"}, {"id": "8a7e0eb394f50b68", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "人生で絶対知っておくべきこと\n\n「 能力 」の差は \"小さい\"\n「 努力 」の差は \"大きい\"\n「 継続 」の差は \"とても大きい\"\n『 習慣 』の差が \"\"いちばん大きい\"\"", "summary": "能力や努力の差より「習慣の差」が人生で最も大きな影響を与える", "mind_theme": "習慣化による人生変革", "key_insights": ["人生における成功の差は、能力や一時の努力よりも継続的な習慣によって生まれる", "良い習慣を身につけることが、長期的に最も大きな差を生む"], "url": "https://x.com/teihen_ns_fire/status/2027713139559759872"}, {"id": "f39a5f945f7a19b8", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "ぶっちゃけ人生を生きやすくするなら、\n出会う人の縁を大切にするより\n「必要ない縁を容赦なく切り捨てる」方が良い。", "summary": "人間関係の整理が人生を生きやすくする鍵だと主張する投稿。", "mind_theme": "人間関係の断捨離", "key_insights": ["不要な人間関係を切り捨てることが、人生を好転させる上で重要。", "縁を大切にすること以上に、縁を切る勇気を持つべき。"], "url": "https://x.com/teihen_ns_fire/status/2048713019858006046"}];
-const TEMPLATES = [{"id": "instant_knowledge", "name": "型1: インスタント・ナレッジ（リスト型）", "description": "知識を箇条書きで整理し、タイパ重視の読者に刺さるリスト投稿", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 「〇〇な人の特徴N選」型】\n[特定の状態・属性] な人の [N] つの特徴\n1. [意外性のある特徴 + 一文の補足説明]\n2. [特徴 + 補足]\n3. [特徴 + 補足]\n...\n\n【B: 対比型（上位 vs 下位）】\n[上位・有利な属性]\n・[行動・思考1]\n・[結果：得をする]\n[下位・不利な属性]\n・[行動・思考1]\n・[結果：損をする]\n\n- 元ポストのkey_insightsやcontentを活かす\n- 140字以内に収める\n"}, {"id": "paradox_break", "name": "型2: パラドックス・ブレイク（常識破壊）", "description": "常識を覆す主張で認知的不協和を誘発し、続きを読ませる", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 有名企業・人物の逆説リスト型】\n[企業A] は [本来持つべきもの] を所有していない\n[企業B] は [本来持つべきもの] を所有していない\n...\n[共通点から導かれる一行の法則]\n\n【B: 強い断言で常識を壊す型】\n[誰もが信じている常識] は [強い否定の言葉]。\n[根拠1] [根拠2]\n本当に重要なのは [意外な本質] だ。\n\n- 元ポストの逆説的な要素・反常識な主張を活かす\n- 140字以内に収める\n"}, {"id": "dream_hack", "name": "型3: ドリームハック・サクセス（夢への近道）", "description": "誰にでも再現可能な成功への近道を提示し、希望と射幸心を刺激する", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 年齢×成果の衝撃フック＋ステップ公開型】\n[〇歳] が [手段] で [期間] に [成果]\n手順はこちらです\n[ゼロ状態]\n↓\n[最初の行動]\n↓\n[転換点]\n↓\n[最終的な結果]\n\n【B: 「知り合いの話」で距離感を縮める型】\n[職種] で [成果] を達成する知り合いがいる。その方法は\n[行動1]\n↓\n[行動2]\n↓\n[核心となる行動]\n\n- 元ポストの具体的な成功エピソードや数字を活かす\n- 140字以内に収める\n"}, {"id": "future_shock", "name": "型4: フューチャーショック・アジテーション（未来扇動）", "description": "未来への危機感を提示してFOMOを刺激し、情報への関心を高める", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 「あなたは知っていますか」型ニュースまとめ】\nあなたはこの [期間] で起きたことを知っていますか？\n多くの人にとって [危機感を呼ぶ形容詞] なニュースが多数あります\n・[ニュース1] → [なぜあなたに直接関係するかの補足]\n・[ニュース2] → [補足]\nここまでがたった [期間] で起きたことです\n\n【B: 「学ばないまま〇年を迎えた末路」型（損失回避）】\n[スキル・ツール] を学ばず [将来の年] を迎えた末路\n[そのツール] は [できるようになったこと] になった\n↓\n[それが生み出すこと]\n↓\n[知らない人が受ける最悪の結果]\n\n- 元ポストの危機感・変化への警告要素を活かす\n- 140字以内に収める\n"}, {"id": "core_insight", "name": "型5: コア・インサイト（本質の言語化）", "description": "漠然と感じている本質を短く鋭く言語化し、共感と引用RTを生む", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 有名人の「上手いと思ったもの」観察型】\n[有名人名] の [やり方・発言] で上手いなと思ったもの\n最初から「[本題を直接言う方法]」と言うのではなく、まずは\n「[YESを引き出す問いかけ]」で同意を取った後に\n「[本題への誘導]」とつなげることで [なぜ効果的なのか]\n\n【B: 「あなたの全盛期は〇〇ではない」型（強い断言）】\n[読者が信じている前提] は [〇〇ではない]。\n[読者が本当に全盛期を迎える条件・状態] に始まる。\n\n- 元ポストのマインドセット・本質的な気づきを活かす\n- 140字以内に収める\n"}, {"id": "authority_drop", "name": "型6: オーソリティ・ドロップ（権威の引用）", "description": "著名な成功者の名前と発言で信頼性を付与し、権威への服従原理を利用する", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のテンプレートで日本語の投稿文を作ってください。\n\n【「著名人が言った〇個の不都合な真実」型】\n[具体的な実績] の [著名人名] が言った [N] 個の不都合な真実\n1. [真実1（常識への反論）]\n2. [真実2]\n3. [真実3]\n\n- 元ポストに登場する成功者・実績のある人の言葉を権威として使う\n- 数字や具体的な実績（フォロワー数・収入など）を冒頭に入れる\n- 140字以内に収める\n"}];
+const LS_POSTS_KEY = 'sns_generated_posts';
+const TEMPLATE_NAMES = {"instant_knowledge": "型1: インスタント・ナレッジ（リスト型）", "paradox_break": "型2: パラドックス・ブレイク（常識破壊）", "dream_hack": "型3: ドリームハック・サクセス（夢への近道）", "future_shock": "型4: フューチャーショック・アジテーション（未来扇動）", "core_insight": "型5: コア・インサイト（本質の言語化）", "authority_drop": "型6: オーソリティ・ドロップ（権威の引用）"};
 
-function renderTemplates() {
-  const grid = document.getElementById('tmplGrid');
-  TEMPLATES.forEach(tmpl => {
-    const card = document.createElement('div');
-    card.className = 'tmpl-card';
-    card.id = 'card-' + tmpl.id;
-    card.innerHTML = `
-      <div class="tmpl-name">${tmpl.name}</div>
-      <div class="tmpl-desc">${tmpl.description}</div>
-      <button class="gen-btn" onclick="generate('${tmpl.id}')">✨ 生成する</button>
-      <div class="result-area" id="result-${tmpl.id}"></div>
-    `;
-    grid.appendChild(card);
-  });
+function loadPosts() {
+  try { return JSON.parse(localStorage.getItem(LS_POSTS_KEY) || '[]'); } catch { return []; }
+}
+function savePosts(posts) {
+  localStorage.setItem(LS_POSTS_KEY, JSON.stringify(posts));
 }
 
-async function generate(templateId) {
-  const tmpl = TEMPLATES.find(t => t.id === templateId);
-  if (!tmpl) return;
-
-  const btn = document.querySelector(`#card-${templateId} .gen-btn`);
-  const resultArea = document.getElementById('result-' + templateId);
-
-  btn.disabled = true;
-  btn.textContent = '生成中...';
-  resultArea.className = 'result-area visible';
-  resultArea.innerHTML = '<div class="loading">⏳ Geminiが生成中です（約20秒）...</div>';
-
-  try {
-    const res = await fetch(WORKER_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        template_id: tmpl.id,
-        template_name: tmpl.name,
-        prompt_hint: tmpl.prompt_hint,
-        posts: POSTS,
-      }),
-    });
-
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP ${res.status}`);
-    }
-
-    const data = await res.json();
-    const generated = data.generated || [];
-
-    if (generated.length === 0) {
-      resultArea.innerHTML = '<div class="error-msg">生成に失敗しました。もう一度お試しください。</div>';
-      return;
-    }
-
-    resultArea.innerHTML = generated.map((g, i) => {
-      const text = g.text || '';
-      const chars = text.length;
-      const overClass = chars > 140 ? 'over' : '';
-      const srcLink = g.source_url ? `<a class="source-link" href="${g.source_url}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
-      const srcInfo = g.source_summary ? `<div class="gen-source">参考: ${g.source_summary.slice(0, 60)}${g.source_summary.length > 60 ? '...' : ''} @${g.source_author}</div>` : '';
-      const textId = `gen-text-${templateId}-${i}`;
-      return `
-        <div class="gen-card">
-          <div class="gen-text" id="${textId}">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
-          <div class="gen-footer">
-            <span class="char-count ${overClass}">${chars}文字</span>
-            <div class="gen-actions">
-              <button class="copy-btn" onclick="copyText(this, '${textId}')">コピー</button>
-              ${srcLink}
-            </div>
-          </div>
-          ${srcInfo}
-        </div>`;
-    }).join('');
-
-  } catch (e) {
-    resultArea.innerHTML = `<div class="error-msg">エラー: ${e.message}</div>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = '✨ もう一度生成';
-  }
+function deletePost(id) {
+  const posts = loadPosts().filter(p => p.id !== id);
+  savePosts(posts);
+  render();
 }
 
-function copyText(btn, elementId) {
-  const el = document.getElementById(elementId);
-  if (!el) return;
-  navigator.clipboard.writeText(el.innerText).then(() => {
+function clearAll() {
+  if (!confirm('保存済みの投稿文をすべて削除しますか？')) return;
+  localStorage.removeItem(LS_POSTS_KEY);
+  render();
+}
+
+function copyText(btn, text) {
+  navigator.clipboard.writeText(text).then(() => {
     btn.textContent = 'コピー済み✓';
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
   });
 }
 
-renderTemplates();
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.toLocaleDateString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function render() {
+  const posts = loadPosts();
+  document.getElementById('totalCount').textContent = posts.length;
+
+  const tabBar = document.getElementById('tabBar');
+  const tabContents = document.getElementById('tabContents');
+
+  if (!posts.length) {
+    tabBar.innerHTML = '';
+    tabContents.innerHTML = `<div class="empty-msg"><div class="icon">📭</div><p><a href="sns_success.html">SNS成功者マインド</a> のポストで「✍️ 投稿文を作る」を押すと、ここに保存されます。</p></div>`;
+    return;
+  }
+
+  // テンプレートIDでグループ化
+  const byTemplate = {};
+  posts.forEach(p => {
+    const tid = p.template_id || 'other';
+    if (!byTemplate[tid]) byTemplate[tid] = [];
+    byTemplate[tid].push(p);
+  });
+
+  // テンプレート順（定義順 + その他）
+  const tmplOrder = Object.keys(TEMPLATE_NAMES);
+  const allTids = [...new Set([...tmplOrder, ...Object.keys(byTemplate)])].filter(t => byTemplate[t]);
+  const firstTab = allTids[0];
+
+  tabBar.innerHTML = allTids.map((tid, i) => {
+    const name = TEMPLATE_NAMES[tid] || tid;
+    const count = (byTemplate[tid] || []).length;
+    const active = i === 0 ? ' active' : '';
+    return `<button class="tab-btn${active}" id="tab-btn-${tid}" onclick="showTab('${tid}')">${name} <span style="opacity:0.6;font-size:0.76rem;">${count}</span></button>`;
+  }).join('');
+
+  tabContents.innerHTML = allTids.map((tid, i) => {
+    const tposts = (byTemplate[tid] || []).slice().reverse(); // 新しい順
+    const active = i === 0 ? ' active' : '';
+    const cards = tposts.map(p => {
+      const text = p.text || '';
+      const chars = p.char_count || text.length;
+      const overClass = chars > 140 ? ' over' : '';
+      const srcLink = p.source_url ? `<a class="source-link" href="${esc(p.source_url)}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
+      const textEsc = esc(text);
+      const textJson = JSON.stringify(text);
+      return `<div class="gen-card">
+  <div class="gen-card-date">${formatDate(p.created_at)}</div>
+  <div class="gen-text">${textEsc}</div>
+  <div class="gen-source">${p.source_summary ? esc(p.source_summary.slice(0,50)) + (p.source_summary.length>50?'...':'') + ' @' + esc(p.source_author) : '@' + esc(p.source_author || '')}</div>
+  <div class="gen-footer">
+    <span class="char-count${overClass}">${chars}文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, ${textJson})">コピー</button>
+      ${srcLink}
+      <button class="del-btn" onclick="deletePost('${p.id}')">削除</button>
+    </div>
+  </div>
+</div>`;
+    }).join('');
+    return `<div class="tab-content${active}" id="tab-${tid}"><div class="cards-grid">${cards}</div></div>`;
+  }).join('');
+}
+
+function showTab(tid) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const btn = document.getElementById('tab-btn-' + tid);
+  const content = document.getElementById('tab-' + tid);
+  if (btn) btn.classList.add('active');
+  if (content) content.classList.add('active');
+}
+
+render();
 </script>
 </body>
 </html>

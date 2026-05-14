@@ -319,6 +319,28 @@ function applyGeneratedBadge(btn) {{
     btn.appendChild(badge);
   }}
 }}
+const LS_POSTS_KEY = 'sns_generated_posts';
+function saveGeneratedPosts(sourcePost, generated) {{
+  let all = [];
+  try {{ all = JSON.parse(localStorage.getItem(LS_POSTS_KEY) || '[]'); }} catch {{}}
+  const now = new Date().toISOString();
+  generated.forEach(g => {{
+    all.push({{
+      id: `${{sourcePost.id}}_${{g.template_id}}_${{Date.now()}}`,
+      template_id: g.template_id,
+      template_name: g.template_name,
+      text: g.text,
+      char_count: (g.text || '').length,
+      source_post_id: sourcePost.id,
+      source_url: sourcePost.url,
+      source_author: sourcePost.author_display || sourcePost.author,
+      source_summary: sourcePost.summary,
+      created_at: now,
+    }});
+  }});
+  localStorage.setItem(LS_POSTS_KEY, JSON.stringify(all));
+}}
+
 function initGeneratedBadges() {{
   const ids = getGeneratedIds();
   if (!ids.size) return;
@@ -423,6 +445,7 @@ async function openGenerator(btn) {{
 
     modalTitle.textContent = '✍️ 6種の投稿文が生成されました';
     markAsGenerated(postData.id);
+    saveGeneratedPosts(postData, generated);
     modalBody.innerHTML = '<div class="modal-results">' + generated.map((g, i) => {{
       const text = g.text || '';
       const chars = text.length;
