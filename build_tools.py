@@ -83,12 +83,21 @@ def _is_ai_tool(item: dict) -> bool:
 def _fmt_date(iso: str) -> str:
     if not iso:
         return ""
+    from zoneinfo import ZoneInfo
+    JST = ZoneInfo("Asia/Tokyo")
+    # ISO 8601形式
     try:
-        from zoneinfo import ZoneInfo
         dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-        return dt.astimezone(ZoneInfo("Asia/Tokyo")).strftime("%Y/%m/%d %H:%M")
-    except Exception:
-        return iso[:10]
+        return dt.astimezone(JST).strftime("%Y/%m/%d %H:%M")
+    except ValueError:
+        pass
+    # Twitter形式: "Wed May 13 19:50:53 +0000 2026"
+    try:
+        dt = datetime.strptime(iso, "%a %b %d %H:%M:%S %z %Y")
+        return dt.astimezone(JST).strftime("%Y/%m/%d %H:%M")
+    except ValueError:
+        pass
+    return iso[:10]
 
 
 def _tool_card_group(items: list[dict]) -> str:

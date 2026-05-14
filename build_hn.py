@@ -41,12 +41,21 @@ def load_all_dates(days: int = 14) -> dict[str, list[dict]]:
 
 
 def _fmt_date(iso: str) -> str:
+    if not iso:
+        return ""
+    from zoneinfo import ZoneInfo
+    JST = ZoneInfo("Asia/Tokyo")
     try:
-        from zoneinfo import ZoneInfo
         dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-        return dt.astimezone(ZoneInfo("Asia/Tokyo")).strftime("%Y/%m/%d %H:%M")
-    except Exception:
-        return iso[:10] if iso else ""
+        return dt.astimezone(JST).strftime("%Y/%m/%d %H:%M")
+    except ValueError:
+        pass
+    try:
+        dt = datetime.strptime(iso, "%a %b %d %H:%M:%S %z %Y")
+        return dt.astimezone(JST).strftime("%Y/%m/%d %H:%M")
+    except ValueError:
+        pass
+    return iso[:10]
 
 
 def _hn_card(item: dict) -> str:
