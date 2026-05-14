@@ -221,62 +221,40 @@ def _load_all_generated() -> list[dict]:
     return posts
 
 
-def generate_post_generator_page(output_path: str, config: dict) -> None:
-    """docs/post_generator.html を生成する"""
-    all_posts = _load_all_generated()
-    templates = config.get("post_templates", {}).get("templates", [])
+WORKER_URL = "https://sns-post-generator.imokonoai.workers.dev"
 
-    # テンプレートIDごとにグループ化（最新生成順）
-    by_template: dict[str, list[dict]] = {t["id"]: [] for t in templates}
-    for p in all_posts:
-        tid = p.get("template_id", "")
-        if tid in by_template:
-            by_template[tid].append(p)
+
+def generate_post_generator_page(output_path: str, config: dict) -> None:
+    """docs/post_generator.html を生成する（Cloudflare Worker経由でリアルタイム生成）"""
+    templates = config.get("post_templates", {}).get("templates", [])
+    sample_size = config.get("post_templates", {}).get("sample_size", 20)
+
+    # 分析済みポストをサンプリングしてJSに埋め込む
+    all_analyzed = _load_all_analyses()
+    sample_posts = _sample_posts(all_analyzed, sample_size) if all_analyzed else []
+
+    # JSに渡すポストデータ（必要なフィールドだけ）
+    posts_for_js = []
+    for p in sample_posts:
+        posts_for_js.append({
+            "id": p.get("id", ""),
+            "author": p.get("author", ""),
+            "author_display": p.get("author_display") or p.get("author", ""),
+            "author_followers": p.get("author_followers", 0),
+            "content": (p.get("content") or "")[:500],
+            "summary": p.get("summary", ""),
+            "mind_theme": p.get("mind_theme", ""),
+            "key_insights": p.get("key_insights") or [],
+            "url": p.get("url", ""),
+        })
+
+    posts_json = json.dumps(posts_for_js, ensure_ascii=False)
+    templates_json = json.dumps([
+        {"id": t["id"], "name": t["name"], "description": t.get("description", ""), "prompt_hint": t.get("prompt_hint", "")}
+        for t in templates
+    ], ensure_ascii=False)
 
     now_jst = datetime.now(timezone.utc).strftime("%Y/%m/%d %H:%M") + " JST"
-    total = sum(len(v) for v in by_template.values())
-
-    tab_buttons = ""
-    tab_contents = ""
-    for i, tmpl in enumerate(templates):
-        tid = tmpl["id"]
-        tname = tmpl["name"]
-        tdesc = tmpl.get("description", "")
-        posts = by_template.get(tid, [])
-        active_cls = " active" if i == 0 else ""
-
-        tab_buttons += f'<button class="tab-btn{active_cls}" onclick="showTab(\'{tid}\')" id="tab-btn-{tid}">{tname}</button>\n'
-
-        cards_html = ""
-        for p in posts:
-            text = p.get("text", "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            char_count = p.get("char_count", len(p.get("text", "")))
-            source_url = p.get("source_url", "")
-            source_author = p.get("source_author", "")
-            source_summary = (p.get("source_summary") or "").replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-            over = "over" if char_count > 140 else ""
-            cards_html += f"""
-<div class="gen-card">
-  <div class="gen-text" id="text-{p.get('source_post_id','')}-{tid}">{text}</div>
-  <div class="gen-footer">
-    <span class="char-count {over}">{char_count}文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-{p.get('source_post_id','')}-{tid}')">コピー</button>
-      {'<a class="source-link" href="' + source_url + '" target="_blank" rel="noopener">元ポストを見る →</a>' if source_url else ''}
-    </div>
-  </div>
-  {('<div class="gen-source">参考: ' + source_summary[:60] + ('...' if len(source_summary) > 60 else '') + ' @' + source_author + '</div>') if source_summary else ''}
-</div>"""
-
-        if not cards_html:
-            cards_html = '<p class="empty-msg">まだ生成されていません。定期実行をお待ちください。</p>'
-
-        display = "block" if i == 0 else "none"
-        tab_contents += f"""
-<div class="tab-content" id="tab-{tid}" style="display:{display}">
-  <p class="tmpl-desc">{tdesc}</p>
-  <div class="cards-grid">{cards_html}</div>
-</div>"""
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -289,7 +267,7 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
     --bg: #0a0f1e; --surface: #131929; --card: #1a2236;
     --accent: #a78bfa; --accent2: #7c3aed; --text: #e2e8f0;
     --muted: #94a3b8; --border: #2d3748; --success: #10b981;
-    --warn: #f59e0b;
+    --warn: #f59e0b; --error: #ef4444;
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }}
@@ -301,60 +279,138 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
   nav a:hover {{ color: var(--accent); background: rgba(167,139,250,0.1); }}
   nav a.active {{ color: var(--accent); background: rgba(167,139,250,0.15); }}
   .container {{ max-width: 1100px; margin: 0 auto; padding: 24px 16px; }}
-  .stats-bar {{ display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }}
-  .stat-chip {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; font-size: 0.85rem; color: var(--muted); }}
-  .stat-chip strong {{ color: var(--accent); font-size: 1.1rem; }}
-  .tabs {{ display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }}
-  .tab-btn {{ background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }}
-  .tab-btn:hover {{ border-color: var(--accent); color: var(--accent); }}
-  .tab-btn.active {{ background: var(--accent2); border-color: var(--accent); color: #fff; }}
-  .tmpl-desc {{ color: var(--muted); font-size: 0.85rem; margin-bottom: 16px; }}
-  .cards-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }}
-  .gen-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }}
-  .gen-text {{ color: var(--text); font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }}
+  .tmpl-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }}
+  .tmpl-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }}
+  .tmpl-card:hover {{ border-color: var(--accent); }}
+  .tmpl-name {{ font-size: 1rem; font-weight: 600; color: var(--accent); }}
+  .tmpl-desc {{ font-size: 0.83rem; color: var(--muted); line-height: 1.5; }}
+  .gen-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 0.9rem; cursor: pointer; width: 100%; transition: opacity 0.2s; }}
+  .gen-btn:hover {{ opacity: 0.85; }}
+  .gen-btn:disabled {{ opacity: 0.5; cursor: not-allowed; }}
+  .result-area {{ margin-top: 12px; display: none; flex-direction: column; gap: 10px; }}
+  .result-area.visible {{ display: flex; }}
+  .gen-card {{ background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }}
+  .gen-text {{ color: var(--text); font-size: 0.92rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }}
   .gen-footer {{ display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }}
-  .char-count {{ font-size: 0.78rem; color: var(--muted); }}
+  .char-count {{ font-size: 0.76rem; color: var(--muted); }}
   .char-count.over {{ color: var(--warn); font-weight: bold; }}
   .gen-actions {{ display: flex; gap: 8px; align-items: center; }}
-  .copy-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 0.82rem; cursor: pointer; transition: opacity 0.2s; }}
-  .copy-btn:hover {{ opacity: 0.85; }}
+  .copy-btn {{ background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }}
   .copy-btn.copied {{ background: var(--success); }}
-  .source-link {{ color: var(--accent); font-size: 0.8rem; text-decoration: none; }}
+  .source-link {{ color: var(--accent); font-size: 0.78rem; text-decoration: none; }}
   .source-link:hover {{ text-decoration: underline; }}
-  .gen-source {{ font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; }}
-  .empty-msg {{ color: var(--muted); font-size: 0.9rem; padding: 32px; text-align: center; }}
+  .gen-source {{ font-size: 0.76rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 6px; }}
+  .loading {{ text-align: center; color: var(--muted); font-size: 0.85rem; padding: 16px; }}
+  .error-msg {{ color: var(--error); font-size: 0.85rem; padding: 8px; }}
+  .info-bar {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.83rem; color: var(--muted); }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; }}
 </style>
 </head>
 <body>
 <header>
   <h1>✍️ SNS投稿ジェネレーター</h1>
-  <p>SNS成功者の知見を元にAIが生成した投稿文 &nbsp;|&nbsp; 最終更新: {now_jst}</p>
+  <p>SNS成功者の知見を元にAIがリアルタイムで投稿文を生成 &nbsp;|&nbsp; ページ更新: {now_jst}</p>
 </header>
 <nav>
-  <a href="index.html">🏠 ホーム</a>
+  <a href="index.html">📰 ニュース</a>
   <a href="sns_success.html">🧠 SNS成功者マインド</a>
-  <a href="money.html">💰 マネタイズ事例</a>
+  <a href="money.html">🎬 マネタイズ事例</a>
   <a href="post_generator.html" class="active">✍️ 投稿ジェネレーター</a>
 </nav>
 <div class="container">
-  <div class="stats-bar">
-    <div class="stat-chip">生成済み投稿 <strong>{total}</strong> 件</div>
-    <div class="stat-chip">テンプレート <strong>{len(templates)}</strong> 種</div>
+  <div class="info-bar">
+    参考ポスト: <strong>{len(sample_posts)}</strong>件 &nbsp;|&nbsp; テンプレート: <strong>{len(templates)}</strong>種 &nbsp;|&nbsp; 生成ボタンを押すとAIがその場で投稿文を作ります（約20秒）
   </div>
-  <div class="tabs">
-{tab_buttons}
-  </div>
-{tab_contents}
+  <div class="tmpl-grid" id="tmplGrid"></div>
 </div>
 <footer>生成文はAIによるものです。投稿前に内容を確認してください。</footer>
 <script>
-function showTab(id) {{
-  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-' + id).style.display = 'block';
-  document.getElementById('tab-btn-' + id).classList.add('active');
+const WORKER_URL = '{WORKER_URL}';
+const POSTS = {posts_json};
+const TEMPLATES = {templates_json};
+
+function renderTemplates() {{
+  const grid = document.getElementById('tmplGrid');
+  TEMPLATES.forEach(tmpl => {{
+    const card = document.createElement('div');
+    card.className = 'tmpl-card';
+    card.id = 'card-' + tmpl.id;
+    card.innerHTML = `
+      <div class="tmpl-name">${{tmpl.name}}</div>
+      <div class="tmpl-desc">${{tmpl.description}}</div>
+      <button class="gen-btn" onclick="generate('${{tmpl.id}}')">✨ 生成する</button>
+      <div class="result-area" id="result-${{tmpl.id}}"></div>
+    `;
+    grid.appendChild(card);
+  }});
 }}
+
+async function generate(templateId) {{
+  const tmpl = TEMPLATES.find(t => t.id === templateId);
+  if (!tmpl) return;
+
+  const btn = document.querySelector(`#card-${{templateId}} .gen-btn`);
+  const resultArea = document.getElementById('result-' + templateId);
+
+  btn.disabled = true;
+  btn.textContent = '生成中...';
+  resultArea.className = 'result-area visible';
+  resultArea.innerHTML = '<div class="loading">⏳ Geminiが生成中です（約20秒）...</div>';
+
+  try {{
+    const res = await fetch(WORKER_URL, {{
+      method: 'POST',
+      headers: {{ 'Content-Type': 'application/json' }},
+      body: JSON.stringify({{
+        template_id: tmpl.id,
+        template_name: tmpl.name,
+        prompt_hint: tmpl.prompt_hint,
+        posts: POSTS,
+      }}),
+    }});
+
+    if (!res.ok) {{
+      const err = await res.json().catch(() => ({{}}));
+      throw new Error(err.error || `HTTP ${{res.status}}`);
+    }}
+
+    const data = await res.json();
+    const generated = data.generated || [];
+
+    if (generated.length === 0) {{
+      resultArea.innerHTML = '<div class="error-msg">生成に失敗しました。もう一度お試しください。</div>';
+      return;
+    }}
+
+    resultArea.innerHTML = generated.map((g, i) => {{
+      const text = g.text || '';
+      const chars = text.length;
+      const overClass = chars > 140 ? 'over' : '';
+      const srcLink = g.source_url ? `<a class="source-link" href="${{g.source_url}}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
+      const srcInfo = g.source_summary ? `<div class="gen-source">参考: ${{g.source_summary.slice(0, 60)}}${{g.source_summary.length > 60 ? '...' : ''}} @${{g.source_author}}</div>` : '';
+      const textId = `gen-text-${{templateId}}-${{i}}`;
+      return `
+        <div class="gen-card">
+          <div class="gen-text" id="${{textId}}">${{text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</div>
+          <div class="gen-footer">
+            <span class="char-count ${{overClass}}">${{chars}}文字</span>
+            <div class="gen-actions">
+              <button class="copy-btn" onclick="copyText(this, '${{textId}}')">コピー</button>
+              ${{srcLink}}
+            </div>
+          </div>
+          ${{srcInfo}}
+        </div>`;
+    }}).join('');
+
+  }} catch (e) {{
+    resultArea.innerHTML = `<div class="error-msg">エラー: ${{e.message}}</div>`;
+  }} finally {{
+    btn.disabled = false;
+    btn.textContent = '✨ もう一度生成';
+  }}
+}}
+
 function copyText(btn, elementId) {{
   const el = document.getElementById(elementId);
   if (!el) return;
@@ -364,6 +420,8 @@ function copyText(btn, elementId) {{
     setTimeout(() => {{ btn.textContent = 'コピー'; btn.classList.remove('copied'); }}, 2000);
   }});
 }}
+
+renderTemplates();
 </script>
 </body>
 </html>"""
@@ -373,4 +431,4 @@ function copyText(btn, elementId) {{
     with open(tmp, "w", encoding="utf-8") as f:
         f.write(html)
     os.replace(tmp, output_path)
-    logger.info("Post generator page generated → %s (%d posts)", output_path, total)
+    logger.info("Post generator page generated → %s (%d source posts embedded)", output_path, len(sample_posts))

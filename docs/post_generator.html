@@ -9,7 +9,7 @@
     --bg: #0a0f1e; --surface: #131929; --card: #1a2236;
     --accent: #a78bfa; --accent2: #7c3aed; --text: #e2e8f0;
     --muted: #94a3b8; --border: #2d3748; --success: #10b981;
-    --warn: #f59e0b;
+    --warn: #f59e0b; --error: #ef4444;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }
@@ -21,506 +21,138 @@
   nav a:hover { color: var(--accent); background: rgba(167,139,250,0.1); }
   nav a.active { color: var(--accent); background: rgba(167,139,250,0.15); }
   .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
-  .stats-bar { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
-  .stat-chip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; font-size: 0.85rem; color: var(--muted); }
-  .stat-chip strong { color: var(--accent); font-size: 1.1rem; }
-  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
-  .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
-  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .tab-btn.active { background: var(--accent2); border-color: var(--accent); color: #fff; }
-  .tmpl-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 16px; }
-  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
-  .gen-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
-  .gen-text { color: var(--text); font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+  .tmpl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .tmpl-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+  .tmpl-card:hover { border-color: var(--accent); }
+  .tmpl-name { font-size: 1rem; font-weight: 600; color: var(--accent); }
+  .tmpl-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+  .gen-btn { background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 0.9rem; cursor: pointer; width: 100%; transition: opacity 0.2s; }
+  .gen-btn:hover { opacity: 0.85; }
+  .gen-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .result-area { margin-top: 12px; display: none; flex-direction: column; gap: 10px; }
+  .result-area.visible { display: flex; }
+  .gen-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+  .gen-text { color: var(--text); font-size: 0.92rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
   .gen-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
-  .char-count { font-size: 0.78rem; color: var(--muted); }
+  .char-count { font-size: 0.76rem; color: var(--muted); }
   .char-count.over { color: var(--warn); font-weight: bold; }
   .gen-actions { display: flex; gap: 8px; align-items: center; }
-  .copy-btn { background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 0.82rem; cursor: pointer; transition: opacity 0.2s; }
-  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn { background: var(--accent2); color: #fff; border: none; border-radius: 6px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer; }
   .copy-btn.copied { background: var(--success); }
-  .source-link { color: var(--accent); font-size: 0.8rem; text-decoration: none; }
+  .source-link { color: var(--accent); font-size: 0.78rem; text-decoration: none; }
   .source-link:hover { text-decoration: underline; }
-  .gen-source { font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; }
-  .empty-msg { color: var(--muted); font-size: 0.9rem; padding: 32px; text-align: center; }
+  .gen-source { font-size: 0.76rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 6px; }
+  .loading { text-align: center; color: var(--muted); font-size: 0.85rem; padding: 16px; }
+  .error-msg { color: var(--error); font-size: 0.85rem; padding: 8px; }
+  .info-bar { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; margin-bottom: 24px; font-size: 0.83rem; color: var(--muted); }
   footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; }
 </style>
 </head>
 <body>
 <header>
   <h1>✍️ SNS投稿ジェネレーター</h1>
-  <p>SNS成功者の知見を元にAIが生成した投稿文 &nbsp;|&nbsp; 最終更新: 2026/05/14 05:18 JST</p>
+  <p>SNS成功者の知見を元にAIがリアルタイムで投稿文を生成 &nbsp;|&nbsp; ページ更新: 2026/05/14 05:27 JST</p>
 </header>
 <nav>
-  <a href="index.html">🏠 ホーム</a>
+  <a href="index.html">📰 ニュース</a>
   <a href="sns_success.html">🧠 SNS成功者マインド</a>
-  <a href="money.html">💰 マネタイズ事例</a>
+  <a href="money.html">🎬 マネタイズ事例</a>
   <a href="post_generator.html" class="active">✍️ 投稿ジェネレーター</a>
 </nav>
 <div class="container">
-  <div class="stats-bar">
-    <div class="stat-chip">生成済み投稿 <strong>30</strong> 件</div>
-    <div class="stat-chip">テンプレート <strong>6</strong> 種</div>
+  <div class="info-bar">
+    参考ポスト: <strong>20</strong>件 &nbsp;|&nbsp; テンプレート: <strong>6</strong>種 &nbsp;|&nbsp; 生成ボタンを押すとAIがその場で投稿文を作ります（約20秒）
   </div>
-  <div class="tabs">
-<button class="tab-btn active" onclick="showTab('instant_knowledge')" id="tab-btn-instant_knowledge">型1: インスタント・ナレッジ（リスト型）</button>
-<button class="tab-btn" onclick="showTab('paradox_break')" id="tab-btn-paradox_break">型2: パラドックス・ブレイク（常識破壊）</button>
-<button class="tab-btn" onclick="showTab('dream_hack')" id="tab-btn-dream_hack">型3: ドリームハック・サクセス（夢への近道）</button>
-<button class="tab-btn" onclick="showTab('future_shock')" id="tab-btn-future_shock">型4: フューチャーショック・アジテーション（未来扇動）</button>
-<button class="tab-btn" onclick="showTab('core_insight')" id="tab-btn-core_insight">型5: コア・インサイト（本質の言語化）</button>
-<button class="tab-btn" onclick="showTab('authority_drop')" id="tab-btn-authority_drop">型6: オーソリティ・ドロップ（権威の引用）</button>
-
-  </div>
-
-<div class="tab-content" id="tab-instant_knowledge" style="display:block">
-  <p class="tmpl-desc">知識を箇条書きで整理し、タイパ重視の読者に刺さるリスト投稿</p>
-  <div class="cards-grid">
-<div class="gen-card">
-  <div class="gen-text" id="text-b3aa47ef1867a0d1-instant_knowledge">【SNSで消耗する人】
-・他人の正解を追い、手動で頑張る
-・結果：時間を失い、空虚感だけが残る
-
-【AIで成果を出す人】
-・作業を自動化し、戦略に集中する
-・結果：自分の軸でビジネスを再構築し、時間も収入も増える</div>
-  <div class="gen-footer">
-    <span class="char-count ">106文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-b3aa47ef1867a0d1-instant_knowledge')">コピー</button>
-      <a class="source-link" href="https://x.com/kouya_sns01/status/2046746332120150047" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: AI自動化で時間を作り、他人の正解ではなく自分の基準でビジネスを再設計する。 @Kouya ｜ AI×SNSマーケ自動化コンサルタント</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-3092e8ad43f1a67c-instant_knowledge">ハーバード大学が75年かけて見つけた「本当に幸せな人」の特徴3選
-
-1. 富や名声に執着しない
-意外にも、お金や健康だけでは幸せになれない。
-
-2. 同じ志を持つ仲間がいる
-頼り、頼られるコミュニティに属している。
-
-3. 人との繋がりを何より大切にする
-結局、人を幸せにするのは人。</div>
-  <div class="gen-footer">
-    <span class="char-count over">142文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-3092e8ad43f1a67c-instant_knowledge')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2028415518030418092" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: ハーバード大学の75年の研究から導き出された「本当の幸せ」の定義 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-9bc4d92d7e246399-instant_knowledge">【年収が上がらない人】
-・みんなと同じスキルを磨く
-・結果：代わりはいくらでもいるので、買い叩かれる
-
-【年収5000万を稼ぐ人】
-・需要はあるのに供給が少ないスキルを狙う
-・結果：希少人材としてGAFAMやファンドが奪い合い、給料が爆上がりする</div>
-  <div class="gen-footer">
-    <span class="char-count ">123文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-9bc4d92d7e246399-instant_knowledge')">コピー</button>
-      <a class="source-link" href="https://x.com/fiction_log/status/2053734802168410257" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 高給職業「クオンツ」について、仕事内容と高年収である理由(市場での希少性)を解説。 @ろじん｜Levela CXO</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-03e256c164cd3149-instant_knowledge">過去に縛られている人の特徴4選
-
-1. ハイブラで武装しがち
-貧乏だった過去の欠乏感を埋めようとしている。
-
-2. SNSの承認に飢えている
-孤独だった経験を無意識に解消しようとする。
-
-3. 美容整形に走る
-地味だった自分へのコンプレックスが強い。
-
-4. 恋に溺れやすい
-モテなかった過去を必死で埋めようとしている。</div>
-  <div class="gen-footer">
-    <span class="char-count over">160文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-03e256c164cd3149-instant_knowledge')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2028763150905168237" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 過去に欠けていたものを大人は埋めようとする、という人間心理を「夜職の友達」を例に鋭く分析している。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-dd6a5ca625884ac1-instant_knowledge">【人生が変わらない人】
-・無駄な誘いを断れず、付き合う人を選ばない
-・結果：時間を浪費し、現状維持のまま
-
-【人生が好転する人】
-・付き合う人を厳選し、週5でジムに通う
-・結果：自己投資の時間が生まれ、理想の自分に近づく</div>
-  <div class="gen-footer">
-    <span class="char-count ">110文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-dd6a5ca625884ac1-instant_knowledge')">コピー</button>
-      <a class="source-link" href="https://x.com/tsugu1908/status/2042950010577576070" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 人生を好転させる最強の習慣リスト（週5ジム、副業、人付き合いの厳選など）。 @つぐ</div>
-</div></div>
-</div>
-<div class="tab-content" id="tab-paradox_break" style="display:none">
-  <p class="tmpl-desc">常識を覆す主張で認知的不協和を誘発し、続きを読ませる</p>
-  <div class="cards-grid">
-<div class="gen-card">
-  <div class="gen-text" id="text-3092e8ad43f1a67c-paradox_break">お金は「本当の幸せ」をもたらさない。
-名声も「本当の幸せ」をもたらさない。
-健康でさえ、その核心ではなかった。
-
-ハーバード大が75年かけて見つけた幸福の本質、それは「同じ志を持つ仲間と、頼り頼られながら生きること」だった。</div>
-  <div class="gen-footer">
-    <span class="char-count ">112文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-3092e8ad43f1a67c-paradox_break')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2028415518030418092" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: ハーバード大学の75年の研究から導き出された「本当の幸せ」の定義 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-96882043dbe845ba-paradox_break">「人生を変えるには何かを始めること」は大きな間違い。やる気は動いた後に出るし、自己流は遠回りだからだ。本当に重要なのは成功者を完コピし「余計なことをやめる」勇気。これが最短ルート。</div>
-  <div class="gen-footer">
-    <span class="char-count ">90文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-96882043dbe845ba-paradox_break')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2050885756693197021" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 人生を30日で変えるための、やる気の仕組みや成功者の完コピなど15の効果的な『裏技習慣』を紹介した投稿。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-f9039988c1b5e59b-paradox_break">「他人の批判が怖い」は、気にするだけ無駄。なぜなら、挑戦しない人ほど挑戦を笑い、失敗したことない人ほど失敗を馬鹿にするからだ。何もせず、ただあなたを監視するだけの人間から得られるものは何もない。自分の道を進もう。</div>
-  <div class="gen-footer">
-    <span class="char-count ">106文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-f9039988c1b5e59b-paradox_break')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2029504442899276228" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 挑戦しない人ほど他人の失敗を笑うという人間心理を指摘し、そうした批判者から得るものはないと断言する。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-3bef097467b5c753-paradox_break">「AI時代はAIスキルを極めるべき」という常識はもう古い。AIの進化で技術はすぐ陳腐化するからだ。本当に価値を持つのは、AIに真似できない「人間的な面白さ」。リアルな人生を冒険し、自分をレベルアップさせることが唯一の生存戦略になる。</div>
-  <div class="gen-footer">
-    <span class="char-count ">116文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-3bef097467b5c753-paradox_break')">コピー</button>
-      <a class="source-link" href="https://x.com/AiFreak_tool/status/2054370867967385696" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: AI時代には技術の追求より、実人生の冒険で人間性を磨くことが唯一の価値になる。 @AI FREAK@AI最新情報をお届け</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-f35a82cbea89dfde-paradox_break">「節約こそがお金持ちへの道」は半分間違い。浮いたお金でガラクタを買っていては意味がない。本当に買うべきは物ではなく「環境」だ。良い場所に住めば、出会う人や舞い込むチャンスの質が変わり、人生そのものが豊かになるから。</div>
-  <div class="gen-footer">
-    <span class="char-count ">107文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-f35a82cbea89dfde-paradox_break')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2030583111843529156" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 祖母の教え「ミニマムリッチ」を紹介。物より環境にお金を使い、良いご縁や体験を得ることの重要性を説く。 @底辺ナース</div>
-</div></div>
-</div>
-<div class="tab-content" id="tab-dream_hack" style="display:none">
-  <p class="tmpl-desc">誰にでも再現可能な成功への近道を提示し、希望と射幸心を刺激する</p>
-  <div class="cards-grid">
-<div class="gen-card">
-  <div class="gen-text" id="text-b3aa47ef1867a0d1-dream_hack">クライアントさんがAI自動化で運用を週21時間→65分に短縮し月収2.3倍を達成。手順はこちらです。疲弊状態→AIで単純作業を自動化→自分の軸で戦略を再設計→時間と収入を同時に最大化</div>
-  <div class="gen-footer">
-    <span class="char-count ">91文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-b3aa47ef1867a0d1-dream_hack')">コピー</button>
-      <a class="source-link" href="https://x.com/kouya_sns01/status/2046746332120150047" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: AI自動化で時間を作り、他人の正解ではなく自分の基準でビジネスを再設計する。 @Kouya ｜ AI×SNSマーケ自動化コンサルタント</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-b7738db0fa541476-dream_hack">スタバで隣の富裕層が「1億円の引き寄せは本当にある」と話していた。その方法は①まず「1億円を得た」と決める→②得た後の生活をリアルに想像→③その「すでに持っている」感覚を日々維持することだった。</div>
-  <div class="gen-footer">
-    <span class="char-count ">97文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-b7738db0fa541476-dream_hack')">コピー</button>
-      <a class="source-link" href="https://x.com/umitterx/status/2032268097068154921" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 富裕層が実践する引き寄せは、1億円などを既に得た感覚をリアルに持つこと @うみ</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-442e1284cad2f2d8-dream_hack">69歳でやなせたかしはアンパンマンで大ヒット。諦めない覚悟が人生を変えました。手順はこちらです。売れない下積み→満員電車から降りない→才能より覚悟を信じる→69歳でついに大ブレイク</div>
-  <div class="gen-footer">
-    <span class="char-count ">90文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-442e1284cad2f2d8-dream_hack')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2032748569258537414" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: やなせたかし氏のエピソードを引用し、才能よりも「諦めない覚悟」が努力や挑戦を成功に導く本質だと主張。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-f35a82cbea89dfde-dream_hack">ミニマムリッチな人生を送る祖母がいる。その方法は①ガラクタは買わない→②本当に気に入った上質な物だけ持つ→③貯まったお金で住む場所など「環境」を買うこと。良いご縁や体験に繋がるから、と。</div>
-  <div class="gen-footer">
-    <span class="char-count ">93文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-f35a82cbea89dfde-dream_hack')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2030583111843529156" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 祖母の教え「ミニマムリッチ」を紹介。物より環境にお金を使い、良いご縁や体験を得ることの重要性を説く。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-a9490bdd01d6d630-dream_hack">「普通の会社員」がAI占いで半年で月100万円達成。手順はこちら。ゼロからスタート→ChatGPTで雰囲気ある文章作成→Canvaで整え「鑑定」として出品→「AIで人生変わった」と自分の手法を情報商材に。この構造、最近見かけませんか？</div>
-  <div class="gen-footer">
-    <span class="char-count ">117文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-a9490bdd01d6d630-dream_hack')">コピー</button>
-      <a class="source-link" href="https://x.com/9ren_azusa/status/2053895408901079145" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 安易な「AI占い副業」の構造を暴露し、本質的なスキル習得の重要性を説く警鐘。 @九蓮梓</div>
-</div></div>
-</div>
-<div class="tab-content" id="tab-future_shock" style="display:none">
-  <p class="tmpl-desc">未来への危機感を提示してFOMOを刺激し、情報への関心を高める</p>
-  <div class="cards-grid">
-<div class="gen-card">
-  <div class="gen-text" id="text-fa4891568ae0aaf5-future_shock">「基準値を壊す」経験をせず2025年を迎えた末路
-↓
-自分の常識が「成長の足枷」になった
-↓
-ぬるま湯の環境で満足し、圧倒的な成果を出す人の思考や覚悟に触れる機会を失う
-↓
-小手先のテクニックに走り、価値観が揺さぶられるような成長体験ができず、いつまでも停滞したままになる。</div>
-  <div class="gen-footer">
-    <span class="char-count ">137文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-fa4891568ae0aaf5-future_shock')">コピー</button>
-      <a class="source-link" href="https://x.com/kouya_sns01/status/2027961300081606875" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 自分の常識を壊すレベルの人に会うと、思考の枠が外れ、学びの質が劇的に変わる。 @Kouya ｜ AI×SNSマーケ自動化コンサルタント</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-a7ae450e18f3f831-future_shock">AI活用術を学ばず2025年を迎えた末路
-↓
-AIは「思考の外部ブレイン」になった
-↓
-AIを使いこなす人とそうでない人の生産性の差は、もはや比較不可能なレベルに
-↓
-ライバルがAIで成果を上げる中、自分だけが時代遅れの作業に時間を奪われ、キャリアで大きな差をつけられる。</div>
-  <div class="gen-footer">
-    <span class="char-count ">136文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-a7ae450e18f3f831-future_shock')">コピー</button>
-      <a class="source-link" href="https://x.com/keitowebai/status/2050378946576077199" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: Claude Codeで覚えるべき基本コマンド15個のまとめ。 @KEITO💻AIディレクター</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-8a7e0eb394f50b68-future_shock">あなたはこの事実を知っていますか？
-多くの人にとって衝撃的な人生の真実が多数あります。
-・「能力」の差は小さい → 才能がないと諦めるのは間違い
-・「習慣」の差が一番大きい → 日々の行動が数年後の圧倒的な差を生む
-ここまでが、人生で起きることの真実です。</div>
-  <div class="gen-footer">
-    <span class="char-count ">128文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-8a7e0eb394f50b68-future_shock')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2027713139559759872" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 能力や努力の差より「習慣の差」が人生で最も大きな影響を与える @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-cc93856521a34bae-future_shock">「モンクモード」を学ばず2025年を迎えた末路
-↓
-「集中力」が個人の価値を決める時代になった
-↓
-SNSに注意力を奪われ続ける人は、目標を達成できず、人生の主導権を失う
-↓
-気づけば周りは遥か先へ。自分だけが何も変わらないまま取り残される。</div>
-  <div class="gen-footer">
-    <span class="char-count ">121文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-cc93856521a34bae-future_shock')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2034924033196925012" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 外界を断ち目標達成に全集中する「モンクモード」を解説。現代の注意散漫な環境で突き抜けるための修行法。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-f442b04f1152ec08-future_shock">テレビ連動術を学ばず2025年を迎えた末路
-↓
-テレビは「自動で売れる商品が見つかる場所」になった
-↓
-知ってる人はテレビを見るだけで稼ぎ、知らない人は貴重な時間を浪費するだけ
-↓
-目の前の稼ぐチャンスに気づかず、いつまでも「時間もお金もない」と嘆くことになる。</div>
-  <div class="gen-footer">
-    <span class="char-count ">131文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-f442b04f1152ec08-future_shock')">コピー</button>
-      <a class="source-link" href="https://x.com/09pauai/status/2031278888559743484" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: テレビ番組で紹介された商品をXでまとめるだけで、月10万円稼ぐことができる具体的なアフィリエイト手法。 @ぱうう</div>
-</div></div>
-</div>
-<div class="tab-content" id="tab-core_insight" style="display:none">
-  <p class="tmpl-desc">漠然と感じている本質を短く鋭く言語化し、共感と引用RTを生む</p>
-  <div class="cards-grid">
-<div class="gen-card">
-  <div class="gen-text" id="text-35988764fc7401bc-core_insight">さかなクンの「魚とイジメ」の話で上手いなと思ったもの。最初から「広い視野を持て」と言うのではなく、まずは「狭い水槽だと魚はイジメあう」という話で同意を取り「人も同じで攻撃的な人は世界が狭い」とつなげる。比喩で自分事化させ、反感を抱かせずに本質を伝えるのが秀逸。</div>
-  <div class="gen-footer">
-    <span class="char-count ">130文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-35988764fc7401bc-core_insight')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2029520045735313503" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: さかなクンの言葉を引用し、狭い世界で生きる人ほど他者を攻撃しがちであり、広い視野を持つべきだと諭す。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-128a1413bddc5b9c-core_insight">あなたの全盛期は、特別な才能に恵まれた時ではない。「続ける」と決めたその日から始まる。副業を1年続ける人は50人に1人。3年努力を続ける人は500人に1人。ほとんどの人が勝手に脱落していく。特別なことはいらない。ただ、やめない。それだけであなたは希少な存在になる。</div>
-  <div class="gen-footer">
-    <span class="char-count ">132文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-128a1413bddc5b9c-core_insight')">コピー</button>
-      <a class="source-link" href="https://x.com/Fukugyo_clinic/status/2053218705778376821" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 日本における努力習慣を持つ人の割合は極めて低く、継続するだけで希少価値。 @あいえる</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-bb80e63b89387cf7-core_insight">あなたの全盛期は、壮大な目標を立てた時ではない。日々の小さな習慣を積み重ねた先に始まる。大きな計画より、今日のスクワット1回、読書1ページ。ジェームズ・クリア氏も言うように、人生は「日々のパターン」の連続。その積み重ねだけが、あなたを本当の未来へ運んでくれる。</div>
-  <div class="gen-footer">
-    <span class="char-count ">130文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-bb80e63b89387cf7-core_insight')">コピー</button>
-      <a class="source-link" href="https://x.com/JamesClear/status/2032203307247108551" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 壮大な計画よりも日々の習慣がその人自身を形成する。 @James Clear</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-cc93856521a34bae-core_insight">あなたの全盛期は、新しい知識を得た時ではない。スマホを置いて注意力を守り抜いた時に始まる。現代は「注意力の奪い合い」。SNSを数時間眺めて1日が終わるなら、何も積み上がらない。人生を変えたいなら、情報を「入れる」より先に「遮断する」。モンクモードで自分に集中せよ。</div>
-  <div class="gen-footer">
-    <span class="char-count ">132文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-cc93856521a34bae-core_insight')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2034924033196925012" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 外界を断ち目標達成に全集中する「モンクモード」を解説。現代の注意散漫な環境で突き抜けるための修行法。 @底辺ナース</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-e0799941def2162d-core_insight">あなたの全盛期は、運良くチャンスが舞い込んだ時ではない。「欲しいものは手に入る」と本気で信じ込んだ時から始まる。脳は信じたことを実現しようと働く。「どうせ無理」と思えば現実は動かない。「自分は恵まれている」と思えば、恵まれている証拠を探し始める。思考が先、現実は後。</div>
-  <div class="gen-footer">
-    <span class="char-count ">133文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-e0799941def2162d-core_insight')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2028794515218178115" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 脳科学的にも「欲しいものは手に入る」と本気で信じ込むことで、実際に現実がそのようになるという思考の力を解説。 @底辺ナース</div>
-</div></div>
-</div>
-<div class="tab-content" id="tab-authority_drop" style="display:none">
-  <p class="tmpl-desc">著名な成功者の名前と発言で信頼性を付与し、権威への服従原理を利用する</p>
-  <div class="cards-grid">
-<div class="gen-card">
-  <div class="gen-text" id="text-e66c2aa3c232f90d-authority_drop">1日3時間稼働で月商3000万の社長が言った3個の不都合な真実
-1. 働く時間は収入と比例しない
-2. 面倒な実務はAIに全て任せる
-3. 自分は顧客対応など高付加価値な仕事に集中する</div>
-  <div class="gen-footer">
-    <span class="char-count ">92文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-e66c2aa3c232f90d-authority_drop')">コピー</button>
-      <a class="source-link" href="https://x.com/gagarotai200/status/2053388074726592520" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 月商3000万を稼働3時間で達成する社長のAIエージェント活用法 @ガガロットAI</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-7be87b4ce1177712-authority_drop">190万円引き寄せたスイス富豪が言った3個の不都合な真実
-1. 頑張って稼ぐのではなく、お風呂で引き寄せる
-2. 夜20秒、お金の不安が消えた自由を感じる
-3. この習慣が富との共鳴を加速させる</div>
-  <div class="gen-footer">
-    <span class="char-count ">97文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-7be87b4ce1177712-authority_drop')">コピー</button>
-      <a class="source-link" href="https://x.com/umitterx/status/2042463640864112966" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: スイスの富豪が実践する富の引き寄せは、夜20秒お風呂で自由を感じること @うみ</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-128a1413bddc5b9c-authority_drop">3年以上努力を続ける500人に1人の希少人材が語る3個の不都合な真実
-1. 才能より「継続」が全て。ほとんどの人は続かない
-2. 副業を1年続けられるのはたった2%
-3. ライバルは勝手に脱落するので、ただ続けるだけで勝てる</div>
-  <div class="gen-footer">
-    <span class="char-count ">112文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-128a1413bddc5b9c-authority_drop')">コピー</button>
-      <a class="source-link" href="https://x.com/Fukugyo_clinic/status/2053218705778376821" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: 日本における努力習慣を持つ人の割合は極めて低く、継続するだけで希少価値。 @あいえる</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-f442b04f1152ec08-authority_drop">テレビを見るだけで月10万稼ぐ主婦が言った3個の不都合な真実
-1. 難しいスキルは不要。一番ラクな副業はテレビを見ること
-2. テレビ紹介商品は検索数が急増し、驚くほど売れる
-3. 番組表を事前に調べ、紹介商品をXでまとめるだけ</div>
-  <div class="gen-footer">
-    <span class="char-count ">114文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-f442b04f1152ec08-authority_drop')">コピー</button>
-      <a class="source-link" href="https://x.com/09pauai/status/2031278888559743484" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: テレビ番組で紹介された商品をXでまとめるだけで、月10万円稼ぐことができる具体的なアフィリエイト手法。 @ぱうう</div>
-</div>
-<div class="gen-card">
-  <div class="gen-text" id="text-4e3c1ebc63d2a20b-authority_drop">マツコ・デラックスが言った人生を変える3個の不都合な真実
-1. 人生は自力だけでは好転しない
-2. 変わり目には必ず助けてくれる人が現れる
-3. 必要なのは、その手を握り返す少しの勇気だけ</div>
-  <div class="gen-footer">
-    <span class="char-count ">94文字</span>
-    <div class="gen-actions">
-      <button class="copy-btn" onclick="copyText(this, 'text-4e3c1ebc63d2a20b-authority_drop')">コピー</button>
-      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2033834977880670644" target="_blank" rel="noopener">元ポストを見る →</a>
-    </div>
-  </div>
-  <div class="gen-source">参考: マツコ・デラックスの言葉を引用し、人生の変わり目には助けが現れるため、それを掴む勇気を持つべきだと説く。 @底辺ナース</div>
-</div></div>
-</div>
+  <div class="tmpl-grid" id="tmplGrid"></div>
 </div>
 <footer>生成文はAIによるものです。投稿前に内容を確認してください。</footer>
 <script>
-function showTab(id) {
-  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-' + id).style.display = 'block';
-  document.getElementById('tab-btn-' + id).classList.add('active');
+const WORKER_URL = 'https://sns-post-generator.imokonoai.workers.dev';
+const POSTS = [{"id": "03e256c164cd3149", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "夜職の友達を見て感じたこと\n\n地味だった人ほど、美容に走り\nモテなかった人ほど、恋に溺れ\n貧乏だった人ほど、ハイブラで武装し\n孤独だった人ほど、SNSで承認を求め\n縛られていた人ほど、夜の世界にハマる\n\n人は『欠けていた過去』を、\n大人になってから埋め続けるんだよね。", "summary": "過去に欠けていたものを大人は埋めようとする、という人間心理を「夜職の友達」を例に鋭く分析している。", "mind_theme": "過去の欠乏感を埋める心理", "key_insights": ["人は過去に満たされなかった欲求を、大人になってから満たそうとする。", "貧乏だった人は富を、孤独だった人は承認を求める傾向がある。", "現在の行動は、過去の経験に大きく影響されている。"], "url": "https://x.com/teihen_ns_fire/status/2028763150905168237"}, {"id": "5912e0b0138d9578", "author": "tsugu1908", "author_display": "つぐ", "author_followers": 16902, "content": "人生を好転させた最強習慣\n\n①超早起き\n②週5でGYM\n③週6で英会話\n④月4冊の読書\n⑤副業で稼ぐ\n⑥定期で成功者に会う\n⑦無駄な誘いに乗らない\n⑧見栄をはった買い物をしない\n⑨付き合う人を厳選\n⑩やりたいことをやる\n\nまじでおすすめです", "summary": "早起き、運動、読書、副業、人付き合いの見直しなど、人生を好転させる10個の最強習慣。", "mind_theme": "人生を好転させる10の最強習慣", "key_insights": ["生活習慣（早起き、運動、読書）が基盤となる", "副業で稼ぐ経験や成功者に会うことでマインドが変わる", "無駄な付き合いや見栄をなくし、付き合う人を厳選することが重要"], "url": "https://x.com/tsugu1908/status/2046721758120857786"}, {"id": "bf3a9a717139da64", "author": "nittan_nittan", "author_display": "にったん🐏", "author_followers": 12935, "content": "引き寄せを10年以上実践してわかったのは、引き寄せは本当にシンプルだということ。\n\n引き寄せはとどのつまり\n「叶うと思ってるから叶う」の法則。\n\n叶うと思ってるから叶うし\n叶うわけないと思ってるから叶わない。\n\nつまり\n「叶うかも」という確信を得られれば勝ちだということ。", "summary": "引き寄せの本質は「叶うと思ってるから叶う」というシンプルな確信である。", "mind_theme": "引き寄せの核心＝確信の力", "key_insights": ["引き寄せの法則は結局のところ「叶うと思っているから叶う」という法則。", "「叶うわけない」と思っていれば叶わない。", "願望実現の鍵は「叶うかも」という確信を得ること。"], "url": "https://x.com/nittan_nittan/status/2048317154823483718"}, {"id": "b7738db0fa541476", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "【引き寄せの法則が働く方法】\n\nスタバで。隣の席から聞こえてきた。\n「最近、引き寄せがすごいんだよね」\n\nよくある会話だけど、なんか雰囲気が違う。どう見ても富裕層ぽい風貌。\n\n「1億の引き寄せとかあるんですよ本当に」って言ってるからよくよく聞いてみると、\n\n富裕層たちが実際やっている事は↓", "summary": "富裕層が実践する引き寄せは、1億円などを既に得た感覚をリアルに持つこと", "mind_theme": "富裕層の引き寄せ実践法", "key_insights": ["富裕層は具体的な金額（例：1億円）を引き寄せた後の感覚をリアルに体験している"], "url": "https://x.com/umitterx/status/2032268097068154921"}, {"id": "96882043dbe845ba", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "「今のままの人生でいいのかな…」と悩んでいる方へ\nおめでとうございます\nこの記事に出会ったことで今日から人生がガラッと変わり始めます\n恐らくこの記事を見る人方の多くが\n数えきれないくらいの「人生を変える方法・習慣」を見て\n愚直に実践して、挫折してきたと思います(実際に私もそのひとりでした）\n今日はそんな人にこそ\nたった30日で人生を変えるための\n効果的な『裏技習慣』を15個お伝えしていきます\n15個目が最も効果的で重要な習慣なので\n最後までしっかり目を通してください。\n1. 「やる気」の正体を理解する（作業興奮の活用）\n「やる気が出ないから動けない」というのは、\n脳の仕組みから見ると大きな間違いです。\nご存じかと思いますが、やる気は「動いた後にしか出てこない」ものなのです。\nこれを心理学で「作業興奮」と呼び、\n人間は行動を開始することで初めて脳からやる気を出す物質が分泌されます。\n掃除を5分だけやるつもりが、\n気づいたら1時間経っていた……という経験はありませんか？\n「とりあえず5分だけ」とハードルを極限まで下げて動き出すこと。\nこれが、やる気に左右されない最強のライフハックです。\n\n", "summary": "人生を30日で変えるための、やる気の仕組みや成功者の完コピなど15の効果的な『裏技習慣』を紹介した投稿。", "mind_theme": "人生を変えるための習慣術", "key_insights": ["「やる気」は動いた後に出る「作業興奮」という脳の仕組みを利用する。", "自己流を捨て、成功者の話を素直に完コピすることが最短ルートである。", "目標を紙に書き出し、毎日目にする場所に貼ることで脳に重要だと認識させる。"], "url": "https://x.com/teihen_ns_fire/status/2050885756693197021"}, {"id": "7be87b4ce1177712", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "スイスの金持ちが共有する『富の引き寄せ法則』を一つ教えます。有名な話ですが、自慢に聞こえたら恐縮。私も190万円ほど引き寄せました。夜、お風呂に浸かりながら20秒。お金の不安が消えた絶対的自由を感じると、マネーバイブレーションの共鳴が加速。オックスフォード大学による、正しいやり方は、", "summary": "スイスの富豪が実践する富の引き寄せは、夜20秒お風呂で自由を感じること", "mind_theme": "富豪の引き寄せ習慣", "key_insights": ["夜、お風呂でリラックスしながら20秒、お金の不安がない絶対的自由を感じる", "この習慣がマネーバイブレーションとの共鳴を加速させる"], "url": "https://x.com/umitterx/status/2042463640864112966"}, {"id": "9bc4d92d7e246399", "author": "fiction_log", "author_display": "ろじん｜Levela CXO", "author_followers": 54972, "content": "今、クオンツという職業の給与がとにかく高い。\n日本でも年収2000万以上が大量にいるし、海外だと5000万超えも普通にいる\n\nクオンツとは何なのか、そしてなぜ高給なのか　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n\nまずクオンツとは、数学・統計・プログラミングを使って金融市場を分析し、利益を生み出す人のことです。\n\nなぜ今需要が高く高給なのか\n\n現代の株式取引における約7割がアルゴリズムに基づく取引です。\nだから金融市場におけるトレーダー職よりもアルゴリズムを作るクオンツが出すインパクトが圧倒的に多い\n\nそしてその必要なスキルを兼ね備えた人材は世界に数千人しかいない。\n希少人材である彼らをヘッジファンドとGAFAM・AIラボが奪い合っている。\n\n当然、高給になる。\n\nそしてクオンツは↓の職に入っている", "summary": "高給職業「クオンツ」について、仕事内容と高年収である理由(市場での希少性)を解説。", "mind_theme": "希少性と市場価値の思考法", "key_insights": ["現代の株式取引の約7割はアルゴリズム取引であり、それを作るクオンツの価値が高い", "需要に対して供給が極端に少ない（世界で数千人）人材は高給になる", "自身のスキルを市場価値の高い分野とかけ合わせることが高収入につながる"], "url": "https://x.com/fiction_log/status/2053734802168410257"}, {"id": "84b354c3d7796b24", "author": "O__CEO", "author_display": "おーCEO", "author_followers": 12210, "content": "【心が腐ってる人の特徴】\n\n・他人の不幸が嬉しい\n・陰口や悪口が習慣\n・人の善意を当然だと思ってる\n・誰かの成功がムカつく\n・常に誰かと自分を比べてイライラ\n・人をコントロールしたがる\n・謝れない、感謝できない\n・被害者思考\n・注意されると逆ギレ\n・弱者にだけ強い\n\n生き方がダサいんよ。", "summary": "成功を遠ざける「心が腐っている人」の特徴。反面教師から学ぶべき思考法。", "mind_theme": "成功を妨げるネガティブマインド", "key_insights": ["他人の不幸を喜んだり、成功に嫉妬したりするネガティブな感情は成功を妨げる。", "謝罪や感謝ができない、被害者思考などの特徴は、人間関係を悪化させ成長を止める。", "このような特徴を反面教師とし、自分の行動を振り返ることが重要。"], "url": "https://x.com/O__CEO/status/2050163270565384385"}, {"id": "f88eadc63a5d65f5", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "人生一度くらいは徹底的な自己理解をした方がいい。\n30代に入って人生を見失ってる女性があまりにも多い。\n誰にも邪魔されずに自分の価値観を深掘りして、不安の根源を打ち消す作業を乗り越えると、他人に振り回されない自己承認の軸ができるんだよね。自分で自分を幸せにできる人はみんなこれを通ってきてる。加えて、その後のキャリアや人間関係でも使える精神的なタフさも手に入る。", "summary": "徹底的な自己理解を通して他人に振り回されない軸を作ることが、自分を幸せにする鍵であると主張。", "mind_theme": "自己理解による精神的自立", "key_insights": ["自分の価値観を深掘りし、不安の根源を知ることが重要。", "自己理解を乗り越えると、他人に振り回されない自己承認の軸ができる。", "精神的なタフさが手に入り、キャリアや人間関係にも活かせる。"], "url": "https://x.com/teihen_ns_fire/status/2030247338175013224"}, {"id": "c8ba35c793a87106", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "ぶっちゃけ人生ってなんとかなるんだよね。\n\n感謝して、謙虚に、ポジティブに生きてたら、\nどうにかなるように世界はできてる。\nうまくいかない時ほど、\n「今が伏線」だと思って過ごすことが大事。\n\n本気で生きてる人にはちゃんと奇跡起きるようになってる。", "summary": "人生がうまくいかない時は「今が伏線」と捉えポジティブに生きる", "mind_theme": "逆境を乗り越えるポジティブマインド", "key_insights": ["感謝、謙虚、ポジティブな姿勢でいれば、人生は好転する", "困難な時期は将来の成功への伏線だと捉えることが大切", "本気で生きる人には奇跡が起こるという信念を持つ"], "url": "https://x.com/teihen_ns_fire/status/2027348235329610071"}, {"id": "442e1284cad2f2d8", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "やなせたかしがアンパンマンで売れたのは69歳。『人生は満員電車みたいなもので、降りずに乗り続けてたらいつか席が空く。僕は終点近くだった』 結局、努力や挑戦の本質って才能より『諦めない覚悟』が大事だよね。", "summary": "やなせたかし氏のエピソードを引用し、才能よりも「諦めない覚悟」が努力や挑戦を成功に導く本質だと主張。", "mind_theme": "諦めないことの重要性", "key_insights": ["成功は才能よりも、諦めずに挑戦し続ける覚悟で決まる。", "人生は満員電車のように、乗り続ければいつかチャンスが来る。", "晩年に成功した偉人の例は、継続する勇気を与えてくれる。"], "url": "https://x.com/teihen_ns_fire/status/2032748569258537414"}, {"id": "2d7465b406e83aaa", "author": "gagarotai200", "author_display": "ガガロットAI", "author_followers": 5518, "content": "Claude Codeで1日を\n全自動化してるエンジニアの1日　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n\n7:00 起床。\n Slack、GitHub、Notion、\nメールをClaude Codeに読ませて、\n今日やるべきことを自動で整理。\n\n8:00 \n昨日のエラー内容をClaude Codeがログから要約。 人間はコーヒーを飲みながら、修正方針だけ確認。\n\n9:00 \n実装開始。 自分が書くのは\n「この機能をこうしたい」という指示だけ。\n 設計、コード作成、テスト、\nリファクタはClaude Codeが進める。\n\n11:00 \nPR作成。 変更内容、影響範囲、\nテスト結果、レビュー観点まで\n自動でまとめられている。\n\n12:00 \n昼休み。 その間にClaude Codeが\nドキュメント更新、型エラー修正、\n不要コード削除を進める。\n\n14:00 \nミーティング。 議事録はAIが整理。 \n", "summary": "AI「Claude Code」を活用し、エンジニア業務を全自動化する1日の流れ", "mind_theme": "AIによる業務自動化と人間がやるべきことの再定義", "key_insights": ["実装、テスト、ドキュメント作成など、開発工程の大部分をAIに任せることができる。", "人間の役割はAIへの指示出しや、AIが提案した複数案からの意思決定にシフトする。", "タスク整理から作業ログ生成まで、1日の業務全体をAIで効率化できる。"], "url": "https://x.com/gagarotai200/status/2052324994089369771"}, {"id": "24b7daf571734f26", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "5月6日、ついに来ました！\n\n1年に1度です\n2日連続の一粒万倍日に\n月徳日×天恩日×辰の日が重なる\n\nしかも、「ブルズゲート」のエネルギーが全開。\n\n今日は、金運上昇と\n引き寄せの法則が強烈に働く最強開運日。\n\n誕生月ごとに\n引き寄せの法則を加速させる方法があって。\n\n一目で簡単にわかる早見表は、", "summary": "最強開運日に誕生月別で引き寄せを加速させる方法がある", "mind_theme": "開運日を活用した引き寄せ", "key_insights": ["一粒万倍日などの開運日は、金運上昇と引き寄せの力が強まる", "誕生月ごとに引き寄せを加速させる独自の方法が存在する"], "url": "https://x.com/umitterx/status/2051851836248957231"}, {"id": "bb80e63b89387cf7", "author": "JamesClear", "author_display": "James Clear", "author_followers": 1200874, "content": "You are not your grand plans. You are your daily patterns.", "summary": "壮大な計画よりも日々の習慣がその人自身を形成する。", "mind_theme": "習慣の絶大な力", "key_insights": ["大きな計画よりも日々の小さな習慣が人間を作る", "成功は日々のパターンによって決まる"], "url": "https://x.com/JamesClear/status/2032203307247108551"}, {"id": "64f459033c75a3f0", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "宇多田ヒカルが「人はどうして誰かと別れると痛みを感じるのか」という問いに「元々、痛みがあってその存在が『痛み止め』になっていたから」と天才的な回答をしてたんだよね。自分がいま、痛みを感じずに過ごせているのは『周りにいる人たち』のおかげであることを絶対に忘れてはいけない。", "summary": "宇多田ヒカルの言葉を引用し、当たり前に感じる平穏は周りの人々のおかげであり、その存在に感謝すべきだと説く。", "mind_theme": "周囲への感謝の重要性", "key_insights": ["人がそばにいることで、人生の痛みが和らげられている。", "当たり前の日常は、周りの人の支えによって成り立っている。", "身近な人への感謝を忘れないことが大切である。"], "url": "https://x.com/teihen_ns_fire/status/2029856571120079303"}, {"id": "45aca5ac61e5ed7d", "author": "1222318thx", "author_display": "マグトロ@引き寄せの法則【マイルール】&【着地】", "author_followers": 10113, "content": "引き寄せのリセット癖。\n\n現実見ちゃったからまたやり直さなきゃ\nエゴにのまれたからまた決め直さなきゃ\nうまくいってないから新しい方法を探さなきゃ\n\nついやりがちなんだけど、本当はリセットしなくていいんです。\nブレてもいいしそのままでいい。\n\n最後に「それでも叶ってる」\nここに戻ってこれれば大丈夫。", "summary": "引き寄せ実践中にブレてもリセットは不要。「それでも叶ってる」と最後に思えれば良い。", "mind_theme": "引き寄せにおける「リセット癖」の克服", "key_insights": ["現実を見て落ち込んだり、エゴに飲まれたりしても、いちいちリセットする必要はない。", "うまくいかないからと新しい方法を探し続けるのは「リセット癖」。", "途中でブレても、最後に「それでも叶っている」という地点に戻れれば問題ない。"], "url": "https://x.com/1222318thx/status/2042869387510907373"}, {"id": "f442b04f1152ec08", "author": "09pauai", "author_display": "ぱうう", "author_followers": 9509, "content": "副業初心者が月1万円稼ぐ一番ラクな方法\n→テレビを見ること。テレビで紹介された商品ってビビるほど売れる。\n\n特に売れやすい番組↓\n・マ◯コの知らない世界\n・サタプラ\n・ラヴィット\n・ZIP\n・ヒルナンデス\n・家事ヤロウ\n\n番組表チェック\n↓\n紹介商品を調べる\n↓\nXでまとめ投稿\n\nこれで月10万売った https://t.co/tQ4Zzm5qez", "summary": "テレビ番組で紹介された商品をXでまとめるだけで、月10万円稼ぐことができる具体的なアフィリエイト手法。", "mind_theme": "テレビ番組連動型アフィリエイト戦略", "key_insights": ["テレビで紹介された商品は検索需要が急増し、非常に売れやすい。", "「マツコの知らない世界」など、特に売れやすい特定の番組が存在する。", "番組表を事前にチェックし、紹介商品を調べて投稿を準備するだけで収益化できる。"], "url": "https://x.com/09pauai/status/2031278888559743484"}, {"id": "f6da3c91312b2a9e", "author": "umitterx", "author_display": "うみ", "author_followers": 13795, "content": "古代ローマの貴族から続く『引き寄せ法則』の裏ワザを教えます。自慢に聞こえたら恐縮ですが、私も80万円ほど引き寄せました。食事の最初。一口目の5秒。富を味わい尽くすように「至高の満足感」を堪能してください。ドーパミンで潜在意識の書き換えを加速。トロント大学の研究で、具体的なやり方は、", "summary": "食事の最初の一口を味わい尽くすことで潜在意識を書き換える方法を紹介。", "mind_theme": "食事習慣による潜在意識書き換え", "key_insights": ["食事の最初の一口で「至高の満足感」を5秒間堪能する。", "この行為がドーパミンを放出し、潜在意識の書き換えを加速させる。", "投稿者はこの方法で80万円を引き寄せたと主張している。"], "url": "https://x.com/umitterx/status/2044702761535897926"}, {"id": "8a7e0eb394f50b68", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "人生で絶対知っておくべきこと\n\n「 能力 」の差は \"小さい\"\n「 努力 」の差は \"大きい\"\n「 継続 」の差は \"とても大きい\"\n『 習慣 』の差が \"\"いちばん大きい\"\"", "summary": "能力や努力の差より「習慣の差」が人生で最も大きな影響を与える", "mind_theme": "習慣化による人生変革", "key_insights": ["人生における成功の差は、能力や一時の努力よりも継続的な習慣によって生まれる", "良い習慣を身につけることが、長期的に最も大きな差を生む"], "url": "https://x.com/teihen_ns_fire/status/2027713139559759872"}, {"id": "f39a5f945f7a19b8", "author": "teihen_ns_fire", "author_display": "底辺ナース", "author_followers": 34670, "content": "ぶっちゃけ人生を生きやすくするなら、\n出会う人の縁を大切にするより\n「必要ない縁を容赦なく切り捨てる」方が良い。", "summary": "人間関係の整理が人生を生きやすくする鍵だと主張する投稿。", "mind_theme": "人間関係の断捨離", "key_insights": ["不要な人間関係を切り捨てることが、人生を好転させる上で重要。", "縁を大切にすること以上に、縁を切る勇気を持つべき。"], "url": "https://x.com/teihen_ns_fire/status/2048713019858006046"}];
+const TEMPLATES = [{"id": "instant_knowledge", "name": "型1: インスタント・ナレッジ（リスト型）", "description": "知識を箇条書きで整理し、タイパ重視の読者に刺さるリスト投稿", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 「〇〇な人の特徴N選」型】\n[特定の状態・属性] な人の [N] つの特徴\n1. [意外性のある特徴 + 一文の補足説明]\n2. [特徴 + 補足]\n3. [特徴 + 補足]\n...\n\n【B: 対比型（上位 vs 下位）】\n[上位・有利な属性]\n・[行動・思考1]\n・[結果：得をする]\n[下位・不利な属性]\n・[行動・思考1]\n・[結果：損をする]\n\n- 元ポストのkey_insightsやcontentを活かす\n- 140字以内に収める\n"}, {"id": "paradox_break", "name": "型2: パラドックス・ブレイク（常識破壊）", "description": "常識を覆す主張で認知的不協和を誘発し、続きを読ませる", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 有名企業・人物の逆説リスト型】\n[企業A] は [本来持つべきもの] を所有していない\n[企業B] は [本来持つべきもの] を所有していない\n...\n[共通点から導かれる一行の法則]\n\n【B: 強い断言で常識を壊す型】\n[誰もが信じている常識] は [強い否定の言葉]。\n[根拠1] [根拠2]\n本当に重要なのは [意外な本質] だ。\n\n- 元ポストの逆説的な要素・反常識な主張を活かす\n- 140字以内に収める\n"}, {"id": "dream_hack", "name": "型3: ドリームハック・サクセス（夢への近道）", "description": "誰にでも再現可能な成功への近道を提示し、希望と射幸心を刺激する", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 年齢×成果の衝撃フック＋ステップ公開型】\n[〇歳] が [手段] で [期間] に [成果]\n手順はこちらです\n[ゼロ状態]\n↓\n[最初の行動]\n↓\n[転換点]\n↓\n[最終的な結果]\n\n【B: 「知り合いの話」で距離感を縮める型】\n[職種] で [成果] を達成する知り合いがいる。その方法は\n[行動1]\n↓\n[行動2]\n↓\n[核心となる行動]\n\n- 元ポストの具体的な成功エピソードや数字を活かす\n- 140字以内に収める\n"}, {"id": "future_shock", "name": "型4: フューチャーショック・アジテーション（未来扇動）", "description": "未来への危機感を提示してFOMOを刺激し、情報への関心を高める", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 「あなたは知っていますか」型ニュースまとめ】\nあなたはこの [期間] で起きたことを知っていますか？\n多くの人にとって [危機感を呼ぶ形容詞] なニュースが多数あります\n・[ニュース1] → [なぜあなたに直接関係するかの補足]\n・[ニュース2] → [補足]\nここまでがたった [期間] で起きたことです\n\n【B: 「学ばないまま〇年を迎えた末路」型（損失回避）】\n[スキル・ツール] を学ばず [将来の年] を迎えた末路\n[そのツール] は [できるようになったこと] になった\n↓\n[それが生み出すこと]\n↓\n[知らない人が受ける最悪の結果]\n\n- 元ポストの危機感・変化への警告要素を活かす\n- 140字以内に収める\n"}, {"id": "core_insight", "name": "型5: コア・インサイト（本質の言語化）", "description": "漠然と感じている本質を短く鋭く言語化し、共感と引用RTを生む", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のどちらかのテンプレートで日本語の投稿文を作ってください。\n\n【A: 有名人の「上手いと思ったもの」観察型】\n[有名人名] の [やり方・発言] で上手いなと思ったもの\n最初から「[本題を直接言う方法]」と言うのではなく、まずは\n「[YESを引き出す問いかけ]」で同意を取った後に\n「[本題への誘導]」とつなげることで [なぜ効果的なのか]\n\n【B: 「あなたの全盛期は〇〇ではない」型（強い断言）】\n[読者が信じている前提] は [〇〇ではない]。\n[読者が本当に全盛期を迎える条件・状態] に始まる。\n\n- 元ポストのマインドセット・本質的な気づきを活かす\n- 140字以内に収める\n"}, {"id": "authority_drop", "name": "型6: オーソリティ・ドロップ（権威の引用）", "description": "著名な成功者の名前と発言で信頼性を付与し、権威への服従原理を利用する", "prompt_hint": "このSNS成功者のポスト内容を参考に、以下のテンプレートで日本語の投稿文を作ってください。\n\n【「著名人が言った〇個の不都合な真実」型】\n[具体的な実績] の [著名人名] が言った [N] 個の不都合な真実\n1. [真実1（常識への反論）]\n2. [真実2]\n3. [真実3]\n\n- 元ポストに登場する成功者・実績のある人の言葉を権威として使う\n- 数字や具体的な実績（フォロワー数・収入など）を冒頭に入れる\n- 140字以内に収める\n"}];
+
+function renderTemplates() {
+  const grid = document.getElementById('tmplGrid');
+  TEMPLATES.forEach(tmpl => {
+    const card = document.createElement('div');
+    card.className = 'tmpl-card';
+    card.id = 'card-' + tmpl.id;
+    card.innerHTML = `
+      <div class="tmpl-name">${tmpl.name}</div>
+      <div class="tmpl-desc">${tmpl.description}</div>
+      <button class="gen-btn" onclick="generate('${tmpl.id}')">✨ 生成する</button>
+      <div class="result-area" id="result-${tmpl.id}"></div>
+    `;
+    grid.appendChild(card);
+  });
 }
+
+async function generate(templateId) {
+  const tmpl = TEMPLATES.find(t => t.id === templateId);
+  if (!tmpl) return;
+
+  const btn = document.querySelector(`#card-${templateId} .gen-btn`);
+  const resultArea = document.getElementById('result-' + templateId);
+
+  btn.disabled = true;
+  btn.textContent = '生成中...';
+  resultArea.className = 'result-area visible';
+  resultArea.innerHTML = '<div class="loading">⏳ Geminiが生成中です（約20秒）...</div>';
+
+  try {
+    const res = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        template_id: tmpl.id,
+        template_name: tmpl.name,
+        prompt_hint: tmpl.prompt_hint,
+        posts: POSTS,
+      }),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP ${res.status}`);
+    }
+
+    const data = await res.json();
+    const generated = data.generated || [];
+
+    if (generated.length === 0) {
+      resultArea.innerHTML = '<div class="error-msg">生成に失敗しました。もう一度お試しください。</div>';
+      return;
+    }
+
+    resultArea.innerHTML = generated.map((g, i) => {
+      const text = g.text || '';
+      const chars = text.length;
+      const overClass = chars > 140 ? 'over' : '';
+      const srcLink = g.source_url ? `<a class="source-link" href="${g.source_url}" target="_blank" rel="noopener">元ポストを見る →</a>` : '';
+      const srcInfo = g.source_summary ? `<div class="gen-source">参考: ${g.source_summary.slice(0, 60)}${g.source_summary.length > 60 ? '...' : ''} @${g.source_author}</div>` : '';
+      const textId = `gen-text-${templateId}-${i}`;
+      return `
+        <div class="gen-card">
+          <div class="gen-text" id="${textId}">${text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+          <div class="gen-footer">
+            <span class="char-count ${overClass}">${chars}文字</span>
+            <div class="gen-actions">
+              <button class="copy-btn" onclick="copyText(this, '${textId}')">コピー</button>
+              ${srcLink}
+            </div>
+          </div>
+          ${srcInfo}
+        </div>`;
+    }).join('');
+
+  } catch (e) {
+    resultArea.innerHTML = `<div class="error-msg">エラー: ${e.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '✨ もう一度生成';
+  }
+}
+
 function copyText(btn, elementId) {
   const el = document.getElementById(elementId);
   if (!el) return;
@@ -530,6 +162,8 @@ function copyText(btn, elementId) {
     setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
   });
 }
+
+renderTemplates();
 </script>
 </body>
 </html>
