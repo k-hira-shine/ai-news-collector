@@ -29,6 +29,7 @@ IMPACT_LABELS = {
 SOURCE_ICONS = {
     "rss": "📰",
     "x": "🐦",
+    "reddit": "🔴",
     "hn": "🔶",
     "arxiv": "📄",
 }

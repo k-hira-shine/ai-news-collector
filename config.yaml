@@ -349,6 +349,21 @@ tools_tracking:
   max_age_days: 7          # 何日前までのRSSを取得するか
   max_items_per_feed: 30   # 1フィードあたり最大取得件数
 
+  # Reddit Data API（承認・Secrets設定後に有効化）
+  reddit:
+    enabled: true
+    sort: new              # new / hot / top
+    time_filter: day       # sort=top の場合のみ使用
+    max_items_per_subreddit: 25
+    user_agent: "python:ai-news-collector:v1.0 (by /u/Junior-Frosting-3658)"
+    subreddits:
+      - artificial
+      - MachineLearning
+      - ChatGPT
+      - LocalLLaMA
+      - ClaudeAI
+      - AItools
+
   rss_feeds:
     # ── 英語：主要テックメディア ───────────────────────────
     - url: "https://venturebeat.com/category/ai/feed/"

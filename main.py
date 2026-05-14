@@ -178,6 +178,7 @@ def main() -> None:
     # ── Step 4: Tools Tracking ────────────────────────────────────────
     try:
         from tools_collector import (
+            collect_reddit_posts,
             collect_rss_feeds,
             deduplicate_tools,
             extract_from_hn,
@@ -191,6 +192,7 @@ def main() -> None:
         if tools_cfg.get("enabled", True):
             # RSS収集
             rss_items = collect_rss_feeds(config) if not args.analyze_only else []
+            reddit_items = collect_reddit_posts(config) if not args.analyze_only else []
 
             # 既存X/HNデータからキーワード抽出
             x_tool_items = extract_from_x(items) if items else []
@@ -201,7 +203,7 @@ def main() -> None:
             hn_tool_items = extract_from_hn(hn_raw)
 
             # マージ・重複排除・JSONL保存
-            all_tool_candidates = deduplicate_tools(rss_items + x_tool_items + hn_tool_items)
+            all_tool_candidates = deduplicate_tools(rss_items + reddit_items + x_tool_items + hn_tool_items)
             if all_tool_candidates:
                 save_tools_jsonl(all_tool_candidates)
                 # Gemini分析

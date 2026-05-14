@@ -134,6 +134,134 @@ def collect_rss_feeds(config: dict) -> list[dict]:
     return new_items
 
 
+def collect_reddit_posts(config: dict) -> list[dict]:
+    """Reddit Data APIからAI関連subredditの投稿を収集して返す。
+
+    必要なSecrets:
+      REDDIT_CLIENT_ID / REDDIT_CLIENT_SECRET / REDDIT_USERNAME / REDDIT_PASSWORD
+    未設定または承認前の場合は安全にスキップする。
+    """
+    tools_cfg = config.get("tools_tracking", {})
+    reddit_cfg = tools_cfg.get("reddit", {})
+    if not reddit_cfg.get("enabled", False):
+        return []
+
+    client_id = os.environ.get("REDDIT_CLIENT_ID")
+    client_secret = os.environ.get("REDDIT_CLIENT_SECRET")
+    username = os.environ.get("REDDIT_USERNAME")
+    password = os.environ.get("REDDIT_PASSWORD")
+    if not all([client_id, client_secret, username, password]):
+        logger.info("Reddit credentials not set — skipping Reddit collection")
+        return []
+
+    try:
+        import requests
+    except ImportError:
+        logger.error("requests not installed — skipping Reddit collection")
+        return []
+
+    user_agent = reddit_cfg.get(
+        "user_agent",
+        f"python:ai-news-collector:v1.0 (by /u/{username})",
+    )
+    headers = {"User-Agent": user_agent}
+
+    try:
+        token_resp = requests.post(
+            "https://www.reddit.com/api/v1/access_token",
+            auth=(client_id, client_secret),
+            data={
+                "grant_type": "password",
+                "username": username,
+                "password": password,
+            },
+            headers=headers,
+            timeout=20,
+        )
+        token_resp.raise_for_status()
+        access_token = token_resp.json().get("access_token")
+        if not access_token:
+            logger.warning("Reddit token response missing access_token")
+            return []
+    except Exception as e:
+        logger.warning("Reddit OAuth failed — likely pending approval or invalid credentials: %s", e)
+        return []
+
+    api_headers = {
+        "Authorization": f"Bearer {access_token}",
+        "User-Agent": user_agent,
+    }
+    subreddits = reddit_cfg.get("subreddits", [])
+    max_items = int(reddit_cfg.get("max_items_per_subreddit", 25))
+    sort = reddit_cfg.get("sort", "new")
+    time_filter = reddit_cfg.get("time_filter", "day")
+
+    seen_urls = _load_seen_urls()
+    new_items: list[dict] = []
+    collected_at = datetime.now(timezone.utc).isoformat()
+
+    for subreddit in subreddits:
+        subreddit = str(subreddit).strip().lstrip("r/")
+        if not subreddit:
+            continue
+        endpoint = f"https://oauth.reddit.com/r/{subreddit}/{sort}"
+        params: dict[str, Any] = {"limit": max_items}
+        if sort == "top":
+            params["t"] = time_filter
+
+        try:
+            resp = requests.get(endpoint, headers=api_headers, params=params, timeout=20)
+            resp.raise_for_status()
+            children = (resp.json().get("data") or {}).get("children") or []
+            count = 0
+            for child in children:
+                data = child.get("data") or {}
+                permalink = data.get("permalink") or ""
+                url = f"https://www.reddit.com{permalink}" if permalink else data.get("url", "")
+                if not url or url in seen_urls:
+                    continue
+
+                created_utc = data.get("created_utc")
+                published_at = ""
+                if created_utc:
+                    try:
+                        published_at = datetime.fromtimestamp(float(created_utc), tz=timezone.utc).isoformat()
+                    except Exception:
+                        published_at = ""
+
+                title = (data.get("title") or "").strip()
+                selftext = (data.get("selftext") or "").strip()
+                link_url = data.get("url") or ""
+                content = selftext or title
+                if link_url and link_url != url:
+                    content = f"{content}\n\nLink: {link_url}".strip()
+
+                item: dict[str, Any] = {
+                    "id": "reddit_" + data.get("id", _make_id(url)),
+                    "source": "reddit",
+                    "source_label": f"Reddit r/{subreddit}",
+                    "title": title,
+                    "url": url,
+                    "content": content[:2000],
+                    "author": data.get("author", ""),
+                    "published_at": published_at,
+                    "collected_at": collected_at,
+                    "reddit_score": data.get("score", 0),
+                    "reddit_comments": data.get("num_comments", 0),
+                    "reddit_subreddit": subreddit,
+                }
+                new_items.append(item)
+                seen_urls.add(url)
+                count += 1
+            logger.info("Reddit [r/%s]: %d new items", subreddit, count)
+        except Exception as e:
+            logger.warning("Reddit fetch failed [r/%s]: %s", subreddit, e)
+
+    _save_seen_urls(seen_urls)
+    logger.info("Reddit collection total: %d new items", len(new_items))
+    return new_items
+
+
 def extract_from_x(x_items: list[dict]) -> list[dict]:
     """既存のX収集データからツール・リリース系っぽい記事を抽出する（簡易キーワードフィルタ）"""
     TOOL_KEYWORDS = [
