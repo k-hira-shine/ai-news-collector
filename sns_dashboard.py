@@ -351,7 +351,7 @@ def _render_post_card(post: dict) -> str:
 
     raw_content = post.get("content") or ""
     content_length = len(raw_content)
-    content_preview_limit = 1200
+    content_preview_limit = 400
     content_escaped = raw_content[:content_preview_limit].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
     has_more = content_length > content_preview_limit
 
