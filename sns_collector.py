@@ -300,7 +300,7 @@ def load_all_sns_items() -> list[dict]:
             continue
         path = os.path.join(SNS_DATA_DIR, fname)
         with open(path, encoding="utf-8") as f:
-            for line in f:
+            for line in f.read().split("\n"):
                 line = line.strip()
                 if line:
                     try:
