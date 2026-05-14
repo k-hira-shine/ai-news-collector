@@ -140,8 +140,11 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     .criteria-box strong {{ color: #a78bfa; }}
     .criteria-box .criteria-title {{ font-size: 0.88rem; font-weight: 700; color: #a78bfa; margin-bottom: 8px; }}
     footer {{ text-align: center; padding: 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #111827; margin-top: 40px; }}
-    .gen-post-btn {{ width: 100%; margin-top: 10px; background: #1e1e40; border: 1px solid #4a4a8a; color: #a78bfa; padding: 8px 0; border-radius: 8px; font-size: 0.83rem; cursor: pointer; transition: all 0.2s; }}
+    .gen-post-btn {{ width: 100%; margin-top: 10px; background: #1e1e40; border: 1px solid #4a4a8a; color: #a78bfa; padding: 8px 0; border-radius: 8px; font-size: 0.83rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 6px; }}
     .gen-post-btn:hover {{ background: #2a2a60; border-color: #a78bfa; }}
+    .gen-post-btn.generated {{ background: #0f2a1a; border-color: #10b981; color: #10b981; }}
+    .gen-post-btn.generated:hover {{ background: #0f3020; }}
+    .gen-badge {{ font-size: 0.75rem; background: #10b981; color: #fff; padding: 1px 7px; border-radius: 10px; }}
     .modal-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }}
     .modal-overlay.open {{ display: flex; }}
     .modal-box {{ background: #111827; border: 1px solid #2a2a5a; border-radius: 14px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative; }}
@@ -289,6 +292,43 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
 <script>
 const WORKER_URL = 'https://sns-post-generator.imokonoai.workers.dev';
 const TEMPLATES = {templates_js};
+const LS_KEY = 'sns_generated_ids';
+
+function getGeneratedIds() {{
+  try {{ return new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); }} catch {{ return new Set(); }}
+}}
+function markAsGenerated(postId) {{
+  if (!postId) return;
+  const ids = getGeneratedIds();
+  ids.add(postId);
+  localStorage.setItem(LS_KEY, JSON.stringify([...ids]));
+  // ボタンにバッジを反映
+  document.querySelectorAll('.gen-post-btn').forEach(btn => {{
+    try {{
+      const d = JSON.parse(btn.getAttribute('data-post').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
+      if (d.id === postId) applyGeneratedBadge(btn);
+    }} catch {{}}
+  }});
+}}
+function applyGeneratedBadge(btn) {{
+  btn.classList.add('generated');
+  if (!btn.querySelector('.gen-badge')) {{
+    const badge = document.createElement('span');
+    badge.className = 'gen-badge';
+    badge.textContent = '✓ 生成済み';
+    btn.appendChild(badge);
+  }}
+}}
+function initGeneratedBadges() {{
+  const ids = getGeneratedIds();
+  if (!ids.size) return;
+  document.querySelectorAll('.gen-post-btn').forEach(btn => {{
+    try {{
+      const d = JSON.parse(btn.getAttribute('data-post').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
+      if (ids.has(d.id)) applyGeneratedBadge(btn);
+    }} catch {{}}
+  }});
+}}
 
 let activeCategory = 'all';
 let activeRegion = 'all';
@@ -382,6 +422,7 @@ async function openGenerator(btn) {{
     if (!generated.length) throw new Error('生成結果が空でした');
 
     modalTitle.textContent = '✍️ 6種の投稿文が生成されました';
+    markAsGenerated(postData.id);
     modalBody.innerHTML = '<div class="modal-results">' + generated.map((g, i) => {{
       const text = g.text || '';
       const chars = text.length;
@@ -419,6 +460,8 @@ function copyResult(btn, textId) {{
     setTimeout(() => {{ btn.textContent = 'コピー'; btn.classList.remove('copied'); }}, 2000);
   }});
 }}
+
+initGeneratedBadges();
 </script>
 {STATUS_BANNER}
 </body>
