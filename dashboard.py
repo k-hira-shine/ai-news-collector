@@ -237,6 +237,12 @@ def _render_news_tabs(history: list[dict]) -> str:
     panels_html = ""
     slot_labels = {"morning": "朝便", "evening": "夕便"}
 
+    # 実際に存在する日数（streak_days の上限に使う）
+    actual_dates = len(set(
+        (a.get("_display_date") or (a.get("run_time", ""))[:10])
+        for a in history
+    ))
+
     for i, a in enumerate(history):
         date = a.get("_display_date") or (a.get("run_time", ""))[:10]
         slot = a.get("_display_slot") or a.get("slot", "")
@@ -248,7 +254,7 @@ def _render_news_tabs(history: list[dict]) -> str:
 
         tabs_html += f'<button class="news-tab{active_class}" data-panel="news-panel-{escape(key)}">{date[5:]} {slot_label}{today_mark}</button>\n'
 
-        panel_content = _render_latest(a)
+        panel_content = _render_latest(a, max_streak=actual_dates)
         panels_html += f'<div class="news-panel{active_class}" id="news-panel-{escape(key)}">{panel_content}</div>\n'
 
     tab_css = """
@@ -289,7 +295,7 @@ def _render_news_tabs(history: list[dict]) -> str:
     )
 
 
-def _render_latest(a: dict) -> str:
+def _render_latest(a: dict, max_streak: int = 0) -> str:
     display_slot = a.get("_display_slot") or a.get("slot")
     slot_label = "朝便" if display_slot == "morning" else "夕便"
     run_date = a.get("_display_date") or (a.get("run_time", ""))[:10]
@@ -318,6 +324,9 @@ def _render_latest(a: dict) -> str:
             icon = status_icons.get(status, "•")
             topic = escape(t.get("topic", ""))
             streak = t.get("streak_days", 0)
+            # Gemini が過大に出力する場合があるので実データ日数でキャップ
+            if max_streak and streak > max_streak:
+                streak = max_streak
             streak_str = f'<span class="evo-streak">({streak}日目)</span>' if streak and streak > 1 else ""
             evolution = escape(t.get("evolution", ""))
             evo_desc = f'<div class="evo-desc">{evolution}</div>' if evolution else ""
