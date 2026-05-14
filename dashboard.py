@@ -33,7 +33,15 @@ def _list_recent_diagrams(diagrams_dir: str, limit: int = 14) -> list[dict]:
     """docs/diagrams/*.html を新しい順に返す（PNGがあれば png_path も付与）"""
     if not os.path.isdir(diagrams_dir):
         return []
-    files = sorted(glob(os.path.join(diagrams_dir, "*.html")), reverse=True)
+    _SLOT_ORDER = {"evening": 0, "morning": 1}  # 夕便が新しい（同日内では夕>朝）
+
+    def _diag_sort_key(p: str) -> tuple:
+        base = os.path.basename(p).rsplit(".html", 1)[0]
+        date_part = base[:10] if len(base) >= 10 else base
+        slot_part = base[11:] if len(base) > 11 else ""
+        return (date_part, _SLOT_ORDER.get(slot_part, 99))
+
+    files = sorted(glob(os.path.join(diagrams_dir, "*.html")), key=_diag_sort_key, reverse=True)
     results: list[dict] = []
     for f in files[:limit]:
         name = os.path.basename(f)
