@@ -513,16 +513,20 @@ def _render_history(history: list[dict]) -> str:
     if len(history) < 2:
         return ""
 
-    counts = []
-    for h in reversed(history[:14]):
+    # 同じ日付の朝・夕を合算する
+    from collections import defaultdict as _dd
+    daily: dict[str, int] = _dd(int)
+    for h in history[:14]:
         date = h.get("_display_date") or (h.get("run_time", ""))[:10]
-        n = h.get("item_count", 0)
-        counts.append((date, n))
+        daily[date] += h.get("item_count", 0)
+
+    # 古い順に並べる
+    counts = sorted(daily.items())
 
     if not counts:
         return ""
 
-    max_n = max(c[1] for c in counts) or 1
+    max_n = max(n for _, n in counts) or 1
     bars: list[str] = []
     for date, n in counts:
         height = max(4, int(80 * n / max_n))
