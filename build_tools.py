@@ -341,9 +341,9 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   <a href="buzz.html">🔥 バズりランキング</a>
   <a href="money.html">🎬 マネタイズ</a>
   <a href="sns_success.html">🧠 SNS成功者</a>
+  <a href="post_generator.html">✍️ 投稿ストック</a>
   <a href="tools.html" class="active">🔧 ツール追跡</a>
   <a href="reviews.html">📋 使ってみた</a>
-  <a href="post_generator.html">✍️ 投稿ストック</a>
   <a href="hn.html">📡 HN/arxiv</a>
 </nav>
 <header>

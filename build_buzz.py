@@ -360,15 +360,15 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </head>
 <body>
 <nav class="topnav">
-  <a href="index.html" class="nav-link">📰 ニュース</a>
-  <a href="strategy.html" class="nav-link">🎯 施策提案</a>
-  <a href="buzz.html" class="nav-link active">🔥 バズりランキング</a>
-  <a href="money.html" class="nav-link">🎬 マネタイズ</a>
-  <a href="sns_success.html" class="nav-link">🧠 SNS成功者</a>
-  <a href="tools.html" class="nav-link">🔧 ツール追跡</a>
-  <a href="reviews.html" class="nav-link">📋 使ってみた</a>
-  <a href="post_generator.html" class="nav-link">✍️ 投稿ストック</a>
-  <a href="hn.html" class="nav-link">📡 HN/arxiv</a>
+  <a class="nav-link" href="index.html">📰 ニュース</a>
+  <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+  <a class="nav-link active" href="buzz.html">🔥 バズりランキング</a>
+  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
+  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
+  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
 </nav>
 <div class="container">
 <header>
