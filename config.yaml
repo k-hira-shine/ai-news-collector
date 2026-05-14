@@ -350,12 +350,26 @@ tools_tracking:
   max_items_per_feed: 30   # 1フィードあたり最大取得件数
 
   rss_feeds:
+    # ── 英語：主要テックメディア ───────────────────────────
     - url: "https://venturebeat.com/category/ai/feed/"
       label: "VentureBeat AI"
     - url: "https://www.theverge.com/rss/ai-artificial-intelligence/index.xml"
       label: "The Verge AI"
     - url: "https://techcrunch.com/feed/"
       label: "TechCrunch"
+    - url: "https://www.wired.com/feed/tag/ai/latest/rss"
+      label: "Wired AI"
+    - url: "https://arstechnica.com/ai/feed/"
+      label: "Ars Technica AI"
+    - url: "https://feeds.reuters.com/reuters/technologyNews"
+      label: "Reuters Technology"
+    - url: "https://www.technologyreview.com/feed/"
+      label: "MIT Technology Review"
+    - url: "https://www.zdnet.com/topic/artificial-intelligence/rss.xml"
+      label: "ZDNet AI"
+    - url: "https://www.businessinsider.com/sai/feed"
+      label: "Business Insider Tech"
+    # ── 英語：公式ブログ ──────────────────────────────────
     - url: "https://openai.com/news/rss/"
       label: "OpenAI Blog"
     - url: "https://www.anthropic.com/rss.xml"
@@ -364,6 +378,17 @@ tools_tracking:
       label: "Google AI Blog"
     - url: "https://huggingface.co/blog/feed.xml"
       label: "Hugging Face Blog"
+    # ── 日本語：テックメディア ────────────────────────────
+    - url: "https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml"
+      label: "ITmedia NEWS"
+    - url: "https://www.itmedia.co.jp/aiplus/rss/2.0/index.rdf"
+      label: "ITmedia AI+"
+    - url: "https://ascii.jp/rss.xml"
+      label: "ASCII.jp"
+    - url: "https://japan.zdnet.com/rss/index.rdf"
+      label: "ZDNet Japan"
+    - url: "https://www.softantenna.com/wp/feed/"
+      label: "SoftAntenna"
 
 # ── SNS投稿ジェネレーター テンプレート定義 ─────────────────
 # テンプレートは https://k-hira-shine.github.io/fiction-log-buzz-report/templates.html の6型を使用
