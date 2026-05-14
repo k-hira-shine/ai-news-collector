@@ -11,15 +11,15 @@
     --muted: #94a3b8; --border: #2d3748; --success: #10b981;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }
-  header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 20px 32px; border-bottom: 1px solid var(--border); }
-  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }
+  .topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }
+  .topnav a { display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
+  .topnav a:hover { color: var(--accent); background: rgba(56,189,248,0.1); }
+  .topnav a.active { background: var(--accent2); color: #fff; }
+  header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 16px 32px; border-bottom: 1px solid var(--border); }
+  .header-inner { max-width: 1200px; margin: 0 auto; }
   .header-title { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
   .header-title span { font-size: 0.85rem; color: var(--muted); margin-left: 10px; font-weight: 400; }
-  nav { display: flex; gap: 8px; padding: 10px 32px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; max-width: 100%; }
-  nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; }
-  nav a:hover { color: var(--accent); background: rgba(56,189,248,0.1); }
-  nav a.active { color: var(--accent); background: rgba(56,189,248,0.15); }
   .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
   .stats-bar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
   .stat-chip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: var(--muted); }
@@ -61,27 +61,28 @@
   .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
   footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }
   @media (max-width: 640px) {
-    header { padding: 14px 12px; }
-    nav { padding: 8px 12px; }
+    header { padding: 12px; }
+    .topnav { gap: 4px; padding: 4px 8px; }
+    .topnav a { font-size: 0.75rem; padding: 3px 8px; }
     .tools-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a href="index.html">📰 ニュース</a>
+  <a href="strategy.html">🎯 施策提案</a>
+  <a href="buzz.html">🔥 バズりランキング</a>
+  <a href="money.html">🎬 マネタイズ</a>
+  <a href="sns_success.html">🧠 SNS成功者</a>
+  <a href="tools.html" class="active">🔧 ツール追跡</a>
+  <a href="reviews.html">📋 使ってみた</a>
+  <a href="post_generator.html">✍️ 投稿ストック</a>
+  <a href="hn.html">📡 HN/arxiv</a>
+</nav>
 <header>
   <div class="header-inner">
-    <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: 2026-05-15 06:40 JST</span></div>
-    <nav style="padding:0;border:none;background:none;">
-      <a href="index.html">📰 ニュース</a>
-      <a href="strategy.html">🎯 施策提案</a>
-      <a href="buzz.html">🔥 バズりランキング</a>
-      <a href="money.html">🎬 マネタイズ</a>
-      <a href="sns_success.html">🧠 SNS成功者</a>
-      <a href="tools.html" class="active">🔧 ツール追跡</a>
-      <a href="reviews.html">📋 使ってみた</a>
-      <a href="post_generator.html">✍️ 投稿ストック</a>
-      <a href="hn.html">📡 HN/arxiv</a>
-    </nav>
+    <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: 2026-05-15 06:47 JST</span></div>
   </div>
 </header>
 <div class="container">
@@ -130,12 +131,12 @@
     </div>
   </div>
   <div class="tools-grid" id="toolsGrid">
-    <div class="modal-overlay" id="m30155106" onclick="if(event.target===this)this.style.display='none'">
+    <div class="modal-overlay" id="mb1355387" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude</span>
       <span class="count-badge">5件</span>
-      <button class="modal-close" onclick="document.getElementById('m30155106').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mb1355387').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -216,7 +217,7 @@ Claudeを繰り返し実… →</a>
       <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/14 08:58</span></div>
       <a href="https://x.com/iritec_jp/status/2054712844386775258" target="_blank" rel="noopener" class="article-link">Anthropicは、OpenClawのようなサードパーティ製AIエージェントや、自分でワークフローを組んでAIを自動化する使い方を、Cla… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m30155106').style.display='flex'">📋 5件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mb1355387').style.display='flex'">📋 5件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai">
@@ -322,12 +323,12 @@ https://t.co/Tr3ZzxIMB… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m82ba65e5" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m9cdfab87" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude Code</span>
       <span class="count-badge">7件</span>
-      <button class="modal-close" onclick="document.getElementById('m82ba65e5').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m9cdfab87').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -448,15 +449,15 @@ https://t.co/bmBsk4e1u… →</a>
 ・有料ユーザー向けに適用
 ・Cla… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m82ba65e5').style.display='flex'">📋 7件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m9cdfab87').style.display='flex'">📋 7件の記事をすべて見る</button>
   </div>
 </div>
-<div class="modal-overlay" id="m9ce9401e" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m1ebd2ead" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude Agent SDK</span>
       <span class="count-badge">5件</span>
-      <button class="modal-close" onclick="document.getElementById('m9ce9401e').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m1ebd2ead').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -539,15 +540,15 @@ E… →</a>
 
 This policy redefines the term &quot;interactive&… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m9ce9401e').style.display='flex'">📋 5件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m1ebd2ead').style.display='flex'">📋 5件の記事をすべて見る</button>
   </div>
 </div>
-<div class="modal-overlay" id="mde81e5ef" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m30bacd01" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">ChatGPT</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mde81e5ef').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m30bacd01').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -591,7 +592,7 @@ This policy redefines the term &quot;interactive&… →</a>
       <a href="https://x.com/excel_niisan/status/2054677069288841226" target="_blank" rel="noopener" class="article-link">ChatGPTから「Study Mode」がメニューから消えたことを問題視。
 学習効果を高めるためのモードなのに、ClaudeやGemini… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mde81e5ef').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m30bacd01').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai">
@@ -673,12 +674,12 @@ Your AI d… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m55ff5b34" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mea88d785" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude for Small Business</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m55ff5b34').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mea88d785').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -726,7 +727,7 @@ Anthropicが「中小企業のためのAIエージェントチーム」を公開
 
 - Claudeが「給与… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m55ff5b34').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mea88d785').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai">
@@ -1306,12 +1307,12 @@ LLM の基礎から RAG、AI のための UX といった応用ま… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mb354a09a" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m34b81801" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Gemini</span>
       <span class="count-badge">4件</span>
-      <button class="modal-close" onclick="document.getElementById('mb354a09a').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m34b81801').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1387,7 +1388,7 @@ GoogleがGeminiを… →</a>
 生成AIを使うたびに発生していた「あの作業」
 ・AIに… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mb354a09a').style.display='flex'">📋 4件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m34b81801').style.display='flex'">📋 4件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai">
@@ -1774,12 +1775,12 @@ Alibabaから画像生成と精密な編集を1つのモデルでこなす驚異
     
   </div>
 </div>
-<div class="modal-overlay" id="mc0fd0282" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="md5361d14" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Instagram Instants</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mc0fd0282').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('md5361d14').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1821,7 +1822,7 @@ Alibabaから画像生成と精密な編集を1つのモデルでこなす驚異
       <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/15 00:06</span></div>
       <a href="https://techcrunch.com/2026/05/14/how-to-turn-of-instagrams-new-instants-feature-and-retract-photos-you-accidentally-shared/" target="_blank" rel="noopener" class="article-link">How to turn off Instagram’s new Instants feature and retract photos yo… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mc0fd0282').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('md5361d14').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="ai">
@@ -1995,12 +1996,12 @@ Alibabaから画像生成と精密な編集を1つのモデルでこなす驚異
     
   </div>
 </div>
-<div class="modal-overlay" id="m3a3a3736" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m81ddb3e3" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Alexa for Shopping (Alexa+)</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m3a3a3736').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m81ddb3e3').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2042,7 +2043,7 @@ Alibabaから画像生成と精密な編集を1つのモデルでこなす驚異
       <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/13 23:59</span></div>
       <a href="https://techcrunch.com/2026/05/13/amazon-launches-an-ai-shopping-assistant-for-the-search-bar-powered-by-alexa/" target="_blank" rel="noopener" class="article-link">Amazon launches an AI shopping assistant for the search bar, powered b… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m3a3a3736').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m81ddb3e3').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="non-ai">

@@ -115,14 +115,15 @@ def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | Non
   --green: #34d399; --red: #f87171; --yellow: #fbbf24; --blue: #60a5fa;
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
-.container {{ max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }}
+body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
+.topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
+.nav-link {{ display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
+.nav-link:hover {{ background: #475569; color: #fff; }}
+.nav-link.active {{ background: var(--accent); color: #fff; }}
+.container {{ max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 2rem; }}
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
-.nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
-.nav-link {{ display: inline-block; padding: 0.4rem 1.2rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
-.nav-link:hover {{ background: #475569; }}
 .card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
 .card h2 {{ font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
 .trend {{ font-size: 1rem; }}
@@ -204,21 +205,21 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a class="nav-link active" href="index.html">📰 ニュース</a>
+  <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
+  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
+  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
+  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
+</nav>
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
   <div class="updated">Last updated: {now_str}</div>
-  <div class="nav-links">
-    <a class="nav-link active" href="index.html">📰 ニュース</a>
-    <a class="nav-link" href="strategy.html">🎯 施策提案</a>
-    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-    <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-    <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-    <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-    <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-    <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-    <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
-  </div>
 </header>
 {body}
 </div>
@@ -588,14 +589,15 @@ def _render_strategy_html(latest: dict | None, all_analyses: list[dict] | None =
   --purple: #c084fc; --orange: #fb923c;
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
-.container {{ max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }}
+body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
+.topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
+.nav-link {{ display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
+.nav-link:hover {{ background: #475569; color: #fff; }}
+.nav-link.active {{ background: var(--accent); color: #fff; }}
+.container {{ max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 2rem; }}
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
-.nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
-.nav-link {{ display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
-.nav-link:hover {{ background: #475569; }}
 .selector-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.5rem; }}
 .selector-item {{ display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0.9rem; background: var(--surface2); border-radius: 8px; text-decoration: none; color: var(--text); font-size: 0.9rem; cursor: pointer; }}
 .selector-item:hover {{ background: #475569; }}
@@ -670,21 +672,21 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a class="nav-link" href="index.html">📰 ニュース</a>
+  <a class="nav-link active" href="strategy.html">🎯 施策提案</a>
+  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
+  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
+  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
+  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
+</nav>
 <div class="container">
 <header>
   <h1>🎯 AI 施策提案</h1>
   <div class="updated">Last updated: {now_str}</div>
-  <div class="nav-links">
-    <a class="nav-link" href="index.html">📰 ニュース</a>
-    <a class="nav-link active" href="strategy.html">🎯 施策提案</a>
-    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-    <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-    <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-    <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-    <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-    <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-    <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
-  </div>
 </header>
 {selector_html}
 <div id="strategy-content">

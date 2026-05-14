@@ -12,14 +12,15 @@
   --purple: #c084fc; --orange: #fb923c;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-.container { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }
+.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }
+.nav-link { display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
+.nav-link:hover { background: #475569; color: #fff; }
+.nav-link.active { background: var(--accent); color: #fff; }
+.container { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 2rem; }
 header { text-align: center; margin-bottom: 2rem; }
 header h1 { font-size: 1.8rem; color: var(--accent); }
 header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
-.nav-links { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }
-.nav-link { display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }
-.nav-link:hover { background: #475569; }
 .selector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.6rem; margin-top: 0.5rem; }
 .selector-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.55rem 0.9rem; background: var(--surface2); border-radius: 8px; text-decoration: none; color: var(--text); font-size: 0.9rem; cursor: pointer; }
 .selector-item:hover { background: #475569; }
@@ -76,8 +77,8 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 @media (max-width: 640px) {
   .container { padding: 1rem 0.75rem; }
   header h1 { font-size: 1.3rem; }
-  .nav-links { gap: 0.4rem; }
-  .nav-link { padding: 0.35rem 0.7rem; font-size: 0.82rem; }
+  .topnav { gap: 4px; padding: 4px 8px; }
+  .nav-link { padding: 3px 8px; font-size: 0.75rem; }
   .card { padding: 1rem 0.9rem; margin-bottom: 1rem; border-radius: 10px; }
   .card h2 { font-size: 1rem; }
   .selector-grid { grid-template-columns: 1fr; }
@@ -94,21 +95,21 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a class="nav-link" href="index.html">📰 ニュース</a>
+  <a class="nav-link active" href="strategy.html">🎯 施策提案</a>
+  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
+  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
+  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
+  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+  <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
+</nav>
 <div class="container">
 <header>
   <h1>🎯 AI 施策提案</h1>
   <div class="updated">Last updated: 2026-05-15 03:41 JST</div>
-  <div class="nav-links">
-    <a class="nav-link" href="index.html">📰 ニュース</a>
-    <a class="nav-link active" href="strategy.html">🎯 施策提案</a>
-    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-    <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-    <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-    <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-    <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-    <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-    <a class="nav-link" href="hn.html">📡 HN/arxiv</a>
-  </div>
 </header>
 <div class="card"><h2>📅 日付を選ぶ</h2><div class="selector-grid"><a class="selector-item active" data-key="2026-05-15-morning" href="#"><span>2026-05-15</span><span class="slot-tag">朝便</span></a><a class="selector-item" data-key="2026-05-14-evening" href="#"><span>2026-05-14</span><span class="slot-tag">夕便</span></a><a class="selector-item" data-key="2026-05-14-morning" href="#"><span>2026-05-14</span><span class="slot-tag">朝便</span></a><a class="selector-item" data-key="2026-05-13-evening" href="#"><span>2026-05-13</span><span class="slot-tag">夕便</span></a><a class="selector-item" data-key="2026-05-13-morning" href="#"><span>2026-05-13</span><span class="slot-tag">朝便</span></a><a class="selector-item" data-key="2026-05-12-evening" href="#"><span>2026-05-12</span><span class="slot-tag">夕便</span></a><a class="selector-item" data-key="2026-05-12-morning" href="#"><span>2026-05-12</span><span class="slot-tag">朝便</span></a></div></div>
 <div class="section-body active" id="section-2026-05-15-morning"><div class="card"><h2>🎬 YouTube企画案</h2><div class="idea-item"><div class="idea-title">【速報】Googleの新AIエージェント『Gemini Spark』がヤバい。24時間あなたのために働く最強の相棒、本日リークされた機能トップ5を解説。</div><div class="idea-row"><span class="label">フック</span>たった今、Google I/Oで発表されると噂の次世代AIエージェント『Gemini Spark』の衝撃的な情報がリークされました。これは単なるアシスタントではありません。あなたの行動を24時間学習し、全てを自動化する『もう一人の自分』です。この動画を見れば、あなたの仕事と生活がどう変わるか、今日わかります。</div><div class="idea-row"><span class="label">なぜ今？</span>本日リークされた新情報であり、Xでは既に「Gemini Spark」に関する投稿が数百件以上拡散し、期待感が最高潮に達しているため、初速のある大きなトレンドに乗れる。</div><div class="idea-row"><span class="label">差別化</span>単なる機能紹介ではなく、「既存のAIエージェント（AutoGPTなど）はなぜ失敗したのか」という視点から、Googleがそれをどう乗り越えようとしているのかを対比構造で深く考察し、ビジネスパーソン向けの示唆を提示する。</div><div class="source-links"><span class="source-label">根拠ポスト</span><a href="https://x.com/AnthropicAI/status/2054941901900611787" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>Anthropic、ゲイツ財団と2億ドル提携<span class="source-from">x:@AnthropicAI</span></a><a href="https://x.com/testingcatalog/status/2054839588963696792" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>Google、新AIエージェント「Gemini Spark」発表か<span class="source-from">x:@testingcatalog</span></a><a href="https://x.com/NousResearch/status/2054958564951912714" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>Hermes AgentがCodexランタイムを統合<span class="source-from">x:@NousResearch</span></a></div></div><div class="idea-item"><div class="idea-title">【本日発表】Anthropicがビル・ゲイツ財団と2億ドル提携！Claudeは単なるチャットAIではなかった。今日から始まる『世界課題解決AI』としての真の目的とは？</div><div class="idea-row"><span class="label">フック</span>本日、Claudeの開発元Anthropicが、ビル・ゲイツ財団との2億ドル規模の提携を発表しました。これは単なる資金調達ニュースではありません。AIが世界の貧困や健康問題を本気で解決しにきたという、歴史的な転換点です。なぜ彼らが選ばれたのか、その理由を3分で解説します。</div><div class="idea-row"><span class="label">なぜ今？</span>本日発表された大型提携であり、Xでは公式アカウントの投稿が数時間で1000件以上リポストされている。技術だけでなく「AIの社会的意義」という新しい切り口で注目を集めているため、幅広い層にリーチできる。</div><div class="idea-row"><span class="label">差別化</span>「なぜOpenAIやGoogleではなくAnthropicだったのか？」という問いを立て、彼らの『Responsible Scaling Policy』や安全性へのコミットメントが、ゲイツ財団のような組織からどう評価されたのかを、ビジネス・倫理の両面から解説する。</div><div class="source-links"><span class="source-label">根拠ポスト</span><a href="https://x.com/Kimi_Moonshot/status/2054918374837322140" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>Moonshot AI、ブラウザ拡張「Kimi Web Bridge」発表<span class="source-from">x:@Kimi_Moonshot</span></a><a href="https://x.com/AnthropicAI/status/2054987444664377374" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>Anthropic、米中のAI競争に関する論文を発表<span class="source-from">x:@AnthropicAI</span></a><a href="https://x.com/ai_hakase_/status/2054865808778531126" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>次世代AI「Learning Beyond Gradients」が発表<span class="source-from">x:@ai_hakase_</span></a></div></div><div class="idea-item"><div class="idea-title">【AIエージェント開発戦争、本日開戦】NousResearchの『Hermes』、Moonshot AIの『Kimi』が新機能を一斉発表！あなたのPC作業を自動化する最新ツール3選を徹底比較。</div><div class="idea-row"><span class="label">フック</span>今日、AIエージェント界隈が大きく動きました。NousResearchの『Hermes』がCodexランタイムを統合し、Moonshot AIがブラウザ拡張『Kimi Web Bridge』を発表。ついにAIがあなたに代わってPCを操作する時代が本格的に到来です。今日から使える最強ツールはどれか、実際に動かして検証します。</div><div class="idea-row"><span class="label">なぜ今？</span>本日、複数のAIエージェントツールが同時に発表・アップデートされており、「AIエージェント」が今日の明確なバズワードになっている。開発者やアーリーアダプター層からの検索流入が確実に見込める。</div><div class="idea-row"><span class="label">差別化</span>各ツールの機能紹介に留まらず、「非エンジニアでも明日から業務で使えるか？」という実践的な視点でハンズオンレビューを行う。具体的なプロンプト例や、業務自動化のビフォーアフターを見せることで、実用性をアピールする。</div><div class="source-links"><span class="source-label">根拠ポスト</span><a href="https://x.com/nvidia/status/2054954894176423939" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>NVIDIA、「AIが提案する時代から行動する時代へ」<span class="source-from">x:@nvidia</span></a><a href="https://x.com/nvidia/status/2054985093785981418" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>ジェンスン・フアン氏、カーネギーメロン大で講演<span class="source-from">x:@nvidia</span></a><a href="https://x.com/ai_hakase_/status/2054866065239269432" target="_blank" rel="noopener" class="source-link"><span class="source-icon">🔗</span>AMD最新APU「Strix Halo」がLLM推論を最大3倍高速化<span class="source-from">x:@ai_hakase_</span></a></div></div></div>

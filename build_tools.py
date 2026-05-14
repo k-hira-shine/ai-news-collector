@@ -277,15 +277,15 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     --muted: #94a3b8; --border: #2d3748; --success: #10b981;
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }}
-  header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 20px 32px; border-bottom: 1px solid var(--border); }}
-  .header-inner {{ max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }}
+  body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }}
+  .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
+  .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
+  .topnav a:hover {{ color: var(--accent); background: rgba(56,189,248,0.1); }}
+  .topnav a.active {{ background: var(--accent2); color: #fff; }}
+  header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 16px 32px; border-bottom: 1px solid var(--border); }}
+  .header-inner {{ max-width: 1200px; margin: 0 auto; }}
   .header-title {{ font-size: 1.4rem; font-weight: 700; color: var(--accent); }}
   .header-title span {{ font-size: 0.85rem; color: var(--muted); margin-left: 10px; font-weight: 400; }}
-  nav {{ display: flex; gap: 8px; padding: 10px 32px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; max-width: 100%; }}
-  nav a {{ color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; }}
-  nav a:hover {{ color: var(--accent); background: rgba(56,189,248,0.1); }}
-  nav a.active {{ color: var(--accent); background: rgba(56,189,248,0.15); }}
   .container {{ max-width: 1200px; margin: 0 auto; padding: 24px 16px; }}
   .stats-bar {{ display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }}
   .stat-chip {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: var(--muted); }}
@@ -327,27 +327,28 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
-    header {{ padding: 14px 12px; }}
-    nav {{ padding: 8px 12px; }}
+    header {{ padding: 12px; }}
+    .topnav {{ gap: 4px; padding: 4px 8px; }}
+    .topnav a {{ font-size: 0.75rem; padding: 3px 8px; }}
     .tools-grid {{ grid-template-columns: 1fr; }}
   }}
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a href="index.html">📰 ニュース</a>
+  <a href="strategy.html">🎯 施策提案</a>
+  <a href="buzz.html">🔥 バズりランキング</a>
+  <a href="money.html">🎬 マネタイズ</a>
+  <a href="sns_success.html">🧠 SNS成功者</a>
+  <a href="tools.html" class="active">🔧 ツール追跡</a>
+  <a href="reviews.html">📋 使ってみた</a>
+  <a href="post_generator.html">✍️ 投稿ストック</a>
+  <a href="hn.html">📡 HN/arxiv</a>
+</nav>
 <header>
   <div class="header-inner">
     <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: {now_str}</span></div>
-    <nav style="padding:0;border:none;background:none;">
-      <a href="index.html">📰 ニュース</a>
-      <a href="strategy.html">🎯 施策提案</a>
-      <a href="buzz.html">🔥 バズりランキング</a>
-      <a href="money.html">🎬 マネタイズ</a>
-      <a href="sns_success.html">🧠 SNS成功者</a>
-      <a href="tools.html" class="active">🔧 ツール追跡</a>
-      <a href="reviews.html">📋 使ってみた</a>
-      <a href="post_generator.html">✍️ 投稿ストック</a>
-      <a href="hn.html">📡 HN/arxiv</a>
-    </nav>
   </div>
 </header>
 <div class="container">

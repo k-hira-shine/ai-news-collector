@@ -198,14 +198,15 @@ def build_hn_page(output_path: str = OUTPUT_PATH) -> None:
   --orange: #fb923c;
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
-.container {{ max-width: 1100px; margin: 0 auto; padding: 2rem 1rem; }}
+body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
+.topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
+.nav-link {{ display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
+.nav-link:hover {{ background: #475569; color: #fff; }}
+.nav-link.active {{ background: var(--accent); color: #fff; }}
+.container {{ max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem 2rem; }}
 header {{ text-align: center; margin-bottom: 1.5rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
-.nav-links {{ display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.8rem; }}
-.nav-link {{ display: inline-block; padding: 0.4rem 1rem; background: var(--surface2); border-radius: 8px; color: var(--blue); text-decoration: none; font-size: 0.9rem; }}
-.nav-link:hover {{ background: #475569; }}
 .date-tabs {{ display: flex; gap: 0.4rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1.5rem; }}
 .date-tab {{
   padding: 0.4rem 1rem; border-radius: 8px; border: 1px solid var(--surface2);
@@ -245,28 +246,29 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .empty {{ text-align: center; color: var(--muted); padding: 3rem 0; font-size: 1rem; }}
 @media (max-width: 640px) {{
   header h1 {{ font-size: 1.3rem; }}
-  .nav-link {{ padding: 0.35rem 0.7rem; font-size: 0.82rem; }}
+  .topnav {{ gap: 4px; padding: 4px 8px; }}
+  .nav-link {{ padding: 3px 8px; font-size: 0.75rem; }}
   .item-card {{ padding: 0.8rem; }}
   .item-title {{ font-size: 0.9rem; }}
 }}
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a class="nav-link" href="index.html">📰 ニュース</a>
+  <a class="nav-link" href="strategy.html">🎯 施策提案</a>
+  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
+  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
+  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
+  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
+  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
+  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
+  <a class="nav-link active" href="hn.html">📡 HN/arxiv</a>
+</nav>
 <div class="container">
 <header>
   <h1>AI 英語一次情報</h1>
   <div class="updated">Last updated: {now_jst}</div>
-  <div class="nav-links">
-    <a class="nav-link" href="index.html">📰 ニュース</a>
-    <a class="nav-link" href="strategy.html">🎯 施策提案</a>
-    <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-    <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-    <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-    <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-    <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-    <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-    <a class="nav-link active" href="hn.html">📡 HN/arxiv</a>
-  </div>
 </header>
 <div class="date-tabs">
 {tabs_html}</div>
