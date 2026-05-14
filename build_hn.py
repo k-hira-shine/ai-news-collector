@@ -42,15 +42,9 @@ def load_all_dates(days: int = 14) -> dict[str, list[dict]]:
 
 def _fmt_date(iso: str) -> str:
     try:
+        from zoneinfo import ZoneInfo
         dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-        now = datetime.now(timezone.utc)
-        diff = now - dt
-        hours = int(diff.total_seconds() / 3600)
-        if hours < 1:
-            return "1時間以内"
-        if hours < 24:
-            return f"{hours}時間前"
-        return f"{diff.days}日前"
+        return dt.astimezone(ZoneInfo("Asia/Tokyo")).strftime("%Y/%m/%d %H:%M")
     except Exception:
         return iso[:10] if iso else ""
 
