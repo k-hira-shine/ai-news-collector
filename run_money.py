@@ -33,6 +33,7 @@ def main() -> None:
     parser.add_argument("--dry-run", action="store_true", help="収集のみ、分析しない")
     parser.add_argument("--money-only", action="store_true", help="money収集のみ（sns_successをスキップ）")
     parser.add_argument("--sns-only", action="store_true", help="sns_success収集のみ（moneyをスキップ）")
+    parser.add_argument("--skip-post-gen", action="store_true", help="投稿ジェネレーター生成をスキップ")
     args = parser.parse_args()
 
     logging.basicConfig(
@@ -48,9 +49,10 @@ def main() -> None:
 
     # ── ページ生成のみ ─────────────────────────────────
     if args.page_only:
-        logger.info("Page-only mode: generating money.html + sns_success.html from existing data")
+        logger.info("Page-only mode: generating money.html + sns_success.html + post_generator.html from existing data")
         _generate_page()
         _generate_sns_page()
+        _generate_post_generator_page(config)
         elapsed = time.time() - t0
         log_run("money", "success", elapsed_sec=elapsed, extra={"mode": "page-only"})
         logger.info("Done in %.1fs", elapsed)
@@ -185,6 +187,14 @@ def main() -> None:
         if run_sns:
             _generate_sns_page()
 
+        # ── 投稿ジェネレーター生成・更新 ──────────────────
+        if run_sns and not args.skip_post_gen and not args.analyze_only:
+            logger.info("=== Step 4: Generating post_generator.html ===")
+            from post_generator import generate_posts
+            generated = generate_posts(config)
+            logger.info("Post generator: %d posts generated", len(generated))
+        _generate_post_generator_page(config)
+
         elapsed = time.time() - t0
         total_collected = collected_money + collected_sns
         total_analyzed = analyzed_money + analyzed_sns
@@ -227,6 +237,13 @@ def _generate_sns_page() -> None:
 
     output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "sns_success.html")
     generate_sns_page(output)
+
+
+def _generate_post_generator_page(config: dict) -> None:
+    from post_generator import generate_post_generator_page
+
+    output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "post_generator.html")
+    generate_post_generator_page(output, config)
 
 
 if __name__ == "__main__":

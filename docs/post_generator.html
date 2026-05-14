@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNS投稿ジェネレーター</title>
+<style>
+  :root {
+    --bg: #0a0f1e; --surface: #131929; --card: #1a2236;
+    --accent: #a78bfa; --accent2: #7c3aed; --text: #e2e8f0;
+    --muted: #94a3b8; --border: #2d3748; --success: #10b981;
+    --warn: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }
+  header { background: linear-gradient(135deg, #1e1b4b, #0a0f1e); padding: 24px 32px; border-bottom: 1px solid var(--border); }
+  header h1 { font-size: 1.6rem; color: var(--accent); }
+  header p { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+  nav { display: flex; gap: 8px; padding: 12px 32px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; }
+  nav a:hover { color: var(--accent); background: rgba(167,139,250,0.1); }
+  nav a.active { color: var(--accent); background: rgba(167,139,250,0.15); }
+  .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+  .stats-bar { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+  .stat-chip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 10px 18px; font-size: 0.85rem; color: var(--muted); }
+  .stat-chip strong { color: var(--accent); font-size: 1.1rem; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent2); border-color: var(--accent); color: #fff; }
+  .tmpl-desc { color: var(--muted); font-size: 0.85rem; margin-bottom: 16px; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .gen-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .gen-text { color: var(--text); font-size: 0.95rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
+  .gen-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+  .char-count { font-size: 0.78rem; color: var(--muted); }
+  .char-count.over { color: var(--warn); font-weight: bold; }
+  .gen-actions { display: flex; gap: 8px; align-items: center; }
+  .copy-btn { background: var(--accent2); color: #fff; border: none; border-radius: 8px; padding: 6px 14px; font-size: 0.82rem; cursor: pointer; transition: opacity 0.2s; }
+  .copy-btn:hover { opacity: 0.85; }
+  .copy-btn.copied { background: var(--success); }
+  .source-link { color: var(--accent); font-size: 0.8rem; text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+  .gen-source { font-size: 0.78rem; color: var(--muted); border-top: 1px solid var(--border); padding-top: 8px; }
+  .empty-msg { color: var(--muted); font-size: 0.9rem; padding: 32px; text-align: center; }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>✍️ SNS投稿ジェネレーター</h1>
+  <p>SNS成功者の知見を元にAIが生成した投稿文 &nbsp;|&nbsp; 最終更新: 2026/05/14 05:11 JST</p>
+</header>
+<nav>
+  <a href="index.html">🏠 ホーム</a>
+  <a href="sns_success.html">🧠 SNS成功者マインド</a>
+  <a href="money.html">💰 マネタイズ事例</a>
+  <a href="post_generator.html" class="active">✍️ 投稿ジェネレーター</a>
+</nav>
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-chip">生成済み投稿 <strong>25</strong> 件</div>
+    <div class="stat-chip">テンプレート <strong>5</strong> 種</div>
+  </div>
+  <div class="tabs">
+<button class="tab-btn active" onclick="showTab('lessons_learned')" id="tab-btn-lessons_learned">教訓箇条書き型</button>
+<button class="tab-btn" onclick="showTab('question_hook')" id="tab-btn-question_hook">問いかけフック型</button>
+<button class="tab-btn" onclick="showTab('thread_starter')" id="tab-btn-thread_starter">スレッド冒頭型</button>
+<button class="tab-btn" onclick="showTab('insight_quote')" id="tab-btn-insight_quote">名言引用型</button>
+<button class="tab-btn" onclick="showTab('before_after')" id="tab-btn-before_after">ビフォーアフター型</button>
+
+  </div>
+
+<div class="tab-content" id="tab-lessons_learned" style="display:block">
+  <p class="tmpl-desc">成功者の知見を箇条書きで紹介するポスト</p>
+  <div class="cards-grid">
+<div class="gen-card">
+  <div class="gen-text" id="text-7483fc0fed1db8b3-lessons_learned">歴史上の偉人が語るADHDの教訓
+・エジソンやジョブズもその特性を持っていた
+・過集中や衝動性が革新の原動力に
+・短所は見方を変えれば最高の才能
+
+その欠点こそが、あなたを唯一無二にする武器になる。</div>
+  <div class="gen-footer">
+    <span class="char-count ">99文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-7483fc0fed1db8b3-lessons_learned')">コピー</button>
+      <a class="source-link" href="https://x.com/otonashikotoba/status/2034081810230219182" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 歴史上の偉人や成功者の多くがADHDだったとし、その特性を才能と捉える視点。 @セナ@ADHDを才能に変える思考法</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-7ac83d91eb603ed3-lessons_learned">底辺ナースが語る人生が詰む人の教訓
+・運動も読書もしない
+・人間関係がずっと同じ
+・休日は家でスマホをいじるだけ
+・興味のあることに挑戦しない
+
+何気ない日常の選択が、あなたの未来を静かに蝕んでいるのかもしれない。</div>
+  <div class="gen-footer">
+    <span class="char-count ">107文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-7ac83d91eb603ed3-lessons_learned')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2025530507870568903" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生が徐々に詰んでいく人が共通してやってしまっている8つの悪習慣 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-036fa58beb4039b1-lessons_learned">成功者が語る人生好転の教訓
+・まず行動する
+・よく寝て、早く起きる
+・本を読んでインプットする
+・趣味を大切に心を満たす
+
+特別なことじゃない。毎日の基本的な積み重ねが、非凡な結果を生む。</div>
+  <div class="gen-footer">
+    <span class="char-count ">94文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-036fa58beb4039b1-lessons_learned')">コピー</button>
+      <a class="source-link" href="https://x.com/mimibkk/status/2025676988275712433" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 行動、睡眠、読書など、成功者に共通するシンプルで本質的な良い習慣。 @みみ</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-ccc4a2971528725b-lessons_learned">Alex Hormoziが語る成功への教訓
+・偉大になるには長い「下手な時期」が必要
+・初期の失敗や未熟さは成長の証
+・完璧を求めず、まず始める勇気を持つ
+
+下手な自分を許すことが、偉大さへの第一歩だ。</div>
+  <div class="gen-footer">
+    <span class="char-count ">101文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-ccc4a2971528725b-lessons_learned')">コピー</button>
+      <a class="source-link" href="https://x.com/AlexHormozi/status/2042079478567071906" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 偉大になるためには、長い間下手な時期を経験する必要がある @Alex Hormozi</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-96e755455504eb4c-lessons_learned">人生が上手くいく人が語る成功の教訓
+・異次元に素直で、楽観的
+・行動スピードがレベチ
+・根拠のない自信がある
+・自分は運がいいと心から信じている
+
+思考が現実を創る。まずはマインドから変えていこう。</div>
+  <div class="gen-footer">
+    <span class="char-count ">99文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-96e755455504eb4c-lessons_learned')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2027317029523607790" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生が上手くいく人に共通する8つの特徴的な思考と行動 @底辺ナース</div>
+</div></div>
+</div>
+<div class="tab-content" id="tab-question_hook" style="display:none">
+  <p class="tmpl-desc">読者への問いかけで始まり、答えへ誘導するポスト</p>
+  <div class="cards-grid">
+<div class="gen-card">
+  <div class="gen-text" id="text-bb80e63b89387cf7-question_hook">大きな計画ばかり立てていませんか？あなたを創るのは壮大な計画ではなく、日々の小さな習慣の積み重ねです。毎日のパターンが未来のあなたを形作ります。まずは一つの小さな習慣から始めてみませんか？</div>
+  <div class="gen-footer">
+    <span class="char-count ">94文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-bb80e63b89387cf7-question_hook')">コピー</button>
+      <a class="source-link" href="https://x.com/JamesClear/status/2032203307247108551" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 壮大な計画よりも日々の習慣がその人自身を形成する。 @James Clear</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-f442b04f1152ec08-question_hook">「テレビを見るだけで稼げる」ってどういうこと？人気番組で紹介された商品は検索需要が爆発し、驚くほど売れます。番組をチェックしてXでまとめるだけで、収益に繋がるんです。今夜の番組から早速試してみましょう！</div>
+  <div class="gen-footer">
+    <span class="char-count ">101文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-f442b04f1152ec08-question_hook')">コピー</button>
+      <a class="source-link" href="https://x.com/09pauai/status/2031278888559743484" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: テレビ番組で紹介された商品をXでまとめるだけで、月10万円稼ぐことができる具体的なアフィリエイト手法。 @ぱうう</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-bf3a9a717139da64-question_hook">あなたは「願いが叶う」と心から信じられていますか？引き寄せの本質は「叶うと思っているから叶う」というシンプルな法則。「叶うかも」という確信が、現実を動かす力になります。まずは小さな「叶うかも」を育ててみませんか？</div>
+  <div class="gen-footer">
+    <span class="char-count ">106文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-bf3a9a717139da64-question_hook')">コピー</button>
+      <a class="source-link" href="https://x.com/nittan_nittan/status/2048317154823483718" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 引き寄せの本質は「叶うと思ってるから叶う」というシンプルな確信である。 @にったん🐏</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-a7a9acc035c5f12d-question_hook">人生に不要なものを抱え込みすぎていませんか？見栄や嫉妬、他人との比較はあなたのエネルギーを奪うだけ。これらを手放すことで心は軽くなり、人生は好転し始めます。今日、ひとつだけ手放すものを決めてみましょう。</div>
+  <div class="gen-footer">
+    <span class="char-count ">101文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-a7a9acc035c5f12d-question_hook')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2034199630876144099" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生で手放すべき6つのネガティブな感情や行動（執着、見栄、比較、嫉妬、悪口、マイナス思考）をリストアップ。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-5233a94b7724d2bf-question_hook">「血のにじむような努力」をした経験はありますか？気を失うほど何かに没頭した経験は、あなたの心に太い軸を作ります。その経験こそが、一生使える自信という最強の武器になるのです。何か一つ、限界を超える挑戦をしてみませんか？</div>
+  <div class="gen-footer">
+    <span class="char-count ">108文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-5233a94b7724d2bf-question_hook')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2029157407637573809" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生で一度は「血のにじむ努力」を経験すべきで、それが自信と精神的な軸を形成する「最強の武器」になると説く。 @底辺ナース</div>
+</div></div>
+</div>
+<div class="tab-content" id="tab-thread_starter" style="display:none">
+  <p class="tmpl-desc">続きが読みたくなるスレッドの1ツイート目</p>
+  <div class="cards-grid">
+<div class="gen-card">
+  <div class="gen-text" id="text-7483fc0fed1db8b3-thread_starter">「あなたの短所、実は最強の才能かも？」エジソンやジョブズなど、歴史を変えた偉人の多くがADHDだったという事実。もし“落ち着きのなさ”が欠点ではなく、天才の証だとしたら…？常識が覆るADHDと才能の真実について話します。🧵</div>
+  <div class="gen-footer">
+    <span class="char-count ">111文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-7483fc0fed1db8b3-thread_starter')">コピー</button>
+      <a class="source-link" href="https://x.com/otonashikotoba/status/2034081810230219182" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 歴史上の偉人や成功者の多くがADHDだったとし、その特性を才能と捉える視点。 @セナ@ADHDを才能に変える思考法</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-a7a9acc035c5f12d-thread_starter">なぜか人生がうまくいかない…その原因、捨てられない“ある感情”のせいかもしれません。「執着」「見栄」「比較」など、あなたを不幸にする6つの不要なものについて話します。これらを手放した先に待っているものとは？🧵（全6ツイート）</div>
+  <div class="gen-footer">
+    <span class="char-count ">112文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-a7a9acc035c5f12d-thread_starter')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2034199630876144099" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生で手放すべき6つのネガティブな感情や行動（執着、見栄、比較、嫉妬、悪口、マイナス思考）をリストアップ。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-8a7e0eb394f50b68-thread_starter">人生で「いちばん大きい差」がつくものは何だと思いますか？能力でも努力でもなく、実はごくありふれた“アレ”でした。知っているだけでライバルと圧倒的な差をつけられる、人生を変えるたった一つの真実について話します。🧵</div>
+  <div class="gen-footer">
+    <span class="char-count ">105文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-8a7e0eb394f50b68-thread_starter')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2027713139559759872" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 能力や努力の差より「習慣の差」が人生で最も大きな影響を与える @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-f9039988c1b5e59b-thread_starter">挑戦するあなたの足を引っ張る人の“意外な正体”について話します🧵なぜか挑戦したことがない人ほど、他人の失敗を笑うのか。あなたの周りにもいるかもしれない批判的な人から、たった1秒で自由になる思考法を解説します。（全4ツイート）</div>
+  <div class="gen-footer">
+    <span class="char-count ">112文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-f9039988c1b5e59b-thread_starter')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2029504442899276228" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 挑戦しない人ほど他人の失敗を笑うという人間心理を指摘し、そうした批判者から得るものはないと断言する。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-a323c343a76df165-thread_starter">世界の富裕層が実践する「潜在意識の書き換え術」の真実🧵アメリカのイメージング、アラブの感謝…彼らが例外なく“目に見えない力”を重要視するのはなぜか？国によって違うアプローチに隠された、富を引き寄せる驚きの共通点を解説します。</div>
+  <div class="gen-footer">
+    <span class="char-count ">112文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-a323c343a76df165-thread_starter')">コピー</button>
+      <a class="source-link" href="https://x.com/umitterx/status/2045762511883186441" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 世界の富裕層が実践する、イメージングや瞑想、感謝など様々な潜在意識の書き換え術を紹介。 @うみ</div>
+</div></div>
+</div>
+<div class="tab-content" id="tab-insight_quote" style="display:none">
+  <p class="tmpl-desc">成功者の言葉を引用してコメントするポスト</p>
+  <div class="cards-grid">
+<div class="gen-card">
+  <div class="gen-text" id="text-442e1284cad2f2d8-insight_quote">「人生は満員電車みたいなもので、降りずに乗り続けてたらいつか席が空く」
+
+才能がないと嘆くより、まずは諦めずに乗り続ける覚悟が大切。やなせたかしさんの言葉、胸に刺さります。</div>
+  <div class="gen-footer">
+    <span class="char-count ">86文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-442e1284cad2f2d8-insight_quote')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2032748569258537414" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: やなせたかし氏のエピソードを引用し、才能よりも「諦めない覚悟」が努力や挑戦を成功に導く本質だと主張。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-c8ba35c793a87106-insight_quote">「うまくいかない時ほど、『今が伏線』だと思って過ごすことが大事」
+
+苦しい時期も、未来の成功への布石だと思えば乗り越えられる。このポジティブな視点は本当に大切にしたい。</div>
+  <div class="gen-footer">
+    <span class="char-count ">84文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-c8ba35c793a87106-insight_quote')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2027348235329610071" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生がうまくいかない時は「今が伏線」と捉えポジティブに生きる @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-3bef097467b5c753-insight_quote">「リアルな自分をレベルアップさせ続ける、というのがAI時代に固有性を持つ、唯一の方法」
+
+AIスキルよりも人間的な面白さが価値になる時代。スキルだけでなく、実人生の冒険にこそ投資すべきですね。</div>
+  <div class="gen-footer">
+    <span class="char-count ">96文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-3bef097467b5c753-insight_quote')">コピー</button>
+      <a class="source-link" href="https://x.com/AiFreak_tool/status/2054370867967385696" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: AI時代には技術の追求より、実人生の冒険で人間性を磨くことが唯一の価値になる。 @AI FREAK@AI最新情報をお届け</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-f9039988c1b5e59b-insight_quote">「失敗をしたことがない人ほど他人の失敗を笑い、挑戦したことがない人ほど他人の挑戦に嫉妬する」
+
+批判を恐れて行動しないのはもったいない。外野の声は気にせず、自分の挑戦に集中しようと改めて思いました。</div>
+  <div class="gen-footer">
+    <span class="char-count ">99文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-f9039988c1b5e59b-insight_quote')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2029504442899276228" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 挑戦しない人ほど他人の失敗を笑うという人間心理を指摘し、そうした批判者から得るものはないと断言する。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-f35a82cbea89dfde-insight_quote">「本当に気に入った上質な物を少しだけ持ち、ガラクタは買わない。その分貯まったお金で、『環境』を買うように」
+
+モノより体験や環境への投資。良い場所に身を置くことで、良いご縁や機会に恵まれるという考え方、とても素敵です。</div>
+  <div class="gen-footer">
+    <span class="char-count ">109文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-f35a82cbea89dfde-insight_quote')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2030583111843529156" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 祖母の教え「ミニマムリッチ」を紹介。物より環境にお金を使い、良いご縁や体験を得ることの重要性を説く。 @底辺ナース</div>
+</div></div>
+</div>
+<div class="tab-content" id="tab-before_after" style="display:none">
+  <p class="tmpl-desc">変化・対比を使って価値を伝えるポスト</p>
+  <div class="cards-grid">
+<div class="gen-card">
+  <div class="gen-text" id="text-a7a9acc035c5f12d-before_after">他人と比べて落ち込む毎日だった私が、他人との比較をやめたら自分の良さに気づけるように。見栄や嫉妬を手放したら、驚くほど心が軽くなった。人生で不要なものを捨てると、本当に大切なものだけが残る。</div>
+  <div class="gen-footer">
+    <span class="char-count ">95文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-a7a9acc035c5f12d-before_after')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2034199630876144099" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生で手放すべき6つのネガティブな感情や行動（執着、見栄、比較、嫉妬、悪口、マイナス思考）をリストアップ。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-96882043dbe845ba-before_after">「やる気が出ない」が口癖で何も始められなかった私。「とりあえず5分」と決めて動いてみたら、脳がオンになり作業がどんどん進むように。やる気は待つものじゃなく、行動して作り出すものだったんだ。</div>
+  <div class="gen-footer">
+    <span class="char-count ">94文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-96882043dbe845ba-before_after')">コピー</button>
+      <a class="source-link" href="https://x.com/teihen_ns_fire/status/2050885756693197021" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 人生を30日で変えるための、やる気の仕組みや成功者の完コピなど15の効果的な『裏技習慣』を紹介した投稿。 @底辺ナース</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-bf3a9a717139da64-before_after">昔は「どうせ叶うわけない」と願望を打ち消していた私。でも「もしかしたら叶うかも」と本気で信じるようにしたら、不思議と現実が好転し始めた。引き寄せの正体は、結局この”確信”の力だった。</div>
+  <div class="gen-footer">
+    <span class="char-count ">91文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-bf3a9a717139da64-before_after')">コピー</button>
+      <a class="source-link" href="https://x.com/nittan_nittan/status/2048317154823483718" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 引き寄せの本質は「叶うと思ってるから叶う」というシンプルな確信である。 @にったん🐏</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-fa4891568ae0aaf5-before_after">今までの常識が通用しないレベルの人に会うまで、自分の限界を勝手に決めていた。でも「そこまでやるから結果が出る」という覚悟に触れたら、自分の行動の基準が一気に変わった。成長の鍵は基準値を壊すこと。</div>
+  <div class="gen-footer">
+    <span class="char-count ">97文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-fa4891568ae0aaf5-before_after')">コピー</button>
+      <a class="source-link" href="https://x.com/kouya_sns01/status/2027961300081606875" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 自分の常識を壊すレベルの人に会うと、思考の枠が外れ、学びの質が劇的に変わる。 @Kouya ｜ AI×SNSマーケ自動化コンサルタント</div>
+</div>
+<div class="gen-card">
+  <div class="gen-text" id="text-dde558bfb4906b55-before_after">「貯金が一番」という親の教えを信じ、資産が全く増えなかった私。勇気を出して身近な常識を疑い、投資の勉強を始めたら未来が変わった。お金持ちへの第一歩は、親の価値観から卒業することだった。</div>
+  <div class="gen-footer">
+    <span class="char-count ">92文字</span>
+    <div class="gen-actions">
+      <button class="copy-btn" onclick="copyText(this, 'text-dde558bfb4906b55-before_after')">コピー</button>
+      <a class="source-link" href="https://x.com/dropoutinvestor/status/2031837801331957886" target="_blank" rel="noopener">元ポストを見る →</a>
+    </div>
+  </div>
+  <div class="gen-source">参考: 親世代の古いお金の価値観は悪影響になることが多く、身近な人の言うことを疑うことが重要。 @TOSHI@高校中退投資家</div>
+</div></div>
+</div>
+</div>
+<footer>生成文はAIによるものです。投稿前に内容を確認してください。</footer>
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).style.display = 'block';
+  document.getElementById('tab-btn-' + id).classList.add('active');
+}
+function copyText(btn, elementId) {
+  const el = document.getElementById(elementId);
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    btn.textContent = 'コピー済み✓';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'コピー'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>

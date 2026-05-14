@@ -156,6 +156,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     <nav class="nav-links">
       <a href="index.html">📰 ニュース</a>
       <a href="money.html">🎬 マネタイズ事例</a>
+      <a href="post_generator.html">✍️ 投稿ジェネレーター</a>
       <a href="buzz.html">🔥 バズりランキング</a>
       <a href="strategy.html">🎯 施策提案</a>
       <a href="hn.html">📡 英語一次情報</a>
