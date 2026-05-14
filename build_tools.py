@@ -91,25 +91,91 @@ def _fmt_date(iso: str) -> str:
         return iso[:10]
 
 
-def _tool_card(item: dict) -> str:
-    tool_name = escape(item.get("tool_name") or "")
-    release_type = item.get("release_type") or "その他"
-    release_icon = RELEASE_TYPE_ICONS.get(release_type, "📌")
-    summary_ja = escape(item.get("summary_ja") or "")
-    title = escape(item.get("title") or "")
-    url = escape(item.get("url") or "#")
-    source = item.get("source") or "rss"
-    source_label = escape(item.get("source_label") or source)
-    source_icon = SOURCE_ICONS.get(source, "📰")
-    impact = item.get("impact") or "low"
-    impact_label, impact_color = IMPACT_LABELS.get(impact, ("⚪ 参考", "#64748b"))
-    age = _fmt_date(item.get("published_at") or item.get("analyzed_at") or "")
+def _tool_card_group(items: list[dict]) -> str:
+    """同一ツール名の記事群を1枚のカードにまとめる。複数記事はクリックで展開。"""
+    # 代表アイテム: impactが最も高いもの、同率なら最新
+    impact_order = {"high": 0, "medium": 1, "low": 2}
+    items_sorted = sorted(
+        items,
+        key=lambda x: (impact_order.get(x.get("impact", "low"), 2),
+                       -(x.get("published_at") or x.get("analyzed_at") or "").replace("Z", "").__lt__("") or 0),
+    )
+    # published_at降順で最新優先
+    items_by_date = sorted(
+        items,
+        key=lambda x: (x.get("published_at") or x.get("analyzed_at") or ""),
+        reverse=True,
+    )
+    rep = items_by_date[0]  # 最新を代表に
 
-    # フィルタ用data属性
+    tool_name = escape(rep.get("tool_name") or "")
+    # impact: グループ内で最も高いものを採用
+    best_impact = min((x.get("impact", "low") for x in items), key=lambda i: impact_order.get(i, 2))
+    impact_label, impact_color = IMPACT_LABELS.get(best_impact, ("⚪ 参考", "#64748b"))
+    # release_type: 代表のもの
+    release_type = rep.get("release_type") or "その他"
+    release_icon = RELEASE_TYPE_ICONS.get(release_type, "📌")
+    summary_ja = escape(rep.get("summary_ja") or "")
+    data_ai = "ai" if _is_ai_tool(rep) else "non-ai"
+    count = len(items)
+
+    # フィルタ用: ソースは複数ある場合は最初のものを使う
     data_release = escape(release_type)
-    data_impact = escape(impact)
-    data_source = escape(source)
-    data_ai = "ai" if _is_ai_tool(item) else "non-ai"
+    data_impact = escape(best_impact)
+    data_source = escape(rep.get("source") or "rss")
+
+    # 記事リスト（全件）
+    articles_html = ""
+    for item in items_by_date:
+        src = item.get("source") or "rss"
+        src_icon = SOURCE_ICONS.get(src, "📰")
+        src_label = escape(item.get("source_label") or src)
+        age = _fmt_date(item.get("published_at") or item.get("analyzed_at") or "")
+        url = escape(item.get("url") or "#")
+        title = escape(item.get("title") or "")
+        title_short = title[:70] + ("…" if len(title) > 70 else "")
+        articles_html += f"""<div class="sub-article">
+  <div class="sub-meta">{src_icon} {src_label} <span class="age">{age}</span></div>
+  <a href="{url}" target="_blank" rel="noopener" class="article-link">{title_short or '記事を見る'} →</a>
+</div>"""
+
+    # 複数件の場合はトグル表示
+    if count == 1:
+        body_html = articles_html
+        toggle_html = ""
+    else:
+        # 最初の1件は常に表示、残りはトグル
+        first_article = items_by_date[0]
+        first_src = first_article.get("source") or "rss"
+        first_src_icon = SOURCE_ICONS.get(first_src, "📰")
+        first_src_label = escape(first_article.get("source_label") or first_src)
+        first_age = _fmt_date(first_article.get("published_at") or first_article.get("analyzed_at") or "")
+        first_url = escape(first_article.get("url") or "#")
+        first_title = escape(first_article.get("title") or "")
+        first_title_short = first_title[:70] + ("…" if len(first_title) > 70 else "")
+
+        rest_html = ""
+        for item in items_by_date[1:]:
+            src = item.get("source") or "rss"
+            src_icon = SOURCE_ICONS.get(src, "📰")
+            src_label = escape(item.get("source_label") or src)
+            age = _fmt_date(item.get("published_at") or item.get("analyzed_at") or "")
+            url = escape(item.get("url") or "#")
+            title = escape(item.get("title") or "")
+            title_short = title[:70] + ("…" if len(title) > 70 else "")
+            rest_html += f"""<div class="sub-article">
+  <div class="sub-meta">{src_icon} {src_label} <span class="age">{age}</span></div>
+  <a href="{url}" target="_blank" rel="noopener" class="article-link">{title_short or '記事を見る'} →</a>
+</div>"""
+
+        body_html = f"""<div class="sub-article">
+  <div class="sub-meta">{first_src_icon} {first_src_label} <span class="age">{first_age}</span></div>
+  <a href="{first_url}" target="_blank" rel="noopener" class="article-link">{first_title_short or '記事を見る'} →</a>
+</div>"""
+        toggle_html = f"""<details class="more-articles">
+  <summary>他 {count - 1} 件の記事を見る</summary>
+  {rest_html}
+</details>"""
 
     return f"""<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}">
   <div class="tool-card-header">
@@ -117,15 +183,13 @@ def _tool_card(item: dict) -> str:
       <span class="tool-name">{tool_name}</span>
       <span class="release-badge">{release_icon} {escape(release_type)}</span>
       <span class="impact-badge" style="color:{impact_color}">{impact_label}</span>
-    </div>
-    <div class="source-age">
-      <span class="source-label">{source_icon} {source_label}</span>
-      <span class="age">{age}</span>
+      {f'<span class="count-badge">{count}件</span>' if count > 1 else ''}
     </div>
   </div>
   {f'<div class="summary-ja">{summary_ja}</div>' if summary_ja else ''}
   <div class="card-footer">
-    <a href="{url}" target="_blank" rel="noopener" class="article-link">{title[:80] + ('…' if len(title) > 80 else '') if title else '記事を見る'} →</a>
+    {body_html}
+    {toggle_html}
   </div>
 </div>"""
 
@@ -139,8 +203,23 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     release_types = sorted(set(i.get("release_type", "その他") for i in items if i.get("release_type")))
     sources = sorted(set(i.get("source_label", "") for i in items if i.get("source_label")))
 
-    cards_html = "\n".join(_tool_card(i) for i in items) if items else \
+    # 同一ツール名でグループ化（tool_nameを正規化してまとめる）
+    from collections import defaultdict
+    groups: dict[str, list[dict]] = defaultdict(list)
+    for item in items:
+        key = (item.get("tool_name") or "").strip().lower()
+        groups[key].append(item)
+    # グループ内最新のpublished_atで全体をソート
+    def _group_latest(g: list[dict]) -> str:
+        return max(
+            (x.get("published_at") or x.get("analyzed_at") or "" for x in g),
+            default=""
+        )
+    sorted_groups = sorted(groups.values(), key=_group_latest, reverse=True)
+    cards_html = "\n".join(_tool_card_group(g) for g in sorted_groups) if sorted_groups else \
         '<div class="empty-state"><p>まだデータがありません。ワークフローを実行すると蓄積されます。</p></div>'
+    total_groups = len(sorted_groups)
+    total_articles = len(items)
 
     ai_filter_btns = (
         '<button class="filter-btn active" data-filter-ai="all">すべて</button>\n'
@@ -207,6 +286,15 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .card-footer {{ border-top: 1px solid var(--border); padding-top: 8px; }}
   .article-link {{ color: var(--muted); font-size: 0.8rem; text-decoration: none; word-break: break-word; }}
   .article-link:hover {{ color: var(--accent); }}
+  .count-badge {{ font-size: 0.72rem; background: rgba(148,163,184,0.15); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 10px; }}
+  .sub-article {{ padding: 4px 0; border-top: 1px solid var(--border); }}
+  .sub-article:first-child {{ border-top: none; }}
+  .sub-meta {{ font-size: 0.74rem; color: var(--muted); margin-bottom: 2px; }}
+  .more-articles {{ margin-top: 6px; }}
+  .more-articles summary {{ font-size: 0.78rem; color: var(--accent); cursor: pointer; padding: 4px 0; list-style: none; }}
+  .more-articles summary::-webkit-details-marker {{ display: none; }}
+  .more-articles summary::before {{ content: "▶ "; font-size: 0.7rem; }}
+  details[open] .more-articles summary::before {{ content: "▼ "; }}
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
@@ -231,7 +319,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 </header>
 <div class="container">
   <div class="stats-bar">
-    <div class="stat-chip">収録件数 <strong id="visibleCount">{len(items)}</strong> / {len(items)} 件</div>
+    <div class="stat-chip">ツール数 <strong id="visibleCount">{total_groups}</strong> / {total_groups} 件（記事 {total_articles} 件）</div>
   </div>
   <div class="filter-section">
     <div class="filter-row">
