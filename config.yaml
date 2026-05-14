@@ -217,6 +217,41 @@ money_collection:
   # 1クエリあたりの最大取得件数（英語強化のため200に増加）
   max_items_per_query: 200
 
+# ── SNS成功者の思考法・マインド収集（run_money.py 統合） ──────
+sns_success:
+  # 重複排除キャッシュの保持日数（長期蓄積）
+  cache_retention_days: 180
+  # 採用する投稿者の最低フォロワー数
+  min_followers: 5000
+  # 1クエリあたりの最大取得件数
+  max_items_per_query: 100
+
+  search_queries:
+    # 日本語：成功体験・マインドセット
+    - "月収 (万円 OR 万) 達成 (習慣 OR マインド OR 思考 OR 考え方) -filter:retweets lang:ja"
+    - "人生変わった (習慣 OR マインド OR 思考法 OR やり方) -filter:retweets lang:ja min_faves:50"
+    - "副業 (月収 OR 稼ぐ OR 収益) (思考 OR マインド OR 習慣 OR 法則) -filter:retweets lang:ja"
+    - "FIRE (達成 OR 実現) (方法 OR 考え方 OR マインド OR 習慣) -filter:retweets lang:ja"
+    - "資産形成 (考え方 OR マインド OR 法則 OR 習慣) -filter:retweets lang:ja min_faves:30"
+    - "潜在意識 (書き換え OR 活用 OR 使い方) (成功 OR 収益 OR 豊か) -filter:retweets lang:ja"
+    - "引き寄せ (法則 OR の法則) (実践 OR 方法 OR やり方) -filter:retweets lang:ja"
+    - "どん底から (復活 OR 這い上がる OR 成功) -filter:retweets lang:ja"
+    - "会社員 (副業 OR 自由 OR 辞める OR FIRE) (思考 OR マインド OR 考え方) -filter:retweets lang:ja"
+    - "SNS (成功 OR バズる OR 伸びる) (法則 OR コツ OR 思考 OR やり方) -filter:retweets lang:ja"
+    # 日本語：習慣・ルーティン系
+    - "朝活 OR 朝のルーティン (成功者 OR 習慣 OR 変わった) -filter:retweets lang:ja"
+    - "成功者 (習慣 OR ルーティン OR 思考法 OR マインドセット) -filter:retweets lang:ja"
+    - "メンタル (強く OR 鍛える OR 整える) (方法 OR 習慣 OR コツ) 成功 -filter:retweets lang:ja"
+    # 英語：成功マインド・習慣
+    - "mindset (success OR rich OR wealthy) habits changed my life -filter:retweets lang:en min_faves:100"
+    - "subconscious mind (reprogram OR rewire OR rewrite) success -filter:retweets lang:en"
+    - "law of attraction (success OR manifesting OR income) practical -filter:retweets lang:en min_faves:50"
+    - "morning routine success habits (changed OR transform OR built) -filter:retweets lang:en"
+    - "from broke to (rich OR wealthy OR financial freedom) mindset -filter:retweets lang:en"
+    - "passive income mindset (habits OR routine OR how I think) -filter:retweets lang:en"
+    - "financial freedom (mindset OR habits OR thinking) achieve -filter:retweets lang:en"
+    - "grew my audience (mindset OR strategy OR how I think) -filter:retweets lang:en min_faves:50"
+
 # ── バズりランキング収集アカウント（run_buzz.py 専用） ──────
 buzz_accounts:
   - handle: "AiFreak_tool"

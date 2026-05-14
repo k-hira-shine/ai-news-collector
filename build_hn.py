@@ -257,6 +257,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
     <a class="nav-link" href="strategy.html">🎯 施策提案</a>
     <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
     <a class="nav-link" href="money.html">🎬 動画マネタイズ事例</a>
+    <a class="nav-link" href="sns_success.html">🧠 SNS成功者マインド</a>
   </div>
 </header>
 <div class="date-tabs">

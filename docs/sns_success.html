@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SNS成功者マインド集</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0f1e; color: #e0e4f0; min-height: 100vh; }
+    header { background: linear-gradient(135deg, #0f1a35 0%, #1a0f35 100%); border-bottom: 1px solid #2a2a5a; padding: 20px 24px; }
+    .header-inner { max-width: 1100px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .header-title { font-size: 1.4rem; font-weight: 700; color: #a78bfa; }
+    .header-title span { font-size: 0.9rem; color: #888; margin-left: 10px; font-weight: 400; }
+    .nav-links { display: flex; gap: 12px; flex-wrap: wrap; }
+    .nav-links a { color: #7aa0d4; text-decoration: none; font-size: 0.85rem; padding: 4px 10px; border: 1px solid #2a4060; border-radius: 4px; }
+    .nav-links a:hover { background: #1e2050; }
+    .main { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
+    .stats-bar { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+    .stat-card { background: #111827; border: 1px solid #2a2a5a; border-radius: 10px; padding: 16px 20px; flex: 1; min-width: 140px; text-align: center; }
+    .stat-number { font-size: 2rem; font-weight: 700; color: #a78bfa; }
+    .stat-label { font-size: 0.8rem; color: #888; margin-top: 4px; }
+    .filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center; }
+    .filter-btn { background: #111827; border: 1px solid #2a2a5a; color: #aaa; padding: 6px 14px; border-radius: 20px; cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .filter-btn.active, .filter-btn:hover { background: #a78bfa; color: #0a0f1e; border-color: #a78bfa; font-weight: 600; }
+    .filter-label { color: #666; font-size: 0.8rem; margin-right: 4px; }
+    .sort-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
+    .sort-btn { background: #111827; border: 1px solid #2a2a5a; color: #aaa; padding: 5px 14px; border-radius: 6px; cursor: pointer; font-size: 0.82rem; transition: all 0.2s; }
+    .sort-btn.active { background: #1e1e40; color: #e0e4f0; border-color: #4a4a8a; font-weight: 600; }
+    .select-filters { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-left: auto; }
+    .select-group { display: flex; align-items: center; gap: 6px; font-size: 0.82rem; color: #888; }
+    .select-group select { background: #111827; border: 1px solid #2a2a5a; color: #e0e4f0; padding: 4px 10px; border-radius: 6px; font-size: 0.82rem; cursor: pointer; }
+    .filter-section { margin-bottom: 16px; }
+    .filter-section-label { font-size: 0.75rem; color: #666; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .cat-filter-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+    .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+    .post-card { background: #111827; border: 1px solid #2a2a5a; border-radius: 12px; padding: 16px; transition: border-color 0.2s, box-shadow 0.2s; }
+    .post-card:hover { border-color: #a78bfa; box-shadow: 0 0 16px rgba(167,139,250,0.15); }
+    .post-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; flex-wrap: wrap; }
+    .post-category { font-size: 0.75rem; background: #1e1e40; color: #9d8ee0; padding: 3px 8px; border-radius: 12px; white-space: nowrap; flex-shrink: 0; }
+    .post-credibility { font-size: 0.78rem; color: #a78bfa; background: #1a0f35; padding: 3px 8px; border-radius: 12px; white-space: normal; word-break: break-word; max-width: 200px; line-height: 1.4; }
+    .post-summary { font-size: 0.97rem; font-weight: 700; color: #e0e4f0; margin-bottom: 6px; line-height: 1.5; }
+    .post-theme { font-size: 0.85rem; color: #a78bfa; margin-bottom: 8px; font-style: italic; }
+    .insights-list { margin: 8px 0; padding: 10px 12px; background: #0f172a; border-left: 3px solid #a78bfa; border-radius: 0 6px 6px 0; }
+    .insights-list li { font-size: 0.83rem; color: #c4b5fd; line-height: 1.7; list-style: none; padding-left: 1.2em; position: relative; }
+    .insights-list li::before { content: "→"; position: absolute; left: 0; color: #a78bfa; }
+    .post-body { font-size: 0.82rem; color: #94a3b8; background: #0a0f1e; border: 1px solid #1e2050; padding: 8px 12px; border-radius: 6px; margin: 8px 0; line-height: 1.6; white-space: pre-wrap; word-break: break-word; max-height: 120px; overflow: hidden; position: relative; }
+    .post-body.expanded { max-height: none; }
+    .post-body-toggle { font-size: 0.78rem; color: #7aa0d4; cursor: pointer; margin-top: 4px; display: block; text-align: right; }
+    .post-target { font-size: 0.78rem; color: #888; margin: 4px 0 8px; }
+    .post-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 8px; border-top: 1px solid #1e2050; font-size: 0.78rem; color: #666; }
+    .post-footer a { color: #7aa0d4; text-decoration: none; }
+    .post-footer a:hover { text-decoration: underline; }
+    .engagement { display: flex; gap: 10px; }
+    .empty-state { text-align: center; padding: 60px 20px; color: #555; }
+    .empty-state .emoji { font-size: 3rem; margin-bottom: 16px; }
+    .criteria-box { background: #0f172a; border: 1px solid #2a2a5a; border-radius: 10px; padding: 14px 20px; margin-bottom: 20px; font-size: 0.82rem; color: #94a3b8; line-height: 1.8; }
+    .criteria-box strong { color: #a78bfa; }
+    .criteria-box .criteria-title { font-size: 0.88rem; font-weight: 700; color: #a78bfa; margin-bottom: 8px; }
+    footer { text-align: center; padding: 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #111827; margin-top: 40px; }
+    @media (max-width: 640px) {
+      header { padding: 14px 12px; }
+      .header-title { font-size: 1.1rem; }
+      .nav-links { gap: 6px; }
+      .nav-links a { font-size: 0.78rem; padding: 3px 7px; }
+      .main { padding: 16px 10px; }
+      .stats-bar { gap: 8px; }
+      .stat-card { padding: 10px 12px; min-width: 100px; }
+      .stat-number { font-size: 1.5rem; }
+      .posts-grid { grid-template-columns: 1fr; gap: 12px; }
+      .post-card { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div>
+      <div class="header-title">🧠 SNS成功者マインド集 <span>Last updated: 2026-05-14 10:15 JST</span></div>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">📰 ニュース</a>
+      <a href="money.html">🎬 マネタイズ事例</a>
+      <a href="buzz.html">🔥 バズりランキング</a>
+      <a href="strategy.html">🎯 施策提案</a>
+      <a href="hn.html">📡 英語一次情報</a>
+    </nav>
+  </div>
+</header>
+
+<div class="main">
+  <div class="criteria-box">
+    <div class="criteria-title">📋 収集・掲載基準</div>
+    <strong>収集元：</strong>日英21種のキーワード検索 &nbsp;|&nbsp;
+    <strong>フォロワー：</strong>5,000人以上の投稿のみ採用 &nbsp;|&nbsp;
+    <strong>判定：</strong>GeminiがSNS成功者の思考法・習慣・マインドとして有益な投稿を自動フィルタリング &nbsp;|&nbsp;
+    <strong>蓄積期間：</strong>過去180日分を継続収集
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">総投稿数</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">🇯🇵 日本語</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">🌍 海外</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">0</div>
+      <div class="stat-label">カテゴリ数</div>
+    </div>
+  </div>
+
+  <div class="sort-bar">
+    <span class="filter-label">並べ替え：</span>
+    <button class="sort-btn active" onclick="setSort('eng', this)">📈 エンゲ率順</button>
+    <button class="sort-btn" onclick="setSort('date', this)">🕐 新着順</button>
+    <div class="select-filters">
+      <div class="select-group">
+        <label for="engSelect">エンゲ率：</label>
+        <select id="engSelect" onchange="applyFilters()">
+          <option value="0">制限なし</option>
+          <option value="0.001">0.1%以上</option>
+          <option value="0.003">0.3%以上</option>
+          <option value="0.005">0.5%以上</option>
+          <option value="0.01">1%以上</option>
+          <option value="0.03">3%以上</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-section-label">地域</div>
+    <div class="filter-bar" id="regionBar" style="margin-bottom:10px;">
+      <button class="filter-btn active" onclick="filterRegion('all', this)">🌐 すべて (0)</button>
+      <button class="filter-btn" onclick="filterRegion('jp', this)">🇯🇵 日本 (0)</button>
+      <button class="filter-btn" onclick="filterRegion('global', this)">🌍 海外 (0)</button>
+    </div>
+    <div class="filter-section-label">カテゴリ</div>
+    <div class="cat-filter-grid" id="catFilterBar">
+      <button class="filter-btn active" onclick="filterCategory('all', this)">すべて</button>
+      
+    </div>
+  </div>
+
+  <div class="posts-grid" id="postsGrid">
+    <div class="empty-state" style="grid-column: 1/-1;">
+  <div class="emoji">🧠</div>
+  <p>まだデータがありません。<br>ワークフローを実行するとSNS成功者の知見が蓄積されます。</p>
+</div>
+  </div>
+</div>
+
+<footer>SNS成功者マインド集 — Xから自動収集し、GeminiがAI分析</footer>
+
+<script>
+let activeCategory = 'all';
+let activeRegion = 'all';
+let activeSort = 'eng';
+
+function filterCategory(cat, btn) {
+  activeCategory = cat;
+  document.querySelectorAll('#catFilterBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterRegion(region, btn) {
+  activeRegion = region;
+  document.querySelectorAll('#regionBar .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function setSort(mode, btn) {
+  activeSort = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  const grid = document.getElementById('postsGrid');
+  const engMin = parseFloat(document.getElementById('engSelect').value) || 0;
+  const allCards = Array.from(grid.querySelectorAll('.post-card'));
+
+  const visible = allCards.filter(card => {
+    const catMatch = activeCategory === 'all' || card.dataset.category === activeCategory;
+    const regionMatch = activeRegion === 'all' ||
+      (activeRegion === 'jp' && card.dataset.jp === 'true') ||
+      (activeRegion === 'global' && card.dataset.jp === 'false');
+    const engMatch = parseFloat(card.dataset.eng || '0') >= engMin;
+    return catMatch && regionMatch && engMatch;
+  });
+
+  visible.sort((a, b) => {
+    if (activeSort === 'date') {
+      return (b.dataset.date || '').localeCompare(a.dataset.date || '');
+    } else {
+      return parseFloat(b.dataset.eng || '0') - parseFloat(a.dataset.eng || '0');
+    }
+  });
+
+  allCards.forEach(c => c.style.display = 'none');
+  visible.forEach(c => { c.style.display = ''; grid.appendChild(c); });
+}
+
+function toggleBody(el) {
+  const body = el.previousElementSibling;
+  if (body.classList.contains('expanded')) {
+    body.classList.remove('expanded');
+    el.textContent = '続きを読む ▼';
+  } else {
+    body.classList.add('expanded');
+    el.textContent = '閉じる ▲';
+  }
+}
+</script>
+
+<div id="runStatusBanner" style="display:none;position:fixed;bottom:16px;right:16px;z-index:8888;max-width:340px;">
+  <div id="runStatusInner" style="border-radius:10px;padding:10px 14px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;" onclick="document.getElementById('runStatusBanner').style.display='none'">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <span id="runStatusIcon" style="font-size:1.1rem;"></span>
+      <div>
+        <div id="runStatusTitle" style="font-weight:700;"></div>
+        <div id="runStatusDetail" style="opacity:0.8;font-size:0.78rem;margin-top:2px;"></div>
+      </div>
+      <span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  fetch('run_status.json?_=' + Date.now())
+    .then(r => r.ok ? r.json() : null)
+    .catch(() => null)
+    .then(data => {
+      if (!data) return;
+      const banner = document.getElementById('runStatusBanner');
+      const inner = document.getElementById('runStatusInner');
+      const icon = document.getElementById('runStatusIcon');
+      const title = document.getElementById('runStatusTitle');
+      const detail = document.getElementById('runStatusDetail');
+      const overall = data.overall || 'success';
+      if (overall === 'success') return; // 正常時は非表示
+      if (overall === 'error') {
+        inner.style.background = '#2d1515';
+        inner.style.border = '1px solid #f87171';
+        inner.style.color = '#fecaca';
+        icon.textContent = '🚨';
+        title.textContent = 'エラーが発生しています';
+      } else {
+        inner.style.background = '#2d2510';
+        inner.style.border = '1px solid #fbbf24';
+        inner.style.color = '#fef3c7';
+        icon.textContent = '⚠️';
+        title.textContent = '警告があります';
+      }
+      const errWfs = Object.entries(data.workflows || {})
+        .filter(([, v]) => v.status !== 'success')
+        .map(([k, v]) => {
+          const base = k + ': ';
+          if (v.cost_usd != null && v.cost_usd >= 1.0) {
+            return base + `コスト異常 $${parseFloat(v.cost_usd).toFixed(3)}`;
+          }
+          return base + (v.error || v.status);
+        });
+      detail.textContent = errWfs.join(' / ') || data.updated_at;
+      banner.style.display = 'block';
+    });
+})();
+</script>
+
+</body>
+</html>
