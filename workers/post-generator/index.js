@@ -1,6 +1,5 @@
 export default {
   async fetch(request, env) {
-    // CORS headers
     const corsHeaders = {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -17,7 +16,8 @@ export default {
 
     try {
       const body = await request.json();
-      const { template_id, template_name, prompt_hint, posts } = body;
+      // post: 単一ポストオブジェクト, templates: テンプレート配列
+      const { post, templates } = body;
 
       if (!env.GEMINI_API_KEY) {
         return new Response(JSON.stringify({ error: 'GEMINI_API_KEY not set' }), {
@@ -25,50 +25,61 @@ export default {
         });
       }
 
-      // 元ポストのテキストを構築
-      let postsText = '';
-      for (const p of posts) {
-        const insights = (p.key_insights || []).map(i => `  - ${i}`).join('\n');
-        postsText += `
-[ID: ${p.id}]
-著者: @${p.author_display || p.author} (フォロワー ${(p.author_followers || 0).toLocaleString()}人)
-要約: ${p.summary || ''}
-テーマ: ${p.mind_theme || ''}
-key_insights:
-${insights || '  (なし)'}
-本文（抜粋）:
-${(p.content || '').slice(0, 400)}
----`;
+      if (!post || !templates || !templates.length) {
+        return new Response(JSON.stringify({ error: 'post and templates are required' }), {
+          status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
       }
 
-      const prompt = `${prompt_hint}
+      // ポスト情報のテキスト化
+      const insights = (post.key_insights || []).map(i => `  - ${i}`).join('\n');
+      const postText = `
+著者: @${post.author_display || post.author} (フォロワー ${(post.author_followers || 0).toLocaleString()}人)
+テーマ: ${post.mind_theme || ''}
+要約: ${post.summary || ''}
+key_insights:
+${insights || '  (なし)'}
+本文:
+${(post.content || '').slice(0, 800)}
+`.trim();
 
-## 条件
+      // 6テンプレート分のプロンプトを1リクエストにまとめる
+      const templateList = templates.map((t, i) =>
+        `### テンプレート${i + 1}: ${t.name}\n${t.prompt_hint}`
+      ).join('\n\n');
+
+      const prompt = `以下のX（旧Twitter）投稿の内容を元に、6種類のテンプレートで日本語の投稿文を1つずつ作成してください。
+
+## 元ポスト情報
+${postText}
+
+## テンプレート定義
+${templateList}
+
+## 共通ルール
+- 各テンプレートにつき1件の投稿文を作成すること
+- 各投稿は140字以内
 - 日本語で書くこと
-- 1投稿あたり140字以内
-- 5件の投稿文を生成すること
-- 各投稿には元ポストのID（[ID: ...]の値）を必ず対応させること
 - コピーしてそのままXに投稿できる形にすること
-
-## 元となるSNS成功者ポスト一覧
-${postsText}`;
+- 元ポストのエッセンス・key_insightsを活かすこと`;
 
       const schema = {
         type: 'object',
         properties: {
-          generated: {
+          results: {
             type: 'array',
             items: {
               type: 'object',
               properties: {
-                source_post_id: { type: 'string' },
+                template_id: { type: 'string' },
+                template_name: { type: 'string' },
                 text: { type: 'string' },
               },
-              required: ['source_post_id', 'text'],
+              required: ['template_id', 'template_name', 'text'],
             },
           },
         },
-        required: ['generated'],
+        required: ['results'],
       };
 
       const geminiRes = await fetch(
@@ -94,22 +105,21 @@ ${postsText}`;
       }
 
       const geminiData = await geminiRes.json();
-      const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-      const result = JSON.parse(text);
+      const rawText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
+      const result = JSON.parse(rawText);
 
-      // source_post_idから元ポスト情報を付与
-      const idToPost = Object.fromEntries(posts.map(p => [p.id, p]));
-      const enriched = (result.generated || []).map(g => {
-        const src = idToPost[g.source_post_id] || {};
+      // template_idが返ってこない場合はtemplates配列のindexで補完
+      const enriched = (result.results || []).map((r, i) => {
+        const tmpl = templates[i] || {};
         return {
-          template_id,
-          template_name,
-          text: g.text,
-          char_count: g.text.length,
-          source_post_id: g.source_post_id,
-          source_url: src.url || '',
-          source_author: src.author_display || src.author || '',
-          source_summary: src.summary || '',
+          template_id: r.template_id || tmpl.id || `t${i + 1}`,
+          template_name: r.template_name || tmpl.name || '',
+          text: (r.text || '').trim(),
+          char_count: (r.text || '').trim().length,
+          source_post_id: post.id || '',
+          source_url: post.url || '',
+          source_author: post.author_display || post.author || '',
+          source_summary: post.summary || '',
         };
       });
 

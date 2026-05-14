@@ -57,6 +57,13 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     except Exception:
         STATUS_BANNER = ""
 
+    # テンプレートJSONを事前生成（f-string内でのネスト回避）
+    raw_templates = config.get("post_templates", {}).get("templates", [])
+    templates_js = json.dumps(
+        [{"id": t["id"], "name": t["name"], "prompt_hint": t.get("prompt_hint", "")} for t in raw_templates],
+        ensure_ascii=False,
+    )
+
     by_category: dict[str, list[dict]] = {}
     for post in posts:
         cat = post.get("category") or "その他"
@@ -133,6 +140,27 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     .criteria-box strong {{ color: #a78bfa; }}
     .criteria-box .criteria-title {{ font-size: 0.88rem; font-weight: 700; color: #a78bfa; margin-bottom: 8px; }}
     footer {{ text-align: center; padding: 20px; color: #444; font-size: 0.8rem; border-top: 1px solid #111827; margin-top: 40px; }}
+    .gen-post-btn {{ width: 100%; margin-top: 10px; background: #1e1e40; border: 1px solid #4a4a8a; color: #a78bfa; padding: 8px 0; border-radius: 8px; font-size: 0.83rem; cursor: pointer; transition: all 0.2s; }}
+    .gen-post-btn:hover {{ background: #2a2a60; border-color: #a78bfa; }}
+    .modal-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }}
+    .modal-overlay.open {{ display: flex; }}
+    .modal-box {{ background: #111827; border: 1px solid #2a2a5a; border-radius: 14px; width: 100%; max-width: 700px; max-height: 90vh; overflow-y: auto; padding: 24px; position: relative; }}
+    .modal-header {{ display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; gap: 12px; }}
+    .modal-title {{ font-size: 1rem; font-weight: 700; color: #a78bfa; line-height: 1.4; }}
+    .modal-close {{ background: none; border: none; color: #666; font-size: 1.4rem; cursor: pointer; flex-shrink: 0; line-height: 1; }}
+    .modal-close:hover {{ color: #aaa; }}
+    .modal-source {{ font-size: 0.8rem; color: #94a3b8; margin-bottom: 16px; padding: 8px 12px; background: #0f172a; border-radius: 6px; line-height: 1.5; }}
+    .modal-loading {{ text-align: center; padding: 32px; color: #888; font-size: 0.9rem; }}
+    .modal-results {{ display: flex; flex-direction: column; gap: 14px; }}
+    .result-card {{ background: #0f172a; border: 1px solid #2a2a5a; border-radius: 10px; padding: 14px; }}
+    .result-tmpl-name {{ font-size: 0.78rem; color: #7c3aed; margin-bottom: 8px; font-weight: 600; }}
+    .result-text {{ color: #e0e4f0; font-size: 0.9rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }}
+    .result-footer {{ display: flex; align-items: center; justify-content: space-between; margin-top: 10px; flex-wrap: wrap; gap: 6px; }}
+    .result-chars {{ font-size: 0.76rem; color: #888; }}
+    .result-chars.over {{ color: #f59e0b; font-weight: bold; }}
+    .copy-btn {{ background: #7c3aed; color: #fff; border: none; border-radius: 6px; padding: 5px 14px; font-size: 0.8rem; cursor: pointer; }}
+    .copy-btn.copied {{ background: #10b981; }}
+    .modal-error {{ color: #ef4444; font-size: 0.85rem; padding: 16px; text-align: center; }}
     @media (max-width: 640px) {{
       header {{ padding: 14px 12px; }}
       .header-title {{ font-size: 1.1rem; }}
@@ -244,7 +272,24 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
 
 <footer>SNS成功者マインド集 — Xから自動収集し、GeminiがAI分析</footer>
 
+<!-- 投稿文生成モーダル -->
+<div class="modal-overlay" id="genModal" onclick="closeModalOnOverlay(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">投稿文を生成中...</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-source" id="modalSource"></div>
+    <div id="modalBody">
+      <div class="modal-loading">⏳ Geminiが6種類の投稿文を生成しています（約20秒）...</div>
+    </div>
+  </div>
+</div>
+
 <script>
+const WORKER_URL = 'https://sns-post-generator.imokonoai.workers.dev';
+const TEMPLATES = {templates_js};
+
 let activeCategory = 'all';
 let activeRegion = 'all';
 let activeSort = 'eng';
@@ -308,6 +353,72 @@ function toggleBody(el) {{
     el.textContent = '閉じる ▲';
   }}
 }}
+
+async function openGenerator(btn) {{
+  const postData = JSON.parse(btn.getAttribute('data-post').replace(/&quot;/g, '"').replace(/&#39;/g, "'"));
+  const modal = document.getElementById('genModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalSource = document.getElementById('modalSource');
+  const modalBody = document.getElementById('modalBody');
+
+  modalTitle.textContent = '✍️ 投稿文を生成中...';
+  modalSource.innerHTML = `<strong>元ポスト:</strong> ${{postData.summary || postData.author_display}} &nbsp;@${{postData.author_display}} <a href="${{postData.url}}" target="_blank" rel="noopener" style="color:#7aa0d4;">ポストを見る →</a>`;
+  modalBody.innerHTML = '<div class="modal-loading">⏳ Geminiが6種類の投稿文を生成しています（約20秒）...</div>';
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  try {{
+    const res = await fetch(WORKER_URL, {{
+      method: 'POST',
+      headers: {{ 'Content-Type': 'application/json' }},
+      body: JSON.stringify({{ post: postData, templates: TEMPLATES }}),
+    }});
+    if (!res.ok) {{
+      const err = await res.json().catch(() => ({{}}));
+      throw new Error(err.error || `HTTP ${{res.status}}`);
+    }}
+    const data = await res.json();
+    const generated = data.generated || [];
+    if (!generated.length) throw new Error('生成結果が空でした');
+
+    modalTitle.textContent = '✍️ 6種の投稿文が生成されました';
+    modalBody.innerHTML = '<div class="modal-results">' + generated.map((g, i) => {{
+      const text = g.text || '';
+      const chars = text.length;
+      const overClass = chars > 140 ? 'over' : '';
+      const textId = `rtext-${{i}}`;
+      return `<div class="result-card">
+        <div class="result-tmpl-name">${{g.template_name}}</div>
+        <div class="result-text" id="${{textId}}">${{text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</div>
+        <div class="result-footer">
+          <span class="result-chars ${{overClass}}">${{chars}}文字</span>
+          <button class="copy-btn" onclick="copyResult(this,'${{textId}}')">コピー</button>
+        </div>
+      </div>`;
+    }}).join('') + '</div>';
+  }} catch(e) {{
+    modalBody.innerHTML = `<div class="modal-error">エラー: ${{e.message}}</div>`;
+  }}
+}}
+
+function closeModal() {{
+  document.getElementById('genModal').classList.remove('open');
+  document.body.style.overflow = '';
+}}
+
+function closeModalOnOverlay(e) {{
+  if (e.target === document.getElementById('genModal')) closeModal();
+}}
+
+function copyResult(btn, textId) {{
+  const el = document.getElementById(textId);
+  if (!el) return;
+  navigator.clipboard.writeText(el.innerText).then(() => {{
+    btn.textContent = 'コピー済み✓';
+    btn.classList.add('copied');
+    setTimeout(() => {{ btn.textContent = 'コピー'; btn.classList.remove('copied'); }}, 2000);
+  }});
+}}
 </script>
 {STATUS_BANNER}
 </body>
@@ -370,6 +481,20 @@ def _render_post_card(post: dict) -> str:
     target_html = f'<div class="post-target">👥 {target}</div>' if target else ""
     toggle_html = '<span class="post-body-toggle" onclick="toggleBody(this)">続きを読む ▼</span>' if has_more else ""
 
+    # 投稿文生成ボタン用にポストデータをJSON化（HTMLエスケープ）
+    post_data = {
+        "id": post.get("id", ""),
+        "author": post.get("author", ""),
+        "author_display": author,
+        "author_followers": post.get("author_followers", 0),
+        "content": raw_content[:800],
+        "summary": summary,
+        "mind_theme": theme,
+        "key_insights": insights,
+        "url": url,
+    }
+    post_data_json = json.dumps(post_data, ensure_ascii=False).replace("'", "&#39;").replace('"', "&quot;")
+
     return f"""<div class="post-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-length="{content_length}">
   <div class="post-header">
     <span class="post-category">{icon} {category}</span>
@@ -388,6 +513,7 @@ def _render_post_card(post: dict) -> str:
       <a href="{url}" target="_blank" rel="noopener">ポストを見る →</a>
     </div>
   </div>
+  <button class="gen-post-btn" onclick="openGenerator(this)" data-post="{post_data_json}">✍️ 投稿文を作る</button>
 </div>"""
 
 
