@@ -179,7 +179,7 @@ money_collection:
     - handle: "ai_hakase_"
       label: "AI博士"
   # 1アカウントあたりの最大取得件数
-  max_items_per_account: 500
+  max_items_per_account: 200
   # 重複排除キャッシュの保持日数（長期蓄積）
   cache_retention_days: 180
   # 事例として採用する投稿者の最低フォロワー数
@@ -220,7 +220,7 @@ money_collection:
     - "made money using AI content creation -filter:retweets lang:en"
     - "ChatGPT Claude AI earning passive income -filter:retweets lang:en"
   # 1クエリあたりの最大取得件数（英語強化のため200に増加）
-  max_items_per_query: 200
+  max_items_per_query: 100
 
 # ── SNS成功者の思考法・マインド収集（run_money.py 統合） ──────
 sns_success:
@@ -232,9 +232,9 @@ sns_success:
   search_since_days: 90
   account_since_days: 365
   # 1クエリあたりの最大取得件数
-  max_items_per_query: 150
+  max_items_per_query: 100
   # 追跡アカウント1件あたりの最大取得件数
-  max_items_per_account: 150
+  max_items_per_account: 100
 
   # 検索では漏れやすいが、継続的に拾いたい成功者アカウント
   accounts:
