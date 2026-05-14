@@ -31,6 +31,7 @@ TOOLS_SCHEMA = {
                         "type": "string",
                         "enum": ["high", "medium", "low"],
                     },
+                    "is_ai_tool": {"type": "boolean"},
                 },
                 "required": ["item_id", "is_tool_release"],
             },
@@ -115,6 +116,7 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str) -> list[dic
 3. リリース種別: 新規リリース / アップデート / 機能追加 / 廃止・終了 / その他
 4. 日本語要約（60字以内。英語記事も日本語に翻訳して要約すること）
 5. 影響度（high: 業界に大きな影響 / medium: 注目すべき / low: 参考程度）
+6. AI関連かどうか（is_ai_tool）: AIモデル・AIツール・AI機能ならtrue、それ以外（SNS機能・一般アプリ等）ならfalse
 
 is_tool_release=falseの記事も必ず結果に含めてください。"""
 
@@ -153,6 +155,7 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
             "release_type": r.get("release_type", "その他"),
             "summary_ja": r.get("summary_ja", ""),
             "impact": r.get("impact", "low"),
+            "is_ai_tool": r.get("is_ai_tool", True),
             "analyzed_at": datetime.now(timezone.utc).isoformat(),
         })
 

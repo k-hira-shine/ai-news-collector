@@ -55,6 +55,31 @@ def load_all_items(days: int = 30) -> list[dict]:
     return items
 
 
+AI_KEYWORDS = {
+    "ai", "gpt", "llm", "claude", "gemini", "openai", "anthropic", "deepmind",
+    "llama", "mistral", "copilot", "cursor", "chatgpt", "bard", "cohere",
+    "hugging face", "huggingface", "stable diffusion", "midjourney", "dall-e",
+    "whisper", "sora", "grok", "perplexity", "notion ai", "github copilot",
+    "agent", "rag", "embedding", "transformer", "diffusion", "generative",
+    "machine learning", "deep learning", "neural", "nlp", "computer vision",
+    "multimodal", "foundation model", "language model", "image generation",
+    "text generation", "vector", "fine-tun", "prompt", "inference",
+    "生成ai", "大規模言語", "aiエージェント", "機械学習",
+}
+
+def _is_ai_tool(item: dict) -> bool:
+    """ツール名・サマリー・タイトルのキーワードでAI関連かを判定する"""
+    if item.get("is_ai_tool") is not None:
+        return bool(item["is_ai_tool"])
+    text = " ".join([
+        (item.get("tool_name") or ""),
+        (item.get("summary_ja") or ""),
+        (item.get("title") or ""),
+        (item.get("content") or "")[:200],
+    ]).lower()
+    return any(kw in text for kw in AI_KEYWORDS)
+
+
 def _fmt_date(iso: str) -> str:
     if not iso:
         return ""
@@ -84,8 +109,9 @@ def _tool_card(item: dict) -> str:
     data_release = escape(release_type)
     data_impact = escape(impact)
     data_source = escape(source)
+    data_ai = "ai" if _is_ai_tool(item) else "non-ai"
 
-    return f"""<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}">
+    return f"""<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">{tool_name}</span>
@@ -115,6 +141,12 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 
     cards_html = "\n".join(_tool_card(i) for i in items) if items else \
         '<div class="empty-state"><p>まだデータがありません。ワークフローを実行すると蓄積されます。</p></div>'
+
+    ai_filter_btns = (
+        '<button class="filter-btn active" data-filter-ai="all">すべて</button>\n'
+        '<button class="filter-btn" data-filter-ai="ai">🤖 AI関連</button>\n'
+        '<button class="filter-btn" data-filter-ai="non-ai">📱 非AI</button>\n'
+    )
 
     release_filter_btns = '<button class="filter-btn active" data-filter-release="all">すべて</button>\n'
     for rt in release_types:
@@ -203,6 +235,10 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   </div>
   <div class="filter-section">
     <div class="filter-row">
+      <span class="filter-label">カテゴリ</span>
+      {ai_filter_btns}
+    </div>
+    <div class="filter-row">
       <span class="filter-label">種別</span>
       {release_filter_btns}
     </div>
@@ -224,6 +260,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 let activeRelease = 'all';
 let activeImpact = 'all';
 let activeSource = 'all';
+let activeAi = 'all';
 
 function applyFilters() {{
   const cards = Array.from(document.querySelectorAll('.tool-card'));
@@ -232,12 +269,22 @@ function applyFilters() {{
     const releaseMatch = activeRelease === 'all' || card.dataset.release === activeRelease;
     const impactMatch = activeImpact === 'all' || card.dataset.impact === activeImpact;
     const sourceMatch = activeSource === 'all' || card.dataset.source === activeSource;
-    const show = releaseMatch && impactMatch && sourceMatch;
+    const aiMatch = activeAi === 'all' || card.dataset.ai === activeAi;
+    const show = releaseMatch && impactMatch && sourceMatch && aiMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   }});
   document.getElementById('visibleCount').textContent = visible;
 }}
+
+document.querySelectorAll('[data-filter-ai]').forEach(btn => {{
+  btn.addEventListener('click', () => {{
+    document.querySelectorAll('[data-filter-ai]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeAi = btn.dataset.filterAi;
+    applyFilters();
+  }});
+}});
 
 document.querySelectorAll('[data-filter-release]').forEach(btn => {{
   btn.addEventListener('click', () => {{
