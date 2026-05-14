@@ -559,7 +559,40 @@ def _load_hn_today() -> list[dict]:
                 items.append(d)
         except (json.JSONDecodeError, OSError):
             continue
-    return items[:50]
+    items = items[:50]
+    _translate_hn_missing(items)
+    return items
+
+
+def _translate_hn_missing(items: list[dict]) -> None:
+    """title_ja がない item を Gemini でまとめて翻訳（in-place）"""
+    gemini_key = os.environ.get("GEMINI_API_KEY")
+    if not gemini_key:
+        return
+    untranslated = [(i, d) for i, d in enumerate(items) if not d.get("title_ja")]
+    if not untranslated:
+        return
+    try:
+        from google import genai as _genai
+        client = _genai.Client(api_key=gemini_key)
+    except Exception as e:
+        logger.warning("Gemini import failed — skipping translation: %s", e)
+        return
+    lines = [f"[{i}] {d.get('title', '')}" for i, d in untranslated]
+    prompt = (
+        "以下の英語タイトルを自然な日本語に翻訳してください。\n"
+        "[番号] 日本語タイトル の形式で返してください。余計な説明は不要です。\n\n"
+        + "\n".join(lines)
+    )
+    try:
+        resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+        import re as _re
+        for m in _re.finditer(r'\[(\d+)\]\s*(.+)', resp.text or ""):
+            idx = int(m.group(1))
+            if 0 <= idx < len(items):
+                items[idx]["title_ja"] = m.group(2).strip()
+    except Exception as e:
+        logger.warning("HN translation failed: %s", e)
 
 
 def _render_hn_section(items: list[dict]) -> str:
