@@ -162,7 +162,7 @@ def main() -> None:
                     i for i in all_sns
                     if i.get("id") not in analyzed_sns_ids and i.get("id") not in new_ids
                 ]
-                BACKLOG_LIMIT = 100
+                BACKLOG_LIMIT = 500
                 if backlog:
                     logger.info("Backlog: %d unanalyzed posts, processing up to %d", len(backlog), BACKLOG_LIMIT)
                     new_sns_items = new_sns_items + backlog[:BACKLOG_LIMIT]
