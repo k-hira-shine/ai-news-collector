@@ -100,93 +100,86 @@ def _fmt_date(iso: str) -> str:
     return iso[:10]
 
 
-def _tool_card_group(items: list[dict]) -> str:
-    """同一ツール名の記事群を1枚のカードにまとめる。複数記事はクリックで展開。"""
-    # 代表アイテム: impactが最も高いもの、同率なら最新
+def _modal_cards(items: list[dict]) -> str:
+    """モーダル内に表示する個別カードのHTML"""
     impact_order = {"high": 0, "medium": 1, "low": 2}
-    items_sorted = sorted(
-        items,
-        key=lambda x: (impact_order.get(x.get("impact", "low"), 2),
-                       -(x.get("published_at") or x.get("analyzed_at") or "").replace("Z", "").__lt__("") or 0),
-    )
-    # published_at降順で最新優先
-    items_by_date = sorted(
-        items,
-        key=lambda x: (x.get("published_at") or x.get("analyzed_at") or ""),
-        reverse=True,
-    )
-    rep = items_by_date[0]  # 最新を代表に
-
-    tool_name = escape(rep.get("tool_name") or "")
-    # impact: グループ内で最も高いものを採用
-    best_impact = min((x.get("impact", "low") for x in items), key=lambda i: impact_order.get(i, 2))
-    impact_label, impact_color = IMPACT_LABELS.get(best_impact, ("⚪ 参考", "#64748b"))
-    # release_type: 代表のもの
-    release_type = rep.get("release_type") or "その他"
-    release_icon = RELEASE_TYPE_ICONS.get(release_type, "📌")
-    summary_ja = escape(rep.get("summary_ja") or "")
-    data_ai = "ai" if _is_ai_tool(rep) else "non-ai"
-    count = len(items)
-
-    # フィルタ用: ソースは複数ある場合は最初のものを使う
-    data_release = escape(release_type)
-    data_impact = escape(best_impact)
-    data_source = escape(rep.get("source") or "rss")
-
-    # 記事リスト（全件）
-    articles_html = ""
+    items_by_date = sorted(items, key=lambda x: (x.get("published_at") or x.get("analyzed_at") or ""), reverse=True)
+    html = ""
     for item in items_by_date:
+        rt = item.get("release_type") or "その他"
+        rt_icon = RELEASE_TYPE_ICONS.get(rt, "📌")
+        imp = item.get("impact") or "low"
+        imp_label, imp_color = IMPACT_LABELS.get(imp, ("⚪ 参考", "#64748b"))
         src = item.get("source") or "rss"
         src_icon = SOURCE_ICONS.get(src, "📰")
         src_label = escape(item.get("source_label") or src)
         age = _fmt_date(item.get("published_at") or item.get("analyzed_at") or "")
         url = escape(item.get("url") or "#")
         title = escape(item.get("title") or "")
-        title_short = title[:70] + ("…" if len(title) > 70 else "")
-        articles_html += f"""<div class="sub-article">
-  <div class="sub-meta">{src_icon} {src_label} <span class="age">{age}</span></div>
-  <a href="{url}" target="_blank" rel="noopener" class="article-link">{title_short or '記事を見る'} →</a>
+        summary = escape(item.get("summary_ja") or "")
+        html += f"""<div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">{rt_icon} {escape(rt)}</span>
+    <span class="impact-badge" style="color:{imp_color}">{imp_label}</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">{src_icon} {src_label}</span>
+    <span class="age">{age}</span>
+  </div>
+  {f'<div class="summary-ja" style="margin-bottom:6px">{summary}</div>' if summary else ''}
+  <a href="{url}" target="_blank" rel="noopener" class="article-link">{title[:80]+('…' if len(title)>80 else '') or '記事を見る'} →</a>
 </div>"""
+    return html
 
-    # 複数件の場合はトグル表示
-    if count == 1:
-        body_html = articles_html
-        toggle_html = ""
-    else:
-        # 最初の1件は常に表示、残りはトグル
-        first_article = items_by_date[0]
-        first_src = first_article.get("source") or "rss"
-        first_src_icon = SOURCE_ICONS.get(first_src, "📰")
-        first_src_label = escape(first_article.get("source_label") or first_src)
-        first_age = _fmt_date(first_article.get("published_at") or first_article.get("analyzed_at") or "")
-        first_url = escape(first_article.get("url") or "#")
-        first_title = escape(first_article.get("title") or "")
-        first_title_short = first_title[:70] + ("…" if len(first_title) > 70 else "")
 
-        rest_html = ""
-        for item in items_by_date[1:]:
-            src = item.get("source") or "rss"
-            src_icon = SOURCE_ICONS.get(src, "📰")
-            src_label = escape(item.get("source_label") or src)
-            age = _fmt_date(item.get("published_at") or item.get("analyzed_at") or "")
-            url = escape(item.get("url") or "#")
-            title = escape(item.get("title") or "")
-            title_short = title[:70] + ("…" if len(title) > 70 else "")
-            rest_html += f"""<div class="sub-article">
-  <div class="sub-meta">{src_icon} {src_label} <span class="age">{age}</span></div>
-  <a href="{url}" target="_blank" rel="noopener" class="article-link">{title_short or '記事を見る'} →</a>
+def _tool_card_group(items: list[dict]) -> str:
+    """同一ツール名の記事群を1枚のカードにまとめる。複数記事はモーダルで展開。"""
+    impact_order = {"high": 0, "medium": 1, "low": 2}
+    items_by_date = sorted(items, key=lambda x: (x.get("published_at") or x.get("analyzed_at") or ""), reverse=True)
+    rep = items_by_date[0]
+
+    tool_name = escape(rep.get("tool_name") or "")
+    best_impact = min((x.get("impact", "low") for x in items), key=lambda i: impact_order.get(i, 2))
+    impact_label, impact_color = IMPACT_LABELS.get(best_impact, ("⚪ 参考", "#64748b"))
+    release_type = rep.get("release_type") or "その他"
+    release_icon = RELEASE_TYPE_ICONS.get(release_type, "📌")
+    summary_ja = escape(rep.get("summary_ja") or "")
+    data_ai = "ai" if _is_ai_tool(rep) else "non-ai"
+    count = len(items)
+    data_release = escape(release_type)
+    data_impact = escape(best_impact)
+    data_source = escape(rep.get("source") or "rss")
+
+    # 代表記事（最新1件）
+    first = items_by_date[0]
+    first_src = first.get("source") or "rss"
+    first_src_icon = SOURCE_ICONS.get(first_src, "📰")
+    first_src_label = escape(first.get("source_label") or first_src)
+    first_age = _fmt_date(first.get("published_at") or first.get("analyzed_at") or "")
+    first_url = escape(first.get("url") or "#")
+    first_title = escape(first.get("title") or "")
+    first_title_short = first_title[:70] + ("…" if len(first_title) > 70 else "")
+
+    # 複数件の場合はモーダルボタン
+    import uuid as _uuid
+    modal_id = "m" + _uuid.uuid4().hex[:8]
+    modal_html = ""
+    more_btn = ""
+    if count > 1:
+        modal_cards_html = _modal_cards(items)
+        modal_html = f"""<div class="modal-overlay" id="{modal_id}" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">{tool_name}</span>
+      <span class="count-badge">{count}件</span>
+      <button class="modal-close" onclick="document.getElementById('{modal_id}').style.display='none'">✕</button>
+    </div>
+    <div class="modal-cards">{modal_cards_html}</div>
+  </div>
 </div>"""
+        more_btn = f'<button class="more-btn" onclick="document.getElementById(\'{modal_id}\').style.display=\'flex\'">📋 {count}件の記事をすべて見る</button>'
 
-        body_html = f"""<div class="sub-article">
-  <div class="sub-meta">{first_src_icon} {first_src_label} <span class="age">{first_age}</span></div>
-  <a href="{first_url}" target="_blank" rel="noopener" class="article-link">{first_title_short or '記事を見る'} →</a>
-</div>"""
-        toggle_html = f"""<details class="more-articles">
-  <summary>他 {count - 1} 件の記事を見る</summary>
-  {rest_html}
-</details>"""
-
-    return f"""<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}">
+    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">{tool_name}</span>
@@ -197,8 +190,11 @@ def _tool_card_group(items: list[dict]) -> str:
   </div>
   {f'<div class="summary-ja">{summary_ja}</div>' if summary_ja else ''}
   <div class="card-footer">
-    {body_html}
-    {toggle_html}
+    <div class="sub-article">
+      <div class="sub-meta">{first_src_icon} {first_src_label} <span class="age">{first_age}</span></div>
+      <a href="{first_url}" target="_blank" rel="noopener" class="article-link">{first_title_short or '記事を見る'} →</a>
+    </div>
+    {more_btn}
   </div>
 </div>"""
 
@@ -309,14 +305,18 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .article-link {{ color: var(--muted); font-size: 0.8rem; text-decoration: none; word-break: break-word; }}
   .article-link:hover {{ color: var(--accent); }}
   .count-badge {{ font-size: 0.72rem; background: rgba(148,163,184,0.15); border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 10px; }}
-  .sub-article {{ padding: 4px 0; border-top: 1px solid var(--border); }}
-  .sub-article:first-child {{ border-top: none; }}
+  .sub-article {{ padding: 4px 0; }}
   .sub-meta {{ font-size: 0.74rem; color: var(--muted); margin-bottom: 2px; }}
-  .more-articles {{ margin-top: 6px; }}
-  .more-articles summary {{ font-size: 0.78rem; color: var(--accent); cursor: pointer; padding: 4px 0; list-style: none; }}
-  .more-articles summary::-webkit-details-marker {{ display: none; }}
-  .more-articles summary::before {{ content: "▶ "; font-size: 0.7rem; }}
-  details[open] .more-articles summary::before {{ content: "▼ "; }}
+  .more-btn {{ margin-top: 8px; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--accent); padding: 5px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; width: 100%; text-align: left; }}
+  .more-btn:hover {{ background: rgba(56,189,248,0.2); }}
+  .modal-overlay {{ display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center; padding: 16px; }}
+  .modal-box {{ background: var(--surface); border: 1px solid var(--border); border-radius: 14px; max-width: 860px; width: 100%; max-height: 85vh; display: flex; flex-direction: column; }}
+  .modal-header {{ display: flex; align-items: center; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }}
+  .modal-title {{ font-size: 1.1rem; font-weight: 700; color: var(--accent); flex: 1; }}
+  .modal-close {{ background: none; border: none; color: var(--muted); font-size: 1.2rem; cursor: pointer; padding: 2px 6px; border-radius: 4px; }}
+  .modal-close:hover {{ color: var(--text); background: var(--card); }}
+  .modal-cards {{ overflow-y: auto; padding: 16px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }}
+  .modal-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }}
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
