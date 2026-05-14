@@ -180,6 +180,9 @@ def _tool_card_group(items: list[dict]) -> str:
 </div>"""
         more_btn = f'<button class="more-btn" onclick="document.getElementById(\'{modal_id}\').style.display=\'flex\'">📋 {count}件の記事をすべて見る</button>'
 
+    from urllib.parse import quote as _quote
+    review_url = f"reviews.html?tool={_quote(rep.get('tool_name') or '')}"
+
     return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}">
   <div class="tool-card-header">
     <div class="tool-name-row">
@@ -187,6 +190,7 @@ def _tool_card_group(items: list[dict]) -> str:
       <span class="release-badge">{release_icon} {escape(release_type)}</span>
       <span class="impact-badge" style="color:{impact_color}">{impact_label}</span>
       {f'<span class="count-badge">{count}件</span>' if count > 1 else ''}
+      <a href="{review_url}" class="review-link" title="使ってみたメモを見る">📋 使ってみた</a>
     </div>
   </div>
   {f'<div class="summary-ja">{summary_ja}</div>' if summary_ja else ''}
@@ -318,6 +322,8 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .modal-close:hover {{ color: var(--text); background: var(--card); }}
   .modal-cards {{ overflow-y: auto; padding: 16px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }}
   .modal-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }}
+  .review-link {{ font-size: 0.75rem; color: var(--muted); text-decoration: none; padding: 2px 8px; border: 1px solid var(--border); border-radius: 10px; margin-left: auto; white-space: nowrap; transition: all 0.2s; }}
+  .review-link:hover {{ color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,0.1); }}
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
@@ -336,6 +342,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
       <a href="sns_success.html">🧠 SNS成功者</a>
       <a href="money.html">🎬 マネタイズ</a>
       <a href="tools.html" class="active">🔧 ツール追跡</a>
+      <a href="reviews.html">📋 使ってみた</a>
       <a href="hn.html">📡 HN/arxiv</a>
     </nav>
   </div>

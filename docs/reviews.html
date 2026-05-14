@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIツール 使ってみたレビュー</title>
+<style>
+  :root {
+    --bg: #0a0f1e; --surface: #111827; --card: #1a2236;
+    --accent: #38bdf8; --accent2: #0284c7; --text: #e2e8f0;
+    --muted: #94a3b8; --border: #2d3748;
+    --green: #10b981; --yellow: #f59e0b; --red: #ef4444;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }
+  header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 20px 32px; border-bottom: 1px solid var(--border); }
+  .header-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header-title { font-size: 1.4rem; font-weight: 700; color: var(--accent); }
+  .header-title span { font-size: 0.85rem; color: var(--muted); margin-left: 10px; font-weight: 400; }
+  nav { display: flex; gap: 8px; padding: 10px 32px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; }
+  nav a:hover { color: var(--accent); background: rgba(56,189,248,0.1); }
+  nav a.active { color: var(--accent); background: rgba(56,189,248,0.15); }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 16px; }
+  .stats-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat-chip { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: var(--muted); }
+  .stat-chip strong { color: var(--accent); }
+  .filter-section { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .filter-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .filter-label { font-size: 0.76rem; color: var(--muted); min-width: 60px; }
+  .filter-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); padding: 5px 12px; border-radius: 16px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { background: var(--accent2); border-color: var(--accent); color: #fff; }
+  .reviews-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 14px; }
+  .review-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 10px; transition: border-color 0.2s; }
+  .review-card:hover { border-color: var(--accent); }
+  .card-header { display: flex; flex-direction: column; gap: 6px; }
+  .tool-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .tool-name { font-size: 1.05rem; font-weight: 700; color: var(--accent); text-decoration: none; }
+  .tool-name:hover { text-decoration: underline; }
+  .category-badge { font-size: 0.72rem; background: rgba(148,163,184,0.15); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 10px; }
+  .badge-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .status-badge, .verdict-badge { font-size: 0.8rem; font-weight: 600; }
+  .updated { font-size: 0.72rem; color: var(--muted); margin-left: auto; }
+  .use-for { display: flex; gap: 6px; flex-wrap: wrap; }
+  .use-badge { font-size: 0.75rem; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25); color: var(--accent); padding: 2px 8px; border-radius: 10px; }
+  .fields { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--border); padding-top: 8px; }
+  .field-row { display: flex; gap: 8px; font-size: 0.85rem; }
+  .field-label { color: var(--muted); min-width: 110px; flex-shrink: 0; font-size: 0.78rem; }
+  .field-value { color: var(--text); line-height: 1.5; }
+  .memo { font-size: 0.85rem; color: var(--muted); background: rgba(148,163,184,0.08); border-radius: 6px; padding: 8px 10px; line-height: 1.6; border-top: 1px solid var(--border); }
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }
+  @media (max-width: 640px) {
+    header { padding: 14px 12px; }
+    nav { padding: 8px 12px; }
+    .reviews-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="header-title">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-15 06:37 JST</span></div>
+    <nav style="padding:0;border:none;background:none;">
+      <a href="index.html" >📰 ニュース</a>
+<a href="sns_success.html" >🧠 SNS成功者</a>
+<a href="money.html" >🎬 マネタイズ</a>
+<a href="tools.html" >🔧 ツール追跡</a>
+<a href="reviews.html" class="active">📋 使ってみた</a>
+<a href="hn.html" >📡 HN/arxiv</a>
+    </nav>
+  </div>
+</header>
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-chip">合計 <strong>4</strong> ツール</div>
+    <div class="stat-chip">✅ 使用中 <strong>4</strong></div>
+    <div class="stat-chip">🔄 試用中 <strong>0</strong></div>
+    <div class="stat-chip">⬜ 未試用 <strong>0</strong></div>
+    <div class="stat-chip">❌ 不採用 <strong>0</strong></div>
+    <div class="stat-chip">👍 採用判定 <strong id="visibleCount">4</strong> / 4</div>
+  </div>
+  <div class="filter-section">
+    <div class="filter-row">
+      <span class="filter-label">ステータス</span>
+      <button class="filter-btn active" data-filter-status="all">すべて</button>
+<button class="filter-btn" data-filter-status="using">✅ 使用中</button>
+<button class="filter-btn" data-filter-status="trying">🔄 試用中</button>
+<button class="filter-btn" data-filter-status="untried">⬜ 未試用</button>
+<button class="filter-btn" data-filter-status="rejected">❌ 不採用</button>
+
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">判定</span>
+      <button class="filter-btn active" data-filter-verdict="all">すべて</button>
+<button class="filter-btn" data-filter-verdict="use">👍 使う</button>
+<button class="filter-btn" data-filter-verdict="no">👎 使わない</button>
+<button class="filter-btn" data-filter-verdict="maybe">🤔 検討中</button>
+
+    </div>
+    <div class="filter-row">
+      <span class="filter-label">カテゴリ</span>
+      <button class="filter-btn active" data-filter-category="all">すべて</button>
+<button class="filter-btn" data-filter-category="AIコーディング">AIコーディング</button>
+<button class="filter-btn" data-filter-category="汎用AI">汎用AI</button>
+
+    </div>
+  </div>
+  <div class="reviews-grid" id="reviewsGrid">
+    <div class="review-card" data-status="using" data-verdict="use" data-category="AIコーディング">
+  <div class="card-header">
+    <div class="tool-name-row">
+      <a href="https://claude.ai/code" target="_blank" rel="noopener" class="tool-name">Claude Code</a>
+      <span class="category-badge">AIコーディング</span>
+    </div>
+    <div class="badge-row">
+      <span class="status-badge" style="color:#10b981">✅ 使用中</span>
+      <span class="verdict-badge" style="color:#10b981">👍 使う</span>
+      <span class="updated">更新 2026-05-15</span>
+    </div>
+  </div>
+  
+  
+  
+</div>
+<div class="review-card" data-status="using" data-verdict="use" data-category="AIコーディング">
+  <div class="card-header">
+    <div class="tool-name-row">
+      <a href="https://cursor.com" target="_blank" rel="noopener" class="tool-name">Cursor</a>
+      <span class="category-badge">AIコーディング</span>
+    </div>
+    <div class="badge-row">
+      <span class="status-badge" style="color:#10b981">✅ 使用中</span>
+      <span class="verdict-badge" style="color:#10b981">👍 使う</span>
+      <span class="updated">更新 2026-05-15</span>
+    </div>
+  </div>
+  
+  
+  
+</div>
+<div class="review-card" data-status="using" data-verdict="use" data-category="汎用AI">
+  <div class="card-header">
+    <div class="tool-name-row">
+      <a href="https://chatgpt.com" target="_blank" rel="noopener" class="tool-name">ChatGPT</a>
+      <span class="category-badge">汎用AI</span>
+    </div>
+    <div class="badge-row">
+      <span class="status-badge" style="color:#10b981">✅ 使用中</span>
+      <span class="verdict-badge" style="color:#10b981">👍 使う</span>
+      <span class="updated">更新 2026-05-15</span>
+    </div>
+  </div>
+  
+  
+  
+</div>
+<div class="review-card" data-status="using" data-verdict="use" data-category="汎用AI">
+  <div class="card-header">
+    <div class="tool-name-row">
+      <a href="https://gemini.google.com" target="_blank" rel="noopener" class="tool-name">Gemini</a>
+      <span class="category-badge">汎用AI</span>
+    </div>
+    <div class="badge-row">
+      <span class="status-badge" style="color:#10b981">✅ 使用中</span>
+      <span class="verdict-badge" style="color:#10b981">👍 使う</span>
+      <span class="updated">更新 2026-05-15</span>
+    </div>
+  </div>
+  
+  
+  
+</div>
+  </div>
+</div>
+<footer>地上にあるAIツールを全て触っている状態を目指す — data/reviews.json に追記して更新</footer>
+<script>
+let activeStatus = 'all';
+let activeVerdict = 'all';
+let activeCategory = 'all';
+
+function applyFilters() {
+  const cards = Array.from(document.querySelectorAll('.review-card'));
+  let visible = 0;
+  cards.forEach(card => {
+    const sm = activeStatus === 'all' || card.dataset.status === activeStatus;
+    const vm = activeVerdict === 'all' || card.dataset.verdict === activeVerdict;
+    const cm = activeCategory === 'all' || card.dataset.category === activeCategory;
+    const show = sm && vm && cm;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  document.getElementById('visibleCount').textContent = visible;
+}
+
+document.querySelectorAll('[data-filter-status]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter-status]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeStatus = btn.dataset.filterStatus;
+    applyFilters();
+  });
+});
+document.querySelectorAll('[data-filter-verdict]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter-verdict]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeVerdict = btn.dataset.filterVerdict;
+    applyFilters();
+  });
+});
+document.querySelectorAll('[data-filter-category]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-filter-category]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCategory = btn.dataset.filterCategory;
+    applyFilters();
+  });
+});
+
+// ?tool=ToolName でリンクされた場合、該当カードをハイライト
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const toolParam = (params.get('tool') || '').toLowerCase().trim();
+  if (!toolParam) return;
+  const cards = Array.from(document.querySelectorAll('.review-card'));
+  let found = null;
+  cards.forEach(card => {
+    const nameEl = card.querySelector('.tool-name');
+    if (nameEl && nameEl.textContent.toLowerCase().trim() === toolParam) {
+      card.style.outline = '2px solid var(--accent)';
+      card.style.background = 'rgba(56,189,248,0.07)';
+      if (!found) found = card;
+    }
+  });
+  if (found) {
+    setTimeout(() => found.scrollIntoView({ behavior: 'smooth', block: 'center' }), 200);
+  }
+})();
+</script>
+</body>
+</html>
