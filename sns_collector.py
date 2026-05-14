@@ -9,12 +9,15 @@ import logging
 import os
 from datetime import datetime, timezone
 
+import requests
+
 from collector import _normalize_tweet
 from utils import data_dir, today_str
 
 logger = logging.getLogger("ai-news.sns_collector")
 
 SNS_CACHE_PATH = data_dir("cache", "sns_seen_urls.json")
+SNS_ARTICLE_CACHE_PATH = data_dir("cache", "sns_x_articles.json")
 SNS_DATA_DIR = data_dir("sns_success")
 
 
@@ -49,6 +52,7 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     import threading
     meta = {"apify_runs": 0, "apify_cost_usd": 0.0, "total_fetched": 0}
     _meta_lock = threading.Lock()
+    article_cache = _load_article_cache()
     all_items: list[dict] = []
 
     def _run_apify(search_terms: list[str], max_items_each: int, label: str, query_type: str = "Top", since_days: int | None = 90) -> list[dict]:
@@ -81,6 +85,7 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
             author_obj = tweet.get("author") or {}
             item["author_display"] = author_obj.get("name") or item["author"]
             item["author_followers"] = author_obj.get("followers") or author_obj.get("followersCount") or 0
+            _enrich_x_article(item, tweet, article_cache)
             media = []
             for m in tweet.get("media") or []:
                 murl = m.get("url") or m.get("previewUrl") or ""
@@ -132,7 +137,97 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
         logger.error("SNS collection failed: %s", e)
         meta["error"] = str(e)[:200]
 
+    _save_article_cache(article_cache)
     return all_items, meta
+
+
+def _find_x_article_url(tweet: dict) -> str:
+    """Apifyの生tweetから x.com/i/article/... URL を探す。"""
+    entities = tweet.get("entities") or {}
+    for url_obj in entities.get("urls") or []:
+        expanded = url_obj.get("expanded_url") or url_obj.get("expandedUrl") or ""
+        if "x.com/i/article/" in expanded or "twitter.com/i/article/" in expanded:
+            return expanded.replace("http://", "https://")
+    return ""
+
+
+def _article_blocks_to_text(blocks: list[dict]) -> str:
+    """Xquik Article API の content blocks を読みやすい本文に変換する。"""
+    lines: list[str] = []
+    for block in blocks or []:
+        text = (block.get("text") or "").strip()
+        if not text:
+            continue
+        block_type = block.get("type", "")
+        if block_type.startswith("header-"):
+            lines.append(f"\n{text}\n")
+        elif block_type == "ordered-list-item":
+            lines.append(f"1. {text}")
+        elif block_type == "unordered-list-item":
+            lines.append(f"- {text}")
+        elif block_type == "blockquote":
+            lines.append(f"> {text}")
+        else:
+            lines.append(text)
+    return "\n".join(lines).strip()
+
+
+def _fetch_x_article(tweet_id: str) -> dict:
+    """X Article本文をXquik APIで取得する。APIキーまたはX_COOKIESがない場合は空dict。"""
+    api_key = os.environ.get("XQUIK_API_KEY")
+    x_cookies = os.environ.get("X_COOKIES")
+    if not api_key and not x_cookies:
+        return {}
+
+    url = f"https://xquik.com/api/v1/x/articles/{tweet_id}"
+    headers = {}
+    if api_key:
+        headers["x-api-key"] = api_key
+    if x_cookies:
+        headers["Cookie"] = x_cookies
+    try:
+        resp = requests.get(url, headers=headers, timeout=30)
+        if resp.status_code == 404:
+            return {}
+        resp.raise_for_status()
+        return resp.json() or {}
+    except Exception as e:
+        logger.warning("Failed to fetch X Article %s: %s", tweet_id, e)
+        return {}
+
+
+def _enrich_x_article(item: dict, tweet: dict, article_cache: dict) -> None:
+    """X Articleリンク付き投稿なら本文を取得し、content/titleを記事本文で補完する。"""
+    article_url = _find_x_article_url(tweet)
+    if not article_url:
+        return
+
+    tweet_id = str(tweet.get("id") or item.get("url", "").rsplit("/", 1)[-1])
+    item["article_url"] = article_url
+    item["article_source"] = "x_article"
+
+    article = article_cache.get(tweet_id)
+    if not article:
+        article = _fetch_x_article(tweet_id)
+        if article:
+            article_cache[tweet_id] = article
+
+    if not article:
+        return
+
+    article_obj = article.get("article") or article
+    title = article_obj.get("title") or ""
+    preview = article_obj.get("previewText") or article_obj.get("preview_text") or ""
+    full_text = article_obj.get("full_text") or ""
+    if not full_text:
+        full_text = _article_blocks_to_text(article_obj.get("contents") or [])
+
+    if full_text:
+        item["article_title"] = title
+        item["article_preview"] = preview
+        item["article_content"] = full_text
+        item["title"] = title or preview or item.get("title", "")
+        item["content"] = full_text
 
 
 def deduplicate_sns(items: list[dict]) -> list[dict]:
@@ -166,6 +261,22 @@ def _save_sns_cache(cache: dict[str, str]) -> None:
     with open(tmp, "w") as f:
         json.dump(cache, f)
     os.replace(tmp, SNS_CACHE_PATH)
+
+
+def _load_article_cache() -> dict:
+    try:
+        with open(SNS_ARTICLE_CACHE_PATH, encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def _save_article_cache(cache: dict) -> None:
+    os.makedirs(os.path.dirname(SNS_ARTICLE_CACHE_PATH), exist_ok=True)
+    tmp = SNS_ARTICLE_CACHE_PATH + ".tmp"
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(cache, f, ensure_ascii=False)
+    os.replace(tmp, SNS_ARTICLE_CACHE_PATH)
 
 
 def save_sns_jsonl(items: list[dict]) -> str:

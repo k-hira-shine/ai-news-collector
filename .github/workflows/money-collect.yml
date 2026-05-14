@@ -43,6 +43,7 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          X_COOKIES: ${{ secrets.X_COOKIES }}
         run: |
           MODE="${{ github.event.inputs.mode || 'full' }}"
           if [ "$MODE" = "analyze-only" ]; then
