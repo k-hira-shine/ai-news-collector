@@ -225,6 +225,13 @@ sns_success:
   min_followers: 5000
   # 1クエリあたりの最大取得件数
   max_items_per_query: 150
+  # 追跡アカウント1件あたりの最大取得件数
+  max_items_per_account: 150
+
+  # 検索では漏れやすいが、継続的に拾いたい成功者アカウント
+  accounts:
+    - handle: "teihen_ns_fire"
+      label: "低辺会社員からFIRE"
 
   search_queries:
     # 日本語：成功体験・マインドセット

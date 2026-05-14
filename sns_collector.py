@@ -35,11 +35,13 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     sns_cfg = config.get("sns_success", {})
     actor_id = config.get("x_twitter", {}).get("apify_actor", "xquik/x-tweet-scraper")
 
+    accounts = sns_cfg.get("accounts", [])
+    max_items_per_account = sns_cfg.get("max_items_per_account", 150)
     search_queries = sns_cfg.get("search_queries", [])
     max_items_per_query = sns_cfg.get("max_items_per_query", 100)
 
-    if not search_queries:
-        logger.warning("No sns_success search_queries configured")
+    if not accounts and not search_queries:
+        logger.warning("No sns_success accounts or search_queries configured")
         return [], {"error": "no_queries"}
 
     import threading
@@ -47,18 +49,18 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     _meta_lock = threading.Lock()
     all_items: list[dict] = []
 
-    def _run_apify(search_terms: list[str], max_items_each: int, label: str) -> list[dict]:
+    def _run_apify(search_terms: list[str], max_items_each: int, label: str, query_type: str = "Top") -> list[dict]:
         """Apifyを1回起動してツイートを取得し正規化して返す"""
         from datetime import timedelta
         since_date = (datetime.now(timezone.utc) - timedelta(days=90)).strftime("%Y-%m-%d")
         run_input = {
             "searchTerms": search_terms,
-            "queryType": "Top",
+            "queryType": query_type,
             "maxItems": max_items_each,
             "includeSearchTerms": True,
             "since": since_date,
         }
-        logger.info("SNS collection [%s]: %d queries × up to %d posts", label, len(search_terms), max_items_each)
+        logger.info("SNS collection [%s]: %d queries × up to %d posts (%s)", label, len(search_terms), max_items_each, query_type)
         run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
         with _meta_lock:
             meta["apify_runs"] += 1
@@ -86,6 +88,10 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
 
     try:
         from concurrent.futures import ThreadPoolExecutor, as_completed
+
+        if accounts:
+            account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
+            all_items += _run_apify(account_queries, max_items_per_account, "accounts", query_type="Latest")
 
         ja_queries = [q for q in search_queries if "lang:en" not in q]
         en_queries = [q for q in search_queries if "lang:en" in q]
