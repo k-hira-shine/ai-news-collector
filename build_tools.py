@@ -163,6 +163,13 @@ def _fmt_date(iso: str) -> str:
     return iso[:10]
 
 
+def _group_latest(g: list[dict]) -> str:
+    return max(
+        (x.get("published_at") or x.get("analyzed_at") or "" for x in g),
+        default=""
+    )
+
+
 def _modal_cards(items: list[dict]) -> str:
     """モーダル内に表示する個別カードのHTML"""
     impact_order = {"high": 0, "medium": 1, "low": 2}
@@ -250,15 +257,18 @@ def _tool_card_group(items: list[dict]) -> str:
 
     first_src_label_raw = first.get("source_label") or first_src
     data_source_label = escape(first_src_label_raw)
+    latest_dt = _group_latest(items)  # ISO文字列
 
-    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}" data-family="{escape(fam)}" data-source-label="{data_source_label}">
+    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}" data-family="{escape(fam)}" data-source-label="{data_source_label}" data-tool-name="{tool_name}" data-latest="{escape(latest_dt)}">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">{tool_name}</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
       <span class="family-badge" style="border-color:{fam_color};color:{fam_color}">{fam_label_esc}</span>
       <span class="release-badge">{release_icon} {escape(release_type)}</span>
       <span class="impact-badge" style="color:{impact_color}">{impact_label}</span>
       {f'<span class="count-badge">{count}件</span>' if count > 1 else ''}
+      <button class="watch-btn" data-tool="{tool_name}" onclick="toggleWatch(this)" title="注目する">☆</button>
       <button class="review-link" data-tool="{escape(rep.get('tool_name') or '')}" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
     </div>
   </div>
@@ -309,11 +319,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     def _group_sort_key(g: list[dict]) -> tuple:
         fam = (g[0].get("tool_family") or "").lower()
         is_priority = 0 if fam in _FAMILY_PRIORITY else 1
-        latest = max(
-            (x.get("published_at") or x.get("analyzed_at") or "" for x in g),
-            default=""
-        )
-        return (is_priority, latest)
+        return (is_priority, _group_latest(g))
 
     sorted_groups = sorted(groups.values(), key=_group_sort_key, reverse=True)
     cards_html = "\n".join(_tool_card_group(g) for g in sorted_groups) if sorted_groups else \
@@ -407,8 +413,13 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .modal-close:hover {{ color: var(--text); background: var(--card); }}
   .modal-cards {{ overflow-y: auto; padding: 16px 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 12px; }}
   .modal-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }}
-  .review-link {{ font-size: 0.75rem; color: var(--muted); text-decoration: none; padding: 2px 8px; border: 1px solid var(--border); border-radius: 10px; margin-left: auto; white-space: nowrap; transition: all 0.2s; }}
+  .review-link {{ font-size: 0.75rem; color: var(--muted); text-decoration: none; padding: 2px 8px; border: 1px solid var(--border); border-radius: 10px; margin-left: auto; white-space: nowrap; transition: all 0.2s; cursor: pointer; background: none; }}
   .review-link:hover {{ color: var(--accent); border-color: var(--accent); background: rgba(56,189,248,0.1); }}
+  .watch-btn {{ font-size: 0.85rem; background: none; border: 1px solid var(--border); color: var(--muted); padding: 2px 7px; border-radius: 10px; cursor: pointer; transition: all 0.2s; white-space: nowrap; }}
+  .watch-btn:hover {{ border-color: #fbbf24; color: #fbbf24; }}
+  .watch-btn.watching {{ border-color: #fbbf24; color: #fbbf24; background: rgba(251,191,36,0.1); }}
+  .tool-card.watched {{ border-color: #fbbf24; box-shadow: 0 0 0 1px #fbbf2440; }}
+  .new-badge {{ font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); padding: 2px 7px; border-radius: 10px; }}
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
@@ -473,6 +484,80 @@ let activeSource = 'all';
 let activeAi = 'all';
 
 let activeFamily = 'all';
+
+/* ── 注目（Watch）機能 ── */
+const WATCH_KEY = 'tools_watched';
+function getWatched() {{
+  try {{ return new Set(JSON.parse(localStorage.getItem(WATCH_KEY) || '[]')); }} catch {{ return new Set(); }}
+}}
+function saveWatched(s) {{
+  localStorage.setItem(WATCH_KEY, JSON.stringify([...s]));
+}}
+
+function toggleWatch(btn) {{
+  const tool = btn.dataset.tool;
+  const watched = getWatched();
+  const card = btn.closest('.tool-card');
+  if (watched.has(tool)) {{
+    watched.delete(tool);
+    btn.textContent = '☆';
+    btn.classList.remove('watching');
+    card.classList.remove('watched');
+  }} else {{
+    watched.add(tool);
+    btn.textContent = '★';
+    btn.classList.add('watching');
+    card.classList.add('watched');
+  }}
+  saveWatched(watched);
+  reorderCards();
+}}
+
+function reorderCards() {{
+  const grid = document.getElementById('toolsGrid');
+  const cards = Array.from(grid.querySelectorAll('.tool-card'));
+  const watched = getWatched();
+  // 注目あり → 新着あり → その他（元の順）
+  cards.sort((a, b) => {{
+    const aw = watched.has(a.dataset.toolName) ? 0 : 1;
+    const bw = watched.has(b.dataset.toolName) ? 0 : 1;
+    if (aw !== bw) return aw - bw;
+    // 同じwatchedランクなら新着を上に
+    const an = a.querySelector('.new-badge')?.style.display !== 'none' ? 0 : 1;
+    const bn = b.querySelector('.new-badge')?.style.display !== 'none' ? 0 : 1;
+    return an - bn;
+  }});
+  cards.forEach(c => grid.appendChild(c));
+}}
+
+function initWatchAndNew() {{
+  const watched = getWatched();
+  const now = Date.now();
+  const H24 = 24 * 60 * 60 * 1000;
+  document.querySelectorAll('.tool-card').forEach(card => {{
+    const tool = card.dataset.toolName;
+    // 注目復元
+    if (watched.has(tool)) {{
+      card.classList.add('watched');
+      const btn = card.querySelector('.watch-btn');
+      if (btn) {{ btn.textContent = '★'; btn.classList.add('watching'); }}
+    }}
+    // 新着バッジ（24時間以内）
+    const latest = card.dataset.latest;
+    if (latest) {{
+      try {{
+        const diff = now - new Date(latest).getTime();
+        if (diff >= 0 && diff < H24) {{
+          const badge = card.querySelector('.new-badge');
+          if (badge) badge.style.display = '';
+        }}
+      }} catch {{}}
+    }}
+  }});
+  reorderCards();
+}}
+
+window.addEventListener('DOMContentLoaded', initWatchAndNew);
 
 function applyFilters() {{
   const cards = Array.from(document.querySelectorAll('.tool-card'));
