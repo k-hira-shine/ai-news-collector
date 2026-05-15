@@ -245,13 +245,14 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
     --warn: #f59e0b; --error: #ef4444;
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-  body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }}
+  body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }}
+  .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
+  .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
+  .topnav a:hover {{ color: var(--accent); background: rgba(167,139,250,0.1); }}
+  .topnav a.active {{ background: var(--accent2); color: #fff; }}
   header {{ background: linear-gradient(135deg, #1e1b4b, #0a0f1e); padding: 24px 32px; border-bottom: 1px solid var(--border); }}
   header h1 {{ font-size: 1.6rem; color: var(--accent); }}
   header p {{ color: var(--muted); font-size: 0.85rem; margin-top: 4px; }}
-  nav {{ display: flex; gap: 8px; padding: 12px 32px; background: var(--surface); border-bottom: 1px solid var(--border); flex-wrap: wrap; }}
-  nav a {{ color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 4px 10px; border-radius: 6px; }}
-  nav a:hover {{ color: var(--accent); background: rgba(167,139,250,0.1); }}
   nav a.active {{ color: var(--accent); background: rgba(167,139,250,0.15); }}
   .container {{ max-width: 1100px; margin: 0 auto; padding: 24px 16px; }}
   .toolbar {{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }}
@@ -299,16 +300,20 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
 </style>
 </head>
 <body>
+<nav class="topnav">
+  <a href="index.html">📰 ニュース</a>
+  <a href="strategy.html">🎯 施策提案</a>
+  <a href="buzz.html">🔥 バズりランキング</a>
+  <a href="money.html">🎬 マネタイズ</a>
+  <a href="sns_success.html">🧠 SNS成功者</a>
+  <a href="post_generator.html" class="active">✍️ 投稿ストック</a>
+  <a href="tools.html">🔧 ツール追跡</a>
+  <a href="reviews.html">📋 使ってみた</a>
+</nav>
 <header>
   <h1>📋 生成済み投稿ストック</h1>
   <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: {now_jst}</p>
 </header>
-<nav>
-  <a href="index.html">📰 ニュース</a>
-  <a href="sns_success.html">🧠 SNS成功者マインド</a>
-  <a href="money.html">🎬 マネタイズ事例</a>
-  <a href="post_generator.html" class="active">📋 投稿ストック</a>
-</nav>
 <div class="container">
   <div class="toolbar">
     <div class="stat-chip">保存済み: <strong id="totalCount">0</strong> 件</div>
