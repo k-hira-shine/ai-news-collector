@@ -43,19 +43,6 @@ FAMILY_LABELS = {
 }
 
 
-def _tools_tracking_cfg() -> dict:
-    try:
-        import yaml
-        with open(CONFIG_PATH, encoding="utf-8") as f:
-            cfg = yaml.safe_load(f) or {}
-        return cfg.get("tools_tracking") or {}
-    except Exception:
-        return {}
-
-
-def _only_major_llm_families() -> bool:
-    return bool(_tools_tracking_cfg().get("only_major_llm_families", True))
-
 
 def _infer_tool_family(item: dict) -> str | None:
     """分析に tool_family が無い旧データ向け。優先順は Gemini → Claude → ChatGPT。"""
@@ -89,7 +76,6 @@ def load_all_items(days: int = 30) -> list[dict]:
         return []
     files = sorted(glob(os.path.join(TOOLS_DATA_DIR, "*.jsonl")), reverse=True)
     items: list[dict] = []
-    only_major = _only_major_llm_families()
     for fpath in files[:days]:
         with open(fpath, encoding="utf-8") as f:
             for line in f.read().split("\n"):
@@ -100,14 +86,8 @@ def load_all_items(days: int = 30) -> list[dict]:
                     obj = json.loads(line)
                     if not obj.get("tool_name"):
                         continue
-                    fam = _resolve_tool_family(obj)
-                    if only_major:
-                        if fam not in ("gemini", "claude", "chatgpt"):
-                            continue
-                    else:
-                        fam = fam or "other"
                     enriched = dict(obj)
-                    enriched["tool_family"] = fam
+                    enriched["tool_family"] = _resolve_tool_family(obj) or "other"
                     items.append(enriched)
                 except Exception:
                     continue
@@ -271,7 +251,6 @@ def _tool_card_group(items: list[dict]) -> str:
 
 def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     items = load_all_items()
-    only_major = _only_major_llm_families()
     from zoneinfo import ZoneInfo
     now_str = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M JST")
 
@@ -301,12 +280,18 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
         key = f"{nk}|{fam}"
         groups[key].append(item)
     # グループ内最新のpublished_atで全体をソート
-    def _group_latest(g: list[dict]) -> str:
-        return max(
+    _FAMILY_PRIORITY = {"gemini": 0, "claude": 0, "chatgpt": 0}
+
+    def _group_sort_key(g: list[dict]) -> tuple:
+        fam = (g[0].get("tool_family") or "").lower()
+        is_priority = 0 if fam in _FAMILY_PRIORITY else 1
+        latest = max(
             (x.get("published_at") or x.get("analyzed_at") or "" for x in g),
             default=""
         )
-    sorted_groups = sorted(groups.values(), key=_group_latest, reverse=True)
+        return (is_priority, latest)
+
+    sorted_groups = sorted(groups.values(), key=_group_sort_key, reverse=True)
     cards_html = "\n".join(_tool_card_group(g) for g in sorted_groups) if sorted_groups else \
         '<div class="empty-state"><p>まだデータがありません。ワークフローを実行すると蓄積されます。</p></div>'
     total_groups = len(sorted_groups)
@@ -324,8 +309,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
         '<button class="filter-btn" data-filter-family="claude">🟠 Claude</button>\n'
         '<button class="filter-btn" data-filter-family="chatgpt">💬 ChatGPT</button>\n'
     )
-    if not only_major:
-        family_filter_btns += '<button class="filter-btn" data-filter-family="other">📌 その他</button>\n'
+    family_filter_btns += '<button class="filter-btn" data-filter-family="other">📌 その他</button>\n'
 
     release_filter_btns = '<button class="filter-btn active" data-filter-release="all">すべて</button>\n'
     for rt in release_types:

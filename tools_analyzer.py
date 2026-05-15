@@ -147,8 +147,6 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
         logger.error("Gemini tools analysis failed: %s", e)
         return []
 
-    major_only = config.get("tools_tracking", {}).get("only_major_llm_families", True)
-
     id_to_item = {item.get("id", ""): item for item in items}
     results: list[dict] = []
 
@@ -158,13 +156,11 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
         item_id = r.get("item_id", "")
         source_item = id_to_item.get(item_id, {})
         if not source_item:
-            # IDが合わなくてもtool_nameがあれば採用
             if not r.get("tool_name"):
                 continue
 
         family = r.get("tool_family") or "other"
-
-        merged = {
+        results.append({
             **source_item,
             "tool_name": r.get("tool_name", ""),
             "release_type": r.get("release_type", "その他"),
@@ -173,13 +169,7 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
             "is_ai_tool": r.get("is_ai_tool", True),
             "tool_family": family,
             "analyzed_at": datetime.now(timezone.utc).isoformat(),
-        }
-
-        if major_only and family not in ("gemini", "claude", "chatgpt"):
-            # ページ対象外だが、バックフィルが同一レコードを毎回再投入するのを防ぐ
-            merged["tool_family"] = "other"
-
-        results.append(merged)
+        })
 
     return results
 
