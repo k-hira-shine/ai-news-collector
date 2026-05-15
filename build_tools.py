@@ -45,20 +45,44 @@ FAMILY_LABELS = {
 
 
 def _infer_tool_family(item: dict) -> str | None:
-    """分析に tool_family が無い旧データ向け。優先順は Gemini → Claude → ChatGPT。"""
-    text = " ".join([
-        item.get("tool_name") or "",
-        item.get("title") or "",
-        item.get("summary_ja") or "",
-        (item.get("content") or "")[:400],
-    ]).lower()
-    if any(k in text for k in ("gemini", "ジェミニ", "google ai studio")):
-        return "gemini"
-    if any(k in text for k in ("claude", "anthropic", "クロード")):
+    """分析に tool_family が無い旧データ向け。ツール名→タイトル→本文の順で判定。
+    ソースラベル（例: Anthropic Blog）も強いシグナルとして使う。
+    """
+    tool_name = (item.get("tool_name") or "").lower()
+    source_label = (item.get("source_label") or "").lower()
+    title = (item.get("title") or "").lower()
+    summary = (item.get("summary_ja") or "").lower()
+    body = (item.get("content") or "")[:400].lower()
+
+    # ── ツール名・ソースラベルで確定（最優先）──────────────
+    if any(k in tool_name for k in ("claude", "anthropic")):
         return "claude"
-    if any(k in text for k in ("chatgpt", "openai", "gpt-", "gpt ", "chat gpt")):
+    if any(k in tool_name for k in ("gemini", "google ai studio")):
+        return "gemini"
+    if any(k in tool_name for k in ("chatgpt", "gpt-", "gpt ")):
         return "chatgpt"
-    return None
+
+    if "anthropic" in source_label:
+        return "claude"
+    if "openai" in source_label:
+        return "chatgpt"
+    if "google ai" in source_label:
+        return "gemini"
+
+    # ── タイトル・要約・本文（弱いシグナル、複合判定）──────
+    full = f"{title} {summary} {body}"
+    claude_score = sum(1 for k in ("claude", "anthropic", "クロード") if k in full)
+    gemini_score = sum(1 for k in ("gemini", "ジェミニ", "google ai studio") if k in full)
+    chatgpt_score = sum(1 for k in ("chatgpt", "openai", "gpt-", "chat gpt") if k in full)
+
+    best = max(claude_score, gemini_score, chatgpt_score)
+    if best == 0:
+        return None
+    if claude_score == best:
+        return "claude"
+    if gemini_score == best:
+        return "gemini"
+    return "chatgpt"
 
 
 def _resolve_tool_family(item: dict) -> str | None:
