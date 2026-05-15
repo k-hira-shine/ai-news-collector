@@ -421,6 +421,12 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .tool-card.watched {{ border-color: #fbbf24; box-shadow: 0 0 0 1px #fbbf2440; }}
   .new-badge {{ font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); padding: 2px 7px; border-radius: 10px; }}
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
+  .search-box {{ display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; transition: border-color 0.2s; }}
+  .search-box:focus-within {{ border-color: var(--accent); }}
+  .search-box input {{ background: none; border: none; color: var(--text); font-size: 0.88rem; outline: none; width: 240px; }}
+  .search-box input::placeholder {{ color: var(--muted); }}
+  .search-clear {{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0 2px; line-height: 1; }}
+  .search-clear:hover {{ color: var(--text); }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
     header {{ padding: 12px; }}
@@ -449,6 +455,11 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 <div class="container">
   <div class="stats-bar">
     <div class="stat-chip">ツール数 <strong id="visibleCount">{total_groups}</strong> / {total_groups} 件（記事 {total_articles} 件）</div>
+    <div class="search-box">
+      <span style="color:var(--muted);font-size:0.9rem">🔍</span>
+      <input type="text" id="searchInput" placeholder="ツール名・キーワードで検索…" oninput="applyFilters()">
+      <button class="search-clear" onclick="document.getElementById('searchInput').value='';applyFilters()" title="クリア">✕</button>
+    </div>
   </div>
   <div class="filter-section">
     <div class="filter-row">
@@ -561,6 +572,7 @@ window.addEventListener('DOMContentLoaded', initWatchAndNew);
 
 function applyFilters() {{
   const cards = Array.from(document.querySelectorAll('.tool-card'));
+  const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
   let visible = 0;
   cards.forEach(card => {{
     const releaseMatch = activeRelease === 'all' || card.dataset.release === activeRelease;
@@ -572,7 +584,12 @@ function applyFilters() {{
       const lbl = card.dataset.sourceLabel || '';
       sourceMatch = lbl.includes(activeSource);
     }}
-    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch;
+    let searchMatch = true;
+    if (q) {{
+      const text = (card.dataset.toolName + ' ' + card.innerText).toLowerCase();
+      searchMatch = q.split(' ').filter(Boolean).every(w => text.includes(w));
+    }}
+    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch && searchMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   }});

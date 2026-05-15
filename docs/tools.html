@@ -64,6 +64,12 @@
   .tool-card.watched { border-color: #fbbf24; box-shadow: 0 0 0 1px #fbbf2440; }
   .new-badge { font-size: 0.7rem; font-weight: 700; color: #10b981; background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); padding: 2px 7px; border-radius: 10px; }
   .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
+  .search-box { display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 6px 12px; transition: border-color 0.2s; }
+  .search-box:focus-within { border-color: var(--accent); }
+  .search-box input { background: none; border: none; color: var(--text); font-size: 0.88rem; outline: none; width: 240px; }
+  .search-box input::placeholder { color: var(--muted); }
+  .search-clear { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0 2px; line-height: 1; }
+  .search-clear:hover { color: var(--text); }
   footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }
   @media (max-width: 640px) {
     header { padding: 12px; }
@@ -86,12 +92,17 @@
 </nav>
 <header>
   <div class="header-inner">
-    <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: 2026-05-16 02:44 JST</span></div>
+    <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: 2026-05-16 05:31 JST</span></div>
   </div>
 </header>
 <div class="container">
   <div class="stats-bar">
     <div class="stat-chip">ツール数 <strong id="visibleCount">131</strong> / 131 件（記事 146 件）</div>
+    <div class="search-box">
+      <span style="color:var(--muted);font-size:0.9rem">🔍</span>
+      <input type="text" id="searchInput" placeholder="ツール名・キーワードで検索…" oninput="applyFilters()">
+      <button class="search-clear" onclick="document.getElementById('searchInput').value='';applyFilters()" title="クリア">✕</button>
+    </div>
   </div>
   <div class="filter-section">
     <div class="filter-row">
@@ -834,12 +845,12 @@ LLM の基礎から RAG、AI のための UX といった応用ま… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="ma64ff6a0" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m1b01762b" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Higgsfield Supercomputer</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('ma64ff6a0').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m1b01762b').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -891,7 +902,7 @@ Higgsfield Supercomputerがリリースされた瞬間、クリエイティブAI
 
 it scans your com… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('ma64ff6a0').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m1b01762b').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="NeRSemble v2" data-latest="Thu May 14 05:03:00 +0000 2026">
@@ -1421,12 +1432,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mcaf43071" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m407e5b3c" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Edge Copilot</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mcaf43071').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m407e5b3c').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1471,7 +1482,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 ZDNet AI <span class="age">2026/05/15 01:49</span></div>
       <a href="https://www.zdnet.com/article/microsoft-edge-ai-copilot-new-skills/" target="_blank" rel="noopener" class="article-link">I&#x27;m no Copilot fan, but these 6 new AI skills turned Edge into my… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mcaf43071').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m407e5b3c').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="TechCrunch" data-tool-name="Spotify video podcast on Apple Podcasts" data-latest="2026-05-14T15:42:18+00:00">
@@ -1518,12 +1529,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="md09a777a" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mcc7c0636" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Instagram Instants</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('md09a777a').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mcc7c0636').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1568,7 +1579,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/15 00:06</span></div>
       <a href="https://techcrunch.com/2026/05/14/how-to-turn-of-instagrams-new-instants-feature-and-retract-photos-you-accidentally-shared/" target="_blank" rel="noopener" class="article-link">How to turn off Instagram’s new Instants feature and retract photos yo… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('md09a777a').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mcc7c0636').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="Dell 14S/16S" data-latest="2026-05-14T15:01:00+00:00">
@@ -1725,12 +1736,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m1abe8139" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m2da0d244" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Meta AI Incognito Chat</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m1abe8139').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m2da0d244').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1775,15 +1786,15 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 The Verge AI <span class="age">2026/05/14 01:45</span></div>
       <a href="https://www.theverge.com/tech/929791/meta-ai-incognito-chats" target="_blank" rel="noopener" class="article-link">Mark Zuckerberg announces &amp;#8216;completely private&amp;#8217; enc… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m1abe8139').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m2da0d244').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
-<div class="modal-overlay" id="m1538c7b4" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m8b8a9b00" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Alexa for Shopping</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m1538c7b4').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m8b8a9b00').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1828,7 +1839,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/13 23:59</span></div>
       <a href="https://techcrunch.com/2026/05/13/amazon-launches-an-ai-shopping-assistant-for-the-search-bar-powered-by-alexa/" target="_blank" rel="noopener" class="article-link">Amazon launches an AI shopping assistant for the search bar, powered b… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m1538c7b4').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m8b8a9b00').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ITmedia NEWS" data-tool-name="Sony α7R VI" data-latest="2026-05-13T14:50:00+00:00">
@@ -2154,12 +2165,12 @@ Anthropic公式が &quot;/goal&quot; コマンドを使えって投稿してた�
     
   </div>
 </div>
-<div class="modal-overlay" id="m3eac55fc" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m5077bdec" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude Agent SDK</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m3eac55fc').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m5077bdec').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2208,7 +2219,7 @@ This policy redefines the term &quot;interactive&quot; to m… →</a>
 
 This policy redefines the term &quot;interactive&… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m3eac55fc').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m5077bdec').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="廃止・終了" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude Code / Agent SDK" data-latest="Wed May 13 21:43:19 +0000 2026">
@@ -2304,12 +2315,12 @@ Claude CodeやAgent SDK系ツールは
     
   </div>
 </div>
-<div class="modal-overlay" id="m37d110b6" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m4552ac44" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude for Small Business</span>
       <span class="count-badge">3件</span>
-      <button class="modal-close" onclick="document.getElementById('m37d110b6').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m4552ac44').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2371,7 +2382,7 @@ Anthropicが「中小企業のためのAIエージェントチーム」を公開
 
 - Claudeが「給与… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m37d110b6').style.display='flex'">📋 3件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m4552ac44').style.display='flex'">📋 3件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="low" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Agent SDK" data-latest="Wed May 13 19:20:09 +0000 2026">
@@ -2396,12 +2407,12 @@ Anthropicが「中小企業のためのAIエージェントチーム」を公開
     
   </div>
 </div>
-<div class="modal-overlay" id="ma1159af4" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m48b10c70" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('ma1159af4').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m48b10c70').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2446,7 +2457,7 @@ Anthropicが「中小企業のためのAIエージェントチーム」を公開
       <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/14 04:17</span></div>
       <a href="https://x.com/tetumemo/status/2054642208461279362" target="_blank" rel="noopener" class="article-link">📝Claudeがサラッと公開している「Claude憲法」って、実は見逃せないくらい凄い内容が盛り沢山。言わばAIキャラクター生成の設計思想が… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('ma1159af4').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m48b10c70').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="low" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Geek AI" data-latest="Wed May 13 17:46:05 +0000 2026">
@@ -2683,12 +2694,12 @@ Just ope… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m4f44ffa2" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m354fdf40" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Gemini Spark</span>
       <span class="count-badge">3件</span>
-      <button class="modal-close" onclick="document.getElementById('m4f44ffa2').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m354fdf40').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2748,7 +2759,7 @@ Google appears to be testing a new 24/7 experim… →</a>
 
 Google appears to be testing a new 24… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m4f44ffa2').style.display='flex'">📋 3件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m354fdf40').style.display='flex'">📋 3件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="NanoClaude" data-latest="Thu May 14 08:03:02 +0000 2026">
@@ -2888,12 +2899,12 @@ Goog… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mc135f61a" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m83f14d6f" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude Code</span>
       <span class="count-badge">3件</span>
-      <button class="modal-close" onclick="document.getElementById('mc135f61a').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m83f14d6f').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2954,7 +2965,7 @@ Claude Codeの週次制限が7月13日まで50%増加。
       <a href="https://x.com/mercarioji/status/2054765563252220304" target="_blank" rel="noopener" class="article-link">Claude Codeの週制限が1.5倍になりました！
 今まで以上にゴリゴリ使えます！ →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mc135f61a').style.display='flex'">📋 3件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m83f14d6f').style.display='flex'">📋 3件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="OpenAIプラグイン for Claude Code" data-latest="Thu May 14 03:01:15 +0000 2026">
@@ -3123,12 +3134,12 @@ https://t.co… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m4f76a86c" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="md2b4d45d" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">ChatGPT (Personal Finance)</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m4f76a86c').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('md2b4d45d').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -3177,7 +3188,7 @@ A further step towards… →</a>
 
 A further st… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m4f76a86c').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('md2b4d45d').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude Code (Meta Ad Manager integration)" data-latest="Fri May 15 17:00:00 +0000 2026">
@@ -3397,12 +3408,12 @@ GPT-imageで新顔が出てくるところが良いですね🥰
     
   </div>
 </div>
-<div class="modal-overlay" id="mf24eb69a" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mf59dd5d9" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">ChatGPT (Plaid integration)</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mf24eb69a').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mf59dd5d9').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -3447,7 +3458,7 @@ GPT-imageで新顔が出てくるところが良いですね🥰
       <div class="sub-meta">🔶 HackerNews <span class="age">2026/05/16 01:38</span></div>
       <a href="https://firethering.com/chatgpt-bank-account-plaid-openai/" target="_blank" rel="noopener" class="article-link">OpenAI is connecting ChatGPT to bank accounts via Plaid →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mf24eb69a').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mf59dd5d9').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="アップデート" data-impact="high" data-source="rss" data-ai="ai" data-family="chatgpt" data-source-label="ASCII.jp" data-tool-name="Siri (iOS 27)" data-latest="2026-05-15T11:00:00+00:00">
@@ -3691,6 +3702,7 @@ window.addEventListener('DOMContentLoaded', initWatchAndNew);
 
 function applyFilters() {
   const cards = Array.from(document.querySelectorAll('.tool-card'));
+  const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
   let visible = 0;
   cards.forEach(card => {
     const releaseMatch = activeRelease === 'all' || card.dataset.release === activeRelease;
@@ -3702,7 +3714,12 @@ function applyFilters() {
       const lbl = card.dataset.sourceLabel || '';
       sourceMatch = lbl.includes(activeSource);
     }
-    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch;
+    let searchMatch = true;
+    if (q) {
+      const text = (card.dataset.toolName + ' ' + card.innerText).toLowerCase();
+      searchMatch = q.split(' ').filter(Boolean).every(w => text.includes(w));
+    }
+    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch && searchMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
