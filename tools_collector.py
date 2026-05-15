@@ -405,7 +405,8 @@ def save_tools_jsonl(items: list[dict]) -> str:
         return ""
     out_dir = _data_dir(TOOLS_DIR_NAME)
     os.makedirs(out_dir, exist_ok=True)
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    from zoneinfo import ZoneInfo
+    today = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d")
     path = os.path.join(out_dir, f"{today}.jsonl")
 
     # 既存のIDを読んで重複を避ける

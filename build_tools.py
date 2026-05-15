@@ -94,6 +94,19 @@ def _resolve_tool_family(item: dict) -> str | None:
     return _infer_tool_family(item)
 
 
+def _to_jst_date(iso: str) -> str:
+    """UTC ISO文字列 → JST の YYYY-MM-DD。変換失敗時は空文字。"""
+    if not iso:
+        return ""
+    from zoneinfo import ZoneInfo
+    JST = ZoneInfo("Asia/Tokyo")
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        return dt.astimezone(JST).strftime("%Y-%m-%d")
+    except Exception:
+        return ""
+
+
 def load_all_items(days: int = 30) -> list[dict]:
     """data/tools/ から直近 days 日分を全件ロード（分析済みのみ、ファミリー解決済み）"""
     if not os.path.isdir(TOOLS_DATA_DIR):
@@ -101,7 +114,6 @@ def load_all_items(days: int = 30) -> list[dict]:
     files = sorted(glob(os.path.join(TOOLS_DATA_DIR, "*.jsonl")), reverse=True)
     items: list[dict] = []
     for fpath in files[:days]:
-        file_date = os.path.basename(fpath).replace(".jsonl", "")  # "YYYY-MM-DD"
         with open(fpath, encoding="utf-8") as f:
             for line in f.read().split("\n"):
                 line = line.strip()
@@ -113,7 +125,8 @@ def load_all_items(days: int = 30) -> list[dict]:
                         continue
                     enriched = dict(obj)
                     enriched["tool_family"] = _resolve_tool_family(obj) or "other"
-                    enriched["collected_date"] = file_date
+                    # collected_at（UTC）をJSTに変換して日付キーを付与
+                    enriched["collected_date"] = _to_jst_date(obj.get("collected_at") or "")
                     items.append(enriched)
                 except Exception:
                     continue
