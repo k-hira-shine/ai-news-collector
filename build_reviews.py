@@ -118,7 +118,8 @@ def _review_card(tool: dict) -> str:
     return f"""<div class="review-card" data-status="{data_status}" data-verdict="{data_verdict}" data-category="{data_category}">
   <div class="card-header">
     <div class="tool-name-row">
-      {'<a href="' + url + '" target="_blank" rel="noopener" class="tool-name">' + name + '</a>' if url else '<span class="tool-name">' + name + '</span>'}
+      <button class="tool-name edit-trigger" onclick="openEditModal(this)" data-tool-name="{name}">{name}</button>
+      {f'<a href="{url}" target="_blank" rel="noopener" class="external-link" title="外部リンクを開く">↗</a>' if url else ''}
       <span class="category-badge">{category}</span>
     </div>
     <div class="badge-row">
@@ -212,6 +213,9 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
   .tool-name-row {{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
   .tool-name {{ font-size: 1.05rem; font-weight: 700; color: var(--accent); text-decoration: none; }}
   .tool-name:hover {{ text-decoration: underline; }}
+  button.tool-name {{ background: none; border: none; cursor: pointer; padding: 0; text-align: left; }}
+  .external-link {{ font-size: 0.78rem; color: var(--muted); text-decoration: none; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; }}
+  .external-link:hover {{ color: var(--accent); border-color: var(--accent); }}
   .category-badge {{ font-size: 0.72rem; background: rgba(148,163,184,0.15); border: 1px solid var(--border); color: var(--muted); padding: 2px 8px; border-radius: 10px; }}
   .badge-row {{ display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }}
   .status-badge, .verdict-badge {{ font-size: 0.8rem; font-weight: 600; }}
@@ -272,6 +276,63 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
   </div>
 </div>
 <footer>地上にあるAIツールを全て触っている状態を目指す — data/reviews.json に追記して更新</footer>
+
+<!-- 編集モーダル -->
+<div id="editModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)closeEditModal()">
+  <div style="background:#111827;border:1px solid #2d3748;border-radius:14px;max-width:540px;width:100%;padding:24px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:1.1rem;font-weight:700;color:#38bdf8" id="editToolName"></span>
+      <button onclick="closeEditModal()" style="background:none;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer">✕</button>
+    </div>
+    <input type="hidden" id="editToolNameHidden">
+    <div id="editTokenSection" style="background:#0a0f1e;border:1px solid #2d3748;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:0.78rem;color:#94a3b8">🔑 GitHub Personal Access Token</span>
+        <span id="editTokenStatus" style="font-size:0.75rem"></span>
+      </div>
+      <div id="editTokenRow" style="display:flex;gap:6px">
+        <input id="editToken" type="password" placeholder="ghp_xxxx…（repo スコープ必要）" style="flex:1;background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px 10px;border-radius:6px;font-size:0.82rem">
+        <button onclick="saveToken()" style="background:#1e3a5f;border:1px solid #2d5986;color:#7dd3fc;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap">保存</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+        使用状況
+        <select id="editStatus" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px;border-radius:6px;font-size:0.85rem">
+          <option value="untried">未試用</option>
+          <option value="trying">試用中</option>
+          <option value="using">使ってる</option>
+          <option value="rejected">却下</option>
+        </select>
+      </label>
+      <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+        評価
+        <select id="editVerdict" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px;border-radius:6px;font-size:0.85rem">
+          <option value="">（未評価）</option>
+          <option value="use">使う</option>
+          <option value="watch">様子見</option>
+          <option value="skip">スキップ</option>
+        </select>
+      </label>
+    </div>
+    <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+      用途・目的
+      <input id="editPurpose" type="text" placeholder="例: YouTube台本作成、調査" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:7px 10px;border-radius:6px;font-size:0.85rem">
+    </label>
+    <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+      注意点・制限
+      <input id="editCaution" type="text" placeholder="例: 無料枠に制限あり" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:7px 10px;border-radius:6px;font-size:0.85rem">
+    </label>
+    <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+      所感メモ
+      <textarea id="editMemo" rows="4" placeholder="使ってみた感想、気づき、改善点など自由に…" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:8px 10px;border-radius:6px;font-size:0.85rem;resize:vertical;line-height:1.6"></textarea>
+    </label>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <span id="editSaveMsg" style="font-size:0.8rem"></span>
+      <button onclick="saveEdit()" style="background:#0284c7;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600">保存</button>
+    </div>
+  </div>
+</div>
 <script>
 let activeStatus = 'all';
 let activeVerdict = 'all';
@@ -315,6 +376,136 @@ document.querySelectorAll('[data-filter-category]').forEach(btn => {{
     applyFilters();
   }});
 }});
+
+/* ── 編集モーダル ── */
+const REPO = 'k-hira-shine/ai-news-collector';
+const FILE_PATH = 'data/reviews.json';
+
+function getToken() {{
+  return localStorage.getItem('gh_pat') || '';
+}}
+
+function saveToken() {{
+  const val = (document.getElementById('editToken')?.value || '').trim();
+  if (!val) return;
+  localStorage.setItem('gh_pat', val);
+  refreshTokenUI();
+}}
+
+function refreshTokenUI() {{
+  const token = getToken();
+  const status = document.getElementById('editTokenStatus');
+  const row = document.getElementById('editTokenRow');
+  if (token) {{
+    if (status) {{ status.textContent = '✅ 保存済み'; status.style.color = '#10b981'; }}
+    if (row) row.style.display = 'none';
+  }} else {{
+    if (status) {{ status.textContent = '未設定'; status.style.color = '#f59e0b'; }}
+    if (row) row.style.display = 'flex';
+  }}
+}}
+
+async function fetchReviews(token) {{
+  const res = await fetch(`https://api.github.com/repos/${{REPO}}/contents/${{FILE_PATH}}`, {{
+    headers: {{ Authorization: `token ${{token}}`, Accept: 'application/vnd.github.v3+json' }}
+  }});
+  if (!res.ok) throw new Error(`GitHub API error: ${{res.status}}`);
+  const data = await res.json();
+  const b64 = data.content.replace(/\n/g, '');
+  const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const text = new TextDecoder('utf-8').decode(bytes);
+  return {{ sha: data.sha, content: JSON.parse(text) }};
+}}
+
+function openEditModal(btn) {{
+  const toolName = btn.dataset.toolName;
+  const card = btn.closest('.review-card');
+  // カードのデータから現在値を読み取る
+  const status = card.dataset.status || 'untried';
+  const verdict = card.dataset.verdict === 'none' ? '' : (card.dataset.verdict || '');
+  const purposeEl = card.querySelector('.field-row .field-value');
+  // fields から各値を取得
+  const fieldRows = card.querySelectorAll('.field-row');
+  let purpose = '', caution = '', memo = '';
+  fieldRows.forEach(row => {{
+    const lbl = (row.querySelector('.field-label')?.textContent || '').trim();
+    const val = (row.querySelector('.field-value')?.textContent || '').trim();
+    if (lbl === '目的・用途') purpose = val;
+    if (lbl === '注意点') caution = val;
+  }});
+  const memoEl = card.querySelector('.memo');
+  if (memoEl) memo = memoEl.textContent.replace(/^📝[\s]*/, '').trim();
+
+  document.getElementById('editToolName').textContent = toolName;
+  document.getElementById('editToolNameHidden').value = toolName;
+  document.getElementById('editStatus').value = status;
+  document.getElementById('editVerdict').value = verdict;
+  document.getElementById('editPurpose').value = purpose;
+  document.getElementById('editCaution').value = caution;
+  document.getElementById('editMemo').value = memo;
+  document.getElementById('editSaveMsg').textContent = '';
+  document.getElementById('editModal').style.display = 'flex';
+  refreshTokenUI();
+}}
+
+function closeEditModal() {{
+  document.getElementById('editModal').style.display = 'none';
+}}
+
+async function saveEdit() {{
+  const token = getToken();
+  if (!token) {{
+    const msg = document.getElementById('editSaveMsg');
+    msg.style.color = '#f59e0b';
+    msg.textContent = '⚠️ トークン欄に GitHub PAT を入力して「保存」してください';
+    return;
+  }}
+  const toolName = document.getElementById('editToolNameHidden').value;
+  const msg = document.getElementById('editSaveMsg');
+  msg.style.color = '#94a3b8';
+  msg.textContent = '保存中…';
+  try {{
+    const {{ sha, content }} = await fetchReviews(token);
+    const idx = (content.tools || []).findIndex(t => t.name === toolName);
+    const existing = idx >= 0 ? content.tools[idx] : {{}};
+    const today = new Date().toLocaleDateString('sv');
+    const snapshot = {{
+      status: document.getElementById('editStatus').value,
+      verdict: document.getElementById('editVerdict').value,
+      purpose: document.getElementById('editPurpose').value,
+      caution: document.getElementById('editCaution').value,
+      memo: document.getElementById('editMemo').value,
+      updated: today,
+    }};
+    const prevHistories = existing.histories || [];
+    const histIdx = prevHistories.findIndex(h => h.updated === today);
+    const newHistories = [...prevHistories];
+    if (histIdx >= 0) newHistories[histIdx] = snapshot;
+    else newHistories.unshift(snapshot);
+    const entry = {{ name: toolName, category: existing.category || '', url: existing.url || '', ...snapshot, histories: newHistories }};
+    if (idx >= 0) content.tools[idx] = entry;
+    else content.tools.push(entry);
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\n')));
+    const putRes = await fetch(`https://api.github.com/repos/${{REPO}}/contents/${{FILE_PATH}}`, {{
+      method: 'PUT',
+      headers: {{ Authorization: `token ${{token}}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }},
+      body: JSON.stringify({{ message: `memo: ${{toolName}} の所感を更新`, content: encoded, sha }})
+    }});
+    if (!putRes.ok) {{ const e = await putRes.json(); throw new Error(e.message || putRes.status); }}
+    msg.style.color = '#10b981';
+    msg.textContent = '✅ 保存しました（ページ再ビルドに数分かかります）';
+  }} catch(e) {{
+    if (e.message.includes('401') || e.message.includes('Bad credentials')) {{
+      localStorage.removeItem('gh_pat');
+      refreshTokenUI();
+      msg.style.color = '#ef4444';
+      msg.textContent = '❌ トークンが無効です。再入力してください。';
+    }} else {{
+      msg.style.color = '#ef4444';
+      msg.textContent = '❌ ' + e.message;
+    }}
+  }}
+}}
 
 // ?tool=ToolName でリンクされた場合、該当カードをハイライト
 (function() {{
