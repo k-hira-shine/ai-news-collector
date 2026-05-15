@@ -101,6 +101,7 @@ def load_all_items(days: int = 30) -> list[dict]:
     files = sorted(glob(os.path.join(TOOLS_DATA_DIR, "*.jsonl")), reverse=True)
     items: list[dict] = []
     for fpath in files[:days]:
+        file_date = os.path.basename(fpath).replace(".jsonl", "")  # "YYYY-MM-DD"
         with open(fpath, encoding="utf-8") as f:
             for line in f.read().split("\n"):
                 line = line.strip()
@@ -112,6 +113,7 @@ def load_all_items(days: int = 30) -> list[dict]:
                         continue
                     enriched = dict(obj)
                     enriched["tool_family"] = _resolve_tool_family(obj) or "other"
+                    enriched["collected_date"] = file_date
                     items.append(enriched)
                 except Exception:
                     continue
@@ -222,6 +224,8 @@ def _tool_card_group(items: list[dict]) -> str:
     data_release = escape(release_type)
     data_impact = escape(best_impact)
     data_source = escape(rep.get("source") or "rss")
+    # グループ内の最新収集日付（複数日にまたがる場合は最新を代表とする）
+    data_collected_date = escape(max((x.get("collected_date") or "" for x in items), default=""))
 
     # 代表記事（最新1件）
     first = items_by_date[0]
@@ -259,7 +263,7 @@ def _tool_card_group(items: list[dict]) -> str:
     data_source_label = escape(first_src_label_raw)
     latest_dt = _group_latest(items)  # ISO文字列
 
-    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}" data-family="{escape(fam)}" data-source-label="{data_source_label}" data-tool-name="{tool_name}" data-latest="{escape(latest_dt)}">
+    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}" data-family="{escape(fam)}" data-source-label="{data_source_label}" data-tool-name="{tool_name}" data-latest="{escape(latest_dt)}" data-collected-date="{data_collected_date}">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">{tool_name}</span>
@@ -355,6 +359,10 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
         # source属性はsource_labelから逆引きできないのでlabelで絞り込む
         source_filter_btns += f'<button class="filter-btn" data-filter-source="{escape(src_label)}">{escape(src_label)}</button>\n'
 
+    collected_dates = sorted(set(i.get("collected_date", "") for i in items if i.get("collected_date")), reverse=True)
+    date_min = collected_dates[-1] if collected_dates else ""
+    date_max = collected_dates[0] if collected_dates else ""
+
     html = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -427,6 +435,10 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .search-box input::placeholder {{ color: var(--muted); }}
   .search-clear {{ background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; padding: 0 2px; line-height: 1; }}
   .search-clear:hover {{ color: var(--text); }}
+  .date-picker-wrap {{ display: flex; align-items: center; gap: 8px; }}
+  .date-input {{ background: var(--card); border: 1px solid var(--border); color: var(--text); padding: 5px 10px; border-radius: 8px; font-size: 0.82rem; cursor: pointer; transition: border-color 0.2s; color-scheme: dark; }}
+  .date-input:focus {{ outline: none; border-color: var(--accent); }}
+  .date-input::-webkit-calendar-picker-indicator {{ filter: invert(0.7); cursor: pointer; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
     header {{ padding: 12px; }}
@@ -482,6 +494,13 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
       <span class="filter-label">ソース</span>
       {source_filter_btns}
     </div>
+    <div class="filter-row">
+      <span class="filter-label">日付</span>
+      <div class="date-picker-wrap">
+        <input type="date" id="dateFilter" class="date-input" min="{date_min}" max="{date_max}" onchange="onDateChange(this.value)">
+        <button class="filter-btn active" id="dateClearBtn" onclick="clearDateFilter()" style="display:none">✕ クリア</button>
+      </div>
+    </div>
   </div>
   <div class="tools-grid" id="toolsGrid">
     {cards_html}
@@ -493,8 +512,8 @@ let activeRelease = 'all';
 let activeImpact = 'all';
 let activeSource = 'all';
 let activeAi = 'all';
-
 let activeFamily = 'all';
+let activeDateDays = 'all';
 
 /* ── 注目（Watch）機能 ── */
 const WATCH_KEY = 'tools_watched';
@@ -589,7 +608,11 @@ function applyFilters() {{
       const text = (card.dataset.toolName + ' ' + card.innerText).toLowerCase();
       searchMatch = q.split(' ').filter(Boolean).every(w => text.includes(w));
     }}
-    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch && searchMatch;
+    let dateMatch = true;
+    if (activeDateDays !== 'all') {{
+      dateMatch = (card.dataset.collectedDate || '') === activeDateDays;
+    }}
+    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch && searchMatch && dateMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   }});
@@ -640,6 +663,22 @@ document.querySelectorAll('[data-filter-source]').forEach(btn => {{
     applyFilters();
   }});
 }});
+
+function onDateChange(val) {{
+  activeDateDays = val || 'all';
+  const clearBtn = document.getElementById('dateClearBtn');
+  if (clearBtn) clearBtn.style.display = val ? '' : 'none';
+  applyFilters();
+}}
+
+function clearDateFilter() {{
+  activeDateDays = 'all';
+  const inp = document.getElementById('dateFilter');
+  if (inp) inp.value = '';
+  const clearBtn = document.getElementById('dateClearBtn');
+  if (clearBtn) clearBtn.style.display = 'none';
+  applyFilters();
+}}
 
 /* ────────────────────────────────────────────────
    所感入力モーダル（GitHub API で reviews.json を更新）
