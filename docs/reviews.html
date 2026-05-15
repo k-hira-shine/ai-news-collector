@@ -79,7 +79,7 @@
 <a href="reviews.html" class="active">📋 使ってみた</a>
 </nav>
 <header>
-  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:24 JST</span></div>
+  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:27 JST</span></div>
 </header>
 <div class="container">
   <div class="stats-bar">
@@ -287,34 +287,36 @@ async function fetchReviews(token) {
 }
 
 function openEditModal(btn) {
-  const toolName = btn.dataset.toolName;
-  const card = btn.closest('.review-card');
-  // カードのデータから現在値を読み取る
-  const status = card.dataset.status || 'untried';
-  const verdict = card.dataset.verdict === 'none' ? '' : (card.dataset.verdict || '');
-  const purposeEl = card.querySelector('.field-row .field-value');
-  // fields から各値を取得
-  const fieldRows = card.querySelectorAll('.field-row');
-  let purpose = '', caution = '', memo = '';
-  fieldRows.forEach(row => {
-    const lbl = (row.querySelector('.field-label')?.textContent || '').trim();
-    const val = (row.querySelector('.field-value')?.textContent || '').trim();
-    if (lbl === '目的・用途') purpose = val;
-    if (lbl === '注意点') caution = val;
-  });
-  const memoEl = card.querySelector('.memo');
-  if (memoEl) memo = memoEl.textContent.replace(/^📝[\s]*/, '').trim();
+  try {
+    const toolName = btn.dataset.toolName;
+    const card = btn.closest('.review-card');
+    const status = (card && card.dataset.status) || 'untried';
+    const verdict = (card && card.dataset.verdict === 'none') ? '' : ((card && card.dataset.verdict) || '');
+    const fieldRows = card ? card.querySelectorAll('.field-row') : [];
+    let purpose = '', caution = '', memo = '';
+    fieldRows.forEach(row => {
+      const lbl = (row.querySelector('.field-label')?.textContent || '').trim();
+      const val = (row.querySelector('.field-value')?.textContent || '').trim();
+      if (lbl === '目的・用途') purpose = val;
+      if (lbl === '注意点') caution = val;
+    });
+    const memoEl = card ? card.querySelector('.memo') : null;
+    if (memoEl) memo = memoEl.textContent.replace(/^📝[\s]*/, '').trim();
 
-  document.getElementById('editToolName').textContent = toolName;
-  document.getElementById('editToolNameHidden').value = toolName;
-  document.getElementById('editStatus').value = status;
-  document.getElementById('editVerdict').value = verdict;
-  document.getElementById('editPurpose').value = purpose;
-  document.getElementById('editCaution').value = caution;
-  document.getElementById('editMemo').value = memo;
-  document.getElementById('editSaveMsg').textContent = '';
-  document.getElementById('editModal').style.display = 'flex';
-  refreshTokenUI();
+    document.getElementById('editToolName').textContent = toolName;
+    document.getElementById('editToolNameHidden').value = toolName;
+    document.getElementById('editStatus').value = status;
+    document.getElementById('editVerdict').value = verdict;
+    document.getElementById('editPurpose').value = purpose;
+    document.getElementById('editCaution').value = caution;
+    document.getElementById('editMemo').value = memo;
+    document.getElementById('editSaveMsg').textContent = '';
+    const modal = document.getElementById('editModal');
+    modal.style.cssText = 'display:flex!important;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:16px';
+    refreshTokenUI();
+  } catch(e) {
+    alert('エラー: ' + e.message);
+  }
 }
 
 function closeEditModal() {
