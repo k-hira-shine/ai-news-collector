@@ -714,6 +714,7 @@ function openMemoModal(toolName) {{
   document.getElementById('memoCaution').value = rev.caution || '';
   document.getElementById('memoSaveMsg').textContent = '';
   document.getElementById('memoModal').style.display = 'flex';
+  refreshTokenSection();
 }}
 
 function closeMemoModal() {{
@@ -729,12 +730,33 @@ async function fetchReviews(token) {{
   return {{ sha: data.sha, content: JSON.parse(atob(data.content.replace(/\\n/g,''))) }};
 }}
 
+function saveToken() {{
+  const val = (document.getElementById('memoToken')?.value || '').trim();
+  if (!val) return;
+  localStorage.setItem('gh_pat', val);
+  refreshTokenSection();
+}}
+
+function refreshTokenSection() {{
+  const token = getToken();
+  const status = document.getElementById('tokenStatus');
+  const inputRow = document.getElementById('tokenInputRow');
+  if (token) {{
+    if (status) {{ status.textContent = '✅ 保存済み'; status.style.color = '#10b981'; }}
+    if (inputRow) inputRow.style.display = 'none';
+  }} else {{
+    if (status) {{ status.textContent = '未設定'; status.style.color = '#f59e0b'; }}
+    if (inputRow) inputRow.style.display = 'flex';
+  }}
+}}
+
 async function saveMemo() {{
-  let token = getToken();
+  const token = getToken();
   if (!token) {{
-    token = prompt('GitHub Personal Access Token を入力してください（repo スコープ必要）:\\n\\n※ このトークンはこのブラウザのみに保存されます。');
-    if (!token) return;
-    localStorage.setItem('gh_pat', token);
+    const msg = document.getElementById('memoSaveMsg');
+    msg.style.color = '#f59e0b';
+    msg.textContent = '⚠️ 上のトークン欄に GitHub PAT を入力して「保存」してください';
+    return;
   }}
 
   const toolName = document.getElementById('memoToolNameHidden').value;
@@ -784,7 +806,8 @@ async function saveMemo() {{
     msg.style.color = 'var(--error)';
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {{
       localStorage.removeItem('gh_pat');
-      msg.textContent = '❌ トークンが無効です。再度ボタンを押してトークンを入力してください。';
+      refreshTokenSection();
+      msg.textContent = '❌ トークンが無効です。トークン欄から再入力してください。';
     }} else {{
       msg.textContent = '❌ ' + e.message;
     }}
@@ -813,6 +836,16 @@ async function saveMemo() {{
       <button onclick="closeMemoModal()" style="background:none;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer">✕</button>
     </div>
     <input type="hidden" id="memoToolNameHidden">
+    <div id="tokenSection" style="background:#0a0f1e;border:1px solid #2d3748;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:0.78rem;color:#94a3b8">🔑 GitHub Personal Access Token</span>
+        <span id="tokenStatus" style="font-size:0.75rem"></span>
+      </div>
+      <div id="tokenInputRow" style="display:flex;gap:6px">
+        <input id="memoToken" type="password" placeholder="ghp_xxxx…（repo スコープ必要）" style="flex:1;background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px 10px;border-radius:6px;font-size:0.82rem">
+        <button onclick="saveToken()" style="background:#1e3a5f;border:1px solid #2d5986;color:#7dd3fc;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap">保存</button>
+      </div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
         使用状況
