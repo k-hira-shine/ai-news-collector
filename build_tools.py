@@ -876,7 +876,7 @@ async function saveMemo() {{
       throw new Error(err.message || putRes.status);
     }}
     msg.style.color = 'var(--success)';
-    msg.textContent = '✅ 保存しました（ページ再ビルドに数分かかります）';
+    msg.textContent = '✅ 保存しました。反映には数分かかります。Cmd+Shift+R でリロードしてください。';
     window.__reviewsCache[toolName] = entry;
     // 保存後すぐにカードのバッジを更新
     const savedCard = Array.from(document.querySelectorAll('.tool-card')).find(c => c.dataset.toolName === toolName);

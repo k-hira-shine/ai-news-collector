@@ -549,7 +549,7 @@ async function saveEdit() {{
     }});
     if (!putRes.ok) {{ const e = await putRes.json(); throw new Error(e.message || putRes.status); }}
     msg.style.color = '#10b981';
-    msg.textContent = '✅ 保存しました（ページ再ビルドに数分かかります）';
+    msg.textContent = '✅ 保存しました。反映には数分かかります。Cmd+Shift+R でリロードしてください。';
   }} catch(e) {{
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {{
       localStorage.removeItem('gh_pat');
@@ -585,7 +585,7 @@ async function deleteTool() {{
     }});
     if (!putRes.ok) {{ const e = await putRes.json(); throw new Error(e.message || putRes.status); }}
     msg.style.color = '#10b981';
-    msg.textContent = '✅ 削除しました（ページ再ビルドに数分かかります）';
+    msg.textContent = '✅ 削除しました。反映には数分かかります。Cmd+Shift+R でリロードしてください。';
     // カードをその場で非表示
     document.querySelectorAll('.review-card').forEach(card => {{
       const nameEl = card.querySelector('.tool-name');
