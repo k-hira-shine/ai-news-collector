@@ -356,15 +356,42 @@ tools_tracking:
     time_filter: day       # sort=top の場合のみ使用
     max_items_per_subreddit: 25
     user_agent: "python:ai-news-collector:v1.0 (by /u/Junior-Frosting-3658)"
+    # 最優先3つを先頭に、件数は他より多く取得（max_items_per_subredditを上書き）
     subreddits:
-      - artificial
-      - MachineLearning
-      - ChatGPT
-      - LocalLLaMA
-      - ClaudeAI
-      - AItools
+      - name: ClaudeAI        # Claude 最優先
+        max_items: 40
+      - name: ChatGPT         # ChatGPT 優先
+        max_items: 40
+      - name: Gemini          # Gemini 優先
+        max_items: 40
+      - name: artificial      # その他
+        max_items: 20
+      - name: MachineLearning
+        max_items: 20
+      - name: LocalLLaMA
+        max_items: 20
+      - name: AItools
+        max_items: 15
 
   rss_feeds:
+    # ══ 最優先：公式ブログ（Gemini / Claude / ChatGPT） ══════════════
+    - url: "https://www.anthropic.com/rss.xml"
+      label: "Anthropic Blog"
+      priority: true
+      max_items: 50
+    - url: "https://openai.com/news/rss/"
+      label: "OpenAI Blog"
+      priority: true
+      max_items: 50
+    - url: "https://feeds.feedburner.com/blogspot/gJZg"
+      label: "Google AI Blog"
+      priority: true
+      max_items: 50
+    # ── 準優先：関連エコシステム ──────────────────────────
+    - url: "https://huggingface.co/blog/feed.xml"
+      label: "Hugging Face Blog"
+      priority: true
+      max_items: 40
     # ── 英語：主要テックメディア ───────────────────────────
     - url: "https://venturebeat.com/category/ai/feed/"
       label: "VentureBeat AI"
@@ -384,15 +411,6 @@ tools_tracking:
       label: "ZDNet AI"
     - url: "https://www.businessinsider.com/sai/feed"
       label: "Business Insider Tech"
-    # ── 英語：公式ブログ ──────────────────────────────────
-    - url: "https://openai.com/news/rss/"
-      label: "OpenAI Blog"
-    - url: "https://www.anthropic.com/rss.xml"
-      label: "Anthropic Blog"
-    - url: "https://feeds.feedburner.com/blogspot/gJZg"
-      label: "Google AI Blog"
-    - url: "https://huggingface.co/blog/feed.xml"
-      label: "Hugging Face Blog"
     # ── 日本語：テックメディア ────────────────────────────
     - url: "https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml"
       label: "ITmedia NEWS"

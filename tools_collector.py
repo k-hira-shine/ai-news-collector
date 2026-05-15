@@ -50,8 +50,28 @@ def _make_id(url: str) -> str:
     return "tool_" + hashlib.md5(url.encode()).hexdigest()[:16]
 
 
+# Gemini/Claude/ChatGPT に関連するキーワード（優先スコア付与用）
+_PRIORITY_KEYWORDS = {
+    "claude": 10, "anthropic": 10,         # Claude 最優先
+    "gemini": 10, "google deepmind": 8,     # Gemini 最優先
+    "chatgpt": 9, "openai": 8, "gpt-": 8,  # ChatGPT 優先
+}
+
+
+def _priority_score(text: str) -> int:
+    """テキスト中の優先キーワードに応じたスコアを返す（高いほど優先）"""
+    lower = text.lower()
+    score = 0
+    for kw, val in _PRIORITY_KEYWORDS.items():
+        if kw in lower:
+            score = max(score, val)
+    return score
+
+
 def collect_rss_feeds(config: dict) -> list[dict]:
-    """設定したRSSフィードからニュースを収集して返す"""
+    """設定したRSSフィードからニュースを収集して返す。
+    priority: true のフィードを先に処理し、max_items 個取得する。
+    """
     tools_cfg = config.get("tools_tracking", {})
     if not tools_cfg.get("enabled", True):
         logger.info("tools_tracking disabled — skipping RSS collection")
@@ -64,25 +84,34 @@ def collect_rss_feeds(config: dict) -> list[dict]:
         return []
 
     import feedparser
+    import re
 
     feeds = tools_cfg.get("rss_feeds", [])
     max_per_feed = tools_cfg.get("max_items_per_feed", 30)
     max_age_days = tools_cfg.get("max_age_days", 7)
     cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
 
+    # priority: true のフィードを先頭に並べ替え
+    priority_feeds = [f for f in feeds if f.get("priority")]
+    normal_feeds = [f for f in feeds if not f.get("priority")]
+    ordered_feeds = priority_feeds + normal_feeds
+
     seen_urls = _load_seen_urls()
     new_items: list[dict] = []
     collected_at = datetime.now(timezone.utc).isoformat()
 
-    for feed_cfg in feeds:
+    for feed_cfg in ordered_feeds:
         url = feed_cfg.get("url", "")
         label = feed_cfg.get("label", url)
+        is_priority = bool(feed_cfg.get("priority"))
+        # priority フィードは個別 max_items、通常フィードはデフォルト上限
+        limit = int(feed_cfg.get("max_items", max_per_feed if not is_priority else 50))
         if not url:
             continue
         try:
             feed = feedparser.parse(url)
             count = 0
-            for entry in feed.entries[:max_per_feed]:
+            for entry in feed.entries[:limit]:
                 link = entry.get("link", "")
                 if not link or link in seen_urls:
                     continue
@@ -105,27 +134,32 @@ def collect_rss_feeds(config: dict) -> list[dict]:
                 elif entry.get("summary"):
                     content = entry.summary
 
-                # HTMLタグを簡易除去
-                import re
                 content = re.sub(r"<[^>]+>", " ", content).strip()
                 content = re.sub(r"\s+", " ", content)[:2000]
+
+                title = entry.get("title", "").strip()
+                p_score = _priority_score(title + " " + content + " " + label)
+                # priority フィードは最低でもスコア5を保証
+                if is_priority and p_score == 0:
+                    p_score = 5
 
                 item: dict[str, Any] = {
                     "id": _make_id(link),
                     "source": "rss",
                     "source_label": label,
-                    "title": entry.get("title", "").strip(),
+                    "title": title,
                     "url": link,
                     "content": content,
                     "author": entry.get("author", ""),
                     "published_at": pub_dt.isoformat() if pub_dt else "",
                     "collected_at": collected_at,
+                    "priority_score": p_score,
                 }
                 new_items.append(item)
                 seen_urls.add(link)
                 count += 1
 
-            logger.info("RSS [%s]: %d new items", label, count)
+            logger.info("RSS [%s%s]: %d new items", "★" if is_priority else "", label, count)
         except Exception as e:
             logger.warning("RSS fetch failed [%s]: %s", label, e)
 
@@ -191,17 +225,27 @@ def collect_reddit_posts(config: dict) -> list[dict]:
         "Authorization": f"Bearer {access_token}",
         "User-Agent": user_agent,
     }
-    subreddits = reddit_cfg.get("subreddits", [])
-    max_items = int(reddit_cfg.get("max_items_per_subreddit", 25))
+    subreddits_raw = reddit_cfg.get("subreddits", [])
+    default_max_items = int(reddit_cfg.get("max_items_per_subreddit", 25))
     sort = reddit_cfg.get("sort", "new")
     time_filter = reddit_cfg.get("time_filter", "day")
+
+    # subreddits は文字列 or {"name": ..., "max_items": ...} の混在を許容
+    def _parse_subreddit(entry: Any) -> tuple[str, int, bool]:
+        """(subreddit名, 取得上限, is_priority) を返す"""
+        if isinstance(entry, dict):
+            name = str(entry.get("name", "")).strip().lstrip("r/")
+            limit = int(entry.get("max_items", default_max_items))
+            # デフォルト上限より多く取る subreddit を priority 扱い
+            return name, limit, limit > default_max_items
+        return str(entry).strip().lstrip("r/"), default_max_items, False
 
     seen_urls = _load_seen_urls()
     new_items: list[dict] = []
     collected_at = datetime.now(timezone.utc).isoformat()
 
-    for subreddit in subreddits:
-        subreddit = str(subreddit).strip().lstrip("r/")
+    for sub_entry in subreddits_raw:
+        subreddit, max_items, is_priority = _parse_subreddit(sub_entry)
         if not subreddit:
             continue
         endpoint = f"https://oauth.reddit.com/r/{subreddit}/{sort}"
@@ -236,6 +280,10 @@ def collect_reddit_posts(config: dict) -> list[dict]:
                 if link_url and link_url != url:
                     content = f"{content}\n\nLink: {link_url}".strip()
 
+                p_score = _priority_score(title + " " + content + " r/" + subreddit)
+                if is_priority and p_score == 0:
+                    p_score = 5
+
                 item: dict[str, Any] = {
                     "id": "reddit_" + data.get("id", _make_id(url)),
                     "source": "reddit",
@@ -249,11 +297,12 @@ def collect_reddit_posts(config: dict) -> list[dict]:
                     "reddit_score": data.get("score", 0),
                     "reddit_comments": data.get("num_comments", 0),
                     "reddit_subreddit": subreddit,
+                    "priority_score": p_score,
                 }
                 new_items.append(item)
                 seen_urls.add(url)
                 count += 1
-            logger.info("Reddit [r/%s]: %d new items", subreddit, count)
+            logger.info("Reddit [r/%s%s]: %d new items", "★" if is_priority else "", subreddit, count)
         except Exception as e:
             logger.warning("Reddit fetch failed [r/%s]: %s", subreddit, e)
 
@@ -278,6 +327,7 @@ def extract_from_x(x_items: list[dict]) -> list[dict]:
         title = (item.get("title") or "").lower()
         combined = text + " " + title
         if any(kw in combined for kw in TOOL_KEYWORDS):
+            p_score = _priority_score(combined)
             results.append({
                 "id": "xtool_" + item.get("id", _make_id(item.get("url", ""))),
                 "source": "x",
@@ -288,6 +338,7 @@ def extract_from_x(x_items: list[dict]) -> list[dict]:
                 "author": item.get("author") or item.get("author_display") or "",
                 "published_at": item.get("published_at") or item.get("collected_at") or "",
                 "collected_at": collected_at,
+                "priority_score": p_score,
             })
     logger.info("X tool extraction: %d items", len(results))
     return results
@@ -308,6 +359,7 @@ def extract_from_hn(hn_items: list[dict]) -> list[dict]:
         combined = title + " " + content
         if any(kw in combined for kw in TOOL_KEYWORDS):
             source = item.get("source", "hn")
+            p_score = _priority_score(combined)
             results.append({
                 "id": "hntool_" + item.get("id", _make_id(item.get("url", ""))),
                 "source": source,
@@ -318,16 +370,26 @@ def extract_from_hn(hn_items: list[dict]) -> list[dict]:
                 "author": item.get("author") or "",
                 "published_at": item.get("published_at") or "",
                 "collected_at": collected_at,
+                "priority_score": p_score,
             })
     logger.info("HN tool extraction: %d items", len(results))
     return results
 
 
 def deduplicate_tools(items: list[dict]) -> list[dict]:
-    """URLベースで重複排除"""
+    """URLベースで重複排除し、priority_score 降順→収集日時降順でソートして返す"""
+    # priority_score 降順でソートしてから重複排除することで、
+    # 優先アイテム（Gemini/Claude/ChatGPT）を確実に残す
+    sorted_items = sorted(
+        items,
+        key=lambda x: (
+            -(x.get("priority_score") or 0),
+            -(x.get("published_at") or x.get("collected_at") or ""),
+        ),
+    )
     seen: set[str] = set()
     result = []
-    for item in items:
+    for item in sorted_items:
         url = item.get("url", "")
         key = url or item.get("id", "")
         if key and key not in seen:
