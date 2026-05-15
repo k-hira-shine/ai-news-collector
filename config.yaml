@@ -352,7 +352,7 @@ tools_tracking:
   # 過去に保存済みで tool_family が空の行を、次回ランで Gemini に再分析（APIコスト上限あり）
   backfill_missing_tool_family:
     enabled: true
-    max_per_run: 40
+    max_per_run: 200   # 既存全件を1回で処理できるよう大きめに設定
     days: 45
 
   # Reddit Data API（承認・Secrets設定後に有効化）
