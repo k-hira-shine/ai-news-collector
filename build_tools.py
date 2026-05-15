@@ -259,7 +259,7 @@ def _tool_card_group(items: list[dict]) -> str:
       <span class="release-badge">{release_icon} {escape(release_type)}</span>
       <span class="impact-badge" style="color:{impact_color}">{impact_label}</span>
       {f'<span class="count-badge">{count}件</span>' if count > 1 else ''}
-      <a href="{review_url}" class="review-link" title="使ってみたメモを見る">📋 使ってみた</a>
+      <button class="review-link" data-tool="{escape(rep.get('tool_name') or '')}" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
     </div>
   </div>
   {f'<div class="summary-ja">{summary_ja}</div>' if summary_ja else ''}
@@ -538,7 +538,170 @@ document.querySelectorAll('[data-filter-source]').forEach(btn => {{
     applyFilters();
   }});
 }});
+
+/* ────────────────────────────────────────────────
+   所感入力モーダル（GitHub API で reviews.json を更新）
+──────────────────────────────────────────────── */
+const REPO = 'k-hira-shine/ai-news-collector';
+const FILE_PATH = 'data/reviews.json';
+const REVIEWS_PAGE = 'reviews.html';
+
+function getToken() {{
+  return localStorage.getItem('gh_pat') || '';
+}}
+
+function openMemoModal(toolName) {{
+  const existing = window.__reviewsCache || {{}};
+  const rev = existing[toolName] || {{}};
+  document.getElementById('memoToolName').textContent = toolName;
+  document.getElementById('memoToolNameHidden').value = toolName;
+  document.getElementById('memoStatus').value = rev.status || 'untried';
+  document.getElementById('memoVerdict').value = rev.verdict || '';
+  document.getElementById('memoMemo').value = rev.memo || '';
+  document.getElementById('memoPurpose').value = rev.purpose || '';
+  document.getElementById('memoCaution').value = rev.caution || '';
+  document.getElementById('memoSaveMsg').textContent = '';
+  document.getElementById('memoModal').style.display = 'flex';
+}}
+
+function closeMemoModal() {{
+  document.getElementById('memoModal').style.display = 'none';
+}}
+
+async function fetchReviews(token) {{
+  const res = await fetch(`https://api.github.com/repos/${{REPO}}/contents/${{FILE_PATH}}`, {{
+    headers: {{ Authorization: `token ${{token}}`, Accept: 'application/vnd.github.v3+json' }}
+  }});
+  if (!res.ok) throw new Error(`GitHub API error: ${{res.status}}`);
+  const data = await res.json();
+  return {{ sha: data.sha, content: JSON.parse(atob(data.content.replace(/\\n/g,''))) }};
+}}
+
+async function saveMemo() {{
+  let token = getToken();
+  if (!token) {{
+    token = prompt('GitHub Personal Access Token を入力してください（repo スコープ必要）:\\n\\n※ このトークンはこのブラウザのみに保存されます。');
+    if (!token) return;
+    localStorage.setItem('gh_pat', token);
+  }}
+
+  const toolName = document.getElementById('memoToolNameHidden').value;
+  const msg = document.getElementById('memoSaveMsg');
+  msg.style.color = 'var(--muted)';
+  msg.textContent = '保存中…';
+
+  try {{
+    const {{ sha, content }} = await fetchReviews(token);
+    window.__reviewsCache = Object.fromEntries((content.tools || []).map(t => [t.name, t]));
+
+    const idx = (content.tools || []).findIndex(t => t.name === toolName);
+    const today = new Date().toLocaleDateString('sv');
+    const entry = {{
+      name: toolName,
+      category: idx >= 0 ? content.tools[idx].category : '',
+      url: idx >= 0 ? content.tools[idx].url : '',
+      status: document.getElementById('memoStatus').value,
+      verdict: document.getElementById('memoVerdict').value,
+      reason: idx >= 0 ? (content.tools[idx].reason || '') : '',
+      purpose: document.getElementById('memoPurpose').value,
+      method: idx >= 0 ? (content.tools[idx].method || '') : '',
+      caution: document.getElementById('memoCaution').value,
+      action_plan: idx >= 0 ? (content.tools[idx].action_plan || '') : '',
+      use_for: idx >= 0 ? (content.tools[idx].use_for || []) : [],
+      memo: document.getElementById('memoMemo').value,
+      updated: today,
+    }};
+
+    if (idx >= 0) content.tools[idx] = entry;
+    else content.tools.push(entry);
+
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\\n')));
+    const putRes = await fetch(`https://api.github.com/repos/${{REPO}}/contents/${{FILE_PATH}}`, {{
+      method: 'PUT',
+      headers: {{ Authorization: `token ${{token}}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }},
+      body: JSON.stringify({{ message: `memo: ${{toolName}} の所感を更新`, content: encoded, sha }})
+    }});
+    if (!putRes.ok) {{
+      const err = await putRes.json();
+      throw new Error(err.message || putRes.status);
+    }}
+    msg.style.color = 'var(--success)';
+    msg.textContent = '✅ 保存しました（ページ再ビルドに数分かかります）';
+    window.__reviewsCache[toolName] = entry;
+  }} catch(e) {{
+    msg.style.color = 'var(--error)';
+    if (e.message.includes('401') || e.message.includes('Bad credentials')) {{
+      localStorage.removeItem('gh_pat');
+      msg.textContent = '❌ トークンが無効です。再度ボタンを押してトークンを入力してください。';
+    }} else {{
+      msg.textContent = '❌ ' + e.message;
+    }}
+  }}
+}}
+
+// 初回ロード時に reviews.json をキャッシュ
+(async () => {{
+  try {{
+    const res = await fetch(REVIEWS_PAGE.replace('.html','') + '/../data/reviews.json');
+    // GitHub Pages では data/ は公開されていないので API なしでは取れない
+    // トークンがあれば取得、なければスキップ
+    const token = getToken();
+    if (!token) return;
+    const {{ content }} = await fetchReviews(token);
+    window.__reviewsCache = Object.fromEntries((content.tools || []).map(t => [t.name, t]));
+  }} catch {{}}
+}})();
 </script>
+
+<!-- 所感入力モーダル -->
+<div id="memoModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)closeMemoModal()">
+  <div style="background:#111827;border:1px solid #2d3748;border-radius:14px;max-width:540px;width:100%;padding:24px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:1.1rem;font-weight:700;color:#38bdf8" id="memoToolName"></span>
+      <button onclick="closeMemoModal()" style="background:none;border:none;color:#94a3b8;font-size:1.3rem;cursor:pointer">✕</button>
+    </div>
+    <input type="hidden" id="memoToolNameHidden">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+        使用状況
+        <select id="memoStatus" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px;border-radius:6px;font-size:0.85rem">
+          <option value="untried">未試用</option>
+          <option value="trying">試用中</option>
+          <option value="using">使ってる</option>
+          <option value="rejected">却下</option>
+        </select>
+      </label>
+      <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+        評価
+        <select id="memoVerdict" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px;border-radius:6px;font-size:0.85rem">
+          <option value="">（未評価）</option>
+          <option value="use">使う</option>
+          <option value="watch">様子見</option>
+          <option value="skip">スキップ</option>
+        </select>
+      </label>
+    </div>
+    <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+      用途・目的
+      <input id="memoPurpose" type="text" placeholder="例: YouTube台本作成、調査" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:7px 10px;border-radius:6px;font-size:0.85rem">
+    </label>
+    <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+      注意点・制限
+      <input id="memoCaution" type="text" placeholder="例: 無料枠に制限あり" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:7px 10px;border-radius:6px;font-size:0.85rem">
+    </label>
+    <label style="font-size:0.8rem;color:#94a3b8;display:flex;flex-direction:column;gap:4px">
+      所感メモ
+      <textarea id="memoMemo" rows="4" placeholder="使ってみた感想、気づき、改善点など自由に…" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:8px 10px;border-radius:6px;font-size:0.85rem;resize:vertical;line-height:1.6"></textarea>
+    </label>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+      <span id="memoSaveMsg" style="font-size:0.8rem"></span>
+      <div style="display:flex;gap:8px">
+        <a id="memoReviewLink" href="reviews.html" style="font-size:0.8rem;color:#94a3b8;text-decoration:none;padding:7px 14px;border:1px solid #2d3748;border-radius:8px">詳細ページ →</a>
+        <button onclick="saveMemo()" style="background:#0284c7;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600">保存</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>"""
 
