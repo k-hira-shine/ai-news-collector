@@ -380,24 +380,36 @@ tools_tracking:
         max_items: 15
 
   rss_feeds:
-    # ══ 最優先：公式ブログ（Gemini / Claude / ChatGPT） ══════════════
-    - url: "https://www.anthropic.com/rss.xml"
-      label: "Anthropic Blog"
-      priority: true
-      max_items: 50
-    - url: "https://openai.com/news/rss/"
-      label: "OpenAI Blog"
-      priority: true
-      max_items: 50
-    - url: "https://feeds.feedburner.com/blogspot/gJZg"
-      label: "Google AI Blog"
-      priority: true
-      max_items: 50
-    # ── 準優先：関連エコシステム ──────────────────────────
+    # ══ 準優先：関連エコシステム（公式ブログはRSS廃止、X公式アカウントで代替）══
     - url: "https://huggingface.co/blog/feed.xml"
       label: "Hugging Face Blog"
       priority: true
       max_items: 40
+    - url: "https://feeds.feedburner.com/blogspot/gJZg"
+      label: "Google AI Blog"
+      priority: true
+      max_items: 50
+    # ── 英語：AI特化ニュースレター（新ツール発見に強い）────────
+    - url: "https://www.producthunt.com/feed?category=artificial-intelligence"
+      label: "Product Hunt AI"
+      priority: true
+      max_items: 50
+    - url: "https://importai.substack.com/feed"
+      label: "Import AI"
+      priority: true
+      max_items: 20
+    - url: "https://lastweekin.ai/feed"
+      label: "Last Week in AI"
+      priority: true
+      max_items: 20
+    - url: "https://aibusiness.com/rss.xml"
+      label: "AI Business"
+      priority: true
+      max_items: 30
+    - url: "https://www.bensbites.com/feed"
+      label: "Ben's Bites"
+      priority: true
+      max_items: 20
     # ── 英語：主要テックメディア ───────────────────────────
     - url: "https://venturebeat.com/category/ai/feed/"
       label: "VentureBeat AI"
@@ -415,8 +427,6 @@ tools_tracking:
       label: "MIT Technology Review"
     - url: "https://www.zdnet.com/topic/artificial-intelligence/rss.xml"
       label: "ZDNet AI"
-    - url: "https://www.businessinsider.com/sai/feed"
-      label: "Business Insider Tech"
     # ── 日本語：テックメディア ────────────────────────────
     - url: "https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml"
       label: "ITmedia NEWS"
@@ -428,23 +438,11 @@ tools_tracking:
       label: "ZDNet Japan"
     - url: "https://www.softantenna.com/wp/feed/"
       label: "SoftAntenna"
-    # ── 新ツール発見特化 ──────────────────────────────────
-    - url: "https://www.producthunt.com/feed?category=artificial-intelligence"
-      label: "Product Hunt AI"
-    - url: "https://www.futurepedia.io/blog/rss.xml"
-      label: "Futurepedia"
     # ── 日本語：開発者コミュニティ ────────────────────────
     - url: "https://zenn.dev/topics/ai/feed"
       label: "Zenn AI"
     - url: "https://qiita.com/tags/ai/feed"
       label: "Qiita AI"
-    # ── AIニュースレター・キュレーション ─────────────────
-    - url: "https://ainews.io/feed"
-      label: "AI News"
-    - url: "https://importai.substack.com/feed"
-      label: "Import AI"
-    - url: "https://lastweekin.ai/feed"
-      label: "Last Week in AI"
     # ── AI企業ブログ ──────────────────────────────────────
     - url: "https://cohere.com/blog/rss"
       label: "Cohere Blog"
