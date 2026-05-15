@@ -332,8 +332,11 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
       <div id="editHistoryList" style="max-height:160px;overflow-y:auto"></div>
     </div>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
-      <span id="editSaveMsg" style="font-size:0.8rem"></span>
-      <button onclick="saveEdit()" style="background:#0284c7;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600">保存</button>
+      <button onclick="deleteTool()" style="background:none;border:1px solid #ef4444;color:#ef4444;padding:7px 14px;border-radius:8px;font-size:0.82rem;cursor:pointer">🗑 削除</button>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span id="editSaveMsg" style="font-size:0.8rem"></span>
+        <button onclick="saveEdit()" style="background:#0284c7;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600">保存</button>
+      </div>
     </div>
   </div>
 </div>
@@ -557,6 +560,41 @@ async function saveEdit() {{
       msg.style.color = '#ef4444';
       msg.textContent = '❌ ' + e.message;
     }}
+  }}
+}}
+
+async function deleteTool() {{
+  const toolName = document.getElementById('editToolNameHidden').value;
+  if (!confirm(`「${{toolName}}」のレビューデータをすべて削除しますか？`)) return;
+  const token = getToken();
+  if (!token) {{
+    document.getElementById('editSaveMsg').textContent = '⚠️ トークンが必要です';
+    return;
+  }}
+  const msg = document.getElementById('editSaveMsg');
+  msg.style.color = '#94a3b8';
+  msg.textContent = '削除中…';
+  try {{
+    const {{ sha, content }} = await fetchReviews(token);
+    content.tools = (content.tools || []).filter(t => t.name !== toolName);
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\\n')));
+    const putRes = await fetch(`https://api.github.com/repos/${{REPO}}/contents/${{FILE_PATH}}`, {{
+      method: 'PUT',
+      headers: {{ Authorization: `token ${{token}}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }},
+      body: JSON.stringify({{ message: `memo: ${{toolName}} を削除`, content: encoded, sha }})
+    }});
+    if (!putRes.ok) {{ const e = await putRes.json(); throw new Error(e.message || putRes.status); }}
+    msg.style.color = '#10b981';
+    msg.textContent = '✅ 削除しました（ページ再ビルドに数分かかります）';
+    // カードをその場で非表示
+    document.querySelectorAll('.review-card').forEach(card => {{
+      const nameEl = card.querySelector('.tool-name');
+      if (nameEl && nameEl.textContent.trim() === toolName) card.style.display = 'none';
+    }});
+    setTimeout(closeEditModal, 1500);
+  }} catch(e) {{
+    msg.style.color = '#ef4444';
+    msg.textContent = '❌ ' + e.message;
   }}
 }}
 
