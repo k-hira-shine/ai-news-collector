@@ -348,6 +348,8 @@ tools_tracking:
   enabled: true
   max_age_days: 7          # 何日前までのRSSを取得するか
   max_items_per_feed: 30   # 1フィードあたり最大取得件数
+  # Gemini / Claude / ChatGPT の3系統のみ分析結果に残す（ページでもこの3つに限定）
+  only_major_llm_families: true
 
   # Reddit Data API（承認・Secrets設定後に有効化）
   reddit:

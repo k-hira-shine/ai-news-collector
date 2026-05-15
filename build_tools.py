@@ -11,6 +11,7 @@ logger = logging.getLogger("ai-news.build_tools")
 
 TOOLS_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "tools")
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "docs", "tools.html")
+CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.yaml")
 
 RELEASE_TYPE_ICONS = {
     "新規リリース": "🆕",
@@ -34,13 +35,59 @@ SOURCE_ICONS = {
     "arxiv": "📄",
 }
 
+FAMILY_LABELS = {
+    "gemini": ("✨ Gemini", "#4285f4"),
+    "claude": ("🟠 Claude", "#d97757"),
+    "chatgpt": ("💬 ChatGPT", "#10a37f"),
+    "other": ("📌 その他", "#64748b"),
+}
+
+
+def _tools_tracking_cfg() -> dict:
+    try:
+        import yaml
+        with open(CONFIG_PATH, encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+        return cfg.get("tools_tracking") or {}
+    except Exception:
+        return {}
+
+
+def _only_major_llm_families() -> bool:
+    return bool(_tools_tracking_cfg().get("only_major_llm_families", True))
+
+
+def _infer_tool_family(item: dict) -> str | None:
+    """分析に tool_family が無い旧データ向け。優先順は Gemini → Claude → ChatGPT。"""
+    text = " ".join([
+        item.get("tool_name") or "",
+        item.get("title") or "",
+        item.get("summary_ja") or "",
+        (item.get("content") or "")[:400],
+    ]).lower()
+    if any(k in text for k in ("gemini", "ジェミニ", "google ai studio")):
+        return "gemini"
+    if any(k in text for k in ("claude", "anthropic", "クロード")):
+        return "claude"
+    if any(k in text for k in ("chatgpt", "openai", "gpt-", "gpt ", "chat gpt")):
+        return "chatgpt"
+    return None
+
+
+def _resolve_tool_family(item: dict) -> str | None:
+    f = (item.get("tool_family") or "").strip().lower()
+    if f in ("gemini", "claude", "chatgpt"):
+        return f
+    return _infer_tool_family(item)
+
 
 def load_all_items(days: int = 30) -> list[dict]:
-    """data/tools/ から直近 days 日分を全件ロード（分析済みのみ）"""
+    """data/tools/ から直近 days 日分を全件ロード（分析済みのみ、ファミリー解決済み）"""
     if not os.path.isdir(TOOLS_DATA_DIR):
         return []
     files = sorted(glob(os.path.join(TOOLS_DATA_DIR, "*.jsonl")), reverse=True)
     items: list[dict] = []
+    only_major = _only_major_llm_families()
     for fpath in files[:days]:
         with open(fpath, encoding="utf-8") as f:
             for line in f.read().split("\n"):
@@ -49,8 +96,17 @@ def load_all_items(days: int = 30) -> list[dict]:
                     continue
                 try:
                     obj = json.loads(line)
-                    if obj.get("tool_name"):  # 分析済みのみ
-                        items.append(obj)
+                    if not obj.get("tool_name"):
+                        continue
+                    fam = _resolve_tool_family(obj)
+                    if only_major:
+                        if fam not in ("gemini", "claude", "chatgpt"):
+                            continue
+                    else:
+                        fam = fam or "other"
+                    enriched = dict(obj)
+                    enriched["tool_family"] = fam
+                    items.append(enriched)
                 except Exception:
                     continue
     return items
@@ -140,6 +196,9 @@ def _tool_card_group(items: list[dict]) -> str:
     rep = items_by_date[0]
 
     tool_name = escape(rep.get("tool_name") or "")
+    fam = rep.get("tool_family") or "other"
+    fam_short, fam_color = FAMILY_LABELS.get(fam, FAMILY_LABELS["other"])
+    fam_label_esc = escape(fam_short)
     best_impact = min((x.get("impact", "low") for x in items), key=lambda i: impact_order.get(i, 2))
     impact_label, impact_color = IMPACT_LABELS.get(best_impact, ("⚪ 参考", "#64748b"))
     release_type = rep.get("release_type") or "その他"
@@ -183,10 +242,14 @@ def _tool_card_group(items: list[dict]) -> str:
     from urllib.parse import quote as _quote
     review_url = f"reviews.html?tool={_quote(rep.get('tool_name') or '')}"
 
-    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}">
+    first_src_label_raw = first.get("source_label") or first_src
+    data_source_label = escape(first_src_label_raw)
+
+    return f"""{modal_html}<div class="tool-card" data-release="{data_release}" data-impact="{data_impact}" data-source="{data_source}" data-ai="{data_ai}" data-family="{escape(fam)}" data-source-label="{data_source_label}">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">{tool_name}</span>
+      <span class="family-badge" style="border-color:{fam_color};color:{fam_color}">{fam_label_esc}</span>
       <span class="release-badge">{release_icon} {escape(release_type)}</span>
       <span class="impact-badge" style="color:{impact_color}">{impact_label}</span>
       {f'<span class="count-badge">{count}件</span>' if count > 1 else ''}
@@ -206,6 +269,7 @@ def _tool_card_group(items: list[dict]) -> str:
 
 def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     items = load_all_items()
+    only_major = _only_major_llm_families()
     from zoneinfo import ZoneInfo
     now_str = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M JST")
 
@@ -213,7 +277,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     release_types = sorted(set(i.get("release_type", "その他") for i in items if i.get("release_type")))
     sources = sorted(set(i.get("source_label", "") for i in items if i.get("source_label")))
 
-    # 同一ツール名でグループ化（tool_nameを正規化してまとめる）
+    # 同一ツール名＋同一ファミリーでグループ化（tool_nameを正規化してまとめる）
     from collections import defaultdict
     import re as _re
 
@@ -230,7 +294,9 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 
     groups: dict[str, list[dict]] = defaultdict(list)
     for item in items:
-        key = _normalize_tool_name(item.get("tool_name") or "")
+        fam = item.get("tool_family") or "other"
+        nk = _normalize_tool_name(item.get("tool_name") or "")
+        key = f"{nk}|{fam}"
         groups[key].append(item)
     # グループ内最新のpublished_atで全体をソート
     def _group_latest(g: list[dict]) -> str:
@@ -249,6 +315,15 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
         '<button class="filter-btn" data-filter-ai="ai">🤖 AI関連</button>\n'
         '<button class="filter-btn" data-filter-ai="non-ai">📱 非AI</button>\n'
     )
+
+    family_filter_btns = (
+        '<button class="filter-btn active" data-filter-family="all">すべて</button>\n'
+        '<button class="filter-btn" data-filter-family="gemini">✨ Gemini</button>\n'
+        '<button class="filter-btn" data-filter-family="claude">🟠 Claude</button>\n'
+        '<button class="filter-btn" data-filter-family="chatgpt">💬 ChatGPT</button>\n'
+    )
+    if not only_major:
+        family_filter_btns += '<button class="filter-btn" data-filter-family="other">📌 その他</button>\n'
 
     release_filter_btns = '<button class="filter-btn active" data-filter-release="all">すべて</button>\n'
     for rt in release_types:
@@ -302,7 +377,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   .tool-card-header {{ display: flex; flex-direction: column; gap: 6px; }}
   .tool-name-row {{ display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }}
   .tool-name {{ font-size: 1rem; font-weight: 700; color: var(--accent); }}
-  .release-badge {{ font-size: 0.75rem; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--accent); padding: 2px 8px; border-radius: 10px; }}
+  .family-badge {{ font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 10px; border: 1px solid; background: rgba(0,0,0,0.2); }}
   .impact-badge {{ font-size: 0.75rem; font-weight: 600; }}
   .source-age {{ display: flex; gap: 10px; align-items: center; font-size: 0.76rem; color: var(--muted); }}
   .summary-ja {{ font-size: 0.9rem; color: var(--text); line-height: 1.65; }}
@@ -356,6 +431,10 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   </div>
   <div class="filter-section">
     <div class="filter-row">
+      <span class="filter-label">ファミリー</span>
+      {family_filter_btns}
+    </div>
+    <div class="filter-row">
       <span class="filter-label">カテゴリ</span>
       {ai_filter_btns}
     </div>
@@ -383,20 +462,36 @@ let activeImpact = 'all';
 let activeSource = 'all';
 let activeAi = 'all';
 
+let activeFamily = 'all';
+
 function applyFilters() {{
   const cards = Array.from(document.querySelectorAll('.tool-card'));
   let visible = 0;
   cards.forEach(card => {{
     const releaseMatch = activeRelease === 'all' || card.dataset.release === activeRelease;
     const impactMatch = activeImpact === 'all' || card.dataset.impact === activeImpact;
-    const sourceMatch = activeSource === 'all' || card.dataset.source === activeSource;
     const aiMatch = activeAi === 'all' || card.dataset.ai === activeAi;
-    const show = releaseMatch && impactMatch && sourceMatch && aiMatch;
+    const familyMatch = activeFamily === 'all' || card.dataset.family === activeFamily;
+    let sourceMatch = true;
+    if (activeSource !== 'all') {{
+      const lbl = card.dataset.sourceLabel || '';
+      sourceMatch = lbl.includes(activeSource);
+    }}
+    const show = releaseMatch && impactMatch && sourceMatch && aiMatch && familyMatch;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   }});
   document.getElementById('visibleCount').textContent = visible;
 }}
+
+document.querySelectorAll('[data-filter-family]').forEach(btn => {{
+  btn.addEventListener('click', () => {{
+    document.querySelectorAll('[data-filter-family]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFamily = btn.dataset.filterFamily;
+    applyFilters();
+  }});
+}});
 
 document.querySelectorAll('[data-filter-ai]').forEach(btn => {{
   btn.addEventListener('click', () => {{
@@ -429,27 +524,8 @@ document.querySelectorAll('[data-filter-source]').forEach(btn => {{
   btn.addEventListener('click', () => {{
     document.querySelectorAll('[data-filter-source]').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    // sourceフィルタはsource_labelで絞り込む
-    const val = btn.dataset.filterSource;
-    document.querySelectorAll('.tool-card').forEach(card => {{
-      if (val === 'all') {{ card.dataset.sourceActive = ''; return; }}
-      const srcLabel = card.querySelector('.source-label') ? card.querySelector('.source-label').textContent.trim().replace(/^[^\\s]+\\s/, '') : '';
-      card.dataset.source = val === 'all' ? card.dataset.source : (card.querySelector('.source-label')?.textContent.includes(val) ? val : card.dataset.source);
-    }});
-    activeSource = val;
-    // source_labelベースで直接フィルタ
-    document.querySelectorAll('.tool-card').forEach(card => {{
-      const releaseMatch = activeRelease === 'all' || card.dataset.release === activeRelease;
-      const impactMatch = activeImpact === 'all' || card.dataset.impact === activeImpact;
-      let sourceMatch = true;
-      if (val !== 'all') {{
-        const srcEl = card.querySelector('.source-label');
-        sourceMatch = srcEl ? srcEl.textContent.includes(val) : false;
-      }}
-      card.style.display = (releaseMatch && impactMatch && sourceMatch) ? '' : 'none';
-    }});
-    document.getElementById('visibleCount').textContent =
-      Array.from(document.querySelectorAll('.tool-card')).filter(c => c.style.display !== 'none').length;
+    activeSource = btn.dataset.filterSource;
+    applyFilters();
   }});
 }});
 </script>
