@@ -79,7 +79,7 @@
 <a href="reviews.html" class="active">📋 使ってみた</a>
 </nav>
 <header>
-  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:33 JST</span></div>
+  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:35 JST</span></div>
 </header>
 <div class="container">
   <div class="stats-bar">
@@ -195,6 +195,10 @@
       所感メモ
       <textarea id="editMemo" rows="4" placeholder="使ってみた感想、気づき、改善点など自由に…" style="background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:8px 10px;border-radius:6px;font-size:0.85rem;resize:vertical;line-height:1.6"></textarea>
     </label>
+    <div style="border-top:1px solid #2d3748;padding-top:10px">
+      <div style="font-size:0.78rem;color:#94a3b8;margin-bottom:6px">📋 履歴（×で削除 → 保存で確定）</div>
+      <div id="editHistoryList" style="max-height:160px;overflow-y:auto"></div>
+    </div>
     <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
       <span id="editSaveMsg" style="font-size:0.8rem"></span>
       <button onclick="saveEdit()" style="background:#0284c7;border:none;color:#fff;padding:8px 20px;border-radius:8px;font-size:0.85rem;cursor:pointer;font-weight:600">保存</button>
@@ -285,7 +289,38 @@ async function fetchReviews(token) {
   return { sha: data.sha, content: JSON.parse(text) };
 }
 
-function openEditModal(btn) {
+// 編集中の履歴（削除操作を反映した作業コピー）
+let _editHistories = [];
+
+function _renderHistoryList() {
+  const container = document.getElementById('editHistoryList');
+  if (!container) return;
+  if (_editHistories.length === 0) {
+    container.innerHTML = '<span style="font-size:0.78rem;color:#64748b">履歴なし</span>';
+    return;
+  }
+  container.innerHTML = _editHistories.map((h, i) => {
+    const dt = h.updated_at || h.updated || '';
+    const sl = { untried:'未試用', trying:'試用中', using:'使ってる', rejected:'却下' }[h.status] || h.status || '';
+    const vl = { use:'👍 使う', watch:'👀 様子見', skip:'👎 スキップ' }[h.verdict] || '';
+    const m = (h.memo || '').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return `<div class="hist-row" style="display:flex;gap:6px;align-items:flex-start;padding:6px 0;border-bottom:1px solid #2d3748;font-size:0.78rem">
+      <div style="flex:1;display:flex;flex-direction:column;gap:2px">
+        <div style="color:#94a3b8">${dt}</div>
+        <div style="color:#e2e8f0">${sl}${vl ? ' / ' + vl : ''}${m ? ' — ' + m : ''}</div>
+      </div>
+      <button onclick="_deleteHistory(${i})" style="background:none;border:1px solid #4b5563;color:#94a3b8;border-radius:4px;padding:2px 7px;cursor:pointer;font-size:0.78rem;flex-shrink:0" title="削除">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function _deleteHistory(idx) {
+  if (!confirm('この履歴を削除しますか？')) return;
+  _editHistories.splice(idx, 1);
+  _renderHistoryList();
+}
+
+async function openEditModal(btn) {
   try {
     const toolName = btn.dataset.toolName;
     const card = btn.closest('.review-card');
@@ -310,9 +345,23 @@ function openEditModal(btn) {
     document.getElementById('editCaution').value = caution;
     document.getElementById('editMemo').value = memo;
     document.getElementById('editSaveMsg').textContent = '';
+
+    // 履歴をAPIから取得して表示
+    _editHistories = [];
+    _renderHistoryList();
     const modal = document.getElementById('editModal');
     modal.style.cssText = 'display:flex!important;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:2000;align-items:center;justify-content:center;padding:16px';
     refreshTokenUI();
+
+    const token = getToken();
+    if (token) {
+      try {
+        const { content } = await fetchReviews(token);
+        const tool = (content.tools || []).find(t => t.name === toolName);
+        _editHistories = tool ? [...(tool.histories || [])] : [];
+        _renderHistoryList();
+      } catch(e) {}
+    }
   } catch(e) {
     alert('エラー: ' + e.message);
   }
@@ -349,9 +398,9 @@ async function saveEdit() {
       updated: today,
       updated_at: now,
     };
-    const prevHistories = existing.histories || [];
-    const histIdx = prevHistories.findIndex(h => h.updated === today);
-    const newHistories = [...prevHistories];
+    // 削除操作済みの _editHistories をベースに今回分を追記
+    const newHistories = [..._editHistories];
+    const histIdx = newHistories.findIndex(h => h.updated === today);
     if (histIdx >= 0) newHistories[histIdx] = snapshot;
     else newHistories.unshift(snapshot);
     const entry = { name: toolName, category: existing.category || '', url: existing.url || '', ...snapshot, histories: newHistories };
