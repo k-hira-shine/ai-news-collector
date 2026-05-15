@@ -727,7 +727,10 @@ async function fetchReviews(token) {{
   }});
   if (!res.ok) throw new Error(`GitHub API error: ${{res.status}}`);
   const data = await res.json();
-  return {{ sha: data.sha, content: JSON.parse(atob(data.content.replace(/\\n/g,''))) }};
+  const b64 = data.content.replace(/\\n/g, '');
+  const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+  const text = new TextDecoder('utf-8').decode(bytes);
+  return {{ sha: data.sha, content: JSON.parse(text) }};
 }}
 
 function saveToken() {{
