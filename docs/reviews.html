@@ -79,16 +79,16 @@
 <a href="reviews.html" class="active">📋 使ってみた</a>
 </nav>
 <header>
-  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:40 JST</span></div>
+  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:41 JST</span></div>
 </header>
 <div class="container">
   <div class="stats-bar">
-    <div class="stat-chip">合計 <strong>0</strong> ツール</div>
+    <div class="stat-chip">合計 <strong>1</strong> ツール</div>
     <div class="stat-chip">✅ 使用中 <strong>0</strong></div>
     <div class="stat-chip">🔄 試用中 <strong>0</strong></div>
-    <div class="stat-chip">⬜ 未試用 <strong>0</strong></div>
+    <div class="stat-chip">⬜ 未試用 <strong>1</strong></div>
     <div class="stat-chip">❌ 不採用 <strong>0</strong></div>
-    <div class="stat-chip">👍 採用判定 <strong id="visibleCount">0</strong> / 0</div>
+    <div class="stat-chip">👍 採用判定 <strong id="visibleCount">1</strong> / 1</div>
   </div>
   <div class="filter-section">
     <div class="filter-row">
@@ -111,11 +111,36 @@
     <div class="filter-row">
       <span class="filter-label">カテゴリ</span>
       <button class="filter-btn active" data-filter-category="all">すべて</button>
+<button class="filter-btn" data-filter-category="未分類">未分類</button>
 
     </div>
   </div>
   <div class="reviews-grid" id="reviewsGrid">
-    <div class="empty-state"><p>まだレビューデータがありません。data/reviews.json に追記してください。</p></div>
+    <div class="review-card" data-status="untried" data-verdict="watch" data-category="">
+  <div class="card-header">
+    <div class="tool-name-row">
+      <button class="tool-name edit-trigger" onclick="openEditModal(this)" data-tool-name="ChatGPT (Personal Finance)">ChatGPT (Personal Finance)</button>
+      
+      <span class="category-badge"></span>
+    </div>
+    <div class="badge-row">
+      <span class="status-badge" style="color:#64748b">⬜ 未試用</span>
+      <span class="verdict-badge" style="color:#64748b">— 未判定</span>
+      <span class="updated">更新 2026/05/16 06:41</span>
+    </div>
+  </div>
+  
+  <div class="fields"><div class="field-row">
+  <span class="field-label">目的・用途</span>
+  <span class="field-value">ChatGPTを使った個人の家計管理</span>
+</div><div class="field-row">
+  <span class="field-label">注意点</span>
+  <span class="field-value">米国のみの提供</span>
+</div></div>
+  <div class="memo">📝 日本で提供されたら使ってみたい。
+何を管理してくれるのか、米国の情報を収集すること。</div>
+  
+</div>
   </div>
 </div>
 <footer>地上にあるAIツールを全て触っている状態を目指す — data/reviews.json に追記して更新</footer>
