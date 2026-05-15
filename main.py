@@ -202,12 +202,51 @@ def main() -> None:
                 hn_raw.extend(date_items)
             hn_tool_items = extract_from_hn(hn_raw)
 
-            # マージ・重複排除・JSONL保存
-            all_tool_candidates = deduplicate_tools(rss_items + reddit_items + x_tool_items + hn_tool_items)
-            if all_tool_candidates:
-                save_tools_jsonl(all_tool_candidates)
-                # Gemini分析
-                analyzed = analyze_tools_items(all_tool_candidates, config)
+            # マージ・重複排除（当日の新規候補）
+            new_candidates = deduplicate_tools(
+                rss_items + reddit_items + x_tool_items + hn_tool_items
+            )
+
+            # tool_family 未設定の過去行を分析キューへ（次回以降のランで順次埋まる）
+            analyze_queue = list(new_candidates)
+            bf_cfg = tools_cfg.get("backfill_missing_tool_family") or {}
+            if bf_cfg.get("enabled", True):
+                max_bf = int(bf_cfg.get("max_per_run", 40))
+                days_bf = int(bf_cfg.get("days", 45))
+                valid_families = {"gemini", "claude", "chatgpt"}
+                if max_bf > 0:
+                    historical = load_all_tools_items(days=days_bf)
+                    seen_ids = {x.get("id") for x in analyze_queue if x.get("id")}
+                    backfill_list: list[dict] = []
+                    for it in historical:
+                        iid = it.get("id", "")
+                        if not iid or not it.get("tool_name"):
+                            continue
+                        fam = (it.get("tool_family") or "").strip().lower()
+                        if fam in valid_families:
+                            continue
+                        if fam == "other":
+                            continue
+                        if iid in seen_ids:
+                            continue
+                        backfill_list.append(dict(it))
+                        seen_ids.add(iid)
+                        if len(backfill_list) >= max_bf:
+                            break
+                    if backfill_list:
+                        logger.info(
+                            "Tools backfill tool_family: queued %d records (max %d)",
+                            len(backfill_list),
+                            max_bf,
+                        )
+                        analyze_queue.extend(backfill_list)
+                        analyze_queue = deduplicate_tools(analyze_queue)
+
+            if new_candidates:
+                save_tools_jsonl(new_candidates)
+
+            if analyze_queue:
+                analyzed = analyze_tools_items(analyze_queue, config)
                 if analyzed:
                     save_tools_analysis(analyzed)
                     logger.info("Tools: %d items analyzed", len(analyzed))

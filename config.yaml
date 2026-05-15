@@ -350,6 +350,11 @@ tools_tracking:
   max_items_per_feed: 30   # 1フィードあたり最大取得件数
   # Gemini / Claude / ChatGPT の3系統のみ分析結果に残す（ページでもこの3つに限定）
   only_major_llm_families: true
+  # 過去に保存済みで tool_family が空の行を、次回ランで Gemini に再分析（APIコスト上限あり）
+  backfill_missing_tool_family:
+    enabled: true
+    max_per_run: 40
+    days: 45
 
   # Reddit Data API（承認・Secrets設定後に有効化）
   reddit:

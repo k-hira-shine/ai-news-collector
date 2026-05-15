@@ -163,10 +163,8 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
                 continue
 
         family = r.get("tool_family") or "other"
-        if major_only and family not in ("gemini", "claude", "chatgpt"):
-            continue
 
-        results.append({
+        merged = {
             **source_item,
             "tool_name": r.get("tool_name", ""),
             "release_type": r.get("release_type", "その他"),
@@ -175,7 +173,13 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
             "is_ai_tool": r.get("is_ai_tool", True),
             "tool_family": family,
             "analyzed_at": datetime.now(timezone.utc).isoformat(),
-        })
+        }
+
+        if major_only and family not in ("gemini", "claude", "chatgpt"):
+            # ページ対象外だが、バックフィルが同一レコードを毎回再投入するのを防ぐ
+            merged["tool_family"] = "other"
+
+        results.append(merged)
 
     return results
 
@@ -189,39 +193,74 @@ def load_all_tools_analyses(days: int = 30) -> list[dict]:
 
 
 def save_tools_analysis(items: list[dict]) -> str:
-    """分析済みアイテムを data/tools/YYYY-MM-DD.jsonl にマージ保存"""
+    """分析済みレコードを id で既存 JSONL を検索し、該当行をすべて置換する。
+
+    見つからない id は当日の JSONL に追加する。過去日ファイルの行を更新しても
+    当日ファイルへ複製しない（従来バグの回避）。
+    """
     if not items:
         return ""
+
+    from collections import defaultdict
+    from glob import glob
 
     base = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "tools")
     os.makedirs(base, exist_ok=True)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    path = os.path.join(base, f"{today}.jsonl")
+    today_path = os.path.join(base, f"{today}.jsonl")
 
-    # 既存データ読み込み
-    existing: dict[str, dict] = {}
-    if os.path.exists(path):
-        with open(path, encoding="utf-8") as f:
-            for line in f.read().split("\n"):
-                line = line.strip()
-                if line:
+    paths = sorted(glob(os.path.join(base, "*.jsonl")))
+    file_rows: dict[str, list[dict]] = {}
+    id_positions: dict[str, list[tuple[str, int]]] = defaultdict(list)
+
+    for p in paths:
+        rows: list[dict] = []
+        if os.path.exists(p):
+            with open(p, encoding="utf-8") as f:
+                for line in f.read().split("\n"):
+                    line = line.strip()
+                    if not line:
+                        continue
                     try:
-                        obj = json.loads(line)
-                        existing[obj.get("id", "")] = obj
+                        rows.append(json.loads(line))
                     except Exception:
-                        pass
+                        continue
+        file_rows[p] = rows
+        for idx, obj in enumerate(rows):
+            oid = obj.get("id", "")
+            if oid:
+                id_positions[oid].append((p, idx))
 
-    # 分析済みデータでマージ（上書き）
+    if today_path not in file_rows:
+        file_rows[today_path] = []
+
+    modified_files: set[str] = set()
+
     for item in items:
         item_id = item.get("id", "")
-        if item_id:
-            existing[item_id] = item
+        if not item_id:
+            continue
+        positions = id_positions.get(item_id, [])
+        if positions:
+            for fp, idx in positions:
+                file_rows[fp][idx] = item
+                modified_files.add(fp)
+        else:
+            rows_today = file_rows[today_path]
+            rows_today.append(item)
+            id_positions[item_id].append((today_path, len(rows_today) - 1))
+            modified_files.add(today_path)
 
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        for obj in existing.values():
-            f.write(json.dumps(obj, ensure_ascii=False) + "\n")
-    os.replace(tmp, path)
+    for fp in modified_files:
+        tmp = fp + ".tmp"
+        with open(tmp, "w", encoding="utf-8") as f:
+            for obj in file_rows[fp]:
+                f.write(json.dumps(obj, ensure_ascii=False) + "\n")
+        os.replace(tmp, fp)
 
-    logger.info("Saved %d analyzed tools items → %s", len(existing), path)
-    return path
+    logger.info(
+        "Upserted %d analyzed tools records (%d files touched)",
+        len(items),
+        len(modified_files),
+    )
+    return today_path

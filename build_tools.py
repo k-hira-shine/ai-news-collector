@@ -78,6 +78,8 @@ def _resolve_tool_family(item: dict) -> str | None:
     f = (item.get("tool_family") or "").strip().lower()
     if f in ("gemini", "claude", "chatgpt"):
         return f
+    if f == "other":
+        return None
     return _infer_tool_family(item)
 
 
