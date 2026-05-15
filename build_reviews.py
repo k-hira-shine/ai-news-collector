@@ -98,6 +98,23 @@ def _review_card(tool: dict) -> str:
     data_verdict = escape(verdict_key) if verdict_key else "none"
     data_category = escape(tool.get("category") or "")
 
+    histories = tool.get("histories") or []
+    history_html = ""
+    if len(histories) > 1:
+        rows = ""
+        for h in histories:
+            h_s_label, h_s_color = STATUS_LABELS.get(h.get("status") or "untried", STATUS_LABELS["untried"])
+            h_v_label, h_v_color = VERDICT_LABELS.get(h.get("verdict") or "", VERDICT_LABELS[""])
+            h_memo = escape(h.get("memo") or "")
+            h_date = escape(h.get("updated") or "")
+            rows += f"""<div class="history-row">
+  <span class="updated">{h_date}</span>
+  <span class="status-badge" style="color:{h_s_color};font-size:0.72rem">{h_s_label}</span>
+  <span class="verdict-badge" style="color:{h_v_color};font-size:0.72rem">{h_v_label}</span>
+  {f'<span class="history-memo">📝 {h_memo}</span>' if h_memo else ''}
+</div>"""
+        history_html = f'<details class="history-details"><summary>履歴 {len(histories)}件</summary><div class="history-list">{rows}</div></details>'
+
     return f"""<div class="review-card" data-status="{data_status}" data-verdict="{data_verdict}" data-category="{data_category}">
   <div class="card-header">
     <div class="tool-name-row">
@@ -113,6 +130,7 @@ def _review_card(tool: dict) -> str:
   {_use_for_badges(use_for)}
   {f'<div class="fields">{fields}</div>' if fields.strip() else ''}
   {f'<div class="memo">📝 {memo}</div>' if memo else ''}
+  {history_html}
 </div>"""
 
 
@@ -205,6 +223,12 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
   .field-label {{ color: var(--muted); min-width: 110px; flex-shrink: 0; font-size: 0.78rem; }}
   .field-value {{ color: var(--text); line-height: 1.5; }}
   .memo {{ font-size: 0.85rem; color: var(--muted); background: rgba(148,163,184,0.08); border-radius: 6px; padding: 8px 10px; line-height: 1.6; border-top: 1px solid var(--border); }}
+  .history-details {{ margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px; }}
+  .history-details summary {{ font-size: 0.78rem; color: var(--muted); cursor: pointer; user-select: none; }}
+  .history-details summary:hover {{ color: var(--accent); }}
+  .history-list {{ display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }}
+  .history-row {{ display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 0.78rem; padding: 4px 0; border-bottom: 1px solid rgba(45,55,72,0.5); }}
+  .history-memo {{ color: var(--muted); font-size: 0.75rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
   .empty-state {{ text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }}
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{

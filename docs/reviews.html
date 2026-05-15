@@ -48,6 +48,12 @@
   .field-label { color: var(--muted); min-width: 110px; flex-shrink: 0; font-size: 0.78rem; }
   .field-value { color: var(--text); line-height: 1.5; }
   .memo { font-size: 0.85rem; color: var(--muted); background: rgba(148,163,184,0.08); border-radius: 6px; padding: 8px 10px; line-height: 1.6; border-top: 1px solid var(--border); }
+  .history-details { margin-top: 8px; border-top: 1px solid var(--border); padding-top: 8px; }
+  .history-details summary { font-size: 0.78rem; color: var(--muted); cursor: pointer; user-select: none; }
+  .history-details summary:hover { color: var(--accent); }
+  .history-list { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+  .history-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; font-size: 0.78rem; padding: 4px 0; border-bottom: 1px solid rgba(45,55,72,0.5); }
+  .history-memo { color: var(--muted); font-size: 0.75rem; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); grid-column: 1/-1; }
   footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }
   @media (max-width: 640px) {
@@ -70,7 +76,7 @@
 <a href="reviews.html" class="active">📋 使ってみた</a>
 </nav>
 <header>
-  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:13 JST</span></div>
+  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:16 JST</span></div>
 </header>
 <div class="container">
   <div class="stats-bar">
@@ -129,6 +135,7 @@
 </div></div>
   <div class="memo">📝 日本で提供されたら試してみたい。
 どのレベルの管理ができるのか、米国の状況を参照すること。</div>
+  
 </div>
   </div>
 </div>

@@ -598,7 +598,66 @@ function initWatchAndNew() {{
   reorderCards();
 }}
 
-window.addEventListener('DOMContentLoaded', initWatchAndNew);
+window.addEventListener('DOMContentLoaded', () => {{
+  initWatchAndNew();
+  applyReviewBadges();
+}});
+
+const REVIEW_STATUS_LABELS = {{
+  untried: {{ label: '未試用', color: '#64748b' }},
+  trying:  {{ label: '試用中', color: '#f59e0b' }},
+  using:   {{ label: '✅ 使ってる', color: '#10b981' }},
+  rejected:{{ label: '❌ 不採用', color: '#ef4444' }},
+}};
+const REVIEW_VERDICT_LABELS = {{
+  use:   {{ label: '👍 使う', color: '#10b981' }},
+  watch: {{ label: '👀 様子見', color: '#f59e0b' }},
+  skip:  {{ label: '👎 スキップ', color: '#ef4444' }},
+}};
+
+function applyReviewBadges() {{
+  const cache = window.__reviewsCache || {{}};
+  document.querySelectorAll('.tool-card').forEach(card => {{
+    const toolName = card.dataset.toolName;
+    const rev = cache[toolName];
+    if (!rev) return;
+    _renderReviewBadge(card, rev);
+  }});
+}}
+
+function _renderReviewBadge(card, rev) {{
+  // 既存バッジ除去
+  card.querySelectorAll('.review-status-badge').forEach(el => el.remove());
+  const sInfo = REVIEW_STATUS_LABELS[rev.status] || null;
+  const vInfo = REVIEW_VERDICT_LABELS[rev.verdict] || null;
+  if (!sInfo && !vInfo) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'review-status-badge';
+  wrap.style.cssText = 'display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:4px;';
+  if (sInfo) {{
+    const s = document.createElement('span');
+    s.style.cssText = `font-size:0.74rem;font-weight:600;color:${{sInfo.color}};background:${{sInfo.color}}22;border:1px solid ${{sInfo.color}}55;padding:2px 8px;border-radius:10px;`;
+    s.textContent = sInfo.label;
+    wrap.appendChild(s);
+  }}
+  if (vInfo) {{
+    const v = document.createElement('span');
+    v.style.cssText = `font-size:0.74rem;font-weight:600;color:${{vInfo.color}};background:${{vInfo.color}}22;border:1px solid ${{vInfo.color}}55;padding:2px 8px;border-radius:10px;`;
+    v.textContent = vInfo.label;
+    wrap.appendChild(v);
+  }}
+  if (rev.memo) {{
+    const m = document.createElement('span');
+    m.style.cssText = 'font-size:0.72rem;color:#94a3b8;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;';
+    m.title = rev.memo;
+    m.textContent = '📝 ' + rev.memo;
+    wrap.appendChild(m);
+  }}
+  // card-footer の前に挿入
+  const footer = card.querySelector('.card-footer');
+  if (footer) card.insertBefore(wrap, footer);
+  else card.appendChild(wrap);
+}}
 
 function applyFilters() {{
   const cards = Array.from(document.querySelectorAll('.tool-card'));
@@ -773,20 +832,32 @@ async function saveMemo() {{
 
     const idx = (content.tools || []).findIndex(t => t.name === toolName);
     const today = new Date().toLocaleDateString('sv');
-    const entry = {{
-      name: toolName,
-      category: idx >= 0 ? content.tools[idx].category : '',
-      url: idx >= 0 ? content.tools[idx].url : '',
+    const existing = idx >= 0 ? content.tools[idx] : {{}};
+
+    // 今回の入力内容
+    const snapshot = {{
       status: document.getElementById('memoStatus').value,
       verdict: document.getElementById('memoVerdict').value,
-      reason: idx >= 0 ? (content.tools[idx].reason || '') : '',
       purpose: document.getElementById('memoPurpose').value,
-      method: idx >= 0 ? (content.tools[idx].method || '') : '',
       caution: document.getElementById('memoCaution').value,
-      action_plan: idx >= 0 ? (content.tools[idx].action_plan || '') : '',
-      use_for: idx >= 0 ? (content.tools[idx].use_for || []) : [],
       memo: document.getElementById('memoMemo').value,
       updated: today,
+    }};
+
+    // 既存の histories に今回分を追記（最新が先頭）
+    const prevHistories = existing.histories || [];
+    // 同日エントリがあれば上書き、なければ追加
+    const histIdx = prevHistories.findIndex(h => h.updated === today);
+    const newHistories = [...prevHistories];
+    if (histIdx >= 0) newHistories[histIdx] = snapshot;
+    else newHistories.unshift(snapshot);
+
+    const entry = {{
+      name: toolName,
+      category: existing.category || '',
+      url: existing.url || '',
+      ...snapshot,
+      histories: newHistories,
     }};
 
     if (idx >= 0) content.tools[idx] = entry;
@@ -805,6 +876,9 @@ async function saveMemo() {{
     msg.style.color = 'var(--success)';
     msg.textContent = '✅ 保存しました（ページ再ビルドに数分かかります）';
     window.__reviewsCache[toolName] = entry;
+    // 保存後すぐにカードのバッジを更新
+    const savedCard = Array.from(document.querySelectorAll('.tool-card')).find(c => c.dataset.toolName === toolName);
+    if (savedCard) _renderReviewBadge(savedCard, entry);
   }} catch(e) {{
     msg.style.color = 'var(--error)';
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {{
@@ -827,6 +901,7 @@ async function saveMemo() {{
     if (!token) return;
     const {{ content }} = await fetchReviews(token);
     window.__reviewsCache = Object.fromEntries((content.tools || []).map(t => [t.name, t]));
+    applyReviewBadges();
   }} catch {{}}
 }})();
 </script>
