@@ -472,6 +472,11 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
       <input type="text" id="searchInput" placeholder="ツール名・キーワードで検索…" oninput="applyFilters()">
       <button class="search-clear" onclick="document.getElementById('searchInput').value='';applyFilters()" title="クリア">✕</button>
     </div>
+    <div class="date-picker-wrap">
+      <span style="color:var(--muted);font-size:0.82rem">📅</span>
+      <input type="date" id="dateFilter" class="date-input" min="{date_min}" max="{date_max}" onchange="onDateChange(this.value)">
+      <button class="filter-btn" id="dateClearBtn" onclick="clearDateFilter()" style="display:none">✕</button>
+    </div>
   </div>
   <div class="filter-section">
     <div class="filter-row">
@@ -493,13 +498,6 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
     <div class="filter-row">
       <span class="filter-label">ソース</span>
       {source_filter_btns}
-    </div>
-    <div class="filter-row">
-      <span class="filter-label">日付</span>
-      <div class="date-picker-wrap">
-        <input type="date" id="dateFilter" class="date-input" min="{date_min}" max="{date_max}" onchange="onDateChange(this.value)">
-        <button class="filter-btn active" id="dateClearBtn" onclick="clearDateFilter()" style="display:none">✕ クリア</button>
-      </div>
     </div>
   </div>
   <div class="tools-grid" id="toolsGrid">
