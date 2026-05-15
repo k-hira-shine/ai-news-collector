@@ -1,0 +1,43 @@
+name: Rebuild Reviews Page
+
+on:
+  push:
+    paths:
+      - 'data/reviews.json'
+
+concurrency:
+  group: rebuild-reviews
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - run: pip install -r requirements.txt
+
+      - name: Rebuild reviews and tools pages
+        run: |
+          python build_reviews.py
+          python build_tools.py
+
+      - name: Commit & push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/reviews.html docs/tools.html
+          git diff --staged --quiet || git commit -m "build: reviews.json 更新によるページ再ビルド"
+          git push
