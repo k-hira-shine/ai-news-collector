@@ -832,6 +832,7 @@ async function saveMemo() {{
 
     const idx = (content.tools || []).findIndex(t => t.name === toolName);
     const today = new Date().toLocaleDateString('sv');
+    const now = new Date().toLocaleString('ja-JP', {{timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}});
     const existing = idx >= 0 ? content.tools[idx] : {{}};
 
     // 今回の入力内容
@@ -842,6 +843,7 @@ async function saveMemo() {{
       caution: document.getElementById('memoCaution').value,
       memo: document.getElementById('memoMemo').value,
       updated: today,
+      updated_at: now,
     }};
 
     // 既存の histories に今回分を追記（最新が先頭）

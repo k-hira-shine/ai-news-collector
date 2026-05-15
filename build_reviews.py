@@ -82,7 +82,7 @@ def _review_card(tool: dict) -> str:
     verdict_key = tool.get("verdict") or ""
     status_label, status_color = STATUS_LABELS.get(status_key, STATUS_LABELS["untried"])
     verdict_label, verdict_color = VERDICT_LABELS.get(verdict_key, VERDICT_LABELS[""])
-    updated = escape(tool.get("updated") or "")
+    updated = escape(tool.get("updated_at") or tool.get("updated") or "")
     use_for = tool.get("use_for") or []
     memo = escape(tool.get("memo") or "")
 
@@ -106,7 +106,7 @@ def _review_card(tool: dict) -> str:
             h_s_label, h_s_color = STATUS_LABELS.get(h.get("status") or "untried", STATUS_LABELS["untried"])
             h_v_label, h_v_color = VERDICT_LABELS.get(h.get("verdict") or "", VERDICT_LABELS[""])
             h_memo = escape(h.get("memo") or "")
-            h_date = escape(h.get("updated") or "")
+            h_date = escape(h.get("updated_at") or h.get("updated") or "")
             rows += f"""<div class="history-row">
   <span class="updated">{h_date}</span>
   <span class="status-badge" style="color:{h_s_color};font-size:0.72rem">{h_s_label}</span>
@@ -471,6 +471,7 @@ async function saveEdit() {{
     const idx = (content.tools || []).findIndex(t => t.name === toolName);
     const existing = idx >= 0 ? content.tools[idx] : {{}};
     const today = new Date().toLocaleDateString('sv');
+    const now = new Date().toLocaleString('ja-JP', {{timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'}});
     const snapshot = {{
       status: document.getElementById('editStatus').value,
       verdict: document.getElementById('editVerdict').value,
@@ -478,6 +479,7 @@ async function saveEdit() {{
       caution: document.getElementById('editCaution').value,
       memo: document.getElementById('editMemo').value,
       updated: today,
+      updated_at: now,
     }};
     const prevHistories = existing.histories || [];
     const histIdx = prevHistories.findIndex(h => h.updated === today);

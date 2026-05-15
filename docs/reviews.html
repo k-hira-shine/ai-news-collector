@@ -79,7 +79,7 @@
 <a href="reviews.html" class="active">📋 使ってみた</a>
 </nav>
 <header>
-  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:29 JST</span></div>
+  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-16 06:33 JST</span></div>
 </header>
 <div class="container">
   <div class="stats-bar">
@@ -339,6 +339,7 @@ async function saveEdit() {
     const idx = (content.tools || []).findIndex(t => t.name === toolName);
     const existing = idx >= 0 ? content.tools[idx] : {};
     const today = new Date().toLocaleDateString('sv');
+    const now = new Date().toLocaleString('ja-JP', {timeZone:'Asia/Tokyo', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'});
     const snapshot = {
       status: document.getElementById('editStatus').value,
       verdict: document.getElementById('editVerdict').value,
@@ -346,6 +347,7 @@ async function saveEdit() {
       caution: document.getElementById('editCaution').value,
       memo: document.getElementById('editMemo').value,
       updated: today,
+      updated_at: now,
     };
     const prevHistories = existing.histories || [];
     const histIdx = prevHistories.findIndex(h => h.updated === today);
