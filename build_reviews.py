@@ -411,7 +411,7 @@ async function fetchReviews(token) {{
   }});
   if (!res.ok) throw new Error(`GitHub API error: ${{res.status}}`);
   const data = await res.json();
-  const b64 = data.content.replace(/\n/g, '');
+  const b64 = data.content.replace(/\\n/g, '');
   const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
   const text = new TextDecoder('utf-8').decode(bytes);
   return {{ sha: data.sha, content: JSON.parse(text) }};
@@ -432,7 +432,7 @@ function openEditModal(btn) {{
       if (lbl === '注意点') caution = val;
     }});
     const memoEl = card ? card.querySelector('.memo') : null;
-    if (memoEl) memo = memoEl.textContent.replace(/^📝[\s]*/, '').trim();
+    if (memoEl) memo = memoEl.textContent.replace(/^📝\u0020*/, '').trim();
 
     document.getElementById('editToolName').textContent = toolName;
     document.getElementById('editToolNameHidden').value = toolName;
@@ -487,7 +487,7 @@ async function saveEdit() {{
     const entry = {{ name: toolName, category: existing.category || '', url: existing.url || '', ...snapshot, histories: newHistories }};
     if (idx >= 0) content.tools[idx] = entry;
     else content.tools.push(entry);
-    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\n')));
+    const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(content, null, 2) + '\\n')));
     const putRes = await fetch(`https://api.github.com/repos/${{REPO}}/contents/${{FILE_PATH}}`, {{
       method: 'PUT',
       headers: {{ Authorization: `token ${{token}}`, Accept: 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }},
