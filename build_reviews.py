@@ -77,7 +77,7 @@ def _field_row(label: str, value: str) -> str:
 def _review_card(tool: dict) -> str:
     name = escape(tool.get("name") or "")
     category = escape(tool.get("category") or "")
-    url = escape(tool.get("url") or "#")
+    url = escape(tool.get("url") or "")
     status_key = tool.get("status") or "untried"
     verdict_key = tool.get("verdict") or ""
     status_label, status_color = STATUS_LABELS.get(status_key, STATUS_LABELS["untried"])
@@ -101,7 +101,7 @@ def _review_card(tool: dict) -> str:
     return f"""<div class="review-card" data-status="{data_status}" data-verdict="{data_verdict}" data-category="{data_category}">
   <div class="card-header">
     <div class="tool-name-row">
-      <a href="{url}" target="_blank" rel="noopener" class="tool-name">{name}</a>
+      {'<a href="' + url + '" target="_blank" rel="noopener" class="tool-name">' + name + '</a>' if url else '<span class="tool-name">' + name + '</span>'}
       <span class="category-badge">{category}</span>
     </div>
     <div class="badge-row">
