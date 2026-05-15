@@ -430,11 +430,15 @@ let _editHistories = [];
 function _renderHistoryList() {{
   const container = document.getElementById('editHistoryList');
   if (!container) return;
-  if (_editHistories.length === 0) {{
-    container.innerHTML = '<span style="font-size:0.78rem;color:#64748b">履歴なし</span>';
+  const today = new Date().toLocaleDateString('sv');
+  // 今日分は上の入力欄と同じなので履歴には表示しない
+  const pastHistories = _editHistories.filter(h => h.updated !== today);
+  if (pastHistories.length === 0) {{
+    container.innerHTML = '<span style="font-size:0.78rem;color:#64748b">過去の履歴なし</span>';
     return;
   }}
   container.innerHTML = _editHistories.map((h, i) => {{
+    if (h.updated === today) return '';
     const dt = h.updated_at || h.updated || '';
     const sl = {{ untried:'未試用', trying:'試用中', using:'使ってる', rejected:'却下' }}[h.status] || h.status || '';
     const vl = {{ use:'👍 使う', watch:'👀 様子見', skip:'👎 スキップ' }}[h.verdict] || '';
