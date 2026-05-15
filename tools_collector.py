@@ -384,8 +384,9 @@ def deduplicate_tools(items: list[dict]) -> list[dict]:
         items,
         key=lambda x: (
             -(x.get("priority_score") or 0),
-            -(x.get("published_at") or x.get("collected_at") or ""),
+            x.get("published_at") or x.get("collected_at") or "",
         ),
+        reverse=True,
     )
     seen: set[str] = set()
     result = []
