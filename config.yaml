@@ -34,12 +34,27 @@ x_twitter:
     - handle: "AIatMeta"
       label: "Meta AI公式"
       priority: critical
-    - handle: "nvidia"
-      label: "NVIDIA公式"
-      priority: high
     - handle: "huggingface"
       label: "Hugging Face公式"
       priority: critical
+    - handle: "MistralAI"
+      label: "Mistral AI公式"
+      priority: critical
+    - handle: "xai"
+      label: "xAI（Grok）公式"
+      priority: critical
+    - handle: "MSFTResearch"
+      label: "Microsoft Research"
+      priority: high
+    - handle: "nvidia"
+      label: "NVIDIA公式"
+      priority: high
+    - handle: "LangChainAI"
+      label: "LangChain公式"
+      priority: high
+    - handle: "cursor_ai"
+      label: "Cursor公式"
+      priority: high
     # ── 海外トップ研究者・CEO ────────────────────────
     - handle: "sama"
       label: "Sam Altman (OpenAI CEO)"
@@ -82,7 +97,7 @@ x_twitter:
       label: "AI博士"
       priority: high
   min_engagement: 10
-  max_results_per_account: 20
+  max_results_per_account: 30   # critical アカウントの連投に対応（20→30）
   apify_actor: "xquik/x-tweet-scraper"
   apify_monthly_budget_usd: 29.0
   apify_warning_threshold: 0.8
