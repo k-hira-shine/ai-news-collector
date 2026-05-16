@@ -125,6 +125,8 @@ body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
+.latest-diagram-btn {{ display: inline-block; margin-top: 10px; padding: 6px 18px; background: rgba(129,140,248,0.15); border: 1px solid var(--accent); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.85rem; font-weight: 600; transition: background 0.2s; }}
+.latest-diagram-btn:hover {{ background: rgba(129,140,248,0.3); }}
 .card {{ background: var(--surface); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; }}
 .card h2 {{ font-size: 1.2rem; color: var(--accent); margin-bottom: 1rem; border-bottom: 1px solid var(--surface2); padding-bottom: 0.5rem; }}
 .trend {{ font-size: 1rem; }}
@@ -221,6 +223,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 <header>
   <h1>🤖 AI News Dashboard</h1>
   <div class="updated">Last updated: {now_str}</div>
+  {f'<a href="{diagrams[0]["rel_path"]}" class="latest-diagram-btn" target="_blank" rel="noopener">📊 最新図解を見る ({diagrams[0]["date"]} {diagrams[0]["slot"]})</a>' if diagrams else ''}
 </header>
 {body}
 </div>

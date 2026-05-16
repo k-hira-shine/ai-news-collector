@@ -16,38 +16,56 @@
   .topnav a { display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
   .topnav a:hover { color: var(--accent); background: rgba(56,189,248,0.1); }
   .topnav a.active { background: var(--accent2); color: #fff; }
-  header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 40px 32px 32px; border-bottom: 1px solid var(--border); text-align: center; }
-  .site-title { font-size: 2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
-  .site-sub { font-size: 0.9rem; color: var(--muted); margin-top: 8px; }
-  .site-updated { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
-  .container { max-width: 1100px; margin: 0 auto; padding: 32px 16px; display: flex; flex-direction: column; gap: 40px; }
-  /* ページカード */
-  .section-title { font-size: 1rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
-  .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 28px 32px 24px; border-bottom: 1px solid var(--border); text-align: center; }
+  .site-title { font-size: 1.8rem; font-weight: 800; color: var(--accent); }
+  .site-sub { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+  .site-updated { font-size: 0.75rem; color: #4b5563; margin-top: 4px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 28px 16px; display: flex; flex-direction: column; gap: 32px; }
+  /* 機能カード */
+  .section-title { font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }
   .page-card {
-    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
-    padding: 20px; text-decoration: none; color: var(--text);
-    display: flex; flex-direction: column; gap: 8px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px 18px; text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 6px;
     transition: border-color 0.2s, transform 0.15s;
     border-left: 3px solid var(--card-color, var(--border));
   }
   .page-card:hover { border-color: var(--card-color); transform: translateY(-2px); }
-  .page-card-title { font-size: 1.05rem; font-weight: 700; color: var(--card-color); }
-  .page-card-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; flex: 1; }
-  .page-updated { font-size: 0.72rem; color: #4b5563; margin-top: 4px; }
+  .page-card-title { font-size: 0.95rem; font-weight: 700; color: var(--card-color); }
+  .page-card-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.55; flex: 1; }
+  .page-updated { font-size: 0.7rem; color: #4b5563; }
+  .page-diagram-link { font-size: 0.75rem; color: var(--muted); }
+  .page-diagram-link a { color: var(--accent); text-decoration: none; }
+  .page-diagram-link a:hover { text-decoration: underline; }
+  /* トピックセクション */
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  .topic-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; }
+  .section-more { font-size: 0.75rem; color: var(--muted); text-decoration: none; }
+  .section-more:hover { color: var(--accent); }
+  .trend-summary { font-size: 0.78rem; color: var(--muted); background: rgba(56,189,248,0.06); border-left: 2px solid var(--accent); padding: 6px 10px; border-radius: 4px; line-height: 1.6; }
+  .trend-date { font-size: 0.72rem; color: #4b5563; margin-right: 6px; }
+  .topic-list { display: flex; flex-direction: column; gap: 2px; }
+  .topic-row { display: flex; align-items: baseline; gap: 8px; padding: 7px 6px; border-radius: 6px; text-decoration: none; color: var(--text); transition: background 0.15s; }
+  .topic-row:hover { background: rgba(255,255,255,0.04); }
+  .topic-rank { font-size: 0.75rem; color: var(--muted); min-width: 36px; flex-shrink: 0; }
+  .topic-title { font-size: 0.83rem; flex: 1; line-height: 1.4; }
+  .topic-meta { font-size: 0.72rem; color: var(--muted); flex-shrink: 0; text-align: right; max-width: 80px; }
+  .topic-empty { font-size: 0.8rem; color: #4b5563; padding: 8px 6px; }
   /* git ログ */
-  .log-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-  .log-row { display: flex; gap: 12px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid rgba(45,55,72,0.6); font-size: 0.82rem; }
+  .log-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+  .log-row { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid rgba(45,55,72,0.5); font-size: 0.8rem; }
   .log-row:last-child { border-bottom: none; }
-  .log-date { color: var(--muted); min-width: 80px; flex-shrink: 0; }
-  .log-sha { font-family: monospace; font-size: 0.75rem; color: #4b5563; flex-shrink: 0; }
+  .log-date { color: var(--muted); min-width: 76px; flex-shrink: 0; }
+  .log-sha { font-family: monospace; font-size: 0.72rem; color: #4b5563; flex-shrink: 0; }
   .log-subject { color: var(--text); }
-  .log-empty { color: var(--muted); font-size: 0.85rem; }
-  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; border-top: 1px solid var(--border); }
+  .log-empty { color: var(--muted); font-size: 0.82rem; }
+  footer { text-align: center; color: var(--muted); font-size: 0.78rem; padding: 28px; border-top: 1px solid var(--border); }
   @media (max-width: 640px) {
-    header { padding: 24px 16px; }
-    .site-title { font-size: 1.5rem; }
-    .pages-grid { grid-template-columns: 1fr; }
+    header { padding: 18px 12px; }
+    .site-title { font-size: 1.4rem; }
+    .pages-grid, .topics-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -66,108 +84,146 @@
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
-  <div class="site-updated">Generated: 2026-05-16 12:35 JST</div>
+  <div class="site-updated">Generated: 2026-05-16 12:40 JST</div>
 </header>
 <div class="container">
   <div>
     <div class="section-title">機能一覧</div>
-    <div class="pages-grid">
-      <a href="index.html" class="page-card" style="--card-color:#38bdf8">
+    <div class="pages-grid"><a href="index.html" class="page-card" style="--card-color:#38bdf8">
   <div class="page-card-title">📰 ニュース</div>
   <div class="page-card-desc">RSS・X・HNから収集したAI関連ニュースを毎日自動更新</div>
+  <span class="page-diagram-link">📊 最新図解: <a href="diagrams/2026-05-16-morning.html" onclick="event.stopPropagation()">2026-05-16-morning</a></span>
   
 </a>
 <a href="tools.html" class="page-card" style="--card-color:#a78bfa">
   <div class="page-card-title">🔧 ツール追跡</div>
   <div class="page-card-desc">AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能</div>
   
+  
 </a>
 <a href="reviews.html" class="page-card" style="--card-color:#34d399">
   <div class="page-card-title">📋 使ってみた</div>
   <div class="page-card-desc">試したAIツールの所感・評価を記録。履歴管理・編集機能付き</div>
+  
   
 </a>
 <a href="buzz.html" class="page-card" style="--card-color:#fb923c">
   <div class="page-card-title">🔥 バズりランキング</div>
   <div class="page-card-desc">いいね・RT数でランキング化。バズったAI情報を見逃さない</div>
   
+  
 </a>
 <a href="strategy.html" class="page-card" style="--card-color:#f472b6">
   <div class="page-card-title">🎯 施策提案</div>
   <div class="page-card-desc">収集ニュースからYouTube施策をAIが自動提案</div>
+  
   
 </a>
 <a href="money.html" class="page-card" style="--card-color:#fbbf24">
   <div class="page-card-title">🎬 マネタイズ</div>
   <div class="page-card-desc">収益化・マネタイズ関連情報を自動収集・整理</div>
   
+  
 </a>
 <a href="sns_success.html" class="page-card" style="--card-color:#60a5fa">
   <div class="page-card-title">🧠 SNS成功者</div>
   <div class="page-card-desc">SNSで成功した人の思考法・習慣を自動収集</div>
+  
   
 </a>
 <a href="post_generator.html" class="page-card" style="--card-color:#4ade80">
   <div class="page-card-title">✍️ 投稿ストック</div>
   <div class="page-card-desc">AI生成の投稿案をストック。すぐ使えるコンテンツを常備</div>
   
+  
 </a>
-
+</div>
+  </div>
+  <div>
+    <div class="section-title" style="margin-bottom:0">最新トピック</div>
+    <div class="topics-grid" style="margin-top:14px">
+      <div class="topic-section">
+  <div class="section-header"><span class="section-title">📰 最新ニュース</span><a href="index.html" class="section-more">もっと見る →</a></div>
+  <div class="trend-summary"><span class="trend-date">2026-05-15 朝</span>本日のAI業界は、「AIエージェント」が多岐にわたる領域で進化を見せ、特にコーディング支援やビジネス自動化における活用が加速していることが主要なトレンドです。GitHubが「Agentic AI Developer」の公式認定を設けるなど、…</div>
+  <div class="topic-list"><a href="https://x.com/elonmusk/status/2055298325994164377" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank">#1</span>
+  <span class="topic-title">Elon Musk氏、Grokモデル版を説明</span>
+  <span class="topic-meta">モデル/ツール x:@elonmusk</span>
+</a><a href="https://x.com/MSFTResearch/status/2055303919497089337" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank">#2</span>
+  <span class="topic-title">Microsoft Researchが新ツール発表</span>
+  <span class="topic-meta">企業動向 x:@MSFTResearch</span>
+</a><a href="https://x.com/nvidia/status/2055332384900292968" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank">#3</span>
+  <span class="topic-title">NVIDIAがAIとエネルギー転換を語る</span>
+  <span class="topic-meta">企業動向 x:@nvidia</span>
+</a><a href="https://x.com/cyrilXBT/status/2055183411619549265" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank">#4</span>
+  <span class="topic-title">GitHub、Agentic AI Developer認定</span>
+  <span class="topic-meta">企業動向 x:@cyrilXBT</span>
+</a><a href="https://x.com/umiyuki_ai/status/2055256476009283685" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank">#5</span>
+  <span class="topic-title">米中GPU貿易問題で中国AI企業が混乱</span>
+  <span class="topic-meta">企業動向 x:@umiyuki_ai</span>
+</a></div>
+</div>
+      <div class="topic-section">
+  <div class="section-header"><span class="section-title">🔧 最新ツール</span><a href="tools.html" class="section-more">もっと見る →</a></div>
+  <div class="topic-list"><a href="https://x.com/HeyOz_AI/status/2055332380383301921" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank" style="color:#ef4444">🔴</span>
+  <span class="topic-title"><strong>Claude Code (Meta Ad Manager integration)</strong> — Claude CodeがMeta Ad Managerと連携し、広告作成を自動化。</span>
+  <span class="topic-meta">機能追加</span>
+</a><a href="https://x.com/ClaudeCode_love/status/2055294649104060908" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank" style="color:#ef4444">🔴</span>
+  <span class="topic-title"><strong>Claude Code (TradingView integration)</strong> — Claude Codeと株価チャートツールTradingViewを直接つなぐ方法が話題。</span>
+  <span class="topic-meta">機能追加</span>
+</a><a href="https://x.com/MakeAI_CEO/status/2055220905182433382" target="_blank" rel="noopener" class="topic-row">
+  <span class="topic-rank" style="color:#ef4444">🔴</span>
+  <span class="topic-title"><strong>Sub-Agent Orchestration</strong> — Anthropicが最新のマルチエージェント機能「Sub-Agent Orchestration」を公式リリース</span>
+  <span class="topic-meta">新規リリース</span>
+</a></div>
+</div>
+      <div class="topic-section">
+  <div class="section-header"><span class="section-title">🔥 バズりトップ</span><a href="buzz.html" class="section-more">もっと見る →</a></div>
+  <div class="topic-list"><div class="topic-empty">データなし</div></div>
+</div>
     </div>
   </div>
   <div class="log-section">
-    <div class="section-title" style="margin-bottom:12px">🕐 最近の更新</div>
+    <div class="section-title" style="margin-bottom:10px">🕐 最近の更新</div>
     <div class="log-row">
+  <span class="log-date">05/16 12:35</span>
+  <span class="log-sha">d6edaea</span>
+  <span class="log-subject">fix: home.htmlにナビを追加、全ページのホームリンクにスタイル統一</span>
+</div><div class="log-row">
   <span class="log-date">05/16 12:31</span>
   <span class="log-sha">c6166e0</span>
   <span class="log-subject">feat: 全ページのナビに🏠ホームリンクを追加</span>
-</div>
-<div class="log-row">
+</div><div class="log-row">
   <span class="log-date">05/16 12:29</span>
   <span class="log-sha">ace1dde</span>
   <span class="log-subject">feat: トップページ(home.html)を新規作成、機能一覧・更新履歴を表示</span>
-</div>
-<div class="log-row">
+</div><div class="log-row">
   <span class="log-date">05/16 06:48</span>
   <span class="log-sha">caa845d</span>
   <span class="log-subject">fix(reviews): 履歴に今日分が重複表示される問題を修正</span>
-</div>
-<div class="log-row">
+</div><div class="log-row">
   <span class="log-date">05/16 06:41</span>
   <span class="log-sha">844557f</span>
   <span class="log-subject">memo: ChatGPT (Personal Finance) の所感を更新</span>
-</div>
-<div class="log-row">
+</div><div class="log-row">
   <span class="log-date">05/16 06:40</span>
   <span class="log-sha">e0d2443</span>
   <span class="log-subject">fix: 保存・削除後のメッセージにリロード案内を追加</span>
-</div>
-<div class="log-row">
+</div><div class="log-row">
   <span class="log-date">05/16 06:38</span>
   <span class="log-sha">346a3ce</span>
   <span class="log-subject">memo: ChatGPT (Personal Finance) を削除</span>
-</div>
-<div class="log-row">
+</div><div class="log-row">
   <span class="log-date">05/16 06:37</span>
   <span class="log-sha">499fab7</span>
   <span class="log-subject">feat(reviews): レビューカード削除機能を追加</span>
 </div>
-<div class="log-row">
-  <span class="log-date">05/16 06:35</span>
-  <span class="log-sha">191e9fc</span>
-  <span class="log-subject">feat(reviews): 編集モーダルに履歴削除機能を追加</span>
-</div>
-<div class="log-row">
-  <span class="log-date">05/16 06:33</span>
-  <span class="log-sha">4cb7279</span>
-  <span class="log-subject">feat(reviews): 保存時刻（JST）を記録・履歴に日時表示</span>
-</div>
-<div class="log-row">
-  <span class="log-date">05/16 06:30</span>
-  <span class="log-sha">926d7cb</span>
-  <span class="log-subject">fix(reviews): f-string内の\nエスケープ修正によるJSパースエラー解消</span>
-</div>
-
   </div>
 </div>
 <footer>AI News Collector — 自動収集・分析パイプライン</footer>
