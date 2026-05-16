@@ -360,7 +360,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </head>
 <body>
 <nav class="topnav">
-  <a href="home.html">🏠 ホーム</a>
+  <a class="nav-link" href="home.html">🏠 ホーム</a>
   <a class="nav-link" href="index.html">📰 ニュース</a>
   <a class="nav-link" href="strategy.html">🎯 施策提案</a>
   <a class="nav-link active" href="buzz.html">🔥 バズりランキング</a>
