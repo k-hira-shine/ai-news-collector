@@ -48,9 +48,9 @@ jobs:
           ACCOUNT="${{ github.event.inputs.account || github.event.client_payload.account }}"
           DAYS="${{ github.event.inputs.days || github.event.client_payload.days || '30' }}"
           if [ -n "$ACCOUNT" ]; then
-            python run_buzz.py --add "$ACCOUNT" --days "$DAYS"
+            python run_buzz.py --add "$ACCOUNT" --days "$DAYS" --max-items 100
           else
-            python run_buzz.py --days "$DAYS"
+            python run_buzz.py --days "$DAYS" --max-items 100
           fi
 
       - name: Rebuild buzz.html with PAT embedded
