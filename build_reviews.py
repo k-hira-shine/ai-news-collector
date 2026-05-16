@@ -36,6 +36,7 @@ USE_FOR_LABELS = {
 }
 
 NAV_LINKS = [
+    ("home.html",           "🏠 ホーム"),
     ("index.html",          "📰 ニュース"),
     ("strategy.html",       "🎯 施策提案"),
     ("buzz.html",           "🔥 バズりランキング"),

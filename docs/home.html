@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News Collector — ホーム</title>
+<style>
+  :root {
+    --bg: #0a0f1e; --surface: #111827; --card: #1a2236;
+    --accent: #38bdf8; --accent2: #0284c7; --text: #e2e8f0;
+    --muted: #94a3b8; --border: #2d3748;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; }
+  header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 40px 32px 32px; border-bottom: 1px solid var(--border); text-align: center; }
+  .site-title { font-size: 2rem; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+  .site-sub { font-size: 0.9rem; color: var(--muted); margin-top: 8px; }
+  .site-updated { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 16px; display: flex; flex-direction: column; gap: 40px; }
+  /* ページカード */
+  .section-title { font-size: 1rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+  .pages-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .page-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+    padding: 20px; text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 8px;
+    transition: border-color 0.2s, transform 0.15s;
+    border-left: 3px solid var(--card-color, var(--border));
+  }
+  .page-card:hover { border-color: var(--card-color); transform: translateY(-2px); }
+  .page-card-title { font-size: 1.05rem; font-weight: 700; color: var(--card-color); }
+  .page-card-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; flex: 1; }
+  .page-updated { font-size: 0.72rem; color: #4b5563; margin-top: 4px; }
+  /* git ログ */
+  .log-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+  .log-row { display: flex; gap: 12px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid rgba(45,55,72,0.6); font-size: 0.82rem; }
+  .log-row:last-child { border-bottom: none; }
+  .log-date { color: var(--muted); min-width: 80px; flex-shrink: 0; }
+  .log-sha { font-family: monospace; font-size: 0.75rem; color: #4b5563; flex-shrink: 0; }
+  .log-subject { color: var(--text); }
+  .log-empty { color: var(--muted); font-size: 0.85rem; }
+  footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; border-top: 1px solid var(--border); }
+  @media (max-width: 640px) {
+    header { padding: 24px 16px; }
+    .site-title { font-size: 1.5rem; }
+    .pages-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="site-title">🤖 AI News Collector</div>
+  <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
+  <div class="site-updated">Generated: 2026-05-16 12:29 JST</div>
+</header>
+<div class="container">
+  <div>
+    <div class="section-title">機能一覧</div>
+    <div class="pages-grid">
+      <a href="index.html" class="page-card" style="--card-color:#38bdf8">
+  <div class="page-card-title">📰 ニュース</div>
+  <div class="page-card-desc">RSS・X・HNから収集したAI関連ニュースを毎日自動更新</div>
+  
+</a>
+<a href="tools.html" class="page-card" style="--card-color:#a78bfa">
+  <div class="page-card-title">🔧 ツール追跡</div>
+  <div class="page-card-desc">AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能</div>
+  
+</a>
+<a href="reviews.html" class="page-card" style="--card-color:#34d399">
+  <div class="page-card-title">📋 使ってみた</div>
+  <div class="page-card-desc">試したAIツールの所感・評価を記録。履歴管理・編集機能付き</div>
+  
+</a>
+<a href="buzz.html" class="page-card" style="--card-color:#fb923c">
+  <div class="page-card-title">🔥 バズりランキング</div>
+  <div class="page-card-desc">いいね・RT数でランキング化。バズったAI情報を見逃さない</div>
+  
+</a>
+<a href="strategy.html" class="page-card" style="--card-color:#f472b6">
+  <div class="page-card-title">🎯 施策提案</div>
+  <div class="page-card-desc">収集ニュースからYouTube施策をAIが自動提案</div>
+  
+</a>
+<a href="money.html" class="page-card" style="--card-color:#fbbf24">
+  <div class="page-card-title">🎬 マネタイズ</div>
+  <div class="page-card-desc">収益化・マネタイズ関連情報を自動収集・整理</div>
+  
+</a>
+<a href="sns_success.html" class="page-card" style="--card-color:#60a5fa">
+  <div class="page-card-title">🧠 SNS成功者</div>
+  <div class="page-card-desc">SNSで成功した人の思考法・習慣を自動収集</div>
+  
+</a>
+<a href="post_generator.html" class="page-card" style="--card-color:#4ade80">
+  <div class="page-card-title">✍️ 投稿ストック</div>
+  <div class="page-card-desc">AI生成の投稿案をストック。すぐ使えるコンテンツを常備</div>
+  
+</a>
+
+    </div>
+  </div>
+  <div class="log-section">
+    <div class="section-title" style="margin-bottom:12px">🕐 最近の更新</div>
+    <div class="log-row">
+  <span class="log-date">05/16 06:48</span>
+  <span class="log-sha">caa845d</span>
+  <span class="log-subject">fix(reviews): 履歴に今日分が重複表示される問題を修正</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:41</span>
+  <span class="log-sha">844557f</span>
+  <span class="log-subject">memo: ChatGPT (Personal Finance) の所感を更新</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:40</span>
+  <span class="log-sha">e0d2443</span>
+  <span class="log-subject">fix: 保存・削除後のメッセージにリロード案内を追加</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:38</span>
+  <span class="log-sha">346a3ce</span>
+  <span class="log-subject">memo: ChatGPT (Personal Finance) を削除</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:37</span>
+  <span class="log-sha">499fab7</span>
+  <span class="log-subject">feat(reviews): レビューカード削除機能を追加</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:35</span>
+  <span class="log-sha">191e9fc</span>
+  <span class="log-subject">feat(reviews): 編集モーダルに履歴削除機能を追加</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:33</span>
+  <span class="log-sha">4cb7279</span>
+  <span class="log-subject">feat(reviews): 保存時刻（JST）を記録・履歴に日時表示</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:30</span>
+  <span class="log-sha">926d7cb</span>
+  <span class="log-subject">fix(reviews): f-string内の\nエスケープ修正によるJSパースエラー解消</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:27</span>
+  <span class="log-sha">d7ca28e</span>
+  <span class="log-subject">fix(reviews): 編集モーダルが開かない問題を修正（防御的実装）</span>
+</div>
+<div class="log-row">
+  <span class="log-date">05/16 06:24</span>
+  <span class="log-sha">ba990de</span>
+  <span class="log-subject">feat(reviews): ツール名クリックで編集モーダルを開く</span>
+</div>
+
+  </div>
+</div>
+<footer>AI News Collector — 自動収集・分析パイプライン</footer>
+</body>
+</html>

@@ -33,6 +33,7 @@ jobs:
         run: |
           python build_reviews.py
           python build_tools.py
+          python build_home.py
 
       - name: Commit & push
         run: |

@@ -463,6 +463,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
 </head>
 <body>
 <nav class="topnav">
+  <a href="home.html">🏠 ホーム</a>
   <a href="index.html">📰 ニュース</a>
   <a href="strategy.html">🎯 施策提案</a>
   <a href="buzz.html">🔥 バズりランキング</a>
