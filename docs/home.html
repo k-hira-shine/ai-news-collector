@@ -24,25 +24,36 @@
   /* セクションタイトル */
   .section-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
   /* 機能リスト */
-  .feature-list { display: flex; flex-direction: column; gap: 8px; }
+  .feature-list { display: flex; flex-direction: column; gap: 10px; }
   .feature-row {
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 18px; text-decoration: none; color: var(--text);
-    display: flex; flex-direction: column; gap: 5px;
+    display: flex; flex-direction: column;
     border-left: 3px solid var(--row-color, var(--border));
-    transition: border-color 0.2s, transform 0.15s;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
-  .feature-row:hover { border-color: var(--row-color); transform: translateX(3px); }
+  .feature-row:hover { border-color: var(--row-color); box-shadow: 0 2px 12px rgba(0,0,0,0.3); }
+  .row-main {
+    padding: 14px 18px 10px; text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .row-main:hover .row-title { color: var(--row-color); }
   .row-line1 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-  .row-title { font-size: 1rem; font-weight: 700; color: var(--row-color); }
-  .row-updated { font-size: 0.7rem; color: #4b5563; margin-left: auto; }
+  .row-title { font-size: 1rem; font-weight: 700; color: var(--row-color); transition: opacity 0.15s; }
+  .row-updated { font-size: 0.68rem; color: #4b5563; margin-left: auto; }
   .row-line2 { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
-  .row-line3 { font-size: 0.8rem; color: #64748b; }
-  .row-topic { color: var(--text); text-decoration: none; }
-  .row-topic:hover { color: var(--accent); text-decoration: underline; }
-  .row-topic-empty { color: #4b5563; }
-  .diagram-chip { font-size: 0.72rem; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--accent); padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; }
-  .diagram-chip:hover { background: rgba(56,189,248,0.2); }
+  .row-line3 {
+    font-size: 0.78rem; color: #64748b;
+    padding: 7px 18px; border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+    display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
+  }
+  .row-topic-text { color: #94a3b8; flex: 1; line-height: 1.4; }
+  .row-topic-link { color: var(--muted); font-size: 0.72rem; text-decoration: none; flex-shrink: 0; }
+  .row-topic-link:hover { color: var(--accent); }
+  .row-topic-empty { color: #374151; }
+  .diagram-chip { font-size: 0.7rem; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25); color: var(--accent); padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; }
+  .diagram-chip:hover { background: rgba(56,189,248,0.18); }
   /* git ログ */
   .log-section { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
   .log-row { display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid rgba(45,55,72,0.5); font-size: 0.8rem; }
@@ -74,104 +85,116 @@
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
-  <div class="site-updated">Generated: 2026-05-16 12:45 JST</div>
+  <div class="site-updated">Generated: 2026-05-16 12:47 JST</div>
 </header>
 <div class="container">
   <div>
     <div class="section-label">機能一覧</div>
     <div class="feature-list">
-      <a href="index.html" class="feature-row" style="--row-color:#38bdf8">
-  <div class="row-line1">
-    <span class="row-title">📰 ニュース</span>
-    
-    <a href="diagrams/2026-05-16-morning.html" class="diagram-chip" target="_blank" rel="noopener" onclick="event.stopPropagation()">📊 最新図解: 2026-05-16-morning</a>
-  </div>
-  <div class="row-line2">RSS・X・HNから収集したAI関連ニュースを毎日自動更新。Geminiがトレンド分析・要約を生成</div>
-  <div class="row-line3">💬 最新: <a href="https://x.com/elonmusk/status/2055298325994164377" target="_blank" rel="noopener" class="row-topic" onclick="event.stopPropagation()">Elon Musk氏、Grokモデル版を説明</a></div>
-</a>
-<a href="tools.html" class="feature-row" style="--row-color:#a78bfa">
-  <div class="row-line1">
-    <span class="row-title">🔧 ツール追跡</span>
-    
-    
-  </div>
-  <div class="row-line2">AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能</div>
-  <div class="row-line3">💬 最新: <a href="https://x.com/MakeAI_CEO/status/2055194164900344034" target="_blank" rel="noopener" class="row-topic" onclick="event.stopPropagation()">Higgsfield Supercomputer — Higgsfield Supercomputerがリリースされ、AIエージェントによる動画生成を自動化。</a></div>
-</a>
-<a href="reviews.html" class="feature-row" style="--row-color:#34d399">
-  <div class="row-line1">
-    <span class="row-title">📋 使ってみた</span>
-    
-    
-  </div>
-  <div class="row-line2">試したAIツールの所感・評価を記録。ステータス・判定・メモを履歴付きで管理</div>
+      <div class="feature-row" style="--row-color:#38bdf8">
+  <a href="index.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">📰 ニュース</span>
+      
+    </div>
+    <div class="row-line2">RSS・X・HNから収集したAI関連ニュースを毎日自動更新。Geminiがトレンド分析・要約を生成</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">Elon Musk氏、Grokモデル版を説明</span><a href="https://x.com/elonmusk/status/2055298325994164377" target="_blank" rel="noopener" class="row-topic-link">↗</a> <a href="diagrams/2026-05-16-morning.html" class="diagram-chip" target="_blank" rel="noopener" onclick="event.stopPropagation()">📊 最新図解: 2026-05-16-morning</a></div>
+</div>
+<div class="feature-row" style="--row-color:#a78bfa">
+  <a href="tools.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">🔧 ツール追跡</span>
+      
+    </div>
+    <div class="row-line2">AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">Higgsfield Supercomputer — Higgsfield Supercomputerがリリースされ、AIエージェントによる動画生成を自動化。</span><a href="https://x.com/MakeAI_CEO/status/2055194164900344034" target="_blank" rel="noopener" class="row-topic-link">↗</a></div>
+</div>
+<div class="feature-row" style="--row-color:#34d399">
+  <a href="reviews.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">📋 使ってみた</span>
+      
+    </div>
+    <div class="row-line2">試したAIツールの所感・評価を記録。ステータス・判定・メモを履歴付きで管理</div>
+  </a>
   <div class="row-line3">💬 最新: <span class="row-topic-empty">データなし</span></div>
-</a>
-<a href="buzz.html" class="feature-row" style="--row-color:#fb923c">
-  <div class="row-line1">
-    <span class="row-title">🔥 バズりランキング</span>
-    
-    
-  </div>
-  <div class="row-line2">いいね・RT数でランキング化。バズったAI情報を見逃さない</div>
-  <div class="row-line3">💬 最新: <a href="https://x.com/fiction_log/status/2051928827266584790" target="_blank" rel="noopener" class="row-topic" onclick="event.stopPropagation()">大学生の時、塾バイトで下ネタ言いまくった結果 https://t.co/Sx9RHu2S6V</a></div>
-</a>
-<a href="strategy.html" class="feature-row" style="--row-color:#f472b6">
-  <div class="row-line1">
-    <span class="row-title">🎯 施策提案</span>
-    
-    
-  </div>
-  <div class="row-line2">収集ニュースからYouTube施策をAIが自動提案。今すぐ使える企画アイデアを毎日更新</div>
-  <div class="row-line3">💬 最新: <a href="strategy.html" class="row-topic" onclick="event.stopPropagation()">【速報】AI新時代、GitHubが『Agentic AI Developer』認定を本日発表！プロンプトエンジニアはもう古い？今すぐ取るべき</a></div>
-</a>
-<a href="money.html" class="feature-row" style="--row-color:#fbbf24">
-  <div class="row-line1">
-    <span class="row-title">🎬 マネタイズ</span>
-    
-    
-  </div>
-  <div class="row-line2">収益化・マネタイズ関連情報を自動収集・整理</div>
-  <div class="row-line3">💬 最新: <a href="money.html" class="row-topic" onclick="event.stopPropagation()">青木さんの記事が既に735万インプ
+</div>
+<div class="feature-row" style="--row-color:#fb923c">
+  <a href="buzz.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">🔥 バズりランキング</span>
+      
+    </div>
+    <div class="row-line2">いいね・RT数でランキング化。バズったAI情報を見逃さない</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">大学生の時、塾バイトで下ネタ言いまくった結果 https://t.co/Sx9RHu2S6V</span><a href="https://x.com/fiction_log/status/2051928827266584790" target="_blank" rel="noopener" class="row-topic-link">↗</a></div>
+</div>
+<div class="feature-row" style="--row-color:#f472b6">
+  <a href="strategy.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">🎯 施策提案</span>
+      
+    </div>
+    <div class="row-line2">収集ニュースからYouTube施策をAIが自動提案。今すぐ使える企画アイデアを毎日更新</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">【速報】AI新時代、GitHubが『Agentic AI Developer』認定を本日発表！プロンプトエンジニアはもう古い？今すぐ取るべき</span><a href="strategy.html" class="row-topic-link">↗</a></div>
+</div>
+<div class="feature-row" style="--row-color:#fbbf24">
+  <a href="money.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">🎬 マネタイズ</span>
+      
+    </div>
+    <div class="row-line2">収益化・マネタイズ関連情報を自動収集・整理</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">青木さんの記事が既に735万インプ
 莫大な応援チケットの支援が集まった。
 
 まだまだ伸びています。
-そしてこれが起きた日は青木さんの奥様のお</a></div>
-</a>
-<a href="sns_success.html" class="feature-row" style="--row-color:#60a5fa">
-  <div class="row-line1">
-    <span class="row-title">🧠 SNS成功者</span>
-    
-    
-  </div>
-  <div class="row-line2">SNSで成功した人の思考法・習慣を自動収集</div>
-  <div class="row-line3">💬 最新: <a href="sns_success.html" class="row-topic" onclick="event.stopPropagation()">青木さんの記事が既に735万インプ
+そしてこれが起きた日は青木さんの奥様のお</span><a href="money.html" class="row-topic-link">↗</a></div>
+</div>
+<div class="feature-row" style="--row-color:#60a5fa">
+  <a href="sns_success.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">🧠 SNS成功者</span>
+      
+    </div>
+    <div class="row-line2">SNSで成功した人の思考法・習慣を自動収集</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">青木さんの記事が既に735万インプ
 莫大な応援チケットの支援が集まった。
 
 まだまだ伸びています。
-そしてこれが起きた日は青木さんの奥様のお</a></div>
-</a>
-<a href="post_generator.html" class="feature-row" style="--row-color:#4ade80">
-  <div class="row-line1">
-    <span class="row-title">✍️ 投稿ストック</span>
-    
-    
-  </div>
-  <div class="row-line2">AI生成の投稿案をストック。すぐ使えるコンテンツを常備</div>
-  <div class="row-line3">💬 最新: <a href="post_generator.html" class="row-topic" onclick="event.stopPropagation()">人生が上手くいく人の特徴４選
+そしてこれが起きた日は青木さんの奥様のお</span><a href="sns_success.html" class="row-topic-link">↗</a></div>
+</div>
+<div class="feature-row" style="--row-color:#4ade80">
+  <a href="post_generator.html" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">✍️ 投稿ストック</span>
+      
+    </div>
+    <div class="row-line2">AI生成の投稿案をストック。すぐ使えるコンテンツを常備</div>
+  </a>
+  <div class="row-line3">💬 最新: <span class="row-topic-text">人生が上手くいく人の特徴４選
 
 1. 異次元の素直さ
 すごい人の教えをすぐ実行する
 
 2. 根拠のない自信
-「自分はできる」と心から信じてい</a></div>
-</a>
+「自分はできる」と心から信じてい</span><a href="post_generator.html" class="row-topic-link">↗</a></div>
+</div>
 
     </div>
   </div>
   <div class="log-section">
     <div class="section-label" style="margin-bottom:10px">🕐 最近の更新</div>
     <div class="log-row">
+  <span class="log-date">05/16 12:45</span>
+  <span class="log-sha">fc39519</span>
+  <span class="log-subject">feat: home を1行1機能リスト形式に変更、各行に最新トピック表示</span>
+</div><div class="log-row">
   <span class="log-date">05/16 12:41</span>
   <span class="log-sha">c3fc88e</span>
   <span class="log-subject">feat: home に最新トピック表示、ニュースに最新図解ボタン追加</span>
@@ -199,10 +222,6 @@
   <span class="log-date">05/16 06:40</span>
   <span class="log-sha">e0d2443</span>
   <span class="log-subject">fix: 保存・削除後のメッセージにリロード案内を追加</span>
-</div><div class="log-row">
-  <span class="log-date">05/16 06:38</span>
-  <span class="log-sha">346a3ce</span>
-  <span class="log-subject">memo: ChatGPT (Personal Finance) を削除</span>
 </div>
   </div>
 </div>

@@ -310,22 +310,22 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
         if topic and topic.get("text"):
             topic_url = escape(topic.get("url") or href)
             topic_text = escape(topic["text"])
-            # 外部URLかどうか判定
             is_external = topic_url.startswith("http")
             target = ' target="_blank" rel="noopener"' if is_external else ""
-            topic_html = f'<a href="{topic_url}"{target} class="row-topic" onclick="event.stopPropagation()">{topic_text}</a>'
+            topic_html = f'<span class="row-topic-text">{topic_text}</span><a href="{topic_url}"{target} class="row-topic-link">↗</a>'
         else:
             topic_html = '<span class="row-topic-empty">データなし</span>'
 
-        rows_html += f"""<a href="{href}" class="feature-row" style="--row-color:{color}">
-  <div class="row-line1">
-    <span class="row-title">{title}</span>
-    {updated_html}
-    {extra_html}
-  </div>
-  <div class="row-line2">{desc}</div>
-  <div class="row-line3">💬 最新: {topic_html}</div>
-</a>
+        rows_html += f"""<div class="feature-row" style="--row-color:{color}">
+  <a href="{href}" class="row-main">
+    <div class="row-line1">
+      <span class="row-title">{title}</span>
+      {updated_html}
+    </div>
+    <div class="row-line2">{desc}</div>
+  </a>
+  <div class="row-line3">💬 最新: {topic_html}{(' ' + extra_html) if extra_html else ''}</div>
+</div>
 """
 
     # ── git ログ ──
@@ -365,25 +365,36 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   /* セクションタイトル */
   .section-label {{ font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }}
   /* 機能リスト */
-  .feature-list {{ display: flex; flex-direction: column; gap: 8px; }}
+  .feature-list {{ display: flex; flex-direction: column; gap: 10px; }}
   .feature-row {{
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px 18px; text-decoration: none; color: var(--text);
-    display: flex; flex-direction: column; gap: 5px;
+    display: flex; flex-direction: column;
     border-left: 3px solid var(--row-color, var(--border));
-    transition: border-color 0.2s, transform 0.15s;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }}
-  .feature-row:hover {{ border-color: var(--row-color); transform: translateX(3px); }}
+  .feature-row:hover {{ border-color: var(--row-color); box-shadow: 0 2px 12px rgba(0,0,0,0.3); }}
+  .row-main {{
+    padding: 14px 18px 10px; text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 5px;
+  }}
+  .row-main:hover .row-title {{ color: var(--row-color); }}
   .row-line1 {{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }}
-  .row-title {{ font-size: 1rem; font-weight: 700; color: var(--row-color); }}
-  .row-updated {{ font-size: 0.7rem; color: #4b5563; margin-left: auto; }}
+  .row-title {{ font-size: 1rem; font-weight: 700; color: var(--row-color); transition: opacity 0.15s; }}
+  .row-updated {{ font-size: 0.68rem; color: #4b5563; margin-left: auto; }}
   .row-line2 {{ font-size: 0.82rem; color: var(--muted); line-height: 1.55; }}
-  .row-line3 {{ font-size: 0.8rem; color: #64748b; }}
-  .row-topic {{ color: var(--text); text-decoration: none; }}
-  .row-topic:hover {{ color: var(--accent); text-decoration: underline; }}
-  .row-topic-empty {{ color: #4b5563; }}
-  .diagram-chip {{ font-size: 0.72rem; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--accent); padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; }}
-  .diagram-chip:hover {{ background: rgba(56,189,248,0.2); }}
+  .row-line3 {{
+    font-size: 0.78rem; color: #64748b;
+    padding: 7px 18px; border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.15);
+    display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap;
+  }}
+  .row-topic-text {{ color: #94a3b8; flex: 1; line-height: 1.4; }}
+  .row-topic-link {{ color: var(--muted); font-size: 0.72rem; text-decoration: none; flex-shrink: 0; }}
+  .row-topic-link:hover {{ color: var(--accent); }}
+  .row-topic-empty {{ color: #374151; }}
+  .diagram-chip {{ font-size: 0.7rem; background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.25); color: var(--accent); padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; }}
+  .diagram-chip:hover {{ background: rgba(56,189,248,0.18); }}
   /* git ログ */
   .log-section {{ background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }}
   .log-row {{ display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid rgba(45,55,72,0.5); font-size: 0.8rem; }}
