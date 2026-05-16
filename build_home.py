@@ -18,17 +18,6 @@ DATA_DIR = os.path.join(BASE_DIR, "data")
 OUTPUT_PATH = os.path.join(DOCS_DIR, "home.html")
 JST = ZoneInfo("Asia/Tokyo")
 
-PAGES = [
-    {"file": "index.html",          "title": "📰 ニュース",        "desc": "RSS・X・HNから収集したAI関連ニュースを毎日自動更新",                    "color": "#38bdf8"},
-    {"file": "tools.html",          "title": "🔧 ツール追跡",      "desc": "AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能", "color": "#a78bfa"},
-    {"file": "reviews.html",        "title": "📋 使ってみた",      "desc": "試したAIツールの所感・評価を記録。履歴管理・編集機能付き",               "color": "#34d399"},
-    {"file": "buzz.html",           "title": "🔥 バズりランキング", "desc": "いいね・RT数でランキング化。バズったAI情報を見逃さない",                  "color": "#fb923c"},
-    {"file": "strategy.html",       "title": "🎯 施策提案",        "desc": "収集ニュースからYouTube施策をAIが自動提案",                            "color": "#f472b6"},
-    {"file": "money.html",          "title": "🎬 マネタイズ",      "desc": "収益化・マネタイズ関連情報を自動収集・整理",                              "color": "#fbbf24"},
-    {"file": "sns_success.html",    "title": "🧠 SNS成功者",       "desc": "SNSで成功した人の思考法・習慣を自動収集",                               "color": "#60a5fa"},
-    {"file": "post_generator.html", "title": "✍️ 投稿ストック",    "desc": "AI生成の投稿案をストック。すぐ使えるコンテンツを常備",                    "color": "#4ade80"},
-]
-
 
 # ── データ取得ヘルパー ──────────────────────────────
 
@@ -71,26 +60,26 @@ def _get_git_log(n: int = 8) -> list[dict]:
         return []
 
 
-def _get_latest_news() -> list[dict]:
-    """最新分析から top_articles を最大5件返す"""
+def _latest_news_topic() -> str:
+    """最新分析から top_articles #1 のタイトルを返す"""
     files = sorted(glob(os.path.join(DATA_DIR, "analysis", "*.json")), reverse=True)
     for fpath in files[:3]:
         try:
             with open(fpath, encoding="utf-8") as f:
                 d = json.load(f)
-            articles = d.get("top_articles") or []
-            trend = d.get("trend_summary") or ""
-            if articles:
-                return {"articles": articles[:5], "trend": trend, "slot": d.get("slot", ""), "run_time": d.get("run_time", "")}
+            arts = d.get("top_articles") or []
+            if arts:
+                t = arts[0].get("title") or ""
+                url = arts[0].get("url") or ""
+                return {"text": t[:80], "url": url}
         except Exception:
             continue
-    return {"articles": [], "trend": "", "slot": "", "run_time": ""}
+    return {}
 
 
-def _get_latest_tools() -> list[dict]:
-    """tools/ から impact:high の最新3件を返す"""
+def _latest_tool_topic() -> dict:
+    """tools/ から impact:high の最新1件を返す"""
     files = sorted(glob(os.path.join(DATA_DIR, "tools", "*.jsonl")), reverse=True)
-    items = []
     for fpath in files[:3]:
         try:
             with open(fpath, encoding="utf-8") as f:
@@ -99,42 +88,127 @@ def _get_latest_tools() -> list[dict]:
                     if not line:
                         continue
                     obj = json.loads(line)
-                    if obj.get("tool_name") and obj.get("impact") in ("high", "medium"):
-                        items.append(obj)
+                    if obj.get("tool_name") and obj.get("impact") == "high":
+                        name = obj.get("tool_name", "")
+                        summary = obj.get("summary_ja", "")[:60]
+                        url = obj.get("url") or ""
+                        return {"text": f"{name} — {summary}", "url": url}
         except Exception:
             continue
-        if len(items) >= 3:
-            break
-    # impact high 優先でソート
-    order = {"high": 0, "medium": 1, "low": 2}
-    items.sort(key=lambda x: (order.get(x.get("impact", "low"), 2), -(x.get("priority_score") or 0)))
-    return items[:3]
+    return {}
 
 
-def _get_latest_buzz() -> list[dict]:
-    """buzz.json から最新3件を返す"""
+def _latest_review_topic() -> dict:
+    """reviews.json から最新の使ってみた1件を返す"""
+    path = os.path.join(DATA_DIR, "reviews.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            d = json.load(f)
+        entries = list(d.values()) if isinstance(d, dict) else d
+        # updated_at で最新順
+        entries.sort(key=lambda x: x.get("updated_at") or x.get("updated") or "", reverse=True)
+        if entries:
+            e = entries[0]
+            name = e.get("tool_name") or e.get("name") or ""
+            verdict = e.get("verdict") or ""
+            memo = (e.get("memo") or "")[:50]
+            text = f"{name}{('：' + verdict) if verdict else ''}{(' / ' + memo) if memo else ''}"
+            return {"text": text, "url": "reviews.html"}
+    except Exception:
+        pass
+    return {}
+
+
+def _latest_buzz_topic() -> dict:
+    """buzz.json からいいね最多の投稿1件を返す"""
     path = os.path.join(DATA_DIR, "buzz.json")
     try:
         with open(path, encoding="utf-8") as f:
             d = json.load(f)
         accounts = d.get("accounts") or []
-        posts = []
+        best = None
+        best_likes = -1
         for acc in accounts:
-            for post in (acc.get("top_posts") or [])[:1]:
-                posts.append({
-                    "author": acc.get("handle") or acc.get("name") or "",
-                    "content": post.get("content") or post.get("text") or "",
-                    "url": post.get("url") or "",
-                    "likes": post.get("likes") or post.get("like_count") or 0,
-                })
-        posts.sort(key=lambda x: x["likes"], reverse=True)
-        return posts[:3]
+            for post in (acc.get("tweets") or acc.get("top_posts") or [])[:3]:
+                likes = post.get("likes") or post.get("like_count") or 0
+                if likes > best_likes:
+                    best_likes = likes
+                    best = {"text": (post.get("content") or post.get("text") or "")[:70],
+                            "url": post.get("url") or "buzz.html",
+                            "likes": likes}
+        return best or {}
     except Exception:
-        return []
+        return {}
+
+
+def _latest_strategy_topic() -> dict:
+    """analysis から youtube_ideas #1 を返す"""
+    files = sorted(glob(os.path.join(DATA_DIR, "analysis", "*.json")), reverse=True)
+    for fpath in files[:3]:
+        try:
+            with open(fpath, encoding="utf-8") as f:
+                d = json.load(f)
+            ideas = (d.get("strategy") or {}).get("youtube_ideas") or []
+            if ideas:
+                return {"text": (ideas[0].get("title") or "")[:70], "url": "strategy.html"}
+        except Exception:
+            continue
+    return {}
+
+
+def _latest_money_topic() -> dict:
+    """money/ から最新1件を返す"""
+    files = sorted(glob(os.path.join(DATA_DIR, "money", "*.jsonl")), reverse=True)
+    for fpath in files[:1]:
+        try:
+            with open(fpath, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    obj = json.loads(line)
+                    t = obj.get("title") or obj.get("content") or ""
+                    return {"text": t[:70], "url": "money.html"}
+        except Exception:
+            pass
+    return {}
+
+
+def _latest_sns_topic() -> dict:
+    """sns_success/ から最新1件を返す"""
+    files = sorted(glob(os.path.join(DATA_DIR, "sns_success", "*.jsonl")), reverse=True)
+    for fpath in files[:1]:
+        try:
+            with open(fpath, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    obj = json.loads(line)
+                    t = obj.get("title") or obj.get("content") or ""
+                    return {"text": t[:70], "url": "sns_success.html"}
+        except Exception:
+            pass
+    return {}
+
+
+def _latest_post_topic() -> dict:
+    """generated_posts から最新1件を返す"""
+    files = sorted(glob(os.path.join(DATA_DIR, "generated_posts", "*.json")), reverse=True)
+    for fpath in files[:1]:
+        try:
+            with open(fpath, encoding="utf-8") as f:
+                posts = json.load(f)
+            if posts:
+                p = posts[0]
+                text = (p.get("text") or p.get("template_name") or "")[:70]
+                return {"text": text, "url": "post_generator.html"}
+        except Exception:
+            pass
+    return {}
 
 
 def _get_latest_diagram() -> dict:
-    """最新の図解HTMLパスを返す"""
     files = sorted(glob(os.path.join(DOCS_DIR, "diagrams", "*.html")), reverse=True)
     if not files:
         return {}
@@ -142,98 +216,117 @@ def _get_latest_diagram() -> dict:
     return {"href": f"diagrams/{latest}", "label": latest.replace(".html", "")}
 
 
+# ── ページ定義（topic_fn: そのページの最新トピック取得関数）──
+
+PAGES = [
+    {
+        "file": "index.html",
+        "title": "📰 ニュース",
+        "desc": "RSS・X・HNから収集したAI関連ニュースを毎日自動更新。Geminiがトレンド分析・要約を生成",
+        "color": "#38bdf8",
+        "topic_fn": _latest_news_topic,
+    },
+    {
+        "file": "tools.html",
+        "title": "🔧 ツール追跡",
+        "desc": "AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能",
+        "color": "#a78bfa",
+        "topic_fn": _latest_tool_topic,
+    },
+    {
+        "file": "reviews.html",
+        "title": "📋 使ってみた",
+        "desc": "試したAIツールの所感・評価を記録。ステータス・判定・メモを履歴付きで管理",
+        "color": "#34d399",
+        "topic_fn": _latest_review_topic,
+    },
+    {
+        "file": "buzz.html",
+        "title": "🔥 バズりランキング",
+        "desc": "いいね・RT数でランキング化。バズったAI情報を見逃さない",
+        "color": "#fb923c",
+        "topic_fn": _latest_buzz_topic,
+    },
+    {
+        "file": "strategy.html",
+        "title": "🎯 施策提案",
+        "desc": "収集ニュースからYouTube施策をAIが自動提案。今すぐ使える企画アイデアを毎日更新",
+        "color": "#f472b6",
+        "topic_fn": _latest_strategy_topic,
+    },
+    {
+        "file": "money.html",
+        "title": "🎬 マネタイズ",
+        "desc": "収益化・マネタイズ関連情報を自動収集・整理",
+        "color": "#fbbf24",
+        "topic_fn": _latest_money_topic,
+    },
+    {
+        "file": "sns_success.html",
+        "title": "🧠 SNS成功者",
+        "desc": "SNSで成功した人の思考法・習慣を自動収集",
+        "color": "#60a5fa",
+        "topic_fn": _latest_sns_topic,
+    },
+    {
+        "file": "post_generator.html",
+        "title": "✍️ 投稿ストック",
+        "desc": "AI生成の投稿案をストック。すぐ使えるコンテンツを常備",
+        "color": "#4ade80",
+        "topic_fn": _latest_post_topic,
+    },
+]
+
+
 # ── HTML生成 ────────────────────────────────────────
 
 def build_home_page(output_path: str = OUTPUT_PATH) -> None:
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
     git_logs = _get_git_log()
-    news_data = _get_latest_news()
-    tools = _get_latest_tools()
-    buzz = _get_latest_buzz()
     diagram = _get_latest_diagram()
 
-    # ── 機能カード ──
-    cards_html = ""
+    # ── 機能リスト（1行1機能、3行構成）──
+    rows_html = ""
     for page in PAGES:
         updated = _get_last_updated(page["file"])
         color = page["color"]
-        extra = ""
-        # ニュースカードに図解リンクを埋め込む
+        href = page["file"]
+        title = escape(page["title"])
+        desc = escape(page["desc"])
+        updated_html = f'<span class="row-updated">{escape(updated)}</span>' if updated else ""
+
+        # 最新トピック取得
+        topic = {}
+        try:
+            topic = page["topic_fn"]() or {}
+        except Exception:
+            pass
+
+        # ニュースには図解リンクも追加
+        extra_html = ""
         if page["file"] == "index.html" and diagram:
-            extra = f'<span class="page-diagram-link">📊 最新図解: <a href="{diagram["href"]}" onclick="event.stopPropagation()">{escape(diagram["label"])}</a></span>'
-        updated_html = f'<span class="page-updated">{escape(updated)}</span>' if updated else ""
-        cards_html += f"""<a href="{page['file']}" class="page-card" style="--card-color:{color}">
-  <div class="page-card-title">{escape(page['title'])}</div>
-  <div class="page-card-desc">{escape(page['desc'])}</div>
-  {extra}
-  {updated_html}
+            extra_html = f'<a href="{escape(diagram["href"])}" class="diagram-chip" target="_blank" rel="noopener" onclick="event.stopPropagation()">📊 最新図解: {escape(diagram["label"])}</a>'
+
+        if topic and topic.get("text"):
+            topic_url = escape(topic.get("url") or href)
+            topic_text = escape(topic["text"])
+            # 外部URLかどうか判定
+            is_external = topic_url.startswith("http")
+            target = ' target="_blank" rel="noopener"' if is_external else ""
+            topic_html = f'<a href="{topic_url}"{target} class="row-topic" onclick="event.stopPropagation()">{topic_text}</a>'
+        else:
+            topic_html = '<span class="row-topic-empty">データなし</span>'
+
+        rows_html += f"""<a href="{href}" class="feature-row" style="--row-color:{color}">
+  <div class="row-line1">
+    <span class="row-title">{title}</span>
+    {updated_html}
+    {extra_html}
+  </div>
+  <div class="row-line2">{desc}</div>
+  <div class="row-line3">💬 最新: {topic_html}</div>
 </a>
 """
-
-    # ── 最新ニュース ──
-    trend_html = ""
-    if news_data["trend"]:
-        slot_label = {"morning": "朝", "evening": "夜"}.get(news_data["slot"], news_data["slot"])
-        run_time = news_data["run_time"][:10] if news_data["run_time"] else ""
-        trend_html = f'<div class="trend-summary"><span class="trend-date">{escape(run_time)} {escape(slot_label)}</span>{escape(news_data["trend"][:120])}…</div>'
-
-    news_rows = ""
-    for art in news_data["articles"]:
-        rank = art.get("rank", "")
-        title = escape((art.get("title") or "")[:70])
-        url = escape(art.get("url") or "#")
-        cat = escape(art.get("category") or "")
-        src = escape(art.get("source_label") or "")
-        news_rows += f"""<a href="{url}" target="_blank" rel="noopener" class="topic-row">
-  <span class="topic-rank">#{rank}</span>
-  <span class="topic-title">{title}</span>
-  <span class="topic-meta">{cat} {src}</span>
-</a>"""
-
-    news_section = f"""<div class="topic-section">
-  <div class="section-header"><span class="section-title">📰 最新ニュース</span><a href="index.html" class="section-more">もっと見る →</a></div>
-  {trend_html}
-  <div class="topic-list">{news_rows or '<div class="topic-empty">データなし</div>'}</div>
-</div>"""
-
-    # ── 最新ツール ──
-    IMPACT = {"high": ("🔴", "#ef4444"), "medium": ("🟡", "#f59e0b"), "low": ("⚪", "#64748b")}
-    tool_rows = ""
-    for t in tools:
-        name = escape(t.get("tool_name") or "")
-        summary = escape((t.get("summary_ja") or "")[:60])
-        imp = t.get("impact", "low")
-        icon, color = IMPACT.get(imp, IMPACT["low"])
-        rt = escape(t.get("release_type") or "")
-        url = escape(t.get("url") or "#")
-        tool_rows += f"""<a href="{url}" target="_blank" rel="noopener" class="topic-row">
-  <span class="topic-rank" style="color:{color}">{icon}</span>
-  <span class="topic-title"><strong>{name}</strong>{' — ' + summary if summary else ''}</span>
-  <span class="topic-meta">{rt}</span>
-</a>"""
-
-    tools_section = f"""<div class="topic-section">
-  <div class="section-header"><span class="section-title">🔧 最新ツール</span><a href="tools.html" class="section-more">もっと見る →</a></div>
-  <div class="topic-list">{tool_rows or '<div class="topic-empty">データなし</div>'}</div>
-</div>"""
-
-    # ── バズ ──
-    buzz_rows = ""
-    for b in buzz:
-        content = escape((b.get("content") or "")[:60])
-        author = escape(b.get("author") or "")
-        likes = b.get("likes", 0)
-        url = escape(b.get("url") or "#")
-        buzz_rows += f"""<a href="{url}" target="_blank" rel="noopener" class="topic-row">
-  <span class="topic-rank">❤️ {likes:,}</span>
-  <span class="topic-title">{content}</span>
-  <span class="topic-meta">@{author}</span>
-</a>"""
-
-    buzz_section = f"""<div class="topic-section">
-  <div class="section-header"><span class="section-title">🔥 バズりトップ</span><a href="buzz.html" class="section-more">もっと見る →</a></div>
-  <div class="topic-list">{buzz_rows or '<div class="topic-empty">データなし</div>'}</div>
-</div>"""
 
     # ── git ログ ──
     log_rows = ""
@@ -264,43 +357,33 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
   .topnav a:hover {{ color: var(--accent); background: rgba(56,189,248,0.1); }}
   .topnav a.active {{ background: var(--accent2); color: #fff; }}
-  header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 28px 32px 24px; border-bottom: 1px solid var(--border); text-align: center; }}
-  .site-title {{ font-size: 1.8rem; font-weight: 800; color: var(--accent); }}
-  .site-sub {{ font-size: 0.85rem; color: var(--muted); margin-top: 6px; }}
-  .site-updated {{ font-size: 0.75rem; color: #4b5563; margin-top: 4px; }}
-  .container {{ max-width: 1200px; margin: 0 auto; padding: 28px 16px; display: flex; flex-direction: column; gap: 32px; }}
-  /* 機能カード */
-  .section-title {{ font-size: 0.82rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }}
-  .pages-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-top: 14px; }}
-  .page-card {{
+  header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 22px 32px 18px; border-bottom: 1px solid var(--border); text-align: center; }}
+  .site-title {{ font-size: 1.6rem; font-weight: 800; color: var(--accent); }}
+  .site-sub {{ font-size: 0.82rem; color: var(--muted); margin-top: 5px; }}
+  .site-updated {{ font-size: 0.72rem; color: #4b5563; margin-top: 4px; }}
+  .container {{ max-width: 860px; margin: 0 auto; padding: 28px 16px; display: flex; flex-direction: column; gap: 32px; }}
+  /* セクションタイトル */
+  .section-label {{ font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }}
+  /* 機能リスト */
+  .feature-list {{ display: flex; flex-direction: column; gap: 8px; }}
+  .feature-row {{
     background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-    padding: 16px 18px; text-decoration: none; color: var(--text);
-    display: flex; flex-direction: column; gap: 6px;
+    padding: 14px 18px; text-decoration: none; color: var(--text);
+    display: flex; flex-direction: column; gap: 5px;
+    border-left: 3px solid var(--row-color, var(--border));
     transition: border-color 0.2s, transform 0.15s;
-    border-left: 3px solid var(--card-color, var(--border));
   }}
-  .page-card:hover {{ border-color: var(--card-color); transform: translateY(-2px); }}
-  .page-card-title {{ font-size: 0.95rem; font-weight: 700; color: var(--card-color); }}
-  .page-card-desc {{ font-size: 0.8rem; color: var(--muted); line-height: 1.55; flex: 1; }}
-  .page-updated {{ font-size: 0.7rem; color: #4b5563; }}
-  .page-diagram-link {{ font-size: 0.75rem; color: var(--muted); }}
-  .page-diagram-link a {{ color: var(--accent); text-decoration: none; }}
-  .page-diagram-link a:hover {{ text-decoration: underline; }}
-  /* トピックセクション */
-  .topics-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }}
-  .topic-section {{ background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; }}
-  .section-header {{ display: flex; align-items: center; justify-content: space-between; }}
-  .section-more {{ font-size: 0.75rem; color: var(--muted); text-decoration: none; }}
-  .section-more:hover {{ color: var(--accent); }}
-  .trend-summary {{ font-size: 0.78rem; color: var(--muted); background: rgba(56,189,248,0.06); border-left: 2px solid var(--accent); padding: 6px 10px; border-radius: 4px; line-height: 1.6; }}
-  .trend-date {{ font-size: 0.72rem; color: #4b5563; margin-right: 6px; }}
-  .topic-list {{ display: flex; flex-direction: column; gap: 2px; }}
-  .topic-row {{ display: flex; align-items: baseline; gap: 8px; padding: 7px 6px; border-radius: 6px; text-decoration: none; color: var(--text); transition: background 0.15s; }}
-  .topic-row:hover {{ background: rgba(255,255,255,0.04); }}
-  .topic-rank {{ font-size: 0.75rem; color: var(--muted); min-width: 36px; flex-shrink: 0; }}
-  .topic-title {{ font-size: 0.83rem; flex: 1; line-height: 1.4; }}
-  .topic-meta {{ font-size: 0.72rem; color: var(--muted); flex-shrink: 0; text-align: right; max-width: 80px; }}
-  .topic-empty {{ font-size: 0.8rem; color: #4b5563; padding: 8px 6px; }}
+  .feature-row:hover {{ border-color: var(--row-color); transform: translateX(3px); }}
+  .row-line1 {{ display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }}
+  .row-title {{ font-size: 1rem; font-weight: 700; color: var(--row-color); }}
+  .row-updated {{ font-size: 0.7rem; color: #4b5563; margin-left: auto; }}
+  .row-line2 {{ font-size: 0.82rem; color: var(--muted); line-height: 1.55; }}
+  .row-line3 {{ font-size: 0.8rem; color: #64748b; }}
+  .row-topic {{ color: var(--text); text-decoration: none; }}
+  .row-topic:hover {{ color: var(--accent); text-decoration: underline; }}
+  .row-topic-empty {{ color: #4b5563; }}
+  .diagram-chip {{ font-size: 0.72rem; background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.3); color: var(--accent); padding: 2px 8px; border-radius: 20px; text-decoration: none; white-space: nowrap; }}
+  .diagram-chip:hover {{ background: rgba(56,189,248,0.2); }}
   /* git ログ */
   .log-section {{ background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }}
   .log-row {{ display: flex; gap: 10px; align-items: baseline; padding: 6px 0; border-bottom: 1px solid rgba(45,55,72,0.5); font-size: 0.8rem; }}
@@ -309,11 +392,11 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   .log-sha {{ font-family: monospace; font-size: 0.72rem; color: #4b5563; flex-shrink: 0; }}
   .log-subject {{ color: var(--text); }}
   .log-empty {{ color: var(--muted); font-size: 0.82rem; }}
-  footer {{ text-align: center; color: var(--muted); font-size: 0.78rem; padding: 28px; border-top: 1px solid var(--border); }}
-  @media (max-width: 640px) {{
-    header {{ padding: 18px 12px; }}
-    .site-title {{ font-size: 1.4rem; }}
-    .pages-grid, .topics-grid {{ grid-template-columns: 1fr; }}
+  footer {{ text-align: center; color: var(--muted); font-size: 0.75rem; padding: 24px; border-top: 1px solid var(--border); }}
+  @media (max-width: 600px) {{
+    header {{ padding: 14px 12px; }}
+    .site-title {{ font-size: 1.3rem; }}
+    .row-updated {{ margin-left: 0; }}
   }}
 </style>
 </head>
@@ -336,19 +419,13 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
 </header>
 <div class="container">
   <div>
-    <div class="section-title">機能一覧</div>
-    <div class="pages-grid">{cards_html}</div>
-  </div>
-  <div>
-    <div class="section-title" style="margin-bottom:0">最新トピック</div>
-    <div class="topics-grid" style="margin-top:14px">
-      {news_section}
-      {tools_section}
-      {buzz_section}
+    <div class="section-label">機能一覧</div>
+    <div class="feature-list">
+      {rows_html}
     </div>
   </div>
   <div class="log-section">
-    <div class="section-title" style="margin-bottom:10px">🕐 最近の更新</div>
+    <div class="section-label" style="margin-bottom:10px">🕐 最近の更新</div>
     {log_rows}
   </div>
 </div>
