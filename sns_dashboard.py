@@ -182,6 +182,7 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
 </head>
 <body>
 <nav class="topnav">
+  <a href="home.html">🏠 ホーム</a>
   <a class="nav-link" href="index.html">📰 ニュース</a>
   <a class="nav-link" href="strategy.html">🎯 施策提案</a>
   <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
