@@ -209,7 +209,13 @@ def _latest_post_topic() -> dict:
 
 
 def _get_latest_diagram() -> dict:
-    files = sorted(glob(os.path.join(DOCS_DIR, "diagrams", "*.html")), reverse=True)
+    # evening=1 / morning=0 でソートし、同日なら evening を優先
+    def _sort_key(path):
+        name = os.path.basename(path).replace(".html", "")
+        slot_order = 1 if name.endswith("evening") else 0
+        return (name[:10], slot_order)  # ("2026-05-17", 1) のように比較
+
+    files = sorted(glob(os.path.join(DOCS_DIR, "diagrams", "*.html")), key=_sort_key, reverse=True)
     if not files:
         return {}
     latest = os.path.basename(files[0])

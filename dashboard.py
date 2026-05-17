@@ -66,7 +66,7 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
     analysis_dir = data_dir("analysis")
     if not os.path.isdir(analysis_dir):
         return []
-    _SLOT_ORDER = {"morning": 0, "evening": 1}
+    _SLOT_ORDER = {"morning": 0, "evening": 1}  # 夕便が新しい
 
     def _sort_key(p: str) -> tuple:
         base = os.path.basename(p).rsplit(".json", 1)[0]
