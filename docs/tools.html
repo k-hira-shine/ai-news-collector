@@ -97,12 +97,12 @@
 </nav>
 <header>
   <div class="header-inner">
-    <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: 2026-05-18 17:35 JST</span></div>
+    <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: 2026-05-19 02:49 JST</span></div>
   </div>
 </header>
 <div class="container">
   <div class="stats-bar">
-    <div class="stat-chip">ツール数 <strong id="visibleCount">270</strong> / 270 件（記事 310 件）</div>
+    <div class="stat-chip">ツール数 <strong id="visibleCount">298</strong> / 298 件（記事 342 件）</div>
     <div class="search-box">
       <span style="color:var(--muted);font-size:0.9rem">🔍</span>
       <input type="text" id="searchInput" placeholder="ツール名・キーワードで検索…" oninput="applyFilters()">
@@ -110,7 +110,7 @@
     </div>
     <div class="date-picker-wrap">
       <span style="color:var(--muted);font-size:0.82rem">📅</span>
-      <input type="date" id="dateFilter" class="date-input" min="2026-05-14" max="2026-05-18" onchange="onDateChange(this.value)">
+      <input type="date" id="dateFilter" class="date-input" min="2026-05-14" max="2026-05-19" onchange="onDateChange(this.value)">
       <button class="filter-btn" id="dateClearBtn" onclick="clearDateFilter()" style="display:none">✕</button>
     </div>
   </div>
@@ -152,9 +152,11 @@
     <div class="filter-row">
       <span class="filter-label">ソース</span>
       <button class="filter-btn active" data-filter-source="all">すべて</button>
+<button class="filter-btn" data-filter-source="AI Business">AI Business</button>
 <button class="filter-btn" data-filter-source="ASCII.jp">ASCII.jp</button>
 <button class="filter-btn" data-filter-source="Ars Technica AI">Ars Technica AI</button>
 <button class="filter-btn" data-filter-source="HackerNews">HackerNews</button>
+<button class="filter-btn" data-filter-source="Hugging Face Blog">Hugging Face Blog</button>
 <button class="filter-btn" data-filter-source="ITmedia NEWS">ITmedia NEWS</button>
 <button class="filter-btn" data-filter-source="Product Hunt AI">Product Hunt AI</button>
 <button class="filter-btn" data-filter-source="Qiita AI">Qiita AI</button>
@@ -946,12 +948,12 @@ LLM の基礎から RAG、AI のための UX といった応用ま… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m4f533e1a" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m06e50322" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Higgsfield Supercomputer</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m4f533e1a').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m06e50322').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1003,7 +1005,7 @@ Higgsfield Supercomputerがリリースされた瞬間、クリエイティブAI
 
 it scans your com… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m4f533e1a').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m06e50322').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="NeRSemble v2" data-latest="Thu May 14 05:03:00 +0000 2026" data-collected-date="2026-05-14">
@@ -1125,12 +1127,12 @@ Alibabaから画像生成と精密な編集を1つのモデルでこなす驚異
     
   </div>
 </div>
-<div class="modal-overlay" id="m896b50f6" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m0b1d2259" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">llama.cpp</span>
       <span class="count-badge">5件</span>
-      <button class="modal-close" onclick="document.getElementById('m896b50f6').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m0b1d2259').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1218,7 +1220,7 @@ llama.cppに「MTP（Multi-Token Prediction）」のサポート… →</a>
 
 AI推論の標準ツール「llama.cpp」が、待望の複数トークン予… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m896b50f6').style.display='flex'">📋 5件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m0b1d2259').style.display='flex'">📋 5件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="AI Master Studio" data-latest="Sun May 17 23:11:02 +0000 2026" data-collected-date="2026-05-18">
@@ -1269,12 +1271,62 @@ Claude、ChatGPT、さらにロー… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mee4008b3" onclick="if(event.target===this)this.style.display='none'">
+<div class="tool-card" data-release="アップデート" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Stanley" data-latest="Sun May 17 20:37:03 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Stanley</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🔄 アップデート</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Stanley" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Stanley" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">$40M企業を救うため、AIエージェント「Stanley」を10倍改善し、「AI Head of Content」に進化させる取り組みを開始。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 05:37</span></div>
+      <a href="https://x.com/JayHoovy/status/2056111779739234756" target="_blank" rel="noopener" class="article-link">I have 30 days to save my $40M company.
+
+Today is Day 0:
+
+Over the las… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Agentic AI Developer certification (GH-600)" data-latest="Sun May 17 19:51:51 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Agentic AI Developer certification (GH-600)</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Agentic AI Developer certification (GH-600)" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Agentic AI Developer certification (GH-600)" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">GitHubがマルチエージェントオーケストレーションなどをカバーするエージェントAI開発者認定（GH-600）を公開しました。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 04:51</span></div>
+      <a href="https://x.com/_vmlops/status/2056100404581261435" target="_blank" rel="noopener" class="article-link">GitHub just launched an Agentic AI Developer certification (GH-600) 
+
+… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="modal-overlay" id="m61cd9b79" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Agentmemory</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mee4008b3').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m61cd9b79').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1325,7 +1377,7 @@ agentmemory：
       <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 02:17</span></div>
       <a href="https://x.com/DivyanshT91162/status/2056061575098949635" target="_blank" rel="noopener" class="article-link">Your AI agents forgetting everything between sessions is officially ov… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mee4008b3').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m61cd9b79').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Synapse Client SDK" data-latest="Sun May 17 16:34:12 +0000 2026" data-collected-date="2026-05-18">
@@ -1492,12 +1544,12 @@ AIが構成案から作成し… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m046535fd" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mdaa0b013" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Hermes Agent</span>
       <span class="count-badge">5件</span>
-      <button class="modal-close" onclick="document.getElementById('m046535fd').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mdaa0b013').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1581,7 +1633,7 @@ http… →</a>
       <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/17 18:51</span></div>
       <a href="https://x.com/AntoineRSX/status/2055949245845590303" target="_blank" rel="noopener" class="article-link">Hermes Agent released v0.14, and it just made every other AI agent fra… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m046535fd').style.display='flex'">📋 5件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mdaa0b013').style.display='flex'">📋 5件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="low" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Velvet X" data-latest="Sun May 17 09:10:43 +0000 2026" data-collected-date="2026-05-18">
@@ -1680,12 +1732,12 @@ The reason is… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m0599dd44" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m9a8748a7" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">comfyui-mesh</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m0599dd44').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m9a8748a7').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1736,7 +1788,7 @@ The reason is… →</a>
 
 2台のPCのGPUをネットワークで連結し、1つの巨大なGPUと… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m0599dd44').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m9a8748a7').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="アップデート" data-impact="high" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Grok V9" data-latest="Sun May 17 07:33:28 +0000 2026" data-collected-date="2026-05-17">
@@ -1783,7 +1835,41 @@ The reason is… →</a>
     
   </div>
 </div>
-<div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Qwen3.6" data-latest="Sun May 17 05:03:01 +0000 2026" data-collected-date="2026-05-17">
+<div class="modal-overlay" id="m4f0f9b9d" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">Qwen3.6</span>
+      <span class="count-badge">2件</span>
+      <button class="modal-close" onclick="document.getElementById('m4f0f9b9d').style.display='none'">✕</button>
+    </div>
+    <div class="modal-cards"><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">🆕 新規リリース</span>
+    <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">🐦 X (Twitter)</span>
+    <span class="age">2026/05/17 14:03</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">爆速ローカルAI「Qwen3.6」が登場し、Terminal-BenchでGemini 2.5 Proを超えるスコアを記録。</div>
+  <a href="https://x.com/ai_hakase_/status/2055876722738737454" target="_blank" rel="noopener" class="article-link">【革命】Gemini超え！爆速ローカルAI「Qwen3.6」が登場 🚀
+
+最新モデル「Qwen3.6-35B-A3B」がTerminal-Bench 2.0にて… →</a>
+</div><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">✨ 機能追加</span>
+    <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">🐦 X (Twitter)</span>
+    <span class="age">2026/05/18 22:02</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">Qwen3.6がMTP(Multi-Token Prediction)技術に対応し、推論速度が最大1.65倍に高速化されました。</div>
+  <a href="https://x.com/ai_hakase_/status/2056359860925583586" target="_blank" rel="noopener" class="article-link">【Qwen3.6 × llama.cpp】MTP対応で推論速度が驚異の1.65倍に爆速化！
+最新モデル「Qwen3.6」をMTP（Multi-Token Pre… →</a>
+</div></div>
+  </div>
+</div><div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Qwen3.6" data-latest="Sun May 17 05:03:01 +0000 2026" data-collected-date="2026-05-19">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">Qwen3.6</span>
@@ -1791,7 +1877,7 @@ The reason is… →</a>
       <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
       <span class="release-badge">🆕 新規リリース</span>
       <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
-      
+      <span class="count-badge">2件</span>
       <button class="watch-btn" data-tool="Qwen3.6" onclick="toggleWatch(this)" title="注目する">☆</button>
       <button class="review-link" data-tool="Qwen3.6" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
     </div>
@@ -1804,7 +1890,7 @@ The reason is… →</a>
 
 最新モデル「Qwen3.6-35B-A3B」がTerminal-B… →</a>
     </div>
-    
+    <button class="more-btn" onclick="document.getElementById('m4f0f9b9d').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="ComfyUI Workflow Finder" data-latest="Sun May 17 04:15:03 +0000 2026" data-collected-date="2026-05-17">
@@ -1854,12 +1940,12 @@ AIが人間に頼らず自給自足で進化する、画期的な学習手法が
     
   </div>
 </div>
-<div class="modal-overlay" id="m8abb33d3" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m006300ae" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Topview Drama Studio</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m8abb33d3').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m006300ae').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -1908,7 +1994,7 @@ AIが人間に頼らず自給自足で進化する、画期的な学習手法が
       <a href="https://x.com/seiiiiiiiiiiru/status/2055856944834093534" target="_blank" rel="noopener" class="article-link">【Topview】AI agentでドラマ制作📢
 新機能「Drama Studio」を使ってエージェントにショートドラマを作ってもらいました… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m8abb33d3').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m006300ae').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Sparky" data-latest="Sun May 17 03:05:02 +0000 2026" data-collected-date="2026-05-17">
@@ -2296,12 +2382,12 @@ Higgsfieldが「Virality Predic… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="md0fd84ac" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mfda83b59" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Ring-2.6-1T</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('md0fd84ac').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mfda83b59').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -2352,7 +2438,7 @@ AIエージェントの常識を塗り替える1兆パラメータの超大型�
 
 AIエージェントの常識を塗り替える1兆パラメータの超大型モ… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('md0fd84ac').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mfda83b59').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Zerion CLI" data-latest="Sat May 16 11:32:00 +0000 2026" data-collected-date="2026-05-17">
@@ -2563,6 +2649,122 @@ AIエージェント5体がチームを組んで、YouTube運営を丸ごと回�
     
   </div>
 </div>
+<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Hermes research agent" data-latest="Mon May 18 14:11:31 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Hermes research agent</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Hermes research agent" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Hermes research agent" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">研究エージェントにGrokとX_Searchを統合し、Grokを「SuperGrok」へと機能強化した。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 23:11</span></div>
+      <a href="https://x.com/gkisokay/status/2056377145778450880" target="_blank" rel="noopener" class="article-link">Hermes literally turned Grok into SuperGrok after I implemented all th… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="機能追加" data-impact="low" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="OpenClaw login with xAI" data-latest="Mon May 18 13:51:34 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">OpenClaw login with xAI</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#64748b">⚪ 参考</span>
+      
+      <button class="watch-btn" data-tool="OpenClaw login with xAI" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="OpenClaw login with xAI" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">OpenClawがxAIでのログイン機能をリリースしたことを発表。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 22:51</span></div>
+      <a href="https://x.com/steipete/status/2056372125749899413" target="_blank" rel="noopener" class="article-link">@CryptoWesearch @openclaw @OpenAI We ship login with xAI since Saturda… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="SmartAttentionDispatcher" data-latest="Mon May 18 11:02:14 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">SmartAttentionDispatcher</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="SmartAttentionDispatcher" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="SmartAttentionDispatcher" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">ComfyUIの生成速度を劇的に向上させる新ノード「SmartAttentionDispatcher」が登場し、特に動画生成で50%以上の速度向上が期待される。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 20:02</span></div>
+      <a href="https://x.com/ai_hakase_/status/2056329508446183882" target="_blank" rel="noopener" class="article-link">【爆速化】ComfyUI新ノード「SmartAttentionDispatcher」で生成効率を最大化！
+
+ComfyUIの生成速度を劇的に… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="MAMMAL" data-latest="Mon May 18 11:02:10 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">MAMMAL</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
+      
+      <button class="watch-btn" data-tool="MAMMAL" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="MAMMAL" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">創薬分野でAlphaFold 3を凌駕するマルチモーダルAI「MAMMAL」が誕生し、がん治療法発見で成果を挙げている。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 20:02</span></div>
+      <a href="https://x.com/ai_hakase_/status/2056329492667195464" target="_blank" rel="noopener" class="article-link">【創薬に革命】AlphaFold 3を凌駕する最強のAI「MAMMAL」が誕生！
+👉  https://t.co/bXOmqwhDCI
+創薬… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="TextGen" data-latest="Mon May 18 09:02:02 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">TextGen</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="TextGen" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="TextGen" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">ローカルLLM環境TextGenがデスクトップアプリ化。Claude Codeとも連携可能。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 18:02</span></div>
+      <a href="https://x.com/ai_hakase_/status/2056299258463052006" target="_blank" rel="noopener" class="article-link">【伝説の復活！最強のローカルLLM環境「TextGen」がデスクトップアプリ化】
+
+あの「TextGen」がついにインストール不要のネイティ… →</a>
+    </div>
+    
+  </div>
+</div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Scenema Audio" data-latest="Mon May 18 08:02:01 +0000 2026" data-collected-date="2026-05-18">
   <div class="tool-card-header">
     <div class="tool-name-row">
@@ -2679,6 +2881,29 @@ AIDC-AIから画像とテキストを同時に扱える最新モ… →</a>
       <a href="https://x.com/ai_hakase_/status/2056239106200318306" target="_blank" rel="noopener" class="article-link">【音楽制作を革新する最強AI「Mureka AI」解禁！】
 👉  https://t.co/n1UXbfMqD2
 スタジオ品質の楽曲を瞬時に… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="other" data-source-label="X (Twitter)" data-tool-name="Ardot" data-latest="Mon May 18 04:48:53 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Ardot</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Ardot" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Ardot" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">TencentのAIネイティブデザインエージェントプラットフォーム「Ardot」が発表された。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 13:48</span></div>
+      <a href="https://x.com/TencentAI_News/status/2056235552790417595" target="_blank" rel="noopener" class="article-link">🪄 Introducing Ardot, Tencent&#x27;s AI-native design agent platform. 
+… →</a>
     </div>
     
   </div>
@@ -3122,6 +3347,398 @@ Dropee is an AI-powered app studio that&#x27;s… →</a>
       <a href="https://x.com/0xRiRoyal/status/2055161194978423043" target="_blank" rel="noopener" class="article-link">good day fr, u know what, most AI tools just assist you.
 
 ARC Terminal… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="アップデート" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="Hugging Face Blog" data-tool-name="NVIDIA Cosmos Predict 2.5" data-latest="2026-05-18T16:00:21+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">NVIDIA Cosmos Predict 2.5</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🔄 アップデート</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="NVIDIA Cosmos Predict 2.5" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="NVIDIA Cosmos Predict 2.5" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">NVIDIA Cosmos Predict 2.5のLoRA/DoRAによるFine-Tuningについて。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Hugging Face Blog <span class="age">2026/05/19 01:00</span></div>
+      <a href="https://huggingface.co/blog/nvidia/cosmos-fine-tuning-for-robot-video-generation" target="_blank" rel="noopener" class="article-link">Fine-Tuning NVIDIA Cosmos Predict 2.5 with LoRA/DoRA for Robot Video G… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="modal-overlay" id="m6c96e1c4" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">Alexa Plus</span>
+      <span class="count-badge">2件</span>
+      <button class="modal-close" onclick="document.getElementById('m6c96e1c4').style.display='none'">✕</button>
+    </div>
+    <div class="modal-cards"><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">✨ 機能追加</span>
+    <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">📰 The Verge AI</span>
+    <span class="age">2026/05/19 00:55</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">AmazonのAIアシスタント「Alexa Plus」が、任意のトピックでAI生成ポッドキャストを作成できるようになりました。</div>
+  <a href="https://www.theverge.com/tech/932375/amazon-alexa-plus-ai-podcasts" target="_blank" rel="noopener" class="article-link">Amazon Alexa Plus can now create AI-generated podcasts →</a>
+</div><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">✨ 機能追加</span>
+    <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">📰 TechCrunch</span>
+    <span class="age">2026/05/18 23:56</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">AmazonのAlexa+がカスタムAIポッドキャストのオンデマンド生成に対応し、パーソナライズされたAIコンテンツプラットフォームに拡大。</div>
+  <a href="https://techcrunch.com/2026/05/18/amazons-new-alexa-powered-feature-can-generate-podcast-episodes/" target="_blank" rel="noopener" class="article-link">Amazon’s new Alexa+ powered feature can generate podcast episodes →</a>
+</div></div>
+  </div>
+</div><div class="tool-card" data-release="機能追加" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="The Verge AI" data-tool-name="Alexa Plus" data-latest="2026-05-18T15:55:25+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Alexa Plus</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      <span class="count-badge">2件</span>
+      <button class="watch-btn" data-tool="Alexa Plus" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Alexa Plus" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">AmazonのAIアシスタント「Alexa Plus」が、任意のトピックでAI生成ポッドキャストを作成できるようになりました。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 The Verge AI <span class="age">2026/05/19 00:55</span></div>
+      <a href="https://www.theverge.com/tech/932375/amazon-alexa-plus-ai-podcasts" target="_blank" rel="noopener" class="article-link">Amazon Alexa Plus can now create AI-generated podcasts →</a>
+    </div>
+    <button class="more-btn" onclick="document.getElementById('m6c96e1c4').style.display='flex'">📋 2件の記事をすべて見る</button>
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="TechCrunch" data-tool-name="Kin Health" data-latest="2026-05-18T15:26:00+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Kin Health</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Kin Health" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Kin Health" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Kin Healthが患者向けのAIメモ取りアプリを構築するため900万ドルを調達、診察を録音しAIで要約。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/19 00:26</span></div>
+      <a href="https://techcrunch.com/2026/05/18/kin-health-raises-9m-to-build-an-ai-notetaker-for-patients/" target="_blank" rel="noopener" class="article-link">Kin Health raises $9M to build an AI notetaker for patients →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="modal-overlay" id="m6b8701e3" onclick="if(event.target===this)this.style.display='none'">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">Windows 11</span>
+      <span class="count-badge">2件</span>
+      <button class="modal-close" onclick="document.getElementById('m6b8701e3').style.display='none'">✕</button>
+    </div>
+    <div class="modal-cards"><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">✨ 機能追加</span>
+    <span class="impact-badge" style="color:#64748b">⚪ 参考</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">📰 ZDNet AI</span>
+    <span class="age">2026/05/19 00:16</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">Windows 11でタスクバーを自由に移動できる機能がInsider向けに展開され、スタートメニュー変更も近日中。</div>
+  <a href="https://www.zdnet.com/article/microsoft-windows-11-taskbar-moves-to-any-screen-edge/" target="_blank" rel="noopener" class="article-link">Microsoft is finally bringing the movable taskbar to Windows 11 - here&#x27;s wh… →</a>
+</div><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">✨ 機能追加</span>
+    <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">📰 SoftAntenna</span>
+    <span class="age">2026/05/13 09:55</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">Windows 11向け月例更新KB5089549が公開、Xboxモードやファイルエクスプローラー改善。</div>
+  <a href="https://softantenna.com/blog/windows-11-version-25h2-24h2-kb5089549-monthly/" target="_blank" rel="noopener" class="article-link">Windows 11の月例更新プログラムKB5089549が公開 - 2026年5月の月例更新、Xboxモードやファイルエクスプローラーの改善など →</a>
+</div></div>
+  </div>
+</div><div class="tool-card" data-release="機能追加" data-impact="medium" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ZDNet AI" data-tool-name="Windows 11" data-latest="2026-05-18T15:16:30+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Windows 11</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      <span class="count-badge">2件</span>
+      <button class="watch-btn" data-tool="Windows 11" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Windows 11" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Windows 11でタスクバーを自由に移動できる機能がInsider向けに展開され、スタートメニュー変更も近日中。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 ZDNet AI <span class="age">2026/05/19 00:16</span></div>
+      <a href="https://www.zdnet.com/article/microsoft-windows-11-taskbar-moves-to-any-screen-edge/" target="_blank" rel="noopener" class="article-link">Microsoft is finally bringing the movable taskbar to Windows 11 - here… →</a>
+    </div>
+    <button class="more-btn" onclick="document.getElementById('m6b8701e3').style.display='flex'">📋 2件の記事をすべて見る</button>
+  </div>
+</div>
+<div class="tool-card" data-release="アップデート" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="Hugging Face Blog" data-tool-name="PaddleOCR 3.5" data-latest="2026-05-18T15:12:46+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">PaddleOCR 3.5</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🔄 アップデート</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="PaddleOCR 3.5" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="PaddleOCR 3.5" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">PaddleOCR 3.5はTransformerバックエンドでOCRと文書解析を実行。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Hugging Face Blog <span class="age">2026/05/19 00:12</span></div>
+      <a href="https://huggingface.co/blog/PaddlePaddle/paddleocr-transformers" target="_blank" rel="noopener" class="article-link">PaddleOCR 3.5: Running OCR and Document Parsing Tasks with a Transform… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="アップデート" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ZDNet AI" data-tool-name="Microsoft Edge" data-latest="2026-05-18T14:52:00+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Microsoft Edge</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🔄 アップデート</span>
+      <span class="impact-badge" style="color:#64748b">⚪ 参考</span>
+      
+      <button class="watch-btn" data-tool="Microsoft Edge" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Microsoft Edge" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Microsoft Edgeがパスワードをプレーンテキストで保存するのを停止。最新アップデートでセキュリティが向上。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 ZDNet AI <span class="age">2026/05/18 23:52</span></div>
+      <a href="https://www.zdnet.com/article/microsoft-edge-passwords-ram-plaintext/" target="_blank" rel="noopener" class="article-link">Microsoft Edge just stopped storing your passwords in plaintext - but … →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="Hugging Face Blog" data-tool-name="Open Agent Leaderboard" data-latest="2026-05-18T14:12:58+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Open Agent Leaderboard</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Open Agent Leaderboard" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Open Agent Leaderboard" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Open Agent Leaderboardが公開され、AIエージェントの評価が可能に。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Hugging Face Blog <span class="age">2026/05/18 23:12</span></div>
+      <a href="https://huggingface.co/blog/ibm-research/open-agent-leaderboard" target="_blank" rel="noopener" class="article-link">The Open Agent Leaderboard →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="high" data-source="rss" data-ai="ai" data-family="other" data-source-label="AI Business" data-tool-name="Grok Build" data-latest="2026-05-18T13:50:52+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Grok Build</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
+      
+      <button class="watch-btn" data-tool="Grok Build" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Grok Build" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">MuskのxAIがGrok Buildをローンチし、Claude Codeなどに対抗。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 AI Business <span class="age">2026/05/18 22:50</span></div>
+      <a href="https://aibusiness.com/generative-ai/musk-s-xai-launches-grok-build-take-claude-code-codex" target="_blank" rel="noopener" class="article-link">Musk’s xAI Launches Grok Build to Take on Claude Code, Codex →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="Zenn AI" data-tool-name="Notion Developer Platform" data-latest="2026-05-18T11:16:51+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Notion Developer Platform</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Notion Developer Platform" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Notion Developer Platform" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Notion Developer Platformがリリースされ、AIエージェント実行基盤となる。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Zenn AI <span class="age">2026/05/18 20:16</span></div>
+      <a href="https://zenn.dev/komlock_lab/articles/notion-developer-platform" target="_blank" rel="noopener" class="article-link">Notion Developer Platform 入門 - CLI基本操作 →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="Zenn AI" data-tool-name="Chrome Prompt API" data-latest="2026-05-18T11:10:45+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Chrome Prompt API</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Chrome Prompt API" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Chrome Prompt API" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Chrome 148でPrompt APIが利用可能になり、自作拡張にAI機能追加。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Zenn AI <span class="age">2026/05/18 20:10</span></div>
+      <a href="https://zenn.dev/satetsu888/articles/chrome-prompt-api-extension" target="_blank" rel="noopener" class="article-link">ChromeのPrompt APIが動くようになったので自作ブラウザ拡張にAI機能をつけてみた →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="Zenn AI" data-tool-name="markgate" data-latest="2026-05-18T10:38:17+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">markgate</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="markgate" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="markgate" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Coding Agentのド忘れを捕捉・強制実行するOSS『markgate』が開発された。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Zenn AI <span class="age">2026/05/18 19:38</span></div>
+      <a href="https://zenn.dev/go_to_k/articles/markgate-oss" target="_blank" rel="noopener" class="article-link">Coding Agent のド忘れを機械的に捕捉し、非コマンドも強制実行する OSS『markgate』を作った →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="miraio" data-latest="2026-05-18T09:30:00+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">miraio</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="miraio" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="miraio" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">プラスゼロがAIオペレーター「miraio」をホリイフードサービスに提供開始。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 ASCII.jp <span class="age">2026/05/18 18:30</span></div>
+      <a href="https://ascii.jp/elem/000/004/402/4402988/?rss" target="_blank" rel="noopener" class="article-link">プラスゼロ、ホリイフードサービスへAIオペレーター「miraio」を提供開始　「隠れ菴 忍家」2店舗にて5月18日より稼働、予約対応をAIで… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="ROCK 5" data-latest="2026-05-18T09:00:00+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">ROCK 5</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#64748b">⚪ 参考</span>
+      
+      <button class="watch-btn" data-tool="ROCK 5" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="ROCK 5" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Blackviewが新型タフネススマホ「ROCK 5」発売記念キャンペーンを開催。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 ASCII.jp <span class="age">2026/05/18 18:00</span></div>
+      <a href="https://ascii.jp/elem/000/004/402/4402991/?rss" target="_blank" rel="noopener" class="article-link">Blackview、新型タフネススマホ「ROCK 5」発売記念キャンペーンを5月18日より開催｜20,000mAhバッテリー・348LMキャ… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="Forza Horizon 6" data-latest="2026-05-18T09:00:00+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Forza Horizon 6</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#64748b">⚪ 参考</span>
+      
+      <button class="watch-btn" data-tool="Forza Horizon 6" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Forza Horizon 6" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Steam売り上げランキングで『Forza Horizon 6』が1位に。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 ASCII.jp <span class="age">2026/05/18 18:00</span></div>
+      <a href="https://ascii.jp/elem/000/004/402/4402817/?rss" target="_blank" rel="noopener" class="article-link">いよいよ発売される『Forza Horizon 6』が1位に！『サブノーティカ２』も2位に登場【Steamランキング】 →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="電動ゲーミングベッド2" data-latest="2026-05-18T09:00:00+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">電動ゲーミングベッド2</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#64748b">⚪ 参考</span>
+      
+      <button class="watch-btn" data-tool="電動ゲーミングベッド2" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="電動ゲーミングベッド2" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">バウヒュッテの「電動ゲーミングベッド2」が究極の堕落ライフを提供。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 ASCII.jp <span class="age">2026/05/18 18:00</span></div>
+      <a href="https://ascii.jp/elem/000/004/402/4402545/?rss" target="_blank" rel="noopener" class="article-link">【全ゲーマーの夢】ゲーミングベッド、起きて1秒でプレイ！ 電動リクライニングで堕落しまくりたい →</a>
     </div>
     
   </div>
@@ -3720,12 +4337,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mffa4248f" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m09ab83dd" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">JPYC</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mffa4248f').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m09ab83dd').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -3770,7 +4387,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 ASCII.jp <span class="age">2026/05/15 21:39</span></div>
       <a href="https://ascii.jp/elem/000/004/402/4402641/?rss" target="_blank" rel="noopener" class="article-link">日本円ステーブルコイン「JPYC」、初の追加対応チェーンとして「Kaia」で発行開始 →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mffa4248f').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m09ab83dd').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="アップデート" data-impact="medium" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="JPYC EX" data-latest="2026-05-15T12:39:07+00:00" data-collected-date="2026-05-16">
@@ -3993,12 +4610,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m266b6463" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mee0ba46d" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Edge Copilot</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m266b6463').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mee0ba46d').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -4043,7 +4660,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 ZDNet AI <span class="age">2026/05/15 01:49</span></div>
       <a href="https://www.zdnet.com/article/microsoft-edge-ai-copilot-new-skills/" target="_blank" rel="noopener" class="article-link">I&#x27;m no Copilot fan, but these 6 new AI skills turned Edge into my… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m266b6463').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mee0ba46d').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="TechCrunch" data-tool-name="Spotify video podcast on Apple Podcasts" data-latest="2026-05-14T15:42:18+00:00" data-collected-date="2026-05-15">
@@ -4090,12 +4707,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mfa76f594" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m13918e6f" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Instagram Instants</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mfa76f594').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m13918e6f').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -4140,7 +4757,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/15 00:06</span></div>
       <a href="https://techcrunch.com/2026/05/14/how-to-turn-of-instagrams-new-instants-feature-and-retract-photos-you-accidentally-shared/" target="_blank" rel="noopener" class="article-link">How to turn off Instagram’s new Instants feature and retract photos yo… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mfa76f594').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m13918e6f').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ASCII.jp" data-tool-name="Dell 14S/16S" data-latest="2026-05-14T15:01:00+00:00" data-collected-date="2026-05-15">
@@ -4297,12 +4914,12 @@ ARC Terminal… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="md1c62b56" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m44c36827" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Meta AI Incognito Chat</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('md1c62b56').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m44c36827').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -4347,15 +4964,15 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 The Verge AI <span class="age">2026/05/14 01:45</span></div>
       <a href="https://www.theverge.com/tech/929791/meta-ai-incognito-chats" target="_blank" rel="noopener" class="article-link">Mark Zuckerberg announces &amp;#8216;completely private&amp;#8217; enc… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('md1c62b56').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m44c36827').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
-<div class="modal-overlay" id="m35eb7859" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m371abec4" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Alexa for Shopping</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m35eb7859').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m371abec4').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -4400,7 +5017,7 @@ ARC Terminal… →</a>
       <div class="sub-meta">📰 TechCrunch <span class="age">2026/05/13 23:59</span></div>
       <a href="https://techcrunch.com/2026/05/13/amazon-launches-an-ai-shopping-assistant-for-the-search-bar-powered-by-alexa/" target="_blank" rel="noopener" class="article-link">Amazon launches an AI shopping assistant for the search bar, powered b… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m35eb7859').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m371abec4').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="low" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="ITmedia NEWS" data-tool-name="Sony α7R VI" data-latest="2026-05-13T14:50:00+00:00" data-collected-date="2026-05-15">
@@ -4509,28 +5126,6 @@ ARC Terminal… →</a>
     <div class="sub-article">
       <div class="sub-meta">📰 SoftAntenna <span class="age">2026/05/13 10:08</span></div>
       <a href="https://softantenna.com/blog/windows-10-kb5087544-monthly/" target="_blank" rel="noopener" class="article-link">Windows 10の月例更新プログラムKB5087544が公開 - 2026年5月の月例更新、リモートデスクトップの警告ダイアログ問題が修… →</a>
-    </div>
-    
-  </div>
-</div>
-<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="rss" data-ai="non-ai" data-family="other" data-source-label="SoftAntenna" data-tool-name="Windows 11" data-latest="2026-05-13T00:55:25+00:00" data-collected-date="2026-05-15">
-  <div class="tool-card-header">
-    <div class="tool-name-row">
-      <span class="tool-name">Windows 11</span>
-      <span class="new-badge" style="display:none">🆕 新着</span>
-      <span class="family-badge" style="border-color:#64748b;color:#64748b">📌 その他</span>
-      <span class="release-badge">✨ 機能追加</span>
-      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
-      
-      <button class="watch-btn" data-tool="Windows 11" onclick="toggleWatch(this)" title="注目する">☆</button>
-      <button class="review-link" data-tool="Windows 11" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
-    </div>
-  </div>
-  <div class="summary-ja">Windows 11向け月例更新KB5089549が公開、Xboxモードやファイルエクスプローラー改善。</div>
-  <div class="card-footer">
-    <div class="sub-article">
-      <div class="sub-meta">📰 SoftAntenna <span class="age">2026/05/13 09:55</span></div>
-      <a href="https://softantenna.com/blog/windows-11-version-25h2-24h2-kb5089549-monthly/" target="_blank" rel="noopener" class="article-link">Windows 11の月例更新プログラムKB5089549が公開 - 2026年5月の月例更新、Xboxモードやファイルエクスプローラーの改… →</a>
     </div>
     
   </div>
@@ -4863,12 +5458,12 @@ Claude CodeやAgent SDK系ツールは
     
   </div>
 </div>
-<div class="modal-overlay" id="m3e0ec77c" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m324ef5e2" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude for Small Business</span>
-      <span class="count-badge">5件</span>
-      <button class="modal-close" onclick="document.getElementById('m3e0ec77c').style.display='none'">✕</button>
+      <span class="count-badge">6件</span>
+      <button class="modal-close" onclick="document.getElementById('m324ef5e2').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -4917,6 +5512,17 @@ Anthropicが&quot;中小企業のオフィス業務全部&quot;を救うツー�
   </div>
   <div class="source-age" style="margin:6px 0 4px">
     <span class="source-label">📰 Zenn AI</span>
+    <span class="age">2026/05/18 18:06</span>
+  </div>
+  <div class="summary-ja" style="margin-bottom:6px">Anthropicが中小企業向けに「Claude for Small Business」を開始。</div>
+  <a href="https://zenn.dev/kairosai/articles/fed69a04ddd3c3" target="_blank" rel="noopener" class="article-link">【AI朝メモ 2026/5/18】Claude for Small Business / ChatGPT Personal Finance →</a>
+</div><div class="modal-card">
+  <div class="tool-name-row">
+    <span class="release-badge">🆕 新規リリース</span>
+    <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
+  </div>
+  <div class="source-age" style="margin:6px 0 4px">
+    <span class="source-label">📰 Zenn AI</span>
     <span class="age">2026/05/17 22:29</span>
   </div>
   <div class="summary-ja" style="margin-bottom:6px">Anthropicが中小企業向け「Claude for Small Business」を発表、IT導入モデルを変革。</div>
@@ -4934,7 +5540,7 @@ Anthropicが&quot;中小企業のオフィス業務全部&quot;を救うツー�
   <a href="https://www.zdnet.com/article/claude-small-business-contract-review-ai-no-lawyer/" target="_blank" rel="noopener" class="article-link">This new Claude skill saves you from bad contracts - and costs less than a lawye… →</a>
 </div></div>
   </div>
-</div><div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude for Small Business" data-latest="Wed May 13 19:50:15 +0000 2026" data-collected-date="2026-05-18">
+</div><div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude for Small Business" data-latest="Wed May 13 19:50:15 +0000 2026" data-collected-date="2026-05-19">
   <div class="tool-card-header">
     <div class="tool-name-row">
       <span class="tool-name">Claude for Small Business</span>
@@ -4942,7 +5548,7 @@ Anthropicが&quot;中小企業のオフィス業務全部&quot;を救うツー�
       <span class="family-badge" style="border-color:#d97757;color:#d97757">🟠 Claude</span>
       <span class="release-badge">🆕 新規リリース</span>
       <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
-      <span class="count-badge">5件</span>
+      <span class="count-badge">6件</span>
       <button class="watch-btn" data-tool="Claude for Small Business" onclick="toggleWatch(this)" title="注目する">☆</button>
       <button class="review-link" data-tool="Claude for Small Business" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
     </div>
@@ -4955,7 +5561,7 @@ Anthropicが&quot;中小企業のオフィス業務全部&quot;を救うツー�
 
 - Claudeが「給与… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m3e0ec77c').style.display='flex'">📋 5件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m324ef5e2').style.display='flex'">📋 6件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="low" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Agent SDK" data-latest="Wed May 13 19:20:09 +0000 2026" data-collected-date="2026-05-14">
@@ -5169,12 +5775,12 @@ The pro… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mc0bc7d2a" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m6af0c295" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Gemini Spark</span>
       <span class="count-badge">3件</span>
-      <button class="modal-close" onclick="document.getElementById('mc0bc7d2a').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m6af0c295').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -5234,7 +5840,7 @@ Google appears to be testing a new 24/7 experim… →</a>
 
 Google appears to be testing a new 24… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mc0bc7d2a').style.display='flex'">📋 3件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m6af0c295').style.display='flex'">📋 3件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="NanoClaude" data-latest="Thu May 14 08:03:02 +0000 2026" data-collected-date="2026-05-14">
@@ -5374,12 +5980,12 @@ Goog… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="mce59d74c" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="md4e6e9f5" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude Code</span>
       <span class="count-badge">5件</span>
-      <button class="modal-close" onclick="document.getElementById('mce59d74c').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('md4e6e9f5').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -5464,7 +6070,7 @@ Claude Code is an … →</a>
       <a href="https://x.com/mercarioji/status/2054765563252220304" target="_blank" rel="noopener" class="article-link">Claude Codeの週制限が1.5倍になりました！
 今まで以上にゴリゴリ使えます！ →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mce59d74c').style.display='flex'">📋 5件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('md4e6e9f5').style.display='flex'">📋 5件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="OpenAIプラグイン for Claude Code" data-latest="Thu May 14 03:01:15 +0000 2026" data-collected-date="2026-05-14">
@@ -5769,12 +6375,12 @@ sales / data / P… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m52800db3" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m2d5e5557" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Codex</span>
       <span class="count-badge">4件</span>
-      <button class="modal-close" onclick="document.getElementById('m52800db3').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m2d5e5557').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -5849,7 +6455,7 @@ You tal… →</a>
 
 一部ユーザーの間で、GPT-5.5の性能が一時的に報告されていましたが、原因となり… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m52800db3').style.display='flex'">📋 4件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m2d5e5557').style.display='flex'">📋 4件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude Code向け学術研究パイプライン" data-latest="Sat May 16 22:09:14 +0000 2026" data-collected-date="2026-05-17">
@@ -6119,12 +6725,12 @@ LINEスタンプが無限生成される
     
   </div>
 </div>
-<div class="modal-overlay" id="mf89c2852" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="me53218b9" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">Claude</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('mf89c2852').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('me53218b9').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -6173,7 +6779,7 @@ It maps your app int… →</a>
 
 It maps yo… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('mf89c2852').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('me53218b9').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Codexプラグイン for Claude Code" data-latest="Sat May 16 07:00:02 +0000 2026" data-collected-date="2026-05-17">
@@ -6226,12 +6832,12 @@ https://t.co/Y… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m32bbc63e" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m95b7ef87" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">ChatGPT Finances</span>
       <span class="count-badge">6件</span>
-      <button class="modal-close" onclick="document.getElementById('m32bbc63e').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m95b7ef87').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -6330,7 +6936,7 @@ OpenAIが金融口座を接続して支出・投資・負債を分析できる�
       <a href="https://x.com/YahooNewsTopics/status/2055496209587114034" target="_blank" rel="noopener" class="article-link">【ChatGPT 米で個人資産の管理機能】
 https://t.co/AxdX3HXFaP →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m32bbc63e').style.display='flex'">📋 6件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m95b7ef87').style.display='flex'">📋 6件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="アップデート" data-impact="high" data-source="x" data-ai="ai" data-family="chatgpt" data-source-label="X (Twitter)" data-tool-name="ChatGPT Images 2.0" data-latest="Sat May 16 03:24:12 +0000 2026" data-collected-date="2026-05-17">
@@ -6403,6 +7009,99 @@ Gmail・Slack・GitHub… →</a>
       <a href="https://x.com/zikilluu/status/2055448215194157494" target="_blank" rel="noopener" class="article-link">Google検索セントラルが「生成AI向けのWebサイト最適化ガイドライン」を公式に発表しました。
 ⠀
 AIOやLLMOという言葉も流行って… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="その他" data-impact="medium" data-source="x" data-ai="non-ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="StainlessAPI" data-latest="Mon May 18 17:00:18 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">StainlessAPI</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#d97757;color:#d97757">🟠 Claude</span>
+      <span class="release-badge">📌 その他</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="StainlessAPI" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="StainlessAPI" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Anthropicが、初期からAPIを支えてきたSDKおよびMCPサーバープラットフォームのStainlessAPIを買収。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/19 02:00</span></div>
+      <a href="https://x.com/AnthropicAI/status/2056419620643541012" target="_blank" rel="noopener" class="article-link">Anthropic is acquiring @stainlessapi, an SDK and MCP server platform t… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="機能追加" data-impact="high" data-source="x" data-ai="ai" data-family="gemini" data-source-label="X (Twitter)" data-tool-name="Gemini 3.5 Flash" data-latest="Mon May 18 12:06:01 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Gemini 3.5 Flash</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#4285f4;color:#4285f4">✨ Gemini</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#ef4444">🔴 重要</span>
+      
+      <button class="watch-btn" data-tool="Gemini 3.5 Flash" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Gemini 3.5 Flash" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Gemini 3.5 Flashが、たった1回のプロンプトでUbuntu Web OSを完全再現し、プロトタイプ制作を数秒で実現。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 21:06</span></div>
+      <a href="https://x.com/ai_hakase_/status/2056345559330435164" target="_blank" rel="noopener" class="article-link">【驚異のAI進化】Gemini 3.5 Flashが一撃でUbuntu Web OSを完全再現！
+👉  https://t.co/OprMS… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="新規リリース" data-impact="medium" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="(Unnamed) open-source tool" data-latest="Mon May 18 09:33:19 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">(Unnamed) open-source tool</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#d97757;color:#d97757">🟠 Claude</span>
+      <span class="release-badge">🆕 新規リリース</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="(Unnamed) open-source tool" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="(Unnamed) open-source tool" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Claude Codeなどを活用し、AIエージェントにテスト駆動開発を強制するOSSがリリース。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 18:33</span></div>
+      <a href="https://x.com/Shruti_0810/status/2056307133973496312" target="_blank" rel="noopener" class="article-link">Claude Code just got replaced by a senior engineer 🤯
+
+This free open-s… →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude compute via Venice proxy" data-latest="Mon May 18 03:21:49 +0000 2026" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Claude compute via Venice proxy</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#d97757;color:#d97757">🟠 Claude</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Claude compute via Venice proxy" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Claude compute via Venice proxy" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">AUTONOMOPOLYがDIEM→Venice→Claude連携を本番稼働。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">🐦 X (Twitter) <span class="age">2026/05/18 12:21</span></div>
+      <a href="https://x.com/votesa/status/2056213641645498624" target="_blank" rel="noopener" class="article-link">Two days ago i told you AUTONOMOPOLY hadn&#x27;t even started yet.
+
+it… →</a>
     </div>
     
   </div>
@@ -6571,12 +7270,12 @@ Open-source IDE Zed now supports ChatGPT subscription … →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m8a8ffee3" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="m81da0497" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">ChatGPT (Personal Finance)</span>
       <span class="count-badge">2件</span>
-      <button class="modal-close" onclick="document.getElementById('m8a8ffee3').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('m81da0497').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -6625,7 +7324,7 @@ A further step towards… →</a>
 
 A further st… →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m8a8ffee3').style.display='flex'">📋 2件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('m81da0497').style.display='flex'">📋 2件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="high" data-source="x" data-ai="ai" data-family="claude" data-source-label="X (Twitter)" data-tool-name="Claude Code (Meta Ad Manager integration)" data-latest="Fri May 15 17:00:00 +0000 2026" data-collected-date="2026-05-16">
@@ -6872,6 +7571,50 @@ Herm… →</a>
     
   </div>
 </div>
+<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="rss" data-ai="ai" data-family="claude" data-source-label="Zenn AI" data-tool-name="Claude Code Hooks (自動サマリー機能)" data-latest="2026-05-18T10:45:05+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Claude Code Hooks (自動サマリー機能)</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#d97757;color:#d97757">🟠 Claude</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Claude Code Hooks (自動サマリー機能)" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Claude Code Hooks (自動サマリー機能)" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Claude Code Hooksでセッション終了時に自動サマリーを作成する機能を紹介。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Zenn AI <span class="age">2026/05/18 19:45</span></div>
+      <a href="https://zenn.dev/yamada_ai_dev/articles/article02-free" target="_blank" rel="noopener" class="article-link">Claude Code Hooksで「セッション終了時に自動サマリー」を作った話 →</a>
+    </div>
+    
+  </div>
+</div>
+<div class="tool-card" data-release="機能追加" data-impact="medium" data-source="rss" data-ai="ai" data-family="claude" data-source-label="Zenn AI" data-tool-name="Claude API (プロンプトキャッシュ)" data-latest="2026-05-18T08:45:49+00:00" data-collected-date="2026-05-19">
+  <div class="tool-card-header">
+    <div class="tool-name-row">
+      <span class="tool-name">Claude API (プロンプトキャッシュ)</span>
+      <span class="new-badge" style="display:none">🆕 新着</span>
+      <span class="family-badge" style="border-color:#d97757;color:#d97757">🟠 Claude</span>
+      <span class="release-badge">✨ 機能追加</span>
+      <span class="impact-badge" style="color:#f59e0b">🟡 注目</span>
+      
+      <button class="watch-btn" data-tool="Claude API (プロンプトキャッシュ)" onclick="toggleWatch(this)" title="注目する">☆</button>
+      <button class="review-link" data-tool="Claude API (プロンプトキャッシュ)" onclick="openMemoModal(this.dataset.tool)" title="所感を記入する">📋 使ってみた</button>
+    </div>
+  </div>
+  <div class="summary-ja">Claude APIで初回トークン待ち時間を短縮するプロンプトキャッシュの事前ウォームアップ術。</div>
+  <div class="card-footer">
+    <div class="sub-article">
+      <div class="sub-meta">📰 Zenn AI <span class="age">2026/05/18 17:45</span></div>
+      <a href="https://zenn.dev/ty2/articles/tweet-claudedevs-2055069548672631218" target="_blank" rel="noopener" class="article-link">Claude APIで初回トークンの待ち時間を短縮するプロンプトキャッシュの事前ウォームアップ術 →</a>
+    </div>
+    
+  </div>
+</div>
 <div class="tool-card" data-release="新規リリース" data-impact="high" data-source="rss" data-ai="ai" data-family="chatgpt" data-source-label="Zenn AI" data-tool-name="GPT-Realtime-2, Codex App Server" data-latest="2026-05-17T23:00:07+00:00" data-collected-date="2026-05-18">
   <div class="tool-card-header">
     <div class="tool-name-row">
@@ -7092,12 +7835,12 @@ Herm… →</a>
     
   </div>
 </div>
-<div class="modal-overlay" id="m24936c22" onclick="if(event.target===this)this.style.display='none'">
+<div class="modal-overlay" id="mb4b877f5" onclick="if(event.target===this)this.style.display='none'">
   <div class="modal-box">
     <div class="modal-header">
       <span class="modal-title">ChatGPT</span>
       <span class="count-badge">3件</span>
-      <button class="modal-close" onclick="document.getElementById('m24936c22').style.display='none'">✕</button>
+      <button class="modal-close" onclick="document.getElementById('mb4b877f5').style.display='none'">✕</button>
     </div>
     <div class="modal-cards"><div class="modal-card">
   <div class="tool-name-row">
@@ -7153,7 +7896,7 @@ Herm… →</a>
       <div class="sub-meta">🔶 HackerNews <span class="age">2026/05/16 01:38</span></div>
       <a href="https://firethering.com/chatgpt-bank-account-plaid-openai/" target="_blank" rel="noopener" class="article-link">OpenAI is connecting ChatGPT to bank accounts via Plaid →</a>
     </div>
-    <button class="more-btn" onclick="document.getElementById('m24936c22').style.display='flex'">📋 3件の記事をすべて見る</button>
+    <button class="more-btn" onclick="document.getElementById('mb4b877f5').style.display='flex'">📋 3件の記事をすべて見る</button>
   </div>
 </div>
 <div class="tool-card" data-release="機能追加" data-impact="high" data-source="rss" data-ai="ai" data-family="chatgpt" data-source-label="The Verge AI" data-tool-name="ChatGPT (Plaid integration)" data-latest="2026-05-15T16:00:00+00:00" data-collected-date="2026-05-16">
