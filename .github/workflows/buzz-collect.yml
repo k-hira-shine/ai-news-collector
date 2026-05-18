@@ -67,5 +67,10 @@ jobs:
           for i in 1 2 3; do
             git push && break
             echo "Push failed (attempt $i), retrying after pull --rebase..."
-            git pull --rebase && sleep 5
+            git stash
+            git pull --rebase
+            git stash pop || true
+            git add data/buzz.json data/logs/ docs/buzz.html config.yaml
+            git diff --staged --quiet || git commit -m "buzz: $(date -u +%Y-%m-%d_%H%M) ${{ github.event.inputs.account }}"
+            sleep 5
           done
