@@ -19,3 +19,18 @@
 | buzz | $0.1576 | max-items=100、12アカウント、1131件収集 |
 | money | $0.6205 | max_items_per_query=50、24クエリ、683件収集 |
 | **合計** | **$0.9072** | **▼$0.204（-18%）** |
+
+## 2026-05-19（追加修正）
+
+### 修正内容
+- push競合対策: `buzz-collect.yml` / `collect.yml` の push リトライ時に `git stash` → `git pull --rebase` → `git stash pop` → 再commitする流れへ変更。
+- cronコメント整理: GitHub Actions の cron コメントを JST 表記に統一。
+- moneyコスト削減: `money_collection.search_interval_days: 2` を追加し、広域検索は2日に1回、追跡アカウントは毎日収集に変更。
+- moneyクエリ削減: 広域検索クエリを17本 → 10本へ削減。
+
+### 明日の確認ポイント
+- Buzz Ranking Collector が push 競合で失敗していないか。
+- AI News Collector が push 競合で失敗していないか。
+- money の `apify_cost_usd` が、広域検索ありの日で $0.25〜$0.35 前後に下がるか。
+- 5/19 は広域検索スキップ日、5/20 は広域検索実行日の想定。
+- money の Actor 起動数は、変更前 8回/日 → 変更後 平均3回/日が目安。
