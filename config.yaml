@@ -205,33 +205,23 @@ money_collection:
   cache_retention_days: 180
   # 事例として採用する投稿者の最低フォロワー数
   min_followers: 1000
+  # 広域検索は2日に1回。追跡アカウントは毎日収集する
+  search_interval_days: 2
   # 検索クエリ（アカウント指定以外の広域収集）
   search_queries:
-    # 日本語：動画収益化
-    - "動画編集 収益化 (月収 OR 稼ぐ OR 副業) -filter:retweets"
-    - "ショート動画 (稼ぐ OR 収益 OR マネタイズ) 事例 -filter:retweets"
+    # 日本語：動画・AI収益化の具体事例
     - "AI動画 (収益化 OR マネタイズ) (事例 OR 実績) -filter:retweets lang:ja"
     - "YouTube 収益化 (やり方 OR 事例 OR 月収) -filter:retweets"
-    # 日本語：幅広い動画系
     - "TikTok (月収 OR 収益化 OR マネタイズ) 事例 -filter:retweets lang:ja"
-    - "ライブ配信 (投げ銭 OR 収益 OR スパチャ OR 月収) -filter:retweets lang:ja"
-    - "動画クリエイター (収益 OR 稼ぐ OR 案件 OR PR) -filter:retweets lang:ja"
-    # 日本語：AI活用収益化
     - "AI副業 (月収 OR 稼いだ OR 収益) -filter:retweets lang:ja"
     - "生成AI (稼ぐ OR 収益化 OR マネタイズ OR 副業) 事例 -filter:retweets lang:ja"
     # 英語：収益報告（金額を含む具体的なもの）
     - "YouTube channel made $ per month -filter:retweets lang:en"
     - "faceless YouTube channel $ month revenue -filter:retweets lang:en"
     - "AI generated YouTube channel making money -filter:retweets lang:en"
-    # 英語：UGC・副業
+    # 英語：UGC・AI活用収益化
     - "UGC creator brand deal payment -filter:retweets lang:en"
-    # 英語：AI活用収益化
     - "AI tools side hustle income made -filter:retweets lang:en"
-    - "ChatGPT Claude AI earning passive income -filter:retweets lang:en"
-    # 英語：AIエージェント×収益化（新興）
-    - "AI agent workflow income automation -filter:retweets lang:en"
-    # 日本語：動画生成AI×収益化（新興）
-    - "(Veo OR Sora OR Runway) (収益 OR 稼ぐ OR マネタイズ) -filter:retweets lang:ja"
   # 1クエリあたりの最大取得件数
   max_items_per_query: 50
 

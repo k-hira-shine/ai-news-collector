@@ -7,7 +7,7 @@ data/money/ に蓄積する（since制限なし・リポスト除外）。
 import json
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from collector import SeenURLsCache, _normalize_tweet
 from utils import data_dir, hash_url, today_str
@@ -39,6 +39,7 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
     max_items = money_cfg.get("max_items_per_account", 500)
     search_queries = money_cfg.get("search_queries", [])
     max_items_per_query = money_cfg.get("max_items_per_query", 100)
+    search_interval_days = max(1, int(money_cfg.get("search_interval_days", 1)))
 
     import threading
     meta = {"apify_runs": 0, "apify_cost_usd": 0.0, "total_fetched": 0}
@@ -88,8 +89,13 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
             account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
             all_items += _run_apify(account_queries, max_items, "accounts")
 
-        # ② 検索クエリ収集（広域）— 日英を分けて並列実行
-        if search_queries:
+        # ② 検索クエリ収集（広域）— コスト削減のため設定日数ごとに実行
+        today_ordinal = date.fromisoformat(today_str()).toordinal()
+        run_search = search_interval_days <= 1 or today_ordinal % search_interval_days == 0
+        if search_queries and not run_search:
+            logger.info("Money search skipped: interval=%d days", search_interval_days)
+
+        if search_queries and run_search:
             from concurrent.futures import ThreadPoolExecutor, as_completed
 
             ja_queries = [q for q in search_queries if "lang:en" not in q]
