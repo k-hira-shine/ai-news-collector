@@ -6,8 +6,8 @@ on:
       - 'data/reviews.json'
 
 concurrency:
-  group: rebuild-reviews
-  cancel-in-progress: true
+  group: repo-data-push
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -37,8 +37,7 @@ jobs:
 
       - name: Commit & push
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/reviews.html docs/tools.html
-          git diff --staged --quiet || git commit -m "build: reviews.json 更新によるページ再ビルド"
-          git push
+          chmod +x .github/scripts/push_data.sh
+          .github/scripts/push_data.sh \
+            "build: reviews.json 更新によるページ再ビルド" \
+            docs/reviews.html docs/tools.html docs/home.html

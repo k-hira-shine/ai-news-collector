@@ -28,7 +28,11 @@
 - moneyコスト削減: `money_collection.search_interval_days: 2` を追加し、広域検索は2日に1回、追跡アカウントは毎日収集に変更。
 - moneyクエリ削減: 広域検索クエリを17本 → 10本へ削減。
 
-### 明日の確認ポイント
+### 2026-05-20（push 競合の恒久対策）
+- 3ワークフロー（collect / buzz / money）に `concurrency: repo-data-push` を設定し、main への書き込みを直列化。
+- `.github/scripts/push_data.sh` を追加。rebase ではなく merge、ログ jsonl は行マージ、buzz.html は再ビルドで解決。
+
+### 確認ポイント
 - Buzz Ranking Collector が push 競合で失敗していないか。
 - AI News Collector が push 競合で失敗していないか。
 - money の `apify_cost_usd` が、広域検索ありの日で $0.25〜$0.35 前後に下がるか。
