@@ -50,6 +50,32 @@ def hash_url(url: str) -> str:
     return hashlib.sha256(url.encode()).hexdigest()[:16]
 
 
+def apify_actor_call(actor, *, run_input: dict, wait_seconds: int = 300):
+    """Apify Actor を起動して完了まで待つ（apify-client 2.x / 3.x 両対応）"""
+    from datetime import timedelta
+
+    try:
+        return actor.call(run_input=run_input, wait_duration=timedelta(seconds=wait_seconds))
+    except TypeError:
+        return actor.call(run_input=run_input, timeout_secs=wait_seconds)
+
+
+def apify_run_get(run, key: str, default=None):
+    """Apify run からフィールド取得（dict / pydantic 両対応）"""
+    if run is None:
+        return default
+    if isinstance(run, dict):
+        return run.get(key, default)
+    if hasattr(run, key):
+        val = getattr(run, key)
+        return default if val is None else val
+    for dump_fn in ("model_dump", "dict"):
+        fn = getattr(run, dump_fn, None)
+        if callable(fn):
+            return fn().get(key, default)
+    return default
+
+
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 

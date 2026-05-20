@@ -10,7 +10,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 
-from utils import data_dir, hash_url, now_iso, parse_datetime, retry, today_str
+from utils import apify_actor_call, apify_run_get, data_dir, hash_url, now_iso, parse_datetime, retry, today_str
 
 logger = logging.getLogger("ai-news.collector")
 
@@ -153,11 +153,11 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 "since": since_date,
             }
 
-            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
+            run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
             meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
-            run_status = (run or {}).get("status", "")
-            run_id = (run or {}).get("id", "")
+            meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
+            run_status = apify_run_get(run, "status", "")
+            run_id = apify_run_get(run, "id", "")
             if run_status and run_status != "SUCCEEDED":
                 # バッチ内のクエリは全部失敗扱い
                 meta["search_error_count"] += len(search_queries)
@@ -167,7 +167,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     logger.warning("X search batch: auth error detected in run log")
             else:
                 count = 0
-                for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+                for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
                     items.append(_normalize_tweet(tweet))
                     count += 1
                 meta["search_total"] += count
@@ -203,11 +203,11 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 "since": since_date,
             }
 
-            run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
+            run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
             meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
-            run_status = (run or {}).get("status", "")
-            run_id = (run or {}).get("id", "")
+            meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
+            run_status = apify_run_get(run, "status", "")
+            run_id = apify_run_get(run, "id", "")
             if run_status and run_status != "SUCCEEDED":
                 meta["must_follow_error"] = True
                 logger.error("X must-follow batch run status=%s", run_status)
@@ -216,7 +216,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     logger.warning("X must-follow: auth error detected in run log")
             else:
                 mf_count = 0
-                for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+                for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
                     item = _normalize_tweet(tweet)
                     author_lower = item["author"].lower()
                     acct_cfg = priority_map.get(author_lower, {})

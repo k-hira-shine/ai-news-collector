@@ -10,7 +10,7 @@ import os
 from datetime import date, datetime, timezone
 
 from collector import SeenURLsCache, _normalize_tweet
-from utils import data_dir, hash_url, today_str
+from utils import apify_actor_call, apify_run_get, data_dir, hash_url, today_str
 
 logger = logging.getLogger("ai-news.money_collector")
 
@@ -58,16 +58,16 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
             "since": since_date,   # 180日前まで遡って取得
         }
         logger.info("Money collection [%s]: %d queries × up to %d posts", label, len(search_terms), max_items_each)
-        run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
+        run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=600)
         with _meta_lock:
             meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
-        run_status = (run or {}).get("status", "")
+            meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
+        run_status = apify_run_get(run, "status", "")
         if run_status != "SUCCEEDED":
             logger.error("Money collection [%s] run status=%s", label, run_status)
             return []
         items = []
-        for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+        for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
             item = _normalize_tweet(tweet)
             item["money_source"] = True
             author_obj = tweet.get("author") or {}

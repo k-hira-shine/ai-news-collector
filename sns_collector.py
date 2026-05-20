@@ -7,12 +7,12 @@ Xキーワード検索で「SNSで成功した人の思考法・習慣・マイ�
 import json
 import logging
 import os
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 import requests
 
 from collector import _normalize_tweet
-from utils import data_dir, today_str
+from utils import apify_actor_call, apify_run_get, data_dir, today_str
 
 logger = logging.getLogger("ai-news.sns_collector")
 
@@ -42,6 +42,7 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     max_items_per_account = sns_cfg.get("max_items_per_account", 150)
     search_queries = sns_cfg.get("search_queries", [])
     max_items_per_query = sns_cfg.get("max_items_per_query", 100)
+    search_interval_days = max(1, int(sns_cfg.get("search_interval_days", 1)))
     search_since_days = sns_cfg.get("search_since_days", 90)
     account_since_days = sns_cfg.get("account_since_days", 365)
 
@@ -70,16 +71,16 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
             "SNS collection [%s]: %d queries × up to %d posts (%s, since_days=%s)",
             label, len(search_terms), max_items_each, query_type, since_days or "none",
         )
-        run = client.actor(actor_id).call(run_input=run_input, timeout_secs=600)
+        run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=600)
         with _meta_lock:
             meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += float((run or {}).get("usageTotalUsd") or 0)
-        run_status = (run or {}).get("status", "")
+            meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
+        run_status = apify_run_get(run, "status", "")
         if run_status != "SUCCEEDED":
             logger.error("SNS collection [%s] run status=%s", label, run_status)
             return []
         items = []
-        for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+        for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
             item = _normalize_tweet(tweet)
             item["sns_source"] = True
             author_obj = tweet.get("author") or {}
@@ -109,26 +110,32 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
                 since_days=account_since_days,
             )
 
-        ja_queries = [q for q in search_queries if "lang:en" not in q]
-        en_queries = [q for q in search_queries if "lang:en" in q]
+        today_ordinal = date.fromisoformat(today_str()).toordinal()
+        run_search = search_interval_days <= 1 or today_ordinal % search_interval_days == 0
+        if search_queries and not run_search:
+            logger.info("SNS search skipped: interval=%d days", search_interval_days)
 
-        batches: list[tuple[list[str], int, str]] = []
+        if search_queries and run_search:
+            ja_queries = [q for q in search_queries if "lang:en" not in q]
+            en_queries = [q for q in search_queries if "lang:en" in q]
 
-        batch_size = 3
-        for i in range(0, len(ja_queries), batch_size):
-            batches.append((ja_queries[i:i + batch_size], max_items_per_query, f"ja_{i//batch_size+1}"))
+            batches: list[tuple[list[str], int, str]] = []
 
-        for i in range(0, len(en_queries), batch_size):
-            batches.append((en_queries[i:i + batch_size], max_items_per_query, f"en_{i//batch_size+1}"))
+            batch_size = 3
+            for i in range(0, len(ja_queries), batch_size):
+                batches.append((ja_queries[i:i + batch_size], max_items_per_query, f"ja_{i//batch_size+1}"))
 
-        with ThreadPoolExecutor(max_workers=4) as pool:
-            futures = {pool.submit(_run_apify, q, n, lbl, "Top", search_since_days): lbl for q, n, lbl in batches}
-            for fut in futures:
-                lbl = futures[fut]
-                try:
-                    all_items += fut.result()
-                except Exception as e:
-                    logger.error("Batch %s failed: %s", lbl, e)
+            for i in range(0, len(en_queries), batch_size):
+                batches.append((en_queries[i:i + batch_size], max_items_per_query, f"en_{i//batch_size+1}"))
+
+            with ThreadPoolExecutor(max_workers=4) as pool:
+                futures = {pool.submit(_run_apify, q, n, lbl, "Top", search_since_days): lbl for q, n, lbl in batches}
+                for fut in as_completed(futures):
+                    lbl = futures[fut]
+                    try:
+                        all_items += fut.result()
+                    except Exception as e:
+                        logger.error("Batch %s failed: %s", lbl, e)
 
         meta["total_fetched"] = len(all_items)
         logger.info("SNS collection total: %d posts (cost=$%.4f)", len(all_items), meta["apify_cost_usd"])

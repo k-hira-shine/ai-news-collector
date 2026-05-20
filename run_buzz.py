@@ -52,9 +52,11 @@ def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 
         "since": since_date,
     }
     logger.info("Fetching %d accounts in 1 batch (last %d days, max %d each) ...", len(handles), days, max_items)
-    run = client.actor(actor_id).call(run_input=run_input, timeout_secs=300)
-    cost = float((run or {}).get("usageTotalUsd") or 0)
-    status = (run or {}).get("status", "")
+    from utils import apify_actor_call, apify_run_get
+
+    run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
+    cost = float(apify_run_get(run, "usageTotalUsd") or 0)
+    status = apify_run_get(run, "status", "")
     if status != "SUCCEEDED":
         logger.error("Batch run status=%s", status)
         return {}, cost
@@ -62,7 +64,7 @@ def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 
     # アカウントごとに仕分け
     result: dict[str, list[dict]] = {h: [] for h in handles}
     total = 0
-    for tweet in client.dataset(run["defaultDatasetId"]).iterate_items():
+    for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
         # author フィールドは構造が揺れるため複数パターンで取得
         author_obj = tweet.get("author") or {}
         author = (
