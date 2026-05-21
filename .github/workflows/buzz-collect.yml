@@ -66,4 +66,4 @@ jobs:
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
             "buzz: $(date -u +%Y-%m-%d_%H%M) ${{ github.event.inputs.account }}" \
-            data/buzz.json data/logs/ docs/buzz.html config.yaml
+            data/buzz.json data/logs/ docs/buzz.html docs/run_status.json config.yaml
