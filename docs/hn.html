@@ -82,10 +82,11 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>AI 英語一次情報</h1>
-  <div class="updated">Last updated: 2026-05-21 17:26 JST</div>
+  <div class="updated">Last updated: 2026-05-22 02:48 JST</div>
 </header>
 <div class="date-tabs">
-<button class="date-tab active" data-panel="panel-2026-05-21">5/21 <small>今日</small></button>
+<button class="date-tab active" data-panel="panel-2026-05-22">5/22 <small>今日</small></button>
+<button class="date-tab" data-panel="panel-2026-05-21">5/21</button>
 <button class="date-tab" data-panel="panel-2026-05-20">5/20</button>
 <button class="date-tab" data-panel="panel-2026-05-19">5/19</button>
 <button class="date-tab" data-panel="panel-2026-05-18">5/18</button>
@@ -95,7 +96,237 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <button class="date-tab" data-panel="panel-2026-05-14">5/14</button>
 <button class="date-tab" data-panel="panel-2026-05-13">5/13</button>
 </div>
-<div class="date-panel active" id="panel-2026-05-21">
+<div class="date-panel active" id="panel-2026-05-22">
+  <div class="stats-bar">
+    <div class="stat-badge"><span>1</span>HN 記事</div>
+    <div class="stat-badge"><span>22</span>arxiv 論文</div>
+  </div>
+  <div class="columns">
+    <div>
+      <div class="col-header">
+        <h2>HackerNews</h2>
+        <span class="col-count">スコア順 · 直近48時間</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://valhovey.github.io/gaia-mary/" target="_blank" rel="noopener">プロジェクト・ヘイル・メアリー – 恒星航行図</a></div>
+  <div class="item-title-en">Project Hail Mary – Stellar Navigation Chart</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 67</span>
+    <span class="badge badge-comments">💬 17</span>
+    <span class="meta-author">by speleo</span>
+    <span class="meta-age">2026/05/22 01:23</span>
+    <a href="https://news.ycombinator.com/item?id=48225297" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="col-header">
+        <h2>arxiv 新着論文</h2>
+        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21489v1" target="_blank" rel="noopener">Variance Reduction for Expectations with Diffusion Teachers</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Jesse Bettencourt, Xindi Wu, Matan Atzmon</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Pretrained diffusion models serve as frozen teachers feeding downstream pipelines such as text-to-3D, single-step distillation, and data attribution. The teacher gradients these pipelines consume are Monte Carlo (MC) expectations over noise levels and Gaussian noise samples; their estimator variance</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21488v1" target="_blank" rel="noopener">Equilibrium Reasoners: Learning Attractors Enables Scalable Reasoning</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Benhao Huang, Zhengyang Geng, Zico Kolter</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Scaling test-time compute by iteratively updating a latent state has emerged as a powerful paradigm for reasoning. Yet the internal mechanisms that enable these iterative models to generalize beyond memorized patterns remain unclear. We hypothesize that generalizable reasoning arises from learning t</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21486v1" target="_blank" rel="noopener">Quantifying Hyperparameter Transfer and the Importance of Embedding Layer Learning Rate</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Dayal Singh Kalra, Maissam Barkeshli</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Hyperparameter transfer allows extrapolating optimal optimization hyperparameters from small to large scales, making it critical for training large language models (LLMs). This is done either by fitting a scaling law to the hyperparameters or by a judicious choice of parameterization, such as Maxima</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21485v1" target="_blank" rel="noopener">EvoStruct: Bridging Evolutionary and Structural Priors for Antibody CDR Design via Protein Language Model Adaptation</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Mansoor Ahmed, Sujin Lee, Umar Khayaz</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Equivariant graph neural network (GNN) methods for antibody complementarity-determining region (CDR) design achieve the highest sequence recovery but suffer from severe vocabulary collapse. The current best GNN methods over-predict very few amino acids, such as tyrosine and glycine, while ignoring f</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21483v1" target="_blank" rel="noopener">Velocityformer: Broken-Symmetry-Matched Equivariant Graph Transformers for Cosmological Velocity Reconstruction</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Tilman Tröster, David Mirkovic, Veronika Oehl</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Precise measurement of the kinematic Sunyaev-Zel&#x27;dovich (kSZ) effect - a probe of the large-scale distribution of baryonic matter, a key observable for cosmological inference - requires accurate reconstruction of galaxy velocities from spectroscopic surveys. The signal-to-noise ratio (SNR) of kSZ me</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21482v1" target="_blank" rel="noopener">DeepWeb-Bench: A Deep Research Benchmark Demanding Massive Cross-Source Evidence and Long-Horizon Derivation</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Sixiong Xie, Zhuofan Shi, Haiyang Shen</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Deep research, in which an agent searches the open web, collects evidence, and derives an answer through extended reasoning, is a prominent use case for frontier language models. Frontier deep research products score high on existing benchmarks, making it difficult to distinguish their capabilities </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21481v1" target="_blank" rel="noopener">AiraXiv: An AI-Driven Open-Access Platform for Human and AI Scientists</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Junshu Pan, Panzhong Lu, Yixuan Weng</span>
+    <span class="meta-age">2026/05/21 02:59</span>
+  </div>
+  <div class="item-summary">Recent advances in artificial intelligence (AI) have accelerated the growth of both human-authored and AI-generated research outputs, placing increasing strain on traditional academic publishing systems and challenging the scalability of conference- and journal-centered paradigms amid rising submiss</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21479v1" target="_blank" rel="noopener">WikiVQABench: A Knowledge-Grounded Visual Question Answering Benchmark from Wikipedia and Wikidata</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Basel Shbita, Pengyuan Li, Anna Lisa Gentile</span>
+    <span class="meta-age">2026/05/21 02:58</span>
+  </div>
+  <div class="item-summary">Visual Question Answering (VQA) benchmarks have largely emphasized perception-based tasks that can be solved from visual content alone. In contrast, many real-world scenarios require external knowledge that is not directly observable in the image to answer correctly. We introduce WikiVQABench, a hum</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21475v1" target="_blank" rel="noopener">Is Fixing Schema Graphs Necessary? Full-Resolution Graph Structure Learning for Relational Deep Learning</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Yi Huang, Qingyun Sun, Jia Li</span>
+    <span class="meta-age">2026/05/21 02:56</span>
+  </div>
+  <div class="item-summary">Relational prediction tasks are fundamental in many real-world applications, where data are naturally stored in relational databases (RDBs). Relational Deep Learning (RDL) addresses this problem by modeling RDBs as graphs and applying graph neural networks (GNNs) for end-to-end learning. However, th</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21470v1" target="_blank" rel="noopener">Agent JIT Compilation for Latency-Optimizing Web Agent Planning and Scheduling</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Caleb Winston, Ron Yifeng Wang, Azalia Mirhoseini</span>
+    <span class="meta-age">2026/05/21 02:54</span>
+  </div>
+  <div class="item-summary">Computer-use agents (CUA) automate tasks specified with natural language such as &quot;order the cheapest item from Taco Bell&quot; by generating sequences of calls to tools such as click, type, and scroll on a browser. Current implementations follow a sequential fetch-screenshot-execute loop where each itera</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21468v1" target="_blank" rel="noopener">You Only Need Minimal RLVR Training: Extrapolating LLMs via Rank-1 Trajectories</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Zhepei Wei, Xinyu Zhu, Wei-Lin Chen</span>
+    <span class="meta-age">2026/05/21 02:53</span>
+  </div>
+  <div class="item-summary">Reinforcement learning with verifiable rewards (RLVR) has become a dominant paradigm for improving reasoning in large language models (LLMs), yet the underlying geometry of the resulting parameter trajectories remains underexplored. In this work, we demonstrate that RLVR weight trajectories are extr</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21467v1" target="_blank" rel="noopener">DelTA: Discriminative Token Credit Assignment for Reinforcement Learning from Verifiable Rewards</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Kaiyi Zhang, Wei Wu, Yankai Lin</span>
+    <span class="meta-age">2026/05/21 02:53</span>
+  </div>
+  <div class="item-summary">Reinforcement learning from verifiable rewards (RLVR) has emerged as a central technique for improving the reasoning capabilities of large language models. Despite its effectiveness, how response-level rewards translate into token-level probability changes remains poorly understood. We introduce a d</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21465v1" target="_blank" rel="noopener">Leveraging LLMs for Grammar Adaptation: A Study on Metamodel-Grammar Co-Evolution</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Weixing Zhang, Bowen Jiang, Rahul Sharma</span>
+    <span class="meta-age">2026/05/21 02:51</span>
+  </div>
+  <div class="item-summary">In model-driven engineering, metamodel evolution leads to the need to adapt corresponding grammars to maintain consistency, which typically requires tedious manual work. Existing rule-based methods can achieve partial automation but have limitations when handling complex grammar scenarios. This pape</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21463v1" target="_blank" rel="noopener">Mem-$π$: Adaptive Memory through Learning When and What to Generate</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Xiaoqiang Wang, Chao Wang, Hadi Nekoei</span>
+    <span class="meta-age">2026/05/21 02:51</span>
+  </div>
+  <div class="item-summary">We present Mem-$π$, a framework for adaptive memory in large language model (LLM) agents, where useful guidance is generated on demand rather than retrieved from external memory stores. Existing memory-augmented agents typically rely on similarity-based retrieval from episodic memory banks or skill </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21460v1" target="_blank" rel="noopener">HITL-D: Human In The Loop Diffusion Assisted Shared Control</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Riley Zilka, Sergey Khlynovskiy, Allie Wang</span>
+    <span class="meta-age">2026/05/21 02:49</span>
+  </div>
+  <div class="item-summary">Autonomous manipulation systems have achieved remarkable capabilities, yet the integration of human expertise with diffusion-based policies in shared control remains relatively unexplored. In this paper, we propose Human-In-The-Loop Diffusion (HITL-D), a shared control framework that enhances user p</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21458v1" target="_blank" rel="noopener">Mind the Sim-to-Real Gap &amp; Think Like a Scientist</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Harsh Parikh, Gabriel Levin-Konigsberg, Dominique Perrault-Joncas</span>
+    <span class="meta-age">2026/05/21 02:48</span>
+  </div>
+  <div class="item-summary">Suppose a planner has a pre-trained simulator of a sequential decision problem and the option to run real experiments in the field. The simulator is cheap to query but inherits confounding and drift from its calibration data. Experimentation is unbiased but consumes one real unit per trial. We study</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21453v1" target="_blank" rel="noopener">Quality and Security Signals in AI-Generated Python Refactoring Pull Requests</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Mohamed Almukhtar, Anwar Ghammam, Hua Ming</span>
+    <span class="meta-age">2026/05/21 02:43</span>
+  </div>
+  <div class="item-summary">As AI agents increasingly contribute to code development and maintenance, there is still limited empirical evidence on the quality and risk characteristics of their changes in real-world projects, particularly for refactoring-oriented contributions. It remains unclear how agent-authored refactoring </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21403v1" target="_blank" rel="noopener">Quantifying the cross-linguistic effects of syncretism on agreement attraction</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Utku Turk, Eva Neu</span>
+    <span class="meta-age">2026/05/21 02:02</span>
+  </div>
+  <div class="item-summary">Agreement attraction errors, in which a verb erroneously agrees with an intervening noun rather than its grammatical head, are amplified by morphological syncretism in some languages (English, German, Russian) but not others (Turkish, Armenian), a cross-linguistic pattern without a principled accoun</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21391v1" target="_blank" rel="noopener">Post-Hoc Understanding of Metaphor Processing in Decoder-Only Language Models via Conditional Scale Entropy</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Lawhori Chakrabarti, Jennifer Johnson-Leung, Bert Baumgaertner</span>
+    <span class="meta-age">2026/05/21 01:45</span>
+  </div>
+  <div class="item-summary">Metaphor requires a language model to resolve a token whose contextual meaning diverges from its basic literal sense. Understanding how transformer models organize this reinterpretation across depth remains an open problem in mechanistic interpretability. We introduce conditional scale entropy (CSE)</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21384v1" target="_blank" rel="noopener">SpecBench: Measuring Reward Hacking in Long-Horizon Coding Agents</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Bingchen Zhao, Dhruv Srikanth, Yuxiang Wu</span>
+    <span class="meta-age">2026/05/21 01:41</span>
+  </div>
+  <div class="item-summary">As long-horizon coding agents produce more code than any developer can review, oversight collapses onto a single surface: the automated test suite. Reward hacking naturally arises in this setup, as the agent optimizes for passing tests while deviating from the users true goal. We study this reward h</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21369v1" target="_blank" rel="noopener">Findings of the Fifth Shared Task on Multilingual Coreference Resolution: Expanding Datasets for Long-Range Entities</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Michal Novák, Miloslav Konopík, Anna Nedoluzhko</span>
+    <span class="meta-age">2026/05/21 01:35</span>
+  </div>
+  <div class="item-summary">This paper describes the fifth edition of the Shared Task on Multilingual Coreference Resolution, held in conjunction with the CODI-CRAC 2026 workshop. Building on previous iterations, the task required participants to develop systems capable of mention identification and identity-based coreference </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2605.21363v1" target="_blank" rel="noopener">&quot;I didn&#x27;t Make the Micro Decisions&quot;: Measuring, Inducing, and Exposing Goal-Level AI Contributions in Collaboration</a></div>
+  
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Eunsu Kim, Jessica R. Mindel, Kyungjin Kim</span>
+    <span class="meta-age">2026/05/21 01:28</span>
+  </div>
+  <div class="item-summary">As large language models (LLMs) increasingly shape how users form, refine, and extend their goals, attributing contributions in human-AI collaboration becomes critical for users calibrating their own reliance and for evaluators assessing AI-assisted work. Yet existing methods focus on final artifact</div>
+</div>
+    </div>
+  </div>
+</div>
+<div class="date-panel" id="panel-2026-05-21">
   <div class="stats-bar">
     <div class="stat-badge"><span>15</span>HN 記事</div>
     <div class="stat-badge"><span>47</span>arxiv 論文</div>
