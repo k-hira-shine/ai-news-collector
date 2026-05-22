@@ -21,7 +21,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "docs", "gemini.html")
 
 STATUS_LABELS = {
     "available_now": ("今すぐ使える", "#10b981"),
-    "coming_soon":   ("近日公開予定", "#f59e0b"),
+    "coming_soon":   ("もうすぐ公開", "#f59e0b"),
     "unknown":       ("未分類", "#64748b"),
 }
 
@@ -167,7 +167,7 @@ def _card(item: dict) -> str:
 </article>"""
 
 
-def _section(title: str, items: list[dict], empty_msg: str) -> str:
+def _section(title: str, subtitle: str, items: list[dict], empty_msg: str) -> str:
     if not items:
         body = f'<div class="empty-state"><p>{escape(empty_msg)}</p></div>'
     else:
@@ -175,7 +175,10 @@ def _section(title: str, items: list[dict], empty_msg: str) -> str:
         body = f'<div class="gemini-list">{cards}</div>'
     return f"""<details class="gemini-section" open>
   <summary class="section-toggle">
-    <span class="section-title">{escape(title)}</span>
+    <span class="section-head">
+      <span class="section-title">{escape(title)}</span>
+      <span class="section-desc">{escape(subtitle)}</span>
+    </span>
     <span class="count">{len(items)}件</span>
   </summary>
   <div class="section-body">{body}</div>
@@ -227,12 +230,14 @@ header h1 {{ font-size: 1.4rem; color: var(--text); }}
 header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .container {{ max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }}
 .gemini-section {{ margin-bottom: 16px; border: 1px solid var(--border); border-radius: 10px; background: rgba(26,34,54,0.45); overflow: hidden; }}
-.section-toggle {{ cursor: pointer; padding: 12px 16px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }}
+.section-toggle {{ cursor: pointer; padding: 12px 16px; list-style: none; display: flex; align-items: center; gap: 12px; user-select: none; }}
 .section-toggle::-webkit-details-marker {{ display: none; }}
-.section-toggle::before {{ content: '▶'; font-size: 0.65rem; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }}
+.section-toggle::before {{ content: '▶'; font-size: 0.65rem; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; margin-top: 2px; }}
 .gemini-section[open] > .section-toggle::before {{ transform: rotate(90deg); }}
-.section-title {{ font-size: 1.1rem; font-weight: 600; color: var(--text); }}
-.section-toggle .count {{ font-size: 0.85rem; color: var(--muted); font-weight: normal; }}
+.section-head {{ display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }}
+.section-title {{ font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.35; }}
+.section-desc {{ font-size: 0.78rem; color: var(--muted); font-weight: normal; line-height: 1.4; }}
+.section-toggle .count {{ font-size: 0.85rem; color: var(--muted); font-weight: normal; flex-shrink: 0; white-space: nowrap; }}
 .section-body {{ padding: 0 16px 16px; }}
 .gemini-list {{ display: flex; flex-direction: column; gap: 10px; }}
 .gemini-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }}
@@ -259,11 +264,11 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
 {nav_html}
 <header>
   <h1>✨ Gemini 機能トラッカー</h1>
-  <p class="meta">Last updated: {now_str} ｜ 収集 {len(items)}件（今すぐ {len(available)} / 近日 {len(coming)}）</p>
+  <p class="meta">Last updated: {now_str} ｜ 収集 {len(items)}件（今すぐ {len(available)} / もうすぐ {len(coming)}）</p>
 </header>
 <div class="container">
-{_section("近日公開予定", coming, "直近14日で「近日公開」と判定された情報はまだありません。")}
-{_section("今すぐ使える機能", available, "直近14日で「利用可能」と判定された情報はまだありません。")}
+{_section("もうすぐ使えるようになる", "Googleが「近日公開」と告知した機能", coming, "直近1週間で「近日公開」と判定された情報はまだありません。")}
+{_section("今すぐ使える", "すでに公開済みで、今試せる機能", available, "直近1週間で「利用可能」と判定された情報はまだありません。")}
 {_sources_section(items)}
 </div>
 <footer>Gemini公式RSS・Release Notes・API Changelog・公式Xアカウントを毎日自動チェック</footer>

@@ -26,12 +26,14 @@ header h1 { font-size: 1.4rem; color: var(--text); }
 header .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
 .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
 .gemini-section { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 10px; background: rgba(26,34,54,0.45); overflow: hidden; }
-.section-toggle { cursor: pointer; padding: 12px 16px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+.section-toggle { cursor: pointer; padding: 12px 16px; list-style: none; display: flex; align-items: center; gap: 12px; user-select: none; }
 .section-toggle::-webkit-details-marker { display: none; }
-.section-toggle::before { content: '▶'; font-size: 0.65rem; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+.section-toggle::before { content: '▶'; font-size: 0.65rem; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; margin-top: 2px; }
 .gemini-section[open] > .section-toggle::before { transform: rotate(90deg); }
-.section-title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
-.section-toggle .count { font-size: 0.85rem; color: var(--muted); font-weight: normal; }
+.section-head { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--text); line-height: 1.35; }
+.section-desc { font-size: 0.78rem; color: var(--muted); font-weight: normal; line-height: 1.4; }
+.section-toggle .count { font-size: 0.85rem; color: var(--muted); font-weight: normal; flex-shrink: 0; white-space: nowrap; }
 .section-body { padding: 0 16px 16px; }
 .gemini-list { display: flex; flex-direction: column; gap: 10px; }
 .gemini-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
@@ -69,17 +71,20 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </nav>
 <header>
   <h1>✨ Gemini 機能トラッカー</h1>
-  <p class="meta">Last updated: 2026-05-22 11:46 JST ｜ 収集 94件（今すぐ 60 / 近日 17）</p>
+  <p class="meta">Last updated: 2026-05-22 11:50 JST ｜ 収集 94件（今すぐ 60 / もうすぐ 17）</p>
 </header>
 <div class="container">
 <details class="gemini-section" open>
   <summary class="section-toggle">
-    <span class="section-title">近日公開予定</span>
+    <span class="section-head">
+      <span class="section-title">もうすぐ使えるようになる</span>
+      <span class="section-desc">Googleが「近日公開」と告知した機能</span>
+    </span>
     <span class="count">17件</span>
   </summary>
   <div class="section-body"><div class="gemini-list"><article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google本体公式</span>
     <span class="date-badge">2026/5/22 1:03</span>
@@ -89,7 +94,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google本体公式</span>
     <span class="date-badge">2026/5/21 4:21</span>
@@ -99,7 +104,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google AI公式</span>
     <span class="date-badge">2026/5/21 3:07</span>
@@ -109,7 +114,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Gemini App公式</span>
     <span class="date-badge">2026/5/21 3:02</span>
@@ -119,7 +124,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google AI公式</span>
     <span class="date-badge">2026/5/21 0:56</span>
@@ -129,7 +134,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google本体公式</span>
     <span class="date-badge">2026/5/20 11:15</span>
@@ -139,7 +144,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google DeepMind公式</span>
     <span class="date-badge">2026/5/20 9:25</span>
@@ -149,7 +154,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Gemini App公式</span>
     <span class="date-badge">2026/5/20 7:49</span>
@@ -159,7 +164,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google AI公式</span>
     <span class="date-badge">2026/5/20 7:08</span>
@@ -169,7 +174,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Demis Hassabis (Google DeepMind CEO)</span>
     <span class="date-badge">2026/5/20 5:16</span>
@@ -179,7 +184,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google AI公式</span>
     <span class="date-badge">2026/5/20 5:08</span>
@@ -189,7 +194,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google本体公式</span>
     <span class="date-badge">2026/5/20 3:47</span>
@@ -199,7 +204,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google DeepMind公式</span>
     <span class="date-badge">2026/5/20 3:47</span>
@@ -209,7 +214,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Google本体公式</span>
     <span class="date-badge">2026/5/20 3:34</span>
@@ -219,7 +224,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
     <span class="source-detail">Gemini App公式</span>
     <span class="date-badge">2026/5/20 3:21</span>
@@ -229,7 +234,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#34d39922;color:#34d399">Web</span>
     <span class="source-detail">Google AI / Innovation</span>
     <span class="date-badge">2026/5/19</span>
@@ -239,7 +244,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </article>
 <article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
-    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">もうすぐ公開</span>
     <span class="source-type" style="background:#34d39922;color:#34d399">Web</span>
     <span class="source-detail">Google DeepMind Blog</span>
     <span class="date-badge">2026/5/17</span>
@@ -250,7 +255,10 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </details>
 <details class="gemini-section" open>
   <summary class="section-toggle">
-    <span class="section-title">今すぐ使える機能</span>
+    <span class="section-head">
+      <span class="section-title">今すぐ使える</span>
+      <span class="section-desc">すでに公開済みで、今試せる機能</span>
+    </span>
     <span class="count">60件</span>
   </summary>
   <div class="section-body"><div class="gemini-list"><article class="gemini-card" data-status="available_now">
