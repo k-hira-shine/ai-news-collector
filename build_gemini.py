@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+import re
 from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from glob import glob
@@ -34,29 +35,46 @@ SOURCE_TYPE = {
 def _parse_date(raw: str) -> datetime | None:
     if not raw:
         return None
+    dt: datetime | None = None
     try:
-        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
     except Exception:
         pass
-    try:
-        return parsedate_to_datetime(raw)
-    except Exception:
+    if not dt:
+        try:
+            dt = parsedate_to_datetime(raw)
+        except Exception:
+            pass
+    if not dt and len(raw) >= 10:
+        try:
+            dt = datetime.strptime(raw[:10], "%Y-%m-%d")
+        except ValueError:
+            pass
+    if not dt:
         return None
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
 
 
 def _to_jst_datetime(raw: str, source: str = "") -> str:
+    if not raw:
+        return "日付不明"
     dt = _parse_date(raw)
     if not dt:
-        return raw[:10] if len(raw) >= 10 else ""
+        return raw[:10] if len(raw) >= 10 else "日付不明"
     jst = dt.astimezone(ZoneInfo("Asia/Tokyo"))
     date_part = f"{jst.year}/{jst.month}/{jst.day}"
-    if source == "scrape":
+    has_time = "T" in raw or bool(re.search(r"\d:\d{2}", raw))
+    if source == "x" and has_time:
+        return f"{date_part} {jst.hour}:{jst.minute:02d}"
+    if not has_time or source in ("rss", "scrape"):
         return date_part
     return f"{date_part} {jst.hour}:{jst.minute:02d}"
 
 
 def _sort_key(item: dict) -> datetime:
-    raw = item.get("published_at") or item.get("collected_at") or ""
+    raw = item.get("published_at") or ""
     dt = _parse_date(raw)
     if dt:
         return dt
@@ -75,7 +93,13 @@ def _load_config() -> dict:
 
 def _filter_recent(items: list[dict], max_age_days: int) -> list[dict]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
-    return [i for i in items if _sort_key(i) >= cutoff]
+    result: list[dict] = []
+    for item in items:
+        raw = item.get("published_at") or ""
+        dt = _parse_date(raw)
+        if not dt or dt >= cutoff:
+            result.append(item)
+    return result
 
 
 def load_gemini_items(days: int = 14) -> list[dict]:
@@ -123,10 +147,7 @@ def _card(item: dict) -> str:
     summary = escape(raw_summary)
     source_label = escape(item.get("source_label") or "")
     url = escape(item.get("url") or "#")
-    date = _to_jst_datetime(
-        item.get("published_at") or item.get("collected_at") or "",
-        item.get("source") or "",
-    )
+    date = _to_jst_datetime(item.get("published_at") or "", item.get("source") or "")
     source_detail = f'<span class="source-detail">{source_label}</span>' if source_label else ""
     summary_html = (
         f'<p class="card-summary">{summary}</p>'

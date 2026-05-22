@@ -94,6 +94,101 @@ def _age_cutoff(config: dict) -> datetime:
     return datetime.now(timezone.utc) - timedelta(days=days)
 
 
+def _parse_date_from_string(raw: str) -> datetime | None:
+    if not raw:
+        return None
+    try:
+        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+    except Exception:
+        pass
+    try:
+        from email.utils import parsedate_to_datetime
+        return parsedate_to_datetime(raw)
+    except Exception:
+        pass
+    if len(raw) >= 10:
+        try:
+            return datetime.strptime(raw[:10], "%Y-%m-%d").replace(tzinfo=timezone.utc)
+        except ValueError:
+            pass
+    return None
+
+
+def _parse_rss_entry_date(entry: Any) -> datetime | None:
+    pub = entry.get("published_parsed") or entry.get("updated_parsed")
+    if pub:
+        try:
+            import time as _time
+            return datetime.fromtimestamp(_time.mktime(pub), tz=timezone.utc)
+        except Exception:
+            pass
+    for key in ("published", "updated"):
+        dt = _parse_date_from_string(entry.get(key) or "")
+        if dt:
+            return dt
+    return None
+
+
+def _extract_published_from_html(html: str) -> datetime | None:
+    for m in re.finditer(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+        try:
+            data = json.loads(m.group(1))
+            candidates = data if isinstance(data, list) else [data]
+            for obj in candidates:
+                if not isinstance(obj, dict):
+                    continue
+                for key in ("datePublished", "dateModified", "uploadDate"):
+                    dt = _parse_date_from_string(str(obj.get(key) or ""))
+                    if dt:
+                        return dt
+        except Exception:
+            continue
+    for pat in (
+        r'property="article:published_time"\s+content="([^"]+)"',
+        r'name="date"\s+content="([^"]+)"',
+        r'"datePublished"\s*:\s*"([^"]+)"',
+    ):
+        m = re.search(pat, html, re.I)
+        if m:
+            dt = _parse_date_from_string(m.group(1))
+            if dt:
+                return dt
+    return None
+
+
+_fetch_date_cache: dict[str, datetime | None] = {}
+
+
+def _fetch_article_published_at(url: str) -> datetime | None:
+    if not url or not url.startswith("http"):
+        return None
+    if url in _fetch_date_cache:
+        return _fetch_date_cache[url]
+    dt: datetime | None = None
+    try:
+        import requests
+        resp = requests.get(
+            url,
+            timeout=20,
+            headers={"User-Agent": "ai-news-collector/1.0 (Gemini tracker)"},
+        )
+        resp.raise_for_status()
+        dt = _extract_published_from_html(resp.text)
+    except Exception as e:
+        logger.debug("Article date fetch failed [%s]: %s", url[:70], e)
+    _fetch_date_cache[url] = dt
+    return dt
+
+
+def _resolve_published_at(entry: Any, link: str) -> datetime | None:
+    pub_dt = _parse_rss_entry_date(entry)
+    if pub_dt:
+        return pub_dt
+    if link:
+        return _fetch_article_published_at(link)
+    return None
+
+
 def _contains_gemini(text: str) -> bool:
     lower = (text or "").lower()
     return any(kw in lower for kw in GEMINI_KEYWORDS)
@@ -139,14 +234,7 @@ def collect_rss(config: dict) -> list[dict]:
                 if not link or link in saved or link in run_seen:
                     continue
 
-                pub_dt: datetime | None = None
-                pub = entry.get("published_parsed") or entry.get("updated_parsed")
-                if pub:
-                    try:
-                        import time as _time
-                        pub_dt = datetime.fromtimestamp(_time.mktime(pub), tz=timezone.utc)
-                    except Exception:
-                        pass
+                pub_dt = _resolve_published_at(entry, link)
                 if pub_dt and pub_dt < cutoff:
                     continue
 
@@ -636,6 +724,25 @@ def rewrite_gemini_jsonl(items: list[dict]) -> str:
     return path
 
 
+def backfill_published_dates(items: list[dict] | None = None, days: int = 30) -> list[dict]:
+    """published_at が空の項目について記事ページから公開日を取得"""
+    if items is None:
+        items = deduplicate_items(load_all_gemini_items(days))
+    updated = 0
+    for item in items:
+        if item.get("published_at"):
+            continue
+        url = item.get("url") or ""
+        if not url.startswith("http"):
+            continue
+        dt = _fetch_article_published_at(url)
+        if dt:
+            item["published_at"] = dt.isoformat()
+            updated += 1
+    logger.info("Backfilled published_at for %d / %d items", updated, len(items))
+    return items
+
+
 def retranslate_recent(config: dict | None = None, days: int = 14) -> list[dict]:
     if config is None:
         config = _load_config()
@@ -669,9 +776,17 @@ def main() -> None:
         action="store_true",
         help="既存データを日本語に翻訳・再分類して上書き保存",
     )
+    parser.add_argument(
+        "--fix-dates",
+        action="store_true",
+        help="published_at が空の項目に記事ページから公開日を補完",
+    )
     args = parser.parse_args()
 
-    if args.retranslate:
+    if args.fix_dates:
+        items = backfill_published_dates()
+        rewrite_gemini_jsonl(items)
+    elif args.retranslate:
         items = retranslate_recent()
     else:
         items = collect_all()
