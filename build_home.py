@@ -243,7 +243,7 @@ def _get_latest_diagram() -> dict:
     return {"href": f"diagrams/{latest}", "label": latest.replace(".html", "")}
 
 
-# ── ページ定義（topic_fn: そのページの最新トピック取得関数）──
+# ── ページ定義（順序は全ページ共通ナビと同じ）──
 
 PAGES = [
     {
@@ -254,25 +254,11 @@ PAGES = [
         "topic_fn": _latest_news_topic,
     },
     {
-        "file": "tools.html",
-        "title": "🔧 ツール追跡",
-        "desc": "AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能",
-        "color": "#a78bfa",
-        "topic_fn": _latest_tool_topic,
-    },
-    {
-        "file": "gemini.html",
-        "title": "✨ Gemini追跡",
-        "desc": "Gemini公式のRSS・Release Notes・Xを毎日チェック。今使える機能と近日公開を日本語で整理",
-        "color": "#4285f4",
-        "topic_fn": _latest_gemini_topic,
-    },
-    {
-        "file": "reviews.html",
-        "title": "📋 使ってみた",
-        "desc": "試したAIツールの所感・評価を記録。ステータス・判定・メモを履歴付きで管理",
-        "color": "#34d399",
-        "topic_fn": _latest_review_topic,
+        "file": "strategy.html",
+        "title": "🎯 施策提案",
+        "desc": "収集ニュースからYouTube施策をAIが自動提案。今すぐ使える企画アイデアを毎日更新",
+        "color": "#f472b6",
+        "topic_fn": _latest_strategy_topic,
     },
     {
         "file": "buzz.html",
@@ -280,13 +266,6 @@ PAGES = [
         "desc": "いいね・RT数でランキング化。バズったAI情報を見逃さない",
         "color": "#fb923c",
         "topic_fn": _latest_buzz_topic,
-    },
-    {
-        "file": "strategy.html",
-        "title": "🎯 施策提案",
-        "desc": "収集ニュースからYouTube施策をAIが自動提案。今すぐ使える企画アイデアを毎日更新",
-        "color": "#f472b6",
-        "topic_fn": _latest_strategy_topic,
     },
     {
         "file": "money.html",
@@ -308,6 +287,27 @@ PAGES = [
         "desc": "AI生成の投稿案をストック。すぐ使えるコンテンツを常備",
         "color": "#4ade80",
         "topic_fn": _latest_post_topic,
+    },
+    {
+        "file": "tools.html",
+        "title": "🔧 ツール追跡",
+        "desc": "AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能",
+        "color": "#a78bfa",
+        "topic_fn": _latest_tool_topic,
+    },
+    {
+        "file": "reviews.html",
+        "title": "📋 使ってみた",
+        "desc": "試したAIツールの所感・評価を記録。ステータス・判定・メモを履歴付きで管理",
+        "color": "#34d399",
+        "topic_fn": _latest_review_topic,
+    },
+    {
+        "file": "gemini.html",
+        "title": "✨ Gemini追跡",
+        "desc": "Gemini公式のRSS・Release Notes・Xを毎日チェック。今使える機能と近日公開を日本語で整理",
+        "color": "#4285f4",
+        "topic_fn": _latest_gemini_topic,
     },
 ]
 
