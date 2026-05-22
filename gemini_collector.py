@@ -14,7 +14,6 @@ import yaml
 logger = logging.getLogger("ai-news.gemini_collector")
 
 GEMINI_DIR = "gemini"
-SEEN_CACHE = "gemini_seen_urls.json"
 JST = ZoneInfo("Asia/Tokyo")
 
 GEMINI_KEYWORDS = [
@@ -57,10 +56,6 @@ def _data_dir(name: str) -> str:
     return os.path.join(_base_dir(), "data", name)
 
 
-def _cache_path() -> str:
-    return os.path.join(_data_dir("cache"), SEEN_CACHE)
-
-
 def _load_config() -> dict:
     path = os.path.join(_base_dir(), "config.yaml")
     with open(path, encoding="utf-8") as f:
@@ -71,24 +66,32 @@ def _make_id(url: str) -> str:
     return "gemini_" + hashlib.md5(url.encode()).hexdigest()[:16]
 
 
-def _load_seen_urls() -> set[str]:
-    path = _cache_path()
-    if not os.path.exists(path):
-        return set()
-    try:
-        data = json.loads(open(path, encoding="utf-8").read())
-        return set(data.get("urls", []))
-    except Exception:
-        return set()
+def _load_saved_urls(days: int = 30) -> set[str]:
+    """jsonl に保存済みの URL（収集スキップ用）"""
+    from glob import glob
+    urls: set[str] = set()
+    out_dir = _data_dir(GEMINI_DIR)
+    if not os.path.isdir(out_dir):
+        return urls
+    files = sorted(glob(os.path.join(out_dir, "*.jsonl")), reverse=True)
+    for fpath in files[:days]:
+        with open(fpath, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    url = json.loads(line).get("url")
+                    if url:
+                        urls.add(url)
+                except Exception:
+                    pass
+    return urls
 
 
-def _save_seen_urls(urls: set[str]) -> None:
-    path = _cache_path()
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    tmp = path + ".tmp"
-    with open(tmp, "w", encoding="utf-8") as f:
-        json.dump({"urls": list(urls)}, f, ensure_ascii=False)
-    os.replace(tmp, path)
+def _age_cutoff(config: dict) -> datetime:
+    days = int(config.get("gemini_collection", {}).get("max_age_days", 14))
+    return datetime.now(timezone.utc) - timedelta(days=days)
 
 
 def _contains_gemini(text: str) -> bool:
@@ -115,11 +118,11 @@ def collect_rss(config: dict) -> list[dict]:
         logger.error("feedparser not installed")
         return []
 
-    max_age_days = int(cfg.get("max_age_days", 14))
-    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
-    seen = _load_seen_urls()
+    cutoff = _age_cutoff(config)
+    saved = _load_saved_urls()
     collected_at = datetime.now(timezone.utc).isoformat()
     items: list[dict] = []
+    run_seen: set[str] = set()
 
     for feed_cfg in cfg.get("rss_feeds", []):
         url = feed_cfg.get("url", "")
@@ -133,7 +136,7 @@ def collect_rss(config: dict) -> list[dict]:
             count = 0
             for entry in feed.entries[:limit]:
                 link = entry.get("link", "")
-                if not link or link in seen:
+                if not link or link in saved or link in run_seen:
                     continue
 
                 pub_dt: datetime | None = None
@@ -169,17 +172,18 @@ def collect_rss(config: dict) -> list[dict]:
                     "collected_at": collected_at,
                 }
                 items.append(item)
-                seen.add(link)
+                run_seen.add(link)
                 count += 1
             logger.info("Gemini RSS [%s]: %d items", label, count)
         except Exception as e:
             logger.warning("Gemini RSS failed [%s]: %s", label, e)
 
-    _save_seen_urls(seen)
     return items
 
 
-def _parse_release_notes(text: str, base_url: str, label: str, max_items: int) -> list[dict]:
+def _parse_release_notes(
+    text: str, base_url: str, label: str, max_items: int, cutoff: datetime | None = None,
+) -> list[dict]:
     """Gemini Release Notes（日本語/英語）から日付ブロックを抽出"""
     items: list[dict] = []
     collected_at = datetime.now(timezone.utc).isoformat()
@@ -195,6 +199,8 @@ def _parse_release_notes(text: str, base_url: str, label: str, max_items: int) -
             try:
                 pub_dt = datetime.strptime(date_str, "%Y.%m.%d").replace(tzinfo=timezone.utc)
             except ValueError:
+                continue
+            if cutoff and pub_dt < cutoff:
                 continue
             blocks = re.split(r"(?m)^###\s+", body)
             for block in blocks[1:]:
@@ -232,6 +238,8 @@ def _parse_release_notes(text: str, base_url: str, label: str, max_items: int) -
             pub_dt = datetime.strptime(date_str, "%Y.%m.%d").replace(tzinfo=timezone.utc)
         except ValueError:
             continue
+        if cutoff and pub_dt < cutoff:
+            continue
 
         split_body = re.split(r"更新内容\s*[:：]|What\s*:", body, maxsplit=1, flags=re.I)
         title_part = split_body[0].strip()
@@ -256,20 +264,33 @@ def _parse_release_notes(text: str, base_url: str, label: str, max_items: int) -
     return items
 
 
-def _parse_api_changelog(text: str, base_url: str, label: str, max_items: int) -> list[dict]:
-    """Gemini API Changelog から日付見出し＋本文を抽出"""
+def _parse_api_changelog(
+    text: str, base_url: str, label: str, max_items: int, cutoff: datetime | None = None,
+) -> list[dict]:
+    """Gemini API Changelog から日付見出し＋本文を抽出（新しい順）"""
     items: list[dict] = []
     collected_at = datetime.now(timezone.utc).isoformat()
     pattern = r"(?is)(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})"
-    matches = list(re.finditer(pattern, text))
-    for idx, m in enumerate(matches[:max_items]):
+    match_list = list(re.finditer(pattern, text))
+    dated: list[tuple[datetime, int]] = []
+    for idx, m in enumerate(match_list):
         month_name, day, year = m.group(1), m.group(2), m.group(3)
         try:
             pub_dt = datetime.strptime(f"{month_name} {day}, {year}", "%B %d, %Y").replace(tzinfo=timezone.utc)
         except ValueError:
             continue
+        dated.append((pub_dt, idx))
+    dated.sort(key=lambda x: x[0], reverse=True)
+
+    for pub_dt, idx in dated:
+        if len(items) >= max_items:
+            break
+        if cutoff and pub_dt < cutoff:
+            continue
+        m = match_list[idx]
+        month_name, day, year = m.group(1), m.group(2), m.group(3)
         start = m.end()
-        end = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
+        end = match_list[idx + 1].start() if idx + 1 < len(match_list) else len(text)
         chunk = text[start:end].strip()
         chunk = re.sub(r"\s+", " ", chunk)[:2000]
         if len(chunk) < 20:
@@ -277,7 +298,7 @@ def _parse_api_changelog(text: str, base_url: str, label: str, max_items: int) -
         title = chunk[:120].strip()
         if not _contains_gemini(title + " " + chunk):
             continue
-        slug = hashlib.md5(f"{year}-{month_name}-{day}-{idx}".encode()).hexdigest()[:12]
+        slug = hashlib.md5(f"{pub_dt.date()}-{idx}".encode()).hexdigest()[:12]
         url = f"{base_url}#{year}-{month_name}-{day}-{slug}"
         items.append({
             "id": _make_id(url),
@@ -303,8 +324,10 @@ def collect_scrape_pages(config: dict) -> list[dict]:
         logger.error("requests not installed")
         return []
 
-    seen = _load_seen_urls()
+    saved = _load_saved_urls()
+    cutoff = _age_cutoff(config)
     items: list[dict] = []
+    run_seen: set[str] = set()
 
     for page in cfg.get("scrape_pages", []):
         url = page.get("url", "")
@@ -323,23 +346,22 @@ def collect_scrape_pages(config: dict) -> list[dict]:
             plain = _strip_html(text)
 
             if "release-notes" in url:
-                parsed = _parse_release_notes(plain, url, label, max_items)
+                parsed = _parse_release_notes(plain, url, label, max_items, cutoff=cutoff)
             else:
-                parsed = _parse_api_changelog(plain, url, label, max_items)
+                parsed = _parse_api_changelog(plain, url, label, max_items, cutoff=cutoff)
 
             count = 0
             for item in parsed:
                 key = item.get("url", "")
-                if key in seen:
+                if key in saved or key in run_seen:
                     continue
                 items.append(item)
-                seen.add(key)
+                run_seen.add(key)
                 count += 1
             logger.info("Gemini scrape [%s]: %d items", label, count)
         except Exception as e:
             logger.warning("Gemini scrape failed [%s]: %s", label, e)
 
-    _save_seen_urls(seen)
     return items
 
 
@@ -386,7 +408,8 @@ def collect_x_accounts(config: dict) -> list[dict]:
 
     items: list[dict] = []
     collected_at = datetime.now(timezone.utc).isoformat()
-    seen = _load_seen_urls()
+    saved = _load_saved_urls()
+    run_seen: set[str] = set()
 
     try:
         run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
@@ -413,7 +436,7 @@ def collect_x_accounts(config: dict) -> list[dict]:
 
             text = tweet.get("text") or tweet.get("fullText") or ""
             url = tweet.get("url") or tweet.get("tweetUrl") or tweet.get("twitterUrl") or ""
-            if not url or url in seen:
+            if not url or url in saved or url in run_seen:
                 continue
 
             if username.lower() in keyword_handles and not _contains_gemini(text):
@@ -432,12 +455,11 @@ def collect_x_accounts(config: dict) -> list[dict]:
                 "published_at": pub_raw,
                 "collected_at": collected_at,
             })
-            seen.add(url)
+            run_seen.add(url)
         logger.info("Gemini X: %d items", len(items))
     except Exception as e:
         logger.error("Gemini X collection failed: %s", e)
 
-    _save_seen_urls(seen)
     return items
 
 

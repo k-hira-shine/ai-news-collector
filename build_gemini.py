@@ -3,11 +3,13 @@
 import json
 import logging
 import os
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from email.utils import parsedate_to_datetime
 from glob import glob
 from html import escape
 from zoneinfo import ZoneInfo
+
+import yaml
 
 from site_nav import NAV_CSS, render_nav
 
@@ -42,12 +44,15 @@ def _parse_date(raw: str) -> datetime | None:
         return None
 
 
-def _to_jst_date(raw: str) -> str:
+def _to_jst_datetime(raw: str, source: str = "") -> str:
     dt = _parse_date(raw)
     if not dt:
         return raw[:10] if len(raw) >= 10 else ""
     jst = dt.astimezone(ZoneInfo("Asia/Tokyo"))
-    return f"{jst.year}/{jst.month}/{jst.day}"
+    date_part = f"{jst.year}/{jst.month}/{jst.day}"
+    if source == "scrape":
+        return date_part
+    return f"{date_part} {jst.hour}:{jst.minute:02d}"
 
 
 def _sort_key(item: dict) -> datetime:
@@ -60,6 +65,17 @@ def _sort_key(item: dict) -> datetime:
 
 def _sort_newest(items: list[dict]) -> list[dict]:
     return sorted(items, key=_sort_key, reverse=True)
+
+
+def _load_config() -> dict:
+    path = os.path.join(os.path.dirname(__file__), "config.yaml")
+    with open(path, encoding="utf-8") as f:
+        return yaml.safe_load(f)
+
+
+def _filter_recent(items: list[dict], max_age_days: int) -> list[dict]:
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    return [i for i in items if _sort_key(i) >= cutoff]
 
 
 def load_gemini_items(days: int = 14) -> list[dict]:
@@ -83,11 +99,7 @@ def load_gemini_items(days: int = 14) -> list[dict]:
 def _dedupe_items(items: list[dict]) -> list[dict]:
     seen: set[str] = set()
     result: list[dict] = []
-    for item in sorted(
-        items,
-        key=lambda x: x.get("published_at") or x.get("collected_at") or "",
-        reverse=True,
-    ):
+    for item in _sort_newest(items):
         key = item.get("url") or item.get("id") or ""
         if key and key not in seen:
             seen.add(key)
@@ -111,7 +123,10 @@ def _card(item: dict) -> str:
     summary = escape(raw_summary)
     source_label = escape(item.get("source_label") or "")
     url = escape(item.get("url") or "#")
-    date = _to_jst_date(item.get("published_at") or item.get("collected_at") or "")
+    date = _to_jst_datetime(
+        item.get("published_at") or item.get("collected_at") or "",
+        item.get("source") or "",
+    )
     source_detail = f'<span class="source-detail">{source_label}</span>' if source_label else ""
     summary_html = (
         f'<p class="card-summary">{summary}</p>'
@@ -160,7 +175,9 @@ def _sources_section(items: list[dict]) -> str:
 
 
 def build_gemini_page(output_path: str = OUTPUT_PATH) -> None:
-    items = _dedupe_items(load_gemini_items(days=14))
+    config = _load_config()
+    max_age_days = int(config.get("gemini_collection", {}).get("max_age_days", 7))
+    items = _filter_recent(_dedupe_items(load_gemini_items(days=14)), max_age_days)
     now_str = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M JST")
 
     available = _sort_newest([i for i in items if i.get("status") == "available_now"])

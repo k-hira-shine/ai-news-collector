@@ -621,8 +621,8 @@ post_templates:
 # ── Gemini専用機能追跡（gemini_collector.py / build_gemini.py） ──────
 gemini_collection:
   enabled: true
-  max_age_days: 14
-  max_items_per_account: 20
+  max_age_days: 7
+  max_items_per_account: 30
   x_keyword_filter_handles:
     - Google
     - sundarpichai
@@ -642,33 +642,39 @@ gemini_collection:
   rss_feeds:
     - url: "https://blog.google/products/gemini/rss/"
       label: "Google Gemini Blog"
-      max_items: 30
+      max_items: 50
     - url: "https://blog.google/products-and-platforms/products/gemini/rss/"
       label: "Google Blog - Gemini製品"
-      max_items: 20
+      max_items: 40
+    - url: "https://blog.google/innovation-and-ai/technology/ai/rss/"
+      label: "Google AI / Innovation"
+      max_items: 40
     - url: "https://docs.cloud.google.com/feeds/gemini-release-notes.xml"
       label: "Gemini API リリースノート"
-      max_items: 30
+      max_items: 50
     - url: "https://feeds.feedburner.com/blogspot/gJZg"
       label: "Google AI Blog"
-      max_items: 30
+      max_items: 50
       gemini_filter: true
     - url: "https://developers.googleblog.com/feeds/posts/default"
       label: "Google Developers Blog"
-      max_items: 20
+      max_items: 40
       gemini_filter: true
     - url: "https://deepmind.google/blog/rss.xml"
       label: "Google DeepMind Blog"
-      max_items: 20
+      max_items: 40
       gemini_filter: true
     - url: "https://docs.cloud.google.com/feeds/generative-ai-on-vertex-ai-release-notes.xml"
       label: "Vertex AI Generative AI リリースノート"
-      max_items: 30
+      max_items: 50
       gemini_filter: true
+    - url: "https://docs.cloud.google.com/feeds/gemini-for-google-workspace-release-notes.xml"
+      label: "Gemini for Google Workspace リリースノート"
+      max_items: 40
   scrape_pages:
     - url: "https://gemini.google/release-notes/"
       label: "Gemini Release Notes"
-      max_items: 30
+      max_items: 40
     - url: "https://ai.google.dev/gemini-api/docs/changelog"
       label: "Gemini API Changelog"
-      max_items: 30
+      max_items: 40
