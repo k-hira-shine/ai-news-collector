@@ -93,11 +93,14 @@ def _load_config() -> dict:
 
 def _filter_recent(items: list[dict], max_age_days: int) -> list[dict]:
     cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    now = datetime.now(timezone.utc)
     result: list[dict] = []
     for item in items:
         raw = item.get("published_at") or ""
         dt = _parse_date(raw)
         if not dt or dt >= cutoff:
+            if dt and dt > now:
+                continue
             result.append(item)
     return result
 

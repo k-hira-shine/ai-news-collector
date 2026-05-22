@@ -371,6 +371,29 @@ def _parse_release_notes(
     return items
 
 
+def _is_changelog_section_date(text: str, start: int, end: int) -> bool:
+    """本文中の停止予定日など、見出しではない日付を除外"""
+    before_tail = text[max(0, start - 30):start].lower()
+    after_head = text[end:end + 40].strip()
+    if re.search(r"(?:will be )?shut down on?\s*$", before_tail):
+        return False
+    if before_tail.rstrip().endswith("shut down"):
+        return False
+    if after_head.startswith(":") and re.match(r":\s*gemini-", after_head, re.I):
+        return False
+    if not re.match(r"[A-Z(]", after_head):
+        return False
+    return True
+
+
+def _is_valid_changelog_chunk(chunk: str) -> bool:
+    if len(chunk) < 20:
+        return False
+    if re.match(r"^:\s*gemini-[\w.-]+(\s+gemini-[\w.-]+)*\s*$", chunk, re.I):
+        return False
+    return True
+
+
 def _parse_api_changelog(
     text: str, base_url: str, label: str, max_items: int, cutoff: datetime | None = None,
 ) -> list[dict]:
@@ -378,13 +401,19 @@ def _parse_api_changelog(
     items: list[dict] = []
     collected_at = datetime.now(timezone.utc).isoformat()
     pattern = r"(?is)(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),\s+(\d{4})"
-    match_list = list(re.finditer(pattern, text))
+    match_list = [
+        m for m in re.finditer(pattern, text)
+        if _is_changelog_section_date(text, m.start(), m.end())
+    ]
     dated: list[tuple[datetime, int]] = []
+    now = datetime.now(timezone.utc)
     for idx, m in enumerate(match_list):
         month_name, day, year = m.group(1), m.group(2), m.group(3)
         try:
             pub_dt = datetime.strptime(f"{month_name} {day}, {year}", "%B %d, %Y").replace(tzinfo=timezone.utc)
         except ValueError:
+            continue
+        if pub_dt > now:
             continue
         dated.append((pub_dt, idx))
     dated.sort(key=lambda x: x[0], reverse=True)
@@ -400,7 +429,7 @@ def _parse_api_changelog(
         end = match_list[idx + 1].start() if idx + 1 < len(match_list) else len(text)
         chunk = text[start:end].strip()
         chunk = re.sub(r"\s+", " ", chunk)[:2000]
-        if len(chunk) < 20:
+        if not _is_valid_changelog_chunk(chunk):
             continue
         title = chunk[:120].strip()
         if not _contains_gemini(title + " " + chunk):
