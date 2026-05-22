@@ -47,6 +47,25 @@ CLASSIFY_SCHEMA = {
     "required": ["items"],
 }
 
+TRANSLATE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "item_id": {"type": "string"},
+                    "title_ja": {"type": "string"},
+                    "summary_ja": {"type": "string"},
+                },
+                "required": ["item_id", "title_ja", "summary_ja"],
+            },
+        }
+    },
+    "required": ["items"],
+}
+
 
 def _base_dir() -> str:
     return os.path.dirname(os.path.abspath(__file__))
@@ -566,7 +585,7 @@ def deduplicate_items(items: list[dict]) -> list[dict]:
     return result
 
 
-def classify_items(items: list[dict], config: dict) -> list[dict]:
+def classify_items(items: list[dict], config: dict, *, titles_only: bool = False) -> list[dict]:
     if not items:
         return []
 
@@ -603,7 +622,23 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
 本文: {(item.get('content') or '')[:700]}
 ---"""
 
-        prompt = f"""以下はGoogle Gemini公式情報源から収集した記事・投稿です。
+        if titles_only:
+            prompt = f"""以下はGoogle Gemini公式情報源から収集した記事・投稿です。
+各項目について title_ja / summary_ja のみ日本語化してください（status は変更しない）。
+
+## 日本語出力（必須）
+- title_ja: 50字以内。**一覧を見た新入社員が「何の機能・製品か」すぐ分かる見出し**
+  - 製品名・機能名・連携先・何ができるかを具体的に書く
+  - 抽象語・マーケ語だけにしない（×「インテリジェントなアイウェア」→ ○「Geminiアプリ連携のオーディオグラス（Samsung共同）」）
+  - 英語キャッチコピーの直訳ではなく、内容を平易に言い換える
+  - summary_ja と同文にしない（title=何、summary=どう便利か/詳細）
+- summary_ja: 80字以内の日本語要約。何の機能・発表かを平易に説明
+
+## 対象
+{items_text}"""
+            schema = TRANSLATE_SCHEMA
+        else:
+            prompt = f"""以下はGoogle Gemini公式情報源から収集した記事・投稿です。
 各項目について status / title_ja / summary_ja / reason を判定してください。
 
 ## 判定基準
@@ -622,6 +657,7 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
 
 ## 対象
 {items_text}"""
+            schema = CLASSIFY_SCHEMA
 
         try:
             response = client.models.generate_content(
@@ -629,7 +665,7 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
-                    response_schema=CLASSIFY_SCHEMA,
+                    response_schema=schema,
                     thinking_config=types.ThinkingConfig(thinking_budget=128),
                 ),
             )
@@ -648,10 +684,11 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
             base = id_map.get(item_id)
             if not base:
                 continue
-            base["status"] = row.get("status", "unknown")
+            if not titles_only:
+                base["status"] = row.get("status", "unknown")
+                base["reason"] = row.get("reason", "")[:200]
             base["title_ja"] = row.get("title_ja", "")[:50]
             base["summary_ja"] = row.get("summary_ja", "")[:160]
-            base["reason"] = row.get("reason", "")[:200]
             base["classified_at"] = datetime.now(timezone.utc).isoformat()
 
     for item in items:
@@ -752,9 +789,41 @@ def retranslate_recent(config: dict | None = None, days: int = 14) -> list[dict]
         config = _load_config()
     items = deduplicate_items(load_all_gemini_items(days))
     logger.info("Retranslating %d Gemini items...", len(items))
-    items = classify_items(items, config)
+    items = classify_items(items, config, titles_only=True)
     rewrite_gemini_jsonl(items)
     return items
+
+
+def restore_statuses_from_snapshot(items: list[dict], snapshot_path: str) -> int:
+    """スナップショット jsonl から status / reason を復元（title_ja は現行を維持）"""
+    if not os.path.isfile(snapshot_path):
+        logger.warning("Snapshot not found: %s", snapshot_path)
+        return 0
+    by_id: dict[str, dict] = {}
+    with open(snapshot_path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except Exception:
+                continue
+            item_id = row.get("id")
+            if item_id:
+                by_id[item_id] = row
+    restored = 0
+    for item in items:
+        snap = by_id.get(item.get("id", ""))
+        if not snap:
+            continue
+        if snap.get("status"):
+            item["status"] = snap["status"]
+            restored += 1
+        if snap.get("reason"):
+            item["reason"] = snap["reason"]
+    logger.info("Restored status for %d / %d items from %s", restored, len(items), snapshot_path)
+    return restored
 
 
 def collect_all(config: dict | None = None) -> list[dict]:
