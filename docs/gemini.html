@@ -25,9 +25,14 @@ header { padding: 24px 20px 12px; border-bottom: 1px solid var(--border); }
 header h1 { font-size: 1.4rem; color: var(--text); }
 header .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
 .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
-.gemini-section { margin-bottom: 36px; }
-.gemini-section h2 { font-size: 1.1rem; margin-bottom: 14px; color: var(--text); }
-.gemini-section h2 .count { font-size: 0.85rem; color: var(--muted); font-weight: normal; }
+.gemini-section { margin-bottom: 16px; border: 1px solid var(--border); border-radius: 10px; background: rgba(26,34,54,0.45); overflow: hidden; }
+.section-toggle { cursor: pointer; padding: 12px 16px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }
+.section-toggle::-webkit-details-marker { display: none; }
+.section-toggle::before { content: '▶'; font-size: 0.65rem; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }
+.gemini-section[open] > .section-toggle::before { transform: rotate(90deg); }
+.section-title { font-size: 1.1rem; font-weight: 600; color: var(--text); }
+.section-toggle .count { font-size: 0.85rem; color: var(--muted); font-weight: normal; }
+.section-body { padding: 0 16px 16px; }
 .gemini-list { display: flex; flex-direction: column; gap: 10px; }
 .gemini-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }
 .card-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 0.78rem; }
@@ -64,12 +69,15 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </nav>
 <header>
   <h1>✨ Gemini 機能トラッカー</h1>
-  <p class="meta">Last updated: 2026-05-22 11:35 JST ｜ 収集 96件（今すぐ 62 / 近日 17）</p>
+  <p class="meta">Last updated: 2026-05-22 11:36 JST ｜ 収集 96件（今すぐ 62 / 近日 17）</p>
 </header>
 <div class="container">
-<section class="gemini-section">
-  <h2>近日公開予定 <span class="count">17件</span></h2>
-  <div class="gemini-list"><article class="gemini-card" data-status="coming_soon">
+<details class="gemini-section" open>
+  <summary class="section-toggle">
+    <span class="section-title">近日公開予定</span>
+    <span class="count">17件</span>
+  </summary>
+  <div class="section-body"><div class="gemini-list"><article class="gemini-card" data-status="coming_soon">
   <div class="card-meta">
     <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
     <span class="source-type" style="background:#1d9bf022;color:#1d9bf0">𝕏</span>
@@ -238,11 +246,14 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   </div>
   <h3 class="card-title"><a href="https://deepmind.google/blog/simulate-real-world-places-with-project-genie-and-street-view/" target="_blank" rel="noopener">Project GenieとStreet Viewで現実世界をシミュレート</a></h3>
   <p class="card-summary">Google AI Ultra購読者へのグローバルなアクセス拡大と、Street Viewを活用した新機能の導入。</p>
-</article></div>
-</section>
-<section class="gemini-section">
-  <h2>今すぐ使える機能 <span class="count">62件</span></h2>
-  <div class="gemini-list"><article class="gemini-card" data-status="available_now">
+</article></div></div>
+</details>
+<details class="gemini-section" open>
+  <summary class="section-toggle">
+    <span class="section-title">今すぐ使える機能</span>
+    <span class="count">62件</span>
+  </summary>
+  <div class="section-body"><div class="gemini-list"><article class="gemini-card" data-status="available_now">
   <div class="card-meta">
     <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
     <span class="source-type" style="background:#34d39922;color:#34d399">Web</span>
@@ -861,8 +872,8 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   </div>
   <h3 class="card-title"><a href="https://deepmind.google/blog/gemini-3-5-frontier-intelligence-with-action/" target="_blank" rel="noopener">Gemini 3.5：行動するフロンティアAI</a></h3>
   <p class="card-summary">Gemini 3.5は、複雑なエージェントワークフローを実行できるように構築されている。</p>
-</article></div>
-</section>
+</article></div></div>
+</details>
 <section class="gemini-section sources-section">
   <h2>チェックした情報源</h2>
   <ul class="sources-list"><li><strong>Gemini App公式</strong>: 23件</li><li><strong>Google本体公式</strong>: 16件</li><li><strong>Google DeepMind公式</strong>: 11件</li><li><strong>Google AI公式</strong>: 10件</li><li><strong>Google Gemini Blog</strong>: 9件</li><li><strong>Google Developers Blog</strong>: 7件</li><li><strong>Google DeepMind Blog</strong>: 7件</li><li><strong>Google AI / Innovation</strong>: 5件</li><li><strong>Demis Hassabis (Google DeepMind CEO)</strong>: 3件</li><li><strong>Gemini API Changelog</strong>: 2件</li><li><strong>Sundar Pichai (Google CEO)</strong>: 2件</li><li><strong>Gemini Release Notes</strong>: 1件</li></ul>

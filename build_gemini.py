@@ -148,15 +148,17 @@ def _card(item: dict) -> str:
 
 def _section(title: str, items: list[dict], empty_msg: str) -> str:
     if not items:
-        return f"""<section class="gemini-section">
-  <h2>{escape(title)} <span class="count">0件</span></h2>
-  <div class="empty-state"><p>{escape(empty_msg)}</p></div>
-</section>"""
-    cards = "\n".join(_card(i) for i in items)
-    return f"""<section class="gemini-section">
-  <h2>{escape(title)} <span class="count">{len(items)}件</span></h2>
-  <div class="gemini-list">{cards}</div>
-</section>"""
+        body = f'<div class="empty-state"><p>{escape(empty_msg)}</p></div>'
+    else:
+        cards = "\n".join(_card(i) for i in items)
+        body = f'<div class="gemini-list">{cards}</div>'
+    return f"""<details class="gemini-section" open>
+  <summary class="section-toggle">
+    <span class="section-title">{escape(title)}</span>
+    <span class="count">{len(items)}件</span>
+  </summary>
+  <div class="section-body">{body}</div>
+</details>"""
 
 
 def _sources_section(items: list[dict]) -> str:
@@ -203,9 +205,14 @@ header {{ padding: 24px 20px 12px; border-bottom: 1px solid var(--border); }}
 header h1 {{ font-size: 1.4rem; color: var(--text); }}
 header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .container {{ max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }}
-.gemini-section {{ margin-bottom: 36px; }}
-.gemini-section h2 {{ font-size: 1.1rem; margin-bottom: 14px; color: var(--text); }}
-.gemini-section h2 .count {{ font-size: 0.85rem; color: var(--muted); font-weight: normal; }}
+.gemini-section {{ margin-bottom: 16px; border: 1px solid var(--border); border-radius: 10px; background: rgba(26,34,54,0.45); overflow: hidden; }}
+.section-toggle {{ cursor: pointer; padding: 12px 16px; list-style: none; display: flex; align-items: center; gap: 8px; user-select: none; }}
+.section-toggle::-webkit-details-marker {{ display: none; }}
+.section-toggle::before {{ content: '▶'; font-size: 0.65rem; color: var(--muted); transition: transform 0.15s; flex-shrink: 0; }}
+.gemini-section[open] > .section-toggle::before {{ transform: rotate(90deg); }}
+.section-title {{ font-size: 1.1rem; font-weight: 600; color: var(--text); }}
+.section-toggle .count {{ font-size: 0.85rem; color: var(--muted); font-weight: normal; }}
+.section-body {{ padding: 0 16px 16px; }}
 .gemini-list {{ display: flex; flex-direction: column; gap: 10px; }}
 .gemini-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }}
 .card-meta {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 0.78rem; }}
