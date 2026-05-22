@@ -4,6 +4,7 @@ import json
 import logging
 import os
 from datetime import datetime
+from email.utils import parsedate_to_datetime
 from glob import glob
 from html import escape
 from zoneinfo import ZoneInfo
@@ -21,21 +22,44 @@ STATUS_LABELS = {
     "unknown":       ("未分類", "#64748b"),
 }
 
-SOURCE_ICONS = {
-    "rss": "📰",
-    "scrape": "🌐",
-    "x": "🐦",
+SOURCE_TYPE = {
+    "x": ("𝕏", "#1d9bf0"),
+    "rss": ("Web", "#34d399"),
+    "scrape": ("Web", "#34d399"),
 }
 
 
-def _to_jst_date(iso: str) -> str:
-    if not iso:
-        return ""
+def _parse_date(raw: str) -> datetime | None:
+    if not raw:
+        return None
     try:
-        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-        return dt.astimezone(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d")
+        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
     except Exception:
-        return iso[:10] if len(iso) >= 10 else iso
+        pass
+    try:
+        return parsedate_to_datetime(raw)
+    except Exception:
+        return None
+
+
+def _to_jst_date(raw: str) -> str:
+    dt = _parse_date(raw)
+    if not dt:
+        return raw[:10] if len(raw) >= 10 else ""
+    jst = dt.astimezone(ZoneInfo("Asia/Tokyo"))
+    return f"{jst.year}/{jst.month}/{jst.day}"
+
+
+def _sort_key(item: dict) -> datetime:
+    raw = item.get("published_at") or item.get("collected_at") or ""
+    dt = _parse_date(raw)
+    if dt:
+        return dt
+    return datetime.min.replace(tzinfo=ZoneInfo("UTC"))
+
+
+def _sort_newest(items: list[dict]) -> list[dict]:
+    return sorted(items, key=_sort_key, reverse=True)
 
 
 def load_gemini_items(days: int = 14) -> list[dict]:
@@ -71,29 +95,39 @@ def _dedupe_items(items: list[dict]) -> list[dict]:
     return result
 
 
+def _source_type_badge(item: dict) -> str:
+    src = item.get("source") or ""
+    type_label, color = SOURCE_TYPE.get(src, ("その他", "#64748b"))
+    return f'<span class="source-type" style="background:{color}22;color:{color}">{type_label}</span>'
+
+
 def _card(item: dict) -> str:
     status = item.get("status") or "unknown"
     label, color = STATUS_LABELS.get(status, STATUS_LABELS["unknown"])
-    src = item.get("source", "")
-    icon = SOURCE_ICONS.get(src, "📌")
+    raw_summary = item.get("summary_ja") or ""
     display_title = escape(
         item.get("title_ja") or item.get("summary_ja") or item.get("title") or ""
     )
-    summary = escape(item.get("summary_ja") or "")
+    summary = escape(raw_summary)
     source_label = escape(item.get("source_label") or "")
     url = escape(item.get("url") or "#")
     date = _to_jst_date(item.get("published_at") or item.get("collected_at") or "")
-
-    summary_block = f'<p class="card-summary">{summary}</p>' if summary and summary != display_title else ""
+    source_detail = f'<span class="source-detail">{source_label}</span>' if source_label else ""
+    summary_html = (
+        f'<p class="card-summary">{summary}</p>'
+        if raw_summary and raw_summary != (item.get("title_ja") or item.get("title") or "")
+        else (f'<p class="card-summary">{summary}</p>' if raw_summary else "")
+    )
 
     return f"""<article class="gemini-card" data-status="{escape(status)}">
-  <div class="card-head">
+  <div class="card-meta">
     <span class="status-badge" style="border-color:{color};color:{color}">{label}</span>
-    <span class="source-badge">{icon} {source_label}</span>
+    {_source_type_badge(item)}
+    {source_detail}
     <span class="date-badge">{date}</span>
   </div>
   <h3 class="card-title"><a href="{url}" target="_blank" rel="noopener">{display_title}</a></h3>
-  {summary_block}
+  {summary_html}
 </article>"""
 
 
@@ -106,7 +140,7 @@ def _section(title: str, items: list[dict], empty_msg: str) -> str:
     cards = "\n".join(_card(i) for i in items)
     return f"""<section class="gemini-section">
   <h2>{escape(title)} <span class="count">{len(items)}件</span></h2>
-  <div class="gemini-grid">{cards}</div>
+  <div class="gemini-list">{cards}</div>
 </section>"""
 
 
@@ -129,8 +163,8 @@ def build_gemini_page(output_path: str = OUTPUT_PATH) -> None:
     items = _dedupe_items(load_gemini_items(days=14))
     now_str = datetime.now(ZoneInfo("Asia/Tokyo")).strftime("%Y-%m-%d %H:%M JST")
 
-    available = [i for i in items if i.get("status") == "available_now"]
-    coming = [i for i in items if i.get("status") == "coming_soon"]
+    available = _sort_newest([i for i in items if i.get("status") == "available_now"])
+    coming = _sort_newest([i for i in items if i.get("status") == "coming_soon"])
 
     nav_html = render_nav("gemini.html")
 
@@ -155,21 +189,25 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .gemini-section {{ margin-bottom: 36px; }}
 .gemini-section h2 {{ font-size: 1.1rem; margin-bottom: 14px; color: var(--text); }}
 .gemini-section h2 .count {{ font-size: 0.85rem; color: var(--muted); font-weight: normal; }}
-.gemini-grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }}
-.gemini-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }}
-.card-head {{ display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }}
-.status-badge {{ font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; border: 1px solid; }}
-.source-badge, .date-badge {{ font-size: 0.72rem; color: var(--muted); }}
-.card-title {{ font-size: 0.95rem; margin-bottom: 6px; line-height: 1.4; }}
+.gemini-list {{ display: flex; flex-direction: column; gap: 10px; }}
+.gemini-card {{ background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; }}
+.card-meta {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 6px; font-size: 0.78rem; }}
+.status-badge {{ font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; border: 1px solid; flex-shrink: 0; }}
+.source-type {{ font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; flex-shrink: 0; }}
+.source-detail {{ color: var(--muted); }}
+.date-badge {{ color: var(--muted); margin-left: auto; flex-shrink: 0; }}
+.card-title {{ font-size: 1rem; margin-bottom: 4px; line-height: 1.45; }}
 .card-title a {{ color: var(--text); text-decoration: none; }}
 .card-title a:hover {{ color: var(--accent); }}
-.card-summary {{ font-size: 0.85rem; color: #cbd5e1; }}
-.card-reason {{ font-size: 0.78rem; color: var(--muted); margin-top: 6px; }}
+.card-summary {{ font-size: 0.88rem; color: #cbd5e1; line-height: 1.6; }}
 .empty-state {{ text-align: center; padding: 40px 20px; color: var(--muted); background: var(--card); border-radius: 10px; border: 1px dashed var(--border); }}
 .sources-list {{ list-style: none; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; }}
 .sources-list li {{ padding: 4px 0; font-size: 0.85rem; color: var(--muted); }}
 footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); }}
-@media (max-width: 640px) {{ .gemini-grid {{ grid-template-columns: 1fr; }} }}
+@media (max-width: 640px) {{
+  .card-meta {{ gap: 6px; }}
+  .date-badge {{ margin-left: 0; width: 100%; }}
+}}
 </style>
 </head>
 <body>
@@ -179,8 +217,8 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
   <p class="meta">Last updated: {now_str} ｜ 収集 {len(items)}件（今すぐ {len(available)} / 近日 {len(coming)}）</p>
 </header>
 <div class="container">
-{_section("今すぐ使える機能", available, "直近14日で「利用可能」と判定された情報はまだありません。")}
 {_section("近日公開予定", coming, "直近14日で「近日公開」と判定された情報はまだありません。")}
+{_section("今すぐ使える機能", available, "直近14日で「利用可能」と判定された情報はまだありません。")}
 {_sources_section(items)}
 </div>
 <footer>Gemini公式RSS・Release Notes・API Changelog・公式Xアカウントを毎日自動チェック</footer>
