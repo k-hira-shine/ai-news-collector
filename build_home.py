@@ -208,6 +208,27 @@ def _latest_post_topic() -> dict:
     return {}
 
 
+def _latest_gemini_topic() -> dict:
+    """gemini/ から最新の available_now 1件を返す"""
+    files = sorted(glob(os.path.join(DATA_DIR, "gemini", "*.jsonl")), reverse=True)
+    for fpath in files[:3]:
+        try:
+            with open(fpath, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    obj = json.loads(line)
+                    if obj.get("status") not in ("available_now", "coming_soon"):
+                        continue
+                    text = obj.get("title_ja") or obj.get("summary_ja") or obj.get("title") or ""
+                    if text:
+                        return {"text": text[:70], "url": "gemini.html"}
+        except Exception:
+            continue
+    return {}
+
+
 def _get_latest_diagram() -> dict:
     # evening=1 / morning=0 でソートし、同日なら evening を優先
     def _sort_key(path):
@@ -238,6 +259,13 @@ PAGES = [
         "desc": "AIツール・機能リリースをリアルタイムで追跡。日付・ファミリー・影響度でフィルター可能",
         "color": "#a78bfa",
         "topic_fn": _latest_tool_topic,
+    },
+    {
+        "file": "gemini.html",
+        "title": "✨ Gemini追跡",
+        "desc": "Gemini公式のRSS・Release Notes・Xを毎日チェック。今使える機能と近日公開を日本語で整理",
+        "color": "#4285f4",
+        "topic_fn": _latest_gemini_topic,
     },
     {
         "file": "reviews.html",

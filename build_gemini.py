@@ -87,12 +87,15 @@ def _card(item: dict) -> str:
     label, color = STATUS_LABELS.get(status, STATUS_LABELS["unknown"])
     src = item.get("source", "")
     icon = SOURCE_ICONS.get(src, "📌")
-    title = escape(item.get("title") or "")
-    summary = escape(item.get("summary_ja") or item.get("title") or "")
+    display_title = escape(
+        item.get("title_ja") or item.get("summary_ja") or item.get("title") or ""
+    )
+    summary = escape(item.get("summary_ja") or "")
     source_label = escape(item.get("source_label") or "")
     url = escape(item.get("url") or "#")
     date = _to_jst_date(item.get("published_at") or item.get("collected_at") or "")
-    reason = escape(item.get("reason") or "")
+
+    summary_block = f'<p class="card-summary">{summary}</p>' if summary and summary != display_title else ""
 
     return f"""<article class="gemini-card" data-status="{escape(status)}">
   <div class="card-head">
@@ -100,9 +103,8 @@ def _card(item: dict) -> str:
     <span class="source-badge">{icon} {source_label}</span>
     <span class="date-badge">{date}</span>
   </div>
-  <h3 class="card-title"><a href="{url}" target="_blank" rel="noopener">{title}</a></h3>
-  <p class="card-summary">{summary}</p>
-  {f'<p class="card-reason">{reason}</p>' if reason else ''}
+  <h3 class="card-title"><a href="{url}" target="_blank" rel="noopener">{display_title}</a></h3>
+  {summary_block}
 </article>"""
 
 

@@ -37,10 +37,11 @@ CLASSIFY_SCHEMA = {
                         "type": "string",
                         "enum": ["available_now", "coming_soon", "unknown"],
                     },
+                    "title_ja": {"type": "string"},
                     "summary_ja": {"type": "string"},
                     "reason": {"type": "string"},
                 },
-                "required": ["item_id", "status", "summary_ja", "reason"],
+                "required": ["item_id", "status", "title_ja", "summary_ja", "reason"],
             },
         }
     },
@@ -464,6 +465,7 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
         logger.warning("GEMINI_API_KEY not set — skipping classification")
         for item in items:
             item.setdefault("status", "unknown")
+            item.setdefault("title_ja", (item.get("title") or "")[:80])
             item.setdefault("summary_ja", (item.get("title") or "")[:80])
             item.setdefault("reason", "API key not set")
         return items
@@ -492,17 +494,20 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
 ---"""
 
         prompt = f"""以下はGoogle Gemini公式情報源から収集した記事・投稿です。
-各項目について status / summary_ja / reason を判定してください。
+各項目について status / title_ja / summary_ja / reason を判定してください。
 
 ## 判定基準
 - available_now: すでに利用可能、正式リリース、GA、generally available、公開済み、rolling out now など
 - coming_soon: coming soon、近日、予定、preview、beta、trusted testers、rollout starting、in the coming weeks など
 - unknown: Gemini機能の新着情報か判断できない、または上記どちらにも当てはまらない
 
-## 対象
-{items_text}
+## 日本語出力（必須）
+- title_ja: 40字以内の日本語見出し。英語の記事・投稿は必ず自然な日本語に翻訳すること
+- summary_ja: 80字以内の日本語要約。何の機能・発表かを平易に説明（分類理由ではなく内容の要約）
+- reason: 分類理由を1文（日本語）。UIには表示しない内部用
 
-summary_ja は60字以内の日本語要約。reason は分類理由を1文で。"""
+## 対象
+{items_text}"""
 
         try:
             response = client.models.generate_content(
@@ -519,6 +524,7 @@ summary_ja は60字以内の日本語要約。reason は分類理由を1文で�
             logger.error("Gemini classification failed: %s", e)
             for item in batch:
                 item.setdefault("status", "unknown")
+                item.setdefault("title_ja", (item.get("title") or "")[:80])
                 item.setdefault("summary_ja", (item.get("title") or "")[:80])
                 item.setdefault("reason", "classification failed")
             continue
@@ -529,12 +535,14 @@ summary_ja は60字以内の日本語要約。reason は分類理由を1文で�
             if not base:
                 continue
             base["status"] = row.get("status", "unknown")
-            base["summary_ja"] = row.get("summary_ja", "")[:120]
+            base["title_ja"] = row.get("title_ja", "")[:80]
+            base["summary_ja"] = row.get("summary_ja", "")[:160]
             base["reason"] = row.get("reason", "")[:200]
             base["classified_at"] = datetime.now(timezone.utc).isoformat()
 
     for item in items:
         item.setdefault("status", "unknown")
+        item.setdefault("title_ja", (item.get("title") or "")[:80])
         item.setdefault("summary_ja", (item.get("title") or "")[:80])
         item.setdefault("reason", "")
 
@@ -573,6 +581,49 @@ def save_gemini_jsonl(items: list[dict]) -> str:
     return path
 
 
+def load_all_gemini_items(days: int = 14) -> list[dict]:
+    out_dir = _data_dir(GEMINI_DIR)
+    if not os.path.isdir(out_dir):
+        return []
+    from glob import glob
+    files = sorted(glob(os.path.join(out_dir, "*.jsonl")), reverse=True)
+    items: list[dict] = []
+    for fpath in files[:days]:
+        with open(fpath, encoding="utf-8") as f:
+            for line in f.read().split("\n"):
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    items.append(json.loads(line))
+                except Exception:
+                    continue
+    return items
+
+
+def rewrite_gemini_jsonl(items: list[dict]) -> str:
+    """分類・翻訳し直した全件を本日ファイルに上書き保存"""
+    out_dir = _data_dir(GEMINI_DIR)
+    os.makedirs(out_dir, exist_ok=True)
+    today = datetime.now(JST).strftime("%Y-%m-%d")
+    path = os.path.join(out_dir, f"{today}.jsonl")
+    with open(path, "w", encoding="utf-8") as f:
+        for item in items:
+            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+    logger.info("Rewrote %d Gemini items → %s", len(items), path)
+    return path
+
+
+def retranslate_recent(config: dict | None = None, days: int = 14) -> list[dict]:
+    if config is None:
+        config = _load_config()
+    items = deduplicate_items(load_all_gemini_items(days))
+    logger.info("Retranslating %d Gemini items...", len(items))
+    items = classify_items(items, config)
+    rewrite_gemini_jsonl(items)
+    return items
+
+
 def collect_all(config: dict | None = None) -> list[dict]:
     if config is None:
         config = _load_config()
@@ -587,8 +638,22 @@ def collect_all(config: dict | None = None) -> list[dict]:
 
 
 def main() -> None:
+    import argparse
+
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
-    items = collect_all()
+    parser = argparse.ArgumentParser(description="Gemini公式情報収集")
+    parser.add_argument(
+        "--retranslate",
+        action="store_true",
+        help="既存データを日本語に翻訳・再分類して上書き保存",
+    )
+    args = parser.parse_args()
+
+    if args.retranslate:
+        items = retranslate_recent()
+    else:
+        items = collect_all()
+
     now = sum(1 for i in items if i.get("status") == "available_now")
     soon = sum(1 for i in items if i.get("status") == "coming_soon")
     logger.info("Gemini collection done: total=%d available_now=%d coming_soon=%d", len(items), now, soon)
