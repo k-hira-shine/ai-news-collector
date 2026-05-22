@@ -183,6 +183,7 @@ python3 check_cost.py
 |--------|------|
 | Reddit API連携 | 承認待ち。承認後にGitHub Secretsへ4つの値を設定するだけで自動有効化 |
 | `reviews.html` の内容充実 | 現在4ツールのみ（Claude Code, Cursor, ChatGPT, Gemini）。`data/reviews.json` に追記 |
+| **Gemini追跡: 地域可用性バッジ** | **要検討。** 日本で使える / 米国限定 / 全世界 / 不明 を公式文面からAI分類で推定しカード表示。`starting in the US` 等は拾えるが、記載なし・段階ロールアウトは `unknown` 扱い。精度向上には日本語リリースノート（`gemini.google/release-notes`）の活用が有効。実装時は `region` + `region_note_ja` を `classify_items` に追加 |
 
 ---
 
