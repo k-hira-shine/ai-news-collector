@@ -11,6 +11,8 @@ import os
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+from site_nav import NAV_CSS, render_nav
+
 BASE = Path(__file__).parent
 BUZZ_JSON = BASE / "data" / "buzz.json"
 OUT_HTML = BASE / "docs" / "buzz.html"
@@ -257,10 +259,7 @@ def build(gh_pat: str = "") -> None:
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
-.topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-.nav-link {{ display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-.nav-link:hover {{ background: #475569; color: #fff; }}
-.nav-link.active {{ background: var(--accent); color: #fff; }}
+{NAV_CSS}
 header {{ text-align: center; padding: 1.5rem 1rem 1rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
 header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }}
@@ -336,8 +335,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 @media (max-width: 640px) {{
   header {{ padding: 1rem 0.75rem 0.75rem; }}
   header h1 {{ font-size: 1.3rem; }}
-  .topnav {{ gap: 4px; padding: 4px 8px; }}
-  .nav-link {{ padding: 3px 8px; font-size: 0.75rem; }}
   .layout {{ flex-direction: column; min-height: unset; }}
   .sidebar {{ width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--surface2); padding: 0.6rem 0 0; overflow-y: visible; overflow-x: hidden; }}
   .sidebar-title {{ padding: 0 0.75rem 0.4rem; }}
@@ -359,18 +356,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <a class="nav-link" href="home.html">🏠 ホーム</a>
-  <a class="nav-link" href="index.html">📰 ニュース</a>
-  <a class="nav-link" href="strategy.html">🎯 施策提案</a>
-  <a class="nav-link active" href="buzz.html">🔥 バズりランキング</a>
-  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("buzz.html")}
 <div class="container">
 <header>
   <h1>🔥 バズりランキング</h1>

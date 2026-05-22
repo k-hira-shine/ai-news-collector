@@ -8,6 +8,7 @@ from glob import glob
 from html import escape
 
 from utils import data_dir, STATUS_BANNER_HTML
+from site_nav import NAV_CSS, render_nav
 
 logger = logging.getLogger("ai-news.dashboard")
 
@@ -117,10 +118,7 @@ def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | Non
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
-.topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-.nav-link {{ display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-.nav-link:hover {{ background: #475569; color: #fff; }}
-.nav-link.active {{ background: var(--accent); color: #fff; }}
+{NAV_CSS}
 .container {{ max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 2rem; }}
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
@@ -188,8 +186,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 @media (max-width: 640px) {{
   .container {{ padding: 1rem 0.75rem; }}
   header h1 {{ font-size: 1.3rem; }}
-  .nav-links {{ gap: 0.4rem; }}
-  .nav-link {{ padding: 0.35rem 0.7rem; font-size: 0.82rem; }}
   .card {{ padding: 1rem 0.9rem; margin-bottom: 1rem; border-radius: 10px; }}
   .card h2 {{ font-size: 1rem; }}
   .cat-grid {{ grid-template-columns: 1fr; }}
@@ -208,18 +204,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <a class="nav-link" href="home.html">🏠 ホーム</a>
-  <a class="nav-link active" href="index.html">📰 ニュース</a>
-  <a class="nav-link" href="strategy.html">🎯 施策提案</a>
-  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("index.html")}
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
@@ -707,10 +692,7 @@ def _render_strategy_html(latest: dict | None, all_analyses: list[dict] | None =
 }}
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
-.topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f172aee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--surface2); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-.nav-link {{ display: inline-block; padding: 4px 12px; background: var(--surface2); border-radius: 6px; color: var(--blue); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-.nav-link:hover {{ background: #475569; color: #fff; }}
-.nav-link.active {{ background: var(--accent); color: #fff; }}
+{NAV_CSS}
 .container {{ max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem 2rem; }}
 header {{ text-align: center; margin-bottom: 2rem; }}
 header h1 {{ font-size: 1.8rem; color: var(--accent); }}
@@ -771,8 +753,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 @media (max-width: 640px) {{
   .container {{ padding: 1rem 0.75rem; }}
   header h1 {{ font-size: 1.3rem; }}
-  .nav-links {{ gap: 0.4rem; }}
-  .nav-link {{ padding: 0.35rem 0.7rem; font-size: 0.82rem; }}
   .card {{ padding: 1rem 0.9rem; margin-bottom: 1rem; border-radius: 10px; }}
   .card h2 {{ font-size: 1rem; }}
   .selector-grid {{ grid-template-columns: 1fr; }}
@@ -789,18 +769,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <a class="nav-link" href="home.html">🏠 ホーム</a>
-  <a class="nav-link" href="index.html">📰 ニュース</a>
-  <a class="nav-link active" href="strategy.html">🎯 施策提案</a>
-  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-  <a class="nav-link" href="money.html">🎬 マネタイズ</a>
-  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("strategy.html")}
 <div class="container">
 <header>
   <h1>🎯 AI 施策提案</h1>

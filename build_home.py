@@ -10,6 +10,8 @@ from glob import glob
 from html import escape
 from zoneinfo import ZoneInfo
 
+from site_nav import NAV_CSS, render_nav
+
 logger = logging.getLogger("ai-news.build_home")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -387,10 +389,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }}
-  .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-  .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-  .topnav a:hover {{ color: var(--accent); background: rgba(56,189,248,0.1); }}
-  .topnav a.active {{ background: var(--accent2); color: #fff; }}
+{NAV_CSS}
   header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 22px 32px 18px; border-bottom: 1px solid var(--border); text-align: center; }}
   .site-title {{ font-size: 1.6rem; font-weight: 800; color: var(--accent); }}
   .site-sub {{ font-size: 0.82rem; color: var(--muted); margin-top: 5px; }}
@@ -446,18 +445,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <a href="home.html" class="active">🏠 ホーム</a>
-  <a href="index.html">📰 ニュース</a>
-  <a href="strategy.html">🎯 施策提案</a>
-  <a href="buzz.html">🔥 バズりランキング</a>
-  <a href="money.html">🎬 マネタイズ</a>
-  <a href="sns_success.html">🧠 SNS成功者</a>
-  <a href="post_generator.html">✍️ 投稿ストック</a>
-  <a href="tools.html">🔧 ツール追跡</a>
-  <a href="reviews.html">📋 使ってみた</a>
-  <a href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("home.html")}
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>

@@ -10,6 +10,8 @@ import os
 import random
 from datetime import datetime, timezone
 
+from site_nav import NAV_CSS, render_nav
+
 logger = logging.getLogger("ai-news.post_generator")
 
 GENERATED_DIR_NAME = "generated_posts"
@@ -246,14 +248,10 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }}
-  .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-  .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-  .topnav a:hover {{ color: var(--accent); background: rgba(167,139,250,0.1); }}
-  .topnav a.active {{ background: var(--accent2); color: #fff; }}
+{NAV_CSS}
   header {{ background: linear-gradient(135deg, #1e1b4b, #0a0f1e); padding: 24px 32px; border-bottom: 1px solid var(--border); }}
   header h1 {{ font-size: 1.6rem; color: var(--accent); }}
   header p {{ color: var(--muted); font-size: 0.85rem; margin-top: 4px; }}
-  nav a.active {{ color: var(--accent); background: rgba(167,139,250,0.15); }}
   .container {{ max-width: 1100px; margin: 0 auto; padding: 24px 16px; }}
   .toolbar {{ display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }}
   .stat-chip {{ background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; color: var(--muted); }}
@@ -300,18 +298,7 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <a class="nav-link" href="home.html">🏠 ホーム</a>
-  <a href="index.html">📰 ニュース</a>
-  <a href="strategy.html">🎯 施策提案</a>
-  <a href="buzz.html">🔥 バズりランキング</a>
-  <a href="money.html">🎬 マネタイズ</a>
-  <a href="sns_success.html">🧠 SNS成功者</a>
-  <a href="post_generator.html" class="active">✍️ 投稿ストック</a>
-  <a href="tools.html">🔧 ツール追跡</a>
-  <a href="reviews.html">📋 使ってみた</a>
-  <a href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("post_generator.html")}
 <header>
   <h1>📋 生成済み投稿ストック</h1>
   <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: {now_jst}</p>

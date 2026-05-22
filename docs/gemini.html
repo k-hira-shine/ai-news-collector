@@ -10,11 +10,17 @@
   --text: #e2e8f0; --muted: #94a3b8; --accent: #4285f4;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-.topnav { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; background: #0a0e17; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
-.topnav a { color: var(--muted); text-decoration: none; font-size: 0.82rem; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
-.topnav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
-.topnav a.active { color: var(--accent); background: rgba(66,133,244,0.15); }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }
+
+.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid #2d3748; display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }
+.topnav a { display: inline-block; padding: 4px 12px; background: #1a2236; border-radius: 6px; color: #94a3b8; text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
+.topnav a:hover { color: #38bdf8; background: rgba(56,189,248,0.1); }
+.topnav a.active { background: #0284c7; color: #fff; }
+@media (max-width: 640px) {
+  .topnav { gap: 4px; padding: 4px 8px; }
+  .topnav a { font-size: 0.75rem; padding: 3px 8px; }
+}
+
 header { padding: 24px 20px 12px; border-bottom: 1px solid var(--border); }
 header h1 { font-size: 1.4rem; color: var(--text); }
 header .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
@@ -41,20 +47,20 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </head>
 <body>
 <nav class="topnav">
-  <a href="home.html" class="nav-link">🏠 ホーム</a>
-  <a href="index.html" class="nav-link">📰 ニュース</a>
-  <a href="strategy.html" class="nav-link">🎯 施策提案</a>
-  <a href="buzz.html" class="nav-link">🔥 バズりランキング</a>
-  <a href="money.html" class="nav-link">🎬 マネタイズ</a>
-  <a href="sns_success.html" class="nav-link">🧠 SNS成功者</a>
-  <a href="post_generator.html" class="nav-link">✍️ 投稿ストック</a>
-  <a href="tools.html" class="nav-link">🔧 ツール追跡</a>
-  <a href="reviews.html" class="nav-link">📋 使ってみた</a>
-  <a href="gemini.html" class="nav-link active">✨ Gemini追跡</a>
+  <a href="home.html">🏠 ホーム</a>
+  <a href="index.html">📰 ニュース</a>
+  <a href="strategy.html">🎯 施策提案</a>
+  <a href="buzz.html">🔥 バズりランキング</a>
+  <a href="money.html">🎬 マネタイズ</a>
+  <a href="sns_success.html">🧠 SNS成功者</a>
+  <a href="post_generator.html">✍️ 投稿ストック</a>
+  <a href="tools.html">🔧 ツール追跡</a>
+  <a href="reviews.html">📋 使ってみた</a>
+  <a href="gemini.html" class="active">✨ Gemini追跡</a>
 </nav>
 <header>
   <h1>✨ Gemini 機能トラッカー</h1>
-  <p class="meta">Last updated: 2026-05-22 11:15 JST ｜ 収集 95件（今すぐ 70 / 近日 15）</p>
+  <p class="meta">Last updated: 2026-05-22 11:23 JST ｜ 収集 95件（今すぐ 70 / 近日 15）</p>
 </header>
 <div class="container">
 <section class="gemini-section">

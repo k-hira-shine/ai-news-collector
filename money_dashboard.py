@@ -10,6 +10,8 @@ import os
 import sys
 from datetime import datetime, timedelta, timezone
 
+from site_nav import NAV_CSS, render_nav
+
 logger = logging.getLogger("ai-news.money_dashboard")
 
 JST = timezone(timedelta(hours=9))
@@ -84,10 +86,7 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
   <style>
     * {{ box-sizing: border-box; margin: 0; padding: 0; }}
     body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f0f1a; color: #e0e0f0; min-height: 100vh; padding-top: 48px; }}
-    .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0f0f1aee; backdrop-filter: blur(8px); border-bottom: 1px solid #2a2a4a; display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-    .nav-link {{ display: inline-block; padding: 4px 12px; background: #1e293b; border-radius: 6px; color: #7aa0d4; text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-    .nav-link:hover {{ background: #2a3a5a; color: #fff; }}
-    .nav-link.active {{ background: #f0c060; color: #1a1a2e; }}
+{NAV_CSS}
     header {{ background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-bottom: 1px solid #2a2a4a; padding: 16px 24px; }}
     .header-inner {{ max-width: 1100px; margin: 0 auto; }}
     .header-title {{ font-size: 1.4rem; font-weight: 700; color: #f0c060; }}
@@ -139,8 +138,6 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
       header {{ padding: 14px 12px; }}
       .header-title {{ font-size: 1.1rem; }}
       .header-title span {{ display: block; margin-left: 0; margin-top: 2px; font-size: 0.78rem; }}
-      .topnav {{ gap: 4px; padding: 4px 8px; }}
-      .nav-link {{ font-size: 0.75rem; padding: 3px 8px; }}
       .main {{ padding: 16px 10px; }}
       .stats-bar {{ gap: 8px; }}
       .stat-card {{ padding: 10px 12px; min-width: 100px; }}
@@ -157,18 +154,7 @@ def _render_money_html(cases: list[dict], config: dict = None) -> str:
   </style>
 </head>
 <body>
-<nav class="topnav">
-  <a class="nav-link" href="home.html">🏠 ホーム</a>
-  <a class="nav-link" href="index.html">📰 ニュース</a>
-  <a class="nav-link" href="strategy.html">🎯 施策提案</a>
-  <a class="nav-link" href="buzz.html">🔥 バズりランキング</a>
-  <a class="nav-link active" href="money.html">🎬 マネタイズ</a>
-  <a class="nav-link" href="sns_success.html">🧠 SNS成功者</a>
-  <a class="nav-link" href="post_generator.html">✍️ 投稿ストック</a>
-  <a class="nav-link" href="tools.html">🔧 ツール追跡</a>
-  <a class="nav-link" href="reviews.html">📋 使ってみた</a>
-  <a class="nav-link" href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("money.html")}
 <header>
   <div class="header-inner">
     <div class="header-title">🎬 動画マネタイズ事例集 <span>Last updated: {now_str}</span></div>

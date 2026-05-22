@@ -12,10 +12,16 @@
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }
-  .topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }
-  .topnav a { display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
-  .topnav a:hover { color: var(--accent); background: rgba(56,189,248,0.1); }
-  .topnav a.active { background: var(--accent2); color: #fff; }
+
+.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid #2d3748; display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }
+.topnav a { display: inline-block; padding: 4px 12px; background: #1a2236; border-radius: 6px; color: #94a3b8; text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
+.topnav a:hover { color: #38bdf8; background: rgba(56,189,248,0.1); }
+.topnav a.active { background: #0284c7; color: #fff; }
+@media (max-width: 640px) {
+  .topnav { gap: 4px; padding: 4px 8px; }
+  .topnav a { font-size: 0.75rem; padding: 3px 8px; }
+}
+
   header { background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 22px 32px 18px; border-bottom: 1px solid var(--border); text-align: center; }
   .site-title { font-size: 1.6rem; font-weight: 800; color: var(--accent); }
   .site-sub { font-size: 0.82rem; color: var(--muted); margin-top: 5px; }
@@ -86,7 +92,7 @@
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
-  <div class="site-updated">Generated: 2026-05-22 11:20 JST</div>
+  <div class="site-updated">Generated: 2026-05-22 11:23 JST</div>
 </header>
 <div class="container">
   <div>
@@ -200,6 +206,10 @@
   <div class="log-section">
     <div class="section-label" style="margin-bottom:10px">🕐 最近の更新</div>
     <div class="log-row">
+  <span class="log-date">05/22 11:20</span>
+  <span class="log-sha">850aaa8</span>
+  <span class="log-subject">fix: Home機能一覧の並び順をナビバーと統一</span>
+</div><div class="log-row">
   <span class="log-date">05/22 11:18</span>
   <span class="log-sha">1ad534d</span>
   <span class="log-subject">feat: Gemini追跡を日本語表示化しHomeに追加</span>
@@ -227,10 +237,6 @@
   <span class="log-date">05/21 07:46</span>
   <span class="log-sha">55311dd</span>
   <span class="log-subject">buzz: 2026-05-20_2246</span>
-</div><div class="log-row">
-  <span class="log-date">05/21 07:33</span>
-  <span class="log-sha">9d5b733</span>
-  <span class="log-subject">fix: apify-client 3.0 破壊的変更で X 収集が全滅する問題を修正</span>
 </div>
   </div>
 </div>

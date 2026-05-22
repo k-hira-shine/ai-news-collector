@@ -7,6 +7,8 @@ from datetime import datetime, timezone
 from glob import glob
 from html import escape
 
+from site_nav import NAV_CSS, render_nav
+
 logger = logging.getLogger("ai-news.build_tools")
 
 TOOLS_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "tools")
@@ -390,10 +392,7 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }}
-  .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-  .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-  .topnav a:hover {{ color: var(--accent); background: rgba(56,189,248,0.1); }}
-  .topnav a.active {{ background: var(--accent2); color: #fff; }}
+{NAV_CSS}
   header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 16px 32px; border-bottom: 1px solid var(--border); }}
   .header-inner {{ max-width: 1200px; margin: 0 auto; }}
   .header-title {{ font-size: 1.4rem; font-weight: 700; color: var(--accent); }}
@@ -455,25 +454,12 @@ def build_tools_page(output_path: str = OUTPUT_PATH) -> None:
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
     header {{ padding: 12px; }}
-    .topnav {{ gap: 4px; padding: 4px 8px; }}
-    .topnav a {{ font-size: 0.75rem; padding: 3px 8px; }}
     .tools-grid {{ grid-template-columns: 1fr; }}
   }}
 </style>
 </head>
 <body>
-<nav class="topnav">
-  <a href="home.html">🏠 ホーム</a>
-  <a href="index.html">📰 ニュース</a>
-  <a href="strategy.html">🎯 施策提案</a>
-  <a href="buzz.html">🔥 バズりランキング</a>
-  <a href="money.html">🎬 マネタイズ</a>
-  <a href="sns_success.html">🧠 SNS成功者</a>
-  <a href="post_generator.html">✍️ 投稿ストック</a>
-  <a href="tools.html" class="active">🔧 ツール追跡</a>
-  <a href="reviews.html">📋 使ってみた</a>
-  <a href="gemini.html">✨ Gemini追跡</a>
-</nav>
+{render_nav("tools.html")}
 <header>
   <div class="header-inner">
     <div class="header-title">🔧 AIツール・機能リリース追跡 <span>Last updated: {now_str}</span></div>

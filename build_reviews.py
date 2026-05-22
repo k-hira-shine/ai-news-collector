@@ -7,6 +7,8 @@ from datetime import datetime
 from html import escape
 from zoneinfo import ZoneInfo
 
+from site_nav import NAV_CSS, render_nav
+
 logger = logging.getLogger("ai-news.build_reviews")
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), "data", "reviews.json")
@@ -34,19 +36,6 @@ USE_FOR_LABELS = {
     "work":     "💼 業務効率化",
     "other":    "📌 その他",
 }
-
-NAV_LINKS = [
-    ("home.html",           "🏠 ホーム"),
-    ("index.html",          "📰 ニュース"),
-    ("strategy.html",       "🎯 施策提案"),
-    ("buzz.html",           "🔥 バズりランキング"),
-    ("money.html",          "🎬 マネタイズ"),
-    ("sns_success.html",    "🧠 SNS成功者"),
-    ("post_generator.html", "✍️ 投稿ストック"),
-    ("tools.html",          "🔧 ツール追跡"),
-    ("reviews.html",        "📋 使ってみた"),
-    ("gemini.html",         "✨ Gemini追跡"),
-]
 
 
 def load_reviews() -> list[dict]:
@@ -170,11 +159,7 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
     for cat in categories:
         category_btns += f'<button class="filter-btn" data-filter-category="{escape(cat)}">{escape(cat)}</button>\n'
 
-    nav_html = "\n".join(
-        f'<a href="{href}" {"class=\"active\"" if href == "reviews.html" else ""}>{label}</a>'
-        for href, label in NAV_LINKS
-    )
-    topnav_html = f'<nav class="topnav">\n{nav_html}\n</nav>'
+    nav_html = render_nav("reviews.html")
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -191,10 +176,7 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
   }}
   * {{ box-sizing: border-box; margin: 0; padding: 0; }}
   body {{ background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; min-height: 100vh; padding-top: 48px; }}
-  .topnav {{ position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid var(--border); display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }}
-  .topnav a {{ display: inline-block; padding: 4px 12px; background: var(--card); border-radius: 6px; color: var(--muted); text-decoration: none; font-size: 0.82rem; white-space: nowrap; }}
-  .topnav a:hover {{ color: var(--accent); background: rgba(56,189,248,0.1); }}
-  .topnav a.active {{ background: var(--accent2); color: #fff; }}
+{NAV_CSS}
   header {{ background: linear-gradient(135deg, #0c1a35, #0a0f1e); padding: 16px 32px; border-bottom: 1px solid var(--border); }}
   .header-title {{ font-size: 1.4rem; font-weight: 700; color: var(--accent); }}
   .header-title span {{ font-size: 0.85rem; color: var(--muted); margin-left: 10px; font-weight: 400; }}
@@ -239,14 +221,12 @@ def build_reviews_page(output_path: str = OUTPUT_PATH) -> None:
   footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 32px; margin-top: 20px; border-top: 1px solid var(--border); }}
   @media (max-width: 640px) {{
     header {{ padding: 12px; }}
-    .topnav {{ gap: 4px; padding: 4px 8px; }}
-    .topnav a {{ font-size: 0.75rem; padding: 3px 8px; }}
     .reviews-grid {{ grid-template-columns: 1fr; }}
   }}
 </style>
 </head>
 <body>
-{topnav_html}
+{nav_html}
 <header>
   <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: {now_str}</span></div>
 </header>

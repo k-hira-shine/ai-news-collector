@@ -8,23 +8,12 @@ from glob import glob
 from html import escape
 from zoneinfo import ZoneInfo
 
+from site_nav import NAV_CSS, render_nav
+
 logger = logging.getLogger("ai-news.build_gemini")
 
 GEMINI_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "gemini")
 OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "docs", "gemini.html")
-
-NAV_LINKS = [
-    ("home.html",           "🏠 ホーム"),
-    ("index.html",          "📰 ニュース"),
-    ("strategy.html",       "🎯 施策提案"),
-    ("buzz.html",           "🔥 バズりランキング"),
-    ("money.html",          "🎬 マネタイズ"),
-    ("sns_success.html",    "🧠 SNS成功者"),
-    ("post_generator.html", "✍️ 投稿ストック"),
-    ("tools.html",          "🔧 ツール追跡"),
-    ("reviews.html",        "📋 使ってみた"),
-    ("gemini.html",         "✨ Gemini追跡"),
-]
 
 STATUS_LABELS = {
     "available_now": ("今すぐ使える", "#10b981"),
@@ -143,10 +132,7 @@ def build_gemini_page(output_path: str = OUTPUT_PATH) -> None:
     available = [i for i in items if i.get("status") == "available_now"]
     coming = [i for i in items if i.get("status") == "coming_soon"]
 
-    nav_html = "\n".join(
-        f'  <a href="{href}" class="nav-link{" active" if href == "gemini.html" else ""}">{label}</a>'
-        for href, label in NAV_LINKS
-    )
+    nav_html = render_nav("gemini.html")
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -160,11 +146,8 @@ def build_gemini_page(output_path: str = OUTPUT_PATH) -> None:
   --text: #e2e8f0; --muted: #94a3b8; --accent: #4285f4;
 }}
 * {{ box-sizing: border-box; margin: 0; padding: 0; }}
-body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }}
-.topnav {{ display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; background: #0a0e17; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }}
-.topnav a {{ color: var(--muted); text-decoration: none; font-size: 0.82rem; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }}
-.topnav a:hover {{ color: var(--text); background: rgba(255,255,255,0.05); }}
-.topnav a.active {{ color: var(--accent); background: rgba(66,133,244,0.15); }}
+body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }}
+{NAV_CSS}
 header {{ padding: 24px 20px 12px; border-bottom: 1px solid var(--border); }}
 header h1 {{ font-size: 1.4rem; color: var(--text); }}
 header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
@@ -190,9 +173,7 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
 </style>
 </head>
 <body>
-<nav class="topnav">
 {nav_html}
-</nav>
 <header>
   <h1>✨ Gemini 機能トラッカー</h1>
   <p class="meta">Last updated: {now_str} ｜ 収集 {len(items)}件（今すぐ {len(available)} / 近日 {len(coming)}）</p>
