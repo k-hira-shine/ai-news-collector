@@ -612,7 +612,11 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
 - unknown: Gemini機能の新着情報か判断できない、または上記どちらにも当てはまらない
 
 ## 日本語出力（必須）
-- title_ja: 40字以内の日本語見出し。英語の記事・投稿は必ず自然な日本語に翻訳すること
+- title_ja: 50字以内。**一覧を見た新入社員が「何の機能・製品か」すぐ分かる見出し**
+  - 製品名・機能名・連携先・何ができるかを具体的に書く
+  - 抽象語・マーケ語だけにしない（×「インテリジェントなアイウェア」→ ○「Geminiアプリ連携のオーディオグラス（Samsung共同）」）
+  - 英語キャッチコピーの直訳ではなく、内容を平易に言い換える
+  - summary_ja と同文にしない（title=何、summary=どう便利か/詳細）
 - summary_ja: 80字以内の日本語要約。何の機能・発表かを平易に説明（分類理由ではなく内容の要約）
 - reason: 分類理由を1文（日本語）。UIには表示しない内部用
 
@@ -645,7 +649,7 @@ def classify_items(items: list[dict], config: dict) -> list[dict]:
             if not base:
                 continue
             base["status"] = row.get("status", "unknown")
-            base["title_ja"] = row.get("title_ja", "")[:80]
+            base["title_ja"] = row.get("title_ja", "")[:50]
             base["summary_ja"] = row.get("summary_ja", "")[:160]
             base["reason"] = row.get("reason", "")[:200]
             base["classified_at"] = datetime.now(timezone.utc).isoformat()
