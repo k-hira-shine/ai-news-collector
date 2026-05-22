@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import re
+import time
 from datetime import datetime, timedelta, timezone
 from typing import Any
 from zoneinfo import ZoneInfo
@@ -788,19 +789,36 @@ def classify_items(items: list[dict], config: dict, *, titles_only: bool = False
 {items_text}"""
             schema = CLASSIFY_SCHEMA
 
-        try:
-            response = client.models.generate_content(
-                model=model_name,
-                contents=prompt,
-                config=types.GenerateContentConfig(
-                    response_mime_type="application/json",
-                    response_schema=schema,
-                    thinking_config=types.ThinkingConfig(thinking_budget=128),
-                ),
-            )
-            raw = json.loads(response.text)
-        except Exception as e:
-            logger.error("Gemini classification failed: %s", e)
+        raw: dict | None = None
+        last_err: Exception | None = None
+        for attempt in range(4):
+            try:
+                response = client.models.generate_content(
+                    model=model_name,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        response_schema=schema,
+                        thinking_config=types.ThinkingConfig(thinking_budget=128),
+                    ),
+                )
+                raw = json.loads(response.text)
+                break
+            except Exception as e:
+                last_err = e
+                err_text = str(e)
+                retryable = "503" in err_text or "UNAVAILABLE" in err_text or "429" in err_text
+                if retryable and attempt < 3:
+                    wait = min(2 * (2 ** attempt), 30)
+                    logger.warning(
+                        "Gemini classification retry %d/3 in %ds: %s",
+                        attempt + 1, wait, e,
+                    )
+                    time.sleep(wait)
+                    continue
+                break
+        if raw is None:
+            logger.error("Gemini classification failed: %s", last_err)
             for item in batch:
                 item.setdefault("status", "unknown")
                 item.setdefault("title_ja", (item.get("title") or "")[:80])
