@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini 機能トラッカー</title>
+<style>
+:root {
+  --bg: #0f1419; --card: #1a2236; --border: #2d3748;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #4285f4;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+.topnav { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 16px; background: #0a0e17; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; }
+.topnav a { color: var(--muted); text-decoration: none; font-size: 0.82rem; padding: 4px 10px; border-radius: 6px; white-space: nowrap; }
+.topnav a:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+.topnav a.active { color: var(--accent); background: rgba(66,133,244,0.15); }
+header { padding: 24px 20px 12px; border-bottom: 1px solid var(--border); }
+header h1 { font-size: 1.4rem; color: var(--text); }
+header .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 40px; }
+.gemini-section { margin-bottom: 36px; }
+.gemini-section h2 { font-size: 1.1rem; margin-bottom: 14px; color: var(--text); }
+.gemini-section h2 .count { font-size: 0.85rem; color: var(--muted); font-weight: normal; }
+.gemini-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+.gemini-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.card-head { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; align-items: center; }
+.status-badge { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; border: 1px solid; }
+.source-badge, .date-badge { font-size: 0.72rem; color: var(--muted); }
+.card-title { font-size: 0.95rem; margin-bottom: 6px; line-height: 1.4; }
+.card-title a { color: var(--text); text-decoration: none; }
+.card-title a:hover { color: var(--accent); }
+.card-summary { font-size: 0.85rem; color: #cbd5e1; }
+.card-reason { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); background: var(--card); border-radius: 10px; border: 1px dashed var(--border); }
+.sources-list { list-style: none; background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 20px; }
+.sources-list li { padding: 4px 0; font-size: 0.85rem; color: var(--muted); }
+footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); }
+@media (max-width: 640px) { .gemini-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="home.html" class="nav-link">🏠 ホーム</a>
+  <a href="index.html" class="nav-link">📰 ニュース</a>
+  <a href="strategy.html" class="nav-link">🎯 施策提案</a>
+  <a href="buzz.html" class="nav-link">🔥 バズりランキング</a>
+  <a href="money.html" class="nav-link">🎬 マネタイズ</a>
+  <a href="sns_success.html" class="nav-link">🧠 SNS成功者</a>
+  <a href="post_generator.html" class="nav-link">✍️ 投稿ストック</a>
+  <a href="tools.html" class="nav-link">🔧 ツール追跡</a>
+  <a href="reviews.html" class="nav-link">📋 使ってみた</a>
+  <a href="gemini.html" class="nav-link active">✨ Gemini追跡</a>
+</nav>
+<header>
+  <h1>✨ Gemini 機能トラッカー</h1>
+  <p class="meta">Last updated: 2026-05-22 11:11 JST ｜ 収集 95件（今すぐ 35 / 近日 6）</p>
+</header>
+<div class="container">
+<section class="gemini-section">
+  <h2>今すぐ使える機能 <span class="count">35件</span></h2>
+  <div class="gemini-grid"><article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2057237073397268970" target="_blank" rel="noopener">Gemini 3.5 Flash understands complex topics and diagrams for your specific needs to visualize the results in a way that’s perfect for you.
+
+Watch Gemini take an advanced math paper, explore it visuall</a></h3>
+  <p class="card-summary">Gemini 3.5 Flashが複雑なトピックや図を理解し、結果を視覚化。</p>
+  <p class="card-reason">本文中に機能の説明があり、具体的な利用例が示されているため、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google DeepMind公式</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleDeepMind/status/2057191598421836253" target="_blank" rel="noopener">Gemini 3.5 Flash has landed. https://t.co/FiiBrK1De1</a></h3>
+  <p class="card-summary">Gemini 3.5 Flashがリリースされました。</p>
+  <p class="card-reason">「has landed」という表現から、すでに公開済みであると判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2057184637600887109" target="_blank" rel="noopener">Our Google AI subscriptions offer higher limits in the Gemini app, extra storage, and premium benefits across Google. Yesterday at #GoogleIO, we announced even more benefits at no extra cost. See what</a></h3>
+  <p class="card-summary">Google AIサブスクリプションの追加特典を発表。</p>
+  <p class="card-reason">「Yesterday at #GoogleIO, we announced even more benefits」という表現から、すでに発表・利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2057154490143588388" target="_blank" rel="noopener">At #GoogleIO, we shared how we’re making AI more helpful for everyone — including releasing two new models, Gemini Omni and Gemini 3.5, and unlocking agents and agentic experiences across our products</a></h3>
+  <p class="card-summary">Google I/OでGemini OmniとGemini 3.5を含む新モデルを発表。</p>
+  <p class="card-reason">「releasing two new models」という表現と、イベントでの発表内容であることから、すでに利用可能または発表済みと判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2057140405523960212" target="_blank" rel="noopener">Gemini 3.5 Flash quickly delivers organized results, no matter how messy the input is.
+
+Watch Gemini take chats and texts with clients and turn them into usable documents for your small business.</a></h3>
+  <p class="card-summary">Gemini 3.5 Flashは、複雑な入力から整理された結果を迅速に提供。</p>
+  <p class="card-reason">本文中に機能の説明があり、具体的な利用例が示されているため、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2056921831513493890" target="_blank" rel="noopener">Keynote? Done.
+Laptop? Closed.
+
+@GeminiApp Spark? Running. https://t.co/UcTQ9CwbLP</a></h3>
+  <p class="card-summary">Gemini App Sparkが稼働中。</p>
+  <p class="card-reason">「Running」という表現から、すでに稼働していると判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Demis Hassabis (Google DeepMind CEO)</span>
+    <span class="date-badge">Wed May 20</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/demishassabis/status/2056904067406860545" target="_blank" rel="noopener">Gemini 3.5 Flash is amazing!
+
+- Performs better than 3.1 Pro on coding &amp;amp; agentic tasks
+- 4x faster than other frontier models
+- 12x faster in @antigravity - 800 tokens/sec!
+- Often at less than ha</a></h3>
+  <p class="card-summary">Gemini 3.5 Flashは3.1 Proより高性能で高速。</p>
+  <p class="card-reason">「Try it in @antigravity, @GeminiApp &amp; more - enjoy!」という表現から、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2056853290672074912" target="_blank" rel="noopener">We’re offering $2M in prizes to builders who want to change the world for the better. 🌍
+
+We just launched the Build with Gemini XPRIZE hackathon at #GoogleIO — a global competition challenging you to </a></h3>
+  <p class="card-summary">Build with Gemini XPRIZEハッカソンをGoogle I/Oで開始。</p>
+  <p class="card-reason">「We just launched the Build with Gemini XPRIZE hackathon」という表現から、すでに開始済みと判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2056847066845057470" target="_blank" rel="noopener">We’re making it easier to build, test, and ship for the 3 billion people using @Android.
+
+Today at #GoogleIO we’re introducing updates for Android developers — with agents doing the heavy lifting:
+
+🟢 </a></h3>
+  <p class="card-summary">Android開発者向けにAIを活用したアップデートを発表。</p>
+  <p class="card-reason">「Today at #GoogleIO we’re introducing updates for Android developers」とあり、発表済みの機能が紹介されているため、利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google AI公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleAI/status/2056845506601718271" target="_blank" rel="noopener">Today, we launched  a brand-new intelligent Search box.
+
+Here&#x27;s what that means:
+
+An upgrade to the Search experience with our most advanced Gemini 3.5 models, bringing with them our latest agentic ca</a></h3>
+  <p class="card-summary">高度なGemini 3.5モデルを搭載した新しいAI検索体験を公開。</p>
+  <p class="card-reason">「Today, we launched a brand-new intelligent Search box.」「This new AI Search experience is live today across desktop and mobile, worldwide.」という表現から、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2056838913944424469" target="_blank" rel="noopener">Today we’re launching a one-click export to @Antigravity.
+
+Developers can now bring entire projects from prototyping in @GoogleAIStudio to scaled development in Antigravity with a single click.
+
+#Goog</a></h3>
+  <p class="card-summary">Antigravityへのワンクリックエクスポート機能を提供開始。</p>
+  <p class="card-reason">「Today we’re launching a one-click export to @Antigravity」という表現から、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2056838653855650286" target="_blank" rel="noopener">Today we’re launching @Antigravity 2.0 — our standalone desktop app built to orchestrate multiple agents to execute tasks in parallel. 💻
+
+#GoogleIO https://t.co/ix6jSLJ5Wb</a></h3>
+  <p class="card-summary">複数のエージェントを並行して実行するデスクトップアプリAntigravity 2.0をリリース。</p>
+  <p class="card-reason">「Today we’re launching @Antigravity 2.0」という表現から、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2056838495298367773" target="_blank" rel="noopener">We&#x27;re giving you access to the exact same @Antigravity agent harness we use at Google.
+
+Introducing Managed Agents in the Gemini API. In a single API call, you get the agent and a secure, hosted Linux</a></h3>
+  <p class="card-summary">Gemini APIでManaged Agentsを発表。</p>
+  <p class="card-reason">「Introducing Managed Agents in the Gemini API」という表現から、すでに発表済み・利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056829734181585038" target="_blank" rel="noopener">Build your first game with Gemini 3.5 Flash.
+
+Translate everyday objects directly into interactive, digital experiences without complex 3D modeling. Start with a Nano Banana prompt, turn your image in</a></h3>
+  <p class="card-summary">Gemini 3.5 Flashで初のゲームを構築。</p>
+  <p class="card-reason">本文中に機能の説明があり、具体的な利用例が示されているため、すでに利用可能と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google DeepMind公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleDeepMind/status/2056826903957504136" target="_blank" rel="noopener">Gemini 3.5 Flash 🤝 @Antigravity
+
+Watch how the model deploys multiple subagents to design and build an entire city. https://t.co/jI1e5ND8md</a></h3>
+  <p class="card-summary">Gemini 3.5 FlashがAntigravityに展開され、モデルが複数のサブエージェントを動員して都市を設計・構築する方法を紹介。</p>
+  <p class="card-reason">別の投稿でGemini 3.5 Flashが「available today」と明記されているため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Sundar Pichai (Google CEO)</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/sundarpichai/status/2056816915717443862" target="_blank" rel="noopener">Gemini Omni doesn&#x27;t just build scenes that look real, it reasons about what should happen next. It combines an intuitive understanding of physics with Gemini&#x27;s knowledge of history, science, and cultu</a></h3>
+  <p class="card-summary">Gemini Omniは物理学とGeminiの知識を組み合わせ、動画出力としてGoogle AI Plus, Pro, Ultra加入者向けに展開中。</p>
+  <p class="card-reason">「Rolling out today starting with video outputs」と明記されており、現在進行形であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056814052039356806" target="_blank" rel="noopener">Meet Gemini Omni, our new model that can create anything from any input, starting with video.
+
+With Gemini Omni, you can combine images, videos and text as inputs and generate high-quality videos grou</a></h3>
+  <p class="card-summary">Gemini Omniは、画像、動画、テキストを組み合わせて高品質な動画を生成できる新しいモデル。</p>
+  <p class="card-reason">別の投稿でGemini Omniが「coming to the Gemini app for paid subscribers today」と明記されており、現在利用可能であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google DeepMind公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleDeepMind/status/2056804306653794336" target="_blank" rel="noopener">Google Flow 🤝 Gemini Omni
+
+Create more cinematic stories with our latest model, which brings batch editing, improved character consistency and more. Here’s what else is new for @FlowbyGoogle → https:/</a></h3>
+  <p class="card-summary">Google FlowとGemini Omniの連携により、バッチ編集や文字の一貫性向上など、よりシネマティックなストーリー作成が可能に。</p>
+  <p class="card-reason">別の投稿でGemini Omniが「coming to the Gemini app for paid subscribers today」と明記されており、現在利用可能であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056800579159216202" target="_blank" rel="noopener">Gemini Omni is coming to the Gemini app for paid subscribers today. 
+
+It lets you bring your ideas to life using any combination of text, images, and video inputs. Just open up Gemini, attach a video </a></h3>
+  <p class="card-summary">Gemini Omniは、テキスト、画像、動画の組み合わせでアイデアを実現できる機能として、本日よりGeminiアプリの有料加入者向けに提供開始。</p>
+  <p class="card-reason">「Gemini Omni is coming to the Gemini app for paid subscribers today」と明記されており、本日利用可能であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056799831444558252" target="_blank" rel="noopener">We&#x27;ve completely redesigned the Gemini experience from the ground up.
+
+From the moment you open the app or visit Gemini on the web, you’re greeted with a stunning new design language we call Neural Ex</a></h3>
+  <p class="card-summary">Gemini体験がNeural Expressiveという新しいデザイン言語で根本的に再設計された。</p>
+  <p class="card-reason">「We&#x27;ve completely redesigned the Gemini experience from the ground up」とあり、すでに完了した変更について言及しているため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google AI公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleAI/status/2056797434735710463" target="_blank" rel="noopener">Three years ago, Gemini started by understanding the world.
+
+With Gemini 2, models learned to think and reason.
+
+Late last year, Gemini 3 brought any idea to life.
+
+Today, we’re continuing that journe</a></h3>
+  <p class="card-summary">Gemini 3.5シリーズが始まり、最初のリリースとして、エージェントとコーディングに優れたGemini 3.5 Flashが登場。</p>
+  <p class="card-reason">「starting with Gemini 3.5 Flash」とあり、別の投稿で本日利用可能とされているため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Sundar Pichai (Google CEO)</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/sundarpichai/status/2056796893951426705" target="_blank" rel="noopener">Just off stage at #GoogleIO, some highlights from this morning 🧵
+
+Gemini 3.5 Flash is available today for everyone in @antigravity and across our products and APIs.
+
+Compared to 3.1 Pro, 3.5 Flash is </a></h3>
+  <p class="card-summary">Gemini 3.5 Flashは本日よりAntigravityおよび製品・API全体で利用可能であり、コーディングで大幅な進歩を遂げている。</p>
+  <p class="card-reason">「Gemini 3.5 Flash is available today for everyone」と明記されており、本日利用可能であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056792679607103626" target="_blank" rel="noopener">We&#x27;re reducing the price of our top-tier Google AI Ultra plan from $250 to $200/mo AND introducing a new $100/mo Ultra plan tier.
+
+This new plan unlocks 5x higher usage limits to Gemini app than the P</a></h3>
+  <p class="card-summary">Google AI Ultraプランの価格を改定し、新しい$100/月のUltraプランが導入され、Geminiアプリの使用制限が5倍に。</p>
+  <p class="card-reason">価格の「reducing」や新しいプランの「introducing」とあり、現在の提供に関する情報であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056788115893993701" target="_blank" rel="noopener">Gemini 3.5 Flash is here and it&#x27;s our best model yet for getting things done quickly and efficiently.
+
+Whether you need help with everyday tasks or multi-step creative projects, Gemini 3.5 Flash navig</a></h3>
+  <p class="card-summary">Gemini 3.5 Flashが登場し、日常業務から多段階のクリエイティブプロジェクトまで、迅速かつ効率的にタスクをこなすのに最適なモデル。</p>
+  <p class="card-reason">「Gemini 3.5 Flash is here」と明記されており、現在利用可能であるため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google DeepMind公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleDeepMind/status/2056787987774816525" target="_blank" rel="noopener">Introducing Gemini 3.5: our newest family of models combining frontier intelligence with real-world action.
+
+The first release is 3.5 Flash, our strongest model yet for agents and coding 🧵</a></h3>
+  <p class="card-summary">Gemini 3.5シリーズを発表し、最初のリリースである3.5 Flashはエージェントとコーディングにおいて最強のモデル。</p>
+  <p class="card-reason">「The first release is 3.5 Flash」とあり、別の投稿で本日利用可能とされているため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google DeepMind公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleDeepMind/status/2056786446636212467" target="_blank" rel="noopener">We’re dropping Gemini Omni: our first step towards a model that can create anything from anything - starting with video.
+
+It combines Gemini’s intelligence with our generative media systems - represen</a></h3>
+  <p class="card-summary">Gemini Omniは、動画から始め、あらゆるものからあらゆるものを生成できるモデルに向けた最初のステップ。</p>
+  <p class="card-reason">「We’re dropping Gemini Omni」とあり、別の投稿で本日利用可能とされているため。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Demis Hassabis (Google DeepMind CEO)</span>
+    <span class="date-badge">Tue May 12</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/demishassabis/status/2054326444189253655" target="_blank" rel="noopener">Really cool work from the team reimagining the mouse pointer to be intelligent! Try the prototype in @GoogleAIStudio it&#x27;s pretty magical.</a></h3>
+  <p class="card-summary">Demis Hassabis氏がGoogle AI Studioでのマウスカーソルプロトタイプを推奨。</p>
+  <p class="card-reason">「Try the prototype in @GoogleAIStudio」とあり、現在試用可能と判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Sundar Pichai (Google CEO)</span>
+    <span class="date-badge">Tue May 12</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/sundarpichai/status/2054255858700415005" target="_blank" rel="noopener">Today at the @Android Show (I/O edition) we announced Gemini Intelligence - bringing the best of Gemini to our most advanced devices.
+
+Automate multi-step tasks across apps and Chrome, fill out forms </a></h3>
+  <p class="card-summary">Android Show (I/O) でGemini Intelligenceを発表。</p>
+  <p class="card-reason">「announced」とあり、既に発表済みと判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Thu May 21</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2057563404798206060" target="_blank" rel="noopener">Last year at #GoogleIO we introduced Google Flow, built with and for filmmakers. Since then, we’ve:
+🌍 Brought Google Flow to over 100 countries 
+🎥 Expanded Google Flow’s capabilities in video and imag</a></h3>
+  <p class="card-summary">Google Flowが100カ国以上に展開され、機能も拡大。</p>
+  <p class="card-reason">「Last year at #GoogleIO we introduced Google Flow」とあり、その後「Brought Google Flow to over 100 countries」とあるため、既に利用可能と判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Thu May 21</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2057550225863246236" target="_blank" rel="noopener">Gemini can now connect to even more apps, including @OpenTable, @Canva, and @Instacart.
+
+Whether you&#x27;re booking a table at a restaurant, creating a flyer, or ordering groceries, Gemini doesn’t just fi</a></h3>
+  <p class="card-summary">GeminiがOpenTable、Canva、Instacartなどのアプリと接続可能に。</p>
+  <p class="card-reason">「Gemini can now connect to even more apps」とあり、現在利用可能と判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Thu May 21</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2057500470147698936" target="_blank" rel="noopener">Get a head start on your day with Daily Brief. 
+
+Gemini can now proactively flag what matters most in an easily digestible to-do list, so you’re ready for the day before you even finish breakfast.</a></h3>
+  <p class="card-summary">GeminiのDaily Brief機能で重要な情報をプロアクティブに把握。</p>
+  <p class="card-reason">「Gemini can now proactively flag what matters most」とあり、現在利用可能と判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Thu May 21</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2057257773868388448" target="_blank" rel="noopener">Our new Gemini 3.5 Flash is our strongest agentic and coding model yet, delivering frontier-level performance at 4x the speed of comparable frontier models at less than half the cost.
+
+We had @TulseeD</a></h3>
+  <p class="card-summary">新しいGemini 3.5 Flashがリリースされ、高性能とコスト効率を実現。</p>
+  <p class="card-reason">「Our new Gemini 3.5 Flash is our strongest agentic and coding model yet」とあり、リリース済みと判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google DeepMind公式</span>
+    <span class="date-badge">Thu May 21</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleDeepMind/status/2057256257153884161" target="_blank" rel="noopener">How can you accelerate your day to day research workflow?
+
+By giving AI the right scientific toolkit.
+
+We launched Science Skills for Google @Antigravity, integrating insights from over 30 major life </a></h3>
+  <p class="card-summary">Google Antigravity向けに30以上の生命科学ソースを統合したScience Skillsを発表。</p>
+  <p class="card-reason">「We launched Science Skills」とあり、既にリリース済みと判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Fri May 22</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2057616371748651054" target="_blank" rel="noopener">Gemini Omni is here, and we’ve been seeing amazing creations all week. Here are some standouts 👇</a></h3>
+  <p class="card-summary">Gemini Omniが利用可能になり、素晴らしい作品が多数作成。</p>
+  <p class="card-reason">「Gemini Omni is here」とあり、現在利用可能と判断できます。</p>
+</article>
+<article class="gemini-card" data-status="available_now">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#10b981;color:#10b981">今すぐ使える</span>
+    <span class="source-badge">🐦 Google AI公式</span>
+    <span class="date-badge">Fri May 08</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleAI/status/2052789253038592466" target="_blank" rel="noopener">Happy Friday! 🎉We’re officially 11 days away from I/O (but the launches keep rolling in). Here’s what happened this week:
+
+— The @googlehealth app, featuring a personalized health coach built with Gem</a></h3>
+  <p class="card-summary">Google I/Oに向けてGoogle Healthアプリ、Gemma 4などの新機能が続々登場。</p>
+  <p class="card-reason">「The @googlehealth app, featuring a personalized health coach built with Gemini」とあり、現在利用可能と判断できます。</p>
+</article></div>
+</section>
+<section class="gemini-section">
+  <h2>近日公開予定 <span class="count">6件</span></h2>
+  <div class="gemini-grid"><article class="gemini-card" data-status="coming_soon">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="source-badge">🐦 Google AI公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GoogleAI/status/2056859455833473091" target="_blank" rel="noopener">New upgrades to the @GeminiApp are you helping you get more done:
+
+✨Gemini Spark is your 24/7 personal AI agent that can take action on your behalf, under your direction. It  seamlessly integrates wit</a></h3>
+  <p class="card-summary">Gemini Appがアップデートされ、新機能SparkとDaily Briefが登場。</p>
+  <p class="card-reason">Daily Briefは「rolling out starting today」、Gemini Sparkは「starting to roll out next week」と具体的な提供開始時期が示されているため、近日中と判断しました。</p>
+</article>
+<article class="gemini-card" data-status="coming_soon">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056802363269329304" target="_blank" rel="noopener">Last month we dropped the Gemini app for macOS.
+
+In the coming weeks, we’ll be bringing Gemini Spark to the Gemini desktop app so it can help with tasks like organizing your local files, or extracting</a></h3>
+  <p class="card-summary">Gemini Sparkが数週間以内にGeminiデスクトップアプリに導入され、ファイル整理やPDFデータ抽出などのタスクをサポート。</p>
+  <p class="card-reason">「In the coming weeks, we’ll be bringing Gemini Spark」と明記されており、近日公開予定であるため。</p>
+</article>
+<article class="gemini-card" data-status="coming_soon">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056801918018564538" target="_blank" rel="noopener">Gemini Spark is your 24/7 personal AI agent that helps you navigate your digital life. 
+
+It transforms Gemini from an assistant that answers your questions, to one that does the work on your behalf, u</a></h3>
+  <p class="card-summary">Gemini Sparkは、質問に答えるだけでなく、ユーザーに代わって作業を行う24時間体制のAIエージェント。</p>
+  <p class="card-reason">別の投稿でGemini Sparkが「In the coming weeks」とリリース予定が明記されているため。</p>
+</article>
+<article class="gemini-card" data-status="coming_soon">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056800978343764238" target="_blank" rel="noopener">Daily Brief is a new personalized digest that’s designed to be your first stop every morning.
+
+It gathers info from your inbox, calendar, and tasks to prioritize, organize, and suggest the next steps </a></h3>
+  <p class="card-summary">Daily Briefは、受信トレイやカレンダー、タスクから情報を収集し、優先順位を付けて次のステップを提案する新しいパーソナライズされたダイジェスト。</p>
+  <p class="card-reason">別の投稿でDaily Briefが「coming soon」と明記されているため。</p>
+</article>
+<article class="gemini-card" data-status="coming_soon">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="source-badge">🐦 Gemini App公式</span>
+    <span class="date-badge">Tue May 19</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/GeminiApp/status/2056792333132460322" target="_blank" rel="noopener">Gemini Spark is your new 24/7 personal AI agent.
+
+Give it a task and it works autonomously in the background, even if your phone and laptop are turned off. You choose to turn it on and it&#x27;s designed t</a></h3>
+  <p class="card-summary">Gemini Sparkは、タスクを自律的に実行する24時間体制の新しいAIエージェントであり、主要なアクションを実行する前にユーザーに確認するよう設計されている。</p>
+  <p class="card-reason">別の投稿でGemini Sparkが「In the coming weeks」とリリース予定が明記されているため。</p>
+</article>
+<article class="gemini-card" data-status="coming_soon">
+  <div class="card-head">
+    <span class="status-badge" style="border-color:#f59e0b;color:#f59e0b">近日公開予定</span>
+    <span class="source-badge">🐦 Google本体公式</span>
+    <span class="date-badge">Thu May 21</span>
+  </div>
+  <h3 class="card-title"><a href="https://x.com/Google/status/2057492440106635763" target="_blank" rel="noopener">The future of intelligent eyewear is coming this fall. 👓
+Here’s your first look at our upcoming audio glasses, designed in partnership with @SamsungMobile, @_GentleMonster_  and @WarbyParker. Blending</a></h3>
+  <p class="card-summary">Geminiと連携するスマートグラスが今秋登場予定。</p>
+  <p class="card-reason">「coming this fall」とあり、近日登場予定と判断できます。</p>
+</article></div>
+</section>
+<section class="gemini-section sources-section">
+  <h2>チェックした情報源</h2>
+  <ul class="sources-list"><li><strong>Gemini Release Notes</strong>: 30件</li><li><strong>Gemini App公式</strong>: 20件</li><li><strong>Google本体公式</strong>: 13件</li><li><strong>Google DeepMind公式</strong>: 12件</li><li><strong>Google AI公式</strong>: 11件</li><li><strong>Demis Hassabis (Google DeepMind CEO)</strong>: 6件</li><li><strong>Sundar Pichai (Google CEO)</strong>: 3件</li></ul>
+</section>
+</div>
+<footer>Gemini公式RSS・Release Notes・API Changelog・公式Xアカウントを毎日自動チェック</footer>
+</body>
+</html>

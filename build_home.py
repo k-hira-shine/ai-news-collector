@@ -428,6 +428,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   <a href="post_generator.html">✍️ 投稿ストック</a>
   <a href="tools.html">🔧 ツール追跡</a>
   <a href="reviews.html">📋 使ってみた</a>
+  <a href="gemini.html">✨ Gemini追跡</a>
 </nav>
 <header>
   <div class="site-title">🤖 AI News Collector</div>

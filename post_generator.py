@@ -310,6 +310,7 @@ def generate_post_generator_page(output_path: str, config: dict) -> None:
   <a href="post_generator.html" class="active">✍️ 投稿ストック</a>
   <a href="tools.html">🔧 ツール追跡</a>
   <a href="reviews.html">📋 使ってみた</a>
+  <a href="gemini.html">✨ Gemini追跡</a>
 </nav>
 <header>
   <h1>📋 生成済み投稿ストック</h1>
