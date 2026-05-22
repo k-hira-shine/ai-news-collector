@@ -14,6 +14,12 @@ import yaml
 
 from site_nav import NAV_CSS, render_nav
 
+try:
+    from gemini_collector import apply_status_guardrails
+except ImportError:
+    def apply_status_guardrails(item: dict) -> None:  # noqa: ARG001
+        pass
+
 logger = logging.getLogger("ai-news.build_gemini")
 
 GEMINI_DATA_DIR = os.path.join(os.path.dirname(__file__), "data", "gemini")
@@ -22,6 +28,7 @@ OUTPUT_PATH = os.path.join(os.path.dirname(__file__), "docs", "gemini.html")
 STATUS_LABELS = {
     "available_now": ("今すぐ使える", "#10b981"),
     "coming_soon":   ("もうすぐ公開", "#f59e0b"),
+    "deprecation":   ("停止予定", "#ef4444"),
     "unknown":       ("未分類", "#64748b"),
 }
 
@@ -134,6 +141,31 @@ def _dedupe_items(items: list[dict]) -> list[dict]:
     return result
 
 
+def _format_scheduled_date(raw: str) -> str:
+    dt = _parse_date(raw)
+    if not dt:
+        return raw[:10] if len(raw) >= 10 else raw
+    jst = dt.astimezone(ZoneInfo("Asia/Tokyo"))
+    return f"{jst.year}/{jst.month}/{jst.day}"
+
+
+def _scheduled_badge(item: dict) -> str:
+    sd = (item.get("scheduled_date") or "").strip()
+    if not sd:
+        return ""
+    status = item.get("status") or ""
+    formatted = _format_scheduled_date(sd)
+    if status == "coming_soon":
+        label = f"予定: {formatted}"
+        color = "#f59e0b"
+    elif status == "deprecation":
+        label = f"停止予定: {formatted}"
+        color = "#ef4444"
+    else:
+        return ""
+    return f'<span class="scheduled-badge" style="color:{color};border-color:{color}">{escape(label)}</span>'
+
+
 def _source_type_badge(item: dict) -> str:
     src = item.get("source") or ""
     type_label, color = SOURCE_TYPE.get(src, ("その他", "#64748b"))
@@ -141,6 +173,7 @@ def _source_type_badge(item: dict) -> str:
 
 
 def _card(item: dict) -> str:
+    apply_status_guardrails(item)
     status = item.get("status") or "unknown"
     label, color = STATUS_LABELS.get(status, STATUS_LABELS["unknown"])
     raw_summary = item.get("summary_ja") or ""
@@ -151,6 +184,7 @@ def _card(item: dict) -> str:
     source_label = escape(item.get("source_label") or "")
     url = escape(item.get("url") or "#")
     date = _to_jst_datetime(item.get("published_at") or "", item.get("source") or "")
+    scheduled = _scheduled_badge(item)
     source_detail = f'<span class="source-detail">{source_label}</span>' if source_label else ""
     summary_html = (
         f'<p class="card-summary">{summary}</p>'
@@ -163,6 +197,7 @@ def _card(item: dict) -> str:
     <span class="status-badge" style="border-color:{color};color:{color}">{label}</span>
     {_source_type_badge(item)}
     {source_detail}
+    {scheduled}
     <span class="date-badge">{date}</span>
   </div>
   <h3 class="card-title"><a href="{url}" target="_blank" rel="noopener">{display_title}</a></h3>
@@ -170,13 +205,14 @@ def _card(item: dict) -> str:
 </article>"""
 
 
-def _section(title: str, subtitle: str, items: list[dict], empty_msg: str) -> str:
+def _section(title: str, subtitle: str, items: list[dict], empty_msg: str, *, open_default: bool = True) -> str:
     if not items:
         body = f'<div class="empty-state"><p>{escape(empty_msg)}</p></div>'
     else:
         cards = "\n".join(_card(i) for i in items)
         body = f'<div class="gemini-list">{cards}</div>'
-    return f"""<details class="gemini-section" open>
+    open_attr = " open" if open_default else ""
+    return f"""<details class="gemini-section"{open_attr}>
   <summary class="section-toggle">
     <span class="section-head">
       <span class="section-title">{escape(title)}</span>
@@ -211,6 +247,9 @@ def build_gemini_page(output_path: str = OUTPUT_PATH) -> None:
 
     available = _sort_newest([i for i in items if i.get("status") == "available_now"])
     coming = _sort_newest([i for i in items if i.get("status") == "coming_soon"])
+    deprecation = _sort_newest([i for i in items if i.get("status") == "deprecation"])
+    unknown = _sort_newest([i for i in items if i.get("status") == "unknown"])
+    visible = len(available) + len(coming) + len(deprecation)
 
     nav_html = render_nav("gemini.html")
 
@@ -249,6 +288,7 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .source-type {{ font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; flex-shrink: 0; }}
 .source-detail {{ color: var(--muted); }}
 .date-badge {{ color: var(--muted); margin-left: auto; flex-shrink: 0; }}
+.scheduled-badge {{ font-size: 0.72rem; font-weight: 600; padding: 2px 8px; border-radius: 10px; border: 1px solid; flex-shrink: 0; }}
 .card-title {{ font-size: 1rem; margin-bottom: 4px; line-height: 1.45; }}
 .card-title a {{ color: var(--text); text-decoration: none; }}
 .card-title a:hover {{ color: var(--accent); }}
@@ -267,11 +307,13 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
 {nav_html}
 <header>
   <h1>✨ Gemini 機能トラッカー</h1>
-  <p class="meta">Last updated: {now_str} ｜ 収集 {len(items)}件（今すぐ {len(available)} / もうすぐ {len(coming)}）</p>
+  <p class="meta">Last updated: {now_str} ｜ 収集 {len(items)}件（表示 {visible} / 未分類 {len(unknown)}）｜ 今すぐ {len(available)} / もうすぐ {len(coming)} / 停止予定 {len(deprecation)}</p>
 </header>
 <div class="container">
-{_section("もうすぐ使えるようになる", "Googleが「近日公開」と告知した機能", coming, "直近1週間で「近日公開」と判定された情報はまだありません。")}
+{_section("もうすぐ使えるようになる", "Googleが「近日公開」と告知した機能（予定日が分かればカードに表示）", coming, "直近1週間で「近日公開」と判定された情報はまだありません。")}
 {_section("今すぐ使える", "すでに公開済みで、今試せる機能", available, "直近1週間で「利用可能」と判定された情報はまだありません。")}
+{_section("廃止・停止予定", "モデル停止やDeprecationの告知", deprecation, "直近1週間で停止予定の告知はまだありません。")}
+{_section("その他（未分類）", "自動分類できなかった情報", unknown, "未分類の情報はありません。", open_default=False)}
 {_sources_section(items)}
 </div>
 <footer>Gemini公式RSS・Release Notes・API Changelog・公式Xアカウントを毎日自動チェック</footer>

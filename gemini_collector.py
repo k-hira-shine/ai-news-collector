@@ -34,13 +34,14 @@ CLASSIFY_SCHEMA = {
                     "item_id": {"type": "string"},
                     "status": {
                         "type": "string",
-                        "enum": ["available_now", "coming_soon", "unknown"],
+                        "enum": ["available_now", "coming_soon", "deprecation", "unknown"],
                     },
                     "title_ja": {"type": "string"},
                     "summary_ja": {"type": "string"},
+                    "scheduled_date": {"type": "string"},
                     "reason": {"type": "string"},
                 },
-                "required": ["item_id", "status", "title_ja", "summary_ja", "reason"],
+                "required": ["item_id", "status", "title_ja", "summary_ja", "scheduled_date", "reason"],
             },
         }
     },
@@ -65,6 +66,98 @@ TRANSLATE_SCHEMA = {
     },
     "required": ["items"],
 }
+
+_DEPRECATION_RE = re.compile(
+    r"shut\s*down|stops?\s+serving|deprecated|deprecation\s+announcement|"
+    r"are now shut down|will be shut down|has been shut down|廃止|停止",
+    re.I,
+)
+
+_MONTH_NAMES = (
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December",
+)
+
+
+def _month_day_year_to_iso(month: str, day: str, year: str) -> str:
+    try:
+        dt = datetime.strptime(f"{month} {int(day)}, {year}", "%B %d, %Y")
+        return dt.strftime("%Y-%m-%d")
+    except ValueError:
+        return ""
+
+
+def extract_scheduled_date(text: str) -> str:
+    """本文から利用開始日・停止予定日を抽出（YYYY-MM-DD）"""
+    if not text:
+        return ""
+    month_pat = "|".join(_MONTH_NAMES)
+    patterns = [
+        rf"(?:will be )?shut\s*down(?:\s+on)?\s+({month_pat})\s+(\d{{1,2}}),?\s+(\d{{4}})",
+        rf"(?:stops?(?:\s+serving)?(?:\s+requests)?\s+on|ends?\s+on|until|by)\s+"
+        rf"({month_pat})\s+(\d{{1,2}}),?\s+(\d{{4}})",
+        rf"(?:available|launch(?:ing)?|roll(?:ing)?\s*out(?:\s+starting)?|starting(?:\s+on)?|"
+        rf"releases?\s+on|from)\s+({month_pat})\s+(\d{{1,2}}),?\s+(\d{{4}})",
+        rf"\b(20\d{{2}})\.(\d{{2}})\.(\d{{2}})\b",
+    ]
+    for pat in patterns:
+        m = re.search(pat, text, re.I)
+        if not m:
+            continue
+        if len(m.groups()) == 3 and m.group(1).isdigit():
+            return f"{m.group(1)}-{m.group(2)}-{m.group(3)}"
+        iso = _month_day_year_to_iso(m.group(1), m.group(2), m.group(3))
+        if iso:
+            return iso
+    return ""
+
+
+def _is_valid_iso_date(raw: str) -> bool:
+    if not raw or len(raw) < 10:
+        return False
+    if not re.match(r"^\d{4}-\d{2}-\d{2}$", raw[:10]):
+        return False
+    try:
+        datetime.strptime(raw[:10], "%Y-%m-%d")
+        return True
+    except ValueError:
+        return False
+
+
+def apply_status_guardrails(item: dict) -> None:
+    """AI判定後の安全装置（廃止検出・未来日ガード・予定日補完）"""
+    text = " ".join([
+        item.get("title") or "",
+        item.get("content") or "",
+        item.get("title_ja") or "",
+        item.get("summary_ja") or "",
+    ])
+    now = datetime.now(timezone.utc)
+
+    sd_raw = (item.get("scheduled_date") or "").strip()
+    if _is_valid_iso_date(sd_raw):
+        item["scheduled_date"] = sd_raw[:10]
+    else:
+        item.pop("scheduled_date", None)
+        extracted = extract_scheduled_date(text)
+        if extracted:
+            item["scheduled_date"] = extracted
+
+    if _DEPRECATION_RE.search(text):
+        item["status"] = "deprecation"
+        return
+
+    pub = _parse_date_from_string(item.get("published_at") or "")
+    if pub and pub.tzinfo is None:
+        pub = pub.replace(tzinfo=timezone.utc)
+    if pub and pub > now and item.get("status") == "available_now":
+        item["status"] = "coming_soon"
+
+    sd = _parse_date_from_string(item.get("scheduled_date") or "")
+    if sd and sd.tzinfo is None:
+        sd = sd.replace(tzinfo=timezone.utc)
+    if sd and sd > now and item.get("status") == "available_now":
+        item["status"] = "coming_soon"
 
 
 def _base_dir() -> str:
@@ -668,12 +761,19 @@ def classify_items(items: list[dict], config: dict, *, titles_only: bool = False
             schema = TRANSLATE_SCHEMA
         else:
             prompt = f"""以下はGoogle Gemini公式情報源から収集した記事・投稿です。
-各項目について status / title_ja / summary_ja / reason を判定してください。
+各項目について status / title_ja / summary_ja / scheduled_date / reason を判定してください。
 
 ## 判定基準
 - available_now: すでに利用可能、正式リリース、GA、generally available、公開済み、rolling out now など
 - coming_soon: coming soon、近日、予定、preview、beta、trusted testers、rollout starting、in the coming weeks など
-- unknown: Gemini機能の新着情報か判断できない、または上記どちらにも当てはまらない
+- deprecation: モデル停止・廃止予告・Deprecation announcement・shut down など（新機能リリースではない）
+- unknown: Gemini機能の新着情報か判断できない、または上記どれにも当てはまらない
+
+## scheduled_date（YYYY-MM-DD）
+- coming_soon: 本文に書かれた利用開始予定日（なければ空文字 ""）
+- deprecation: 停止予定日（なければ空文字 ""）
+- それ以外: 空文字 ""
+- プレースホルダ（YYYY-MM-DD 等）は禁止。確実な日付のみ。
 
 ## 日本語出力（必須）
 - title_ja: 50字以内。**一覧を見た新入社員が「何の機能・製品か」すぐ分かる見出し**
@@ -716,15 +816,22 @@ def classify_items(items: list[dict], config: dict, *, titles_only: bool = False
             if not titles_only:
                 base["status"] = row.get("status", "unknown")
                 base["reason"] = row.get("reason", "")[:200]
+                sd = (row.get("scheduled_date") or "").strip()
+                if _is_valid_iso_date(sd):
+                    base["scheduled_date"] = sd[:10]
+                else:
+                    base.pop("scheduled_date", None)
             base["title_ja"] = row.get("title_ja", "")[:50]
             base["summary_ja"] = row.get("summary_ja", "")[:160]
             base["classified_at"] = datetime.now(timezone.utc).isoformat()
+            apply_status_guardrails(base)
 
     for item in items:
         item.setdefault("status", "unknown")
         item.setdefault("title_ja", (item.get("title") or "")[:80])
         item.setdefault("summary_ja", (item.get("title") or "")[:80])
         item.setdefault("reason", "")
+        apply_status_guardrails(item)
 
     return items
 
@@ -813,6 +920,25 @@ def backfill_published_dates(items: list[dict] | None = None, days: int = 30) ->
     return items
 
 
+def apply_guardrails_to_all(days: int = 14) -> list[dict]:
+    """既存データにルールベースのガードレールと予定日抽出を適用（API不要）"""
+    items = deduplicate_items(load_all_gemini_items(days))
+    for item in items:
+        apply_status_guardrails(item)
+    rewrite_gemini_jsonl(items)
+    return items
+
+
+def reclassify_recent(config: dict | None = None, days: int = 14) -> list[dict]:
+    if config is None:
+        config = _load_config()
+    items = deduplicate_items(load_all_gemini_items(days))
+    logger.info("Reclassifying %d Gemini items...", len(items))
+    items = classify_items(items, config, titles_only=False)
+    rewrite_gemini_jsonl(items)
+    return items
+
+
 def retranslate_recent(config: dict | None = None, days: int = 14) -> list[dict]:
     if config is None:
         config = _load_config()
@@ -874,9 +1000,19 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     parser = argparse.ArgumentParser(description="Gemini公式情報収集")
     parser.add_argument(
+        "--apply-guardrails",
+        action="store_true",
+        help="既存データに廃止検出・予定日抽出・未来日ガードを適用（API不要）",
+    )
+    parser.add_argument(
+        "--reclassify",
+        action="store_true",
+        help="既存データを新スキーマで再分類（scheduled_date / deprecation 対応）",
+    )
+    parser.add_argument(
         "--retranslate",
         action="store_true",
-        help="既存データを日本語に翻訳・再分類して上書き保存",
+        help="既存データの見出し・要約のみ日本語化（status は維持）",
     )
     parser.add_argument(
         "--fix-dates",
@@ -888,6 +1024,10 @@ def main() -> None:
     if args.fix_dates:
         items = backfill_published_dates()
         rewrite_gemini_jsonl(items)
+    elif args.apply_guardrails:
+        items = apply_guardrails_to_all()
+    elif args.reclassify:
+        items = reclassify_recent()
     elif args.retranslate:
         items = retranslate_recent()
     else:
@@ -895,7 +1035,12 @@ def main() -> None:
 
     now = sum(1 for i in items if i.get("status") == "available_now")
     soon = sum(1 for i in items if i.get("status") == "coming_soon")
-    logger.info("Gemini collection done: total=%d available_now=%d coming_soon=%d", len(items), now, soon)
+    dep = sum(1 for i in items if i.get("status") == "deprecation")
+    unk = sum(1 for i in items if i.get("status") == "unknown")
+    logger.info(
+        "Gemini done: total=%d now=%d soon=%d deprecation=%d unknown=%d",
+        len(items), now, soon, dep, unk,
+    )
 
 
 if __name__ == "__main__":
