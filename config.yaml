@@ -108,10 +108,13 @@ x_twitter:
     - handle: "Suryanshti777"
       label: "Suryanshti777"
       priority: high
+    - handle: "genel_ai"
+      label: "genel_ai"
+      priority: high
   min_engagement: 10
   max_results_per_account: 30   # critical アカウントの連投に対応（20→30）
   apify_actor: "xquik/x-tweet-scraper"
-  apify_monthly_budget_usd: 29.0
+  apify_monthly_budget_usd: 45.0
   apify_warning_threshold: 0.8
 
 # Silent Failure 検知: 成功 exit した実行でも内部劣化があればログへ警告
@@ -209,6 +212,8 @@ money_collection:
       label: "starriver0513"
     - handle: "Suryanshti777"
       label: "Suryanshti777"
+    - handle: "genel_ai"
+      label: "genel_ai"
   # 1アカウントあたりの最大取得件数
   max_items_per_account: 200
   # 重複排除キャッシュの保持日数（長期蓄積）
@@ -283,6 +288,8 @@ sns_success:
       label: "starriver0513"
     - handle: "Suryanshti777"
       label: "Suryanshti777"
+    - handle: "genel_ai"
+      label: "genel_ai"
 
   search_queries:
     # 日本語：成功体験・マインドセット
@@ -371,6 +378,8 @@ buzz_accounts:
     display_name: "starriver0513"
   - handle: "Suryanshti777"
     display_name: "Suryanshti777"
+  - handle: "genel_ai"
+    display_name: "genel_ai"
 
 # ── AIツール・機能リリース追跡 ────────────────────────────────
 tools_tracking:

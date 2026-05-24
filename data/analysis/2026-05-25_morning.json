@@ -1,159 +1,281 @@
 {
-  "trend_summary": "今日のAI業界は、単一の高性能AIから複数のAIが協調する「AIエージェントチーム」へと開発のパラダイムが急速にシフトしていることが鮮明になりました。Anthropicのエンジニアによる5体のエージェントが協調して開発を行うデモが大きな注目を集め、AIの知能がモデル単体の性能だけでなく、それらを制御・連携させる「ハーネス」というシステム設計に依存するという考え方が広まっています。この流れは、GitHubで関連ツールが急成長していることからも裏付けられており、AI開発は「個」の強化から「群」の連携・運用フェーズへと移行しつつあります。",
+  "trend_summary": "本日のAI業界は、技術的な進歩と社会的な課題という二つの側面が鮮明になりました。技術面では、llama.cppのWebGPU対応が大きな注目を集め、サーバーを介さずにブラウザ上で高性能なAIを実行する「オンデバイスAI」の流れが加速しています。これは企業のAPIコスト削減やプライバシー保護の観点からも支持されており、AIアプリケーション開発の新たな潮流となりつつあります。一方で、声優の津田健次郎氏が自身の声を無断で模倣した生成AIサービスを提訴したニュースが大きな反響を呼び、生成AIと著作権・パブリシティ権を巡る法整備の必要性が社会的な重要課題として浮上しています。",
   "trend_evolution": {
-    "since_last": "前回の分析で「マルチエージェント・システム」の台頭が新たなトレンドとして浮上しましたが、本日はその概念を具体化するデモやツール、研究論文が同時に登場し、トレンドが確固たるものとなりました。特にAnthropicのエンジニアによるライブデモは、抽象的な概念だった「エージェントチーム」を具体的な開発ユースケースとして提示し、議論を加速させています。これにより、「AIエージェント開発競争」は、単体性能からチームとしての連携・運用能力を競う新たな段階へと進化しました。",
+    "since_last": "前回の分析から、ローカルLLM/オンデバイスAIへの関心が技術デモの段階から具体的なコスト削減やプライバシー保護という企業ニーズと結びつき、より大きなトレンドへと成長しています。また、これまでも議論されてきた生成AIと著作権の問題が、著名人の提訴という形で社会的な注目度が非常に高いトピックへと発展しました。一方で、これまで継続的に追跡されてきたAnthropicの動向やAIによる科学研究の加速といった話題は今回見られず、議論の中心が技術の社会実装に伴う具体的な課題へとシフトしている様子がうかがえます。",
     "tracked_topics": [
       {
-        "topic": "AIエージェントチーム（マルチエージェント）",
+        "topic": "ローカルLLM/オンデバイスAIの進化",
+        "status": "RISING",
+        "streak_days": 3,
+        "evolution": "llama.cppの高速化ニュースから始まり、WebGPU対応によるブラウザ実行という具体的な実装の登場で、実用化への期待が大きく高まっている。"
+      },
+      {
+        "topic": "生成AIと著作権/パブリシティ権",
         "status": "RISING",
         "streak_days": 2,
-        "evolution": "概念の提唱から、具体的な実装デモやそれを支えるツールの登場へと急速に具体化が進んでいる。"
+        "evolution": "音楽生成AIの著作権訴訟から、著名声優による提訴へと発展し、社会的な議論と法規制を求める声が一気に高まった。"
       },
       {
-        "topic": "AIエージェントのシステム設計（ハーネス）",
+        "topic": "AIのAPIコストと企業の内製化",
         "status": "NEW",
         "streak_days": 1,
-        "evolution": "モデル単体の性能よりも、ツールやメモリ、プランニングを制御する周辺システムの重要性が新たな論点として浮上した。"
+        "evolution": "大手テック企業がClaudeの利用を停止するとの噂や、ローカルモデルへの移行を予測する声が出ており、APIビジネスの持続可能性が問われ始めている。"
       },
       {
-        "topic": "AIコーディングツールの進化",
+        "topic": "AIエージェント開発競争",
         "status": "SUSTAINED",
         "streak_days": 6,
-        "evolution": "GitHubで急成長するリポジトリにエージェント関連ツールが多数含まれ、開発現場での需要の高まりが続いている。"
+        "evolution": "各社の大型アップデート競争から、具体的なツール連携や自己ホスティング可能なオーケストレーションツールの登場など、より実践的な開発フェーズに移行している。"
       },
       {
-        "topic": "AIによる組織論・ワークフロー変革",
-        "status": "SUSTAINED",
-        "streak_days": 2,
-        "evolution": "AIチームによる生産性向上という議論が、具体的な開発ワークフローの自動化デモによって現実味を帯びてきた。"
+        "topic": "次世代検索技術の開発",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "ユーザーの検索意図を深く理解する新しい検索フレームワーク「OneSearch-V2」の登場により、検索体験の革新に向けた研究開発が注目されている。"
       },
       {
-        "topic": "生成AIと人格権（声の権利）",
-        "status": "FADING",
-        "streak_days": 4,
-        "evolution": "技術開発の話題が中心となり、声優の権利を巡る社会的な議論の勢いは一旦落ち着きを見せている。"
+        "topic": "中国製LLMの台頭",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "KimiやQwenといった中国発のLLMがコーディングやエージェント機能で高い性能を示し、グローバルなモデル開発競争における存在感を増している。"
       }
     ]
   },
   "top_articles": [
     {
-      "id": "f927e6c8035aadc7",
+      "id": "ad6e20734e2aeaab",
       "rank": 1,
-      "title": "Anthropicエンジニア、5体のAIエージェントチーム構築デモ",
-      "url": "https://x.com/zodchiii/status/2058489071274533169",
-      "summary": "Anthropicのエンジニアが、コーディング、テスト、レビュー、デプロイを分担する5体のAIエージェントチームを30分でライブ構築するデモを公開し、注目を集めている。",
-      "importance_reason": "マルチエージェントシステムの概念を具体的な開発ワークフローとして提示し、AIによる自律的なチーム開発の実現可能性を示した点で極めて重要。",
-      "category": "ユースケース",
-      "source_label": "x:@zodchiii"
-    },
-    {
-      "id": "a7577dec9fd2196d",
-      "rank": 2,
-      "title": "論文：AIエージェントの知能は「ハーネス」に依存する",
-      "url": "https://x.com/rohanpaul_ai/status/2058177628188623212",
-      "summary": "AIエージェントの性能はプロンプト単体よりも、プランニングやツール、メモリを制御する周辺のコード（ハーネス）に大きく依存することを示した論文が話題に。",
-      "importance_reason": "AI開発の焦点が、LLM自体の性能向上だけでなく、エージェントをいかに賢く制御し、システムとして機能させるかというシステム工学的な課題に移っていることを明確にした。",
-      "category": "研究論文",
-      "source_label": "x:@rohanpaul_ai"
-    },
-    {
-      "id": "4015ea81daf2ab20",
-      "rank": 3,
-      "title": "GitHub急成長リポジトリ、AIエージェント関連が上位独占",
-      "url": "https://x.com/sharbel/status/2058129659963843071",
-      "summary": "今週GitHubで最もスターを集めたリポジトリのトップに、AIエージェント向けのコード知識グラフ「codegraph」など、関連ツールがランクインした。",
-      "importance_reason": "AIエージェント開発のトレンドが、開発者コミュニティにおいて実践的なツールの需要として具体化していることを示す強力な証拠となっている。",
+      "title": "llama.cppがWebGPU対応、ブラウザで高速AI実行",
+      "url": "https://x.com/ai_hakase_/status/2058655529967206646",
+      "summary": "オープンソースのLLM実行環境「llama.cpp」がWebGPUに本格対応。ブラウザ上でPCのGPUを直接利用し、サーバーコスト不要で高速なAI推論を実現します。",
+      "importance_reason": "サーバーを介さずユーザーのデバイスでAIを完結させる流れを決定づける技術的ブレークスルー。AIアプリ開発のコスト構造とプライバシーの常識を覆す可能性があり、業界へのインパクトが極めて大きい。",
       "category": "モデル/ツール",
-      "source_label": "x:@sharbel"
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "0ad928f020de924c",
+      "rank": 2,
+      "title": "声優・津田健次郎氏、生成AIの音声模倣で提訴",
+      "url": "https://x.com/YahooNewsTopics/status/2057949626305814707",
+      "summary": "声優の津田健次郎氏が、自身の声を無断で学習・模倣した生成AI音声サービスに対し、パブリシティ権侵害などを理由にサービスの差し止めと損害賠償を求めて提訴しました。",
+      "importance_reason": "著名人が生成AIによる権利侵害に対して法的措置を取った象徴的な事例。今後のクリエイターの権利保護やAI規制に関する議論を大きく加速させるマイルストーンとなる。",
+      "category": "規制/政策",
+      "source_label": "x:@YahooNewsTopics"
+    },
+    {
+      "id": "be9448a4e4ce7d14",
+      "rank": 3,
+      "title": "次世代検索フレームワーク「OneSearch-V2」登場",
+      "url": "https://x.com/ai_hakase_/status/2058655276794806523",
+      "summary": "ユーザーの言葉の裏にある「真の意図」を理解することを目指した最新の検索フレームワークが登場。クリック率や購入者数の大幅な向上を実現したと報告されています。",
+      "importance_reason": "単なるキーワードマッチングから、ユーザーの意図理解へと検索技術の進化を示す研究。Eコマースなどビジネスへの応用インパクトが大きい。",
+      "category": "研究論文",
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "6051e7eec5326a42",
+      "rank": 4,
+      "title": "声優の声の無断学習に批判、AI規制法を求める声",
+      "url": "https://x.com/afjJ42OQLD54132/status/2057992124457693583",
+      "summary": "津田健次郎氏の提訴を受け、多くの声優の声が無断で学習・利用されている現状を批判し、政府に迅速なAI規制法の制定を求める声がX上で広がっています。",
+      "importance_reason": "津田氏の提訴という個別の事案が、より広範なAI規制を求める世論を形成していることを示しており、今後の政策決定に影響を与える可能性がある。",
+      "category": "規制/政策",
+      "source_label": "x:@afjJ42OQLD54132"
+    },
+    {
+      "id": "f3941d0a82d91912",
+      "rank": 5,
+      "title": "大手テック企業、高コストでClaude利用を停止か",
+      "url": "https://x.com/rdd147/status/2058198456431489295",
+      "summary": "マイクロソフト、メタ、Google、Amazonが、トークンコストの増大を理由にAnthropicのClaude利用契約を打ち切り、内製のコーディングツールに切り替えているとの噂が報じられています。",
+      "importance_reason": "大手企業によるAPI利用コストの課題が表面化し、LLMビジネスの持続可能性に疑問を投げかける情報。企業のAI戦略が外部API依存から内製・ローカル化へシフトする可能性を示唆する。",
+      "category": "企業動向",
+      "source_label": "x:@rdd147"
+    },
+    {
+      "id": "962988095cfc6922",
+      "rank": 6,
+      "title": "企業はAPI契約から自社GPUサーバーへ移行する予測",
+      "url": "https://x.com/signaloftheeye/status/2058627324619182408",
+      "summary": "企業はOpenAIやAnthropicなどとのAPI契約を徐々に解消し、ローカルAIモデルを運用するための自社GPUサーバーを購入するようになるだろう、との予測が投稿されています。",
+      "importance_reason": "APIモデルが抱えるプロンプトインジェクションやRLHFによるワークフローの非互換性といった問題を指摘し、ローカルモデルへの移行という大きな流れを裏付けている。",
+      "category": "企業動向",
+      "source_label": "x:@signaloftheeye"
+    },
+    {
+      "id": "7302348fc809f9b0",
+      "rank": 7,
+      "title": "NotebookLM、スライド生成でキャラのポーズを自動変更",
+      "url": "https://x.com/ai_jitan/status/2058654303523369104",
+      "summary": "GoogleのNotebookLMで、スライド生成時にキャラクター画像を入れると、スライドの内容に合わせてキャラクターのポーズや表情が自動で変化する機能が紹介されています。",
+      "importance_reason": "AIによるコンテンツ生成の高度化を示す好例。単なる情報整理だけでなく、視覚的に魅力的で文脈に沿った資料作成を自動化するユースケースとして注目される。",
+      "category": "ユースケース",
+      "source_label": "x:@ai_jitan"
+    },
+    {
+      "id": "290cf1922010378d",
+      "rank": 8,
+      "title": "中国製LLM「Kimi 2.6」「GLM-5.1」等の高評価",
+      "url": "https://x.com/tphuang/status/2058336878194204805",
+      "summary": "Kimi 2.6やGLM-5.1といった中国製LLMが、コーディングやエージェント機能において自己改善可能なレベルに達しているとの評価が投稿されています。",
+      "importance_reason": "欧米の主要モデルに対抗しうる高性能な中国製LLMの存在が示されており、グローバルなAI開発競争の激化と多様化を象徴している。",
+      "category": "モデル/ツール",
+      "source_label": "x:@tphuang"
+    },
+    {
+      "id": "9bfc541a13486379",
+      "rank": 9,
+      "title": "オープンなAIエージェントツール「ANIMA」",
+      "url": "https://x.com/lavaplanetx/status/2058505715610731005",
+      "summary": "ARC Terminalの「ANIMA」は、プライベートサーバーや既存のインフラに接続し、暗号化された認証情報を保ったままカスタムツールを利用できるオープンなAIエージェントとして紹介されています。",
+      "importance_reason": "特定のプラットフォームにユーザーを囲い込むのではなく、既存のインフラやツールとの連携を重視するオープンなAIエージェントの思想を示している。",
+      "category": "モデル/ツール",
+      "source_label": "x:@lavaplanetx"
+    },
+    {
+      "id": "0a778a03e1ee3122",
+      "rank": 10,
+      "title": "AIエージェント向けパッケージ情報ツール「Nipmod」",
+      "url": "https://x.com/nipmod/status/2058620263835594862",
+      "summary": "AIエージェントが安全にソフトウェアパッケージを選択・インストールできるよう、npmやPyPIなどのリポジトリを横断検索し、信頼性情報を提供するツール「Nipmod」が紹介されています。",
+      "importance_reason": "AIエージェントが自律的に開発環境を操作する際のセキュリティリスクという、重要ながら見過ごされがちな課題に取り組むツール。",
+      "category": "モデル/ツール",
+      "source_label": "x:@nipmod"
     }
   ],
   "category_summaries": [
     {
-      "category": "ユースケース",
-      "summary": "複数のAIエージェントが協調して一つの開発タスクを完遂するデモが公開され、AIが単なるアシスタントから自律的な開発チームへと進化する可能性が示された。これは、今後のソフトウェア開発やナレッジワークのあり方を大きく変える可能性を秘めている。",
-      "count": 1,
+      "category": "モデル/ツール",
+      "summary": "llama.cppのWebGPU対応が最大のトピックとなり、ブラウザ上での高速なローカルAI実行が現実のものとなりました。これにより、AIアプリケーションのアーキテクチャが大きく変わる可能性があります。また、AIエージェントが安全に外部ツールやパッケージを利用するためのツール群も登場し、エージェント開発のエコシステムが成熟しつつあります。中国製LLMの性能向上も注目されています。",
+      "count": 6,
       "key_articles": [
         {
-          "title": "Anthropicエンジニア、5体のAIエージェントチーム構築デモ",
-          "url": "https://x.com/zodchiii/status/2058489071274533169",
-          "summary": "コーディング、テスト、レビュー、デプロイを分担する5体のAIエージェントを30分で構築するデモ。"
+          "title": "【ブラウザ×AIの革命】llama.cppのWebGPU対応が凄すぎる！",
+          "url": "https://x.com/ai_hakase_/status/2058655529967206646"
+        },
+        {
+          "title": "Kimi 2.6 w/ its agent can already handle everything I need AI for. Both K2.6 & GLM-5.1 got good enough in coding & agent flow to really self improve. Qwen 3.7 is the most recent Chinese LLM to reach t",
+          "url": "https://x.com/tphuang/status/2058336878194204805"
+        },
+        {
+          "title": "Most AI agents are built to keep you inside someone else’s walls. @TheARCTERMINAL is doing the opposite with ANIMA. By supporting MCP server connections, it lets any public or private server become a",
+          "url": "https://x.com/lavaplanetx/status/2058505715610731005"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "声優・津田健次郎氏による生成AI音声サービスへの提訴が、業界内外に大きな衝撃を与えました。この一件をきっかけに、クリエイターの権利保護とAIの無断学習に対する批判が噴出し、政府に迅速な法整備を求める世論が形成されつつあります。生成AIの社会実装に伴う法的・倫理的課題が、いよいよ本格的な議論のフェーズに入ったことを示しています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "【生成AIで津田健次郎さん模倣 提訴】",
+          "url": "https://x.com/YahooNewsTopics/status/2057949626305814707"
+        },
+        {
+          "title": "津田さんだけではなくたくさんの声優さんの声を勝手に無断学習して動画で荒稼ぎしていますよね？ で、これが「すんばらしい生成AIを活用した未来」なんですか？ さっさとAI規制法作ってよ政府",
+          "url": "https://x.com/afjJ42OQLD54132/status/2057992124457693583"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "大手テック企業がAnthropicのClaudeの利用を停止したとの噂や、企業がAPIモデルから自社のローカルモデル運用へ移行するとの予測が注目を集めました。高騰するAPIコストや、外部モデルがもたらすワークフロー上の制約が、企業のAI戦略を見直すきっかけとなっている可能性があり、AIビジネスの潮目の変化を示唆しています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "What will happen: companies will slowly back out of their contracts with Anthropic, OpenAI, Gemini, Xai etc as they realize they can just buy their own small GPU server to run local ai models. Token b",
+          "url": "https://x.com/signaloftheeye/status/2058627324619182408"
+        },
+        {
+          "title": "$MSFT $META $GOOG $AMZN reportedly dumping Claude usage agreements as tokenmaxxing caused costs to spiral out of control at the companies. Switching to internal coding tools to control costs. Claude",
+          "url": "https://x.com/rdd147/status/2058198456431489295"
         }
       ]
     },
     {
       "category": "研究論文",
-      "summary": "AIエージェントの性能を決定づける要因として、モデル本体だけでなく、それを制御する周辺システム（ハーネス）の重要性を指摘する論文が注目された。これは、今後のAI開発がよりシステム工学的なアプローチを必要とすることを示唆している。",
+      "summary": "ユーザーの検索意図を深く理解することを目指す新しい検索フレームワーク「OneSearch-V2」が発表されました。単語の一致だけでなく、ユーザーの行動履歴などから「思考」プロセスを経て真の目的を解析するアプローチは、Eコマースなどの分野でコンバージョン率を大幅に改善する可能性を秘めており、検索技術の新たな方向性を示しています。",
       "count": 1,
       "key_articles": [
         {
-          "title": "論文：AIエージェントの知能は「ハーネス」に依存する",
-          "url": "https://x.com/rohanpaul_ai/status/2058177628188623212",
-          "summary": "エージェントの性能はプロンプトよりも、プランニング、ツール、メモリを制御する周辺コードに依存すると主張。"
+          "title": "【検索の常識を覆す！OneSearch-V2の衝撃】",
+          "url": "https://x.com/ai_hakase_/status/2058655276794806523"
         }
       ]
     },
     {
-      "category": "モデル/ツール",
-      "summary": "開発者コミュニティでは、AIエージェントをより効率的に、より低コストで運用するためのツールへの関心が爆発的に高まっている。特に、トークン消費を抑え、ローカルで動作するコード知識グラフなどが人気を集めており、実用化に向けた動きが加速している。",
-      "count": 1,
+      "category": "ユースケース",
+      "summary": "GoogleのNotebookLMがスライドの内容に応じてキャラクターの表情やポーズを自動変更するなど、AIによるコンテンツ作成がより高度化・自動化している事例が報告されました。また、ウォレットにAIエージェントが搭載されるのが当たり前になるとの予測もあり、様々なアプリケーションへのAI統合が加速していくことが予想されます。",
+      "count": 2,
       "key_articles": [
         {
-          "title": "GitHub急成長リポジトリ、AIエージェント関連が上位独占",
-          "url": "https://x.com/sharbel/status/2058129659963843071",
-          "summary": "エージェント向けのコード知識グラフ「codegraph」がGitHubスター数で週間トップに。"
+          "title": "ガチでおすすめです。NotebookLMのスライド生成にキャラクター画像を入れると、全スライドに自動配置されるだけじゃなく、内容に合わせてポーズと表情まで自動で変わります。",
+          "url": "https://x.com/ai_jitan/status/2058654303523369104"
+        },
+        {
+          "title": "In five years, opening a wallet without an AI agent will feel like printing google maps directions.",
+          "url": "https://x.com/TrustWallet/status/2057944844102987923"
         }
       ]
     }
   ],
   "action_items": [
-    "自社の開発ワークフローに、複数のAIエージェントを協調させる「エージェントチーム」の概念を導入できないか検討を開始する。",
-    "AI開発の評価軸を、使用するLLMのモデル名や性能だけでなく、エージェントを制御するシステム（ハーネス）全体の設計と効率性にも拡大する。",
-    "GitHubなどで公開されている最新のAIエージェント関連ツール（codegraph等）を調査し、開発効率やコスト削減に繋がる技術の早期導入を検討する。",
-    "AIによる自動化の対象を、単一タスクから、複数の専門家が関わるような複雑なプロジェクト全体へと広げるための研究開発に着手する。"
+    "WebGPU対応のllama.cppなどを活用し、サーバーコストをかけずにユーザーのブラウザ上で動作するAI機能のプロトタイプ開発を検討する。",
+    "自社で利用している生成AIサービスについて、学習データの権利処理が適切に行われているか再確認し、潜在的な法的リスクを評価する。",
+    "外部LLMのAPI利用コストをモニタリングし、費用対効果を定期的に評価する。長期的には、特定タスク向けの小型ローカルモデルの導入や内製化も視野に入れる。",
+    "AIによる音声合成や画像生成を事業で利用する際は、パブリシティ権侵害のリスクを考慮し、著名人の声や容姿の利用に関するガイドラインを策定する。"
   ],
   "x_trends": [
     {
-      "topic": "AIエージェントチームによる自動開発",
-      "description": "Anthropicのエンジニアが公開した、5体のAIエージェントが協調して開発を行うデモが大きな反響を呼んでいる。多くの開発者がその効率性と未来の働き方へのインパクトに驚きを示しており、「SFの世界が現実に」「自分の仕事がなくなるのでは」といった期待と不安が入り混じった反応が見られる。具体的なフレームワークや構築ガイドへの関心も非常に高い。",
-      "buzz_level": "medium",
-      "sentiment": "positive",
+      "topic": "声優・津田健次郎氏のAI音声模倣提訴",
+      "description": "声優の津田健次郎氏が自身の声を無断利用したAIサービスを提訴したというニュースが、Xで爆発的な関心を集めています。クリエイターの権利を守るための行動として多くの支持が寄せられる一方、同様の被害に遭っている他の声優やイラストレーターの事例も多数報告されています。この一件は、生成AIの倫理と法整備の必要性を社会に強く問いかけるきっかけとなりました。",
+      "buzz_level": "high",
+      "sentiment": "negative",
       "representative_tweets": [
         {
-          "author": "@zodchiii",
-          "text": "Anthropic engineer showed how one person can run 5 AI agents, that code, test, review, and deploy at the same time.\n\nIn 30 minutes they built the whole thing live in one session. \n\nHere's what they cover:\n\n> when to use one agent vs a full team \n> how to split work so agents don't step on each other > the exact framework for deciding what each agent handles \n\nthat's exactly why, I put together a guide on building agent teams that actually work.\n\nfull guide in the article below 👇",
-          "url": "https://x.com/zodchiii/status/2058489071274533169",
-          "likes": 195,
-          "retweets": 34
+          "author": "@YahooNewsTopics",
+          "text": "【生成AIで津田健次郎さん模倣 提訴】\nhttps://t.co/BAdCMAiQqC",
+          "url": "https://x.com/YahooNewsTopics/status/2057949626305814707",
+          "likes": 23852,
+          "retweets": 7478
+        },
+        {
+          "author": "@afjJ42OQLD54132",
+          "text": "津田さんだけではなくたくさんの声優さんの声を勝手に無断学習して動画で荒稼ぎしていますよね？\nで、これが「すんばらしい生成AIを活用した未来」なんですか？\nさっさとAI規制法作ってよ政府",
+          "url": "https://x.com/afjJ42OQLD54132/status/2057992124457693583",
+          "likes": 2992,
+          "retweets": 605
         }
       ]
     },
     {
-      "topic": "エージェントの性能を左右する「ハーネス」の重要性",
-      "description": "AIエージェントの賢さはモデル単体で決まるのではなく、ツール連携やメモリ管理といった周辺システム「ハーネス」が重要だという論文が開発者界隈で広く共有されている。「モデルをガチャするよりシステムを磨くべき」という意見に多くの共感が集まっており、AI開発のアプローチを見直すきっかけとなっている。プロンプトエンジニアリングの次に来るスキルセットとして、この「ハーネス」設計能力が注目されている。",
-      "buzz_level": "medium",
+      "topic": "llama.cppのWebGPU対応とオンデバイスAIへの期待",
+      "description": "LLM実行環境のllama.cppがWebGPUに対応したという技術ニュースが開発者コミュニティを中心に話題となっています。これにより、高価なGPUサーバーなしで、ユーザーのPCブラウザ上で直接高速なAIを動かせるようになります。サーバーコスト削減、プライバシー保護、環境構築の手軽さといったメリットが挙げられ、「AIアプリ開発の新たなスタンダードになる」と大きな期待が寄せられています。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@ai_hakase_",
+          "text": "【ブラウザ×AIの革命】llama.cppのWebGPU対応が凄すぎる！\n👉  https://t.co/y7dOSVx8vB\nllama.cppがついにWebGPUバックエンドに本格対応しました！\nブラウザからPCのGPUパワーを直接引き出すことで、驚異的な速度でAIを動作させることが可能です。\n\n注目のメリット：\n\n✅ サーバーコストの削減\nユーザー側のリソースで推論を行うため、運営側の高価なGPUサーバー代がゼロになります。\n\n✅ セキュリティとプライバシー\nデータが外部に送信されない「完全ローカル完結」のため、機密情報の扱いも安心です。\n\n✅ 圧倒的な手軽さ\nPythonなどの複雑な環境構築は一切不要。URLにアクセスするだけで、誰でもすぐに最新のLLMを体験できます。\n\n「ブラウザ×ローカルLLM」は、今後のAIアプリ開発における新たなスタンダードになること間違いなしです！🚀\n\n#AI開発 #WebGPU",
+          "url": "https://x.com/ai_hakase_/status/2058655529967206646",
+          "likes": 27,
+          "retweets": 0
+        }
+      ]
+    },
+    {
+      "topic": "大手テック企業のClaude離れとAPIコスト問題",
+      "description": "MicrosoftやGoogleなどの大手テック企業が、高騰するコストを理由にAnthropicのClaudeの利用契約を打ち切っている、という噂が業界関係者の間で広がっています。特にコーディング用途でのトークン消費が激しいことが原因とされており、AI-APIビジネスの持続可能性と、費用対効果の課題を浮き彫りにしています。この動きは、企業が外部API依存から内製・ローカルモデルへとシフトする予兆と捉えられています。",
+      "buzz_level": "low",
       "sentiment": "neutral",
       "representative_tweets": [
         {
-          "author": "@rohanpaul_ai",
-          "text": "This paper shows that agent performance depends less on prompts alone and more on the harness around them.\n\n“Agent intelligence” is becoming partly a systems problem. The problem is that many AI agents look like 1 model, but their real behavior comes from surrounding code that controls planning, tools, memory, retries, checking, and stopping.\n\nA model may reason well in one step, but long tasks fail in messier places: state disappears, verification drifts, tools return partial evidence, and the",
-          "url": "https://x.com/rohanpaul_ai/status/2058177628188623212",
-          "likes": 233,
-          "retweets": 43
-        }
-      ]
-    },
-    {
-      "topic": "GitHubでのAI関連リポジトリの急成長",
-      "description": "今週GitHubで最もスターを集めたリポジトリが「codegraph」をはじめとするAIエージェント関連ツールで占められていることが話題になっている。特に「ローカルで動作」「トークン消費削減」といった実用的な特徴を持つツールへの関心が高く、開発者が現場で直面している課題を反映している。このランキングは、現在のAI開発のトレンドと需要を明確に示す指標として注目されている。",
-      "buzz_level": "medium",
-      "sentiment": "positive",
-      "representative_tweets": [
-        {
-          "author": "@sharbel",
-          "text": "The 10 fastest growing GitHub repos this week:\n\n1. codegraph (+14.1K stars)\nPre-indexed code knowledge graph for Claude Code, Codex, Cursor, OpenCode, and Hermes Agent — fewer tokens, fewer tool calls, 100% local\nhttps://t.co/PmnpMlGC3r\n\n2. openhuman (+17.1K stars)\nYour Personal AI super intelligence. Private, Simple and extremely powerful.\nhttps://t.co/mrpvMxUFwe\n\n3. academic-research-skills (+11.6K stars)\nAcademic Research Skills for Claude Code: research → write → review → revise → finalize\nh",
-          "url": "https://x.com/sharbel/status/2058129659963843071",
-          "likes": 893,
-          "retweets": 103
+          "author": "@rdd147",
+          "text": "$MSFT $META $GOOG $AMZN reportedly dumping Claude usage agreements as tokenmaxxing caused costs to spiral out of control at the companies. Switching to internal coding tools to control costs.\n\nClaude Code was eating up 1000x tokens of standard Ai.",
+          "url": "https://x.com/rdd147/status/2058198456431489295",
+          "likes": 441,
+          "retweets": 56
         }
       ]
     }
@@ -161,110 +283,110 @@
   "strategy": {
     "youtube_ideas": [
       {
-        "title": "【速報】AI開発の常識が変わる。本日公開されたAnthropic製『AIエージェント5体チーム』が人間超えの開発速度を叩き出した件",
-        "hook": "たった今、AI開発の歴史が変わる瞬間が訪れました。Anthropicのエンジニアが本日公開した、5体のAIエージェントがチームで開発を行うデモ映像がこちらです。これはもう単一のAIに指示する時代ではありません。AIチームを率いる新時代、あなたはどう乗りこなしますか？",
-        "reason": "本日、AnthropicのエンジニアによるデモがXで公開され、わずか数時間で技術者を中心に爆発的に拡散されています。トレンドが最高潮の今、この速報を出すことで先行者利益を最大化できます。",
-        "angle": "単なるデモの紹介に終わらず、『AIチームの司令塔』として人間がどう立ち振る舞うべきか、具体的なプロンプトや思考法まで踏み込んで解説。視聴者が明日から使えるTipsを提供する視点で差別化します。",
+        "title": "【速報】llama.cppが本日WebGPUに神対応！もうGPUサーバーは不要。あなたのPCだけで爆速AIが動く時代へ。",
+        "hook": "本日、誰もが使っているLLM実行ツール「llama.cpp」がWebGPUに対応したという衝撃ニュースが飛び込んできました。これは、高価なサーバー契約なしで、今あなたが見ているこのブラウザ上だけで、高性能なAIが直接、しかも高速に動くことを意味します。APIコストに悩む全ての開発者と企業にとって革命的な変化です。",
+        "reason": "本日発表されたばかりの最新技術で、開発者界隈のXで急速に話題が広がっています。企業のAPIコスト削減やプライバシー保護というトレンドにも合致しており、再生数が伸びる可能性が非常に高いです。",
+        "angle": "単なる技術解説に留まらず、「企業のAPIコストが年間数百万円削減できる」「個人のプライバシーが完全に守られる」といった、開発者以外も自分事として捉えられるビジネス・セキュリティ視点を強く打ち出し、差別化を図ります。",
         "urgency": "high"
       },
       {
-        "title": "【本日判明】君のAIはなぜ頭が悪い？最新論文が解明した『ハーネス理論』で手持ちAIの性能を3倍にする方法",
-        "hook": "「GPT-4oでもClaude 3でも、なぜか期待した動きをしない…」そう感じていませんか？その原因はモデルではなく、あなたの『ハーネス』にありました。本日話題の最新論文で提唱されたこの概念を知らないと、あなたはAIの本当の実力を一生引き出せないかもしれません。",
-        "reason": "AIエージェントの性能はモデル単体ではなく、周辺システム（ハーネス）に依存するという論文が本日、開発者界隈で広く共有され始めています。専門的な内容を分かりやすく解説する動画はまだなく、今出せば検索上位を狙えます。",
-        "angle": "論文の難解な部分を避け、視聴者がローカル環境や既存ツールで「自分のAIのハーネスをどう改善できるか」という超具体的なアクションプランに落とし込んで解説。理論だけでなく、実践にフォーカスします。",
+        "title": "【緊急解説】声優・津田健次郎氏が本日、生成AIを提訴。あなたの声も盗まれる？クリエイターが今すぐやるべき自衛策３選",
+        "hook": "たった今、人気声優の津田健次郎さんが、自身の声を無断利用したAIサービスを提訴したというニュースが全メディアで報じられました。これは他人事ではありません。あなたの声やイラスト、文章が明日にはAIに盗まれ、悪用される可能性があります。今日はこの事件の全貌と、私たちクリエイターができる自衛策を解説します。",
+        "reason": "本日Yahoo!ニュースのトップにも掲載され、Xで爆発的にトレンド入りしている超注目トピックです。社会的な関心事が非常に高く、AI関係者以外からの流入も期待できるため、今週中に公開すれば間違いなく再生数が伸びます。",
+        "angle": "単に事件を報じるだけでなく、「クリエイターの権利擁護」という明確なスタンスを打ち出します。弁護士の見解などを引用しつつ、具体的な自衛策（電子透かし、利用規約の確認方法など）を提示することで、視聴者に実用的な価値を提供し、信頼性を高めます。",
         "urgency": "high"
       },
       {
-        "title": "【GitHubトレンド速報】今週最もスターを集めたAIエージェントツールTOP5を完全解説。トークン消費を抑える新星『codegraph』とは？",
-        "hook": "毎週AI開発のトレンドがわかるGitHubスターランキング。今週、上位をAIエージェント関連ツールが独占するという異常事態が発生しました。特に注目はローカルで動きトークン消費を抑える新ツール。この動画を見れば、次に乗り遅れないための必須ツールが全てわかります。",
-        "reason": "GitHubのトレンドはAI開発の最先端であり、今週は特に「AIエージェント」というテーマでリポジトリが集中し、強いトレンドを形成しています。このまとめと解説は、常に最新ツールを探している開発者層に強く響きます。",
-        "angle": "単なるツールの羅列ではなく、「AnthropicのAIチームのようなものを自前で構築するなら、どのツールをどう組み合わせるべきか」という実践的な視点で各ツールをレビュー・比較し、具体的なユースケースを提示します。",
+        "title": "【本日判明】大手テック企業、高コストでClaude利用を停止か。APIから『自社GPUサーバー』への大移行時代が始まる",
+        "hook": "本日、業界に衝撃が走りました。MicrosoftやGoogleといった巨大テック企業が、高すぎるAPIコストを理由にClaudeの利用を停止しているという情報が入ってきました。これは、AI活用のトレンドがAPI利用から自社運用、つまりオンデバイスAIへと大きくシフトする歴史的な転換点かもしれません。",
+        "reason": "本日Xでリークされ、業界関係者の間で急速に拡散されている最新の企業動向です。「ローカルLLM/オンデバイスAI」という上昇トレンドと完全に一致しており、今後の業界標準を占う上で非常に重要なテーマです。",
+        "angle": "「大手も悲鳴を上げるAPIコスト」という切り口で、中小企業や個人開発者が今後どう立ち回るべきか、という実践的な視点を提供します。llama.cppのWebGPU対応のニュースと絡め、「APIを使わない」新しいAIアプリ開発の具体的な方法論まで踏み込みます。",
         "urgency": "medium"
       }
     ],
     "x_post_ideas": [
       {
-        "theme": "【速報】AnthropicエンジニアによるAIエージェントチームのデモ公開",
-        "draft": "【速報】AI開発、新時代へ。たった今、Anthropicのエンジニアが5体のAIエージェントが協調して開発するデモを公開。\n\n1. マネージャーAIが指示出し\n2. 複数エンジニアAIがコーディング\n3. QAエンジニアAIがテスト\n\nSFで見た光景が目の前に…！もう個のAIを使う時代は終わり。AIチームを率いるマネジメント能力が問われる時代が来ましたね。これ、ヤバすぎる… #AIエージェント #Anthropic",
+        "theme": "【速報】llama.cppのWebGPU対応",
+        "draft": "【超速報】たった今、llama.cppがWebGPU対応を発表！🎉\n\nこれにより、高価なGPUサーバーなしで、ブラウザ上で直接LLMが高速実行可能に。\n\n✅APIコストゼロ\n✅プライバシー完全保護\n\n「オンデバイスAI」の時代が本格的に到来しました。AIアプリ開発の常識が今日、変わります。#AI #llama_cpp #WebGPU",
+        "format": "単発",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "【緊急】声優・津田健次郎氏のAI提訴",
+        "draft": "【本日報道】人気声優の津田健次郎さんが、自身の声を無断利用した生成AIサービスを提訴。\n\nこれは全てのクリエイターにとって他人事ではない。\n\n・声、イラスト、文章の無断学習\n・パブリシティ権の侵害\n\nクリエイターの権利を守るため、AIと法律の議論が急務です。この動きを断固支持します。#AIと著作権 #津田健次郎",
+        "format": "単発",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "【考察】大手テック企業のClaude離れとAPIコスト問題",
+        "draft": "【本日判明した噂】\n\n大手テック企業、高騰するAPIコストを理由にClaudeの利用を停止か？\n\n背景にあるのは「API利用モデルの限界」。\n\nこれからは、本日発表されたllama.cppのWebGPU対応のような「オンデバイスAI」や「自社GPUサーバー」への移行が加速しそう。企業のAI戦略、大きな転換点ですね。🤔 #Claude #APIコスト",
+        "format": "単発",
+        "expected_reach": "medium"
+      },
+      {
+        "theme": "【まとめ】今日のAIニュース（llama.cppと津田氏提訴）",
+        "draft": "今日のAIニュース、２つの大きな動きが対照的すぎる…\n\n技術の進歩🚀\n・llama.cppがWebGPU対応し、ブラウザでAIが動くように\n\n社会の課題⚖️\n・声優の津田健次郎氏がAI音声模倣を提訴\n\n技術が社会実装される上で、こうした倫理や法律の問題は避けて通れない。両方の動向を追うことが重要。",
         "format": "スレッド",
-        "expected_reach": "high"
-      },
-      {
-        "theme": "【今日判明】AIの性能は「ハーネス」で決まるという新常識",
-        "draft": "衝撃の論文が本日話題に…。「AIの賢さは、モデル自体より周辺システム『ハーネス』で決まる」とのこと。\n\nいくら高性能なモデルを使っても、ツール連携やメモリ管理が下手だと宝の持ち腐れということですね。\n\n「どのAIを使うか」から「AIをどう使いこなすか」へのパラダイムシフト。AIガチャから卒業する時が来た…！",
-        "format": "単発",
         "expected_reach": "medium"
       },
       {
-        "theme": "【本日発表】GitHub急成長リポジトリ上位がAIエージェント関連で独占",
-        "draft": "【今日のGitHubトレンド】\n今週、スターが急増したリポジトリ、なんと上位が「AIエージェント」関連で独占状態に。\n\n特に、ローカルで動作しトークン消費を抑える『codegraph』が熱い🔥\n\nもう世界中の開発者が「個」のAI強化から「群」のAI連携へと舵を切っているのが明らかですね。この波、乗り遅れたらマジでまずい。",
-        "format": "画像付き",
-        "expected_reach": "high"
-      },
-      {
-        "theme": "AIエージェントチームがもたらす働き方の変化",
-        "draft": "本日公開されたAnthropicのAI開発チームデモを見て確信。\n\n今後の人間の仕事は「AIに作業を依頼する」から「AIチームを組成し、プロジェクトを管理する」に変わる。\n\n必要なスキル：\n・的確な業務分解\n・役割定義\n・AI間の連携設計\n\nもはやAI使いではなく、AIプロジェクトマネージャーになる必要がある。",
+        "theme": "【紹介】次世代検索フレームワーク「OneSearch-V2」",
+        "draft": "【本日発表】次世代の検索フレームワーク「OneSearch-V2」が登場！論文が公開されました。\n\n従来の検索エンジンとは異なり、より複雑な意図を理解し、最適な情報を提示してくれるらしい。\n\nAIエージェントやRAGの精度向上に直結する重要な研究。早速、論文をチェックします！👀 #AI論文 #検索技術",
         "format": "単発",
-        "expected_reach": "medium"
-      },
-      {
-        "theme": "【まとめ】今日のAIニュース：パラダイムシフト発生",
-        "draft": "本日〇月〇日のAI業界まとめ📝\n\n✅AnthropicがAIチーム開発デモ公開\n✅AIの性能は「ハーネス」次第と判明\n✅GitHubトレンドもAIエージェント一色に\n\n結論：AI開発は「個」から「群」の時代へ、完全にパラダイムシフトが起きた歴史的な一日。この変化、見逃し厳禁です。#AIニュース",
-        "format": "単発",
-        "expected_reach": "medium"
+        "expected_reach": "low"
       }
     ],
     "business_insights": [
       {
-        "insight": "本日公開されたAnthropicのデモにより、複雑な知的労働（ソフトウェア開発など）をAIチームに外注する「AIエージェント・アズ・ア・サービス」市場が現実味を帯びてきた。単一機能のAIツールではなく、プロジェクト単位で業務を丸ごと請け負うビジネスモデルが成立しうる。",
-        "action": "自社の定型的な開発・運用業務の一部を、AIエージェントチームで自動化する小規模な実証実験（PoC）を企画・開始する。まずはGitHubで話題のツールを組み合わせ、社内ドキュメントの整理や簡単なバグ修正タスクから試す。",
+        "insight": "本日発表されたllama.cppのWebGPU対応は、「オンデバイスAI」が机上の空論から実用フェーズに入ったことを示す決定的な出来事。企業のAI導入におけるAPIコストとプライバシーリスクという2大障壁を同時に解決し、市場のゲームチェンジを引き起こす可能性がある。",
+        "action": "自社サービスへのオンデバイスAI組み込みの技術検証を直ちに開始する。特に、顧客データなど機密情報を扱う機能から優先的に、APIモデルからブラウザ完結型モデルへの移行計画を今週中に策定する。",
+        "timeframe": "今すぐ",
+        "impact": "high"
+      },
+      {
+        "insight": "本日報じられた声優・津田健次郎氏の提訴は、生成AIにおける権利問題（著作権、パブリシティ権）のリスクを社会全体に可視化させた。今後、権利的にクリーンなAIモデルや、クリエイターの権利を守るための技術（電子透かし等）への需要が急速に高まる。",
+        "action": "自社で利用している生成AIの学習データや利用規約を今週中に再点検し、権利侵害リスクがないかを確認する。同時に、クリエイター向けの権利保護ツールの開発や、正規ライセンス契約を結んだモデルへの移行を検討する。",
         "timeframe": "今週中",
         "impact": "high"
       },
       {
-        "insight": "「ハーネス」という概念が本日明確になったことで、AIモデルそのものを開発するのではなく、既存の高性能AIをいかに上手く連携・制御するかにビジネス価値が移行している。AI導入コンサルティングは、モデル選定だけでなく、最適なシステム設計（ハーネス構築）の提案が必須となる。",
-        "action": "コンサルティングメニューに「AIエージェントシステム設計支援」「ハーネス最適化コンサル」を追加する。本日話題の論文をベースに、クライアントの課題に合わせたツール選定・連携フロー設計の提案資料を作成する。",
+        "insight": "本日リークされた大手テック企業のClaude離れの噂は、AIのAPIコストが事業継続性を脅かすレベルに達していることを示唆している。APIを再販するだけのビジネスモデルは終焉を迎え、今後はコスト効率の良いオープンモデルのファインチューニングや、特定タスクに特化した軽量モデルの開発・提供が新たなビジネスチャンスとなる。",
+        "action": "高コストな汎用APIへの依存度を下げ、オープンソースLLM（Llama, Mistral等）を用いた自社特化モデルの構築に着手する。まずは今月中に、最もAPIコール数の多い業務を特定し、それを代替する小規模モデルのPoC（概念実証）を開始する。",
         "timeframe": "今月中",
         "impact": "medium"
-      },
-      {
-        "insight": "本日GitHubで急成長しているツール群（特にローカル動作、トークン節約を謳うもの）への需要は、AIエージェント運用の「コスト」と「セキュリティ」が実用化の大きな課題であることを示している。これを解決するソリューションに大きなビジネスチャンスがある。",
-        "action": "自社サービスやクライアントに対し、高価なAPI利用を前提としない、ローカルLLMや特定タスク特化型モデルを組み合わせた低コストなAIエージェントチームの導入を提案する。コスト削減とセキュリティを武器に、大手AIベンダーとの差別化を図る。",
-        "timeframe": "今すぐ",
-        "impact": "high"
       }
     ],
     "trend_forecast": {
-      "next_big_thing": "個々のAIの性能競争は一旦落ち着き、複数のAIエージェントをいかに効率的に協調させ、管理・監督するためのプラットフォームやマネジメント手法（AIのための組織論）が次の巨大市場になる。",
+      "next_big_thing": "「オンデバイスAI」が次の巨大トレンドになる。APIコストとプライバシー問題を解決するこの技術は、ブラウザやスマートフォン上でAIが動くのが当たり前の世界を実現し、あらゆるアプリケーションの前提を覆すだろう。",
       "watch_topics": [
-        "AIエージェントのオーケストレーションツール",
-        "自律型AIエージェントの倫理・ガバナンス",
-        "AIプロジェクトマネージャー（人間の新職種）",
-        "ローカルLLMを活用したマルチエージェントシステム",
-        "AI間のコミュニケーション言語・プロトコル"
+        "オンデバイスAI/ローカルLLMの実用化事例",
+        "生成AIのパブリシティ権・著作権に関する法整備と判例",
+        "企業のAI内製化（脱API）支援サービス",
+        "特定タスク特化型の軽量AIモデル",
+        "AIエージェントの自律性と制御技術"
       ],
       "fading_topics": [
-        "単一プロンプトによる性能比較",
-        "汎用AIモデルのパラメータ数競争",
-        "単純な画像生成・文章生成ツールの紹介"
+        "汎用大規模言語モデルの性能競争（パラメータ数など）",
+        "単純なAPIラッパーツールの紹介",
+        "学習データの権利問題を無視した画像・音声生成AI"
       ]
     }
   },
-  "run_time": "2026-05-24T17:24:04.503141+00:00",
+  "run_time": "2026-05-24T21:12:09.987917+00:00",
   "slot": "morning",
-  "item_count": 4,
+  "item_count": 25,
   "fallback_used_stages": [],
   "analysis_save": {
     "ok": true,
-    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-05-25_morning.json",
+    "path": "/Users/kz5/Cursor/YouTube/ai-news-collector/data/analysis/2026-05-25_morning.json",
     "error": ""
   },
   "cost": {
-    "apify_usd": 0.0009,
+    "apify_usd": 0.123,
     "apify_runs": 2,
-    "apify_cycle_total_usd": 29.005435228401044,
+    "apify_cycle_total_usd": 29.265206064263488,
     "apify_cycle_end": "2026-06-09T23:59:59.999Z",
-    "apify_monthly_budget_usd": 29.0,
+    "apify_monthly_budget_usd": 45.0,
     "gemini_usd": 0,
     "github_actions_usd": 0
   }
