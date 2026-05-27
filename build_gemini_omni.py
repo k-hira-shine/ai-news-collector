@@ -218,33 +218,16 @@ def _thumb_url(post: dict) -> str:
     return ""
 
 
-def _video_html(post: dict) -> str:
-    mp4 = (post.get("video_mp4") or "").strip()
-    thumb = _thumb_url(post)
-    tweet_url = post.get("url") or ""
-
-    if mp4:
-        poster = f' poster="{escape(thumb)}"' if thumb else ""
-        return (
-            f'<div class="post-video">'
-            f'<video controls playsinline preload="metadata"{poster}>'
-            f'<source src="{escape(mp4)}" type="video/mp4" />'
-            f"</video></div>"
-        )
-
-    if tweet_url and post.get("has_native_video"):
-        return (
-            f'<div class="post-video post-video-embed" data-tweet-url="{escape(tweet_url)}">'
-            f'<blockquote class="twitter-tweet" data-dnt="true" data-conversation="none">'
-            f'<a href="{escape(tweet_url)}"></a></blockquote></div>'
-        )
-
-    if thumb:
-        return (
-            f'<a class="thumb-wrap" href="{escape(tweet_url or "#")}" target="_blank" rel="noopener">'
-            f'<img src="{escape(thumb)}" alt="" loading="lazy" /></a>'
-        )
-    return ""
+def _tweet_embed_html(post: dict) -> str:
+    """X 投稿をそのまま埋め込み表示（動画・本文はウィジェット側）"""
+    tweet_url = (post.get("url") or "").strip()
+    if not tweet_url:
+        return ""
+    return (
+        f'<div class="tweet-embed-slot" data-tweet-url="{escape(tweet_url)}">'
+        f'<blockquote class="twitter-tweet" data-dnt="true" data-lang="en">'
+        f'<a href="{escape(tweet_url)}"></a></blockquote></div>'
+    )
 
 
 def _sort_posts(posts: list[dict]) -> list[dict]:
@@ -310,7 +293,7 @@ def _overview_html() -> str:
         <li>対象: 海外（本文に日本語なし）・動画付き・一人称の生成・検証っぽい X 投稿</li>
         <li>除外: Google 公式・まとめ系・明らかなリード獲得投稿</li>
         <li>収集: Apify 英語検索 3 クエリ（直近7日・再取得時は既存とマージ）</li>
-        <li>動画は X 上でプレビュー必須（サムネイルは参考画像）</li>
+        <li>各カードは <strong>X 投稿の埋め込み</strong>で表示（動画は投稿内で再生）</li>
         <li>一覧の並び: <strong>いいね数の多い順</strong>（バッジの tier は参考ラベル）</li>
       </ul>
     </article>
@@ -330,11 +313,17 @@ def _post_card(post: dict, *, rank: int) -> str:
     promo_badge = '<span class="badge promo">プロモ注意</span>' if promo else ""
     text = escape(_display_text(post))
     date = escape(_fmt_date(post.get("published_at") or ""))
-    media_html = _video_html(post)
+    embed_html = _tweet_embed_html(post)
     cls = "post-card"
     stats = f"❤{likes:,} · RT{rts:,}"
     if views:
         stats += f" · 👁{views:,}"
+    ja_block = ""
+    if text:
+        ja_block = f"""<details class="post-ja">
+  <summary>日本語訳を表示</summary>
+  <p class="post-text">{text}</p>
+</details>"""
     return f"""<article class="{cls}" data-tier="{tier}" data-promo="{1 if promo else 0}">
   <div class="post-head">
     <span class="badge tier" style="border-color:{tier_color};color:{tier_color}">{tier_label}</span>
@@ -345,11 +334,8 @@ def _post_card(post: dict, *, rank: int) -> str:
     <span class="date">{date}</span>
   </div>
   <div class="post-body">
-    {media_html}
-    <p class="post-text">{text}</p>
-  </div>
-  <div class="post-foot">
-    <a class="x-link" href="{url}" target="_blank" rel="noopener">X で元ポストを見る →</a>
+    {embed_html}
+    {ja_block}
   </div>
 </article>"""
 
@@ -423,18 +409,16 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .rank {{ font-size: 0.78rem; font-weight: 700; color: var(--accent2); min-width: 2.2rem; }}
 .stats, .date {{ color: var(--muted); }}
 .post-body {{ display: flex; flex-direction: column; gap: 10px; }}
-.post-video {{ width: 100%; max-width: 520px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: #000; }}
-.post-video video {{ width: 100%; height: auto; display: block; max-height: 520px; }}
-.post-video-embed {{ min-height: 120px; }}
-.thumb-wrap {{ display: block; width: 100%; max-width: 320px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }}
-.thumb-wrap img {{ width: 100%; height: auto; display: block; }}
-.post-text {{ font-size: 0.9rem; color: #cbd5e1; min-width: 0; }}
-.post-foot {{ margin-top: 10px; }}
-.x-link {{ color: var(--accent); font-size: 0.85rem; text-decoration: none; font-weight: 600; }}
-.x-link:hover {{ text-decoration: underline; }}
+.tweet-embed-slot {{ min-height: 200px; display: flex; justify-content: center; }}
+.tweet-embed-slot .twitter-tweet {{ margin: 0 auto !important; }}
+.post-ja {{ margin-top: 4px; }}
+.post-ja summary {{ cursor: pointer; color: var(--muted); font-size: 0.84rem; user-select: none; }}
+.post-ja summary:hover {{ color: var(--accent); }}
+.post-ja[open] summary {{ margin-bottom: 8px; }}
+.post-text {{ font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }}
 footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }}
 @media (max-width: 640px) {{
-  .post-video {{ max-width: 100%; }}
+  .tweet-embed-slot {{ min-height: 160px; }}
 }}
 </style>
 </head>
@@ -452,39 +436,46 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
   {_overview_html()}
   <section class="section" id="posts">
     <h2>収集ポスト（動画付き・海外）</h2>
-    <p class="hint">いいね数の多い順。本文は日本語訳。動画はカード内で再生（取得できない場合は X 埋め込み）。</p>
+    <p class="hint">いいね数の多い順。各カードは X 投稿の埋め込み（原文・動画）。日本語訳は「日本語訳を表示」から開けます。</p>
     <div class="post-list">{posts_html}</div>
   </section>
 </div>
 <footer>データ: gemini_omni_overseas_hands_on_video.json ｜ 再生成: python build_gemini_omni.py</footer>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script>
 (function () {{
-  var embeds = document.querySelectorAll(".post-video-embed[data-tweet-url]");
-  if (!embeds.length) return;
-  function loadWidget(el) {{
+  var slots = document.querySelectorAll(".tweet-embed-slot");
+  if (!slots.length) return;
+  function renderSlot(el) {{
     if (el.dataset.loaded) return;
     el.dataset.loaded = "1";
     if (window.twttr && window.twttr.widgets) {{
       window.twttr.widgets.load(el);
+    }}
+  }}
+  function whenReady(fn) {{
+    if (window.twttr && window.twttr.ready) {{
+      window.twttr.ready(fn);
+    }} else {{
+      var n = 0;
+      var t = setInterval(function () {{
+        if (window.twttr && window.twttr.ready) {{ clearInterval(t); window.twttr.ready(fn); }}
+        else if (++n > 80) {{ clearInterval(t); fn(); }}
+      }}, 100);
+    }}
+  }}
+  whenReady(function () {{
+    if (!("IntersectionObserver" in window)) {{
+      slots.forEach(renderSlot);
       return;
     }}
-    var s = document.createElement("script");
-    s.src = "https://platform.twitter.com/widgets.js";
-    s.async = true;
-    s.charset = "utf-8";
-    s.onload = function () {{ window.twttr && window.twttr.widgets && window.twttr.widgets.load(el); }};
-    document.head.appendChild(s);
-  }}
-  if (!("IntersectionObserver" in window)) {{
-    embeds.forEach(loadWidget);
-    return;
-  }}
-  var io = new IntersectionObserver(function (entries) {{
-    entries.forEach(function (e) {{
-      if (e.isIntersecting) {{ loadWidget(e.target); io.unobserve(e.target); }}
-    }});
-  }}, {{ rootMargin: "200px" }});
-  embeds.forEach(function (el) {{ io.observe(el); }});
+    var io = new IntersectionObserver(function (entries) {{
+      entries.forEach(function (e) {{
+        if (e.isIntersecting) {{ renderSlot(e.target); io.unobserve(e.target); }}
+      }});
+    }}, {{ rootMargin: "280px" }});
+    slots.forEach(function (el) {{ io.observe(el); }});
+  }});
 }})();
 </script>
 </body>
