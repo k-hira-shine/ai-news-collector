@@ -16,9 +16,30 @@ logger = logging.getLogger("ai-news.build_gemini_omni")
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(BASE_DIR, "data", "gemini_omni_overseas_hands_on_video.json")
+TRANSLATIONS_PATH = os.path.join(BASE_DIR, "data", "gemini_omni_post_translations.json")
 OUTPUT_PATH = os.path.join(BASE_DIR, "docs", "gemini-omni.html")
 DOCS_DIR = os.path.join(BASE_DIR, "docs")
 JST = ZoneInfo("Asia/Tokyo")
+TRANSLATE_MODEL = "gemini-2.5-flash"
+TRANSLATE_BATCH = 8
+
+TRANSLATE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "text_ja": {"type": "string"},
+                },
+                "required": ["id", "text_ja"],
+            },
+        }
+    },
+    "required": ["items"],
+}
 
 PROMO_HINTS = (
     'Comment "OMNI"',
@@ -65,7 +86,124 @@ def _is_promo(post: dict) -> bool:
     return author in ("muvi_ai", "muviai")
 
 
-def _clean_text(text: str, limit: int = 420) -> str:
+def _load_env_file() -> None:
+    path = os.path.join(BASE_DIR, ".env")
+    if not os.path.isfile(path):
+        return
+    with open(path, encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, val = line.partition("=")
+            key, val = key.strip(), val.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = val
+
+
+def _load_translation_cache() -> dict[str, str]:
+    if not os.path.isfile(TRANSLATIONS_PATH):
+        return {}
+    try:
+        with open(TRANSLATIONS_PATH, encoding="utf-8") as f:
+            data = json.load(f)
+        return {k: v for k, v in (data.get("by_url") or {}).items() if isinstance(v, str)}
+    except Exception as e:
+        logger.warning("Failed to load translations cache: %s", e)
+        return {}
+
+
+def _save_translation_cache(cache: dict[str, str]) -> None:
+    os.makedirs(os.path.dirname(TRANSLATIONS_PATH), exist_ok=True)
+    with open(TRANSLATIONS_PATH, "w", encoding="utf-8") as f:
+        json.dump({"by_url": cache, "updated_at": datetime.now(JST).isoformat()}, f, ensure_ascii=False, indent=2)
+
+
+def _translate_batch(client, posts: list[dict]) -> dict[str, str]:
+    from google.genai import types
+
+    blocks = []
+    for p in posts:
+        url = p.get("url") or ""
+        raw = unescape(re.sub(r"\s+", " ", (p.get("text") or "").strip()))
+        blocks.append(f'[ID: {url}]\n{raw[:3500]}\n---')
+    prompt = f"""以下は X（Twitter）投稿の英語本文です。各 ID ごとに自然な日本語へ翻訳してください。
+
+## ルール
+- text_ja: 投稿全文を日本語化（要約せず、意味を落とさない）
+- @ユーザー名・URL・製品名（Gemini Omni, Seedance 等）はそのままかカタカナ表記でよい
+- 絵文字・改行のニュアンスはできるだけ維持
+- リード獲得（Comment "OMNI" 等）も含めて正直に訳す
+
+## 投稿
+{chr(10).join(blocks)}"""
+
+    response = client.models.generate_content(
+        model=TRANSLATE_MODEL,
+        contents=prompt,
+        config={
+            "response_mime_type": "application/json",
+            "response_json_schema": TRANSLATE_SCHEMA,
+            "thinking_config": {"thinking_budget": 0},
+            "http_options": types.HttpOptions(timeout=120_000),
+        },
+    )
+    text = response.text
+    if not text:
+        raise ValueError("Empty translation response")
+    parsed = json.loads(text)
+    out: dict[str, str] = {}
+    for item in parsed.get("items") or []:
+        pid = item.get("id") or ""
+        ja = (item.get("text_ja") or "").strip()
+        if pid and ja:
+            out[pid] = ja
+    return out
+
+
+def ensure_post_translations(posts: list[dict]) -> list[dict]:
+    """投稿に text_ja を付与（キャッシュ + 未訳のみ API）"""
+    _load_env_file()
+    cache = _load_translation_cache()
+    missing = [p for p in posts if (p.get("url") or "") not in cache]
+    api_key = os.environ.get("GEMINI_API_KEY")
+
+    if missing and api_key:
+        try:
+            from google import genai
+        except ImportError:
+            logger.warning("google-genai not installed — skipping translation")
+        else:
+            client = genai.Client(api_key=api_key)
+            for i in range(0, len(missing), TRANSLATE_BATCH):
+                batch = missing[i : i + TRANSLATE_BATCH]
+                logger.info("Translating posts %d–%d / %d…", i + 1, i + len(batch), len(missing))
+                try:
+                    cache.update(_translate_batch(client, batch))
+                    _save_translation_cache(cache)
+                except Exception as e:
+                    logger.error("Translation batch failed: %s", e)
+                    break
+    elif missing:
+        logger.warning("GEMINI_API_KEY not set — %d posts without Japanese", len(missing))
+
+    enriched: list[dict] = []
+    for p in posts:
+        copy = dict(p)
+        url = copy.get("url") or ""
+        copy["text_ja"] = cache.get(url) or ""
+        enriched.append(copy)
+    return enriched
+
+
+def _display_text(post: dict) -> str:
+    ja = (post.get("text_ja") or "").strip()
+    if ja:
+        return ja
+    return _clean_text(post.get("text") or "", limit=800)
+
+
+def _clean_text(text: str, limit: int = 800) -> str:
     t = unescape(re.sub(r"\s+", " ", text or "").strip())
     if len(t) > limit:
         t = t[: limit - 1] + "…"
@@ -152,7 +290,7 @@ def _post_card(post: dict, *, featured: bool = False) -> str:
     tier_label, tier_color = TIER_LABELS.get(tier, TIER_LABELS[1])
     promo = _is_promo(post)
     promo_badge = '<span class="badge promo">プロモ注意</span>' if promo else ""
-    text = escape(_clean_text(post.get("text") or ""))
+    text = escape(_display_text(post))
     date = escape(_fmt_date(post.get("published_at") or ""))
     thumb = _thumb_url(post)
     thumb_html = ""
@@ -241,6 +379,7 @@ def sync_nav_in_docs() -> None:
 
 def build_gemini_omni_page(output_path: str = OUTPUT_PATH) -> None:
     posts, meta = _load_posts()
+    posts = ensure_post_translations(posts)
     featured = _featured_posts(posts)
     featured_urls = {p.get("url") for p in featured}
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
@@ -323,12 +462,12 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
   {_overview_html()}
   <section class="section" id="featured">
     <h2>注目の実使用ポスト（動画付き・海外）</h2>
-    <p class="hint">tier 3 中心。埋め込みは X のウィジェット（読み込みに数秒かかることがあります）。動画は各投稿のプレビューで確認してください。</p>
+    <p class="hint">tier 3 中心。本文は日本語訳（原文は英語）。埋め込みは X のウィジェット。動画は各投稿のプレビューで確認してください。</p>
     <div class="post-list">{featured_html}</div>
   </section>
   <section class="section" id="all-posts">
     <h2>その他の収集ポスト</h2>
-    <p class="hint">プロモ・紹介系（tier 1）を含む。❤ 数・tier の降順。</p>
+    <p class="hint">プロモ・紹介系（tier 1）を含む。本文は日本語訳。❤ 数・tier の降順。</p>
     <div class="post-list">{all_html}</div>
   </section>
 </div>

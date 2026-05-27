@@ -11,7 +11,6 @@ NAV_LINKS: list[tuple[str, str]] = [
     ("tools.html",          "🔧 ツール追跡"),
     ("reviews.html",        "📋 使ってみた"),
     ("gemini.html",         "✨ Gemini追跡"),
-    ("gemini-omni.html",    "🎬 Gemini Omni"),
 ]
 
 NAV_CSS = """
