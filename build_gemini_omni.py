@@ -221,7 +221,7 @@ def _thumb_url(post: dict) -> str:
 def _sort_posts(posts: list[dict]) -> list[dict]:
     """いいね数の多い順（同数は新しい投稿を上）"""
     def key(post: dict) -> tuple:
-        likes = post.get("likes") or 0
+        likes = int(post.get("likes") or 0)
         raw = post.get("published_at") or ""
         try:
             dt = parsedate_to_datetime(raw)
@@ -289,10 +289,10 @@ def _overview_html() -> str:
 </section>"""
 
 
-def _post_card(post: dict) -> str:
+def _post_card(post: dict, *, rank: int) -> str:
     url = escape(post.get("url") or "#")
     author = escape(post.get("author") or "?")
-    likes = post.get("likes") or 0
+    likes = int(post.get("likes") or 0)
     rts = post.get("retweets") or 0
     views = post.get("views") or 0
     tier = post.get("tier") or 1
@@ -316,6 +316,7 @@ def _post_card(post: dict) -> str:
   <div class="post-head">
     <span class="badge tier" style="border-color:{tier_color};color:{tier_color}">{tier_label}</span>
     {promo_badge}
+    <span class="rank">#{rank}</span>
     <a class="author" href="https://x.com/{author}" target="_blank" rel="noopener">@{author}</a>
     <span class="stats">{stats}</span>
     <span class="date">{date}</span>
@@ -350,12 +351,13 @@ def sync_nav_in_docs() -> None:
 def build_gemini_omni_page(output_path: str = OUTPUT_PATH) -> None:
     posts, meta = _load_posts()
     posts = ensure_post_translations(posts)
+    posts = _sort_posts(posts)
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
     cost = meta.get("apify_cost_usd")
     cost_str = f"${cost:.2f}" if isinstance(cost, (int, float)) else "—"
     nav_html = render_nav("gemini-omni.html")
 
-    posts_html = "\n".join(_post_card(p) for p in posts)
+    posts_html = "\n".join(_post_card(p, rank=i) for i, p in enumerate(posts, start=1))
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -395,6 +397,7 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .badge {{ font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; border: 1px solid; }}
 .badge.promo {{ border-color: #f59e0b; color: #f59e0b; }}
 .author {{ color: var(--accent); font-weight: 600; text-decoration: none; }}
+.rank {{ font-size: 0.78rem; font-weight: 700; color: var(--accent2); min-width: 2.2rem; }}
 .stats, .date {{ color: var(--muted); }}
 .post-body {{ display: flex; gap: 12px; align-items: flex-start; }}
 .thumb-wrap {{ flex-shrink: 0; display: block; width: 120px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }}
