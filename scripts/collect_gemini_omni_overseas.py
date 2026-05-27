@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+from scripts.gemini_omni_media import media_from_apify_tweet
 from utils import apify_actor_call, apify_run_get
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
@@ -72,12 +73,8 @@ def _parse_tweet(tweet: dict) -> dict | None:
     if JP.search(text) or author in OFFICIAL or author in NEWS_BOT:
         return None
 
-    media = []
-    for m in tweet.get("media") or []:
-        murl = m.get("url") or m.get("previewUrl") or ""
-        if murl:
-            media.append({"type": m.get("type", "photo"), "url": murl})
-    has_video = any(m["type"] == "video" for m in media) or bool(
+    media, video_mp4 = media_from_apify_tweet(tweet)
+    has_video = any(m.get("type") == "video" for m in media) or bool(video_mp4) or bool(
         re.search(r"https?://t\.co/\w+", text)
     )
     if not has_video:
@@ -98,7 +95,8 @@ def _parse_tweet(tweet: dict) -> dict | None:
         "hands_on": hands_on,
         "text": text,
         "media": media,
-        "has_native_video": any(m["type"] == "video" for m in media),
+        "video_mp4": video_mp4,
+        "has_native_video": any(m.get("type") == "video" for m in media) or bool(video_mp4),
         "first_person": bool(FIRST_PERSON.search(text)),
     }
 

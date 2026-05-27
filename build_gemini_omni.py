@@ -218,6 +218,35 @@ def _thumb_url(post: dict) -> str:
     return ""
 
 
+def _video_html(post: dict) -> str:
+    mp4 = (post.get("video_mp4") or "").strip()
+    thumb = _thumb_url(post)
+    tweet_url = post.get("url") or ""
+
+    if mp4:
+        poster = f' poster="{escape(thumb)}"' if thumb else ""
+        return (
+            f'<div class="post-video">'
+            f'<video controls playsinline preload="metadata"{poster}>'
+            f'<source src="{escape(mp4)}" type="video/mp4" />'
+            f"</video></div>"
+        )
+
+    if tweet_url and post.get("has_native_video"):
+        return (
+            f'<div class="post-video post-video-embed" data-tweet-url="{escape(tweet_url)}">'
+            f'<blockquote class="twitter-tweet" data-dnt="true" data-conversation="none">'
+            f'<a href="{escape(tweet_url)}"></a></blockquote></div>'
+        )
+
+    if thumb:
+        return (
+            f'<a class="thumb-wrap" href="{escape(tweet_url or "#")}" target="_blank" rel="noopener">'
+            f'<img src="{escape(thumb)}" alt="" loading="lazy" /></a>'
+        )
+    return ""
+
+
 def _sort_posts(posts: list[dict]) -> list[dict]:
     """いいね数の多い順（同数は新しい投稿を上）"""
     def key(post: dict) -> tuple:
@@ -301,13 +330,7 @@ def _post_card(post: dict, *, rank: int) -> str:
     promo_badge = '<span class="badge promo">プロモ注意</span>' if promo else ""
     text = escape(_display_text(post))
     date = escape(_fmt_date(post.get("published_at") or ""))
-    thumb = _thumb_url(post)
-    thumb_html = ""
-    if thumb:
-        thumb_html = (
-            f'<a class="thumb-wrap" href="{url}" target="_blank" rel="noopener">'
-            f'<img src="{escape(thumb)}" alt="" loading="lazy" /></a>'
-        )
+    media_html = _video_html(post)
     cls = "post-card"
     stats = f"❤{likes:,} · RT{rts:,}"
     if views:
@@ -322,11 +345,11 @@ def _post_card(post: dict, *, rank: int) -> str:
     <span class="date">{date}</span>
   </div>
   <div class="post-body">
-    {thumb_html}
+    {media_html}
     <p class="post-text">{text}</p>
   </div>
   <div class="post-foot">
-    <a class="x-link" href="{url}" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+    <a class="x-link" href="{url}" target="_blank" rel="noopener">X で元ポストを見る →</a>
   </div>
 </article>"""
 
@@ -399,17 +422,19 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .author {{ color: var(--accent); font-weight: 600; text-decoration: none; }}
 .rank {{ font-size: 0.78rem; font-weight: 700; color: var(--accent2); min-width: 2.2rem; }}
 .stats, .date {{ color: var(--muted); }}
-.post-body {{ display: flex; gap: 12px; align-items: flex-start; }}
-.thumb-wrap {{ flex-shrink: 0; display: block; width: 120px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }}
+.post-body {{ display: flex; flex-direction: column; gap: 10px; }}
+.post-video {{ width: 100%; max-width: 520px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); background: #000; }}
+.post-video video {{ width: 100%; height: auto; display: block; max-height: 520px; }}
+.post-video-embed {{ min-height: 120px; }}
+.thumb-wrap {{ display: block; width: 100%; max-width: 320px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }}
 .thumb-wrap img {{ width: 100%; height: auto; display: block; }}
-.post-text {{ font-size: 0.9rem; color: #cbd5e1; flex: 1; min-width: 0; }}
+.post-text {{ font-size: 0.9rem; color: #cbd5e1; min-width: 0; }}
 .post-foot {{ margin-top: 10px; }}
 .x-link {{ color: var(--accent); font-size: 0.85rem; text-decoration: none; font-weight: 600; }}
 .x-link:hover {{ text-decoration: underline; }}
 footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }}
 @media (max-width: 640px) {{
-  .post-body {{ flex-direction: column; }}
-  .thumb-wrap {{ width: 100%; max-width: 200px; }}
+  .post-video {{ max-width: 100%; }}
 }}
 </style>
 </head>
@@ -427,11 +452,41 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
   {_overview_html()}
   <section class="section" id="posts">
     <h2>収集ポスト（動画付き・海外）</h2>
-    <p class="hint">いいね数の多い順。本文は日本語訳。バッジ「注目／実使用／参考」は収集時の tier（実使用の確からしさの目安）。動画は X のリンクから確認。</p>
+    <p class="hint">いいね数の多い順。本文は日本語訳。動画はカード内で再生（取得できない場合は X 埋め込み）。</p>
     <div class="post-list">{posts_html}</div>
   </section>
 </div>
 <footer>データ: gemini_omni_overseas_hands_on_video.json ｜ 再生成: python build_gemini_omni.py</footer>
+<script>
+(function () {{
+  var embeds = document.querySelectorAll(".post-video-embed[data-tweet-url]");
+  if (!embeds.length) return;
+  function loadWidget(el) {{
+    if (el.dataset.loaded) return;
+    el.dataset.loaded = "1";
+    if (window.twttr && window.twttr.widgets) {{
+      window.twttr.widgets.load(el);
+      return;
+    }}
+    var s = document.createElement("script");
+    s.src = "https://platform.twitter.com/widgets.js";
+    s.async = true;
+    s.charset = "utf-8";
+    s.onload = function () {{ window.twttr && window.twttr.widgets && window.twttr.widgets.load(el); }};
+    document.head.appendChild(s);
+  }}
+  if (!("IntersectionObserver" in window)) {{
+    embeds.forEach(loadWidget);
+    return;
+  }}
+  var io = new IntersectionObserver(function (entries) {{
+    entries.forEach(function (e) {{
+      if (e.isIntersecting) {{ loadWidget(e.target); io.unobserve(e.target); }}
+    }});
+  }}, {{ rootMargin: "200px" }});
+  embeds.forEach(function (el) {{ io.observe(el); }});
+}})();
+</script>
 </body>
 </html>"""
 
