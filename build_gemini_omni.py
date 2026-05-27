@@ -320,10 +320,7 @@ def _post_card(post: dict, *, rank: int) -> str:
         stats += f" · 👁{views:,}"
     ja_block = ""
     if text:
-        ja_block = f"""<details class="post-ja">
-  <summary>日本語訳を表示</summary>
-  <p class="post-text">{text}</p>
-</details>"""
+        ja_block = f'<p class="post-text post-ja">{text}</p>'
     return f"""<article class="{cls}" data-tier="{tier}" data-promo="{1 if promo else 0}">
   <div class="post-head">
     <span class="badge tier" style="border-color:{tier_color};color:{tier_color}">{tier_label}</span>
@@ -334,8 +331,8 @@ def _post_card(post: dict, *, rank: int) -> str:
     <span class="date">{date}</span>
   </div>
   <div class="post-body">
-    {embed_html}
     {ja_block}
+    {embed_html}
   </div>
 </article>"""
 
@@ -411,11 +408,7 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .post-body {{ display: flex; flex-direction: column; gap: 10px; }}
 .tweet-embed-slot {{ min-height: 200px; display: flex; justify-content: center; }}
 .tweet-embed-slot .twitter-tweet {{ margin: 0 auto !important; }}
-.post-ja {{ margin-top: 4px; }}
-.post-ja summary {{ cursor: pointer; color: var(--muted); font-size: 0.84rem; user-select: none; }}
-.post-ja summary:hover {{ color: var(--accent); }}
-.post-ja[open] summary {{ margin-bottom: 8px; }}
-.post-text {{ font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; }}
+.post-text.post-ja {{ font-size: 0.9rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 4px; }}
 footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }}
 @media (max-width: 640px) {{
   .tweet-embed-slot {{ min-height: 160px; }}
@@ -436,7 +429,7 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
   {_overview_html()}
   <section class="section" id="posts">
     <h2>収集ポスト（動画付き・海外）</h2>
-    <p class="hint">いいね数の多い順。各カードは X 投稿の埋め込み（原文・動画）。日本語訳は「日本語訳を表示」から開けます。</p>
+    <p class="hint">いいね数の多い順。日本語訳の下に X 投稿の埋め込み（原文・動画）。</p>
     <div class="post-list">{posts_html}</div>
   </section>
 </div>
