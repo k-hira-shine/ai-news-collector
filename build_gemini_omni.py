@@ -218,19 +218,20 @@ def _thumb_url(post: dict) -> str:
     return ""
 
 
-def _post_sort_key(post: dict) -> tuple:
-    raw = post.get("published_at") or ""
-    try:
-        dt = parsedate_to_datetime(raw)
-        if dt.tzinfo is None:
-            dt = dt.replace(tzinfo=timezone.utc)
-    except Exception:
-        dt = datetime.min.replace(tzinfo=timezone.utc)
-    return (dt, post.get("tier") or 0, post.get("likes") or 0)
-
-
 def _sort_posts(posts: list[dict]) -> list[dict]:
-    return sorted(posts, key=_post_sort_key, reverse=True)
+    """いいね数の多い順（同数は新しい投稿を上）"""
+    def key(post: dict) -> tuple:
+        likes = post.get("likes") or 0
+        raw = post.get("published_at") or ""
+        try:
+            dt = parsedate_to_datetime(raw)
+            if dt.tzinfo is None:
+                dt = dt.replace(tzinfo=timezone.utc)
+        except Exception:
+            dt = datetime.min.replace(tzinfo=timezone.utc)
+        return (likes, dt)
+
+    return sorted(posts, key=key, reverse=True)
 
 
 def _load_posts() -> tuple[list[dict], dict]:
@@ -281,13 +282,14 @@ def _overview_html() -> str:
         <li>除外: Google 公式・まとめ系・明らかなリード獲得投稿</li>
         <li>収集: Apify 英語検索 3 クエリ（直近7日・再取得時は既存とマージ）</li>
         <li>動画は X 上でプレビュー必須（サムネイルは参考画像）</li>
+        <li>一覧の並び: <strong>いいね数の多い順</strong>（バッジの tier は参考ラベル）</li>
       </ul>
     </article>
   </div>
 </section>"""
 
 
-def _post_card(post: dict, *, featured: bool = False) -> str:
+def _post_card(post: dict) -> str:
     url = escape(post.get("url") or "#")
     author = escape(post.get("author") or "?")
     likes = post.get("likes") or 0
@@ -306,16 +308,7 @@ def _post_card(post: dict, *, featured: bool = False) -> str:
             f'<a class="thumb-wrap" href="{url}" target="_blank" rel="noopener">'
             f'<img src="{escape(thumb)}" alt="" loading="lazy" /></a>'
         )
-    embed_html = ""
-    if featured and not promo:
-        raw_url = post.get("url") or ""
-        embed_html = f"""
-  <div class="tweet-embed">
-    <blockquote class="twitter-tweet" data-dnt="true">
-      <a href="{escape(raw_url)}"></a>
-    </blockquote>
-  </div>"""
-    cls = "post-card featured" if featured else "post-card"
+    cls = "post-card"
     stats = f"❤{likes:,} · RT{rts:,}"
     if views:
         stats += f" · 👁{views:,}"
@@ -334,37 +327,7 @@ def _post_card(post: dict, *, featured: bool = False) -> str:
   <div class="post-foot">
     <a class="x-link" href="{url}" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
   </div>
-  {embed_html}
 </article>"""
-
-
-def _featured_posts(posts: list[dict]) -> list[dict]:
-    picked: list[dict] = []
-    seen_urls: set[str] = set()
-    for p in posts:
-        if (p.get("tier") or 0) < 3:
-            continue
-        if _is_promo(p):
-            continue
-        url = p.get("url") or ""
-        if url in seen_urls:
-            continue
-        seen_urls.add(url)
-        picked.append(p)
-        if len(picked) >= 12:
-            break
-    if len(picked) < 8:
-        for p in posts:
-            if (p.get("tier") or 0) < 2:
-                continue
-            url = p.get("url") or ""
-            if url in seen_urls or _is_promo(p):
-                continue
-            seen_urls.add(url)
-            picked.append(p)
-            if len(picked) >= 12:
-                break
-    return picked
 
 
 def sync_nav_in_docs() -> None:
@@ -387,17 +350,12 @@ def sync_nav_in_docs() -> None:
 def build_gemini_omni_page(output_path: str = OUTPUT_PATH) -> None:
     posts, meta = _load_posts()
     posts = ensure_post_translations(posts)
-    featured = _featured_posts(posts)
-    featured_urls = {p.get("url") for p in featured}
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
     cost = meta.get("apify_cost_usd")
     cost_str = f"${cost:.2f}" if isinstance(cost, (int, float)) else "—"
     nav_html = render_nav("gemini-omni.html")
 
-    featured_html = "\n".join(_post_card(p, featured=True) for p in featured)
-    all_html = "\n".join(
-        _post_card(p) for p in posts if p.get("url") not in featured_urls
-    )
+    posts_html = "\n".join(_post_card(p) for p in posts)
 
     html = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -446,7 +404,6 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .post-foot {{ margin-top: 10px; }}
 .x-link {{ color: var(--accent); font-size: 0.85rem; text-decoration: none; font-weight: 600; }}
 .x-link:hover {{ text-decoration: underline; }}
-.tweet-embed {{ margin-top: 12px; min-height: 48px; }}
 footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }}
 @media (max-width: 640px) {{
   .post-body {{ flex-direction: column; }}
@@ -463,30 +420,23 @@ footer {{ text-align: center; color: var(--muted); font-size: 0.8rem; padding: 2
 <div class="container">
   <nav class="toc">
     <a href="#overview">概要</a>
-    <a href="#featured">注目ポスト</a>
-    <a href="#all-posts">一覧</a>
+    <a href="#posts">投稿一覧</a>
   </nav>
   {_overview_html()}
-  <section class="section" id="featured">
-    <h2>注目の実使用ポスト（動画付き・海外）</h2>
-    <p class="hint">tier 3 中心。本文は日本語訳（原文は英語）。埋め込みは X のウィジェット。動画は各投稿のプレビューで確認してください。</p>
-    <div class="post-list">{featured_html}</div>
-  </section>
-  <section class="section" id="all-posts">
-    <h2>その他の収集ポスト</h2>
-    <p class="hint">プロモ・紹介系（tier 1）を含む。本文は日本語訳。❤ 数・tier の降順。</p>
-    <div class="post-list">{all_html}</div>
+  <section class="section" id="posts">
+    <h2>収集ポスト（動画付き・海外）</h2>
+    <p class="hint">いいね数の多い順。本文は日本語訳。バッジ「注目／実使用／参考」は収集時の tier（実使用の確からしさの目安）。動画は X のリンクから確認。</p>
+    <div class="post-list">{posts_html}</div>
   </section>
 </div>
 <footer>データ: gemini_omni_overseas_hands_on_video.json ｜ 再生成: python build_gemini_omni.py</footer>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>"""
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(html)
-    logger.info("Built Gemini Omni page → %s (%d posts, %d featured)", output_path, len(posts), len(featured))
+    logger.info("Built Gemini Omni page → %s (%d posts)", output_path, len(posts))
 
 
 def build() -> None:
