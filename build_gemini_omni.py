@@ -4,7 +4,7 @@ import json
 import logging
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from glob import glob
 from html import escape, unescape
@@ -218,12 +218,19 @@ def _thumb_url(post: dict) -> str:
     return ""
 
 
+def _post_sort_key(post: dict) -> tuple:
+    raw = post.get("published_at") or ""
+    try:
+        dt = parsedate_to_datetime(raw)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=timezone.utc)
+    except Exception:
+        dt = datetime.min.replace(tzinfo=timezone.utc)
+    return (dt, post.get("tier") or 0, post.get("likes") or 0)
+
+
 def _sort_posts(posts: list[dict]) -> list[dict]:
-    return sorted(
-        posts,
-        key=lambda p: (p.get("tier") or 0, p.get("likes") or 0),
-        reverse=True,
-    )
+    return sorted(posts, key=_post_sort_key, reverse=True)
 
 
 def _load_posts() -> tuple[list[dict], dict]:
@@ -272,7 +279,7 @@ def _overview_html() -> str:
       <ul>
         <li>対象: 海外（本文に日本語なし）・動画付き・一人称の生成・検証っぽい X 投稿</li>
         <li>除外: Google 公式・まとめ系・明らかなリード獲得投稿</li>
-        <li>収集: 既存ログ + Apify（英語検索 3 クエリ）→ 実使用っぽい投稿に絞り込み</li>
+        <li>収集: Apify 英語検索 3 クエリ（直近7日・再取得時は既存とマージ）</li>
         <li>動画は X 上でプレビュー必須（サムネイルは参考画像）</li>
       </ul>
     </article>
