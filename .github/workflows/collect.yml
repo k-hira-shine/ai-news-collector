@@ -95,6 +95,9 @@ jobs:
       - name: Build Gemini tracker page
         run: python build_gemini.py
 
+      - name: Build Gemini Omni page
+        run: python build_gemini_omni.py
+
       - name: Build home page
         run: python build_home.py
 

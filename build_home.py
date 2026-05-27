@@ -311,6 +311,13 @@ PAGES = [
         "color": "#4285f4",
         "topic_fn": _latest_gemini_topic,
     },
+    {
+        "file": "gemini-omni.html",
+        "title": "🎬 Gemini Omni",
+        "desc": "I/O 2026発表の動画AIまとめ＋海外ユーザーの動画付き実使用ポスト（Apify収集）",
+        "color": "#a78bfa",
+        "topic_fn": lambda: {"text": "海外実使用ポスト 71件（動画付き）", "url": "gemini-omni.html"},
+    },
 ]
 
 

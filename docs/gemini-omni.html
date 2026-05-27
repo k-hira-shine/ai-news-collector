@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gemini Omni — 概要と海外実使用ポスト</title>
+<style>
+:root {
+  --bg: #0f1419; --card: #1a2236; --border: #2d3748;
+  --text: #e2e8f0; --muted: #94a3b8; --accent: #4285f4; --accent2: #a78bfa;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; padding-top: 48px; }
+
+.topnav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #0a0f1eee; backdrop-filter: blur(8px); border-bottom: 1px solid #2d3748; display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; padding: 6px 12px; }
+.topnav a { display: inline-block; padding: 4px 12px; background: #1a2236; border-radius: 6px; color: #94a3b8; text-decoration: none; font-size: 0.82rem; white-space: nowrap; }
+.topnav a:hover { color: #38bdf8; background: rgba(56,189,248,0.1); }
+.topnav a.active { background: #0284c7; color: #fff; }
+@media (max-width: 640px) {
+  .topnav { gap: 4px; padding: 4px 8px; }
+  .topnav a { font-size: 0.75rem; padding: 3px 8px; }
+}
+
+header { padding: 24px 20px 12px; border-bottom: 1px solid var(--border); }
+header h1 { font-size: 1.45rem; }
+header .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
+.container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 48px; }
+.toc { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.toc a { padding: 6px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.88rem; }
+.toc a:hover { background: rgba(66,133,244,0.15); }
+.overview { margin-bottom: 32px; }
+.overview h2 { font-size: 1.2rem; margin-bottom: 10px; color: var(--accent2); }
+.overview .lead { color: #cbd5e1; margin-bottom: 16px; max-width: 900px; }
+.overview-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.ov-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.ov-card h3 { font-size: 0.95rem; margin-bottom: 8px; color: var(--text); }
+.ov-card ul { padding-left: 1.1rem; font-size: 0.86rem; color: #cbd5e1; }
+.ov-card li { margin: 4px 0; }
+.section { margin-top: 28px; }
+.section h2 { font-size: 1.15rem; margin-bottom: 6px; }
+.section .hint { color: var(--muted); font-size: 0.84rem; margin-bottom: 14px; }
+.post-list { display: flex; flex-direction: column; gap: 14px; }
+.post-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.post-card.featured { border-color: rgba(66,133,244,0.45); }
+.post-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.8rem; margin-bottom: 8px; }
+.badge { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 8px; border: 1px solid; }
+.badge.promo { border-color: #f59e0b; color: #f59e0b; }
+.author { color: var(--accent); font-weight: 600; text-decoration: none; }
+.stats, .date { color: var(--muted); }
+.post-body { display: flex; gap: 12px; align-items: flex-start; }
+.thumb-wrap { flex-shrink: 0; display: block; width: 120px; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+.thumb-wrap img { width: 100%; height: auto; display: block; }
+.post-text { font-size: 0.9rem; color: #cbd5e1; flex: 1; min-width: 0; }
+.post-foot { margin-top: 10px; }
+.x-link { color: var(--accent); font-size: 0.85rem; text-decoration: none; font-weight: 600; }
+.x-link:hover { text-decoration: underline; }
+.tweet-embed { margin-top: 12px; min-height: 48px; }
+footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24px; border-top: 1px solid var(--border); margin-top: 32px; }
+@media (max-width: 640px) {
+  .post-body { flex-direction: column; }
+  .thumb-wrap { width: 100%; max-width: 200px; }
+}
+</style>
+</head>
+<body>
+<nav class="topnav">
+  <a href="home.html">🏠 ホーム</a>
+  <a href="index.html">📰 ニュース</a>
+  <a href="strategy.html">🎯 施策提案</a>
+  <a href="buzz.html">🔥 バズりランキング</a>
+  <a href="money.html">🎬 マネタイズ</a>
+  <a href="sns_success.html">🧠 SNS成功者</a>
+  <a href="post_generator.html">✍️ 投稿ストック</a>
+  <a href="tools.html">🔧 ツール追跡</a>
+  <a href="reviews.html">📋 使ってみた</a>
+  <a href="gemini.html">✨ Gemini追跡</a>
+  <a href="gemini-omni.html" class="active">🎬 Gemini Omni</a>
+</nav>
+<header>
+  <h1>🎬 Gemini Omni</h1>
+  <p class="meta">Last updated: 2026-05-27 23:35 JST ｜ 実使用ポスト 71件 ｜ Apify 収集コスト目安 $0.03</p>
+</header>
+<div class="container">
+  <nav class="toc">
+    <a href="#overview">概要</a>
+    <a href="#featured">注目ポスト</a>
+    <a href="#all-posts">一覧</a>
+  </nav>
+  
+<section class="overview" id="overview">
+  <h2>Gemini Omni とは</h2>
+  <p class="lead">
+    Google I/O 2026（2026年5月）で発表された、マルチモーダル動画生成・編集の新ファミリー。
+    コミュニティでは「動画版 Nano Banana」とも呼ばれ、まずは<strong>動画</strong>が入口になっている。
+  </p>
+  <div class="overview-grid">
+    <article class="ov-card">
+      <h3>位置づけ</h3>
+      <ul>
+        <li>「Anything from anything」の第一歩（現時点は動画中心）</li>
+        <li>他社の動画 AI と違い、<strong>映像のネイティブ編集</strong>もマルチモーダルで扱える点が差別化</li>
+        <li>モデル名: <strong>Gemini Omni</strong>（ファミリー）／実運用は <strong>Gemini Omni Flash</strong> が入口</li>
+      </ul>
+    </article>
+    <article class="ov-card">
+      <h3>どこで使えるか</h3>
+      <ul>
+        <li>Gemini アプリ（有料プラン）</li>
+        <li>Google Flow（Agent モードでの一括生成）</li>
+        <li>YouTube Shorts 等への展開言及</li>
+        <li>API は「近日」告知が多く、開発者向けはまだ待ちの声が多い</li>
+      </ul>
+    </article>
+    <article class="ov-card">
+      <h3>よく言われる制約</h3>
+      <ul>
+        <li>レート制限・<strong>約10秒</strong>の尺上限</li>
+        <li>画質・物理表現のばらつき（バックフリップ等の失敗報告あり）</li>
+        <li>Seedance 2.0 等との比較では「見た目は良いが演出・カメラワークは劣る」という実使用レビューも</li>
+      </ul>
+    </article>
+    <article class="ov-card">
+      <h3>このページのデータ</h3>
+      <ul>
+        <li>対象: 海外（本文に日本語なし）・動画付き・一人称の生成・検証っぽい X 投稿</li>
+        <li>除外: Google 公式・まとめ系・明らかなリード獲得投稿</li>
+        <li>収集: 既存ログ + Apify（英語検索 3 クエリ）→ 実使用っぽい投稿に絞り込み</li>
+        <li>動画は X 上でプレビュー必須（サムネイルは参考画像）</li>
+      </ul>
+    </article>
+  </div>
+</section>
+  <section class="section" id="featured">
+    <h2>注目の実使用ポスト（動画付き・海外）</h2>
+    <p class="hint">tier 3 中心。埋め込みは X のウィジェット（読み込みに数秒かかることがあります）。動画は各投稿のプレビューで確認してください。</p>
+    <div class="post-list"><article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/emollick" target="_blank" rel="noopener">@emollick</a>
+    <span class="stats">❤2,889 · RT229 · 👁266,821</span>
+    <span class="date">2026/05/23</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/emollick/status/2057874739817808223" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057873371774259201/img/e71JnJYmvnxkcfEV.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I think people don&#x27;t realize why Gemini Omni is different than other video AIs. It is fully multimodal, so it can edit video natively, too I took the famous &quot;train &quot; movie from 1896 &amp; made it a bullet train, LEGO, added a time traveler, a centipede, muppets... (see reflections?) https://t.co/WxSO5h9x1Z</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/emollick/status/2057874739817808223" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/emollick/status/2057874739817808223"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/emollick" target="_blank" rel="noopener">@emollick</a>
+    <span class="stats">❤432 · RT21 · 👁311,736</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/emollick/status/2056788122369712148" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056787332905250816/img/_KOcijHeVFvw5bgG.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I had early Gemini Omni access: &quot;sea otter in a pilot&#x27;s uniform explains why Spirit Airlines went bankrupt to a river otter who is distracted by their laptop while they are in a hot air balloon over NYC. in the next balloon over, william shakespeare fights a robot made of pizza&quot; https://t.co/FrSQWobYM4</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/emollick/status/2056788122369712148" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/emollick/status/2056788122369712148"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/aimikoda" target="_blank" rel="noopener">@aimikoda</a>
+    <span class="stats">❤400 · RT37 · 👁32,368</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/aimikoda/status/2056840097455014017" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056839124221341696/img/0v4awTx9SRn5erV3.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Seedance 2.0 vs Gemini Omni, tested under the same conditions 👀 I was working on a new storyboard. After generating it with Seedance 2.0, I gave the exact same prompt + storyboard reference + character reference to Gemini Omni as well. Result: Gemini Omni surprised me with style quality and got closer than I expected in prompt adherence. But Seedance still feels ahead for storyboard execution, motion energy, camera …</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/aimikoda/status/2056840097455014017" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/aimikoda/status/2056840097455014017"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/thewhizzai" target="_blank" rel="noopener">@thewhizzai</a>
+    <span class="stats">❤346 · RT24 · 👁65,962</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/TheWhizzAI/status/2056976857611006319" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056976806365073408/img/RuAhprgVyw2xErwf.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google spent billions of dollars on Gemini Omni. It still can&#x27;t make a person do a backflip. I tested it → Asked Gemini to generate a backflip → Physics was broken → Body looked wrong → Tried 3 times. Same result. A billion-dollar model. One simple move. Still failing. Don&#x27;t trust the hype. Test everything yourself. Bookmark this. Comment on your worst AI fail.</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/TheWhizzAI/status/2056976857611006319" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/TheWhizzAI/status/2056976857611006319"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/caliraval" target="_blank" rel="noopener">@caliraval</a>
+    <span class="stats">❤214 · RT5 · 👁10,941</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/CaliraVal/status/2057279497721073695" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057279419602079744/pu/img/sQcWZh3ebFmXjAtG.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">One grocery store video became an entire AI-generated ad campaign using Gemini Omni Flash on @muvi_ai I changed the styling, products, colors, and overall commercial look while keeping the same original footage. No new shoots. No complex editing. Just video-to-video generation doing the heavy lifting. And right now, Muvi Video is offering unlimited Omni Flash access free for annual Ultra &amp; Business subscribers until…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/CaliraVal/status/2057279497721073695" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/CaliraVal/status/2057279497721073695"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/inshrah_ali_" target="_blank" rel="noopener">@inshrah_ali_</a>
+    <span class="stats">❤177 · RT1 · 👁8,902</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Inshrah_ali_/status/2057112403809354202" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057112284858589184/pu/img/6K9SNJT-DHBdK-Re.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google’s new Gemini Omni model is now live on Buzzy I generated a video and kept refining it just by chatting with the AI extending scenes, adjusting details and improving everything step by step. Pretty wild experience. https://t.co/aqFaEW2Lsp</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Inshrah_ali_/status/2057112403809354202" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/Inshrah_ali_/status/2057112403809354202"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/jsfilmz0412" target="_blank" rel="noopener">@jsfilmz0412</a>
+    <span class="stats">❤169 · RT12 · 👁52,808</span>
+    <span class="date">2026/05/23</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/JSFILMZ0412/status/2057926749598736635" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057925548056203264/img/tfeHYW5WQBa2DQZJ.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">My Final Verdict. Seedance 2.0 Fast vs Gemini Omni Flash. Gemini Omni Flash just doesn&#x27;t have a place in my workflow. Beyond the frustrating 10-second limit and heavy censorship flags, the style transfers completely break character consistency—with the likeness drifting hard and even changing my characters&#x27; race to Caucasian. The only real positive here is that generation speed is fast. Fingers crossed for what Goog…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/JSFILMZ0412/status/2057926749598736635" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/JSFILMZ0412/status/2057926749598736635"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/codebypoonam" target="_blank" rel="noopener">@codebypoonam</a>
+    <span class="stats">❤155 · RT18 · 👁9,031</span>
+    <span class="date">2026/05/24</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/CodeByPoonam/status/2058289024306143446" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2058288973571936256/img/4SyXqA0Z6fDFNqJo.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google just made video editing as easy as texting. Gemini Omni can: → Swap characters in your video → Change backgrounds instantly → Add or remove objects mid-scene → Manipulate camera angles → Create your own digital avatar with your voice → Apply cinematic zooms with one prompt → Reimagine existing landmarks entirely → Edit physics — gravity, fluid dynamics, kinetic energy → Build new worlds from a single instruct…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/CodeByPoonam/status/2058289024306143446" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/CodeByPoonam/status/2058289024306143446"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/topviewaihq" target="_blank" rel="noopener">@topviewaihq</a>
+    <span class="stats">❤154 · RT20 · 👁10,312</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/TopviewAIhq/status/2056799133063950747" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056799072921780224/img/kVpCiwle-9uX8k4g.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Generated the storyboard with GPT-Image-2, then used Gemini Omni Flash for video generation. The output quality is genuinely impressive — especially the instruction following. Gemini Omni Flash understands cinematic prompts and shot intentions really well. https://t.co/1qo0HMR8Ub</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/TopviewAIhq/status/2056799133063950747" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/TopviewAIhq/status/2056799133063950747"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/romi2656" target="_blank" rel="noopener">@romi2656</a>
+    <span class="stats">❤136 · RT56 · 👁6,281</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Romi2656/status/2057801798023360523" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057801616535822336/pu/img/6nBGHvtjMIFx5uc3.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">UGC is evolving faster than ever, and the quality jump is honestly insane 💯 Made with Omni Flash on @muvi_ai YES, WE GOT CRAZY. USE GEMINI OMNI FLASH FOR FREE 🥒 AI-powered UGC is completely changing how content is made. With Omni Flash video-to-video, you can take one simple scene and turn it into multiple high-quality ad variations without reshoots or rebuilding anything. Same footage, same movement… but endless po…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Romi2656/status/2057801798023360523" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/Romi2656/status/2057801798023360523"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/vortex_promos" target="_blank" rel="noopener">@vortex_promos</a>
+    <span class="stats">❤130 · RT130 · 👁1,601</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/VORTEX_Promos/status/2059605907277787295" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2059605651937013760/img/CxHS0lPFjeBK7Mvv.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">This is insane. Google Gemini Omni generated a full drone flight path from one simple image with just a red arrow path. Not GPS. Not a map. Not a complex prompt. Just one image, one arrow, and it understood the entire camera movement. AI video direction is getting scary good. https://t.co/Cg9b0bQf0X</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/VORTEX_Promos/status/2059605907277787295" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/VORTEX_Promos/status/2059605907277787295"></a>
+    </blockquote>
+  </div>
+</article>
+<article class="post-card featured" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/ruzainameer" target="_blank" rel="noopener">@ruzainameer</a>
+    <span class="stats">❤130 · RT5 · 👁5,517</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/RuzainaMeer/status/2057785474446741728" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057785333019021313/pu/img/7iBLMIfp8MUWlcGo.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Raw power. Real punches. No choreography. created with Gemini Omni Flash on @muvi_ai Prompt: Ultra-realistic 10-second boxing fight between two women inside a small underground gym. Both fighters look naturally athletic with realistic skin texture, sweat, bruises, and detailed facial expressions. One woman wears black boxing shorts and red gloves, the other wears dark gray sportswear with blue gloves. The fight feel…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/RuzainaMeer/status/2057785474446741728" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+  <div class="tweet-embed">
+    <blockquote class="twitter-tweet" data-dnt="true">
+      <a href="https://x.com/RuzainaMeer/status/2057785474446741728"></a>
+    </blockquote>
+  </div>
+</article></div>
+  </section>
+  <section class="section" id="all-posts">
+    <h2>その他の収集ポスト</h2>
+    <p class="hint">プロモ・紹介系（tier 1）を含む。❤ 数・tier の降順。</p>
+    <div class="post-list"><article class="post-card" data-tier="3" data-promo="1">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    <span class="badge promo">プロモ注意</span>
+    <a class="author" href="https://x.com/mikefutia" target="_blank" rel="noopener">@mikefutia</a>
+    <span class="stats">❤390 · RT32 · 👁31,635</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/mikefutia/status/2057492694650515878" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057492624538505216/img/CAoyoL0L4HxjZ4hr.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google Gemini Omni is f*cking insane for UGC ads 🤯 Google just dropped their new video model and I spent the past 24 hours putting it through its paces. Multi-shot UGC ads -&gt; Consistent creator across every scene -&gt;Agent mode that runs the whole session. Perfect for DTC brands and agencies who need UGC creative at volume without hiring creators or paying per-video platform fees. If you&#x27;re briefing creators every wee…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/mikefutia/status/2057492694650515878" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/zarairahh" target="_blank" rel="noopener">@zarairahh</a>
+    <span class="stats">❤123 · RT9 · 👁5,956</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ZaraIrahh/status/2057775215749349520" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057775120081408000/pu/img/BYs1EkTamceoNluj.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Collecting sunsets, skylines &amp; little pieces of the world with Muvi Video Made with Gemini Omni Flash on @muvi_ai Prompt: Create a 10-second cinematic hyper-lapse selfie travel video of the uploaded female character across 20 world-famous destinations in 2026. Hard cuts every 0.5 seconds synced to the beat. Handheld selfie-stick camera, wide-angle lens, close selfie framing, energetic travel-vlogger style, vibrant c…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ZaraIrahh/status/2057775215749349520" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/tulseedoshi" target="_blank" rel="noopener">@tulseedoshi</a>
+    <span class="stats">❤118 · RT8 · 👁4,841</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/tulseedoshi/status/2059295084034871658" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2059295035385053184/img/WI-hOX3vt7b2RzL2.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">A week ago, we released Gemini Omni, bringing nano banana editing to video! Here, Omni was prompted to edit the view from the window to be iconic Oregon views aligned with my movements There&#x27;s so much Omni can do. 7 examples from the last 7 days in🧵 What else have you tried? https://t.co/oo55jD9vJK</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/tulseedoshi/status/2059295084034871658" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/hitpawofficial" target="_blank" rel="noopener">@hitpawofficial</a>
+    <span class="stats">❤111 · RT8 · 👁9,006</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/HitPawofficial/status/2056954325608644915" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056954106527506432/img/4Hs-b13aJz91fsNx.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni vs. Seedance 2.0, tested under the same prompts. Which one do you prefer? #GeminiOmni #GoogleIO #HitPaw #Seedance2 https://t.co/zLiOYlOliV</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/HitPawofficial/status/2056954325608644915" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/synthesarah" target="_blank" rel="noopener">@synthesarah</a>
+    <span class="stats">❤108 · RT3 · 👁4,465</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/SyntheSarah/status/2057808000073798126" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057807949435654144/pu/img/ncC-SKdVeZ71lRto.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">woman gently playing with puppy, created with Gemini Omni Flash on @muvi_ai Prompt: Ultra-realistic 10-second cinematic sequence in a quiet residential neighborhood during soft afternoon light. A woman walks slowly along a tree-lined sidewalk carrying a small rescued puppy in her arms. The puppy is calm, slightly curious, gently moving its head while she smiles naturally and adjusts it with care. The environment fee…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/SyntheSarah/status/2057808000073798126" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/nawalsehar" target="_blank" rel="noopener">@nawalsehar</a>
+    <span class="stats">❤106 · RT1 · 👁2,961</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/nawalsehar/status/2057333717354569993" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057333677806264320/pu/img/QGtIktAHj0lFm_CO.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni Flash now has UNLIMITED access on @muvi_ai Using a single grocery store clip, Omni Flash generated multiple commercial-style ad variations with entirely different products, visuals, and creative directions. One video. Unlimited transformations. No reshoots or complex production needed. Muvi Video is offering unlimited Omni Flash access free with annual Ultra &amp; Business plans until the end of May.</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/nawalsehar/status/2057333717354569993" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/im_shahid7" target="_blank" rel="noopener">@im_shahid7</a>
+    <span class="stats">❤103 · RT3 · 👁1,458</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/im_shahid7/status/2057670955665867262" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057670776393011200/img/xdFeSoFVSOtJU0Kn.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Tried Gemini Omni Flash on @muvi_ai And the details are amazing,everything looks fine and crazy ✌🏻 Here is the workflow i used 👇 https://t.co/c8GzE1RplV</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/im_shahid7/status/2057670955665867262" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/sripathiteja4" target="_blank" rel="noopener">@sripathiteja4</a>
+    <span class="stats">❤100 · RT20 · 👁8,738</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/sripathiteja4/status/2057111779772363010" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057111729784672256/pu/img/vLgybzsElnNyQvoj.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni model is now live on Buzzy. I created a video and kept building on it through conversation, extending moments, refining visuals, and shaping every detail naturally step by step. https://t.co/4tqfDMTAkx</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/sripathiteja4/status/2057111779772363010" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/ariaxawan" target="_blank" rel="noopener">@ariaxawan</a>
+    <span class="stats">❤96 · RT1 · 👁2,485</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ariaxawan/status/2057298065086878145" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057297996082200576/pu/img/dq2ZNwwuxECGyEO6.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Created multiple commercial-ready ad variations from one grocery store video using Gemini Omni Flash on @muvi_ai Different products. Different styling. Different aesthetics. All generated from the same original clip without reshooting anything.This kind of AI video editing is going to completely change content production. Unlimited Omni Flash access on Muvi Video is currently free with annual Ultra &amp; Business plans …</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ariaxawan/status/2057298065086878145" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/denneydara" target="_blank" rel="noopener">@denneydara</a>
+    <span class="stats">❤95 · RT2 · 👁7,837</span>
+    <span class="date">2026/05/23</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/DenneyDara/status/2057844409639551380" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057844332527259648/img/FzoXoFLfryU7Rdgq.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Tested out the new Gemini Omni video generation yesterday... The TLDR: it&#x27;s REALLY good at animation ads. This was a one-shot output from a crap prompt: https://t.co/gBItlcQija</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/DenneyDara/status/2057844409639551380" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/kaiteeshiks" target="_blank" rel="noopener">@kaiteeshiks</a>
+    <span class="stats">❤92 · RT79 · 👁17,623</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/KaiteeShiks/status/2057105709460762816" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057105254244626432/img/MkhW0hSGTNvuelHb.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Tried Gemini Omni on Buzzy earlier and the biggest difference isn’t the first generation. It’s the fact that the video remembers context while you keep editing it. Way closer to directing a scene than endlessly rerolling prompts. https://t.co/XkEEx3djq5</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/KaiteeShiks/status/2057105709460762816" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
+    <span class="stats">❤89 · RT11 · 👁29,442</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ai_artworkgen/status/2057144321653289288" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057026911902093312/img/pCVg43vOQ8rUV4gC.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I&#x27;ve been testing Google&#x27;s new Gemini Omni model in Google Flow. I created a scene (using my character sheet), then asked Flow to change the time of day (nighttime), the render-type (animated), and the weather (snowscape). The results are below. I think this is pretty great to be honest - the integrity 1: Original 2: Nighttime 3: 3D Render 4: Snowscape</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ai_artworkgen/status/2057144321653289288" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
+    <span class="stats">❤86 · RT4 · 👁63,657</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/jerrod_lew/status/2057100280672739525" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057100227090563073/img/pjAjG2B2NwFZD89x.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google Gemini Omni can change the video style. Ask the Agent to reference a video you&#x27;ve created or uploaded. Then use a text prompt to adjust the video style, such as into anime or claymation. The result keeps the motion but changes everything in the scene. Example: https://t.co/5z3TdQGSrF</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/jerrod_lew/status/2057100280672739525" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/official_maxc" target="_blank" rel="noopener">@official_maxc</a>
+    <span class="stats">❤81 · RT6 · 👁4,901</span>
+    <span class="date">2026/05/24</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Official_maxC/status/2058452170752581931" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2058452054029541376/img/6VPLtknI6Z0Gb_yi.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google Gemini Omni in @FlowbyGoogle is an absolute game-changer for video generation! It seamlessly bridges multiple input images and complex user prompts to create something stunning. It generated this incredible promotional video for my project, SpatialOS (GeminiSpace) which just took 1st Place at the Gemini3 Seoul Hackathon! 🏆✨ Check out the Gemini-based SpatialOS repo here: 👇 https://t.co/K5Zp1nJNMn #BuildwithAI…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Official_maxC/status/2058452170752581931" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/iqrasaifiii" target="_blank" rel="noopener">@iqrasaifiii</a>
+    <span class="stats">❤76 · RT2 · 👁16,016</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/IqraSaifiii/status/2056809149137391908" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2056809119500341248/pu/img/JYBXw-7fELD2WJHG.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni Flash is so Bad As an ai film maker, I feel handicapped using this model , it feels like I am back in 2024. Inconsistent, no character consistency No memory, bad prompt following Write what you guys felt this is my opinion https://t.co/NKI1IlFkLt</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/IqraSaifiii/status/2056809149137391908" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤75 · RT9 · 👁4,601</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2057719588184629497" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057719391022985217/pu/img/58_H4u4MZWHZMq6v.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">A tiny miniature world built around a giant stranded whale on a tropical shore 🐋 Created using Nano Banana 2 + Gemini Omni flash Prompt below ↓ https://t.co/ypDg0Nhhop</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2057719588184629497" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="1">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    <span class="badge promo">プロモ注意</span>
+    <a class="author" href="https://x.com/muvi_ai" target="_blank" rel="noopener">@muvi_ai</a>
+    <span class="stats">❤69 · RT18 · 👁14,374</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/muvi_ai/status/2057161860407828711" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057161741834854400/img/f1JD3vUNPsCHpnhP.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">YES, WE GOT CRAZY. USE GEMINI OMNI FLASH FOR FREE 🥒 We started with $20 in free Omni credits. Now we’re opening UNLIMITED Omni Flash access for annual Ultra and Business users until the end of May. All these videos are generated using Omni Flash video-to-video on Muvi Video. Same grocery store scene. Same camera movement. Same acting. But: Different hair colors Different outfits Different branded products on the she…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/muvi_ai/status/2057161860407828711" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤59 · RT4 · 👁10,599</span>
+    <span class="date">2026/05/24</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2058367252299452851" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2058367152676388864/pu/img/LbKzbYMU4KonGBRL.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Letter Never Sent 📤 Created this with Gemini Omni flash on Google Folw https://t.co/KryzxaprHz</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2058367252299452851" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/saniaspeaks_" target="_blank" rel="noopener">@saniaspeaks_</a>
+    <span class="stats">❤54 · RT0 · 👁2,465</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/saniaspeaks_/status/2057291234734182514" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057291160830570497/pu/img/GFsXT4RimH_myFBT.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">One clip turned into an entire campaign with Gemini Omni Flash on @muvi_ai 🎬 Different products, different aesthetics, different ad concepts all generated from the same original video. No new shoots. No production team. Just AI reshaping the content in seconds. And right now, annual Ultra &amp; Business users get unlimited Omni Flash access for free before May ends.</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/saniaspeaks_/status/2057291234734182514" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/marvin_x1" target="_blank" rel="noopener">@marvin_x1</a>
+    <span class="stats">❤53 · RT2 · 👁545</span>
+    <span class="date">2026/05/24</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/marvin_x1/status/2058205773637755204" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2058198509669535744/img/92SURk2C3Ck7LoSf.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">you’re 7 years old and came over to visit your aunt: would you visit your aunt? video created using gemini omni🤫 https://t.co/sPfV9hhlGV</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/marvin_x1/status/2058205773637755204" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/vraserx" target="_blank" rel="noopener">@vraserx</a>
+    <span class="stats">❤50 · RT6 · 👁1,902</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/VraserX/status/2056767490093387920" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056767353363353600/img/Z_RVhCbCFQPLWWbr.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni just blew my mind. Google’s new omnimodal AI model generated a full 1 minute science explainer video in about 2 minutes. Custom education videos for every student, every topic, on demand. AI tutoring just became visual. https://t.co/GOFWZUGIkY</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/VraserX/status/2056767490093387920" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/snskritinaruka" target="_blank" rel="noopener">@snskritinaruka</a>
+    <span class="stats">❤49 · RT13 · 👁2,567</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/snskritinaruka/status/2057112945038082253" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057112482548957184/img/8hWCaT99cLMbIQUF.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Testing out the new Gemini Omni model on Buzzy. 🎬 The conversational video editing is wild. I generated a base clip, then just talked to the AI to extend scenes, tweak details, and polish the final cut step by step. The future of prompting is a conversation. Try it 👉https://t.co/WIkZIM7bRZ</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/snskritinaruka/status/2057112945038082253" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/gumvue" target="_blank" rel="noopener">@gumvue</a>
+    <span class="stats">❤47 · RT8 · 👁3,750</span>
+    <span class="date">2026/05/23</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/GumVue/status/2058182972059074900" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2058181960090910720/img/2ac8kKkvwKaNQLBt.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Watch the full article and YouTube tutorial to see how this short film was created using custom GPT tools, ChatGPT 2.0, Dreamina AI, Seedance 2.0, Grok Imagine, and Gemini Omni. I first generated the character photos, then built full character sheets, created the story and cinematic storyboards, and finally animated everything in Dreamina OCTO with Seedance 2.0. If you want access to the custom GPT Short Film Prompt…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/GumVue/status/2058182972059074900" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤45 · RT3 · 👁3,423</span>
+    <span class="date">2026/05/24</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2058462401364934685" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2058461299038990336/pu/img/8S8tdqforpceDxdA.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Love this new trend! Created with Gemini Omni flash on @FlowbyGoogle https://t.co/GFy3KS7T1b</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2058462401364934685" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/dkare1009" target="_blank" rel="noopener">@dkare1009</a>
+    <span class="stats">❤44 · RT2 · 👁1,797</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/dkare1009/status/2057416009834021342" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057415583239647232/img/TgVGW1jYJMevCoX3.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">This is where AI video generation starts feeling less like prompting and more like directing. Reference images → generated scenes → iterative edits in one workflow. Buzzy + Gemini Omni Flash makes the whole pipeline insanely fast. The Multi-run Edit feature is the real unlock here — refine outputs without restarting from scratch every time. Up to 50% OFF is honestly wild for this level of quality.</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/dkare1009/status/2057416009834021342" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/meng_dagg695" target="_blank" rel="noopener">@meng_dagg695</a>
+    <span class="stats">❤44 · RT3 · 👁1,278</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/meng_dagg695/status/2057303343312318754" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057303314476498944/pu/img/mrKaQ69eQ0463SjH.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni Flash just landed on @muvi_ai This entire video was generated from a single source clip using video-to-video AI. Different outfits, branding, and product variations - no reshoots needed. One video. Multiple ad creatives. Built with Omni Flash on Muvi Video. https://t.co/jueABR43PL</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/meng_dagg695/status/2057303343312318754" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤42 · RT1 · 👁3,465</span>
+    <span class="date">2026/05/25</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2058883876471378384" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2058883683210407936/pu/img/f7DyxjGG7eLZ5CIQ.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Soil Scientist ⚗️🔬 Created this with Gemini Omni flash on Google Folw https://t.co/SAZ6hYPoCA</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2058883876471378384" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/techxutkarsh" target="_blank" rel="noopener">@techxutkarsh</a>
+    <span class="stats">❤42 · RT14 · 👁21,428</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/techxutkarsh/status/2057104615376851060" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057104396388122624/img/dcE1BmjBijGd9brs.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Tried many AI video tools lately. Most are good at generating videos, but editing and improving results still feels slow. Gemini Omni Flash on Buzzy felt smoother for me. You can start with references, generate fast, and keep refining without breaking the flow. That creative experience stood out to me. 🎬</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/techxutkarsh/status/2057104615376851060" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/oggii_0" target="_blank" rel="noopener">@oggii_0</a>
+    <span class="stats">❤35 · RT0 · 👁1,564</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/oggii_0/status/2057313826841018680" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057313784902086656/pu/img/o8HjyRgZLKvx4tEU.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Unlimited access to Gemini Omni Flash is now available on @muvi_ai We took a single grocery store clip and turned it into multiple ad variations with completely different products, styles, and visual looks using Omni Flash video-to-video generation. No reshoots. No added production costs. Just one source video transformed into endless creative possibilities. For a limited time, Muvi Video is also offering free unlim…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/oggii_0/status/2057313826841018680" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/trendyvers" target="_blank" rel="noopener">@trendyvers</a>
+    <span class="stats">❤35 · RT3 · 👁416</span>
+    <span class="date">2026/05/23</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/trendyvers/status/2058118234239574271" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2058114674290548736/img/ezrqez_nEA85-Rbn.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Tried Gemini Omni on this one and its video creation is incredible. This is how it looks in motion😎🖤 @FlowbyGoogle 🎬 https://t.co/e2XFYTzgHG</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/trendyvers/status/2058118234239574271" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/movielover93582" target="_blank" rel="noopener">@movielover93582</a>
+    <span class="stats">❤33 · RT1 · 👁508</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/movielover93582/status/2057311098899227107" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057311053219078144/pu/img/nAcdiYnxYjPBCFNz.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Music video created By Google Gemini Omni https://t.co/m7VSHmR3ku</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/movielover93582/status/2057311098899227107" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/movielover93582" target="_blank" rel="noopener">@movielover93582</a>
+    <span class="stats">❤31 · RT3 · 👁679</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/movielover93582/status/2057090298485121109" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057090149738283008/pu/img/ortIX1FKoh3cnwc5.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">ChatGPT images 2.0 + Gemini Omni Image generated by Chatgpt 2.0 and video generation by Gemini omni . #AI https://t.co/CufZJQOJmo</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/movielover93582/status/2057090298485121109" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤29 · RT1 · 👁3,195</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2059163367844262062" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2059163300630568960/pu/img/roz5H0epvW_1_Hjv.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Wedding Dress 👗 Created this using Gemini Omni flash on @GeminiApp https://t.co/rWC0f7tkJZ</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2059163367844262062" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤28 · RT2 · 👁2,702</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2059314781367275761" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2059314723380957188/pu/img/0BW_vUiEuj5ujBor.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Cartographer&#x27;s Error 🗺️ Created this using Gemini Omni flash 3.5 on Gemini app https://t.co/WtGUUqEsDB</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2059314781367275761" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/eddaxm" target="_blank" rel="noopener">@eddaxm</a>
+    <span class="stats">❤28 · RT1 · 👁101,471</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/eddaxm/status/2056853946329645261" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056853888888688640/img/nSbeTX5G8BatJU33.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Tried out the new Gemini Omni model, apparently I can ski now https://t.co/3fdmVAVXYr</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/eddaxm/status/2056853946329645261" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤28 · RT2 · 👁4,536</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2059231588328865840" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2059231479864160256/pu/img/V1_L21V-L78Soz-b.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Last Public Telephone ☎️ Created this using Gemini Omni flash 3.5 on Gemini App https://t.co/Yoizdt8wQV</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2059231588328865840" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤27 · RT2 · 👁2,629</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2059002993358618766" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2059002960164868096/pu/img/H8ia6RYsOzBww6Qg.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Disappeared River 🪾 Created this using Gemini Omni flash on Gemini app 📱 https://t.co/URWiZS6kX8</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2059002993358618766" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/kanikabk" target="_blank" rel="noopener">@kanikabk</a>
+    <span class="stats">❤25 · RT12 · 👁2,286</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/KanikaBK/status/2057024242001322233" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057024192143654912/img/P0ggds5VBXsbwkMu.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">🚨 10 COOL THINGS THAT FEEL ILLEGAL you can do with Gemini Omni avatars right now! (I tested every single one today and my brain is actually broken) STEAL MY POINTERS. https://t.co/MwYnOc1gnw</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/KanikaBK/status/2057024242001322233" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/philippschi" target="_blank" rel="noopener">@philippschi</a>
+    <span class="stats">❤24 · RT2 · 👁3,054</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/PhilippSchi/status/2056943814997315898" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056943357260378113/img/yQ9fq-B1-pNbod4b.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">We just announced Gemini Omni at I/O! 💥 Gemini Omni is our new model that can create anything from any input. To prove it, I used my voice, photo and a prompt to generate an 80s infomercial for a bike-mounted coffee machine. Look at the magic it created! 🧵 https://t.co/kaIJPW4mL1</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/PhilippSchi/status/2056943814997315898" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
+    <span class="stats">❤23 · RT5 · 👁2,791</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Dheepanratnam/status/2057800398124011636" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057800077045821440/img/Q9NlKODWkzwAsztB.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I asked Google&#x27;s AI to make a 40-second cinematic story. This is Google Flow with Gemini Omni Flash. One prompt. the agent did everything else Testing it out - not perfect but can make a lot of shots and choose and edit to make cool videos in minutes It gave me → A cyberpunk mechanic named Jett Vane → 5 fully directed scenes → Hyper-realistic cinematography → Character consistency across every shot</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Dheepanratnam/status/2057800398124011636" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
+    <span class="stats">❤23 · RT4 · 👁1,304</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ai_artworkgen/status/2057221641600446973" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057221017894862848/img/XQf5cZu6LGTgYNqC.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">More Tests with Gemini Omni 1st Video is the OG, created inside Google Flow. 1. Transform the video into a Blair Witch Project found-footage style. Make the lighting significantly darker, with heavy shadows and a sense of night-time claustrophobia. The camera should be extremely shaky and handheld, feeling frantic and raw. Add digital noise, motion blur, and a low-quality documentary aesthetic to the entire sequence…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ai_artworkgen/status/2057221641600446973" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/nyaiibubu" target="_blank" rel="noopener">@nyaiibubu</a>
+    <span class="stats">❤17 · RT2 · 👁2,405</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/NyaiiBubu/status/2056991811877609886" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056990675061911552/img/i4uHr3nswWIgqMxG.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Testing Gemini Omni Flash to turn my old videos into anime style. Surprisingly good at video editing too. It cost me 40 credits for editing 🥲 But generating a new 10s video only costs around 30 credits. People are already calling it a Seedance 2.0 competitor. I acces with Google Flow beta app. Wdyt ? Worth the credits or with seedance 2.0 ? Left is gemini omni and right is my old video</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/NyaiiBubu/status/2056991811877609886" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/_vmlops" target="_blank" rel="noopener">@_vmlops</a>
+    <span class="stats">❤17 · RT0 · 👁1,056</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/_vmlops/status/2056919617847914524" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2056919565192548352/pu/img/VH1ocZY5GEP1zvOQ.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni created a full video explaining photosynthesis✨ https://t.co/i5xBh6AL9L</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/_vmlops/status/2056919617847914524" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/jasonbotterill" target="_blank" rel="noopener">@jasonbotterill</a>
+    <span class="stats">❤17 · RT2 · 👁864</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/JasonBotterill/status/2056903045674566091" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056902755617574912/img/w2dO14wXyVpHhl3i.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">GM Sam Just tried new Gemini Omni Will be back later have good day yall https://t.co/Rgk70P3p66</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/JasonBotterill/status/2056903045674566091" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/bonsaixbt" target="_blank" rel="noopener">@bonsaixbt</a>
+    <span class="stats">❤17 · RT1 · 👁41,985</span>
+    <span class="date">2026/05/19</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/bonsaixbt/status/2056722426981986409" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056722367087329280/img/1ioLGhYEfmc0OuaT.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Google I/O: Is Gemini Omni about to be revealed? If the video Sundar Pichai showed us was generated from a single prompt, then the new model might already be showing some insane capabilities: &gt; Seamless style transfer - instant, smooth transitions from realistic video into completely different styles (here it shifts from realism through a glitch effect straight into a black-and-white pencil sketch) &gt; Character consi…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/bonsaixbt/status/2056722426981986409" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
+    <span class="stats">❤16 · RT3 · 👁356</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/MrDasOnX/status/2057718509703184674" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057718300587745280/img/jyYPO2zGwd0Qo6Xy.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The only equation keeping Earth alive! Created with Gemini Omni Flash on @FlowbyGoogle Prompt below 👇 https://t.co/yqO9YqbG4e</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/MrDasOnX/status/2057718509703184674" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/skyesharkie" target="_blank" rel="noopener">@skyesharkie</a>
+    <span class="stats">❤16 · RT0 · 👁316</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/SkyeSharkie/status/2057355472798372023" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2057355356146425856/img/WK8TQV8ddQEJLwqq.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">tested out the new video to video on gemini omni, it turned Claude into a lion https://t.co/5akqWqf5T4</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/SkyeSharkie/status/2057355472798372023" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/thesoragirls" target="_blank" rel="noopener">@thesoragirls</a>
+    <span class="stats">❤16 · RT0 · 👁1,676</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/thesoragirls/status/2056822497899683870" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056821285296979968/img/YdtPHnbKJciC_r-P.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">waiting for @grok Imagine rate limits to reset like... Created with Gemini Omni https://t.co/YpSwVWacWj</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/thesoragirls/status/2056822497899683870" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤15 · RT2 · 👁2,171</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2059461797514735779" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2059461749712293888/pu/img/falcdp2BqErLUUF0.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The Last Handwritten Newspaper 📰 Created with this Gemini Omni flash on Google Folw https://t.co/YToimR3lr0</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2059461797514735779" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/abhishek" target="_blank" rel="noopener">@abhishek</a>
+    <span class="stats">❤14 · RT0 · 👁912</span>
+    <span class="date">2026/05/24</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/abhishek/status/2058499196790145273" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2058494347616911360/img/Hm0xPiHCyMa0t2O7.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I used Google Gemini Omni, Flash 3.5 model to create an AR-style video after uploading just one photo of the phone. Here is how I created this. 🧵 https://t.co/btBQTCdpJT</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/abhishek/status/2058499196790145273" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/riyazmd774" target="_blank" rel="noopener">@riyazmd774</a>
+    <span class="stats">❤14 · RT0 · 👁8,291</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/riyazmd774/status/2057103938743349314" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057103903318306816/pu/img/HMSQC4PfFALdgHNz.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I’ve tested a lot of AI video tools lately… but Gemini Omni Flash on Buzzy genuinely feels different. The ability to start from references, generate instantly, then keep refining with Multi-run Edit makes the workflow feel creative instead of frustrating. This is the first time AI video iteration has felt this smooth to me. 🎬</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/riyazmd774/status/2057103938743349314" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤13 · RT1 · 👁1,077</span>
+    <span class="date">2026/05/25</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Strength04_X/status/2058787056764211317" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2058786983162589184/pu/img/dqZaNko0h-74V4DV.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">During a routine shipwreck dive, she found a box of perfectly preserved letters from 1882 🗞️ Every return address pointed to the same lighthouse she still lives in today.. Created with Gemini Omni Flash on @FlowbyGoogle https://t.co/K7IJ6uEctJ</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Strength04_X/status/2058787056764211317" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/shramankar" target="_blank" rel="noopener">@shramankar</a>
+    <span class="stats">❤11 · RT3 · 👁3,343</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ShramanKar/status/2056833691163455689" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056833586750533632/img/NdkGmNVvbw6mDCgM.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni is a huge step forward but it still is not practical for actually explaining things that are technical. Like the videos generated by Omni still cannot explain you multivariable calculus or a deep codebase. That is why I think the future of AI video is specialized models like Golpo that prioritize explanations. The below video from Golpo AI shows this in practice .</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ShramanKar/status/2056833691163455689" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/rengle820" target="_blank" rel="noopener">@rengle820</a>
+    <span class="stats">❤11 · RT0 · 👁1,519</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Rengle820/status/2056800886396010890" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2056800659546972160/img/eWJiwb_X01arnZKA.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">The real AI video benchmark we need is to give each generated golf swing a handicap. This is Gemini Omni, and I&#x27;m giving it a 24. https://t.co/F2Z8qEPXqS</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Rengle820/status/2056800886396010890" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/mehulfanawala" target="_blank" rel="noopener">@mehulfanawala</a>
+    <span class="stats">❤10 · RT0 · 👁578</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/MehulFanawala/status/2056820033062588463" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2056820012577681408/pu/img/ZStVPBOMhdnTSHeQ.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Generated using Google Gemini Omni in one shot. Mind = Blown 🤯 https://t.co/dwrEdk3Hpj</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/MehulFanawala/status/2056820033062588463" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
+    <span class="stats">❤10 · RT0 · 👁817</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ai_with_shah/status/2059228179651502102" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/amplify_video_thumb/2059228073976098816/img/oglySLzuUXQinab-.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I wanted to become a master chef. Ended up becoming Domino’s best customer 🍕😭 Image Made with GPT Image 2 and video created with Gemini omni flash. https://t.co/XaKFUgQW2W</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ai_with_shah/status/2059228179651502102" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <a class="author" href="https://x.com/epsilon_ai__" target="_blank" rel="noopener">@epsilon_ai__</a>
+    <span class="stats">❤122 · RT5 · 👁9,329</span>
+    <span class="date">2026/05/22</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/Epsilon_ai__/status/2057614036846756154" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/media/HI4dDwDa4AAeFSs.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">Gemini Omni is utter disgusting. Tried to create three different videos and couldn&#x27;t generate anything https://t.co/vqbN5J5EEc</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/Epsilon_ai__/status/2057614036846756154" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <a class="author" href="https://x.com/chromeunboxed" target="_blank" rel="noopener">@chromeunboxed</a>
+    <span class="stats">❤20 · RT2 · 👁918</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/chromeunboxed/status/2057207916839460882" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/media/HIyrshHXoAADqIY.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">I just tested the new Gemini Omni AI avatar feature in the Gemini app, and cloning my face and voice took less than two minutes and the results are shocking. https://t.co/g3IPFC6qIH https://t.co/9Z6GDZPpG9</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/chromeunboxed/status/2057207916839460882" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <a class="author" href="https://x.com/zarairahh" target="_blank" rel="noopener">@zarairahh</a>
+    <span class="stats">❤123 · RT5 · 👁5,433</span>
+    <span class="date">2026/05/21</span>
+  </div>
+  <div class="post-body">
+    <a class="thumb-wrap" href="https://x.com/ZaraIrahh/status/2057268357301502297" target="_blank" rel="noopener"><img src="https://pbs.twimg.com/ext_tw_video_thumb/2057268319183646720/pu/img/iVam0gwZ9rCcZoCK.jpg" alt="" loading="lazy" /></a>
+    <p class="post-text">UNLIMITED ACCESS to Gemini Omni Flash is now live on @muvi_ai Took one simple grocery store clip and transformed it into multiple ad variations with different looks, products, and styling using Omni Flash video-to-video generation. No reshoots. No extra production. Just one source video turned into endless creative variations. And for a limited time, Muvi Video is offering unlimited Omni Flash access free with annua…</p>
+  </div>
+  <div class="post-foot">
+    <a class="x-link" href="https://x.com/ZaraIrahh/status/2057268357301502297" target="_blank" rel="noopener">X で見る（動画プレビュー） →</a>
+  </div>
+  
+</article></div>
+  </section>
+</div>
+<footer>データ: gemini_omni_overseas_hands_on_video.json ｜ 再生成: python build_gemini_omni.py</footer>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</body>
+</html>
