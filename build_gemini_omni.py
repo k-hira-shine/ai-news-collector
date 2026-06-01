@@ -261,38 +261,40 @@ def _overview_html() -> str:
   <dl class="ov-list">
 
     <dt>🤔 そもそも何？</dt>
-    <dd>去年の <strong>Nano Banana（画像生成）の動画版</strong>。テキスト・画像・音声・動画を組み合わせて入力し、高品質な動画を生成・編集できる。</dd>
-    <dd>既存の動画 AI（Veo など）は「テキスト/画像 → 動画」だけだったが、Omni は<strong>動画を入力にして動画を編集・リミックス</strong>できる点が最大の違い。</dd>
+    <dd>Google が 2026年5月の Google I/O で発表した、<strong>動画を扱える新しい AI モデル</strong>。正式名称は「Gemini Omni」。</dd>
+    <dd>一言でいうと「<strong>動画版の画像生成 AI</strong>」。テキストで指示するだけで動画を作ったり、既存の動画を編集したりできる。</dd>
+    <dd>これまでの動画 AI（Google の Veo など）は「テキストや画像を渡すと新しい動画を作る」だけだった。Omni の最大の違いは、<strong>すでにある動画を入力として受け取り、それを編集・加工・リミックスできる</strong>点。たとえば「自分で撮った動画の背景だけ変えて」という指示が通る。</dd>
+    <dd>「Omni（オムニ）」とはラテン語で「すべて」の意味。テキスト・画像・音声・動画をまとめて扱える「全部入り」モデルであることを示している。</dd>
 
     <dt>📦 モデルの種類</dt>
-    <dd><strong>Gemini Omni Flash</strong>（今すぐ使える） — 最初にリリースされた実用モデル。動画生成・編集に対応。</dd>
-    <dd><strong>Gemini Omni Pro</strong>（近日公開予定） — キーノートで言及のみ。詳細は未発表。</dd>
-    <dd>将来的には動画以外（画像・音声）の出力にも対応予定。</dd>
+    <dd><strong>Gemini Omni Flash</strong>（今すぐ使える） — 2026年5月時点でリリース済みの実用モデル。動画生成・編集に対応。「Flash」は速くて軽量なバージョンという意味。</dd>
+    <dd><strong>Gemini Omni Pro</strong>（近日公開予定） — より高性能な上位バージョン。Google I/O のキーノート（基調講演）で存在だけ言及されたが、詳細スペックや価格は未発表。</dd>
+    <dd>将来的には動画だけでなく、<strong>画像・音声の出力にも対応予定</strong>。現時点は動画出力のみ。</dd>
 
     <dt>🎯 できること（公式より）</dt>
-    <dd>テキスト・写真・音声・動画を混ぜて動画を生成できる。</dd>
-    <dd>「背景を変えて」「この人物を追加して」など<strong>会話形式で動画を編集</strong>できる。</dd>
-    <dd>人物・キャラクターの顔や声を複数シーンで統一する<strong>キャラクター一貫性</strong>機能あり。</dd>
-    <dd>自分の顔・声を使った AI アバター動画の作成も可能。</dd>
-    <dd>生成動画には自動的に <strong>SynthID 透かし</strong>が入り、AI 生成かどうかを検証できる。</dd>
+    <dd><strong>マルチモーダル入力で動画生成</strong> — テキスト・写真・音声・動画を組み合わせて渡すと、それをもとに動画を生成できる。「このキャラクターが踊る動画を作って」といった指示が可能。</dd>
+    <dd><strong>会話形式の動画編集</strong> — 「背景を夕日にして」「この人物を左に移動させて」のように、チャット感覚で指示を重ねながら動画を仕上げていける。専門ソフト不要。</dd>
+    <dd><strong>キャラクター一貫性</strong> — 同じキャラクターや人物が複数のシーンに登場しても、顔・声・服装が変わらないように統一できる機能。CM や YouTube シリーズ動画の制作に便利。</dd>
+    <dd><strong>AI アバター動画</strong> — 自分の顔や声をサンプルとして登録すると、それをもとに AI がアバター動画を生成できる。</dd>
+    <dd><strong>SynthID 透かし（ウォーターマーク）自動付与</strong> — 生成した動画には Google の技術「SynthID」による目に見えない透かしが自動で入る。「これは AI が作った動画か？」を後から検証できるようになる。フェイク動画対策にもなる仕組み。</dd>
 
     <dt>📱 どこで使えるか</dt>
-    <dd><strong>Gemini アプリ</strong> — Google AI Plus / Pro / Ultra プラン（有料）で利用可。</dd>
-    <dd><strong>Google Flow</strong> — 映像クリエイター向け AI 制作スタジオ。Google AI サブスクで利用可。</dd>
-    <dd><strong>YouTube Shorts / YouTube Create</strong> — 18歳以上なら<strong>無料</strong>で利用可。</dd>
-    <dd><strong>API（開発者向け）</strong> — 「数週間以内」に公開予定と発表済み。</dd>
+    <dd><strong>Gemini アプリ</strong>（gemini.google.com） — スマホ・PC から使える Google の AI チャットアプリ。Omni の動画機能を使うには <strong>Google AI Plus（月約3,000円）以上のプラン</strong>が必要。</dd>
+    <dd><strong>Google Flow</strong> — 映像クリエイター向けに設計された AI 動画制作スタジオ。複数ショットを組み合わせた本格的な動画制作が可能。Google AI サブスクで利用可。</dd>
+    <dd><strong>YouTube Shorts / YouTube Create</strong> — YouTube の動画編集アプリ「YouTube Create」と Shorts 作成機能に統合済み。<strong>18歳以上なら無料</strong>で利用できる。一般ユーザーが最も手軽に試せる入口。</dd>
+    <dd><strong>API（開発者向け）</strong> — 自社アプリやサービスに組み込むための接続口（API）。「数週間以内に公開」と発表済みだが、2026年5月時点では未公開。</dd>
 
-    <dt>⚠️ 現時点の制限</dt>
-    <dd>生成できる動画は<strong>最大10秒</strong>。公式は「モデルの限界ではなく設計上の判断」と説明しており、延長は近日予定。</dd>
-    <dd>レート制限が厳しめ。Pro プランでも数プロンプトで消費量が多いという報告あり。</dd>
-    <dd>スタイル転送・物理表現（ジャンプ・回転など）は苦手な場合がある。</dd>
-    <dd>Seedance 2.0 との比較では「見た目は良いが、演出・カメラワークは Seedance の方が上」という実使用レビューも。</dd>
+    <dt>⚠️ 現時点の制限（知っておくべきこと）</dt>
+    <dd><strong>動画は最大10秒</strong> — 1回の生成で作れる動画の長さは現在10秒まで。公式は「モデルの技術的な限界ではなく、意図的な設計上の判断」と説明しており、延長機能は近日中に追加予定。</dd>
+    <dd><strong>レート制限が厳しい</strong> — 「レート制限」とは「1日に使える回数の上限」のこと。有料の Pro プランでも、数回プロンプトを送ると上限に達してしまうという報告がユーザーから多数あがっている。</dd>
+    <dd><strong>物理的な動きの再現が苦手</strong> — ジャンプ・回転・水しぶきなど、物理法則に従う動きを自然に描写するのは現状では難しい場合がある。</dd>
+    <dd><strong>競合との比較</strong> — 同じ動画生成 AI の「Seedance 2.0」と比べると「映像のクオリティは Omni の方が綺麗だが、カメラワークや演出の表現力は Seedance の方が上」という実使用レビューが複数ある。</dd>
 
-    <dt>🔥 実際に使われている場面（ユーザー報告・176件より）</dt>
-    <dd><strong>動画編集・リミックス（52件）</strong> — 背景変更・スタイル変換・別アングル生成など。</dd>
-    <dd><strong>Google Flow × Agent モード（46件）</strong> — 1プロンプトで複数ショットを自動生成。</dd>
-    <dd><strong>UGC 広告・商品動画（30件）</strong> — 1本の素材から複数バリエーションを量産。</dd>
-    <dd><strong>他モデルとの比較検証（20件）</strong> — Seedance 2.0 と同条件で比較するレビューが多数。</dd>
+    <dt>🔥 実際に使われている場面（X ポスト 176件の分析より）</dt>
+    <dd><strong>動画編集・リミックス（52件・最多）</strong> — 自分で撮った動画の背景変更、スタイルを別テイストに変換、同じシーンを別アングルで生成、といった用途が最も多い。</dd>
+    <dd><strong>Google Flow × Agent モード（46件）</strong> — Google Flow の「Agent モード」を使い、1回の指示で複数ショットを自動生成してつなげる使い方。ショート動画や CM の尺に合わせた動画を効率よく作れる。</dd>
+    <dd><strong>UGC 広告・商品動画（30件）</strong> — 「UGC」とは一般ユーザーが作ったような自然なスタイルの広告動画のこと。1本の素材動画から複数バリエーションを量産して A/B テストに使う企業が増えている。</dd>
+    <dd><strong>他モデルとの比較検証（20件）</strong> — Seedance 2.0、Veo 3、Kling など他の動画 AI と同じプロンプト・素材で比較するレビュー投稿が多い。「どれが一番いいか」を検証するコンテンツとして人気。</dd>
 
   </dl>
 </section>"""
@@ -384,12 +386,12 @@ header .meta {{ color: var(--muted); font-size: 0.85rem; margin-top: 6px; }}
 .toc a {{ padding: 6px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.88rem; }}
 .toc a:hover {{ background: rgba(66,133,244,0.15); }}
 .overview {{ margin-bottom: 32px; }}
-.ov-source {{ font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; }}
+.ov-source {{ font-size: 0.85rem; color: var(--muted); margin-bottom: 20px; }}
 .ov-source a {{ color: #60a5fa; }}
 .ov-list {{ display: flex; flex-direction: column; gap: 0; }}
-.ov-list dt {{ font-size: 0.95rem; font-weight: 700; color: var(--text); padding: 14px 18px 6px; border-top: 1px solid var(--border); margin-top: 4px; }}
-.ov-list dt:first-child {{ border-top: none; margin-top: 0; }}
-.ov-list dd {{ font-size: 0.9rem; color: #cbd5e1; line-height: 1.65; padding: 2px 18px 2px 36px; margin: 0; }}
+.ov-list dt {{ font-size: 1.05rem; font-weight: 700; color: #f1f5f9; padding: 18px 4px 8px; border-top: 1px solid var(--border); margin-top: 8px; }}
+.ov-list dt:first-child {{ border-top: none; margin-top: 0; padding-top: 4px; }}
+.ov-list dd {{ font-size: 1rem; color: #e2e8f0; line-height: 1.75; padding: 4px 4px 4px 20px; margin: 0; border-left: 2px solid rgba(148,163,184,0.25); margin-bottom: 2px; }}
 .section {{ margin-top: 28px; }}
 .section h2 {{ font-size: 1.15rem; margin-bottom: 6px; }}
 .section .hint {{ color: var(--muted); font-size: 0.84rem; margin-bottom: 14px; }}

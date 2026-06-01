@@ -29,12 +29,12 @@ header .meta { color: var(--muted); font-size: 0.85rem; margin-top: 6px; }
 .toc a { padding: 6px 14px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; color: var(--accent); text-decoration: none; font-size: 0.88rem; }
 .toc a:hover { background: rgba(66,133,244,0.15); }
 .overview { margin-bottom: 32px; }
-.ov-source { font-size: 0.8rem; color: var(--muted); margin-bottom: 16px; }
+.ov-source { font-size: 0.85rem; color: var(--muted); margin-bottom: 20px; }
 .ov-source a { color: #60a5fa; }
 .ov-list { display: flex; flex-direction: column; gap: 0; }
-.ov-list dt { font-size: 0.95rem; font-weight: 700; color: var(--text); padding: 14px 18px 6px; border-top: 1px solid var(--border); margin-top: 4px; }
-.ov-list dt:first-child { border-top: none; margin-top: 0; }
-.ov-list dd { font-size: 0.9rem; color: #cbd5e1; line-height: 1.65; padding: 2px 18px 2px 36px; margin: 0; }
+.ov-list dt { font-size: 1.05rem; font-weight: 700; color: #f1f5f9; padding: 18px 4px 8px; border-top: 1px solid var(--border); margin-top: 8px; }
+.ov-list dt:first-child { border-top: none; margin-top: 0; padding-top: 4px; }
+.ov-list dd { font-size: 1rem; color: #e2e8f0; line-height: 1.75; padding: 4px 4px 4px 20px; margin: 0; border-left: 2px solid rgba(148,163,184,0.25); margin-bottom: 2px; }
 .section { margin-top: 28px; }
 .section h2 { font-size: 1.15rem; margin-bottom: 6px; }
 .section .hint { color: var(--muted); font-size: 0.84rem; margin-bottom: 14px; }
@@ -71,7 +71,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
 </nav>
 <header>
   <h1>🎬 Gemini Omni</h1>
-  <p class="meta">Last updated: 2026-05-28 00:12 JST ｜ 実使用ポスト 176件 ｜ Apify 収集コスト目安 $0.04</p>
+  <p class="meta">Last updated: 2026-06-02 04:18 JST ｜ 実使用ポスト 265件 ｜ Apify 収集コスト目安 $0.02</p>
 </header>
 <div class="container">
   <nav class="toc">
@@ -85,38 +85,40 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <dl class="ov-list">
 
     <dt>🤔 そもそも何？</dt>
-    <dd>去年の <strong>Nano Banana（画像生成）の動画版</strong>。テキスト・画像・音声・動画を組み合わせて入力し、高品質な動画を生成・編集できる。</dd>
-    <dd>既存の動画 AI（Veo など）は「テキスト/画像 → 動画」だけだったが、Omni は<strong>動画を入力にして動画を編集・リミックス</strong>できる点が最大の違い。</dd>
+    <dd>Google が 2026年5月の Google I/O で発表した、<strong>動画を扱える新しい AI モデル</strong>。正式名称は「Gemini Omni」。</dd>
+    <dd>一言でいうと「<strong>動画版の画像生成 AI</strong>」。テキストで指示するだけで動画を作ったり、既存の動画を編集したりできる。</dd>
+    <dd>これまでの動画 AI（Google の Veo など）は「テキストや画像を渡すと新しい動画を作る」だけだった。Omni の最大の違いは、<strong>すでにある動画を入力として受け取り、それを編集・加工・リミックスできる</strong>点。たとえば「自分で撮った動画の背景だけ変えて」という指示が通る。</dd>
+    <dd>「Omni（オムニ）」とはラテン語で「すべて」の意味。テキスト・画像・音声・動画をまとめて扱える「全部入り」モデルであることを示している。</dd>
 
     <dt>📦 モデルの種類</dt>
-    <dd><strong>Gemini Omni Flash</strong>（今すぐ使える） — 最初にリリースされた実用モデル。動画生成・編集に対応。</dd>
-    <dd><strong>Gemini Omni Pro</strong>（近日公開予定） — キーノートで言及のみ。詳細は未発表。</dd>
-    <dd>将来的には動画以外（画像・音声）の出力にも対応予定。</dd>
+    <dd><strong>Gemini Omni Flash</strong>（今すぐ使える） — 2026年5月時点でリリース済みの実用モデル。動画生成・編集に対応。「Flash」は速くて軽量なバージョンという意味。</dd>
+    <dd><strong>Gemini Omni Pro</strong>（近日公開予定） — より高性能な上位バージョン。Google I/O のキーノート（基調講演）で存在だけ言及されたが、詳細スペックや価格は未発表。</dd>
+    <dd>将来的には動画だけでなく、<strong>画像・音声の出力にも対応予定</strong>。現時点は動画出力のみ。</dd>
 
     <dt>🎯 できること（公式より）</dt>
-    <dd>テキスト・写真・音声・動画を混ぜて動画を生成できる。</dd>
-    <dd>「背景を変えて」「この人物を追加して」など<strong>会話形式で動画を編集</strong>できる。</dd>
-    <dd>人物・キャラクターの顔や声を複数シーンで統一する<strong>キャラクター一貫性</strong>機能あり。</dd>
-    <dd>自分の顔・声を使った AI アバター動画の作成も可能。</dd>
-    <dd>生成動画には自動的に <strong>SynthID 透かし</strong>が入り、AI 生成かどうかを検証できる。</dd>
+    <dd><strong>マルチモーダル入力で動画生成</strong> — テキスト・写真・音声・動画を組み合わせて渡すと、それをもとに動画を生成できる。「このキャラクターが踊る動画を作って」といった指示が可能。</dd>
+    <dd><strong>会話形式の動画編集</strong> — 「背景を夕日にして」「この人物を左に移動させて」のように、チャット感覚で指示を重ねながら動画を仕上げていける。専門ソフト不要。</dd>
+    <dd><strong>キャラクター一貫性</strong> — 同じキャラクターや人物が複数のシーンに登場しても、顔・声・服装が変わらないように統一できる機能。CM や YouTube シリーズ動画の制作に便利。</dd>
+    <dd><strong>AI アバター動画</strong> — 自分の顔や声をサンプルとして登録すると、それをもとに AI がアバター動画を生成できる。</dd>
+    <dd><strong>SynthID 透かし（ウォーターマーク）自動付与</strong> — 生成した動画には Google の技術「SynthID」による目に見えない透かしが自動で入る。「これは AI が作った動画か？」を後から検証できるようになる。フェイク動画対策にもなる仕組み。</dd>
 
     <dt>📱 どこで使えるか</dt>
-    <dd><strong>Gemini アプリ</strong> — Google AI Plus / Pro / Ultra プラン（有料）で利用可。</dd>
-    <dd><strong>Google Flow</strong> — 映像クリエイター向け AI 制作スタジオ。Google AI サブスクで利用可。</dd>
-    <dd><strong>YouTube Shorts / YouTube Create</strong> — 18歳以上なら<strong>無料</strong>で利用可。</dd>
-    <dd><strong>API（開発者向け）</strong> — 「数週間以内」に公開予定と発表済み。</dd>
+    <dd><strong>Gemini アプリ</strong>（gemini.google.com） — スマホ・PC から使える Google の AI チャットアプリ。Omni の動画機能を使うには <strong>Google AI Plus（月約3,000円）以上のプラン</strong>が必要。</dd>
+    <dd><strong>Google Flow</strong> — 映像クリエイター向けに設計された AI 動画制作スタジオ。複数ショットを組み合わせた本格的な動画制作が可能。Google AI サブスクで利用可。</dd>
+    <dd><strong>YouTube Shorts / YouTube Create</strong> — YouTube の動画編集アプリ「YouTube Create」と Shorts 作成機能に統合済み。<strong>18歳以上なら無料</strong>で利用できる。一般ユーザーが最も手軽に試せる入口。</dd>
+    <dd><strong>API（開発者向け）</strong> — 自社アプリやサービスに組み込むための接続口（API）。「数週間以内に公開」と発表済みだが、2026年5月時点では未公開。</dd>
 
-    <dt>⚠️ 現時点の制限</dt>
-    <dd>生成できる動画は<strong>最大10秒</strong>。公式は「モデルの限界ではなく設計上の判断」と説明しており、延長は近日予定。</dd>
-    <dd>レート制限が厳しめ。Pro プランでも数プロンプトで消費量が多いという報告あり。</dd>
-    <dd>スタイル転送・物理表現（ジャンプ・回転など）は苦手な場合がある。</dd>
-    <dd>Seedance 2.0 との比較では「見た目は良いが、演出・カメラワークは Seedance の方が上」という実使用レビューも。</dd>
+    <dt>⚠️ 現時点の制限（知っておくべきこと）</dt>
+    <dd><strong>動画は最大10秒</strong> — 1回の生成で作れる動画の長さは現在10秒まで。公式は「モデルの技術的な限界ではなく、意図的な設計上の判断」と説明しており、延長機能は近日中に追加予定。</dd>
+    <dd><strong>レート制限が厳しい</strong> — 「レート制限」とは「1日に使える回数の上限」のこと。有料の Pro プランでも、数回プロンプトを送ると上限に達してしまうという報告がユーザーから多数あがっている。</dd>
+    <dd><strong>物理的な動きの再現が苦手</strong> — ジャンプ・回転・水しぶきなど、物理法則に従う動きを自然に描写するのは現状では難しい場合がある。</dd>
+    <dd><strong>競合との比較</strong> — 同じ動画生成 AI の「Seedance 2.0」と比べると「映像のクオリティは Omni の方が綺麗だが、カメラワークや演出の表現力は Seedance の方が上」という実使用レビューが複数ある。</dd>
 
-    <dt>🔥 実際に使われている場面（ユーザー報告・176件より）</dt>
-    <dd><strong>動画編集・リミックス（52件）</strong> — 背景変更・スタイル変換・別アングル生成など。</dd>
-    <dd><strong>Google Flow × Agent モード（46件）</strong> — 1プロンプトで複数ショットを自動生成。</dd>
-    <dd><strong>UGC 広告・商品動画（30件）</strong> — 1本の素材から複数バリエーションを量産。</dd>
-    <dd><strong>他モデルとの比較検証（20件）</strong> — Seedance 2.0 と同条件で比較するレビューが多数。</dd>
+    <dt>🔥 実際に使われている場面（X ポスト 176件の分析より）</dt>
+    <dd><strong>動画編集・リミックス（52件・最多）</strong> — 自分で撮った動画の背景変更、スタイルを別テイストに変換、同じシーンを別アングルで生成、といった用途が最も多い。</dd>
+    <dd><strong>Google Flow × Agent モード（46件）</strong> — Google Flow の「Agent モード」を使い、1回の指示で複数ショットを自動生成してつなげる使い方。ショート動画や CM の尺に合わせた動画を効率よく作れる。</dd>
+    <dd><strong>UGC 広告・商品動画（30件）</strong> — 「UGC」とは一般ユーザーが作ったような自然なスタイルの広告動画のこと。1本の素材動画から複数バリエーションを量産して A/B テストに使う企業が増えている。</dd>
+    <dd><strong>他モデルとの比較検証（20件）</strong> — Seedance 2.0、Veo 3、Kling など他の動画 AI と同じプロンプト・素材で比較するレビュー投稿が多い。「どれが一番いいか」を検証するコンテンツとして人気。</dd>
 
   </dl>
 </section>
@@ -227,6 +229,20 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
     <span class="rank">#8</span>
+    <a class="author" href="https://x.com/buzzy_now_ai" target="_blank" rel="noopener">@buzzy_now_ai</a>
+    <span class="stats">❤1,015 · RT309 · 👁1,299,730</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni FlashがBuzzyでライブになりました！リファレンスから始めて動画を作成し、Buzzy Multi-run Editで繰り返し洗練させることができます。あらゆるものを参照し、すべてを編集できます。最大50%オフ。Googleの最も強力な動画モデルを今日Buzzyで試してみてください</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Buzzy_now_AI/status/2057100210413933017"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Buzzy_now_AI/status/2057100210413933017"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#9</span>
     <a class="author" href="https://x.com/synthwavedd" target="_blank" rel="noopener">@synthwavedd</a>
     <span class="stats">❤884 · RT38 · 👁70,578</span>
     <span class="date">2026/05/20</span>
@@ -236,11 +252,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/synthwavedd/status/2056751766755004578"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/synthwavedd/status/2056751766755004578"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#10</span>
+    <a class="author" href="https://x.com/techhalla" target="_blank" rel="noopener">@techhalla</a>
+    <span class="stats">❤828 · RT87 · 👁117,087</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniに中つ国を案内してくれるよう頼みました🐴 必要なのは地図（画像入力）とこのプロンプトだけでした 👇 添付された地図上の矢印の位置と方向を分析してください。赤い矢印を削除してください。その場所で最も重要な2つの場所を示すバーチャルツアーガイドビデオを作成してください。POV：私たちは茶色い馬に乗っていました。リアルでザラザラしたファウンドフッテージ。[OPTIONAL]（種族：エルフ、オーク、ホビットなど...）が日常的なことを繰り返している様子です！どんなリファレンスでも、そうです、Google マップでも試してみてください！あなたの作品をドロップしてください 👀</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/techhalla/status/2059724218158166537"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/techhalla/status/2059724218158166537"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#9</span>
+    <span class="rank">#11</span>
     <a class="author" href="https://x.com/techhalla" target="_blank" rel="noopener">@techhalla</a>
     <span class="stats">❤719 · RT26 · 👁103,687</span>
     <span class="date">2026/05/20</span>
@@ -254,7 +284,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#10</span>
+    <span class="rank">#12</span>
     <a class="author" href="https://x.com/alexanderchen" target="_blank" rel="noopener">@alexanderchen</a>
     <span class="stats">❤544 · RT39 · 👁61,969</span>
     <span class="date">2026/05/24</span>
@@ -268,7 +298,35 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#11</span>
+    <span class="rank">#13</span>
+    <a class="author" href="https://x.com/fofrai" target="_blank" rel="noopener">@fofrai</a>
+    <span class="stats">❤492 · RT30 · 👁230,593</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flash: &gt; ロンドン・アイのカプセルからの録画で、遠くの何かへギクシャクとズームし、その後（少し前後しながら）再フォーカスする（タイムスタンプや会話なし） ロンドンの景観に関する世界知識と、カプセルが動くように動画が優しく動く点に注目。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/fofrAI/status/2056789242274259242"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/fofrAI/status/2056789242274259242"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#14</span>
+    <a class="author" href="https://x.com/ai_for_success" target="_blank" rel="noopener">@ai_for_success</a>
+    <span class="stats">❤461 · RT38 · 👁79,353</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">AIがVFXを食いつぶしました。Gemini Omni Flashは本当に🔥です https://t.co/7VSlkTyVwm</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_for_success/status/2060739171015332284"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_for_success/status/2060739171015332284"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#15</span>
     <a class="author" href="https://x.com/kimmonismus" target="_blank" rel="noopener">@kimmonismus</a>
     <span class="stats">❤460 · RT23 · 👁80,071</span>
     <span class="date">2026/05/20</span>
@@ -278,11 +336,11 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/kimmonismus/status/2056786433458000041"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/kimmonismus/status/2056786433458000041"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#12</span>
+    <span class="rank">#16</span>
     <a class="author" href="https://x.com/emollick" target="_blank" rel="noopener">@emollick</a>
     <span class="stats">❤432 · RT21 · 👁311,736</span>
     <span class="date">2026/05/20</span>
@@ -296,7 +354,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#13</span>
+    <span class="rank">#17</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤410 · RT52 · 👁14,841</span>
     <span class="date">2026/05/22</span>
@@ -306,11 +364,11 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2057838324140953773"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2057838324140953773"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#14</span>
+    <span class="rank">#18</span>
     <a class="author" href="https://x.com/aimikoda" target="_blank" rel="noopener">@aimikoda</a>
     <span class="stats">❤400 · RT37 · 👁32,368</span>
     <span class="date">2026/05/20</span>
@@ -320,11 +378,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/aimikoda/status/2056840097455014017"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/aimikoda/status/2056840097455014017"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#19</span>
+    <a class="author" href="https://x.com/ai_for_success" target="_blank" rel="noopener">@ai_for_success</a>
+    <span class="stats">❤391 · RT50 · 👁25,579</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flashを使って、参照画像を使って動画内のキャラクターを置き換えることができます。https://t.co/FvbyWBpYr8</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_for_success/status/2061271064001589420"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_for_success/status/2061271064001589420"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="3" data-promo="1">
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     <span class="badge promo">プロモ注意</span>
-    <span class="rank">#15</span>
+    <span class="rank">#20</span>
     <a class="author" href="https://x.com/mikefutia" target="_blank" rel="noopener">@mikefutia</a>
     <span class="stats">❤390 · RT32 · 👁31,635</span>
     <span class="date">2026/05/22</span>
@@ -338,7 +410,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#16</span>
+    <span class="rank">#21</span>
     <a class="author" href="https://x.com/timjayas" target="_blank" rel="noopener">@timjayas</a>
     <span class="stats">❤388 · RT29 · 👁53,151</span>
     <span class="date">2026/05/22</span>
@@ -352,7 +424,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#17</span>
+    <span class="rank">#22</span>
     <a class="author" href="https://x.com/ai_for_success" target="_blank" rel="noopener">@ai_for_success</a>
     <span class="stats">❤383 · RT9 · 👁75,529</span>
     <span class="date">2026/05/20</span>
@@ -366,7 +438,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#18</span>
+    <span class="rank">#23</span>
     <a class="author" href="https://x.com/chrisgpt" target="_blank" rel="noopener">@chrisgpt</a>
     <span class="stats">❤355 · RT42 · 👁26,139</span>
     <span class="date">2026/05/23</span>
@@ -376,11 +448,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Chrisgpt/status/2057945285981065339"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Chrisgpt/status/2057945285981065339"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#24</span>
+    <a class="author" href="https://x.com/ozansihay" target="_blank" rel="noopener">@ozansihay</a>
+    <span class="stats">❤354 · RT10 · 👁23,160</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flashテスト。プロンプト: 動画内の赤い車を黄色のマスタングに変えてください。https://t.co/PKXHqDpSW4</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ozansihay/status/2061031268846842321"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ozansihay/status/2061031268846842321"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="3" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#19</span>
+    <span class="rank">#25</span>
     <a class="author" href="https://x.com/thewhizzai" target="_blank" rel="noopener">@thewhizzai</a>
     <span class="stats">❤346 · RT24 · 👁65,964</span>
     <span class="date">2026/05/20</span>
@@ -390,11 +476,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/TheWhizzAI/status/2056976857611006319"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/TheWhizzAI/status/2056976857611006319"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#26</span>
+    <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
+    <span class="stats">❤326 · RT40 · 👁28,811</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flashで4つの異なるスタイルの動画を作成しました😻さらに探求して結果を共有します エピソード1 - 4つのスタイル 1- ペーパークラフト 2- 折り紙 3- クレイメーション 4- ぬいぐるみワールド プロンプトはコメント欄にありますので、私が使ったすべてのプロンプトを貼り付けて、ご自身で試すことができます。https://t.co/Ay1anNvVJX</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Dheepanratnam/status/2061160870156095615"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Dheepanratnam/status/2061160870156095615"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#20</span>
+    <span class="rank">#27</span>
     <a class="author" href="https://x.com/topviewaihq" target="_blank" rel="noopener">@topviewaihq</a>
     <span class="stats">❤312 · RT38 · 👁56,785</span>
     <span class="date">2026/05/20</span>
@@ -408,7 +508,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#21</span>
+    <span class="rank">#28</span>
     <a class="author" href="https://x.com/stufflistings" target="_blank" rel="noopener">@stufflistings</a>
     <span class="stats">❤299 · RT129 · 👁3,179</span>
     <span class="date">2026/05/20</span>
@@ -422,7 +522,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#22</span>
+    <span class="rank">#29</span>
     <a class="author" href="https://x.com/maxescu" target="_blank" rel="noopener">@maxescu</a>
     <span class="stats">❤297 · RT22 · 👁43,734</span>
     <span class="date">2026/05/25</span>
@@ -437,7 +537,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#23</span>
+    <span class="rank">#30</span>
     <a class="author" href="https://x.com/arrakis_ai" target="_blank" rel="noopener">@arrakis_ai</a>
     <span class="stats">❤292 · RT15 · 👁42,607</span>
     <span class="date">2026/05/23</span>
@@ -451,7 +551,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#24</span>
+    <span class="rank">#31</span>
     <a class="author" href="https://x.com/venturetwins" target="_blank" rel="noopener">@venturetwins</a>
     <span class="stats">❤289 · RT22 · 👁28,466</span>
     <span class="date">2026/05/24</span>
@@ -461,11 +561,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/venturetwins/status/2058235415883313361"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/venturetwins/status/2058235415883313361"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#32</span>
+    <a class="author" href="https://x.com/rourke_heath" target="_blank" rel="noopener">@rourke_heath</a>
+    <span class="stats">❤280 · RT26 · 👁104,905</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Omni は過小評価されている🔥 今日、Google Flow で Omni を試してみよう @googlegemini @google @googledeepmind Gemini Omni は、プレーンな会話を通じて動画や画像を編集でき、シーンの変更、オブジェクトの入れ替え、アングルやアクションの変更を、キャラクターと物理法則の一貫性を保ちながら行えます。これは Flash モデルにすぎないので、さらに良くなるでしょう。すでに高速で、クリエイター、映画制作者、マーケターにとって非常に効果的です。 #GeminiOmni #GoogleAI #AIVideoEditing #CreativeAI #GenerativeAI</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/rourke_heath/status/2058994443022385376"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/rourke_heath/status/2058994443022385376"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#25</span>
+    <span class="rank">#33</span>
     <a class="author" href="https://x.com/aimikoda" target="_blank" rel="noopener">@aimikoda</a>
     <span class="stats">❤259 · RT40 · 👁241,234</span>
     <span class="date">2026/05/21</span>
@@ -501,7 +615,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#26</span>
+    <span class="rank">#34</span>
     <a class="author" href="https://x.com/epicmnw" target="_blank" rel="noopener">@epicmnw</a>
     <span class="stats">❤254 · RT136 · 👁1,110</span>
     <span class="date">2026/05/24</span>
@@ -511,11 +625,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/epicmnw/status/2058535596231118956"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/epicmnw/status/2058535596231118956"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#35</span>
+    <a class="author" href="https://x.com/ozansihay" target="_blank" rel="noopener">@ozansihay</a>
+    <span class="stats">❤239 · RT20 · 👁43,776</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniが多言語動画作成を信じられないほど簡単にしました。Geminiで作成した動画でも、自分で録画した動画でも、音声の対話を好きな言語に翻訳できるようになりました。私は自分の顔と声でアバター機能をテストしました。結果は本当に印象的で、自然なリップシンク、トーン、そして表現です。これは本格的なグローバルコンテンツ作成にとって大きな一歩です。もう試しましたか？</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ozansihay/status/2059966959270211622"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ozansihay/status/2059966959270211622"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#27</span>
+    <span class="rank">#36</span>
     <a class="author" href="https://x.com/angaisb_" target="_blank" rel="noopener">@angaisb_</a>
     <span class="stats">❤235 · RT5 · 👁14,139</span>
     <span class="date">2026/05/20</span>
@@ -529,7 +657,21 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#28</span>
+    <span class="rank">#37</span>
+    <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
+    <span class="stats">❤227 · RT21 · 👁66,319</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Flow は Gemini Omni によって動いています。動画をアップロードし、新しいエージェント機能を使ってプラットフォーム内で編集できます。移動、音声、キャラクターをそのままに保ちながら、シーンを編集します。簡単なチュートリアルはこちら: https://t.co/w9WrVNe2Xv</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2059243368706957733"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2059243368706957733"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#38</span>
     <a class="author" href="https://x.com/nachos2d_" target="_blank" rel="noopener">@nachos2d_</a>
     <span class="stats">❤220 · RT25 · 👁66,283</span>
     <span class="date">2026/05/20</span>
@@ -543,7 +685,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#29</span>
+    <span class="rank">#39</span>
     <a class="author" href="https://x.com/techhalla" target="_blank" rel="noopener">@techhalla</a>
     <span class="stats">❤218 · RT16 · 👁60,908</span>
     <span class="date">2026/05/21</span>
@@ -563,7 +705,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#30</span>
+    <span class="rank">#40</span>
     <a class="author" href="https://x.com/caliraval" target="_blank" rel="noopener">@caliraval</a>
     <span class="stats">❤214 · RT5 · 👁10,941</span>
     <span class="date">2026/05/21</span>
@@ -577,7 +719,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#31</span>
+    <span class="rank">#41</span>
     <a class="author" href="https://x.com/alexanderchen" target="_blank" rel="noopener">@alexanderchen</a>
     <span class="stats">❤201 · RT22 · 👁91,571</span>
     <span class="date">2026/05/21</span>
@@ -591,7 +733,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#32</span>
+    <span class="rank">#42</span>
     <a class="author" href="https://x.com/sharbel" target="_blank" rel="noopener">@sharbel</a>
     <span class="stats">❤196 · RT20 · 👁52,319</span>
     <span class="date">2026/05/20</span>
@@ -601,39 +743,11 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/sharbel/status/2057057310975901784"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/sharbel/status/2057057310975901784"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
-  <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
-    
-    <span class="rank">#33</span>
-    <a class="author" href="https://x.com/rourke_heath" target="_blank" rel="noopener">@rourke_heath</a>
-    <span class="stats">❤180 · RT20 · 👁48,486</span>
-    <span class="date">2026/05/26</span>
-  </div>
-  <div class="post-body">
-    <p class="post-text post-ja">Google Gemini Omni は過小評価されている🔥 今日、Google Flow で Omni を試してみよう @googlegemini @google @googledeepmind Gemini Omni は、プレーンな会話を通じて動画や画像を編集でき、シーンの変更、オブジェクトの入れ替え、アングルやアクションの変更を、キャラクターと物理法則の一貫性を保ちながら行えます。これは Flash モデルにすぎないので、さらに良くなるでしょう。すでに高速で、クリエイター、映画制作者、マーケターにとって非常に効果的です。 #GeminiOmni #GoogleAI #AIVideoEditing #CreativeAI #GenerativeAI</p>
-    <div class="tweet-embed-slot" data-tweet-url="https://x.com/rourke_heath/status/2058994443022385376"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/rourke_heath/status/2058994443022385376"></a></blockquote></div>
-  </div>
-</article>
-<article class="post-card" data-tier="1" data-promo="0">
-  <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
-    
-    <span class="rank">#34</span>
-    <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
-    <span class="stats">❤178 · RT13 · 👁25,258</span>
-    <span class="date">2026/05/26</span>
-  </div>
-  <div class="post-body">
-    <p class="post-text post-ja">Google Flow は Gemini Omni によって動いています。動画をアップロードし、新しいエージェント機能を使ってプラットフォーム内で編集できます。移動、音声、キャラクターをそのままに保ちながら、シーンを編集します。簡単なチュートリアルはこちら: https://t.co/w9WrVNe2Xv</p>
-    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2059243368706957733"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2059243368706957733"></a></blockquote></div>
-  </div>
-</article>
 <article class="post-card" data-tier="3" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#35</span>
+    <span class="rank">#43</span>
     <a class="author" href="https://x.com/inshrah_ali_" target="_blank" rel="noopener">@inshrah_ali_</a>
     <span class="stats">❤177 · RT1 · 👁8,902</span>
     <span class="date">2026/05/20</span>
@@ -647,7 +761,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#36</span>
+    <span class="rank">#44</span>
     <a class="author" href="https://x.com/jsfilmz0412" target="_blank" rel="noopener">@jsfilmz0412</a>
     <span class="stats">❤169 · RT12 · 👁52,814</span>
     <span class="date">2026/05/23</span>
@@ -661,7 +775,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#37</span>
+    <span class="rank">#45</span>
     <a class="author" href="https://x.com/jsfilmz0412" target="_blank" rel="noopener">@jsfilmz0412</a>
     <span class="stats">❤169 · RT13 · 👁25,707</span>
     <span class="date">2026/05/21</span>
@@ -675,7 +789,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#38</span>
+    <span class="rank">#46</span>
     <a class="author" href="https://x.com/vaibhavsisinty" target="_blank" rel="noopener">@vaibhavsisinty</a>
     <span class="stats">❤166 · RT17 · 👁6,772</span>
     <span class="date">2026/05/20</span>
@@ -711,7 +825,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#39</span>
+    <span class="rank">#47</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤164 · RT13 · 👁10,214</span>
     <span class="date">2026/05/23</span>
@@ -725,7 +839,21 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#40</span>
+    <span class="rank">#48</span>
+    <a class="author" href="https://x.com/vortex_promos" target="_blank" rel="noopener">@vortex_promos</a>
+    <span class="stats">❤162 · RT203 · 👁2,130</span>
+    <span class="date">2026/06/02</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">#GeminiOmni vs #Grok vs #Seedance #Omni は10秒のものです。そして、Seedance はそのダイナミクスと最後の編集カットでそれだとわかるでしょう。https://t.co/ne29R3Tds2</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/VORTEX_Promos/status/2061482301758775422"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/VORTEX_Promos/status/2061482301758775422"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#49</span>
     <a class="author" href="https://x.com/techdroider" target="_blank" rel="noopener">@techdroider</a>
     <span class="stats">❤158 · RT10 · 👁8,636</span>
     <span class="date">2026/05/20</span>
@@ -739,7 +867,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#41</span>
+    <span class="rank">#50</span>
     <a class="author" href="https://x.com/codebypoonam" target="_blank" rel="noopener">@codebypoonam</a>
     <span class="stats">❤155 · RT18 · 👁9,033</span>
     <span class="date">2026/05/24</span>
@@ -763,7 +891,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#42</span>
+    <span class="rank">#51</span>
     <a class="author" href="https://x.com/stocksavvyshay" target="_blank" rel="noopener">@stocksavvyshay</a>
     <span class="stats">❤155 · RT27 · 👁20,192</span>
     <span class="date">2026/05/20</span>
@@ -773,11 +901,11 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/StockSavvyShay/status/2056789935269748796"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/StockSavvyShay/status/2056789935269748796"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#43</span>
+    <span class="rank">#52</span>
     <a class="author" href="https://x.com/topviewaihq" target="_blank" rel="noopener">@topviewaihq</a>
     <span class="stats">❤154 · RT20 · 👁10,312</span>
     <span class="date">2026/05/20</span>
@@ -791,7 +919,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#44</span>
+    <span class="rank">#53</span>
     <a class="author" href="https://x.com/aihighlight" target="_blank" rel="noopener">@aihighlight</a>
     <span class="stats">❤153 · RT55 · 👁12,419</span>
     <span class="date">2026/05/21</span>
@@ -805,7 +933,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#45</span>
+    <span class="rank">#54</span>
     <a class="author" href="https://x.com/minchoi" target="_blank" rel="noopener">@minchoi</a>
     <span class="stats">❤149 · RT17 · 👁46,491</span>
     <span class="date">2026/05/21</span>
@@ -819,21 +947,21 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#46</span>
-    <a class="author" href="https://x.com/koltregaskes" target="_blank" rel="noopener">@koltregaskes</a>
-    <span class="stats">❤146 · RT8 · 👁10,648</span>
-    <span class="date">2026/05/18</span>
+    <span class="rank">#55</span>
+    <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
+    <span class="stats">❤143 · RT13 · 👁16,777</span>
+    <span class="date">2026/05/29</span>
   </div>
   <div class="post-body">
-    <p class="post-text post-ja">Gemini Spark エージェント、Gemini Omni ビデオモデル、新しいポインター機能、Gemini Live がすべて、今後の Google デスクトップアプリ（今のところ Mac のみ）に搭載される予定です。他の Gemini の優れた機能も、そして Windows アプリも登場することを願っています。https://t.co/rZnND7yP19</p>
-    <div class="tweet-embed-slot" data-tweet-url="https://x.com/koltregaskes/status/2056366509803622408"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/koltregaskes/status/2056366509803622408"></a></blockquote></div>
+    <p class="post-text post-ja">Google Gemini Omni は最高に楽しい！シンプルなプロンプトで、開始ビデオを編集して、たくさんのバリエーションを作成できます。すごい！https://t.co/tOSmSSVCCm</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_artworkgen/status/2060322372599587206"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_artworkgen/status/2060322372599587206"></a></blockquote></div>
   </div>
 </article>
 <article class="post-card" data-tier="3" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#47</span>
+    <span class="rank">#56</span>
     <a class="author" href="https://x.com/romi2656" target="_blank" rel="noopener">@romi2656</a>
     <span class="stats">❤136 · RT56 · 👁6,281</span>
     <span class="date">2026/05/22</span>
@@ -851,7 +979,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#48</span>
+    <span class="rank">#57</span>
     <a class="author" href="https://x.com/shamiweb3" target="_blank" rel="noopener">@shamiweb3</a>
     <span class="stats">❤136 · RT3 · 👁4,753</span>
     <span class="date">2026/05/21</span>
@@ -861,11 +989,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/ShamiWeb3/status/2057118072813900024"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ShamiWeb3/status/2057118072813900024"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#58</span>
+    <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
+    <span class="stats">❤134 · RT14 · 👁30,886</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">🤯 Google Gemini Omni Flash に1つのプロンプトを入力しました。「ペーパークラフトスタイルの物語を作成して」…すると、これが生成されました。https://t.co/sdq0RaLD6b</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Dheepanratnam/status/2060937041659969675"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Dheepanratnam/status/2060937041659969675"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#49</span>
+    <span class="rank">#59</span>
     <a class="author" href="https://x.com/cointelegraph" target="_blank" rel="noopener">@cointelegraph</a>
     <span class="stats">❤134 · RT33 · 👁21,930</span>
     <span class="date">2026/05/20</span>
@@ -879,7 +1021,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#50</span>
+    <span class="rank">#60</span>
     <a class="author" href="https://x.com/parul_gautam7" target="_blank" rel="noopener">@parul_gautam7</a>
     <span class="stats">❤131 · RT37 · 👁15,983</span>
     <span class="date">2026/05/21</span>
@@ -893,7 +1035,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#51</span>
+    <span class="rank">#61</span>
     <a class="author" href="https://x.com/vortex_promos" target="_blank" rel="noopener">@vortex_promos</a>
     <span class="stats">❤130 · RT130 · 👁1,607</span>
     <span class="date">2026/05/27</span>
@@ -903,11 +1045,11 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/VORTEX_Promos/status/2059605907277787295"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/VORTEX_Promos/status/2059605907277787295"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#52</span>
+    <span class="rank">#62</span>
     <a class="author" href="https://x.com/ruzainameer" target="_blank" rel="noopener">@ruzainameer</a>
     <span class="stats">❤130 · RT5 · 👁5,517</span>
     <span class="date">2026/05/22</span>
@@ -923,7 +1065,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#53</span>
+    <span class="rank">#63</span>
     <a class="author" href="https://x.com/ai_for_success" target="_blank" rel="noopener">@ai_for_success</a>
     <span class="stats">❤130 · RT1 · 👁14,198</span>
     <span class="date">2026/05/22</span>
@@ -937,7 +1079,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#54</span>
+    <span class="rank">#64</span>
     <a class="author" href="https://x.com/vortex_promos" target="_blank" rel="noopener">@vortex_promos</a>
     <span class="stats">❤123 · RT10 · 👁38,428</span>
     <span class="date">2026/05/23</span>
@@ -951,7 +1093,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#55</span>
+    <span class="rank">#65</span>
     <a class="author" href="https://x.com/zarairahh" target="_blank" rel="noopener">@zarairahh</a>
     <span class="stats">❤123 · RT9 · 👁5,956</span>
     <span class="date">2026/05/22</span>
@@ -967,7 +1109,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#56</span>
+    <span class="rank">#66</span>
     <a class="author" href="https://x.com/zarairahh" target="_blank" rel="noopener">@zarairahh</a>
     <span class="stats">❤123 · RT5 · 👁5,433</span>
     <span class="date">2026/05/21</span>
@@ -977,11 +1119,25 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/ZaraIrahh/status/2057268357301502297"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ZaraIrahh/status/2057268357301502297"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#67</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤122 · RT5 · 👁2,194</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">THE REWILDING 🐺 🎥 : Gemini Omni flash プロンプト ↓ https://t.co/QtMtt0GFDG</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2060549856444469710"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2060549856444469710"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#57</span>
+    <span class="rank">#68</span>
     <a class="author" href="https://x.com/epsilon_ai__" target="_blank" rel="noopener">@epsilon_ai__</a>
     <span class="stats">❤122 · RT5 · 👁9,329</span>
     <span class="date">2026/05/22</span>
@@ -995,7 +1151,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#58</span>
+    <span class="rank">#69</span>
     <a class="author" href="https://x.com/emollick" target="_blank" rel="noopener">@emollick</a>
     <span class="stats">❤122 · RT5 · 👁15,347</span>
     <span class="date">2026/05/20</span>
@@ -1009,7 +1165,7 @@ footer { text-align: center; color: var(--muted); font-size: 0.8rem; padding: 24
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#59</span>
+    <span class="rank">#70</span>
     <a class="author" href="https://x.com/tulseedoshi" target="_blank" rel="noopener">@tulseedoshi</a>
     <span class="stats">❤118 · RT8 · 👁4,849</span>
     <span class="date">2026/05/27</span>
@@ -1024,7 +1180,7 @@ Omniには非常に多くのことができます。過去7日間の7つの例�
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#60</span>
+    <span class="rank">#71</span>
     <a class="author" href="https://x.com/aiwarper" target="_blank" rel="noopener">@aiwarper</a>
     <span class="stats">❤115 · RT15 · 👁9,253</span>
     <span class="date">2026/05/20</span>
@@ -1038,7 +1194,7 @@ Omniには非常に多くのことができます。過去7日間の7つの例�
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#61</span>
+    <span class="rank">#72</span>
     <a class="author" href="https://x.com/hitpawofficial" target="_blank" rel="noopener">@hitpawofficial</a>
     <span class="stats">❤111 · RT8 · 👁9,006</span>
     <span class="date">2026/05/20</span>
@@ -1052,7 +1208,35 @@ Omniには非常に多くのことができます。過去7日間の7つの例�
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#62</span>
+    <span class="rank">#73</span>
+    <a class="author" href="https://x.com/timjayas" target="_blank" rel="noopener">@timjayas</a>
+    <span class="stats">❤110 · RT7 · 👁23,260</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Pro がたった1つのプロンプトで40%ものクォータを消費した。これはプレーンテキストの出力だったが、ビデオ生成における Gemini Omni はどれほどひどいことになるだろうか？ https://t.co/HMHrV5hht1</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/TimJayas/status/2059521468720132479"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/TimJayas/status/2059521468720132479"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#74</span>
+    <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
+    <span class="stats">❤108 · RT9 · 👁31,591</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Omni Flash で何でも作成できます。Google Flow では、新しいモデルでビデオを参照して調整や編集を行うことができます。キャラクターとシーンの一貫性を保ちながら、環境、服を変更したり、オブジェクトを追加/削除したりできます。https://t.co/gnzLRDXpyR</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2059983245320802475"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2059983245320802475"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#75</span>
     <a class="author" href="https://x.com/synthesarah" target="_blank" rel="noopener">@synthesarah</a>
     <span class="stats">❤108 · RT3 · 👁4,465</span>
     <span class="date">2026/05/22</span>
@@ -1068,7 +1252,21 @@ Omniには非常に多くのことができます。過去7日間の7つの例�
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#63</span>
+    <span class="rank">#76</span>
+    <a class="author" href="https://x.com/codebypoonam" target="_blank" rel="noopener">@codebypoonam</a>
+    <span class="stats">❤107 · RT10 · 👁11,066</span>
+    <span class="date">2026/06/02</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni は本当にすごいのに、誰も十分に話題にしていません。これで、普通の会話でビデオを編集できるようになりました。https://t.co/TS6alkUhhm</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/CodeByPoonam/status/2061488684827025740"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/CodeByPoonam/status/2061488684827025740"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#77</span>
     <a class="author" href="https://x.com/heyfatema" target="_blank" rel="noopener">@heyfatema</a>
     <span class="stats">❤107 · RT15 · 👁21,882</span>
     <span class="date">2026/05/21</span>
@@ -1082,7 +1280,7 @@ Omniには非常に多くのことができます。過去7日間の7つの例�
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#64</span>
+    <span class="rank">#78</span>
     <a class="author" href="https://x.com/nawalsehar" target="_blank" rel="noopener">@nawalsehar</a>
     <span class="stats">❤106 · RT1 · 👁2,961</span>
     <span class="date">2026/05/21</span>
@@ -1100,7 +1298,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#65</span>
+    <span class="rank">#79</span>
     <a class="author" href="https://x.com/aimikoda" target="_blank" rel="noopener">@aimikoda</a>
     <span class="stats">❤104 · RT8 · 👁4,089</span>
     <span class="date">2026/05/24</span>
@@ -1114,7 +1312,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#66</span>
+    <span class="rank">#80</span>
     <a class="author" href="https://x.com/gesorameshack" target="_blank" rel="noopener">@gesorameshack</a>
     <span class="stats">❤104 · RT90 · 👁21,857</span>
     <span class="date">2026/05/20</span>
@@ -1128,7 +1326,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#67</span>
+    <span class="rank">#81</span>
     <a class="author" href="https://x.com/im_shahid7" target="_blank" rel="noopener">@im_shahid7</a>
     <span class="stats">❤103 · RT3 · 👁1,459</span>
     <span class="date">2026/05/22</span>
@@ -1142,7 +1340,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#68</span>
+    <span class="rank">#82</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤103 · RT5 · 👁4,661</span>
     <span class="date">2026/05/22</span>
@@ -1156,7 +1354,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#69</span>
+    <span class="rank">#83</span>
     <a class="author" href="https://x.com/cryptopunk7213" target="_blank" rel="noopener">@cryptopunk7213</a>
     <span class="stats">❤102 · RT6 · 👁19,009</span>
     <span class="date">2026/05/20</span>
@@ -1170,7 +1368,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#70</span>
+    <span class="rank">#84</span>
     <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
     <span class="stats">❤101 · RT8 · 👁34,085</span>
     <span class="date">2026/05/21</span>
@@ -1184,7 +1382,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#71</span>
+    <span class="rank">#85</span>
     <a class="author" href="https://x.com/sjinn_agent" target="_blank" rel="noopener">@sjinn_agent</a>
     <span class="stats">❤101 · RT16 · 👁55,543</span>
     <span class="date">2026/05/21</span>
@@ -1198,7 +1396,7 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#72</span>
+    <span class="rank">#86</span>
     <a class="author" href="https://x.com/sripathiteja4" target="_blank" rel="noopener">@sripathiteja4</a>
     <span class="stats">❤100 · RT20 · 👁8,738</span>
     <span class="date">2026/05/20</span>
@@ -1212,7 +1410,21 @@ Muvi Video では、5月末まで年間UltraおよびBusinessプランでOmni Fl
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#73</span>
+    <span class="rank">#87</span>
+    <a class="author" href="https://x.com/coinbureau" target="_blank" rel="noopener">@coinbureau</a>
+    <span class="stats">❤99 · RT7 · 👁14,103</span>
+    <span class="date">2026/05/20</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">⚡️速報: GOOGLE が「GEMINI OMNI」を発表 $GOOGL の「Gemini Omni」は、ビデオから始まる、あらゆるものからあらゆるものを作成できるモデルへの第一歩です。これは、Gemini の知能と Google の生成メディアシステムを組み合わせています。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/coinbureau/status/2056795279186403615"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/coinbureau/status/2056795279186403615"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#88</span>
     <a class="author" href="https://x.com/ariaxawan" target="_blank" rel="noopener">@ariaxawan</a>
     <span class="stats">❤96 · RT1 · 👁2,485</span>
     <span class="date">2026/05/21</span>
@@ -1228,7 +1440,21 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#74</span>
+    <span class="rank">#89</span>
+    <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
+    <span class="stats">❤95 · RT6 · 👁5,278</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Omni は VFX に最適です。携帯電話で何でも撮影し、Google Flow にアップロードします。Omni Flash を選択し、プロンプトを挿入してシーンで何が起こるかを指示します。できるだけ具体的な詳細を与えるようにしてください。このビデオで使用したプロンプトはコメントに残してあります！https://t.co/xcQE6QTIpa</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2061119586226020585"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2061119586226020585"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#90</span>
     <a class="author" href="https://x.com/denneydara" target="_blank" rel="noopener">@denneydara</a>
     <span class="stats">❤95 · RT2 · 👁7,837</span>
     <span class="date">2026/05/23</span>
@@ -1242,7 +1468,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#75</span>
+    <span class="rank">#91</span>
     <a class="author" href="https://x.com/scaling01" target="_blank" rel="noopener">@scaling01</a>
     <span class="stats">❤94 · RT3 · 👁4,288</span>
     <span class="date">2026/05/20</span>
@@ -1252,11 +1478,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/scaling01/status/2056787246271910132"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/scaling01/status/2056787246271910132"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#76</span>
+    <span class="rank">#92</span>
     <a class="author" href="https://x.com/kaiteeshiks" target="_blank" rel="noopener">@kaiteeshiks</a>
     <span class="stats">❤92 · RT79 · 👁17,623</span>
     <span class="date">2026/05/20</span>
@@ -1266,11 +1492,27 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/KaiteeShiks/status/2057105709460762816"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/KaiteeShiks/status/2057105709460762816"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#93</span>
+    <a class="author" href="https://x.com/marionawfal" target="_blank" rel="noopener">@marionawfal</a>
+    <span class="stats">❤89 · RT15 · 👁20,686</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni があれば、性別適合手術なんて必要ないね。
+フィッシャーたちはこれを気に入るだろうな。
+https://t.co/wAYfZWExn9</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/MarioNawfal/status/2061360852930896290"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MarioNawfal/status/2061360852930896290"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#77</span>
+    <span class="rank">#94</span>
     <a class="author" href="https://x.com/alexanderchen" target="_blank" rel="noopener">@alexanderchen</a>
     <span class="stats">❤89 · RT4 · 👁8,934</span>
     <span class="date">2026/05/22</span>
@@ -1284,7 +1526,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#78</span>
+    <span class="rank">#95</span>
     <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
     <span class="stats">❤89 · RT11 · 👁29,442</span>
     <span class="date">2026/05/21</span>
@@ -1298,7 +1540,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#79</span>
+    <span class="rank">#96</span>
     <a class="author" href="https://x.com/petergyang" target="_blank" rel="noopener">@petergyang</a>
     <span class="stats">❤89 · RT3 · 👁7,750</span>
     <span class="date">2026/05/20</span>
@@ -1312,7 +1554,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#80</span>
+    <span class="rank">#97</span>
     <a class="author" href="https://x.com/chrisfirst" target="_blank" rel="noopener">@chrisfirst</a>
     <span class="stats">❤88 · RT8 · 👁26,138</span>
     <span class="date">2026/05/23</span>
@@ -1326,7 +1568,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#81</span>
+    <span class="rank">#98</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤86 · RT4 · 👁63,667</span>
     <span class="date">2026/05/20</span>
@@ -1336,11 +1578,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2057100280672739525"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2057100280672739525"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#99</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤84 · RT8 · 👁32,335</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni 🤓 Prompt: Place the woman (ref vid) realistically into these locations(*). Never change the angle, framing, the woman, or the woman’s pose. Never zoom in, never zoom out. Keep exactly the same angle and the same framing. (just---chng outfit). * Museum - 1click * Car showroom - 1click * Next to the window of a skyscraper - 1click * Next to the window on a bus - 1click * Beside a wall in a metro station - 1click</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2059324538677244033"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2059324538677244033"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#82</span>
+    <span class="rank">#100</span>
     <a class="author" href="https://x.com/arrakis_ai" target="_blank" rel="noopener">@arrakis_ai</a>
     <span class="stats">❤84 · RT7 · 👁4,315</span>
     <span class="date">2026/05/24</span>
@@ -1354,7 +1610,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#83</span>
+    <span class="rank">#101</span>
     <a class="author" href="https://x.com/aamiransar94694" target="_blank" rel="noopener">@aamiransar94694</a>
     <span class="stats">❤83 · RT29 · 👁11,868</span>
     <span class="date">2026/05/21</span>
@@ -1364,11 +1620,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/AamirAnsar94694/status/2057279084439458066"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/AamirAnsar94694/status/2057279084439458066"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#84</span>
+    <span class="rank">#102</span>
     <a class="author" href="https://x.com/official_maxc" target="_blank" rel="noopener">@official_maxc</a>
     <span class="stats">❤81 · RT6 · 👁4,901</span>
     <span class="date">2026/05/24</span>
@@ -1382,7 +1638,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#85</span>
+    <span class="rank">#103</span>
     <a class="author" href="https://x.com/allexa_ai" target="_blank" rel="noopener">@allexa_ai</a>
     <span class="stats">❤79 · RT11 · 👁8,576</span>
     <span class="date">2026/05/21</span>
@@ -1396,7 +1652,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#86</span>
+    <span class="rank">#104</span>
     <a class="author" href="https://x.com/icreatelife" target="_blank" rel="noopener">@icreatelife</a>
     <span class="stats">❤78 · RT7 · 👁14,910</span>
     <span class="date">2026/05/25</span>
@@ -1410,7 +1666,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#87</span>
+    <span class="rank">#105</span>
     <a class="author" href="https://x.com/hey_mujeebahmed" target="_blank" rel="noopener">@hey_mujeebahmed</a>
     <span class="stats">❤78 · RT38 · 👁16,095</span>
     <span class="date">2026/05/20</span>
@@ -1424,7 +1680,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#88</span>
+    <span class="rank">#106</span>
     <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
     <span class="stats">❤77 · RT10 · 👁5,767</span>
     <span class="date">2026/05/25</span>
@@ -1439,7 +1695,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#89</span>
+    <span class="rank">#107</span>
     <a class="author" href="https://x.com/manishkumar_dev" target="_blank" rel="noopener">@manishkumar_dev</a>
     <span class="stats">❤77 · RT23 · 👁8,507</span>
     <span class="date">2026/05/20</span>
@@ -1449,11 +1705,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/manishkumar_dev/status/2057112518649360695"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/manishkumar_dev/status/2057112518649360695"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#90</span>
+    <span class="rank">#108</span>
     <a class="author" href="https://x.com/iqrasaifiii" target="_blank" rel="noopener">@iqrasaifiii</a>
     <span class="stats">❤76 · RT2 · 👁16,016</span>
     <span class="date">2026/05/20</span>
@@ -1463,11 +1719,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/IqraSaifiii/status/2056809149137391908"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/IqraSaifiii/status/2056809149137391908"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#91</span>
+    <span class="rank">#109</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
     <span class="stats">❤75 · RT9 · 👁4,601</span>
     <span class="date">2026/05/22</span>
@@ -1477,25 +1733,35 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2057719588184629497"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2057719588184629497"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="2" data-promo="0">
+<article class="post-card" data-tier="3" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#92</span>
-    <a class="author" href="https://x.com/timjayas" target="_blank" rel="noopener">@timjayas</a>
-    <span class="stats">❤74 · RT6 · 👁12,057</span>
-    <span class="date">2026/05/27</span>
+    <span class="rank">#110</span>
+    <a class="author" href="https://x.com/lagerskoy" target="_blank" rel="noopener">@lagerskoy</a>
+    <span class="stats">❤73 · RT9 · 👁9,908</span>
+    <span class="date">2026/05/29</span>
   </div>
   <div class="post-body">
-    <p class="post-text post-ja">Google Gemini Pro がたった1つのプロンプトで40%ものクォータを消費した。これはプレーンテキストの出力だったが、ビデオ生成における Gemini Omni はどれほどひどいことになるだろうか？ https://t.co/HMHrV5hht1</p>
-    <div class="tweet-embed-slot" data-tweet-url="https://x.com/TimJayas/status/2059521468720132479"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/TimJayas/status/2059521468720132479"></a></blockquote></div>
+    <p class="post-text post-ja">Google は先週 I/O 2026 で Gemini Omni を出荷したばかりで、ビデオ編集業界全体には事業モデルが崩壊するまでに 12 ヶ月しかありません。これは未来のテクノロジーではありません。これは今日、ライブで動いています。物理認識合成による対話型ビデオ編集です。ほとんどの人は、これから 6 ヶ月間、何が起こったのか気づかないでしょう。
+
+これが Omni が実際にすることです。1つのビデオをアップロードします。平易な英語で変更を記述します。モデルは、シーン認識の忠実度で変更を実行します。遠近法と照明を尊重して、床にライオンを追加します。部屋の残りを維持しながらカーテンを開けます。プラスチックボトルを金属製に変更します。空のボトルに水を入れます。指を鳴らしてライトを点滅させます。出力はフォトリアルです。ジオメトリは正確です。照明はシーンと一致します。物理は一貫しています。これはテキストから新しいビデオを生成する Veo 3 ではありません。これは会話を通じて既存のビデオを編集する Omni です。この区別は、テクノロジープレスが処理しているよりも重要です。
+
+さて、誰も計算していない数学があります。従来の VFX アーティストは、既存のフッテージに単一の複雑な要素を合成するために、1時間あたり 150ドルから 400ドルを請求します。CGI ライオンを正しい照明と遠近法でホテルの部屋のショットに追加する作業には、20時間から 40時間の熟練した労働が必要です。総費用は 1ショットあたり 3,000ドルから 16,000ドルになります。このパイプラインは、Google AI Premium サブスクリプションの費用で、自然言語を通じて 90秒で同じショットを実行します。Reddit のフリーランス VFX コミュニティは、これが現実なのかマーケティングなのかすでに議論しています。答えは両方です。デモは現実です。出力品質は中級のポストプロダクション作業に匹敵します。マーケティングも現実です。なぜなら Google はこれを、次の10年の消費者向けビデオ作成インターフェースとして位置付けているからです。
+
+これは 2026年の 7番目のクリエイティブな圧縮です。Claude Design がデザインレイヤーを崩壊させました。KIMI K2.6 がコーディングレイヤーを崩壊させました。Rodin Gen 2.5 が 3D アセットレイヤーを崩壊させました。21st dev と Claude Code がランディングページ制作レイヤーを崩壊させました。Vision API と Gemini と Sora 2 スタックが UGC ビデオ制作レイヤーを崩壊させました。AI Conversion Blocks を備えた Section Store が Eコマース CRO レイヤーを崩壊させました。Gemini Omni はビデオポストプロダクションレイヤーを崩壊させました。18ヶ月前にはフリーランス経済全体を定義していた 7つのクリエイティブ産業が、今では月額 500ドル未満のサブスクリプションスタックになっています。
+
+ほとんどのビルダーが見落とす部分。機会は自分自身のためにビデオを作成することではありません。機会は、すべてのソロクリエイターが月額 20ドルで中級の VFX スタジオの機能にアクセスできるようになったときに何が起こるかです。不動産エージェントは、映画のような照明調整を施した物件ツアービデオを、映画撮影チームを雇うことなく制作できるようになります。中小企業のオーナーは、VFX スタジオに支払うことなく、フォトリアルな CGI 要素を追加した製品デモンストレーションビデオを制作できるようになります。教師は、After Effects を学ぶことなく、複雑な視覚的デモンストレーションを含む教育コンテンツを制作できるようになります。市場の底は 4桁分押し上げられました。
+
+2026年にクリエイティブスタック全体で実際に起こっていること。18ヶ月前には専門知識を必要としていたプロのクリエイティブ制作のすべてのレイヤーが、今年、対話型 AI インターフェースに崩壊しつつあります。デザイン。コード。3D アセット。ランディングページ。UGC ビデオ。Eコマース最適化。そして今、ビデオポストプロダクション。これらの専門スキルを販売することに基づいて構築されたフリーランス経済は、リアルタイムで再評価されています。クライアントは</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/lagerskoy/status/2060203644436525325"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/lagerskoy/status/2060203644436525325"></a></blockquote></div>
   </div>
 </article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#93</span>
+    <span class="rank">#111</span>
     <a class="author" href="https://x.com/viipin8" target="_blank" rel="noopener">@viipin8</a>
     <span class="stats">❤73 · RT19 · 👁29,736</span>
     <span class="date">2026/05/20</span>
@@ -1505,11 +1771,26 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/viipin8/status/2057105981461651752"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/viipin8/status/2057105981461651752"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#112</span>
+    <a class="author" href="https://x.com/mayorkingai" target="_blank" rel="noopener">@mayorkingai</a>
+    <span class="stats">❤72 · RT10 · 👁37,708</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flash のプロンプト: すべての元の映像を正確に保持し、ラップトップ画面に映るフクロモモンガを生き返らせて、目の前の開いた手のひらに飛び乗らせてください。
+https://t.co/2wcf0ESQ6F</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/MayorKingAI/status/2060415101208072426"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MayorKingAI/status/2060415101208072426"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#94</span>
+    <span class="rank">#113</span>
     <a class="author" href="https://x.com/trakintech" target="_blank" rel="noopener">@trakintech</a>
     <span class="stats">❤72 · RT4 · 👁1,620</span>
     <span class="date">2026/05/20</span>
@@ -1519,11 +1800,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/TrakinTech/status/2056788825331077539"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/TrakinTech/status/2056788825331077539"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="1">
+<article class="post-card" data-tier="2" data-promo="1">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     <span class="badge promo">プロモ注意</span>
-    <span class="rank">#95</span>
+    <span class="rank">#114</span>
     <a class="author" href="https://x.com/muvi_ai" target="_blank" rel="noopener">@muvi_ai</a>
     <span class="stats">❤69 · RT18 · 👁14,374</span>
     <span class="date">2026/05/21</span>
@@ -1533,11 +1814,26 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/muvi_ai/status/2057161860407828711"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/muvi_ai/status/2057161860407828711"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#115</span>
+    <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
+    <span class="stats">❤68 · RT4 · 👁4,312</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Omni を使うための本当に素晴らしい方法です。Flow で生成した画像に直接落書きして、方向線を追加することもできます！
+https://t.co/W9jl8G9Uvr</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2059654841362690384"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2059654841362690384"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#96</span>
+    <span class="rank">#116</span>
     <a class="author" href="https://x.com/cfryant" target="_blank" rel="noopener">@cfryant</a>
     <span class="stats">❤67 · RT5 · 👁3,196</span>
     <span class="date">2026/05/22</span>
@@ -1547,11 +1843,33 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/cfryant/status/2057532550470648136"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/cfryant/status/2057532550470648136"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#117</span>
+    <a class="author" href="https://x.com/harshithlucky3" target="_blank" rel="noopener">@harshithlucky3</a>
+    <span class="stats">❤65 · RT7 · 👁4,125</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">@GeminiApp の Gemini Omni Flash 🔥🔥
+このプロンプトで 2つの参照画像を与えました。
+&gt; スポーツカーが素早く、部品ごとに組み立てられていく様子を示す、テンポの速い高エネルギーの 10秒間の動画を作成してください。提供された 2つの参照画像を始点と終点として使用します。
+- 4つの車輪が所定の位置に転がり込むところから始めます。
+- 金属製のロッドとサスペンションがそれらの間に素早くはまります。
+- エンジンブロックが落ちてきます。
+- 外装パネルが四方から飛び交い、フレームにはまります。
+- マットなプライマーを光沢のある赤い塗料に変えます。
+カメラアングルは厳密に 3/4 等角投影で維持してください。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/HarshithLucky3/status/2059713624885891271"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/HarshithLucky3/status/2059713624885891271"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#97</span>
+    <span class="rank">#118</span>
     <a class="author" href="https://x.com/brookswhalex" target="_blank" rel="noopener">@brookswhalex</a>
     <span class="stats">❤64 · RT25 · 👁5,948</span>
     <span class="date">2026/05/21</span>
@@ -1561,11 +1879,26 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/BrooksWhaleX/status/2057437105039786404"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/BrooksWhaleX/status/2057437105039786404"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#119</span>
+    <a class="author" href="https://x.com/steren" target="_blank" rel="noopener">@steren</a>
+    <span class="stats">❤63 · RT0 · 👁9,497</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">個人アカウントで Gemini Omni を手に入れました。最初の作業は、Google Drive のルートにあるすべてのファイルを見て、それらをどこに移動すべきかを提案し（そして移動する）ことでした。
+https://t.co/SzALOJ1g4C</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/steren/status/2060832457398878457"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/steren/status/2060832457398878457"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="3" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#98</span>
+    <span class="rank">#120</span>
     <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
     <span class="stats">❤63 · RT3 · 👁4,027</span>
     <span class="date">2026/05/24</span>
@@ -1579,7 +1912,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#99</span>
+    <span class="rank">#121</span>
     <a class="author" href="https://x.com/doctorwasif" target="_blank" rel="noopener">@doctorwasif</a>
     <span class="stats">❤63 · RT8 · 👁2,782</span>
     <span class="date">2026/05/22</span>
@@ -1593,7 +1926,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#100</span>
+    <span class="rank">#122</span>
     <a class="author" href="https://x.com/beebomco" target="_blank" rel="noopener">@beebomco</a>
     <span class="stats">❤63 · RT2 · 👁1,942</span>
     <span class="date">2026/05/20</span>
@@ -1603,11 +1936,41 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/beebomco/status/2056787253796774197"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/beebomco/status/2056787253796774197"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#123</span>
+    <a class="author" href="https://x.com/kaanakz" target="_blank" rel="noopener">@kaanakz</a>
+    <span class="stats">❤61 · RT4 · 👁12,004</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">🚨初めて Google Gemini Omni ビデオを作成しました 👀
+私の母は仕立て屋なので、彼女が生地を切っているビデオを溶岩に変えない手はありませんよね？
+https://t.co/68NouKCu4J</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/kaanakz/status/2061105776307949858"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/kaanakz/status/2061105776307949858"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="3" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
+    
+    <span class="rank">#124</span>
+    <a class="author" href="https://x.com/hbcoop_" target="_blank" rel="noopener">@hbcoop_</a>
+    <span class="stats">❤61 · RT6 · 👁12,014</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google FlowのGemini Omni Flashを使えば、アイデアを実験・探求する方法はたくさんあります。私はエージェントモードを使って、アップロードした画像から非常にユニークで驚くような都市環境の、いくつかのズームインした視点を要求しました。それは新しいアイデアごとに異なる視点と動画を生成してくれました。それは、私がストーリーをさらに発展させる上で、より多くのアイデアを与えてくれました。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/HBCoop_/status/2059668574684238022"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/HBCoop_/status/2059668574684238022"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#101</span>
+    <span class="rank">#125</span>
     <a class="author" href="https://x.com/mronsase" target="_blank" rel="noopener">@mronsase</a>
     <span class="stats">❤61 · RT65 · 👁14,577</span>
     <span class="date">2026/05/20</span>
@@ -1621,7 +1984,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#102</span>
+    <span class="rank">#126</span>
     <a class="author" href="https://x.com/lexnlin" target="_blank" rel="noopener">@lexnlin</a>
     <span class="stats">❤61 · RT0 · 👁4,254</span>
     <span class="date">2026/05/20</span>
@@ -1635,7 +1998,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#10b981;color:#10b981">注目</span>
     
-    <span class="rank">#103</span>
+    <span class="rank">#127</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤60 · RT7 · 👁3,662</span>
     <span class="date">2026/05/24</span>
@@ -1649,7 +2012,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#104</span>
+    <span class="rank">#128</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
     <span class="stats">❤59 · RT4 · 👁10,653</span>
     <span class="date">2026/05/24</span>
@@ -1663,7 +2026,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#105</span>
+    <span class="rank">#129</span>
     <a class="author" href="https://x.com/jaybisen473370" target="_blank" rel="noopener">@jaybisen473370</a>
     <span class="stats">❤58 · RT13 · 👁607</span>
     <span class="date">2026/05/21</span>
@@ -1677,7 +2040,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#106</span>
+    <span class="rank">#130</span>
     <a class="author" href="https://x.com/goyalshaliniuk" target="_blank" rel="noopener">@goyalshaliniuk</a>
     <span class="stats">❤55 · RT14 · 👁745</span>
     <span class="date">2026/05/21</span>
@@ -1691,7 +2054,35 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#107</span>
+    <span class="rank">#131</span>
+    <a class="author" href="https://x.com/techhalla" target="_blank" rel="noopener">@techhalla</a>
+    <span class="stats">❤54 · RT4 · 👁5,329</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">これはとんでもないプロンプトです。Gemini Omniを使って、The SimsのAI拡張パック動画を作成しましょう👇 https://t.co/mhxVVdaeoZ</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/techhalla/status/2060149099278516717"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/techhalla/status/2060149099278516717"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#132</span>
+    <a class="author" href="https://x.com/oiioii_official" target="_blank" rel="noopener">@oiioii_official</a>
+    <span class="stats">❤54 · RT2 · 👁5,223</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">🚀 新しいモデルがOiiOiiに登場しました。Gemini Omniは、よりスマートで柔軟な作成のためのマルチ入力リファレンスです。Grokは、大作レベルの品質で超リアルなビジュアルを想像します。必要なすべてのモデルがOiiOiiにあります。今すぐOiiOiiでお試しください https://t.co/BbIC9YITC6</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/OiiOii_Official/status/2059199733608952295"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/OiiOii_Official/status/2059199733608952295"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#133</span>
     <a class="author" href="https://x.com/saniaspeaks_" target="_blank" rel="noopener">@saniaspeaks_</a>
     <span class="stats">❤54 · RT0 · 👁2,465</span>
     <span class="date">2026/05/21</span>
@@ -1705,7 +2096,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#108</span>
+    <span class="rank">#134</span>
     <a class="author" href="https://x.com/marvin_x1" target="_blank" rel="noopener">@marvin_x1</a>
     <span class="stats">❤53 · RT2 · 👁545</span>
     <span class="date">2026/05/24</span>
@@ -1719,7 +2110,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#109</span>
+    <span class="rank">#135</span>
     <a class="author" href="https://x.com/aiwithyasir" target="_blank" rel="noopener">@aiwithyasir</a>
     <span class="stats">❤51 · RT22 · 👁5,839</span>
     <span class="date">2026/05/21</span>
@@ -1733,7 +2124,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#110</span>
+    <span class="rank">#136</span>
     <a class="author" href="https://x.com/diptish09" target="_blank" rel="noopener">@diptish09</a>
     <span class="stats">❤51 · RT15 · 👁17,397</span>
     <span class="date">2026/05/20</span>
@@ -1747,7 +2138,21 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#111</span>
+    <span class="rank">#137</span>
+    <a class="author" href="https://x.com/codebypoonam" target="_blank" rel="noopener">@codebypoonam</a>
+    <span class="stats">❤50 · RT6 · 👁8,148</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">すごい…Gemini Omni Flashは本当にすごい。数分で自分だけのAIアバターを作れます。 https://t.co/0nUUomowJ9</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/CodeByPoonam/status/2060992503999025319"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/CodeByPoonam/status/2060992503999025319"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#138</span>
     <a class="author" href="https://x.com/aiwithzoaina" target="_blank" rel="noopener">@aiwithzoaina</a>
     <span class="stats">❤50 · RT36 · 👁19,979</span>
     <span class="date">2026/05/21</span>
@@ -1757,11 +2162,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/AiwithZoaina/status/2057153710849941750"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/AiwithZoaina/status/2057153710849941750"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#112</span>
+    <span class="rank">#139</span>
     <a class="author" href="https://x.com/vraserx" target="_blank" rel="noopener">@vraserx</a>
     <span class="stats">❤50 · RT6 · 👁1,902</span>
     <span class="date">2026/05/20</span>
@@ -1771,11 +2176,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/VraserX/status/2056767490093387920"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/VraserX/status/2056767490093387920"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#140</span>
+    <a class="author" href="https://x.com/giulia_4i" target="_blank" rel="noopener">@giulia_4i</a>
+    <span class="stats">❤49 · RT2 · 👁6,406</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">お手伝いしましょうか？◾🔹▫️ Gemini Omni https://t.co/arp4SWQ8h9</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Giulia_4i/status/2060096875789779151"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Giulia_4i/status/2060096875789779151"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#113</span>
+    <span class="rank">#141</span>
     <a class="author" href="https://x.com/snskritinaruka" target="_blank" rel="noopener">@snskritinaruka</a>
     <span class="stats">❤49 · RT13 · 👁2,567</span>
     <span class="date">2026/05/20</span>
@@ -1785,11 +2204,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/snskritinaruka/status/2057112945038082253"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/snskritinaruka/status/2057112945038082253"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#142</span>
+    <a class="author" href="https://x.com/hbcoop_" target="_blank" rel="noopener">@hbcoop_</a>
+    <span class="stats">❤47 · RT2 · 👁9,912</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">@FlowbyGoogle のGemini Omniで写真ロールに命を吹き込んでいます https://t.co/QY49Sy9ZAs</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/HBCoop_/status/2060030922951458869"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/HBCoop_/status/2060030922951458869"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#114</span>
+    <span class="rank">#143</span>
     <a class="author" href="https://x.com/gumvue" target="_blank" rel="noopener">@gumvue</a>
     <span class="stats">❤47 · RT8 · 👁3,751</span>
     <span class="date">2026/05/23</span>
@@ -1803,7 +2236,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#115</span>
+    <span class="rank">#144</span>
     <a class="author" href="https://x.com/techwithakansha" target="_blank" rel="noopener">@techwithakansha</a>
     <span class="stats">❤47 · RT17 · 👁17,796</span>
     <span class="date">2026/05/20</span>
@@ -1817,7 +2250,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#116</span>
+    <span class="rank">#145</span>
     <a class="author" href="https://x.com/kanojiyaaakash1" target="_blank" rel="noopener">@kanojiyaaakash1</a>
     <span class="stats">❤47 · RT3 · 👁27,064</span>
     <span class="date">2026/05/20</span>
@@ -1831,7 +2264,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#117</span>
+    <span class="rank">#146</span>
     <a class="author" href="https://x.com/techbyarti" target="_blank" rel="noopener">@techbyarti</a>
     <span class="stats">❤46 · RT18 · 👁8,954</span>
     <span class="date">2026/05/21</span>
@@ -1845,7 +2278,21 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#118</span>
+    <span class="rank">#147</span>
+    <a class="author" href="https://x.com/sebatheepan" target="_blank" rel="noopener">@sebatheepan</a>
+    <span class="stats">❤45 · RT5 · 👁2,503</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">捕食者情報ファイルインフォグラフィックス GPT 2.0画像 x Gemini omni flashアニメーション Apexプロファイル - ホホジロザメ 待ち伏せの解剖学 - イリエワニ トラッカーボード - ジャガー 殺害戦略図 - ハヤブサ プロンプトとフル4K画像 ⏬ @imagineart_creo @ImagineArt_X で作成</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/sebatheepan/status/2060378024906817684"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/sebatheepan/status/2060378024906817684"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#148</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
     <span class="stats">❤45 · RT3 · 👁3,425</span>
     <span class="date">2026/05/24</span>
@@ -1859,7 +2306,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#119</span>
+    <span class="rank">#149</span>
     <a class="author" href="https://x.com/ai_for_success" target="_blank" rel="noopener">@ai_for_success</a>
     <span class="stats">❤44 · RT3 · 👁5,448</span>
     <span class="date">2026/05/22</span>
@@ -1873,7 +2320,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#120</span>
+    <span class="rank">#150</span>
     <a class="author" href="https://x.com/dkare1009" target="_blank" rel="noopener">@dkare1009</a>
     <span class="stats">❤44 · RT2 · 👁1,797</span>
     <span class="date">2026/05/21</span>
@@ -1887,7 +2334,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#121</span>
+    <span class="rank">#151</span>
     <a class="author" href="https://x.com/meng_dagg695" target="_blank" rel="noopener">@meng_dagg695</a>
     <span class="stats">❤44 · RT3 · 👁1,278</span>
     <span class="date">2026/05/21</span>
@@ -1901,7 +2348,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#122</span>
+    <span class="rank">#152</span>
     <a class="author" href="https://x.com/lupin_ai_coder" target="_blank" rel="noopener">@lupin_ai_coder</a>
     <span class="stats">❤43 · RT28 · 👁2,057</span>
     <span class="date">2026/05/21</span>
@@ -1915,9 +2362,9 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#123</span>
+    <span class="rank">#153</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤42 · RT1 · 👁3,468</span>
+    <span class="stats">❤42 · RT1 · 👁3,923</span>
     <span class="date">2026/05/25</span>
   </div>
   <div class="post-body">
@@ -1929,7 +2376,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#124</span>
+    <span class="rank">#154</span>
     <a class="author" href="https://x.com/techxutkarsh" target="_blank" rel="noopener">@techxutkarsh</a>
     <span class="stats">❤42 · RT14 · 👁21,428</span>
     <span class="date">2026/05/20</span>
@@ -1943,7 +2390,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#125</span>
+    <span class="rank">#155</span>
     <a class="author" href="https://x.com/zeneca" target="_blank" rel="noopener">@zeneca</a>
     <span class="stats">❤41 · RT3 · 👁3,423</span>
     <span class="date">2026/05/21</span>
@@ -1953,11 +2400,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Zeneca/status/2057401783807570162"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Zeneca/status/2057401783807570162"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#156</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤40 · RT4 · 👁1,944</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">CapCutがGeminiに追加されるのが待ちきれません。リファレンス動画を追加し、車を変更し、複数のシーンから構築するだけでこの動画を作成しました。Gemini Omniは、私が求めるものを常に正確に提供してくれます。 https://t.co/fasz0R9XPK</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2059065081711751205"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2059065081711751205"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="1">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     <span class="badge promo">プロモ注意</span>
-    <span class="rank">#126</span>
+    <span class="rank">#157</span>
     <a class="author" href="https://x.com/muvi_ai" target="_blank" rel="noopener">@muvi_ai</a>
     <span class="stats">❤40 · RT5 · 👁1,497</span>
     <span class="date">2026/05/21</span>
@@ -1967,11 +2428,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/muvi_ai/status/2057252076426764522"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/muvi_ai/status/2057252076426764522"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#158</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤39 · RT3 · 👁3,440</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">最後の漁村 🛶 @GeminiApp の Gemini Omni flash で作成しました https://t.co/dU0PM5QidE</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2060267647942693135"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2060267647942693135"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#127</span>
+    <span class="rank">#159</span>
     <a class="author" href="https://x.com/verge" target="_blank" rel="noopener">@verge</a>
     <span class="stats">❤39 · RT6 · 👁7,308</span>
     <span class="date">2026/05/20</span>
@@ -1985,7 +2460,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#128</span>
+    <span class="rank">#160</span>
     <a class="author" href="https://x.com/doctorwasif" target="_blank" rel="noopener">@doctorwasif</a>
     <span class="stats">❤38 · RT1 · 👁1,361</span>
     <span class="date">2026/05/21</span>
@@ -1999,7 +2474,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#129</span>
+    <span class="rank">#161</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤37 · RT5 · 👁3,614</span>
     <span class="date">2026/05/20</span>
@@ -2009,11 +2484,53 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2056865054130319828"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2056865054130319828"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#162</span>
+    <a class="author" href="https://x.com/sebatheepan" target="_blank" rel="noopener">@sebatheepan</a>
+    <span class="stats">❤36 · RT8 · 👁5,109</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">インフォグラフィックを短いビデオに変換しました。それぞれ簡単なビデオを1つ作成しました。いくつか作成してつなぎ合わせることができます ChatGPTの2枚の画像 x Google Gemini Omni flashビデオアニメーションプロンプトは引用投稿にあります ⏬ https://t.co/5cMwAvxCG8</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/sebatheepan/status/2060310788221378742"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/sebatheepan/status/2060310788221378742"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#163</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤35 · RT1 · 👁1,767</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">シードバンクの従業員 @GeminiApp の Gemini Omni flash を使って作成しました📱 プロンプト ↓ https://t.co/ei3KfCloXx</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2060747850615861760"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2060747850615861760"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#130</span>
+    <span class="rank">#164</span>
+    <a class="author" href="https://x.com/sebatheepan" target="_blank" rel="noopener">@sebatheepan</a>
+    <span class="stats">❤35 · RT2 · 👁1,193</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">GPT2の画像 x Gemini Omni ミュージアムの展示ポスターのインフォグラフィックを、Gemini Omniアニメーションで短いビデオに変換しましょう --オウギワシ --コガシラネズミイルカ - 地球上には10頭未満しか残っていないかもしれません。 --シロナガスクジラ - 地球上でこれまでに生息した最大の動物 --カブトガニ - 4億5千万年前から、今も私たちのビーチを歩いています。 --ヘビを捕食するヘビクイワシ プロンプト + 高解像度4Kポスターは返信欄にあります。⏬ 野生動物とAIが好きならブックマークしてください @imagineart_creo @ImagineArt_X</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/sebatheepan/status/2060648768635101614"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/sebatheepan/status/2060648768635101614"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#165</span>
     <a class="author" href="https://x.com/trendyvers" target="_blank" rel="noopener">@trendyvers</a>
     <span class="stats">❤35 · RT3 · 👁416</span>
     <span class="date">2026/05/23</span>
@@ -2027,7 +2544,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#131</span>
+    <span class="rank">#166</span>
     <a class="author" href="https://x.com/oggii_0" target="_blank" rel="noopener">@oggii_0</a>
     <span class="stats">❤35 · RT0 · 👁1,564</span>
     <span class="date">2026/05/21</span>
@@ -2041,7 +2558,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#132</span>
+    <span class="rank">#167</span>
     <a class="author" href="https://x.com/jsfilmz0412" target="_blank" rel="noopener">@jsfilmz0412</a>
     <span class="stats">❤34 · RT1 · 👁4,175</span>
     <span class="date">2026/05/20</span>
@@ -2055,7 +2572,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#133</span>
+    <span class="rank">#168</span>
     <a class="author" href="https://x.com/movielover93582" target="_blank" rel="noopener">@movielover93582</a>
     <span class="stats">❤33 · RT1 · 👁508</span>
     <span class="date">2026/05/21</span>
@@ -2069,7 +2586,21 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#134</span>
+    <span class="rank">#169</span>
+    <a class="author" href="https://x.com/godofprompt" target="_blank" rel="noopener">@godofprompt</a>
+    <span class="stats">❤32 · RT2 · 👁10,074</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">皆がSeedance 2.0とGemini Omni Flashを並べて比較していますが、彼らは要点を見落としています。確かに、現時点ではOmniはSeedanceほど良くないかもしれませんが、1つの利点があります... https://t.co/Z4dOnnRZjj</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/godofprompt/status/2060983420873027595"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/godofprompt/status/2060983420873027595"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#170</span>
     <a class="author" href="https://x.com/jerrod_lew" target="_blank" rel="noopener">@jerrod_lew</a>
     <span class="stats">❤32 · RT3 · 👁84,043</span>
     <span class="date">2026/05/20</span>
@@ -2079,11 +2610,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/jerrod_lew/status/2056849951897030687"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jerrod_lew/status/2056849951897030687"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#171</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤31 · RT4 · 👁1,285</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniで自分だけのGTAスタイルのゲームビデオを作成できます。これは最近一番楽しんでいるAIビデオモデルです。ビデオ界のナノバナナ！ https://t.co/sQCCLqhqEb</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2058962328389923194"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2058962328389923194"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#135</span>
+    <span class="rank">#172</span>
     <a class="author" href="https://x.com/movielover93582" target="_blank" rel="noopener">@movielover93582</a>
     <span class="stats">❤31 · RT3 · 👁679</span>
     <span class="date">2026/05/20</span>
@@ -2093,13 +2638,114 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/movielover93582/status/2057090298485121109"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/movielover93582/status/2057090298485121109"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#173</span>
+    <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
+    <span class="stats">❤30 · RT1 · 👁1,322</span>
+    <span class="date">2026/06/02</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flashを壊すエピソード2。🔥 簡単なプロンプトから完全に異なる10秒のシーンが4つ：5. LEGOシティの交通、6. 影絵劇の月のショー、7. 水彩画の野原を走る、8. 漫画風の屋上での追跡。これは1つのモデルで、4つのツールではありません。LEGO / 影絵 / 水彩画 / 漫画風のプロンプトはすべて返信欄にドロップするので、コピー→ペーストして自分でテストできます。👇👇</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Dheepanratnam/status/2061467435111162140"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Dheepanratnam/status/2061467435111162140"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#174</span>
+    <a class="author" href="https://x.com/datachaz" target="_blank" rel="noopener">@datachaz</a>
+    <span class="stats">❤30 · RT4 · 👁2,709</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">WOW、この人はGoogle Flowを使って自分の描画キャプチャツールを文字通りバイブレーションコードで作成し、Gemini Omniに写真のような赤い毛糸を依頼して、絶対的な魔法を創造しました 🤯 https://t.co/7VV2bKnzkf</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/DataChaz/status/2059993335776129054"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/DataChaz/status/2059993335776129054"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#175</span>
+    <a class="author" href="https://x.com/zefredai" target="_blank" rel="noopener">@zefredai</a>
+    <span class="stats">❤30 · RT5 · 👁4,013</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni のキャラクターの一貫性をテストするため、20 の異なる歴史的時代を 10 秒のハイパーラプスで強制的に通過させました。結果は正気を失うほどです。顔の同一性は古代エジプトからネオ東京 2099 まで維持されています。その秘訣は？厳密な「ビートに合わせたハードカット」という構造的制約と、非常に具体的な時代の衣装です。以下のスレッドをチェックして、マスタープロンプトをコピー＆ペーストし、独自のキャラクターに置き換えてください。👇 オリジナルコンセプトは @aimikoda 🫶</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ZefredAi/status/2059675787473915934"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ZefredAi/status/2059675787473915934"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#176</span>
+    <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
+    <span class="stats">❤29 · RT3 · 👁705</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">溶けた金の都市のスカイライン形成 Google Gemini Omni プロンプト ⤵️ https://t.co/8b7j70L1Cv</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/MrDasOnX/status/2060647680955830461"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MrDasOnX/status/2060647680955830461"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#177</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤29 · RT4 · 👁1,571</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni を使えば、何時間もかかっていたプロの撮影が、たった 10 秒で、一貫性を失うことなく、1 つのプロンプトで作成できるようになりました。
+プロンプト：バッグを連続的に変化させ（s-1-click）、バッグと一緒に背景色も変化させる（s-1-click）。https://t.co/iqsHvoGsFC</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2060363276987388233"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2060363276987388233"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#136</span>
+    <span class="rank">#178</span>
+    <a class="author" href="https://x.com/jaadasss" target="_blank" rel="noopener">@jaadasss</a>
+    <span class="stats">❤29 · RT0 · 👁2,083</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">自分の静止画と食べ物のテーブルの画像を Gemini に読み込ませたら、こんなのができました。実際に食べていない食べ物を食べているんです 🫢🔥
+Gemini からは 4 つの主要なアップデートがありました 👇
+Gemini Omni は動画を作成し、Flash はエージェントを高速化し、Spark はコンピューターが閉じていても動作し、Ask YouTube はどんな動画でも会話に変えられます 😮</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jaadasss/status/2059828673197506826"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jaadasss/status/2059828673197506826"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#179</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤29 · RT1 · 👁3,195</span>
+    <span class="stats">❤29 · RT0 · 👁2,257</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">帰還兵の庭 🌻 2 年ぶりに帰宅した彼は、荒れ果てた庭を予想していた… これを @GeminiApp で Gemini Omni flash 3.5 を使って作成しました https://t.co/IgiDs9shHm</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059671823462371695"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059671823462371695"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#180</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤29 · RT1 · 👁3,590</span>
     <span class="date">2026/05/26</span>
   </div>
   <div class="post-body">
@@ -2107,11 +2753,47 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059163367844262062"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059163367844262062"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#181</span>
+    <a class="author" href="https://x.com/juliangoldieseo" target="_blank" rel="noopener">@juliangoldieseo</a>
+    <span class="stats">❤29 · RT8 · 👁1,654</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google の新しい AI スタックがどれほどクレイジーか、誰も話していません。
+Project Genie → プロンプトから探索可能な 3D 世界を構築
+Gemini Omni → 話しかけることで動画を編集
+AI Studio Build Mode → 自然な英語からアプリを構築
+Google Stitch → 音声でウェブサイトをデザイン
+Google Pix → 数分でマーケティンググラフィックを作成
+Ask YouTube → 動画を検索し、正確な答えにジャンプ
+これは Google が密かにワークフロー全体を置き換えているということです。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/JulianGoldieSEO/status/2058946547048755274"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/JulianGoldieSEO/status/2058946547048755274"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#137</span>
+    <span class="rank">#182</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤29 · RT2 · 👁1,171</span>
+    <span class="date">2026/05/25</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni 🙌
+プロンプト: Google のロゴが右から左へ消え、「Go」だけが残り、テキストが「Gemini Omni」に拡大する。https://t.co/JqZ5CgC1TV</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2058724289134637132"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2058724289134637132"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#183</span>
     <a class="author" href="https://x.com/im_shahid7" target="_blank" rel="noopener">@im_shahid7</a>
     <span class="stats">❤29 · RT2 · 👁1,182</span>
     <span class="date">2026/05/21</span>
@@ -2121,13 +2803,13 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/im_shahid7/status/2057172439252300012"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/im_shahid7/status/2057172439252300012"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#138</span>
+    <span class="rank">#184</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤28 · RT2 · 👁2,704</span>
+    <span class="stats">❤28 · RT2 · 👁3,071</span>
     <span class="date">2026/05/27</span>
   </div>
   <div class="post-body">
@@ -2135,13 +2817,13 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059314781367275761"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059314781367275761"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#139</span>
+    <span class="rank">#185</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤28 · RT2 · 👁4,536</span>
+    <span class="stats">❤28 · RT2 · 👁5,121</span>
     <span class="date">2026/05/26</span>
   </div>
   <div class="post-body">
@@ -2153,7 +2835,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#140</span>
+    <span class="rank">#186</span>
     <a class="author" href="https://x.com/topviewaihq" target="_blank" rel="noopener">@topviewaihq</a>
     <span class="stats">❤28 · RT3 · 👁1,862</span>
     <span class="date">2026/05/21</span>
@@ -2163,11 +2845,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/TopviewAIhq/status/2057457292136865868"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/TopviewAIhq/status/2057457292136865868"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#141</span>
+    <span class="rank">#187</span>
     <a class="author" href="https://x.com/eddaxm" target="_blank" rel="noopener">@eddaxm</a>
     <span class="stats">❤28 · RT1 · 👁101,471</span>
     <span class="date">2026/05/20</span>
@@ -2177,13 +2859,27 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/eddaxm/status/2056853946329645261"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/eddaxm/status/2056853946329645261"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#188</span>
+    <a class="author" href="https://x.com/jacalulu" target="_blank" rel="noopener">@jacalulu</a>
+    <span class="stats">❤27 · RT1 · 👁1,023</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">先週、Google は Gemini Omni をリリースしました。これは @GeminiApp で直接動画を編集できる素晴らしい新モデルです。これで、私が週末にキャンプ場でゆっくり動いているのを撮影したあのカタツムリ 🐌 が、最も魅力的な姿に変身できるんです 🌈 ...この新モデル、すごく楽しいです 😅</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jacalulu/status/2059421652094738569"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jacalulu/status/2059421652094738569"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#142</span>
+    <span class="rank">#189</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤27 · RT2 · 👁2,637</span>
+    <span class="stats">❤27 · RT2 · 👁2,944</span>
     <span class="date">2026/05/26</span>
   </div>
   <div class="post-body">
@@ -2191,11 +2887,67 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059002993358618766"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059002993358618766"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#190</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤27 · RT4 · 👁1,334</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">タイムズスクエアに無料で広告を出してみませんか？ これらの動画はすべてGemini Omniで編集しました。一貫性が素晴らしいです。 プロンプト：動画内のビルボードを完全に変更し、いくつかの広告は変更しないままにするか、後で新しい広告を追加する。広告はGoogle、Gemini、Gemini Omniに焦点を当てること。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2058938802559746161"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2058938802559746161"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#191</span>
+    <a class="author" href="https://x.com/dylanbishopx" target="_blank" rel="noopener">@dylanbishopx</a>
+    <span class="stats">❤26 · RT2 · 👁3,513</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniはすごい。木星の環境でApple Vision Proを通して自分の手の映像を録画し、Omniに尋ねた。「私の手を宇宙飛行士の手のように見せられますか？ そして、ユーザーインターフェースを地球にいる妻とのFaceTimeビデオにできますか？」 https://t.co/AB9CBWtiBU</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/DylanBishopX/status/2060897121197584775"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/DylanBishopX/status/2060897121197584775"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#192</span>
+    <a class="author" href="https://x.com/giulia_4i" target="_blank" rel="noopener">@giulia_4i</a>
+    <span class="stats">❤26 · RT1 · 👁8,439</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniを使った初めての動画。結果がとても気に入りました😍 🗣️💨🔥 - ああ、今日の夏の暑さは耐えられないほどだ。 - 太陽の下でアイスクリームのように溶けている。 - 涼しい風よ、どうか私を救い、吹き抜けてくれ。 - この扇風機が今の絶対的な親友だ。via Gemini App</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Giulia_4i/status/2059375192368148902"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Giulia_4i/status/2059375192368148902"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#143</span>
+    <span class="rank">#193</span>
+    <a class="author" href="https://x.com/iharnoorsingh" target="_blank" rel="noopener">@iharnoorsingh</a>
+    <span class="stats">❤26 · RT2 · 👁2,938</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniはワイルドだ！ ロボット工学、CCTVカメラなどの分野での応用！ アメリカには1億以上のCCTV設置住宅があり、多くの誤報が発生しているが、これで解決するだろう！ https://t.co/vU9Qrp2ZvG</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/iHarnoorSingh/status/2058993403761725554"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/iHarnoorSingh/status/2058993403761725554"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#194</span>
     <a class="author" href="https://x.com/techcrunch" target="_blank" rel="noopener">@techcrunch</a>
     <span class="stats">❤26 · RT3 · 👁12,801</span>
     <span class="date">2026/05/20</span>
@@ -2209,7 +2961,35 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#144</span>
+    <span class="rank">#195</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤25 · RT2 · 👁1,299</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">夜の図書館員 📚 🎥 : Gemini Omni flash プロンプト ↓ https://t.co/MaPEAsJfe7</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2060739156054348097"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2060739156054348097"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#196</span>
+    <a class="author" href="https://x.com/abhishek" target="_blank" rel="noopener">@abhishek</a>
+    <span class="stats">❤25 · RT2 · 👁5,542</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniによるビデオtoビデオ編集は魔法のようだ。👀 ラップトップの画面から小鳥を救出した。これは@FlowbyGoogleで作成した方法だ。 https://t.co/JYXcKCTCwC</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/abhishek/status/2060642856466034988"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/abhishek/status/2060642856466034988"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#197</span>
     <a class="author" href="https://x.com/kanikabk" target="_blank" rel="noopener">@kanikabk</a>
     <span class="stats">❤25 · RT12 · 👁2,286</span>
     <span class="date">2026/05/20</span>
@@ -2223,7 +3003,35 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#145</span>
+    <span class="rank">#198</span>
+    <a class="author" href="https://x.com/realbigbrainai" target="_blank" rel="noopener">@realbigbrainai</a>
+    <span class="stats">❤24 · RT12 · 👁1,522</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">これがパーソナライズされた学習の姿です：Gemini Omniは、あなたの質問、ペース、レベルに合わせてアニメーションレッスンを作成します。 https://t.co/Y2Vi40tPXx</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/realBigBrainAI/status/2059952958809473332"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/realBigBrainAI/status/2059952958809473332"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#199</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤24 · RT2 · 👁2,936</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">山岳救助犬の最後のシーズン 🐕‍🦺 Gemini AppのGemini Omni flashを使って作成しました https://t.co/mx9nLzaNks</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059643628742750268"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059643628742750268"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#200</span>
     <a class="author" href="https://x.com/philippschi" target="_blank" rel="noopener">@philippschi</a>
     <span class="stats">❤24 · RT2 · 👁3,054</span>
     <span class="date">2026/05/20</span>
@@ -2233,11 +3041,53 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/PhilippSchi/status/2056943814997315898"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/PhilippSchi/status/2056943814997315898"></a></blockquote></div>
   </div>
 </article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#201</span>
+    <a class="author" href="https://x.com/themetav3rse" target="_blank" rel="noopener">@themetav3rse</a>
+    <span class="stats">❤23 · RT18 · 👁4,614</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">動画が証拠として通用しなくなる時代が来ています。Gemini Omni は、現実の映像と見分けがつかないほど説得力のある操作が可能です。(視聴方法): https://t.co/nJpOjl2kgs</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/themetav3rse/status/2061402495952580636"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/themetav3rse/status/2061402495952580636"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#202</span>
+    <a class="author" href="https://x.com/fourtislisting" target="_blank" rel="noopener">@fourtislisting</a>
+    <span class="stats">❤23 · RT15 · 👁7,406</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">⚡Fourtis Express Listing - GeminiAI⚡ @GeminiOmni_Sol Gemini Omni AI ( #GeminiAI ) https://t.co/TBK4VENFoW CA: FigiV3MrpYXsJLbLReM1nfcUpfCmWB7748TQXRMqpump 価格: $0.00000638 | 時価総額: $6,380.47 #新規上場 #アルトコイン #ミームコイン #FourtisNewlisting https://t.co/lcaVJte9Kl</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/fourtislisting/status/2061150729075622139"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/fourtislisting/status/2061150729075622139"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#203</span>
+    <a class="author" href="https://x.com/sainemani1" target="_blank" rel="noopener">@sainemani1</a>
+    <span class="stats">❤23 · RT1 · 👁2,127</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">彼らは個別のモデルから、Gemini Omni という一つのモデルに移行していると思います…彼らが言うように、Gemini Omni はあらゆるものからあらゆるものを作り出せるからです（そして彼らはビデオから始めていますが、それはより多くの出力を生成するようになることを意味します）。これは実際、私の意見ではより良いことです🤔… https://t.co/NPfdHwL3PD</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/SaiNemani1/status/2060750466779316328"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/SaiNemani1/status/2060750466779316328"></a></blockquote></div>
+  </div>
+</article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#146</span>
+    <span class="rank">#204</span>
     <a class="author" href="https://x.com/dheepanratnam" target="_blank" rel="noopener">@dheepanratnam</a>
     <span class="stats">❤23 · RT5 · 👁2,791</span>
     <span class="date">2026/05/22</span>
@@ -2251,7 +3101,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#147</span>
+    <span class="rank">#205</span>
     <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
     <span class="stats">❤23 · RT4 · 👁1,304</span>
     <span class="date">2026/05/21</span>
@@ -2265,7 +3115,35 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#148</span>
+    <span class="rank">#206</span>
+    <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
+    <span class="stats">❤22 · RT2 · 👁533</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">王には玉座など必要なかった！ Google Gemini Omni プロンプト: 月明かりの庭で、冠をかぶり、暗い影のローブをまとった謎めいた擬人化された猫が静かに座っている。庭には枯れた桜が咲き、劇的なノワール照明の下、深いコントラストとムーディーな影が漂う。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/MrDasOnX/status/2061068717937860647"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MrDasOnX/status/2061068717937860647"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#207</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤22 · RT2 · 👁2,639</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">グラスハーモニカ奏者 🪗 🎥 : Gemini Omni フラッシュプロンプト ↓ https://t.co/nSFL8zpuXv</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2061068495098675414"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2061068495098675414"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#208</span>
     <a class="author" href="https://x.com/wesroth" target="_blank" rel="noopener">@wesroth</a>
     <span class="stats">❤22 · RT3 · 👁3,713</span>
     <span class="date">2026/05/22</span>
@@ -2279,7 +3157,49 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#149</span>
+    <span class="rank">#209</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤21 · RT2 · 👁911</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">国勢調査員がやってきた夜 📝 🎥 : Gemini Omni フラッシュプロンプト ↓ https://t.co/1nFBe6La3a</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2061094389926281392"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2061094389926281392"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#210</span>
+    <a class="author" href="https://x.com/datachaz" target="_blank" rel="noopener">@datachaz</a>
+    <span class="stats">❤21 · RT1 · 👁2,238</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">私たちはもう終わりだ。Gemini Omni はこの男性を500万ドルのポケモンカードを持っているかのように見せかけた🤯 https://t.co/3DeS8iNeLC</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/DataChaz/status/2059907257127649783"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/DataChaz/status/2059907257127649783"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#211</span>
+    <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
+    <span class="stats">❤21 · RT2 · 👁681</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">雨の中の輝く幼少期の思い出☔️ Gemini アプリの Gemini Omni で作成 https://t.co/lsDgvWZfhn</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/MrDasOnX/status/2059620519310442844"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MrDasOnX/status/2059620519310442844"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#212</span>
     <a class="author" href="https://x.com/shabnam_774" target="_blank" rel="noopener">@shabnam_774</a>
     <span class="stats">❤21 · RT0 · 👁3,885</span>
     <span class="date">2026/05/20</span>
@@ -2293,7 +3213,49 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#150</span>
+    <span class="rank">#213</span>
+    <a class="author" href="https://x.com/purzbeats" target="_blank" rel="noopener">@purzbeats</a>
+    <span class="stats">❤20 · RT2 · 👁734</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni 「おもちゃが命を宿し、カメラに向かって踊り始める」 https://t.co/kJxmTcvLwH</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/PurzBeats/status/2060405065119117395"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/PurzBeats/status/2060405065119117395"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#214</span>
+    <a class="author" href="https://x.com/jacalulu" target="_blank" rel="noopener">@jacalulu</a>
+    <span class="stats">❤20 · RT1 · 👁1,317</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google I/Oの狂乱の後、ようやくGemini Omniをいじる時間ができたと思ったら、どうやらこれを作ってしまったようです😂週末のキャンプ冒険の後、バナナスラッグ（ナメクジの一種）のことが頭から離れないんです…ごめんなさい、でもこれはこれでありかなって…それから、これ、次の週末のビデオモンタージュのオープニングシーンになる気がしてる🎬</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/jacalulu/status/2059488670739218880"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/jacalulu/status/2059488670739218880"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#215</span>
+    <a class="author" href="https://x.com/harshithlucky3" target="_blank" rel="noopener">@harshithlucky3</a>
+    <span class="stats">❤20 · RT1 · 👁13,909</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flash プロンプト：男性が1秒に1ヶ月ずつ1月から12月までの月名を言う動画。画面の隅に現在の月を表示する。彼が言う月名以外のセリフはなし。背景の場所とシーンは毎月、その月に合わせて変更：1月は冬、2月はバレンタイン、3月は春、4月は雨、5月は花、6月はビーチ、7月は花火、8月はトロピカル、9月は学校/秋、10月はハロウィン、11月は心地よい秋、12月はクリスマス。非常に惜しいが、6月が完全にスキップされ、10月が2回になった</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/HarshithLucky3/status/2059259787444166919"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/HarshithLucky3/status/2059259787444166919"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#216</span>
     <a class="author" href="https://x.com/chromeunboxed" target="_blank" rel="noopener">@chromeunboxed</a>
     <span class="stats">❤20 · RT2 · 👁918</span>
     <span class="date">2026/05/21</span>
@@ -2307,7 +3269,77 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#151</span>
+    <span class="rank">#217</span>
+    <a class="author" href="https://x.com/ai_artworkgen" target="_blank" rel="noopener">@ai_artworkgen</a>
+    <span class="stats">❤19 · RT4 · 👁1,878</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Omniでの追加テスト：→背景から車の除去 →スプレーペイントで「OMNI」と書かれた黒いG.O.A.T.（lol）の追加 →被写体の髪の変更（燃えている状態 vs ずぶ濡れの状態） 信じられない。https://t.co/rk1KJp9Znv</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_artworkgen/status/2061173885811179804"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_artworkgen/status/2061173885811179804"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#218</span>
+    <a class="author" href="https://x.com/patrickassale" target="_blank" rel="noopener">@patrickassale</a>
+    <span class="stats">❤19 · RT2 · 👁1,549</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">「車の窓の外に雨を追加し、ガラスにリアルな雨粒を、背景には雨の雰囲気を表示する。男性と車内は変更しない」Google FlowのGemini Omni https://t.co/xqyTpoW2pO</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/patrickassale/status/2060370345723322528"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/patrickassale/status/2060370345723322528"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#219</span>
+    <a class="author" href="https://x.com/aitrendz_xyz" target="_blank" rel="noopener">@aitrendz_xyz</a>
+    <span class="stats">❤19 · RT1 · 👁6,029</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniのクオリティには本当に驚かされました。AIのおかげで、まさにZach Kingレベルのビデオトリックができるようになりました！動画を撮影し、Omniにアップロードしてプロンプトを入力するだけです。制限なし、創造性全開です。@Google @GoogleDeepMind @GeminiApp、素晴らしい仕事です🤌 インスピレーションをくれた @rourke_heath ありがとう - あなたが新しいトレンドを始めたんですからね haha</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/aitrendz_xyz/status/2060020243804660105"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/aitrendz_xyz/status/2060020243804660105"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#220</span>
+    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
+    <span class="stats">❤18 · RT2 · 👁3,587</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">最後の直筆新聞 📰 Google FolwのこのGemini Omni Flashで作成 https://t.co/YToimR3lr0</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059461797514735779"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059461797514735779"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#221</span>
+    <a class="author" href="https://x.com/timjayas" target="_blank" rel="noopener">@timjayas</a>
+    <span class="stats">❤18 · RT0 · 👁809</span>
+    <span class="date">2026/05/25</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Google Gemini Omniはビデオ編集にとってまったくもって信じられない存在です🤯ほとんどの人は完全に間違った使い方をしていて、ビデオ生成にしか使っていません。しかし、実際にはビデオ編集のために作られており、現時点ではこれに匹敵するモデルはありません。Rourkeが正確にどのように使うべきかをデモンストレーションしているので、見てみてください👇</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/TimJayas/status/2058869882054398025"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/TimJayas/status/2058869882054398025"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#222</span>
     <a class="author" href="https://x.com/wireflowai" target="_blank" rel="noopener">@wireflowai</a>
     <span class="stats">❤18 · RT6 · 👁1,393</span>
     <span class="date">2026/05/22</span>
@@ -2321,7 +3353,21 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#152</span>
+    <span class="rank">#223</span>
+    <a class="author" href="https://x.com/hbcoop_" target="_blank" rel="noopener">@hbcoop_</a>
+    <span class="stats">❤17 · RT2 · 👁1,175</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">おはようございます。朝の散歩にぴったりの美しい日です🌸☀️ Nano Banana 2 -&gt; Gemini Omni: https://t.co/EsaL0PMg8B</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/HBCoop_/status/2059984351467557033"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/HBCoop_/status/2059984351467557033"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#224</span>
     <a class="author" href="https://x.com/nyaiibubu" target="_blank" rel="noopener">@nyaiibubu</a>
     <span class="stats">❤17 · RT2 · 👁2,407</span>
     <span class="date">2026/05/20</span>
@@ -2331,11 +3377,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/NyaiiBubu/status/2056991811877609886"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/NyaiiBubu/status/2056991811877609886"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#153</span>
+    <span class="rank">#225</span>
     <a class="author" href="https://x.com/_vmlops" target="_blank" rel="noopener">@_vmlops</a>
     <span class="stats">❤17 · RT0 · 👁1,056</span>
     <span class="date">2026/05/20</span>
@@ -2345,11 +3391,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/_vmlops/status/2056919617847914524"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/_vmlops/status/2056919617847914524"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#154</span>
+    <span class="rank">#226</span>
     <a class="author" href="https://x.com/jasonbotterill" target="_blank" rel="noopener">@jasonbotterill</a>
     <span class="stats">❤17 · RT2 · 👁864</span>
     <span class="date">2026/05/20</span>
@@ -2359,11 +3405,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/JasonBotterill/status/2056903045674566091"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/JasonBotterill/status/2056903045674566091"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#155</span>
+    <span class="rank">#227</span>
     <a class="author" href="https://x.com/bonsaixbt" target="_blank" rel="noopener">@bonsaixbt</a>
     <span class="stats">❤17 · RT1 · 👁41,985</span>
     <span class="date">2026/05/19</span>
@@ -2389,7 +3435,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#156</span>
+    <span class="rank">#228</span>
     <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
     <span class="stats">❤16 · RT3 · 👁356</span>
     <span class="date">2026/05/22</span>
@@ -2403,7 +3449,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#157</span>
+    <span class="rank">#229</span>
     <a class="author" href="https://x.com/ohhdanqi" target="_blank" rel="noopener">@ohhdanqi</a>
     <span class="stats">❤16 · RT1 · 👁910</span>
     <span class="date">2026/05/22</span>
@@ -2413,11 +3459,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/ohhdanqi/status/2057546972584628305"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ohhdanqi/status/2057546972584628305"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#158</span>
+    <span class="rank">#230</span>
     <a class="author" href="https://x.com/skyesharkie" target="_blank" rel="noopener">@skyesharkie</a>
     <span class="stats">❤16 · RT0 · 👁316</span>
     <span class="date">2026/05/21</span>
@@ -2427,11 +3473,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/SkyeSharkie/status/2057355472798372023"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/SkyeSharkie/status/2057355472798372023"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#159</span>
+    <span class="rank">#231</span>
     <a class="author" href="https://x.com/thesoragirls" target="_blank" rel="noopener">@thesoragirls</a>
     <span class="stats">❤16 · RT0 · 👁1,676</span>
     <span class="date">2026/05/20</span>
@@ -2441,25 +3487,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/thesoragirls/status/2056822497899683870"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/thesoragirls/status/2056822497899683870"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="2" data-promo="0">
+<article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#160</span>
-    <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤15 · RT2 · 👁2,213</span>
-    <span class="date">2026/05/27</span>
+    <span class="rank">#232</span>
+    <a class="author" href="https://x.com/juliangoldieseo" target="_blank" rel="noopener">@juliangoldieseo</a>
+    <span class="stats">❤15 · RT2 · 👁668</span>
+    <span class="date">2026/05/26</span>
   </div>
   <div class="post-body">
-    <p class="post-text post-ja">最後の直筆新聞 📰 Google FolwのこのGemini Omni Flashで作成 https://t.co/YToimR3lr0</p>
-    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2059461797514735779"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2059461797514735779"></a></blockquote></div>
+    <p class="post-text post-ja">Googleが一度に6つのAIツールを投入しました。多くの人はまだAI＝チャットボットだと思っていますが、それは大きな間違いです。何が変わったのかというと：→ Project Genie = テキストから探索可能な3D世界を構築 → Gemini Omni = 最初からやり直す代わりに話すことでビデオを編集 → AI Studio Build Mode = 平易な英語でアプリを構築 → Stitch = 音声でウェブサイトをデザイン → Pix = デザインスキルなしでマーケティンググラフィックを作成 → Ask YouTube = 質問に答えて正確なタイムスタンプにジャンプ 実際の変化とは？Googleはワークフローから摩擦を取り除いています。プログラマー不要。デザイナー不要。エディター不要。欲しいものを説明するだけです。この動画を保存すれば、AIが実際にどこへ向かっているのか理解できるでしょう。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/JulianGoldieSEO/status/2059122353934921746"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/JulianGoldieSEO/status/2059122353934921746"></a></blockquote></div>
   </div>
 </article>
 <article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#161</span>
+    <span class="rank">#233</span>
     <a class="author" href="https://x.com/futurestacked" target="_blank" rel="noopener">@futurestacked</a>
     <span class="stats">❤15 · RT1 · 👁8,396</span>
     <span class="date">2026/05/21</span>
@@ -2473,7 +3519,35 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#162</span>
+    <span class="rank">#234</span>
+    <a class="author" href="https://x.com/geminiomni_sol" target="_blank" rel="noopener">@geminiomni_sol</a>
+    <span class="stats">❤14 · RT2 · 👁450</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">ファンタもコーラも中華漬物も、Gemini Omni AIがあれば何でもできる $GeminiAI https://t.co/fqulmw0Xdf</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/GeminiOmni_Sol/status/2061222686764962022"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/GeminiOmni_Sol/status/2061222686764962022"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#235</span>
+    <a class="author" href="https://x.com/bradmillscan" target="_blank" rel="noopener">@bradmillscan</a>
+    <span class="stats">❤14 · RT0 · 👁3,004</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniに、外部の観察者が驚愕するようなこの状況のビデオを作るよう依頼しました https://t.co/tVqrkcRoxr</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/bradmillscan/status/2061078726285148348"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/bradmillscan/status/2061078726285148348"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#236</span>
     <a class="author" href="https://x.com/abhishek" target="_blank" rel="noopener">@abhishek</a>
     <span class="stats">❤14 · RT0 · 👁1,174</span>
     <span class="date">2026/05/24</span>
@@ -2487,7 +3561,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#163</span>
+    <span class="rank">#237</span>
     <a class="author" href="https://x.com/abhishek" target="_blank" rel="noopener">@abhishek</a>
     <span class="stats">❤14 · RT0 · 👁912</span>
     <span class="date">2026/05/24</span>
@@ -2497,11 +3571,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/abhishek/status/2058499196790145273"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/abhishek/status/2058499196790145273"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#164</span>
+    <span class="rank">#238</span>
     <a class="author" href="https://x.com/riyazmd774" target="_blank" rel="noopener">@riyazmd774</a>
     <span class="stats">❤14 · RT0 · 👁8,291</span>
     <span class="date">2026/05/20</span>
@@ -2515,9 +3589,23 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#165</span>
+    <span class="rank">#239</span>
+    <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
+    <span class="stats">❤13 · RT1 · 👁1,566</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">存在しないターコイズのパンサーカメレオン。それでもなぜか、まるで実物のように感じられます。Gemini Omni Flashで作成📸 https://t.co/p5ExZRv7Cj</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_with_shah/status/2061403989623624181"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_with_shah/status/2061403989623624181"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#240</span>
     <a class="author" href="https://x.com/strength04_x" target="_blank" rel="noopener">@strength04_x</a>
-    <span class="stats">❤13 · RT1 · 👁1,079</span>
+    <span class="stats">❤13 · RT1 · 👁1,214</span>
     <span class="date">2026/05/25</span>
   </div>
   <div class="post-body">
@@ -2525,25 +3613,25 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Strength04_X/status/2058787056764211317"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Strength04_X/status/2058787056764211317"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="2" data-promo="0">
+<article class="post-card" data-tier="1" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#166</span>
-    <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
-    <span class="stats">❤12 · RT1 · 👁177</span>
-    <span class="date">2026/05/27</span>
+    <span class="rank">#241</span>
+    <a class="author" href="https://x.com/hodlreaper" target="_blank" rel="noopener">@hodlreaper</a>
+    <span class="stats">❤12 · RT2 · 👁643</span>
+    <span class="date">2026/05/30</span>
   </div>
   <div class="post-body">
-    <p class="post-text post-ja">雨の中の輝く幼少期の思い出☔️ Gemini アプリの Gemini Omni で作成 https://t.co/lsDgvWZfhn</p>
-    <div class="tweet-embed-slot" data-tweet-url="https://x.com/MrDasOnX/status/2059620519310442844"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MrDasOnX/status/2059620519310442844"></a></blockquote></div>
+    <p class="post-text post-ja">GoogleのGemini Omni Flashは、私が本気だと判断するまでに1枚の写真に6回編集を加えました。その売り文句は会話型編集だったので、読むのをやめてテストを開始しました。まず、固体オブジェクトを透けて見えるようにします。不透明度を下げ、元のフレーム構造のすべてのエッジを無傷に保ち、何も歪みませんでした。次に、誰もが知っている簡単なこと：オブジェクトを交換します。1回で完了。そこで私はさらにハードに、動物を部屋に落とし、それを撫でるために手を伸ばすと、モデルは手を毛皮に溶かす代わりに接触を維持しました。編集4は、ほとんどの人が実際に望むポストプロダクションの動きです。ソファが邪魔だったので、それを取り除きました。空になった床、一致する照明、座っていた場所には何の汚れもありません。そして背景。自分で実行するまで他のテスターのクリップでしか見たことのなかったものをアニメーション化しました。動きました。最後に、水を交換し、表面を再構築しました。これは最も多くのプロンプトが必要でしたが、成功しました。6つのテスト、6回の合格。完璧ではありません。いくつか2回目の指示が必要でしたし、クライアントの仕事で信頼する前に、もっと酷使したいです。しかし、Googleはこれを5月19日のI/Oでリリースしました。そしてすでにこのレベルです。わずか10日前のツールから6つのクリーンな編集。ガイドが必要な場合はお知らせください。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/HodlReaper/status/2060384768659718223"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/HodlReaper/status/2060384768659718223"></a></blockquote></div>
   </div>
 </article>
 <article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#167</span>
+    <span class="rank">#242</span>
     <a class="author" href="https://x.com/s_mohinii" target="_blank" rel="noopener">@s_mohinii</a>
     <span class="stats">❤12 · RT5 · 👁2,764</span>
     <span class="date">2026/05/20</span>
@@ -2557,7 +3645,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#168</span>
+    <span class="rank">#243</span>
     <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
     <span class="stats">❤11 · RT0 · 👁4,894</span>
     <span class="date">2026/05/22</span>
@@ -2571,7 +3659,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#169</span>
+    <span class="rank">#244</span>
     <a class="author" href="https://x.com/nyaiibubu" target="_blank" rel="noopener">@nyaiibubu</a>
     <span class="stats">❤11 · RT2 · 👁335</span>
     <span class="date">2026/05/21</span>
@@ -2585,7 +3673,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#170</span>
+    <span class="rank">#245</span>
     <a class="author" href="https://x.com/mrdasonx" target="_blank" rel="noopener">@mrdasonx</a>
     <span class="stats">❤11 · RT2 · 👁396</span>
     <span class="date">2026/05/21</span>
@@ -2595,11 +3683,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/MrDasOnX/status/2057122059491401848"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/MrDasOnX/status/2057122059491401848"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#171</span>
+    <span class="rank">#246</span>
     <a class="author" href="https://x.com/shramankar" target="_blank" rel="noopener">@shramankar</a>
     <span class="stats">❤11 · RT3 · 👁3,343</span>
     <span class="date">2026/05/20</span>
@@ -2609,11 +3697,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/ShramanKar/status/2056833691163455689"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ShramanKar/status/2056833691163455689"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#172</span>
+    <span class="rank">#247</span>
     <a class="author" href="https://x.com/rengle820" target="_blank" rel="noopener">@rengle820</a>
     <span class="stats">❤11 · RT0 · 👁1,519</span>
     <span class="date">2026/05/20</span>
@@ -2623,13 +3711,41 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/Rengle820/status/2056800886396010890"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Rengle820/status/2056800886396010890"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#173</span>
+    <span class="rank">#248</span>
+    <a class="author" href="https://x.com/mack1510019" target="_blank" rel="noopener">@mack1510019</a>
+    <span class="stats">❤10 · RT1 · 👁137</span>
+    <span class="date">2026/06/02</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flash：会話を通じて動画を編集する📌複数のターンで動画を洗練させる：元のシーンの繋がりを失うことなく、環境、アングル、スタイル、さらには特定の詳細を変更できます📌スタイル、モーション、エフェクトを適用する：入力参照を使用するか、自然言語で説明するだけで、視覚的な言語を定義します。Omniは入力参照をブレンドして、まとまりのあるクリップを作成します▶️ #AI #Gemini #Google https://t.co/58vmfDJBbk</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/Mack1510019/status/2061501100965208172"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/Mack1510019/status/2061501100965208172"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#249</span>
+    <a class="author" href="https://x.com/colindougherty" target="_blank" rel="noopener">@colindougherty</a>
+    <span class="stats">❤10 · RT2 · 👁1,718</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">「これを30秒でやった。ビデオを作ったんだ。」@futurecommerce の共同創設者である@philwinkleは、I/OでのGoogle Flowの新しいGemini OmniモデルによるCPGデモについて語っています。「誰かが座って20種類のシーンを作成し、それを組み合わせるようなものではありませんでした。」広告作成の手作業が、まさに消え去ったのです。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/colindougherty/status/2060806198274695445"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/colindougherty/status/2060806198274695445"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#250</span>
     <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
-    <span class="stats">❤10 · RT0 · 👁817</span>
+    <span class="stats">❤10 · RT0 · 👁958</span>
     <span class="date">2026/05/26</span>
   </div>
   <div class="post-body">
@@ -2641,7 +3757,7 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#174</span>
+    <span class="rank">#251</span>
     <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
     <span class="stats">❤10 · RT0 · 👁747</span>
     <span class="date">2026/05/23</span>
@@ -2651,11 +3767,11 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_with_shah/status/2058123464259555801"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_with_shah/status/2058123464259555801"></a></blockquote></div>
   </div>
 </article>
-<article class="post-card" data-tier="1" data-promo="0">
+<article class="post-card" data-tier="2" data-promo="0">
   <div class="post-head">
-    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
     
-    <span class="rank">#175</span>
+    <span class="rank">#252</span>
     <a class="author" href="https://x.com/mehulfanawala" target="_blank" rel="noopener">@mehulfanawala</a>
     <span class="stats">❤10 · RT0 · 👁578</span>
     <span class="date">2026/05/20</span>
@@ -2669,7 +3785,147 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-head">
     <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
     
-    <span class="rank">#176</span>
+    <span class="rank">#253</span>
+    <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
+    <span class="stats">❤9 · RT0 · 👁1,282</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">POV：朝のコーヒーがドラゴンのポータルを開いた瞬間。一口飲んだだけなのに、大混乱に。Gemini Omniはワイルドだ。🔥 https://t.co/h6lNVyHoae</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_with_shah/status/2060676795045687367"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_with_shah/status/2060676795045687367"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#254</span>
+    <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
+    <span class="stats">❤9 · RT0 · 👁3,176</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">最高のアドベンチャーは、たった一つの奇妙な発見から始まる✨そして突然、世界は想像以上に広くなる。画像はGPT Image 2で作成、動画はGemini Omni Flashで作成💗 https://t.co/AnaxoDxHew</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_with_shah/status/2060325520361816422"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_with_shah/status/2060325520361816422"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#255</span>
+    <a class="author" href="https://x.com/steren" target="_blank" rel="noopener">@steren</a>
+    <span class="stats">❤9 · RT0 · 👁772</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniで新しいサングラスを探しています。どれを買うべきでしょうか？ https://t.co/ri815RqB8b</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/steren/status/2059037664691863989"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/steren/status/2059037664691863989"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#256</span>
+    <a class="author" href="https://x.com/prometheanaix" target="_blank" rel="noopener">@prometheanaix</a>
+    <span class="stats">❤9 · RT1 · 👁757</span>
+    <span class="date">2026/05/26</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">🔥 Google Gemini Omniの使い方 #GeminiOmni #GoogleGemini #Google https://t.co/FLHWKH3BJJ Googleの新しいAI動画ツールは未来のように見えますが、本当のところはGemini Omniが実際にどこで機能し、どこで劣っているのか、そしてなぜクリエイターがまだ注目すべきなのかです。さらに、今日試せる10のプロンプトと10のユースケースも紹介します。Google Gemini Omniの動画は、シンプルだが強力なアイデアに基づいて設計されています。それは、動画作成がソフトウェアを操作するよりも、創造的な会話をするように感じられるべきだということです。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/PrometheanAIX/status/2058993963852615747"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/PrometheanAIX/status/2058993963852615747"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#257</span>
+    <a class="author" href="https://x.com/wolfriccardo" target="_blank" rel="noopener">@wolfriccardo</a>
+    <span class="stats">❤8 · RT1 · 👁327</span>
+    <span class="date">2026/05/29</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">このようなゲームをプレイしてみたいですか？参照画像を使用してGemini Omniで作成しました。</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/WolfRiccardo/status/2060373606647865513"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/WolfRiccardo/status/2060373606647865513"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#258</span>
+    <a class="author" href="https://x.com/nullbeaconx" target="_blank" rel="noopener">@nullbeaconx</a>
+    <span class="stats">❤7 · RT3 · 👁228</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">After Effectsで何時間も。何千ものキーフレーム。今日では？1つのプロンプトで。Gemini Omni Flashは、アニメーション、トランジション、ビジュアル、サウンドエフェクトを含むこのダイナミックなタイポグラフィ動画全体を生成しました。コンテンツ作成の未来は、ほとんどの人が気づいているよりも速く到来しています。プロンプトはコメント欄に👇🚀 #Gemini #Omni #AI #AIVideo</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/NullBeaconX/status/2061027088136556871"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/NullBeaconX/status/2061027088136556871"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#259</span>
+    <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
+    <span class="stats">❤7 · RT1 · 👁1,578</span>
+    <span class="date">2026/05/28</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">夢が飛び立った瞬間に恐怖は消え去る✈️ 画像はGPT Image 2で作成し、動画はGemini omni flashで作成しました。 https://t.co/CTFBIjRs3G</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_with_shah/status/2059954647486370230"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_with_shah/status/2059954647486370230"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#260</span>
+    <a class="author" href="https://x.com/kolboai" target="_blank" rel="noopener">@kolboai</a>
+    <span class="stats">❤6 · RT2 · 👁209</span>
+    <span class="date">2026/06/01</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omni Flash動画モデルがhttps://t.co/G6b9fZuWvsで利用可能になりました！これはその核心においてマルチモーダルです。テキスト、画像、動画クリップ、またはあなたの声を与えれば、すべてを理解します。 https://t.co/EPozXvdJPM</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/KolboAI/status/2061439805574037875"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/KolboAI/status/2061439805574037875"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="2" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#38bdf8;color:#38bdf8">実使用</span>
+    
+    <span class="rank">#261</span>
+    <a class="author" href="https://x.com/ai_with_shah" target="_blank" rel="noopener">@ai_with_shah</a>
+    <span class="stats">❤6 · RT0 · 👁1,110</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">毎年1月にはモチベーショナルスピーカーになります。2月にはソファと一体化します😭 画像はGPT Image 2で作成し、動画はGemini Omni Flashで作成しました📸 https://t.co/FM7fOndEnV</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/ai_with_shah/status/2061047116542116025"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/ai_with_shah/status/2061047116542116025"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#262</span>
+    <a class="author" href="https://x.com/smasithick" target="_blank" rel="noopener">@smasithick</a>
+    <span class="stats">❤6 · RT0 · 👁759</span>
+    <span class="date">2026/05/27</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">Gemini Omniで10秒で20都市 https://t.co/6pYkKS7fEL</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/smasithick/status/2059450442829144346"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/smasithick/status/2059450442829144346"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#263</span>
     <a class="author" href="https://x.com/tildeaio" target="_blank" rel="noopener">@tildeaio</a>
     <span class="stats">❤5 · RT0 · 👁815</span>
     <span class="date">2026/05/27</span>
@@ -2677,6 +3933,34 @@ Muvi VideoのOmni Flash無制限アクセスは、5月末まで年間Ultra＆Bus
   <div class="post-body">
     <p class="post-text post-ja">Google の5月19日の Gemini Omni の展開により、AI 動画が Gemini、Flow、YouTube Shorts に統合されます。この変化により、動画生成はソーシャルな作成レイヤーとなり、クリップの品質だけでなく、来歴やクリエイターのコントロールも重要になります。情報源: https://t.co/WvnP5Ulp0m https://t.co/qT5E6Vsx6F</p>
     <div class="tweet-embed-slot" data-tweet-url="https://x.com/tildeaio/status/2059485640430166187"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/tildeaio/status/2059485640430166187"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#264</span>
+    <a class="author" href="https://x.com/vibecastingapp" target="_blank" rel="noopener">@vibecastingapp</a>
+    <span class="stats">❤0 · RT0 · 👁50</span>
+    <span class="date">2026/05/31</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">8/10 - Gemini Omniの動画編集がバイラル化 クリエイターは、かつて専門のソフトウェアと手作業が必要だったオブジェクトの交換やシーンレベルの調整を、簡単なプロンプトを使って行っています。 https://t.co/AzP0GOV8O2</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/vibecastingapp/status/2060836248403546212"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/vibecastingapp/status/2060836248403546212"></a></blockquote></div>
+  </div>
+</article>
+<article class="post-card" data-tier="1" data-promo="0">
+  <div class="post-head">
+    <span class="badge tier" style="border-color:#94a3b8;color:#94a3b8">参考</span>
+    
+    <span class="rank">#265</span>
+    <a class="author" href="https://x.com/38twelvedaily" target="_blank" rel="noopener">@38twelvedaily</a>
+    <span class="stats">❤0 · RT0 · 👁22</span>
+    <span class="date">2026/05/30</span>
+  </div>
+  <div class="post-body">
+    <p class="post-text post-ja">出典: https://t.co/gG9L6oRwPC — 「Gemini OmniとGemini 3.5の動作デモ11選」 https://t.co/1ULMWvhQ0j</p>
+    <div class="tweet-embed-slot" data-tweet-url="https://x.com/38twelveDaily/status/2060598535125430582"><blockquote class="twitter-tweet" data-dnt="true" data-lang="en"><a href="https://x.com/38twelveDaily/status/2060598535125430582"></a></blockquote></div>
   </div>
 </article></div>
   </section>
