@@ -95,7 +95,18 @@ jobs:
       - name: Build Gemini tracker page
         run: python build_gemini.py
 
+      # 朝のみ Apify 収集（約 $0.04/回）。夕方 run では build のみ。
+      - name: Collect Gemini Omni overseas posts
+        if: >-
+          (github.event_name == 'schedule' && github.event.schedule == '0 17 * * *')
+          || (github.event_name == 'workflow_dispatch' && (github.event.inputs.mode || 'full') == 'full')
+        env:
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+        run: python scripts/collect_gemini_omni_overseas.py
+
       - name: Build Gemini Omni page
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python build_gemini_omni.py
 
       - name: Build home page

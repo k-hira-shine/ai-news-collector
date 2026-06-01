@@ -210,6 +210,26 @@ def _latest_post_topic() -> dict:
     return {}
 
 
+def _latest_gemini_omni_topic() -> dict:
+    """gemini_omni 海外実使用ポストのいいね1位を返す"""
+    path = os.path.join(DATA_DIR, "gemini_omni_overseas_hands_on_video.json")
+    if not os.path.isfile(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as f:
+            posts = json.load(f).get("posts") or []
+        if not posts:
+            return {}
+        top = max(posts, key=lambda p: int(p.get("likes") or 0))
+        text = (top.get("text_ja") or top.get("text") or "").strip()
+        author = top.get("author") or "?"
+        if text:
+            return {"text": f"@{author}: {text[:55]}", "url": "gemini-omni.html"}
+    except Exception:
+        pass
+    return {}
+
+
 def _latest_gemini_topic() -> dict:
     """gemini/ から最新の available_now 1件を返す"""
     files = sorted(glob(os.path.join(DATA_DIR, "gemini", "*.jsonl")), reverse=True)
@@ -310,6 +330,13 @@ PAGES = [
         "desc": "Gemini公式のRSS・Release Notes・Xを毎日チェック。今使える機能と近日公開を日本語で整理",
         "color": "#4285f4",
         "topic_fn": _latest_gemini_topic,
+    },
+    {
+        "file": "gemini-omni.html",
+        "title": "🎬 Gemini Omni",
+        "desc": "Gemini Omni の概要と海外の実使用 X ポスト（動画付き）を日本語訳付きで収集",
+        "color": "#818cf8",
+        "topic_fn": _latest_gemini_omni_topic,
     },
 ]
 
