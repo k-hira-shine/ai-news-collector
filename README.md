@@ -59,6 +59,13 @@ python main.py --dry-run
 - **スコアリング**: `scoring.freshness_bonus` で鮮度ボーナスを調整
 - **カテゴリ**: `analysis.categories` で分類カテゴリを変更可能
 
+## プロジェクト構成
+
+ルートに `.py` が多いのは GitHub Actions が `python main.py` のように **ファイル名直指定** しているためです（フォルダ移動は workflow 修正が必要）。
+
+- **ファイル地図（何がどこにあるか）:** [.cursor/docs/project-layout.md](.cursor/docs/project-layout.md)
+- **手動・診断スクリプトの置き場:** [scripts/README.md](scripts/README.md)
+
 ## データ
 
 ```

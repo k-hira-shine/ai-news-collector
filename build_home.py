@@ -470,16 +470,17 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
     .row-updated {{ margin-left: 0; }}
   }}
 {INCIDENT_CSS}
+.incident-mount-wrap {{ margin: 1rem auto 1.5rem; }}
 </style>
 </head>
 <body>
 {render_nav("home.html")}
-{INCIDENT_BODY_HTML}
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
   <div class="site-updated">Generated: {now_str}</div>
 </header>
+{INCIDENT_BODY_HTML}
 <div class="container">
   <div>
     <div class="section-label">機能一覧</div>
