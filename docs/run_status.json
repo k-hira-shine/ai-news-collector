@@ -1,11 +1,11 @@
 {
   "overall": "warning",
-  "updated_at": "2026-06-04 03:44 JST",
+  "updated_at": "2026-06-04 05:05 JST",
   "workflows": {
     "collect": {
       "status": "warning",
       "ts": "2026-06-04T03:33:20.838728+09:00",
-      "time": "2026-06-04 03:33 JST",
+      "time": "2026-06-04 05:05 JST",
       "error": "X 収集が停止中（上流 API 障害）",
       "items_collected": 1,
       "top_articles": 0
@@ -45,11 +45,11 @@
     "severity": "critical",
     "workflow": "collect",
     "title": "X 収集が停止中（上流 API 障害）",
-    "situation": "2026-06-04 朝便の収集で X ツイートが実質 0 件（収集 1 件は空レコード）。上流 API が応答していません。",
-    "cause": "xquik の X 検索 API が 502 → 503 x_api_unavailable を返しています。Apify Actor は SUCCEEDED ですがデータは取れません。Cookie/設定の問題ではありません。",
+    "situation": "2026-06-04 朝便の収集で X ツイートが実質 0 件。 直近の能動プローブ（from:OpenAI・3件）も 0 件でした。",
+    "cause": "xquik の X 検索 API が 502 → 503 x_api_unavailable を返しています。 Apify Actor は SUCCEEDED ですがデータは取れません。Cookie/設定の問題ではありません。",
     "impact": "・新しい図解 HTML/PNG は生成されません\n・「最新図解」リンクが前回便のまま残ります\n・ニュース分析の更新が止まります\n・復旧後: probe_x_upstream.py で OK 確認 → collect full 再実行",
     "technical": "x_api_unavailable, http_502, zero-output-run",
-    "diagram_latest": "2026-06-03-evening",
-    "updated_at": "2026-06-04 03:44 JST"
+    "diagram_latest": "2026-06-03-morning",
+    "updated_at": "2026-06-04 05:05 JST"
   }
 }
