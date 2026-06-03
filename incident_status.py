@@ -285,18 +285,6 @@ INCIDENT_CSS = """
 
 INCIDENT_BODY_HTML = """
 <div id="incidentMount" class="incident-mount-wrap" style="display:none" aria-live="polite"></div>
-<div id="runStatusBanner" style="display:none;position:fixed;bottom:16px;right:16px;z-index:8888;max-width:340px;">
-  <div id="runStatusInner" style="border-radius:10px;padding:10px 14px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;" onclick="document.getElementById('runStatusBanner').style.display='none'">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span id="runStatusIcon" style="font-size:1.1rem;"></span>
-      <div>
-        <div id="runStatusTitle" style="font-weight:700;"></div>
-        <div id="runStatusDetail" style="opacity:0.8;font-size:0.78rem;margin-top:2px;"></div>
-      </div>
-      <span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
-    </div>
-  </div>
-</div>
 <script>
 (function() {
   function esc(s) {
@@ -348,27 +336,6 @@ INCIDENT_BODY_HTML = """
           mount.style.display = 'block';
         }
       }
-      var banner = document.getElementById('runStatusBanner');
-      if (!banner || data.overall === 'success') return;
-      var inner = document.getElementById('runStatusInner');
-      var icon = document.getElementById('runStatusIcon');
-      var title = document.getElementById('runStatusTitle');
-      var detail = document.getElementById('runStatusDetail');
-      if (data.overall === 'error') {
-        inner.style.background = '#2d1515';
-        inner.style.border = '1px solid #f87171';
-        inner.style.color = '#fecaca';
-        icon.textContent = '🚨';
-        title.textContent = (inc && inc.title) ? inc.title : 'エラーが発生しています';
-      } else {
-        inner.style.background = '#2d2510';
-        inner.style.border = '1px solid #fbbf24';
-        inner.style.color = '#fef3c7';
-        icon.textContent = '⚠️';
-        title.textContent = (inc && inc.title) ? inc.title : '警告があります';
-      }
-      detail.textContent = (inc && inc.situation) ? inc.situation.slice(0, 200) : data.updated_at;
-      banner.style.display = 'block';
     });
 })();
 </script>
@@ -385,6 +352,15 @@ _STYLE_BLOCK_RE = re.compile(r"<style[^>]*>.*?</style>", re.DOTALL | re.IGNORECA
 _INCIDENT_CSS_MARKER = ".incident-mount-wrap {"
 _LEAKED_CSS_BLOCK_RE = re.compile(
     r"\n\.incident-mount-wrap \{.*?(?=\n<div id=\"incidentMount\")",
+    re.DOTALL,
+)
+_RUN_STATUS_BANNER_HTML_RE = re.compile(
+    r'<div id="runStatusBanner"[^>]*>\s*<div id="runStatusInner"[^>]*>.*?</div>\s*</div>\s*',
+    re.DOTALL,
+)
+_RUN_STATUS_BANNER_JS_RE = re.compile(
+    r"\s*(?:var|const) banner = document\.getElementById\('runStatusBanner'\);"
+    r".*?banner\.style\.display = 'block';\n",
     re.DOTALL,
 )
 
@@ -411,6 +387,27 @@ def find_leaked_incident_css_files(docs_dir: str | None = None) -> list[str]:
     return leaked
 
 
+def remove_run_status_banner_from_docs(docs_dir: str | None = None) -> int:
+    """右下固定トースト runStatusBanner を docs/*.html から除去"""
+    docs_dir = docs_dir or os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
+    fixed = 0
+    for fname in os.listdir(docs_dir):
+        if not fname.endswith(".html"):
+            continue
+        path = os.path.join(docs_dir, fname)
+        with open(path, encoding="utf-8") as f:
+            content = f.read()
+        if 'id="runStatusBanner"' not in content:
+            continue
+        new_content, n1 = _RUN_STATUS_BANNER_HTML_RE.subn("", content)
+        new_content, n2 = _RUN_STATUS_BANNER_JS_RE.subn("", new_content)
+        if n1 or n2:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            fixed += 1
+    return fixed
+
+
 def repair_leaked_incident_css_in_docs(docs_dir: str | None = None) -> int:
     """<style> 外に漏れた incident 用 CSS テキストを除去"""
     docs_dir = docs_dir or os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
@@ -435,6 +432,7 @@ def sync_status_scripts_in_docs(docs_dir: str | None = None) -> int:
     """docs/*.html に incident クライアントを未挿入なら </body> 直前に追加"""
     docs_dir = docs_dir or os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
     repair_leaked_incident_css_in_docs(docs_dir)
+    remove_run_status_banner_from_docs(docs_dir)
     marker = 'id="incidentMount"'
     updated_count = 0
     for fname in os.listdir(docs_dir):

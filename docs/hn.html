@@ -4371,15 +4371,7 @@ document.querySelectorAll('.date-tab').forEach(tab => {
 
 <div id="incidentMount" class="incident-mount-wrap" style="display:none" aria-live="polite"></div>
 
-<div id="runStatusBanner" style="display:none;position:fixed;bottom:16px;right:16px;z-index:8888;max-width:340px;">
-  <div id="runStatusInner" style="border-radius:10px;padding:10px 14px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;" onclick="document.getElementById('runStatusBanner').style.display='none'">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span id="runStatusIcon" style="font-size:1.1rem;"></span>
-      <div>
-        <div id="runStatusTitle" style="font-weight:700;"></div>
-        <div id="runStatusDetail" style="opacity:0.8;font-size:0.78rem;margin-top:2px;"></div>
-      </div>
-      <span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
+<span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
     </div>
   </div>
 </div>
@@ -4433,29 +4425,7 @@ document.querySelectorAll('.date-tab').forEach(tab => {
           mount.innerHTML = cardHtml(inc);
           mount.style.display = 'block';
         }
-      }
-      var banner = document.getElementById('runStatusBanner');
-      if (!banner || data.overall === 'success') return;
-      var inner = document.getElementById('runStatusInner');
-      var icon = document.getElementById('runStatusIcon');
-      var title = document.getElementById('runStatusTitle');
-      var detail = document.getElementById('runStatusDetail');
-      if (data.overall === 'error') {
-        inner.style.background = '#2d1515';
-        inner.style.border = '1px solid #f87171';
-        inner.style.color = '#fecaca';
-        icon.textContent = '🚨';
-        title.textContent = (inc && inc.title) ? inc.title : 'エラーが発生しています';
-      } else {
-        inner.style.background = '#2d2510';
-        inner.style.border = '1px solid #fbbf24';
-        inner.style.color = '#fef3c7';
-        icon.textContent = '⚠️';
-        title.textContent = (inc && inc.title) ? inc.title : '警告があります';
-      }
-      detail.textContent = (inc && inc.situation) ? inc.situation.slice(0, 200) : data.updated_at;
-      banner.style.display = 'block';
-    });
+      }    });
 })();
 </script>
 

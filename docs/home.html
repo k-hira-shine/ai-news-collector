@@ -108,22 +108,10 @@
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
-  <div class="site-updated">Generated: 2026-06-04 05:38 JST</div>
+  <div class="site-updated">Generated: 2026-06-04 05:41 JST</div>
 </header>
 
 <div id="incidentMount" class="incident-mount-wrap" style="display:none" aria-live="polite"></div>
-<div id="runStatusBanner" style="display:none;position:fixed;bottom:16px;right:16px;z-index:8888;max-width:340px;">
-  <div id="runStatusInner" style="border-radius:10px;padding:10px 14px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;" onclick="document.getElementById('runStatusBanner').style.display='none'">
-    <div style="display:flex;align-items:center;gap:8px;">
-      <span id="runStatusIcon" style="font-size:1.1rem;"></span>
-      <div>
-        <div id="runStatusTitle" style="font-weight:700;"></div>
-        <div id="runStatusDetail" style="opacity:0.8;font-size:0.78rem;margin-top:2px;"></div>
-      </div>
-      <span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
-    </div>
-  </div>
-</div>
 <script>
 (function() {
   function esc(s) {
@@ -175,27 +163,6 @@
           mount.style.display = 'block';
         }
       }
-      var banner = document.getElementById('runStatusBanner');
-      if (!banner || data.overall === 'success') return;
-      var inner = document.getElementById('runStatusInner');
-      var icon = document.getElementById('runStatusIcon');
-      var title = document.getElementById('runStatusTitle');
-      var detail = document.getElementById('runStatusDetail');
-      if (data.overall === 'error') {
-        inner.style.background = '#2d1515';
-        inner.style.border = '1px solid #f87171';
-        inner.style.color = '#fecaca';
-        icon.textContent = '🚨';
-        title.textContent = (inc && inc.title) ? inc.title : 'エラーが発生しています';
-      } else {
-        inner.style.background = '#2d2510';
-        inner.style.border = '1px solid #fbbf24';
-        inner.style.color = '#fef3c7';
-        icon.textContent = '⚠️';
-        title.textContent = (inc && inc.title) ? inc.title : '警告があります';
-      }
-      detail.textContent = (inc && inc.situation) ? inc.situation.slice(0, 200) : data.updated_at;
-      banner.style.display = 'block';
     });
 })();
 </script>
@@ -314,6 +281,10 @@
   <div class="log-section">
     <div class="section-label" style="margin-bottom:10px">🕐 最近の更新</div>
     <div class="log-row">
+  <span class="log-date">06/04 05:38</span>
+  <span class="log-sha">0a3b158</span>
+  <span class="log-subject">docs: プロジェクト地図を追加し Home の障害カードをタイトル下へ</span>
+</div><div class="log-row">
   <span class="log-date">06/04 05:34</span>
   <span class="log-sha">c696140</span>
   <span class="log-subject">fix: 障害表示 CSS の本文漏れを修正し再発防止を追加</span>
@@ -341,10 +312,6 @@
   <span class="log-date">06/03 03:29</span>
   <span class="log-sha">e32f4b4</span>
   <span class="log-subject">buzz: 2026-06-02_1829</span>
-</div><div class="log-row">
-  <span class="log-date">06/02 04:32</span>
-  <span class="log-sha">9ba9646</span>
-  <span class="log-subject">money: 2026-06-01_1932 (merge attempt 1)</span>
 </div>
   </div>
 </div>
