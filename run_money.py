@@ -210,7 +210,7 @@ def main() -> None:
         else:
             run_status = "success"
             run_error = ""
-        write_run_status("money", run_status, error=run_error,
+        write_run_status("money", run_status, error=run_error, config=config,
                          extra={"money_collected": collected_money, "sns_collected": collected_sns,
                                 "money_analyzed": analyzed_money, "sns_analyzed": analyzed_sns,
                                 "mode": mode, "cost_usd": round(apify_cost, 4)})

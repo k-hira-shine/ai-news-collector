@@ -15,6 +15,11 @@ def _stats(**overrides) -> dict:
             "must_follow_configured": 11,
             "must_follow_items": 20,
             "must_follow_error": False,
+            "x_valid_count": 25,
+            "invalid_items_stripped": 0,
+            "apify_failure_hints": [],
+            "search_failure_detail": "",
+            "must_follow_failure_detail": "",
         },
         "analysis_meta": {
             "top_articles_count": 5,
@@ -24,6 +29,7 @@ def _stats(**overrides) -> dict:
             "save_error": "",
         },
         "diagram_meta": {
+            "enabled": True,
             "attempted": False,
             "html_saved": False,
             "png_generated": False,
@@ -125,13 +131,38 @@ class DetectAnomaliesTests(unittest.TestCase):
         self.assertEqual(matched[0]["severity"], "warning")
         self.assertIn("Playwright timeout", matched[0]["detail"])
 
-    def test_diagram_not_attempted_no_alert(self) -> None:
-        # top_articles が空で diagram ブロックをスキップしたケース
+    def test_diagram_skipped_zero_articles_is_critical(self) -> None:
         alerts = detect_anomalies(
-            _stats(diagram_meta={"attempted": False, "png_generated": False}),
+            _stats(
+                analysis_meta={"top_articles_count": 0},
+                diagram_meta={"attempted": False, "png_generated": False},
+            ),
             _cfg(),
         )
-        self.assertFalse(any("図解" in a["title"] for a in alerts))
+        titles = [a["title"] for a in alerts]
+        self.assertTrue(any("図解が生成されなかった" in t for t in titles))
+        self.assertTrue(any("top_articles が 0" in t for t in titles))
+
+    def test_search_zero_with_hints_is_critical(self) -> None:
+        alerts = detect_anomalies(
+            _stats(
+                x_meta={
+                    "search_total": 0,
+                    "search_error_count": 0,
+                    "apify_failure_hints": ["x_api_unavailable", "http_502"],
+                    "search_failure_detail": "search 0件 / 検出: x_api_unavailable",
+                },
+            ),
+            _cfg(),
+        )
+        self.assertTrue(any("0 件" in a["title"] or "全滅" in a["title"] for a in alerts))
+
+    def test_x_valid_zero_is_critical(self) -> None:
+        alerts = detect_anomalies(
+            _stats(x_meta={"x_valid_count": 0, "invalid_items_stripped": 1}),
+            _cfg(),
+        )
+        self.assertTrue(any("実質 0 件" in a["title"] for a in alerts))
 
     def test_diagram_png_success_no_alert(self) -> None:
         alerts = detect_anomalies(

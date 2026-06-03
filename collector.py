@@ -50,6 +50,10 @@ def _default_x_runtime_meta() -> dict:
         "must_follow_error": False,
         "apify_cost_usd": 0.0,
         "apify_runs": 0,
+        "invalid_items_stripped": 0,
+        "apify_failure_hints": [],
+        "search_failure_detail": "",
+        "must_follow_failure_detail": "",
     }
 
 
@@ -73,19 +77,93 @@ _AUTH_ERROR_PATTERN = re.compile(
 )
 
 
-def _run_log_has_auth_error(client, run_id: str) -> bool:
-    """Fetch Apify run log and check for auth-related failure keywords.
-
-    Returns False on any fetch error (conservative: don't falsely warn).
-    """
+def _fetch_apify_run_log(client, run_id: str) -> str:
     try:
-        log_text = client.run(run_id).log().get()
+        return client.run(run_id).log().get() or ""
     except Exception as e:
         logger.debug("Failed to fetch Apify run log %s: %s", run_id, e)
-        return False
-    if not log_text:
-        return False
-    return bool(_AUTH_ERROR_PATTERN.search(log_text))
+        return ""
+
+
+def _inspect_apify_run_log(log_text: str) -> dict:
+    """Apify Actor ログから障害の種類と要約を抽出（原因の記録用）"""
+    hints: list[str] = []
+    if "x_api_unavailable" in log_text:
+        hints.append("x_api_unavailable")
+    if "zero-output-run" in log_text:
+        hints.append("zero-output-run")
+    if "HTTP 502" in log_text or "Error 502" in log_text:
+        hints.append("http_502")
+    if "HTTP 503" in log_text and "x_api_unavailable" not in hints:
+        hints.append("http_503")
+    if _AUTH_ERROR_PATTERN.search(log_text):
+        hints.append("auth_error")
+
+    sample = ""
+    for line in log_text.splitlines():
+        if "retry-exhausted" in line or "fetch-error" in line or "zero-output-run" in line:
+            sample = line.strip()[:280]
+            break
+
+    return {
+        "hints": hints,
+        "fetch_errors": log_text.count("fetch-error"),
+        "sample_error": sample,
+        "auth_error": "auth_error" in hints,
+    }
+
+
+def _merge_failure_hints(meta: dict, hints: list[str]) -> None:
+    merged = list(meta.get("apify_failure_hints") or [])
+    for h in hints:
+        if h not in merged:
+            merged.append(h)
+    meta["apify_failure_hints"] = merged
+
+
+def _format_failure_detail(inspection: dict, *, label: str) -> str:
+    hints = inspection.get("hints") or []
+    parts = [label]
+    if hints:
+        parts.append("検出: " + ", ".join(hints))
+    if inspection.get("fetch_errors"):
+        parts.append(f"fetch-error ×{inspection['fetch_errors']}")
+    if inspection.get("sample_error"):
+        parts.append("ログ抜粋: " + inspection["sample_error"])
+    return " / ".join(parts)
+
+
+def _note_zero_batch_failure(
+    meta: dict,
+    *,
+    batch: str,
+    configured: int,
+    raw_count: int,
+    inspection: dict,
+) -> None:
+    """SUCCEEDED だが 0 件のとき、原因を meta に残し search_error_count を立てる"""
+    detail = _format_failure_detail(inspection, label=f"{batch} 0件")
+    if batch == "search":
+        meta["search_failure_detail"] = detail
+        if raw_count == 0 and configured > 0:
+            meta["search_error_count"] = max(meta.get("search_error_count", 0), configured)
+    else:
+        meta["must_follow_failure_detail"] = detail
+        if raw_count == 0 and configured > 0:
+            meta["must_follow_error"] = True
+    _merge_failure_hints(meta, inspection.get("hints") or [])
+    logger.warning("Apify %s: SUCCEEDED but %d items — %s", batch, raw_count, detail)
+
+
+def _run_log_has_auth_error(client, run_id: str) -> bool:
+    inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id))
+    return inspection["auth_error"]
+
+
+def _is_valid_tweet_item(item: dict) -> bool:
+    url = (item.get("url") or "").strip()
+    text = (item.get("content") or item.get("title") or "").strip()
+    return url.startswith("http") and len(text) >= 5
 
 
 def _should_warn_x_cookies(meta: dict) -> bool:
@@ -168,15 +246,27 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             else:
                 count = 0
                 for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
-                    items.append(_normalize_tweet(tweet))
-                    count += 1
+                    item = _normalize_tweet(tweet)
+                    if _is_valid_tweet_item(item):
+                        items.append(item)
+                        count += 1
                 meta["search_total"] += count
                 logger.info("X search batch (%d queries): %d tweets", len(search_queries), count)
+                inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id)) if run_id else {}
+                _merge_failure_hints(meta, inspection.get("hints") or [])
+                if count == 0 and inspection.get("hints"):
+                    _note_zero_batch_failure(
+                        meta,
+                        batch="search",
+                        configured=len(search_queries),
+                        raw_count=0,
+                        inspection=inspection,
+                    )
                 # SUCCEEDED でも結果が極端に少なく auth エラーがある場合は実質失敗扱い
                 few_results = count < len(search_queries)
-                if (count == 0 or few_results) and run_id and _run_log_has_auth_error(client, run_id):
+                if (count == 0 or few_results) and inspection.get("auth_error"):
                     meta["auth_error_count"] += 1
-                    meta["search_error_count"] += len(search_queries)
+                    meta["search_error_count"] = max(meta.get("search_error_count", 0), len(search_queries))
                     logger.warning(
                         "X search batch: SUCCEEDED but %d results with auth error in log"
                         " — treating as cookie failure",
@@ -218,6 +308,8 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                 mf_count = 0
                 for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
                     item = _normalize_tweet(tweet)
+                    if not _is_valid_tweet_item(item):
+                        continue
                     author_lower = item["author"].lower()
                     acct_cfg = priority_map.get(author_lower, {})
                     item["is_must_follow"] = True
@@ -227,9 +319,19 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     mf_count += 1
                 meta["must_follow_items"] = mf_count
                 logger.info("X must-follow batch (%d profiles): %d tweets", len(handles), mf_count)
+                inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id)) if run_id else {}
+                _merge_failure_hints(meta, inspection.get("hints") or [])
+                if mf_count == 0 and inspection.get("hints"):
+                    _note_zero_batch_failure(
+                        meta,
+                        batch="must-follow",
+                        configured=len(handles),
+                        raw_count=0,
+                        inspection=inspection,
+                    )
                 # SUCCEEDED でも結果が少なく auth エラーがある場合は must_follow_error を立てる
                 few_results = mf_count < len(handles)
-                if (mf_count == 0 or few_results) and run_id and _run_log_has_auth_error(client, run_id):
+                if (mf_count == 0 or few_results) and inspection.get("auth_error"):
                     meta["auth_error_count"] += 1
                     meta["must_follow_error"] = True
                     logger.warning(
@@ -241,6 +343,13 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             meta["must_follow_error"] = True
             logger.error("X must-follow batch failed: %s", e)
 
+    before_valid = len(items)
+    items = [it for it in items if _is_valid_tweet_item(it)]
+    stripped = before_valid - len(items)
+    if stripped:
+        meta["invalid_items_stripped"] = meta.get("invalid_items_stripped", 0) + stripped
+        logger.warning("Stripped %d invalid/empty tweet records from Apify dataset", stripped)
+
     min_eng = x_cfg.get("min_engagement", 0)
     if min_eng > 0:
         before = len(items)
@@ -250,6 +359,17 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             or (it["engagement"].get("likes", 0) + it["engagement"].get("retweets", 0)) >= min_eng
         ]
         logger.info("X engagement filter (>=%d): %d → %d", min_eng, before, len(items))
+
+    meta["x_valid_count"] = len(items)
+    if meta.get("search_total", 0) == 0 and meta.get("search_queries_configured", 0) > 0:
+        if not meta.get("search_failure_detail") and meta.get("apify_failure_hints"):
+            meta["search_failure_detail"] = (
+                "search 0件 / 検出: " + ", ".join(meta["apify_failure_hints"])
+            )
+            meta["search_error_count"] = max(
+                meta.get("search_error_count", 0),
+                meta["search_queries_configured"],
+            )
 
     if meta["apify_runs"] > 0:
         usage_now = _get_apify_usage(token)

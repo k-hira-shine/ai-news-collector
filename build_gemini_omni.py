@@ -482,6 +482,9 @@ def build() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     build_gemini_omni_page()
     sync_nav_in_docs()
+    from incident_status import sync_status_scripts_in_docs
+
+    sync_status_scripts_in_docs()
 
 
 if __name__ == "__main__":

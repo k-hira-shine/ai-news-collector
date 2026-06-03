@@ -36,30 +36,58 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
     search_errors = x_meta.get("search_error_count", 0)
     auth_errors = x_meta.get("auth_error_count", 0)
     search_total = x_meta.get("search_total", 0)
+    x_valid_count = x_meta.get("x_valid_count")
     must_follow_items = x_meta.get("must_follow_items", 0)
     must_follow_configured = x_meta.get("must_follow_configured", 0)
     apify_runs = stats.get("apify_runs", 0)
     has_apify = x_meta.get("has_apify", False)
     has_cookies = x_meta.get("has_cookies", False)
+    search_failure_detail = (x_meta.get("search_failure_detail") or "").strip()
+    must_follow_failure_detail = (x_meta.get("must_follow_failure_detail") or "").strip()
+    apify_hints = x_meta.get("apify_failure_hints") or []
+    invalid_stripped = x_meta.get("invalid_items_stripped", 0)
 
-    # 検索クエリが全滅 (Actor API 変更 / 入力バリデーション エラーの典型)
+    def _append_search_alert(severity: str, title: str, base_detail: str) -> None:
+        detail = base_detail
+        if search_failure_detail:
+            detail += f"\n原因: {search_failure_detail}"
+        elif apify_hints:
+            detail += f"\n検出: {', '.join(apify_hints)}"
+        alerts.append({"severity": severity, "title": title, "detail": detail})
+
+    # 検索クエリが全滅 (Actor API 変更 / 入力バリデーション / x_api_unavailable 等)
     if has_apify and search_configured > 0 and search_errors >= search_configured:
-        alerts.append({
-            "severity": "critical",
-            "title": "X 検索クエリが全滅",
-            "detail": (
+        _append_search_alert(
+            "critical",
+            "X 検索クエリが全滅",
+            (
                 f"{search_errors}/{search_configured} クエリが失敗。"
-                "Apify Actor の入力バリデーションエラー（scrapeMode 改名など）または "
-                "Cookie 失効の可能性。\n"
-                "→ `gh run view <RUN_ID> --log | grep 'X search'` で原因確認。"
+                "Apify Actor の入力バリデーション、Cookie 失効、上流 API 障害の可能性。\n"
+                "→ `gh run view <RUN_ID> --log | grep -E 'X search|x_api_unavailable'`"
             ),
-        })
+        )
     elif has_apify and search_configured > 0 and search_errors > 0:
-        alerts.append({
-            "severity": "warning",
-            "title": f"X 検索で {search_errors} クエリが失敗",
-            "detail": f"{search_errors}/{search_configured} クエリがエラー。部分的劣化。",
-        })
+        _append_search_alert(
+            "warning",
+            f"X 検索で {search_errors} クエリが失敗",
+            f"{search_errors}/{search_configured} クエリがエラー。部分的劣化。",
+        )
+    # SUCCEEDED だが search_error_count が立たない旧経路: 0 件のみ
+    elif (
+        has_apify
+        and search_configured > 0
+        and search_total == 0
+        and search_errors == 0
+        and (search_failure_detail or apify_hints)
+    ):
+        _append_search_alert(
+            "critical",
+            "X 検索が 0 件（Actor は成功終了）",
+            (
+                f"設定 {search_configured} クエリに対し取得 0 件。"
+                "ログに x_api_unavailable / 502 等があると上流障害の可能性。"
+            ),
+        )
 
     # Cookie 認証エラー
     if auth_errors > 0:
@@ -96,16 +124,53 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             ),
         })
 
+    # 空レコードのみ・フィルタ後に実質 0 件
+    if has_apify and apify_runs > 0 and x_valid_count is not None and x_valid_count == 0:
+        detail = "Apify は起動したが有効ツイートが 0 件。図解・分析がスキップされます。"
+        if invalid_stripped:
+            detail += f"\n空/不正レコード {invalid_stripped} 件を除外済み。"
+        if search_failure_detail or must_follow_failure_detail:
+            detail += "\n" + " / ".join(
+                d for d in (search_failure_detail, must_follow_failure_detail) if d
+            )
+        alerts.append({
+            "severity": "critical",
+            "title": "X 収集結果が実質 0 件",
+            "detail": detail,
+        })
+    elif invalid_stripped > 0:
+        alerts.append({
+            "severity": "warning",
+            "title": f"空/不正ツイート {invalid_stripped} 件を除外",
+            "detail": "Apify が空レコードを返した可能性。上流 API 障害時に発生しやすい。",
+        })
+
     # 必須アカウント収集が完全失敗
     if must_follow_configured > 0 and x_meta.get("must_follow_error"):
+        detail = "timeline batch がエラー終了、または 0 件。Cookie か Actor 側の問題。"
+        if must_follow_failure_detail:
+            detail += f"\n原因: {must_follow_failure_detail}"
         alerts.append({
             "severity": "critical",
             "title": "必須アカウントのタイムライン取得が失敗",
-            "detail": "timeline batch がエラー終了。Cookie か Actor 側の問題。",
+            "detail": detail,
+        })
+    elif (
+        has_apify
+        and must_follow_configured > 0
+        and must_follow_items == 0
+        and must_follow_failure_detail
+        and not x_meta.get("must_follow_error")
+    ):
+        alerts.append({
+            "severity": "warning",
+            "title": "必須アカウントのタイムラインが 0 件",
+            "detail": must_follow_failure_detail,
         })
 
-    # ── Analyzer 関連（Gemini フォールバック使用 = 品質劣化の可能性）────
+    # ── Analyzer 関連 ─────────────────────────────────────────────────
     analysis_meta = stats.get("analysis_meta") or {}
+    top_count = analysis_meta.get("top_articles_count", 0)
     fallback_stages = analysis_meta.get("fallback_used_stages") or []
     if fallback_stages:
         alerts.append({
@@ -124,6 +189,16 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             "detail": f"data/analysis/ への書き込み失敗。ディスク or パーミッションを確認。\n{err}",
         })
 
+    if top_count == 0 and has_apify and apify_runs > 0:
+        alerts.append({
+            "severity": "critical",
+            "title": "分析の top_articles が 0 件",
+            "detail": (
+                "Gemini 分析後に掲載記事がなく、図解 HTML/PNG は生成されません。"
+                "直前の X 収集失敗・空レコードを先に確認してください。"
+            ),
+        })
+
     # ── Diagram 生成関連 ─────────────────────────────────────────────
     diagram_meta = stats.get("diagram_meta") or {}
     if diagram_meta.get("attempted") and not diagram_meta.get("png_generated"):
@@ -134,6 +209,21 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             "severity": "warning",
             "title": "図解 PNG 生成失敗",
             "detail": detail,
+        })
+    elif (
+        diagram_meta.get("enabled", True)
+        and not diagram_meta.get("attempted")
+        and top_count == 0
+        and has_apify
+        and apify_runs > 0
+    ):
+        alerts.append({
+            "severity": "critical",
+            "title": "図解が生成されなかった（記事 0 件）",
+            "detail": (
+                "diagram は top_articles 必須のためスキップ。"
+                "最新図解リンクが前回のまま残ります。"
+            ),
         })
 
     # ── コスト関連（既存の budget 警告とは別に、急増を検知）────────────

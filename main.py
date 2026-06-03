@@ -25,9 +25,25 @@ def main() -> None:
     logger = setup_logging()
     logger.info("=== AI News Collector started (%s %s) ===", today_str(), time_slot())
     t0 = time.time()
-
     config = load_config()
 
+    try:
+        _run_main(args, config, logger, t0)
+    except Exception as e:
+        logger.exception("Collect pipeline failed: %s", e)
+        from incident_status import build_workflow_incident
+
+        write_run_status(
+            "collect",
+            "error",
+            error=str(e)[:300],
+            incident=build_workflow_incident("collect", status="error", error=str(e)[:300]),
+            config=config,
+        )
+        raise
+
+
+def _run_main(args, config: dict, logger, t0: float) -> None:
     # ── Step 1: Collect ───────────────────────────────────────────────
     x_meta: dict = {}
     if args.analyze_only:
@@ -67,6 +83,17 @@ def main() -> None:
 
     if args.dry_run:
         logger.info("Dry run — skipping analysis and notification")
+        log_status = "warning" if anomalies else "success"
+        error_msg = "; ".join(a["title"] for a in anomalies) if anomalies else ""
+        write_run_status(
+            "collect",
+            log_status,
+            error=error_msg,
+            extra={"items_collected": stats["total"], "mode": "dry-run"},
+            stats=stats,
+            config=config,
+            clear_incident_on_success=True,
+        )
         return
 
     # ── Step 2: Analyze ───────────────────────────────────────────────
@@ -162,6 +189,11 @@ def main() -> None:
         output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "index.html")
         generate_dashboard(output)
         logger.info("Dashboard generated → %s", output)
+        from incident_status import sync_status_scripts_in_docs
+
+        n = sync_status_scripts_in_docs()
+        if n:
+            logger.info("Injected incident client into %d docs/*.html", n)
     except Exception as e:
         logger.error("Dashboard generation failed: %s", e)
 
@@ -279,11 +311,27 @@ def main() -> None:
             "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0),
             "diagram_png": diagram_meta.get("png_generated", False),
             "anomalies": len(anomalies),
+            "x_valid_count": x_meta.get("x_valid_count"),
+            "invalid_stripped": x_meta.get("invalid_items_stripped", 0),
+            "apify_hints": ",".join(x_meta.get("apify_failure_hints") or []),
+            "search_failure": (x_meta.get("search_failure_detail") or "")[:300],
+            "must_follow_failure": (x_meta.get("must_follow_failure_detail") or "")[:300],
         },
     )
-    write_run_status("collect", log_status, error=error_msg,
-                     extra={"items_collected": stats["total"],
-                            "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0)})
+    write_run_status(
+        "collect",
+        log_status,
+        error=error_msg,
+        extra={
+            "items_collected": stats["total"],
+            "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0),
+            "apify_hints": ",".join(x_meta.get("apify_failure_hints") or []),
+            "search_failure": (x_meta.get("search_failure_detail") or "")[:300],
+        },
+        stats=stats,
+        config=config,
+        clear_incident_on_success=True,
+    )
 
     if anomalies:
         logger.warning("⚠️ 健全性アラート %d 件", len(anomalies))

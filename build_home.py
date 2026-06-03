@@ -11,6 +11,7 @@ from html import escape
 from zoneinfo import ZoneInfo
 
 from site_nav import NAV_CSS, render_nav
+from utils import STATUS_BANNER_HTML
 
 logger = logging.getLogger("ai-news.build_home")
 
@@ -347,7 +348,6 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
     git_logs = _get_git_log()
     diagram = _get_latest_diagram()
-
     # ── 機能リスト（1行1機能、3行構成）──
     rows_html = ""
     for page in PAGES:
@@ -491,6 +491,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   </div>
 </div>
 <footer>AI News Collector — 自動収集・分析パイプライン</footer>
+{STATUS_BANNER_HTML}
 </body>
 </html>"""
 
