@@ -177,7 +177,7 @@ def _purge_old_logs(log_dir: str, keep_days: int = 30) -> None:
             logging.getLogger("ai-news").info("Purged old log: %s", fname)
 
 
-from incident_status import INCIDENT_CLIENT_HTML as STATUS_BANNER_HTML  # noqa: E402
+from incident_status import INCIDENT_CLIENT_HTML as STATUS_BANNER_HTML  # noqa: E402  # re-export
 
 
 def write_run_status(

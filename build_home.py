@@ -11,7 +11,7 @@ from html import escape
 from zoneinfo import ZoneInfo
 
 from site_nav import NAV_CSS, render_nav
-from utils import STATUS_BANNER_HTML
+from incident_status import INCIDENT_BODY_HTML, INCIDENT_CSS
 
 logger = logging.getLogger("ai-news.build_home")
 
@@ -469,10 +469,12 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
     .site-title {{ font-size: 1.3rem; }}
     .row-updated {{ margin-left: 0; }}
   }}
+{INCIDENT_CSS}
 </style>
 </head>
 <body>
 {render_nav("home.html")}
+{INCIDENT_BODY_HTML}
 <header>
   <div class="site-title">🤖 AI News Collector</div>
   <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
@@ -491,7 +493,6 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
   </div>
 </div>
 <footer>AI News Collector — 自動収集・分析パイプライン</footer>
-{STATUS_BANNER_HTML}
 </body>
 </html>"""
 

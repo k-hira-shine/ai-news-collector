@@ -7,7 +7,8 @@ from datetime import datetime, timedelta, timezone
 from glob import glob
 from html import escape
 
-from utils import data_dir, STATUS_BANNER_HTML
+from incident_status import INCIDENT_BODY_HTML, INCIDENT_CSS
+from utils import data_dir
 from site_nav import NAV_CSS, render_nav
 
 logger = logging.getLogger("ai-news.dashboard")
@@ -95,8 +96,6 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
 def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | None = None) -> str:
     JST = timezone(timedelta(hours=9))
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
-    STATUS_BANNER = STATUS_BANNER_HTML
-
     diagrams = diagrams or []
     hn_items = _load_hn_today()
     if not latest:
@@ -201,10 +200,12 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   .history-chart {{ height: 70px; }}
   .history-bar .label {{ font-size: 0.6rem; }}
 }}
+{INCIDENT_CSS}
 </style>
 </head>
 <body>
 {render_nav("index.html")}
+{INCIDENT_BODY_HTML}
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
@@ -213,7 +214,6 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </header>
 {body}
 </div>
-{STATUS_BANNER}
 </body>
 </html>"""
 
@@ -663,7 +663,6 @@ def generate_strategy_page(output_path: str) -> None:
 def _render_strategy_html(latest: dict | None, all_analyses: list[dict] | None = None) -> str:
     JST = timezone(timedelta(hours=9))
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
-    STATUS_BANNER = STATUS_BANNER_HTML
     all_analyses = all_analyses or []
 
     if not latest:
@@ -766,10 +765,12 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   .trend-topic {{ font-size: 0.93rem; }}
   .trend-desc {{ font-size: 0.85rem; }}
 }}
+{INCIDENT_CSS}
 </style>
 </head>
 <body>
 {render_nav("strategy.html")}
+{INCIDENT_BODY_HTML}
 <div class="container">
 <header>
   <h1>🎯 AI 施策提案</h1>
@@ -793,7 +794,6 @@ document.querySelectorAll('.selector-item').forEach(function(el) {{
   }});
 }});
 </script>
-{STATUS_BANNER}
 </body>
 </html>"""
 

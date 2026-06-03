@@ -1,4 +1,11 @@
-"""収集障害の状況・原因・影響を pages 用 HTML / run_status.json に載せる"""
+"""収集障害の状況・原因・影響を pages 用 HTML / run_status.json に載せる
+
+組み込みルール（再発防止: .cursor/docs/incident-display-css-leak.md）:
+- INCIDENT_CSS → 必ず既存の <style> ブロック内（<head>）
+- INCIDENT_BODY_HTML → ナビ直後など body 内（マウント + JS のみ）
+- STATUS_BANNER_HTML / INCIDENT_CLIENT_HTML → </body> 直前への一括挿入用（<style> 付き）
+- INCIDENT_CSS を body 末尾や footer 後にそのまま連結しない
+"""
 
 from __future__ import annotations
 
@@ -276,12 +283,8 @@ INCIDENT_CSS = """
 .incident-meta { font-size: 0.75rem; color: var(--muted, #94a3b8); margin: 0.35rem 0 0; }
 """
 
-INCIDENT_CLIENT_HTML = (
-    INCIDENT_CSS
-    + """
+INCIDENT_BODY_HTML = """
 <div id="incidentMount" class="incident-mount-wrap" style="display:none" aria-live="polite"></div>
-"""
-    + """
 <div id="runStatusBanner" style="display:none;position:fixed;bottom:16px;right:16px;z-index:8888;max-width:340px;">
   <div id="runStatusInner" style="border-radius:10px;padding:10px 14px;font-size:0.82rem;line-height:1.5;box-shadow:0 4px 16px rgba(0,0,0,0.4);cursor:pointer;" onclick="document.getElementById('runStatusBanner').style.display='none'">
     <div style="display:flex;align-items:center;gap:8px;">
@@ -370,12 +373,68 @@ INCIDENT_CLIENT_HTML = (
 })();
 </script>
 """
+
+INCIDENT_CLIENT_HTML = (
+    "<style>\n" + INCIDENT_CSS.strip() + "\n</style>\n" + INCIDENT_BODY_HTML.strip() + "\n"
 )
+
+# utils 互換
+STATUS_BANNER_HTML = INCIDENT_CLIENT_HTML
+
+_STYLE_BLOCK_RE = re.compile(r"<style[^>]*>.*?</style>", re.DOTALL | re.IGNORECASE)
+_INCIDENT_CSS_MARKER = ".incident-mount-wrap {"
+_LEAKED_CSS_BLOCK_RE = re.compile(
+    r"\n\.incident-mount-wrap \{.*?(?=\n<div id=\"incidentMount\")",
+    re.DOTALL,
+)
+
+
+def _html_without_style_blocks(content: str) -> str:
+    return _STYLE_BLOCK_RE.sub("", content)
+
+
+def _incident_css_outside_style(content: str) -> bool:
+    return _INCIDENT_CSS_MARKER in _html_without_style_blocks(content)
+
+
+def find_leaked_incident_css_files(docs_dir: str | None = None) -> list[str]:
+    """<style> 外に漏れた incident CSS がある HTML のファイル名一覧"""
+    docs_dir = docs_dir or os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
+    leaked: list[str] = []
+    for fname in os.listdir(docs_dir):
+        if not fname.endswith(".html"):
+            continue
+        path = os.path.join(docs_dir, fname)
+        with open(path, encoding="utf-8") as f:
+            if _incident_css_outside_style(f.read()):
+                leaked.append(fname)
+    return leaked
+
+
+def repair_leaked_incident_css_in_docs(docs_dir: str | None = None) -> int:
+    """<style> 外に漏れた incident 用 CSS テキストを除去"""
+    docs_dir = docs_dir or os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
+    fixed = 0
+    for fname in os.listdir(docs_dir):
+        if not fname.endswith(".html"):
+            continue
+        path = os.path.join(docs_dir, fname)
+        with open(path, encoding="utf-8") as f:
+            content = f.read()
+        if not _incident_css_outside_style(content):
+            continue
+        new_content, n = _LEAKED_CSS_BLOCK_RE.subn("\n", content)
+        if n:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(new_content)
+            fixed += 1
+    return fixed
 
 
 def sync_status_scripts_in_docs(docs_dir: str | None = None) -> int:
     """docs/*.html に incident クライアントを未挿入なら </body> 直前に追加"""
     docs_dir = docs_dir or os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs")
+    repair_leaked_incident_css_in_docs(docs_dir)
     marker = 'id="incidentMount"'
     updated_count = 0
     for fname in os.listdir(docs_dir):

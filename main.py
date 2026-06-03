@@ -189,8 +189,9 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "index.html")
         generate_dashboard(output)
         logger.info("Dashboard generated → %s", output)
-        from incident_status import sync_status_scripts_in_docs
+        from incident_status import repair_leaked_incident_css_in_docs, sync_status_scripts_in_docs
 
+        repair_leaked_incident_css_in_docs()
         n = sync_status_scripts_in_docs()
         if n:
             logger.info("Injected incident client into %d docs/*.html", n)
