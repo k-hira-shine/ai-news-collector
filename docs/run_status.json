@@ -1,14 +1,16 @@
 {
   "overall": "warning",
-  "updated_at": "2026-06-04 05:05 JST",
+  "updated_at": "2026-06-04 17:40 JST",
   "workflows": {
     "collect": {
       "status": "warning",
-      "ts": "2026-06-04T03:33:20.838728+09:00",
-      "time": "2026-06-04 05:05 JST",
-      "error": "X 収集が停止中（上流 API 障害）",
-      "items_collected": 1,
-      "top_articles": 0
+      "ts": "2026-06-04T17:40:14.091878+09:00",
+      "time": "2026-06-04 17:40 JST",
+      "error": "Apify 月間予算 80% 到達",
+      "items_collected": 267,
+      "top_articles": 10,
+      "apify_hints": "",
+      "search_failure": ""
     },
     "money": {
       "status": "success",
@@ -41,15 +43,15 @@
     }
   },
   "incident": {
-    "active": true,
-    "severity": "critical",
+    "active": "true",
+    "severity": "warning",
+    "title": "収集パイプラインに警告",
+    "situation": "健全性アラート 1 件。収集 267 件 / top_articles 10 件。",
+    "cause": "Apify 月間予算 80% 到達 — 通算 $42.30 / $45（残り $2.70）",
+    "impact": "一部の更新・品質が劣化している可能性があります。下記の状況・原因を確認してください。",
+    "technical": "",
+    "diagram_latest": "2026-06-04-evening",
     "workflow": "collect",
-    "title": "X 収集が停止中（上流 API 障害）",
-    "situation": "2026-06-04 朝便の収集で X ツイートが実質 0 件。 直近の能動プローブ（from:OpenAI・3件）も 0 件でした。",
-    "cause": "xquik の X 検索 API が 502 → 503 x_api_unavailable を返しています。 Apify Actor は SUCCEEDED ですがデータは取れません。Cookie/設定の問題ではありません。",
-    "impact": "・新しい図解 HTML/PNG は生成されません\n・「最新図解」リンクが前回便のまま残ります\n・ニュース分析の更新が止まります\n・復旧後: probe_x_upstream.py で OK 確認 → collect full 再実行",
-    "technical": "x_api_unavailable, http_502, zero-output-run",
-    "diagram_latest": "2026-06-03-morning",
-    "updated_at": "2026-06-04 05:05 JST"
+    "updated_at": "2026-06-04 17:40 JST"
   }
 }
