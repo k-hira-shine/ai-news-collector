@@ -391,9 +391,6 @@ class DiscordNotifier:
             if cycle_total:
                 apify_line += f" | 通算 ${cycle_total:.2f} / ${budget:.0f} (残り ${remaining:.2f})"
             parts.append(apify_line)
-            threshold = stats.get("apify_warning_threshold", 0.8)
-            if cycle_total and cycle_total >= budget * threshold:
-                parts.append(f"⚠️ Apify 残高が {(1 - threshold) * 100:.0f}% を切りました！")
         if stats.get("elapsed_sec"):
             parts.append(f"処理時間: {stats['elapsed_sec']:.0f}秒")
 

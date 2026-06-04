@@ -83,9 +83,9 @@ class DetectAnomaliesTests(unittest.TestCase):
         alerts = detect_anomalies(_stats(x_meta={"must_follow_error": True}), _cfg())
         self.assertTrue(any(a["severity"] == "critical" and "タイムライン" in a["title"] for a in alerts))
 
-    def test_budget_80pct_is_warning(self) -> None:
+    def test_budget_80pct_not_in_operational_alerts(self) -> None:
         alerts = detect_anomalies(_stats(apify_cycle_total_usd=24.0), _cfg())
-        self.assertTrue(any("予算" in a["title"] for a in alerts))
+        self.assertFalse(any("予算" in a["title"] for a in alerts))
 
     def test_alerts_disabled_returns_empty(self) -> None:
         alerts = detect_anomalies(

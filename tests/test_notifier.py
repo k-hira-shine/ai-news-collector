@@ -28,14 +28,15 @@ class StatsEmbedTests(unittest.TestCase):
         })
         self.assertIn("$0.0456", embed["description"])
 
-    def test_budget_warning_line_appears_when_threshold_exceeded(self) -> None:
+    def test_apify_cycle_total_in_stats_embed(self) -> None:
         embed = self.n._build_stats_embed({
             "total": 5, "apify_runs": 2, "apify_cost_usd": 0.05,
             "apify_cycle_total_usd": 25.0,
             "apify_monthly_budget_usd": 29.0,
             "apify_warning_threshold": 0.8,
         })
-        self.assertIn("残高", embed["description"])
+        self.assertIn("通算 $25.00", embed["description"])
+        self.assertNotIn("残高", embed["description"])
 
     def test_collection_breakdown_included(self) -> None:
         embed = self.n._build_stats_embed({

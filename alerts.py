@@ -226,19 +226,7 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             ),
         })
 
-    # ── コスト関連（既存の budget 警告とは別に、急増を検知）────────────
-    cycle_total = stats.get("apify_cycle_total_usd", 0)
-    budget = stats.get("apify_monthly_budget_usd", 29.0)
-    threshold = stats.get("apify_warning_threshold", 0.8)
-    if cycle_total and cycle_total >= budget * threshold:
-        alerts.append({
-            "severity": "warning",
-            "title": f"Apify 月間予算 {threshold * 100:.0f}% 到達",
-            "detail": (
-                f"通算 ${cycle_total:.2f} / ${budget:.0f}（残り "
-                f"${max(0, budget - cycle_total):.2f}）"
-            ),
-        })
+    # 月間予算はエラー扱いにしない（check_cost.py / Discord 収集統計の通算表示のみ）
 
     return alerts
 
