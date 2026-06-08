@@ -47,6 +47,14 @@ gh run view <AI_NEWS_RUN_ID> --log \
 
 ---
 
+## 引き継ぎ運用ルール
+
+2026-06-09 より、コード・設定・Actions・運用変更を行った作業は、この資料の更新と `main` へのpushまでを完了条件とする。
+
+詳細: `.cursor/rules/handoff-required.mdc`
+
+---
+
 ## プロジェクト概要
 
 AIニュース・ツール・SNS成功者情報などを自動収集・Gemini分析し、  
