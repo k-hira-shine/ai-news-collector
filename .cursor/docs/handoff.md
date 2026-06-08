@@ -4,6 +4,45 @@
 
 ---
 
+## 2026-06-09 ローカル main 同期
+
+510コミット古かったローカル `main` を `origin/main` へ同期した。同期前の未コミット内容は削除せず、以下の3系統で保全済み。
+
+- ローカル保全ブランチ: `backup/local-pre-sync-20260609`
+- 保全コミット: `221df54` (`backup: preserve local work before main sync`)
+- 外部アーカイブ: `/Users/kz5/ai-news-collector-backups/2026-06-09-pre-sync/working-files.tar.gz`
+- Git bundle: `/Users/kz5/ai-news-collector-backups/2026-06-09-pre-sync/local-pre-sync.bundle`
+
+同期後:
+
+- ローカル `main` と `origin/main` は同一
+- 作業ツリーはクリーン
+- テストは `53 passed, 12 subtests passed`
+- 保全データは最新版へ自動で混ぜ戻していない
+
+保全内容を確認する場合:
+
+```bash
+git show --stat backup/local-pre-sync-20260609
+git diff main...backup/local-pre-sync-20260609
+```
+
+特定ファイルだけ復元する場合:
+
+```bash
+git restore --source backup/local-pre-sync-20260609 -- <path>
+```
+
+ブランチが失われた場合はbundleから復元できる。
+
+```bash
+git bundle verify /Users/kz5/ai-news-collector-backups/2026-06-09-pre-sync/local-pre-sync.bundle
+git fetch /Users/kz5/ai-news-collector-backups/2026-06-09-pre-sync/local-pre-sync.bundle \
+  backup/local-pre-sync-20260609:backup/local-pre-sync-20260609
+```
+
+---
+
 ## 2026-06-10 朝の確認事項
 
 2026-06-09 に日次ヘルスチェックの修正を `main` へ反映した。
