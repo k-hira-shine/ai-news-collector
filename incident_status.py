@@ -170,6 +170,7 @@ def resolve_incident_for_write(
     config: dict[str, Any] | None = None,
     explicit: dict[str, str] | None = None,
     existing: dict[str, str] | None = None,
+    clear_on_success: bool = False,
 ) -> dict[str, str] | None:
     """write_run_status 用: 明示 incident > collect 自動検知 > 汎用 > 既存維持"""
     if explicit:
@@ -186,6 +187,9 @@ def resolve_incident_for_write(
             if existing and existing.get("severity") == "critical" and generic.get("severity") != "critical":
                 return existing
             return generic
+
+    if clear_on_success and workflow == "collect" and status == "success":
+        return None
 
     if _active_incident(existing):
         return existing

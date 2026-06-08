@@ -241,6 +241,7 @@ def write_run_status(
         config=config,
         explicit=incident,
         existing=existing.get("incident"),
+        clear_on_success=clear_incident_on_success,
     )
     output = merge_incident_into_run_status(
         output,
