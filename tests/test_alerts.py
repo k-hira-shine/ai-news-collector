@@ -63,6 +63,15 @@ class DetectAnomaliesTests(unittest.TestCase):
     def test_healthy_run_no_alerts(self) -> None:
         self.assertEqual(detect_anomalies(_stats(), _cfg()), [])
 
+    def test_pre_analysis_stats_do_not_emit_analysis_or_diagram_alerts(self) -> None:
+        stats = _stats()
+        stats.pop("analysis_meta")
+        stats.pop("diagram_meta")
+        alerts = detect_anomalies(stats, _cfg())
+        titles = [alert["title"] for alert in alerts]
+        self.assertFalse(any("top_articles" in title for title in titles))
+        self.assertFalse(any("図解が生成されなかった" in title for title in titles))
+
     def test_all_search_queries_failed_is_critical(self) -> None:
         alerts = detect_anomalies(_stats(x_meta={"search_error_count": 3, "search_total": 0}), _cfg())
         titles = [a["title"] for a in alerts]

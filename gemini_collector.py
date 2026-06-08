@@ -16,6 +16,7 @@ logger = logging.getLogger("ai-news.gemini_collector")
 
 GEMINI_DIR = "gemini"
 JST = ZoneInfo("Asia/Tokyo")
+LAST_RSS_HEALTH: dict[str, Any] = {}
 
 GEMINI_KEYWORDS = [
     "gemini", "ジェミニ", "google ai studio", "ai studio", "veo", "imagen",
@@ -211,12 +212,14 @@ def _parse_date_from_string(raw: str) -> datetime | None:
     if not raw:
         return None
     try:
-        return datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        dt = datetime.fromisoformat(raw.replace("Z", "+00:00"))
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
     except Exception:
         pass
     try:
         from email.utils import parsedate_to_datetime
-        return parsedate_to_datetime(raw)
+        dt = parsedate_to_datetime(raw)
+        return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
     except Exception:
         pass
     if len(raw) >= 10:
@@ -231,8 +234,8 @@ def _parse_rss_entry_date(entry: Any) -> datetime | None:
     pub = entry.get("published_parsed") or entry.get("updated_parsed")
     if pub:
         try:
-            import time as _time
-            return datetime.fromtimestamp(_time.mktime(pub), tz=timezone.utc)
+            import calendar
+            return datetime.fromtimestamp(calendar.timegm(pub), tz=timezone.utc)
         except Exception:
             pass
     for key in ("published", "updated"):
@@ -316,8 +319,10 @@ def _strip_html(html: str) -> str:
 
 
 def collect_rss(config: dict) -> list[dict]:
+    global LAST_RSS_HEALTH
     cfg = config.get("gemini_collection", {})
     if not cfg.get("enabled", True):
+        LAST_RSS_HEALTH = {"feeds_total": 0, "feeds_ok": 0, "feeds_failed": 0, "failures": []}
         return []
 
     try:
@@ -331,6 +336,12 @@ def collect_rss(config: dict) -> list[dict]:
     collected_at = datetime.now(timezone.utc).isoformat()
     items: list[dict] = []
     run_seen: set[str] = set()
+    health = {
+        "feeds_total": 0,
+        "feeds_ok": 0,
+        "feeds_failed": 0,
+        "failures": [],
+    }
 
     for feed_cfg in cfg.get("rss_feeds", []):
         url = feed_cfg.get("url", "")
@@ -339,6 +350,7 @@ def collect_rss(config: dict) -> list[dict]:
         need_filter = bool(feed_cfg.get("gemini_filter"))
         if not url:
             continue
+        health["feeds_total"] += 1
         try:
             feed = feedparser.parse(url)
             count = 0
@@ -376,9 +388,13 @@ def collect_rss(config: dict) -> list[dict]:
                 run_seen.add(link)
                 count += 1
             logger.info("Gemini RSS [%s]: %d items", label, count)
+            health["feeds_ok"] += 1
         except Exception as e:
             logger.warning("Gemini RSS failed [%s]: %s", label, e)
+            health["feeds_failed"] += 1
+            health["failures"].append({"label": label, "error": str(e)[:200]})
 
+    LAST_RSS_HEALTH = health
     return items
 
 
@@ -1059,6 +1075,29 @@ def main() -> None:
         "Gemini done: total=%d now=%d soon=%d deprecation=%d unknown=%d",
         len(items), now, soon, dep, unk,
     )
+    if not any((args.fix_dates, args.apply_guardrails, args.reclassify, args.retranslate)):
+        from utils import log_run
+
+        failed = int(LAST_RSS_HEALTH.get("feeds_failed", 0))
+        failures = LAST_RSS_HEALTH.get("failures") or []
+        log_run(
+            "gemini",
+            "warning" if failed else "success",
+            items_collected=len(items),
+            error="; ".join(
+                f"{row.get('label')}: {row.get('error')}" for row in failures
+            ),
+            extra={
+                "rss_feeds_total": LAST_RSS_HEALTH.get("feeds_total", 0),
+                "rss_feeds_ok": LAST_RSS_HEALTH.get("feeds_ok", 0),
+                "rss_feeds_failed": failed,
+                "rss_failures": failures,
+                "available_now": now,
+                "coming_soon": soon,
+                "deprecation": dep,
+                "unknown": unk,
+            },
+        )
 
 
 if __name__ == "__main__":

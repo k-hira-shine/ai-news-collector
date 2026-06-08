@@ -169,10 +169,11 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
         })
 
     # ── Analyzer 関連 ─────────────────────────────────────────────────
+    analysis_complete = "analysis_meta" in stats
     analysis_meta = stats.get("analysis_meta") or {}
     top_count = analysis_meta.get("top_articles_count", 0)
     fallback_stages = analysis_meta.get("fallback_used_stages") or []
-    if fallback_stages:
+    if analysis_complete and fallback_stages:
         alerts.append({
             "severity": "warning",
             "title": "Gemini モデルがフォールバック動作",
@@ -181,7 +182,11 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
                 "fallback モデルに切替。分析品質が通常より低い可能性あり。"
             ),
         })
-    if alerts_cfg.get("analysis_json_save_alert", True) and not analysis_meta.get("save_ok", True):
+    if (
+        analysis_complete
+        and alerts_cfg.get("analysis_json_save_alert", True)
+        and not analysis_meta.get("save_ok", True)
+    ):
         err = (analysis_meta.get("save_error") or "")[:200]
         alerts.append({
             "severity": "critical",
@@ -189,7 +194,7 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             "detail": f"data/analysis/ への書き込み失敗。ディスク or パーミッションを確認。\n{err}",
         })
 
-    if top_count == 0 and has_apify and apify_runs > 0:
+    if analysis_complete and top_count == 0 and has_apify and apify_runs > 0:
         alerts.append({
             "severity": "critical",
             "title": "分析の top_articles が 0 件",
@@ -200,8 +205,9 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
         })
 
     # ── Diagram 生成関連 ─────────────────────────────────────────────
+    diagram_complete = "diagram_meta" in stats
     diagram_meta = stats.get("diagram_meta") or {}
-    if diagram_meta.get("attempted") and not diagram_meta.get("png_generated"):
+    if diagram_complete and diagram_meta.get("attempted") and not diagram_meta.get("png_generated"):
         detail = "PNG 生成に失敗（テキストのみ配信）。Playwright/Chromium の状態を確認。"
         if diagram_meta.get("error"):
             detail += f"\nError: {diagram_meta['error']}"
@@ -211,7 +217,8 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             "detail": detail,
         })
     elif (
-        diagram_meta.get("enabled", True)
+        diagram_complete
+        and diagram_meta.get("enabled", True)
         and not diagram_meta.get("attempted")
         and top_count == 0
         and has_apify

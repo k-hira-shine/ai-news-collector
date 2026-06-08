@@ -77,6 +77,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
 
     from alerts import detect_anomalies
     anomalies = detect_anomalies(stats, config)
+    collection_anomalies = list(anomalies)
     stats["anomalies"] = anomalies
     for a in anomalies:
         logger.warning("ALERT [%s] %s — %s", a["severity"], a["title"], a["detail"])
@@ -312,6 +313,9 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
             "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0),
             "diagram_png": diagram_meta.get("png_generated", False),
             "anomalies": len(anomalies),
+            "collection_anomalies": len(collection_anomalies),
+            "post_analysis_anomalies": len(anomalies),
+            "health_check_version": 2,
             "x_valid_count": x_meta.get("x_valid_count"),
             "invalid_stripped": x_meta.get("invalid_items_stripped", 0),
             "apify_hints": ",".join(x_meta.get("apify_failure_hints") or []),

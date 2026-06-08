@@ -59,15 +59,24 @@ fix_buzz_html() {
   fi
 }
 
+fix_run_status() {
+  [[ -f docs/run_status.json ]] || return 0
+  grep -q '^<<<<<<< ' docs/run_status.json || return 0
+  python3 .github/scripts/merge_run_status.py docs/run_status.json
+  git add docs/run_status.json data/logs/
+}
+
 resolve_merge_conflicts() {
   fix_jsonl_conflicts
   fix_buzz_html
+  fix_run_status
   local f
   while IFS= read -r f; do
     [[ -n "$f" ]] || continue
     case "$f" in
       data/logs/*.jsonl) fix_jsonl_conflicts ;;
       docs/buzz.html) fix_buzz_html ;;
+      docs/run_status.json) fix_run_status ;;
       *)
         git checkout --theirs "$f" 2>/dev/null \
           || git checkout --ours "$f" 2>/dev/null || true
