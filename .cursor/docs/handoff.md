@@ -1,6 +1,49 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-05-15
+最終更新: 2026-06-09
+
+---
+
+## 2026-06-10 朝の確認事項
+
+2026-06-09 に日次ヘルスチェックの修正を `main` へ反映した。
+
+- 修正コミット: `e592abd` (`fix: harden daily health checks and status merge`)
+- `docs/run_status.json` の競合時に、ワークフローごとの新しい `ts` を維持する
+- Gemini RSSの日付をUTC aware datetimeへ正規化する
+- 分析前に `top_articles=0` / 図解未生成の誤警報を出さない
+- 判定用の詳細を `data/logs/YYYY-MM-DD.jsonl` に永続化する
+
+### 合格条件
+
+2026-06-10 朝の全ワークフロー完了後に以下を確認する。
+
+1. `AI News Collector`、`Buzz Ranking Collector`、`AI Money Cases Collector` が成功
+2. `workflow=gemini` のログで `rss_feeds_failed=0`
+3. `workflow=collect` のログで `health_check_version=2`
+4. 正常実行なら `collection_anomalies=0` かつ `post_analysis_anomalies=0`
+5. `docs/run_status.json` の `collect` / `buzz` / `money` がすべて2026-06-10の時刻
+6. push競合が起きた場合、`workflow=status_merge` のログがあり、各ワークフローの最新時刻が維持されている
+7. Actionsログに `offset-naive and offset-aware datetimes` がない
+8. 分析前に `分析の top_articles が 0 件` または `図解が生成されなかった（記事 0 件）` が出ていない
+
+### 確認コマンド
+
+```bash
+git fetch origin main
+git show origin/main:data/logs/2026-06-10.jsonl
+git show origin/main:docs/run_status.json
+gh run list --limit 15
+```
+
+必要ならActionsログを追加確認する。
+
+```bash
+gh run view <AI_NEWS_RUN_ID> --log \
+  | grep -E 'offset-naive|top_articles が 0|図解が生成されなかった|Gemini RSS failed'
+```
+
+出力が空なら、今回対象にしたエラーと誤警報は再発していない。
 
 ---
 
