@@ -1,0 +1,16 @@
+{
+  "verified_at": "2026-06-10T06:53:17+09:00",
+  "model_a": "gemini-2.5-pro",
+  "model_b": "gemini-2.5-pro",
+  "input_items": 42,
+  "metrics": {
+    "a_selected": 34,
+    "b_selected": 41,
+    "selection_jaccard": 0.829,
+    "common_count": 34,
+    "avg_importance_diff": 0.68,
+    "category_agreement": 0.941,
+    "top30_overlap": 0.875
+  },
+  "note": "selection_jaccard/top30_overlap が 0.8 以上、category_agreement 0.85 以上なら Flash 化を可とする目安。同一モデル同士の結果は実行揺らぎの基準値"
+}
