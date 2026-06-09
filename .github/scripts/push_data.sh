@@ -21,6 +21,17 @@ commit_if_needed() {
   fi
 }
 
+refresh_cost_tracking() {
+  local path
+  for path in "${ADD_PATHS[@]}"; do
+    if [[ "$path" == "data/" || "$path" == "data/logs/" || "$path" == "data/cost_tracking.json" ]]; then
+      python3 check_cost.py --record --quiet
+      git add data/cost_tracking.json
+      return
+    fi
+  done
+}
+
 fix_jsonl_conflicts() {
   local f
   for f in data/logs/*.jsonl; do
@@ -91,9 +102,12 @@ merge_origin_main() {
   abort_in_progress_git
   git fetch origin main
   if git merge origin/main -m "${COMMIT_MSG} (merge attempt ${attempt})"; then
+    refresh_cost_tracking
+    commit_if_needed
     return 0
   fi
   resolve_merge_conflicts
+  refresh_cost_tracking
   if ! git diff --cached --quiet || ! git diff --quiet; then
     git commit -m "${COMMIT_MSG} (merge attempt ${attempt})"
   fi

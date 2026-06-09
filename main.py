@@ -20,12 +20,14 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="AI News Collector")
     parser.add_argument("--dry-run", action="store_true", help="Collect only, skip analysis/notification")
     parser.add_argument("--analyze-only", action="store_true", help="Skip collection, reuse latest daily JSONL")
+    parser.add_argument("--x-mode", choices=("full", "light"), default="full", help="X収集モード")
     args = parser.parse_args()
 
     logger = setup_logging()
     logger.info("=== AI News Collector started (%s %s) ===", today_str(), time_slot())
     t0 = time.time()
     config = load_config()
+    config.setdefault("x_twitter", {})["runtime_mode"] = args.x_mode
 
     try:
         _run_main(args, config, logger, t0)
@@ -310,6 +312,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         error=error_msg,
         extra={
             "mode": "analyze-only" if args.analyze_only else "full",
+            "x_mode": args.x_mode,
             "top_articles": stats.get("analysis_meta", {}).get("top_articles_count", 0),
             "diagram_png": diagram_meta.get("png_generated", False),
             "anomalies": len(anomalies),

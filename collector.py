@@ -192,6 +192,27 @@ def _collect_x_twitter_with_meta(config: dict) -> tuple[list[dict], dict]:
     return items, meta
 
 
+def _x_collection_settings(x_cfg: dict) -> tuple[int, int, list[dict]]:
+    """通常便/夕方軽量便の上限と追跡アカウントを返す。"""
+    must_follow = x_cfg.get("must_follow_accounts", [])
+    max_query = int(x_cfg.get("max_results_per_query", 40))
+    max_account = int(x_cfg.get("max_results_per_account", 10))
+    if x_cfg.get("runtime_mode") != "light":
+        return max_query, max_account, must_follow
+
+    light = x_cfg.get("light_mode", {})
+    selected = {str(handle).lower() for handle in light.get("must_follow_handles", [])}
+    accounts = [
+        account for account in must_follow
+        if account.get("handle", "").lower() in selected
+    ]
+    return (
+        int(light.get("max_results_per_query", 75)),
+        int(light.get("max_results_per_account", 10)),
+        accounts,
+    )
+
+
 def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[dict]:
     """Apify 経由で X/Twitter を収集 (検索 + 必須アカウント)"""
     meta = runtime_meta if runtime_meta is not None else _default_x_runtime_meta()
@@ -213,6 +234,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     actor_id = x_cfg.get("apify_actor", "xquik/x-tweet-scraper")
     meta["apify_actor"] = actor_id
     search_queries = x_cfg.get("search_queries", [])
+    max_results_per_query, max_results_per_account, must_follow = _x_collection_settings(x_cfg)
     meta["search_queries_configured"] = len(search_queries)
     items: list[dict] = []
 
@@ -226,7 +248,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             run_input = {
                 "searchTerms": list(search_queries),
                 "queryType": "Top",
-                "maxItems": x_cfg.get("max_results_per_query", 40),
+                "maxItems": max_results_per_query,
                 "includeSearchTerms": True,
                 "since": since_date,
             }
@@ -278,7 +300,6 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     else:
         logger.info("X search queries not configured — skipping search queries")
 
-    must_follow = x_cfg.get("must_follow_accounts", [])
     meta["must_follow_configured"] = len(must_follow)
     if must_follow:
         try:
@@ -288,7 +309,7 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             run_input: dict = {
                 "searchTerms": account_queries,
                 "queryType": "Latest",
-                "maxItems": x_cfg.get("max_results_per_account", 10),
+                "maxItems": max_results_per_account,
                 "includeSearchTerms": True,
                 "since": since_date,
             }

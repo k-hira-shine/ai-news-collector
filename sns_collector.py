@@ -21,7 +21,21 @@ SNS_ARTICLE_CACHE_PATH = data_dir("cache", "sns_x_articles.json")
 SNS_DATA_DIR = data_dir("sns_success")
 
 
-def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
+def _prepare_sns_items(items: list[dict], article_cache: dict) -> list[dict]:
+    prepared = []
+    for source in items:
+        item = source.copy()
+        raw_tweet = item.pop("_raw_tweet", {})
+        item["sns_source"] = True
+        _enrich_x_article(item, raw_tweet, article_cache)
+        prepared.append(item)
+    return prepared
+
+
+def collect_sns_success(
+    config: dict,
+    shared_account_items: list[dict] | None = None,
+) -> tuple[list[dict], dict]:
     """SNS成功者マインド関連ポストを収集する"""
     token = os.environ.get("APIFY_TOKEN")
     if not token:
@@ -39,12 +53,10 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     actor_id = config.get("x_twitter", {}).get("apify_actor", "xquik/x-tweet-scraper")
 
     accounts = sns_cfg.get("accounts", [])
-    max_items_per_account = sns_cfg.get("max_items_per_account", 150)
     search_queries = sns_cfg.get("search_queries", [])
     max_items_per_query = sns_cfg.get("max_items_per_query", 100)
     search_interval_days = max(1, int(sns_cfg.get("search_interval_days", 1)))
     search_since_days = sns_cfg.get("search_since_days", 90)
-    account_since_days = sns_cfg.get("account_since_days", 365)
 
     if not accounts and not search_queries:
         logger.warning("No sns_success accounts or search_queries configured")
@@ -55,6 +67,14 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
     _meta_lock = threading.Lock()
     article_cache = _load_article_cache()
     all_items: list[dict] = []
+
+    if shared_account_items is None:
+        from account_collector import collect_shared_accounts
+        shared_account_items, account_meta = collect_shared_accounts(config, accounts)
+        meta["apify_runs"] += account_meta.get("apify_runs", 0)
+        meta["apify_cost_usd"] += account_meta.get("apify_cost_usd", 0)
+    from account_collector import items_for_accounts
+    all_items += _prepare_sns_items(items_for_accounts(shared_account_items, accounts), article_cache)
 
     def _run_apify(search_terms: list[str], max_items_each: int, label: str, query_type: str = "Top", since_days: int | None = 90) -> list[dict]:
         """Apifyを1回起動してツイートを取得し正規化して返す"""
@@ -99,16 +119,6 @@ def collect_sns_success(config: dict) -> tuple[list[dict], dict]:
 
     try:
         from concurrent.futures import ThreadPoolExecutor, as_completed
-
-        if accounts:
-            account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
-            all_items += _run_apify(
-                account_queries,
-                max_items_per_account,
-                "accounts",
-                query_type="Latest",
-                since_days=account_since_days,
-            )
 
         today_ordinal = date.fromisoformat(today_str()).toordinal()
         run_search = search_interval_days <= 1 or today_ordinal % search_interval_days == 0

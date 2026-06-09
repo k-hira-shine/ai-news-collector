@@ -333,6 +333,13 @@ PAGES = [
         "topic_fn": _latest_gemini_topic,
     },
     {
+        "file": "gemini-buzz.html",
+        "title": "🏆 Gemini活用",
+        "desc": "過去にバズったGeminiの使い方・プロンプト・活用事例をいいね順で保存",
+        "color": "#8b5cf6",
+        "topic_fn": lambda: {},
+    },
+    {
         "file": "gemini-omni.html",
         "title": "🎬 Gemini Omni",
         "desc": "Gemini Omni の概要と海外の実使用 X ポスト（動画付き）を日本語訳付きで収集",
@@ -357,6 +364,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
         title = escape(page["title"])
         desc = escape(page["desc"])
         updated_html = f'<span class="row-updated">{escape(updated)}</span>' if updated else ""
+        updated_line = f"\n      {updated_html}" if updated_html else ""
 
         # 最新トピック取得
         topic = {}
@@ -382,8 +390,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
         rows_html += f"""<div class="feature-row" style="--row-color:{color}">
   <a href="{href}" class="row-main">
     <div class="row-line1">
-      <span class="row-title">{title}</span>
-      {updated_html}
+      <span class="row-title">{title}</span>{updated_line}
     </div>
     <div class="row-line2">{desc}</div>
   </a>

@@ -1,2 +1,3 @@
 {"date": "2026-05-15", "type": "schedule", "summary": "スケジュールをJST 03:00→02:00に変更", "detail": "collect/buzz/money-collect.yml のcronをUTC 18:00→17:00に変更。GitHub Actionsの遅延対策。"}
 {"date": "2026-05-15", "type": "config", "summary": "A案: max_items半減でコスト削減", "detail": "money: max_items_per_account 500→200, max_items_per_query 200→100 / sns: max_items_per_query/account 150→100。重複率84〜92%のため品質影響なし。期待削減率38%。"}
+{"date": "2026-06-10", "type": "implementation", "summary": "重複取得を削減する4施策を実装", "detail": "SNS広域検索を3日ごと・18クエリへ集約、Money/SNSアカウントを共通差分取得、Buzzを週3回、News夕方便を軽量化。中心見込み$9.96/月、確認レンジ$8〜12/月。"}

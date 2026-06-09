@@ -1,7 +1,6 @@
 """AIマネタイズ事例コレクター
 
-@fiction_log など指定アカウントのポストを取得し、
-data/money/ に蓄積する（since制限なし・リポスト除外）。
+共通差分コレクターと広域検索から候補を受け取り、data/money/ に蓄積する。
 """
 
 import json
@@ -9,8 +8,8 @@ import logging
 import os
 from datetime import date, datetime, timezone
 
-from collector import SeenURLsCache, _normalize_tweet
-from utils import apify_actor_call, apify_run_get, data_dir, hash_url, today_str
+from collector import _normalize_tweet
+from utils import apify_actor_call, apify_run_get, data_dir, today_str
 
 logger = logging.getLogger("ai-news.money_collector")
 
@@ -18,7 +17,20 @@ MONEY_CACHE_PATH = data_dir("cache", "money_seen_urls.json")
 MONEY_DATA_DIR = data_dir("money")
 
 
-def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
+def _prepare_money_items(items: list[dict]) -> list[dict]:
+    prepared = []
+    for source in items:
+        item = source.copy()
+        item.pop("_raw_tweet", None)
+        item["money_source"] = True
+        prepared.append(item)
+    return prepared
+
+
+def collect_money_cases(
+    config: dict,
+    shared_account_items: list[dict] | None = None,
+) -> tuple[list[dict], dict]:
     """AIマネタイズ事例アカウントのポストを収集する"""
     token = os.environ.get("APIFY_TOKEN")
     if not token:
@@ -36,7 +48,6 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
     actor_id = config.get("x_twitter", {}).get("apify_actor", "xquik/x-tweet-scraper")
 
     accounts = money_cfg.get("accounts", [{"handle": "fiction_log", "label": "ろじん|Levela CXO"}])
-    max_items = money_cfg.get("max_items_per_account", 500)
     search_queries = money_cfg.get("search_queries", [])
     max_items_per_query = money_cfg.get("max_items_per_query", 100)
     search_interval_days = max(1, int(money_cfg.get("search_interval_days", 1)))
@@ -45,6 +56,14 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
     meta = {"apify_runs": 0, "apify_cost_usd": 0.0, "total_fetched": 0}
     _meta_lock = threading.Lock()
     all_items: list[dict] = []
+
+    if shared_account_items is None:
+        from account_collector import collect_shared_accounts
+        shared_account_items, account_meta = collect_shared_accounts(config, accounts)
+        meta["apify_runs"] += account_meta.get("apify_runs", 0)
+        meta["apify_cost_usd"] += account_meta.get("apify_cost_usd", 0)
+    from account_collector import items_for_accounts
+    all_items += _prepare_money_items(items_for_accounts(shared_account_items, accounts))
 
     def _run_apify(search_terms: list[str], max_items_each: int, label: str) -> list[dict]:
         """Apifyを1回起動してツイートを取得し正規化して返す"""
@@ -84,12 +103,7 @@ def collect_money_cases(config: dict) -> tuple[list[dict], dict]:
         return items
 
     try:
-        # ① アカウント指定収集（リポスト除外・since制限なし）
-        if accounts:
-            account_queries = [f"from:{acct['handle']} -filter:retweets" for acct in accounts]
-            all_items += _run_apify(account_queries, max_items, "accounts")
-
-        # ② 検索クエリ収集（広域）— コスト削減のため設定日数ごとに実行
+        # 広域検索は設定日数ごとに実行。アカウント取得は共通差分コレクターで実施済み。
         today_ordinal = date.fromisoformat(today_str()).toordinal()
         run_search = search_interval_days <= 1 or today_ordinal % search_interval_days == 0
         if search_queries and not run_search:

@@ -113,6 +113,18 @@ x_twitter:
       priority: high
   min_engagement: 10
   max_results_per_account: 30   # critical アカウントの連投に対応（20→30）
+  light_mode:
+    max_results_per_query: 75
+    max_results_per_account: 10
+    must_follow_handles:
+      - "OpenAI"
+      - "AnthropicAI"
+      - "GoogleDeepMind"
+      - "GoogleAI"
+      - "AIatMeta"
+      - "huggingface"
+      - "xai"
+      - "nvidia"
   apify_actor: "xquik/x-tweet-scraper"
   apify_monthly_budget_usd: 50.0
   apify_warning_threshold: 0.8
@@ -162,6 +174,12 @@ scoring:
 
 cache:
   seen_urls_retention_days: 2
+
+# Money/SNS共通アカウント取得。成功日の2日前から重ねて差分取得する。
+shared_account_collection:
+  overlap_days: 2
+  initial_lookback_days: 365
+  max_items_per_account: 200
 
 # ── HackerNews 収集（collect_all() 経由、data/hn/ に保存） ────────────
 hackernews:
@@ -214,8 +232,6 @@ money_collection:
       label: "Suryanshti777"
     - handle: "genel_ai"
       label: "genel_ai"
-  # 1アカウントあたりの最大取得件数
-  max_items_per_account: 200
   # 重複排除キャッシュの保持日数（長期蓄積）
   cache_retention_days: 180
   # 事例として採用する投稿者の最低フォロワー数
@@ -246,14 +262,11 @@ sns_success:
   cache_retention_days: 180
   # 採用する投稿者の最低フォロワー数
   min_followers: 5000
-  # 広域検索は新しめに絞り、追跡アカウントは過去の良質投稿も拾う
+  # 広域検索は新しめに絞る。追跡アカウントは共通差分コレクターで取得する。
   search_since_days: 90
-  account_since_days: 365
+  search_interval_days: 3
   # 1クエリあたりの最大取得件数
   max_items_per_query: 100
-  # 追跡アカウント1件あたりの最大取得件数
-  max_items_per_account: 100
-
   # 検索では漏れやすいが、継続的に拾いたい成功者アカウント
   accounts:
     - handle: "teihen_ns_fire"
@@ -290,8 +303,28 @@ sns_success:
       label: "Suryanshti777"
     - handle: "genel_ai"
       label: "genel_ai"
+    - handle: "naval"
+      label: "Naval"
+    - handle: "AlexHormozi"
+      label: "Alex Hormozi"
+    - handle: "SahilBloom"
+      label: "Sahil Bloom"
+    - handle: "Codie_Sanchez"
+      label: "Codie Sanchez"
+    - handle: "dankoe"
+      label: "Dan Koe"
+    - handle: "thejustinwelsh"
+      label: "Justin Welsh"
+    - handle: "dickiebush"
+      label: "Dickie Bush"
+    - handle: "AliAbdaal"
+      label: "Ali Abdaal"
+    - handle: "matt_gray_"
+      label: "Matt Gray"
+    - handle: "JamesClear"
+      label: "James Clear"
 
-  search_queries:
+  legacy_search_queries_disabled:
     # 日本語：成功体験・マインドセット
     - "月収 (万円 OR 万) 達成 (習慣 OR マインド OR 思考 OR 考え方) -filter:retweets lang:ja"
     - "人生変わった (習慣 OR マインド OR 思考法 OR やり方) -filter:retweets lang:ja min_faves:50"
@@ -347,6 +380,27 @@ sns_success:
     - "from:AliAbdaal -filter:retweets lang:en"
     - "from:matt_gray_ -filter:retweets lang:en"
     - "from:JamesClear -filter:retweets lang:en"
+
+  # 3日ごとの広域検索に使う集約済み18クエリ
+  search_queries:
+    - "月収 (万円 OR 万) 達成 (習慣 OR マインド OR 思考 OR 考え方) -filter:retweets lang:ja"
+    - "人生変わった (習慣 OR マインド OR 思考法 OR やり方) -filter:retweets lang:ja min_faves:50"
+    - "副業 (月収 OR 稼ぐ OR 収益) (思考 OR マインド OR 習慣 OR 法則) -filter:retweets lang:ja"
+    - "FIRE (達成 OR 実現) (方法 OR 考え方 OR マインド OR 習慣) -filter:retweets lang:ja"
+    - "資産形成 (考え方 OR マインド OR 法則 OR 習慣) -filter:retweets lang:ja min_faves:30"
+    - "SNS (成功 OR バズる OR 伸びる) (法則 OR コツ OR 思考 OR やり方) -filter:retweets lang:ja"
+    - "SNS運用 (長文 OR 解説 OR 完全版 OR まとめ) (伸ばす OR 稼ぐ OR 成功) -filter:retweets lang:ja"
+    - "副業 (ロードマップ OR 完全ガイド OR まとめ OR 長文) -filter:retweets lang:ja"
+    - "成功者 (習慣 OR ルーティン OR 思考法 OR マインドセット) -filter:retweets lang:ja"
+    - "mindset (success OR rich OR wealthy) habits changed my life -filter:retweets lang:en min_faves:100"
+    - "from broke to (rich OR wealthy OR financial freedom) mindset -filter:retweets lang:en"
+    - "grew my audience (mindset OR strategy OR how I think) -filter:retweets lang:en min_faves:50"
+    - "creator economy mindset success habits -filter:retweets lang:en min_faves:50"
+    - "one person business (mindset OR habits OR lessons) -filter:retweets lang:en min_faves:50"
+    - "personal brand (audience OR followers OR business) lessons -filter:retweets lang:en min_faves:50"
+    - "0 to 100k followers (lessons OR strategy OR mindset) -filter:retweets lang:en"
+    - "made $10k/month (creator OR business OR audience) lessons -filter:retweets lang:en"
+    - "(thread OR deep dive OR framework OR playbook) (audience growth OR personal brand OR creator business) -filter:retweets lang:en min_faves:50"
 
 # ── バズりランキング収集アカウント（run_buzz.py 専用） ──────
 buzz_accounts:

@@ -239,10 +239,14 @@ build_buzz.py    → docs/buzz.html
 
 ## コスト管理
 
-### 現在のApify設定（2026-05削減後）
-- `money_collection.max_items_per_account`: 200（削減前500）
-- `money_collection.max_items_per_query`: 100（削減前200）
-- `sns_success.max_items_per_query`: 100（削減前150）
+### 現在のApify設定（2026-06-10削減後）
+- Money/SNSアカウントは共通コレクターで1回だけ取得
+- 前回成功日の2日前から差分取得、上限200件/アカウント
+- Money広域検索: 2日に1回、10クエリ、上限50件/クエリ
+- SNS広域検索: 3日に1回、18クエリ、上限100件/クエリ
+- Buzz: 月・水・金の週3回
+- News夕方便: 検索上限75件、重要公式8アカウントのみ
+- 実装後見込み: `$9.96/月`（確認レンジ `$8〜12`）
 
 ### コスト確認
 ```bash
@@ -250,6 +254,7 @@ python3 check_cost.py
 ```
 `data/logs/YYYY-MM-DD.jsonl` に各ワークフローのApifyコストが記録されている。
 `data/cost_changes.jsonl` に設定変更の記録と効果測定あり。
+`data/cost_tracking.json` に実装後の日次費用・取得件数・移動平均を記録する。
 
 ---
 

@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "created_at": "2026-06-10",
+  "implementation_status": "implemented",
+  "implementation_date": "2026-06-10",
+  "currency": "USD",
+  "actual_previous_billing_cycle": {
+    "cycle_end_jst": "2026-06-10 08:59:59",
+    "confirmed_snapshot_usd": 47.2401,
+    "estimated_final_usd": 47.91,
+    "note": "初期開発、手動実行、他プロジェクトの利用を含むアカウント全体の推定額"
+  },
+  "baseline": {
+    "period_start": "2026-06-05",
+    "period_end": "2026-06-09",
+    "days": 5,
+    "daily_usd": 0.7823,
+    "monthly_usd": 23.47,
+    "workflows_monthly_usd": {
+      "collect": 4.19,
+      "money": 13.87,
+      "buzz": 5.42
+    },
+    "note": "直近の安定稼働5日間。初期開発費を除いた通常運用の比較基準"
+  },
+  "measures": [
+    {
+      "id": 1,
+      "name": "SNS広域検索の間隔・クエリ最適化",
+      "decision": "approved",
+      "estimate_monthly_saving_usd": {
+        "min": 4.0,
+        "max": 6.0
+      }
+    },
+    {
+      "id": 2,
+      "name": "Money/SNSアカウント取得の統合・差分取得",
+      "decision": "approved",
+      "estimate_monthly_saving_usd": {
+        "min": 4.0,
+        "max": 6.0
+      },
+      "note": "施策1と削減対象が一部重なるため、単純合算せず統合後のMoney/SNS目標で評価"
+    },
+    {
+      "id": 3,
+      "name": "Buzzを週3回に変更",
+      "decision": "approved",
+      "estimate_monthly_saving_usd": {
+        "min": 2.8,
+        "max": 3.3
+      }
+    },
+    {
+      "id": 4,
+      "name": "News夕方実行の軽量化",
+      "decision": "approved",
+      "estimate_monthly_saving_usd": {
+        "min": 0.8,
+        "max": 1.5
+      }
+    }
+  ],
+  "projected_after": {
+    "daily_usd": 0.332,
+    "monthly_usd": 9.96,
+    "range_daily_usd": {
+      "min": 0.267,
+      "max": 0.4
+    },
+    "range_monthly_usd": {
+      "min": 8.0,
+      "max": 12.0
+    },
+    "workflows_monthly_usd": {
+      "collect": 3.14,
+      "money": 4.5,
+      "buzz": 2.32
+    },
+    "expected_reduction_pct": 57.6,
+    "note": "情報取得を停止せず、重複取得と過剰な再取得だけを削減した場合の概算"
+  },
+  "measurement": {
+    "rolling_average_days": 7,
+    "primary_metric": "7日移動平均の日額と月額換算",
+    "success_condition": "実装後7日移動平均の月額換算が12ドル以下",
+    "target_condition": "実装後14日移動平均が中心見込み9.96ドル付近",
+    "review_notes": [
+      "Buzz非実行日を含めた暦日平均で評価する",
+      "Apify障害で取得できなかった日は削減成功とみなさず、収集件数も併記して確認する",
+      "手動バックフィルや開発テスト費用は通常運用と分けて記録する"
+    ]
+  }
+}

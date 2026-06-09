@@ -70,12 +70,25 @@ def main() -> None:
 
     try:
         if not args.analyze_only:
+            shared_account_items = []
+            shared_meta = {"apify_cost_usd": 0.0}
+            shared_accounts = []
+            if run_money:
+                shared_accounts += config.get("money_collection", {}).get("accounts", [])
+            if run_sns:
+                shared_accounts += config.get("sns_success", {}).get("accounts", [])
+            if shared_accounts:
+                from account_collector import collect_shared_accounts
+                logger.info("=== Step 1: Collecting shared Money/SNS accounts ===")
+                shared_account_items, shared_meta = collect_shared_accounts(config, shared_accounts)
+                apify_cost += shared_meta.get("apify_cost_usd", 0)
+
             # money収集
             if run_money:
                 from money_collector import collect_money_cases, deduplicate_money, save_money_jsonl
 
                 logger.info("=== Step 1a: Collecting money cases ===")
-                items, meta = collect_money_cases(config)
+                items, meta = collect_money_cases(config, shared_account_items)
                 apify_cost += meta.get("apify_cost_usd", 0)
                 logger.info("Money fetched %d posts (cost=$%.4f)", len(items), meta.get("apify_cost_usd", 0))
 
@@ -93,7 +106,7 @@ def main() -> None:
                 from sns_collector import collect_sns_success, deduplicate_sns, save_sns_jsonl
 
                 logger.info("=== Step 1b: Collecting SNS success minds ===")
-                sns_items, sns_meta = collect_sns_success(config)
+                sns_items, sns_meta = collect_sns_success(config, shared_account_items)
                 apify_cost += sns_meta.get("apify_cost_usd", 0)
                 logger.info("SNS fetched %d posts (cost=$%.4f)", len(sns_items), sns_meta.get("apify_cost_usd", 0))
 

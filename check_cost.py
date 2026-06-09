@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
-"""Apifyコスト確認スクリプト
+"""Apifyコスト確認・日次追跡スクリプト
 
 使い方:
   python3 check_cost.py          # 直近7日分を表示
   python3 check_cost.py --days 14  # 直近14日分を表示
   python3 check_cost.py --all      # 全期間を表示
+  python3 check_cost.py --record   # data/cost_tracking.json を更新
 """
 
 import argparse
 import json
 import os
 from collections import defaultdict
+from datetime import date, datetime, timedelta
+from zoneinfo import ZoneInfo
 
-LOGS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "logs")
-CHANGES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "cost_changes.jsonl")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+LOGS_DIR = os.path.join(BASE_DIR, "data", "logs")
+CHANGES_PATH = os.path.join(BASE_DIR, "data", "cost_changes.jsonl")
+PLAN_PATH = os.path.join(BASE_DIR, "data", "cost_reduction_plan.json")
+TRACKING_PATH = os.path.join(BASE_DIR, "data", "cost_tracking.json")
 
 WORKFLOW_LABELS = {
     "collect": "AI News  ",
@@ -69,18 +75,144 @@ def summarize(records: list[dict]) -> dict[str, dict]:
     return by_date
 
 
+def load_plan() -> dict:
+    try:
+        with open(PLAN_PATH, encoding="utf-8") as f:
+            return json.load(f)
+    except (FileNotFoundError, json.JSONDecodeError):
+        return {}
+
+
+def _date_range(start: str, end: str) -> list[str]:
+    current = date.fromisoformat(start)
+    last = date.fromisoformat(end)
+    dates = []
+    while current <= last:
+        dates.append(current.isoformat())
+        current += timedelta(days=1)
+    return dates
+
+
+def _workflow_costs(by_date: dict, target_date: str) -> dict[str, float]:
+    costs = by_date.get(target_date, {})
+    return {
+        workflow: round(float(costs.get(workflow, 0)), 4)
+        for workflow in ("collect", "money", "buzz")
+    }
+
+
+def _daily_items(records: list[dict]) -> dict[str, dict[str, int]]:
+    items: dict[str, dict[str, int]] = defaultdict(lambda: defaultdict(int))
+    for record in records:
+        target_date = record.get("date", "")
+        workflow = record.get("workflow", "other")
+        items[target_date][workflow] += int(record.get("items_collected", 0) or 0)
+    return items
+
+
+def build_tracking(records: list[dict], plan: dict) -> dict:
+    """固定基準と日次ログから、実装後の比較に使う追跡データを作る。"""
+    by_date = summarize(records)
+    items_by_date = _daily_items(records)
+    dates = sorted(d for d in by_date if d)
+    daily = []
+    for target_date in dates:
+        workflows = _workflow_costs(by_date, target_date)
+        daily.append({
+            "date": target_date,
+            "workflows": workflows,
+            "items_collected": {
+                workflow: items_by_date[target_date].get(workflow, 0)
+                for workflow in ("collect", "money", "buzz")
+            },
+            "total_usd": round(sum(workflows.values()), 4),
+        })
+
+    rolling_days = int(plan.get("measurement", {}).get("rolling_average_days", 7))
+    today_jst = datetime.now(ZoneInfo("Asia/Tokyo")).date().isoformat()
+    implementation_date = plan.get("implementation_date")
+    completed_daily = [
+        day for day in daily
+        if day["date"] < today_jst
+        and (not implementation_date or day["date"] >= implementation_date)
+    ]
+    recent = completed_daily[-rolling_days:]
+    rolling_avg = (
+        sum(day["total_usd"] for day in recent) / len(recent)
+        if recent else 0
+    )
+    projected = plan.get("projected_after", {})
+    target_daily = float(projected.get("daily_usd", 0))
+    baseline_daily = float(plan.get("baseline", {}).get("daily_usd", 0))
+    reduction_pct = (
+        (baseline_daily - rolling_avg) / baseline_daily * 100
+        if baseline_daily else 0
+    )
+    if not recent:
+        status = "no_data"
+    elif rolling_avg <= float(projected.get("range_daily_usd", {}).get("max", target_daily)):
+        status = "on_target"
+    else:
+        status = "above_target"
+
+    return {
+        "plan_version": plan.get("version", 1),
+        "implementation_status": plan.get("implementation_status", "planned"),
+        "implementation_date": implementation_date,
+        "baseline": plan.get("baseline", {}),
+        "projected_after": projected,
+        "latest": daily[-1] if daily else None,
+        "rolling": {
+            "days": len(recent),
+            "window": rolling_days,
+            "start_date": recent[0]["date"] if recent else None,
+            "end_date": recent[-1]["date"] if recent else None,
+            "average_daily_usd": round(rolling_avg, 4),
+            "monthly_projection_usd": round(rolling_avg * 30, 2),
+            "reduction_vs_baseline_pct": round(reduction_pct, 1),
+            "status": status,
+        },
+        "daily": daily[-30:],
+    }
+
+
+def write_tracking(records: list[dict], plan: dict) -> dict:
+    tracking = build_tracking(records, plan)
+    os.makedirs(os.path.dirname(TRACKING_PATH), exist_ok=True)
+    tmp_path = TRACKING_PATH + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(tracking, f, ensure_ascii=False, indent=2)
+        f.write("\n")
+    os.replace(tmp_path, TRACKING_PATH)
+    return tracking
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Apifyコスト確認")
     parser.add_argument("--days", type=int, default=7, help="表示する日数（デフォルト7）")
     parser.add_argument("--all", action="store_true", help="全期間を表示")
+    parser.add_argument("--record", action="store_true", help="日次追跡JSONを更新")
+    parser.add_argument("--quiet", action="store_true", help="追跡更新時の標準出力を抑制")
     args = parser.parse_args()
 
-    days = None if args.all else args.days
+    days = None if args.all or args.record else args.days
     records = load_logs(days)
 
     if not records:
         print("ログが見つかりません。")
         return
+
+    if args.record:
+        tracking = write_tracking(records, load_plan())
+        if not args.quiet:
+            rolling = tracking["rolling"]
+            print(
+                f"Cost tracking updated: ${rolling['average_daily_usd']:.4f}/day, "
+                f"${rolling['monthly_projection_usd']:.2f}/month "
+                f"({rolling['status']})"
+            )
+        if args.quiet:
+            return
 
     by_date = summarize(records)
     changes = load_changes()

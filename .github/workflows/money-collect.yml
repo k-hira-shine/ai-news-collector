@@ -56,6 +56,9 @@ jobs:
             python run_money.py
           fi
 
+      - name: Update Apify cost tracking
+        run: python check_cost.py --record --quiet
+
       - name: Commit & push data
         run: |
           chmod +x .github/scripts/push_data.sh

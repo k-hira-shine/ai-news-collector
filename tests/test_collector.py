@@ -4,6 +4,7 @@ from collector import (
     _AUTH_ERROR_PATTERN,
     _default_x_runtime_meta,
     _should_warn_x_cookies,
+    _x_collection_settings,
 )
 
 
@@ -89,6 +90,42 @@ class AuthErrorPatternTests(unittest.TestCase):
         for s in samples:
             with self.subTest(s=s):
                 self.assertIsNone(_AUTH_ERROR_PATTERN.search(s))
+
+
+class XCollectionModeTests(unittest.TestCase):
+    def test_light_mode_limits_accounts_and_items(self) -> None:
+        config = {
+            "runtime_mode": "light",
+            "max_results_per_query": 150,
+            "max_results_per_account": 30,
+            "must_follow_accounts": [
+                {"handle": "OpenAI"},
+                {"handle": "AnthropicAI"},
+                {"handle": "other"},
+            ],
+            "light_mode": {
+                "max_results_per_query": 75,
+                "max_results_per_account": 10,
+                "must_follow_handles": ["OpenAI", "AnthropicAI"],
+            },
+        }
+
+        max_query, max_account, accounts = _x_collection_settings(config)
+
+        self.assertEqual(max_query, 75)
+        self.assertEqual(max_account, 10)
+        self.assertEqual([a["handle"] for a in accounts], ["OpenAI", "AnthropicAI"])
+
+    def test_full_mode_keeps_all_accounts(self) -> None:
+        accounts = [{"handle": "OpenAI"}, {"handle": "other"}]
+        config = {
+            "runtime_mode": "full",
+            "max_results_per_query": 150,
+            "max_results_per_account": 30,
+            "must_follow_accounts": accounts,
+        }
+
+        self.assertEqual(_x_collection_settings(config), (150, 30, accounts))
 
 
 if __name__ == "__main__":
