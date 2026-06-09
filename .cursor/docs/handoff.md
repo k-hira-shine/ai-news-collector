@@ -17,6 +17,15 @@
 
 ---
 
+## 2026-06-10 Gemini API コスト削減計画を作成（未実装）
+
+- 何をしたか: Gemini API の全利用箇所（9ファイル）を棚卸しし、`.cursor/docs/gemini-cost-reduction-plan.md` に削減計画を作成。施策は**未実装**。
+- 最初にやること: ユーザーが Google AI Studio / Cloud 請求で「無料ティアか有料か」「直近30日の実費」を確認する。**無料なら大半の施策は不要**。
+- 計画の要点: G1=usage_metadata でトークン計測（前提）、G2=post_generator の意図しない Pro 参照修正、G3=1次フィルタ系を Pro→Flash（検証後）、G4=max_output_tokens 設定。
+- 関連コミット: 本ターンでコミット
+- 次回確認: ユーザーのプラン確認結果を聞いてから G1/G2 に着手。
+- 問題発生時はまず `.cursor/docs/gemini-cost-reduction-plan.md` の利用マップを見る。
+
 ## 2026-06-10 全体レビュー結果と経過観察項目
 
 - レビュー範囲: 6/9〜6/10 朝の全コミット（health check 強化、Apify削減、gemini-buzz ページ改善、ナビ恒久対策）
