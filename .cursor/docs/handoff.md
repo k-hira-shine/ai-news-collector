@@ -1,6 +1,45 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-10
+最終更新: 2026-06-10（朝セッション終了時点）
+
+---
+
+## 次回最初に確認: 2026-06-10 朝セッションの総括と次回アクション
+
+### コスト状況（このセッションで判明・対策済み）
+
+| 項目 | 実測 | 対策後の見込み |
+|---|---|---|
+| Apify | 月$20.42（基準 $23.47） | 月$8〜12（6/10 実装済み、測定中） |
+| Gemini API | 月約¥2,900ペース（Pro が92%） | Pro→Flash 切替で大幅減（6/10 実装済み、測定中） |
+
+- Gemini は **有料 Tier 1**（プロジェクト名 Sedori、本プロジェクト専用とユーザー確認済み）。無料枠は別プロジェクトのキーでのみ使える（公式確認済み、詳細は `.cursor/docs/gemini-cost-reduction-plan.md`）。
+
+### 6/11（翌日）にやること
+
+1. **Flash化の品質目視**: data/analysis の新規分析、money/sns ページの要約に劣化がないか確認。劣化時は config.yaml `models.stage1_filter` を `gemini-2.5-pro` に戻すだけで復旧。
+2. **Gemini実測**: `python3 gemini_usage.py` — 6/10夜以降の呼び出し別トークン・推定額が出る。Pro が stage2/3 だけになっているか確認。
+3. **Apify初回効果**: `python3 check_cost.py` と `data/logs/` で Money 収集のコスト・件数が下がったか確認。
+
+### 6/13頃にやること
+
+- Apify 7日移動平均の判定（合格: 月換算$12以下）。`python3 check_cost.py`。
+- Gemini 実測3日分で月額を再計算し、無料キー切替（月¥0化）を検討する価値があるか判断。
+
+### 未実施の残タスク（優先度順）
+
+1. G4: 全 Gemini 呼び出しに max_output_tokens 設定（暴走出力の保険、軽作業）
+2. G6: dashboard.py の HN 二重翻訳解消（効果数円、低優先）
+3. 無料キー切替の試行（実測を見てから判断。リスク: Pro無料枠50〜100回/日、データがGoogle製品改善に利用される）
+4. Gemini活用法バズ調査の2回目（コストと別件、下記参照）
+
+### このセッションで実装したもの（詳細は各日付の節）
+
+- gemini-buzz ページ: 日付の日本語化、表示名、ER表示、並べ替え（`e751e38`〜`d0da798`）
+- ナビ欠落の恒久対策 `sync_nav.py`（`1a46c63`）
+- Gemini トークン計測 `gemini_usage.py` + 全10箇所組込み、post_generator の Pro 誤参照修正（`0c4f7a5`）
+- stage1検証WF `verify-stage1-flash.yml`（Pro vs Flash / Pro vs Pro 実施済み）
+- stage1系（ニュース/Money/SNS）の Flash 切替（`8b577ba`）
 
 ---
 
