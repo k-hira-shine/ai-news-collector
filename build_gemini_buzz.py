@@ -20,6 +20,25 @@ def _load(path: Path) -> dict:
         return {}
 
 
+def _format_date(raw: str) -> str:
+    """投稿日時を「2026年4月30日」形式へ変換する。"""
+    raw = (raw or "").strip()
+    if not raw:
+        return ""
+    # XのAPIは "Thu Apr 30 21:15:38 +0000 2026" 形式で返す
+    for fmt in ("%a %b %d %H:%M:%S %z %Y", "%Y-%m-%dT%H:%M:%S", "%Y-%m-%d"):
+        try:
+            dt = datetime.strptime(raw, fmt)
+            return f"{dt.year}年{dt.month}月{dt.day}日"
+        except ValueError:
+            continue
+    try:
+        dt = datetime.strptime(raw[:19], "%Y-%m-%dT%H:%M:%S")
+        return f"{dt.year}年{dt.month}月{dt.day}日"
+    except ValueError:
+        return raw[:10]
+
+
 def _card(rank: int, post: dict) -> str:
     media = ""
     for item in post.get("media") or []:
@@ -32,7 +51,7 @@ def _card(rank: int, post: dict) -> str:
   <div class="rank">#{rank}</div>
   <div class="content">
     <div class="meta"><strong>@{escape(post.get("author") or "")}</strong>
-      <span>{escape((post.get("published_at") or "")[:10])}</span>{review}</div>
+      <span>{escape(_format_date(post.get("published_at") or ""))}</span>{review}</div>
     <p>{escape(post.get("text") or "")}</p>
     <div class="stats">
       <span>♥ {int(post.get("likes") or 0):,}</span>
