@@ -136,7 +136,9 @@ alerts:
 
 analysis:
   models:
-    stage1_filter: "gemini-2.5-pro"
+    # stage1(1次フィルタ)とMoney/SNS分析はFlash。検証(2026-06-10)で採用判定の
+    # Pro一致率97.6%を確認済み。深い分析のstage2/3のみPro維持。
+    stage1_filter: "gemini-2.5-flash"
     stage2_analysis: "gemini-2.5-pro"
     fallback: "gemini-2.5-flash"
   thinking_budget:

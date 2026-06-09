@@ -17,6 +17,16 @@
 
 ---
 
+## 2026-06-10 stage1系をFlash化（G3実行）+ toolsバックフィル調査
+
+- 実行内容（ユーザー承認済み）: config.yaml `models.stage1_filter` を `gemini-2.5-pro` → `gemini-2.5-flash` に変更。
+  - 影響範囲: analyzer.py Stage1（ニュース1次フィルタ）、money_analyzer.py、sns_analyzer.py の3箇所。Stage2/3 は Pro 維持。
+  - 根拠: 採用判定の Pro 一致率 97.6%（Pro自身の揺らぎ 82.9% より高い）。Money/SNS は未検証のままの切替（ユーザー判断）。
+  - 期待効果: Pro費用（月¥2,450、全体の92%）の大幅削減。実測は `python3 gemini_usage.py` で確認。
+- **品質の経過観察（明日6/11）**: data/analysis の新規分析、money/sns ページの要約品質に劣化がないか目視確認。劣化が大きければ config の stage1_filter を Pro に戻すだけで復旧。
+- toolsバックフィル調査結果: **空回りしていない**。8,541件中、未分類6,160件の内訳は「tool_name無し=6,159件（設計上の対象外）」+「処理待ち=1件」。バックフィルは実質完了済みで、毎回の処理対象は約1件 → コスト影響ほぼゼロ。自己修復機能として enabled のまま維持。
+- 関連コミット: 本ターンでコミット
+
 ## 2026-06-10 G3追加検証: Pro vs Pro 揺らぎ基準を測定
 
 - 結果（`data/stage1_verification_gemini-2.5-pro_vs_gemini-2.5-pro.json`）:
