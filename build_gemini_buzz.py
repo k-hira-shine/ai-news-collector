@@ -39,6 +39,19 @@ def _format_date(raw: str) -> str:
         return raw[:10]
 
 
+def _engagement_rate(post: dict) -> str:
+    """フォロワー数に対する総エンゲージメント率を「677%」形式で返す。"""
+    followers = int(post.get("author_followers") or 0)
+    if followers <= 0:
+        return ""
+    engagements = sum(
+        int(post.get(k) or 0)
+        for k in ("likes", "retweets", "bookmarks", "quotes", "replies")
+    )
+    rate = engagements / followers * 100
+    return f"{rate:,.0f}%" if rate >= 100 else f"{rate:.1f}%"
+
+
 def _card(rank: int, post: dict) -> str:
     media = ""
     for item in post.get("media") or []:
@@ -47,6 +60,13 @@ def _card(rank: int, post: dict) -> str:
             media = f'<img class="thumb" src="{escape(url)}" loading="lazy" alt="">'
             break
     review = '<span class="review">要確認</span>' if post.get("needs_review") else ""
+    er = _engagement_rate(post)
+    er_html = (
+        f'<span class="er" title="フォロワー数に対する総エンゲージメント率">'
+        f"ER {escape(er)}</span>"
+        if er
+        else ""
+    )
     return f"""<article class="card">
   <div class="rank">#{rank}</div>
   <div class="content">
@@ -55,10 +75,12 @@ def _card(rank: int, post: dict) -> str:
       <span>{escape(_format_date(post.get("published_at") or ""))}</span>{review}</div>
     <p>{escape(post.get("text") or "")}</p>
     <div class="stats">
+      {er_html}
       <span>♥ {int(post.get("likes") or 0):,}</span>
       <span>↻ {int(post.get("retweets") or 0):,}</span>
       <span>🔖 {int(post.get("bookmarks") or 0):,}</span>
       <span>表示 {int(post.get("views") or 0):,}</span>
+      <span>👤 {int(post.get("author_followers") or 0):,}</span>
       <a href="{escape(post.get("url") or "#")}" target="_blank" rel="noopener">Xで開く</a>
     </div>
   </div>{media}
@@ -92,7 +114,8 @@ main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5f
 .card{{display:flex;gap:14px;align-items:flex-start;padding:16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px}}
 .rank{{font-size:1.2rem;font-weight:800;color:#fbbf24;min-width:42px}} .content{{flex:1;min-width:0}}
 .meta{{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-size:.8rem}} .meta strong{{color:var(--text)}} .meta .handle{{color:var(--muted)}} .content p{{white-space:pre-wrap;line-height:1.65}}
-.stats{{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.82rem}} .stats a{{color:#60a5fa}}
+.stats{{display:flex;gap:14px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.82rem}} .stats a{{color:#60a5fa}}
+.er{{font-weight:700;color:#0f172a;background:#34d399;padding:1px 8px;border-radius:999px;font-size:.78rem}}
 .thumb{{width:160px;max-height:120px;object-fit:cover;border-radius:8px}} .review{{color:#fbbf24}}
 .empty{{padding:60px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px}}
 @media(max-width:650px){{.thumb{{display:none}}.card{{gap:6px}}}}
