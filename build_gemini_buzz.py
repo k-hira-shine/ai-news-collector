@@ -50,7 +50,8 @@ def _card(rank: int, post: dict) -> str:
     return f"""<article class="card">
   <div class="rank">#{rank}</div>
   <div class="content">
-    <div class="meta"><strong>@{escape(post.get("author") or "")}</strong>
+    <div class="meta"><strong>{escape(post.get("author_display") or "")}</strong>
+      <span class="handle">@{escape(post.get("author") or "")}</span>
       <span>{escape(_format_date(post.get("published_at") or ""))}</span>{review}</div>
     <p>{escape(post.get("text") or "")}</p>
     <div class="stats">
@@ -90,7 +91,7 @@ main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5f
 .notice{{padding:12px 14px;border:1px solid #7c3aed;background:#2e1065;border-radius:10px;margin:18px 0;font-size:.86rem}}
 .card{{display:flex;gap:14px;align-items:flex-start;padding:16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px}}
 .rank{{font-size:1.2rem;font-weight:800;color:#fbbf24;min-width:42px}} .content{{flex:1;min-width:0}}
-.meta{{display:flex;gap:10px;color:var(--muted);font-size:.8rem}} .content p{{white-space:pre-wrap;line-height:1.65}}
+.meta{{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-size:.8rem}} .meta strong{{color:var(--text)}} .meta .handle{{color:var(--muted)}} .content p{{white-space:pre-wrap;line-height:1.65}}
 .stats{{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.82rem}} .stats a{{color:#60a5fa}}
 .thumb{{width:160px;max-height:120px;object-fit:cover;border-radius:8px}} .review{{color:#fbbf24}}
 .empty{{padding:60px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px}}

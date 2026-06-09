@@ -17,11 +17,14 @@
 
 ---
 
-## 2026-06-10 Gemini活用法バズ調査ページ 日付表示を日本語化
+## 2026-06-10 Gemini活用法バズ調査ページ 日付の日本語化＋表示名追加
 
-- 何を変更したか: `build_gemini_buzz.py` の投稿日表示を「Thu Apr 30」→「2026年4月30日」へ。`_format_date()` を追加し、X形式 `%a %b %d %H:%M:%S %z %Y` をパースして変換。`docs/gemini-buzz.html` を再生成。
-- 関連コミット: 未コミット（要コミット）
-- 合格条件: ページ各カードの日付が「YYYY年M月D日」表記。`grep '年.*月.*日' docs/gemini-buzz.html` でヒットすればOK。
+- 何を変更したか:
+  - `build_gemini_buzz.py` の投稿日表示を「Thu Apr 30」→「2026年4月30日」へ。`_format_date()` を追加し、X形式 `%a %b %d %H:%M:%S %z %Y` をパースして変換。
+  - カードのメタ行に `author_display`（アカウント表示名）を太字で追加。`@ハンドル` は `.handle` クラスで控えめ表示。
+  - `docs/gemini-buzz.html` を再生成。
+- 関連コミット: `e751e38`（日付）+ 表示名分は本ターンでコミット
+- 合格条件: 各カードに「表示名 + @ハンドル + YYYY年M月D日」が並ぶ。`grep '年.*月.*日' docs/gemini-buzz.html` でヒットすればOK。
 - 注意: 旧コードの `[:10]` スライスはX形式日付では英語のまま切り出すバグだった。再生成は `python3 build_gemini_buzz.py`。
 - 残課題: なし
 
