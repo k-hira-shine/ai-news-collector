@@ -1,9 +1,25 @@
 {
-  "status": "not_run",
+  "snapshot_id": "20260609T205255Z",
+  "fetched_at": "2026-06-09T20:52:55.572903+00:00",
   "actor": "xquik/x-tweet-scraper",
-  "planned_queries": 4,
+  "run_id": "6FdGJYI3amf7eAmK0",
+  "period": {
+    "start": "2025-06-10",
+    "end": "2026-06-10"
+  },
+  "queries": [
+    "Gemini (使い方 OR 活用法 OR プロンプト) -filter:replies lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini (仕事 OR 業務効率化 OR 資料作成) -filter:replies lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini (workflow OR tutorial OR \"use case\") -filter:replies lang:en min_faves:200 since:2025-06-10 until:2026-06-11",
+    "\"Gemini prompt\" (\"how I use\" OR guide OR workflow) -filter:replies lang:en min_faves:200 since:2025-06-10 until:2026-06-11"
+  ],
+  "max_items_per_query": 100,
   "max_possible_results": 400,
-  "estimated_max_result_cost_usd": 0.06,
+  "apify_cost_usd": 0.0145,
+  "raw_count": 97,
+  "deduplicated_count": 97,
+  "accepted_count": 42,
+  "raw_snapshot": "data/gemini_buzz/raw/20260609T205255Z.json",
   "limitations": [
     "X Top search is relevance-ranked and not exhaustive.",
     "Engagement values are a snapshot at collection time.",
