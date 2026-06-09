@@ -17,6 +17,20 @@
 
 ---
 
+## 2026-06-10 Gemini コスト削減 G1+G2 実装、G3 検証完了
+
+- 実費確認結果: **有料 Tier 1**。6/1〜9 実費 ¥2,892（月ペース約¥9,600）。**Pro が費用の92%**（28日間 Pro ¥2,450 / Flash ¥206）。Apify（月$20）より大きい。キーは本プロジェクト専用（プロジェクト名 Sedori、ユーザー確認済み）。
+- G1 実装: `gemini_usage.py` 新規作成。全10呼び出し箇所（analyzer×stage1-3, money, sns, tools, gemini_collector, post_generator, dashboard, collector×2, gemini_omni）に `log_usage()` を組込み。`data/gemini_usage/YYYY-MM-DD.jsonl` に記録。集計は `python3 gemini_usage.py`。
+- G2 実装: post_generator が config の `stage1_filter`(=Pro) を意図せず参照していたのを `fallback`(=Flash) に修正。
+- G3 検証結果（42件、HN/arxiv のみ、`data/stage1_flash_verification.json`）:
+  - 採用判定の一致率（Jaccard）**0.976** = ほぼ同じ記事を選ぶ
+  - 重要度スコア平均差 1.4点（10点中）、カテゴリ一致 0.775、Top30重複 0.667
+  - 同一入力の実測: Pro $0.0176 / Flash $0.0043 = **4.1倍差**
+  - 未確定: Pro自身の実行ブレ（Pro vs Pro基準）が未測定のため、スコア/カテゴリ差がFlash起因か不明
+- 関連コミット: `0c4f7a5`（G1+G2+検証WF）、検証結果は Actions が自動コミット
+- 次回確認: G1ログが明日の定期実行から蓄積される。`python3 gemini_usage.py` で日次推定額を確認。stage1のFlash切替はユーザー判断待ち。
+- 異常時: 計測が増えない場合は各呼び出し箇所の log_usage 呼び出しと data/gemini_usage/ の push 対象を確認。
+
 ## 2026-06-10 Gemini API コスト削減計画を作成（未実装）
 
 - 何をしたか: Gemini API の全利用箇所（9ファイル）を棚卸しし、`.cursor/docs/gemini-cost-reduction-plan.md` に削減計画を作成。施策は**未実装**。
