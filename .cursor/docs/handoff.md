@@ -17,6 +17,16 @@
 
 ---
 
+## 2026-06-10 Gemini活用法バズ調査ページ 並べ替え機能を追加
+
+- 何を変更したか: `build_gemini_buzz.py` にクライアントサイド並べ替えを実装。
+  - 各カードに `data-likes/retweets/bookmarks/er/buzz` を埋め込み、上部に並べ替えボタン（バズスコア=既定/いいね/リポスト/ブックマーク/エンゲージメント率）を追加。
+  - 末尾の `<script>` でカードをDOM並べ替えし、`.rank` の番号(#n)を振り直す。
+- 関連コミット: 本ターンでコミット
+- 合格条件: ページ上部のボタンを押すと並び替わり、#番号が1から振り直される。`grep -c sortbtn docs/gemini-buzz.html` が0より大。
+- 注意: 静的ページなのでJSはインライン。再生成は `python3 build_gemini_buzz.py`。
+- 残課題: なし
+
 ## 2026-06-10 Gemini活用法バズ調査ページ エンゲージメント率(ER)を追加
 
 - 何を変更したか: `build_gemini_buzz.py` に `_engagement_rate()` を追加。

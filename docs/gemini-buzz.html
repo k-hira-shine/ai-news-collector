@@ -17,6 +17,9 @@
 
 main{max-width:1050px;margin:auto;padding:28px 18px} h1{margin:0;color:#c4b5fd} .lead{color:var(--muted);line-height:1.7}
 .notice{padding:12px 14px;border:1px solid #7c3aed;background:#2e1065;border-radius:10px;margin:18px 0;font-size:.86rem}
+.sortbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:18px 0;color:var(--muted);font-size:.85rem}
+.sortbtn{cursor:pointer;padding:6px 12px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;font-size:.82rem}
+.sortbtn:hover{border-color:var(--accent)} .sortbtn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
 .card{display:flex;gap:14px;align-items:flex-start;padding:16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px}
 .rank{font-size:1.2rem;font-weight:800;color:#fbbf24;min-width:42px} .content{flex:1;min-width:0}
 .meta{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-size:.8rem} .meta strong{color:var(--text)} .meta .handle{color:var(--muted)} .content p{white-space:pre-wrap;line-height:1.65}
@@ -43,7 +46,15 @@ main{max-width:1050px;margin:auto;padding:28px 18px} h1{margin:0;color:#c4b5fd} 
 <main><h1>Gemini 活用法バズ調査</h1>
 <p class="lead">過去に反響が大きかったGeminiの使い方・プロンプト・活用事例を、取得時点のいいね数順に保存した調査資料です。</p>
 <div class="notice">対象: 2025-06-10〜2026-06-10 / 取得 97件 / 採用 42件 / Apify $0.0145<br>最終調査: 2026-06-09 20:52:55 UTC。XのTop検索は完全な全件取得ではありません。</div>
-<article class="card">
+<div class="sortbar">並べ替え:
+  <button class="sortbtn active" data-key="buzz">バズスコア</button>
+  <button class="sortbtn" data-key="likes">いいね</button>
+  <button class="sortbtn" data-key="retweets">リポスト</button>
+  <button class="sortbtn" data-key="bookmarks">ブックマーク</button>
+  <button class="sortbtn" data-key="er">エンゲージメント率</button>
+</div>
+<div id="cards">
+<article class="card" data-likes="10934" data-retweets="1582" data-bookmarks="14494" data-er="676.7137" data-buzz="44778">
   <div class="rank">#1</div>
   <div class="content">
     <div class="meta"><strong>ユナ│AI副業</strong>
@@ -70,7 +81,7 @@ ChatGPT・Claude・Gemini
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="7116" data-retweets="586" data-bookmarks="6240" data-er="59.5057" data-buzz="21430">
   <div class="rank">#2</div>
   <div class="content">
     <div class="meta"><strong>限界助教|ChatGPT/Claude/Geminiで論文作成と科研費申請</strong>
@@ -88,7 +99,7 @@ ChatGPT・Claude・Gemini
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G27r9_YbUAAiZb1.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="3489" data-retweets="280" data-bookmarks="4129" data-er="9.8749" data-buzz="12647">
   <div class="rank">#3</div>
   <div class="content">
     <div class="meta"><strong>さとり</strong>
@@ -106,7 +117,7 @@ ChatGPT・Claude・Gemini
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G62rylebgAAM5bW.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="3092" data-retweets="240" data-bookmarks="5734" data-er="159.7717" data-buzz="15296">
   <div class="rank">#4</div>
   <div class="content">
     <div class="meta"><strong>おさぼりさん</strong>
@@ -126,7 +137,7 @@ ChatGPT・Claude・Gemini
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="2519" data-retweets="227" data-bookmarks="4396" data-er="106.0270" data-buzz="12004">
   <div class="rank">#5</div>
   <div class="content">
     <div class="meta"><strong>まなみ｜AI副業</strong>
@@ -150,7 +161,7 @@ ChatGPT、Gemini、Claude
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="2226" data-retweets="213" data-bookmarks="2599" data-er="10.3161" data-buzz="8161">
   <div class="rank">#6</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -168,7 +179,7 @@ ChatGPT、Gemini、Claude
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2019154011258019840/pu/img/FgUjN-CYxuF88mSV.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="2023" data-retweets="173" data-bookmarks="1636" data-er="7.8987" data-buzz="5954">
   <div class="rank">#7</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -199,7 +210,7 @@ Geminiの中でノートブックが直接開ける。
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1982" data-retweets="176" data-bookmarks="2718" data-er="20.8023" data-buzz="7970">
   <div class="rank">#8</div>
   <div class="content">
     <div class="meta"><strong>限界助教|ChatGPT/Claude/Geminiで論文作成と科研費申請</strong>
@@ -221,7 +232,7 @@ Geminiの中でノートブックが直接開ける。
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1758" data-retweets="139" data-bookmarks="2686" data-er="9.3330" data-buzz="7607">
   <div class="rank">#9</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -239,7 +250,7 @@ Geminiの中でノートブックが直接開ける。
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1745" data-retweets="301" data-bookmarks="2193" data-er="8.2082" data-buzz="7070">
   <div class="rank">#10</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -271,7 +282,7 @@ Geminiに「〜を調べて」と
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1615" data-retweets="157" data-bookmarks="1990" data-er="72.3223" data-buzz="6130">
   <div class="rank">#11</div>
   <div class="content">
     <div class="meta"><strong>少し明るい高橋くん | WEIN / BACKSTAGE</strong>
@@ -349,7 +360,7 @@ TODO化ならタスク分解スキルを召喚。
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HAChGddaEAAsvEl.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="1478" data-retweets="117" data-bookmarks="2510" data-er="8.3844" data-buzz="6911">
   <div class="rank">#12</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -379,7 +390,7 @@ Google公式プロンプトガイドを
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2036548645961465856/pu/img/48SHiambPjZVmWip.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="1472" data-retweets="163" data-bookmarks="1346" data-er="27.3338" data-buzz="4665">
   <div class="rank">#13</div>
   <div class="content">
     <div class="meta"><strong>しゅん｜ホワイト転職</strong>
@@ -409,7 +420,7 @@ Google公式プロンプトガイドを
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1374" data-retweets="127" data-bookmarks="2534" data-er="46.5719" data-buzz="6829">
   <div class="rank">#14</div>
   <div class="content">
     <div class="meta"><strong>月島くん</strong>
@@ -435,7 +446,7 @@ Geminiの出力レベルが１→10000万倍になる
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1034" data-retweets="97" data-bookmarks="521" data-er="18.0971" data-buzz="3255">
   <div class="rank">#15</div>
   <div class="content">
     <div class="meta"><strong>まと｜AI×デザイン部</strong>
@@ -465,7 +476,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HEVF7GKbEAAJ1Df.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="998" data-retweets="67" data-bookmarks="1069" data-er="4.3030" data-buzz="3339">
   <div class="rank">#16</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -485,7 +496,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="953" data-retweets="73" data-bookmarks="939" data-er="2.4922" data-buzz="3088">
   <div class="rank">#17</div>
   <div class="content">
     <div class="meta"><strong>ミヤマ</strong>
@@ -504,7 +515,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2057223532531372032/img/RGCOUe7JH76LCUiQ.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="852" data-retweets="90" data-bookmarks="499" data-er="3.8703" data-buzz="2182">
   <div class="rank">#18</div>
   <div class="content">
     <div class="meta"><strong>TICA - ティカ</strong>
@@ -529,7 +540,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HHwUgKQbkAAf6Kr.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="758" data-retweets="57" data-bookmarks="976" data-er="3.6765" data-buzz="2899">
   <div class="rank">#19</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -547,7 +558,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="684" data-retweets="45" data-bookmarks="642" data-er="1.1048" data-buzz="2113">
   <div class="rank">#20</div>
   <div class="content">
     <div class="meta"><strong>トヨマネ｜うねり代表</strong>
@@ -567,7 +578,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G7y-rHyaMAIHkXj.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="644" data-retweets="51" data-bookmarks="640" data-er="2.7518" data-buzz="2109">
   <div class="rank">#21</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -585,7 +596,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2027142064077697025/img/wvtpe7UlT-z441HV.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="539" data-retweets="36" data-bookmarks="615" data-er="2.4174" data-buzz="1893">
   <div class="rank">#22</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -603,7 +614,7 @@ Gemini推奨ですが他モデルでもたぶんイケます！
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="524" data-retweets="56" data-bookmarks="614" data-er="2.3723" data-buzz="1944">
   <div class="rank">#23</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -635,7 +646,7 @@ Gemini・Claude・ChatGPTどれでも
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="520" data-retweets="36" data-bookmarks="627" data-er="2.4537" data-buzz="1932">
   <div class="rank">#24</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -657,7 +668,7 @@ NotebookLM × Gemの活用法3選をリプ欄で紹介します👇</p>
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="450" data-retweets="51" data-bookmarks="685" data-er="0.7888" data-buzz="1973">
   <div class="rank">#25</div>
   <div class="content">
     <div class="meta"><strong>木内翔大＠SHIFT AI代表「日本をAI先進国に」𝕏</strong>
@@ -679,7 +690,7 @@ NotebookLM × Gemの活用法3選をリプ欄で紹介します👇</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/GulE7b0b0AAujd8.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="447" data-retweets="57" data-bookmarks="336" data-er="2.9001" data-buzz="1292">
   <div class="rank">#26</div>
   <div class="content">
     <div class="meta"><strong>よしぎ｜AI時代のキャリア戦略</strong>
@@ -708,7 +719,7 @@ NotebookLM × Gemの活用法3選をリプ欄で紹介します👇</p>
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="384" data-retweets="17" data-bookmarks="564" data-er="5.8788" data-buzz="1581">
   <div class="rank">#27</div>
   <div class="content">
     <div class="meta"><strong>ほしの</strong>
@@ -726,7 +737,7 @@ NotebookLM × Gemの活用法3選をリプ欄で紹介します👇</p>
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="379" data-retweets="51" data-bookmarks="476" data-er="1.8285" data-buzz="1514">
   <div class="rank">#28</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -761,7 +772,7 @@ Gemini・Claude・ChatGPT
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="378" data-retweets="27" data-bookmarks="325" data-er="2.5783" data-buzz="1119">
   <div class="rank">#29</div>
   <div class="content">
     <div class="meta"><strong>よしぎ｜AI時代のキャリア戦略</strong>
@@ -779,7 +790,7 @@ Gemini・Claude・ChatGPT
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="366" data-retweets="45" data-bookmarks="521" data-er="1.8592" data-buzz="1567">
   <div class="rank">#30</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -797,7 +808,7 @@ Gemini・Claude・ChatGPT
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="357" data-retweets="36" data-bookmarks="91" data-er="0.2595" data-buzz="675">
   <div class="rank">#31</div>
   <div class="content">
     <div class="meta"><strong>チャエン | デジライズ CEO《重要AIニュースを毎日最速で発信⚡️》</strong>
@@ -825,7 +836,7 @@ https://t.co/S2Xr0qYY4i</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2054269756207779840/img/_ijI1GjU-SQFMnAn.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="273" data-retweets="44" data-bookmarks="380" data-er="1.4035" data-buzz="1179">
   <div class="rank">#32</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -851,7 +862,7 @@ https://t.co/S2Xr0qYY4i</p>
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="268" data-retweets="42" data-bookmarks="378" data-er="1.3862" data-buzz="1170">
   <div class="rank">#33</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -882,7 +893,7 @@ Gemini Flash3.5がさらに賢くなる
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="246" data-retweets="36" data-bookmarks="279" data-er="1.1565" data-buzz="940">
   <div class="rank">#34</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -912,7 +923,7 @@ Gemini Flash3.5がさらに賢くなる
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2053214695725940736/pu/img/_luYBv23A2w4oUNe.jpg" loading="lazy" alt="">
 </article>
-<article class="card">
+<article class="card" data-likes="237" data-retweets="32" data-bookmarks="300" data-er="1.1622" data-buzz="959">
   <div class="rank">#35</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -931,7 +942,7 @@ Gemini Flash3.5がさらに賢くなる
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="188" data-retweets="53" data-bookmarks="206" data-er="0.9305" data-buzz="785">
   <div class="rank">#36</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -949,7 +960,7 @@ Gemini Flash3.5がさらに賢くなる
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="163" data-retweets="31" data-bookmarks="152" data-er="0.7506" data-buzz="584">
   <div class="rank">#37</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -969,7 +980,7 @@ AIに『魂をやどらせるプロンプト』を海外から輸入してきま
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="153" data-retweets="30" data-bookmarks="145" data-er="0.6969" data-buzz="551">
   <div class="rank">#38</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -987,7 +998,7 @@ AIに『魂をやどらせるプロンプト』を海外から輸入してきま
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1" data-retweets="0" data-bookmarks="0" data-er="0.0301" data-buzz="1">
   <div class="rank">#39</div>
   <div class="content">
     <div class="meta"><strong>わた@お金の窓口</strong>
@@ -1006,7 +1017,7 @@ AIに『魂をやどらせるプロンプト』を海外から輸入してきま
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="1" data-retweets="0" data-bookmarks="0" data-er="0.0236" data-buzz="1">
   <div class="rank">#40</div>
   <div class="content">
     <div class="meta"><strong>お玉じゃっく氏@AIマスク😷イラスト</strong>
@@ -1025,7 +1036,7 @@ AIに『魂をやどらせるプロンプト』を海外から輸入してきま
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="0" data-retweets="0" data-bookmarks="0" data-er="0.4219" data-buzz="0">
   <div class="rank">#41</div>
   <div class="content">
     <div class="meta"><strong>ぽちねこ｜2026/9/5にTOEIC860以上</strong>
@@ -1045,7 +1056,7 @@ AIに『魂をやどらせるプロンプト』を海外から輸入してきま
     </div>
   </div>
 </article>
-<article class="card">
+<article class="card" data-likes="0" data-retweets="0" data-bookmarks="0" data-er="0.4425" data-buzz="0">
   <div class="rank">#42</div>
   <div class="content">
     <div class="meta"><strong>高井夜音</strong>
@@ -1063,4 +1074,29 @@ AIに『魂をやどらせるプロンプト』を海外から輸入してきま
       <a href="https://x.com/takaiyone/status/2064045726905360618" target="_blank" rel="noopener">Xで開く</a>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKT2pR1bUAAdgIR.png" loading="lazy" alt="">
-</article></main></body></html>
+</article>
+</div></main>
+<script>
+(function(){
+  var container=document.getElementById("cards");
+  var cards=Array.prototype.slice.call(container.querySelectorAll(".card"));
+  var buttons=document.querySelectorAll(".sortbtn");
+  function sortBy(key){
+    cards.sort(function(a,b){
+      return parseFloat(b.dataset[key])-parseFloat(a.dataset[key]);
+    });
+    cards.forEach(function(card,i){
+      card.querySelector(".rank").textContent="#"+(i+1);
+      container.appendChild(card);
+    });
+  }
+  buttons.forEach(function(btn){
+    btn.addEventListener("click",function(){
+      buttons.forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      sortBy(btn.dataset.key);
+    });
+  });
+})();
+</script>
+</body></html>

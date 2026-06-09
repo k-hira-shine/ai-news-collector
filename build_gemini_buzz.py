@@ -39,16 +39,23 @@ def _format_date(raw: str) -> str:
         return raw[:10]
 
 
-def _engagement_rate(post: dict) -> str:
-    """フォロワー数に対する総エンゲージメント率を「677%」形式で返す。"""
+def _engagement_rate_value(post: dict) -> float:
+    """フォロワー数に対する総エンゲージメント率(%)を数値で返す。0なら-1。"""
     followers = int(post.get("author_followers") or 0)
     if followers <= 0:
-        return ""
+        return -1.0
     engagements = sum(
         int(post.get(k) or 0)
         for k in ("likes", "retweets", "bookmarks", "quotes", "replies")
     )
-    rate = engagements / followers * 100
+    return engagements / followers * 100
+
+
+def _engagement_rate(post: dict) -> str:
+    """フォロワー数に対する総エンゲージメント率を「677%」形式で返す。"""
+    rate = _engagement_rate_value(post)
+    if rate < 0:
+        return ""
     return f"{rate:,.0f}%" if rate >= 100 else f"{rate:.1f}%"
 
 
@@ -61,13 +68,18 @@ def _card(rank: int, post: dict) -> str:
             break
     review = '<span class="review">要確認</span>' if post.get("needs_review") else ""
     er = _engagement_rate(post)
+    er_value = _engagement_rate_value(post)
     er_html = (
         f'<span class="er" title="フォロワー数に対する総エンゲージメント率">'
         f"ER {escape(er)}</span>"
         if er
         else ""
     )
-    return f"""<article class="card">
+    likes = int(post.get("likes") or 0)
+    retweets = int(post.get("retweets") or 0)
+    bookmarks = int(post.get("bookmarks") or 0)
+    buzz = int(post.get("buzz_score") or 0)
+    return f"""<article class="card" data-likes="{likes}" data-retweets="{retweets}" data-bookmarks="{bookmarks}" data-er="{er_value:.4f}" data-buzz="{buzz}">
   <div class="rank">#{rank}</div>
   <div class="content">
     <div class="meta"><strong>{escape(post.get("author_display") or "")}</strong>
@@ -111,6 +123,9 @@ def build() -> None:
 {NAV_CSS}
 main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5fd}} .lead{{color:var(--muted);line-height:1.7}}
 .notice{{padding:12px 14px;border:1px solid #7c3aed;background:#2e1065;border-radius:10px;margin:18px 0;font-size:.86rem}}
+.sortbar{{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:18px 0;color:var(--muted);font-size:.85rem}}
+.sortbtn{{cursor:pointer;padding:6px 12px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;font-size:.82rem}}
+.sortbtn:hover{{border-color:var(--accent)}} .sortbtn.active{{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}}
 .card{{display:flex;gap:14px;align-items:flex-start;padding:16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px}}
 .rank{{font-size:1.2rem;font-weight:800;color:#fbbf24;min-width:42px}} .content{{flex:1;min-width:0}}
 .meta{{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-size:.8rem}} .meta strong{{color:var(--text)}} .meta .handle{{color:var(--muted)}} .content p{{white-space:pre-wrap;line-height:1.65}}
@@ -124,7 +139,40 @@ main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5f
 <main><h1>Gemini 活用法バズ調査</h1>
 <p class="lead">過去に反響が大きかったGeminiの使い方・プロンプト・活用事例を、取得時点のいいね数順に保存した調査資料です。</p>
 <div class="notice">{escape(summary)}<br>最終調査: {escape(updated)} UTC。XのTop検索は完全な全件取得ではありません。</div>
-{cards}</main></body></html>"""
+<div class="sortbar">並べ替え:
+  <button class="sortbtn active" data-key="buzz">バズスコア</button>
+  <button class="sortbtn" data-key="likes">いいね</button>
+  <button class="sortbtn" data-key="retweets">リポスト</button>
+  <button class="sortbtn" data-key="bookmarks">ブックマーク</button>
+  <button class="sortbtn" data-key="er">エンゲージメント率</button>
+</div>
+<div id="cards">
+{cards}
+</div></main>
+<script>
+(function(){{
+  var container=document.getElementById("cards");
+  var cards=Array.prototype.slice.call(container.querySelectorAll(".card"));
+  var buttons=document.querySelectorAll(".sortbtn");
+  function sortBy(key){{
+    cards.sort(function(a,b){{
+      return parseFloat(b.dataset[key])-parseFloat(a.dataset[key]);
+    }});
+    cards.forEach(function(card,i){{
+      card.querySelector(".rank").textContent="#"+(i+1);
+      container.appendChild(card);
+    }});
+  }}
+  buttons.forEach(function(btn){{
+    btn.addEventListener("click",function(){{
+      buttons.forEach(function(b){{b.classList.remove("active");}});
+      btn.classList.add("active");
+      sortBy(btn.dataset.key);
+    }});
+  }});
+}})();
+</script>
+</body></html>"""
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(html, encoding="utf-8")
     print(f"Generated {OUTPUT_PATH} ({len(posts)} posts)")
