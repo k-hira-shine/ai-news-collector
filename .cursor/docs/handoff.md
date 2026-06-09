@@ -17,6 +17,18 @@
 
 ---
 
+## 2026-06-10 ナビ欠落の恒久対策（sync_nav.py）
+
+- 問題: ナビは各HTMLにビルド時に焼き込む方式。`site_nav.py` にページを足しても、その後に再生成されないページは旧ナビのままでリンクが欠ける（毎回どこかで漏れる）。
+- 対策:
+  - `sync_nav.py` を新規作成。`docs/*.html` の `<nav class="topnav">...</nav>` を最新ナビへ一括置換（active はファイル名で判定）。
+  - 全収集系ワークフロー（collect / money-collect / buzz-collect / gemini-buzz-research / rebuild-reviews）のコミット前に `python sync_nav.py` を追加。ターゲット型 workflow の push 対象を個別HTML→`docs/` へ拡大し、同期結果が確実に push されるようにした。
+  - 既存11ページを今回のコミットで同期済み。
+- 関連コミット: 本ターンでコミット
+- 合格条件: どのページからでもナビに全リンク（特に🏆Gemini活用）が出る。新ページ追加時は `python3 sync_nav.py` 実行→`docs/` を push。
+- 注意: `render_nav` の NAV_LINKS が唯一のソース。CSS(`NAV_CSS`)は各ビルダー側で head に入る前提なので sync_nav は CSS を触らない。
+- 残課題: なし
+
 ## 2026-06-10 Gemini活用法バズ調査ページ 並べ替え機能を追加
 
 - 何を変更したか: `build_gemini_buzz.py` にクライアントサイド並べ替えを実装。

@@ -35,9 +35,12 @@ jobs:
           python build_tools.py
           python build_home.py
 
+      - name: Sync navigation across all pages
+        run: python sync_nav.py
+
       - name: Commit & push
         run: |
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
             "build: reviews.json 更新によるページ再ビルド" \
-            docs/reviews.html docs/tools.html docs/home.html
+            docs/

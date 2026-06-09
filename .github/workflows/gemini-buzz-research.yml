@@ -39,9 +39,12 @@ jobs:
             --end "${{ inputs.end }}" \
             --max-items-per-query 100 \
             --max-charge-usd 0.08
+      - name: Sync navigation across all pages
+        run: python sync_nav.py
+
       - name: Commit research snapshot
         run: |
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
             "research: Gemini buzz ${{ inputs.start }} to ${{ inputs.end }}" \
-            data/gemini_buzz/ docs/gemini-buzz.html
+            data/gemini_buzz/ docs/

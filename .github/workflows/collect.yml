@@ -119,6 +119,9 @@ jobs:
       - name: Update Apify cost tracking
         run: python check_cost.py --record --quiet
 
+      - name: Sync navigation across all pages
+        run: python sync_nav.py
+
       - name: Commit & push data
         env:
           REBUILD_BUZZ: "true"

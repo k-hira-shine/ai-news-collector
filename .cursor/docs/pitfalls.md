@@ -5,3 +5,4 @@
 - 2026-05-23: collect.yml の 15 分タイムアウトで夜間実行が push 前に中断されサイト更新が止まる。Gemini収集追加後は 45 分以上を確保する
 - 2026-05-21: `apify-client>=1.8.0` だけだと CI で 3.0 が入り `timeout_secs` が使えず X 収集が全滅する（`<3.0.0` で pin する）
 - 2026-06-04: `INCIDENT_CSS` を `<style>` なしで body/footer 末尾に出すと Home 下部に CSS が生テキスト表示される。`INCIDENT_CSS` は head の `<style>` 内、`INCIDENT_BODY_HTML` はナビ直後。commit 前に `python3 scripts/check_incident_css_leak.py`（詳細: `.cursor/docs/incident-display-css-leak.md`）
+- 2026-06-10: ナビは各HTMLにビルド時焼き込みのため、`site_nav.py` にページ追加しても再生成しないページはリンクが欠ける。新ページ追加時は必ず `python3 sync_nav.py` で全 `docs/*.html` を同期し、`docs/` 全体を push する（各収集ワークフローのデプロイ前にも組込済み）
