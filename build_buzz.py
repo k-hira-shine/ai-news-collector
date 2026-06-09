@@ -417,7 +417,7 @@ async function addAccount() {{
   const status = document.getElementById('addStatus');
   let raw = handleInput.value.trim();
   // URL形式（https://x.com/handle や twitter.com/handle）からハンドル抽出
-  const urlMatch = raw.match(/(?:x\.com|twitter\.com)\/([A-Za-z0-9_]+)/);
+  const urlMatch = raw.match(/(?:x\\.com|twitter\\.com)\\/([A-Za-z0-9_]+)/);
   let handle = urlMatch ? urlMatch[1] : raw.replace(/^@/, '');
   if (!handle) {{ status.textContent = '⚠️ ハンドルを入力してください'; status.style.color='#f59e0b'; return; }}
   if (!GH_PAT) {{ status.textContent = '⚠️ 設定が必要です（管理者にお知らせください）'; status.style.color='#f87171'; return; }}

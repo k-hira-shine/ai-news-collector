@@ -1,6 +1,20 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-09
+最終更新: 2026-06-10
+
+---
+
+## 2026-06-10 日次確認
+
+朝の3ワークフローと昨日のヘルスチェック修正を確認した。
+
+- `AI News Collector`、`Buzz Ranking Collector`、`AI Money Cases Collector` はすべて成功
+- Gemini RSSは9件すべて成功し、`rss_feeds_failed=0`
+- collectは`health_check_version=2`、収集前後の異常検知はいずれも0
+- push競合後に`status_merge`が動作し、2回目のpushで成功
+- 本日生成されたJSON/JSONLに構文エラーなし
+- テストは`53 passed, 12 subtests passed`
+- Python 3.14の警告を解消するため、`build_buzz.py`内のJavaScript正規表現を二重エスケープ
 
 ---
 
