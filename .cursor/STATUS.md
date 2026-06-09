@@ -1,6 +1,9 @@
 # ai-news-collector 現状整理
 
-最終更新: 2026-05-13
+最終更新: 2026-06-10
+
+> Gemini活用法バズ調査を再開する場合は、最初に
+> `.cursor/docs/gemini-buzz-research-log.md` を参照する。
 
 ---
 
