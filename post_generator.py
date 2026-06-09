@@ -54,8 +54,10 @@ def _generate_posts_for_template(
     from google.genai import types
 
     client = genai.Client(api_key=api_key)
+    # テンプレ生成は軽量タスクのため Flash 固定（以前は stage1_filter=Pro を
+    # 意図せず参照していた）
     model_name = config.get("analysis", {}).get("models", {}).get(
-        "stage1_filter", "gemini-2.5-flash"
+        "fallback", "gemini-2.5-flash"
     )
     max_chars = config.get("post_templates", {}).get("max_chars", 140)
     n = config.get("post_templates", {}).get("posts_per_template", 5)
@@ -118,6 +120,8 @@ key_insights:
                 "http_options": types.HttpOptions(timeout=120_000),
             },
         )
+        from gemini_usage import log_usage
+        log_usage("post_generator", model_name, response)
         result = json.loads(response.text)
         generated = result.get("generated", [])
 

@@ -142,6 +142,8 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
                 thinking_config=types.ThinkingConfig(thinking_budget=128),
             ),
         )
+        from gemini_usage import log_usage
+        log_usage("tools_analyzer", model_name, response)
         raw = json.loads(response.text)
     except Exception as e:
         logger.error("Gemini tools analysis failed: %s", e)

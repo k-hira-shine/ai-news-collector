@@ -157,6 +157,8 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
                 "http_options": types.HttpOptions(timeout=300_000),
             },
         )
+        from gemini_usage import log_usage
+        log_usage("sns_analyzer", model_name, response)
         result = json.loads(response.text)
         raw_posts = result.get("posts", [])
 

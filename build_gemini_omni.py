@@ -148,6 +148,8 @@ def _translate_batch(client, posts: list[dict]) -> dict[str, str]:
             "http_options": types.HttpOptions(timeout=120_000),
         },
     )
+    from gemini_usage import log_usage
+    log_usage("gemini_omni_translate", TRANSLATE_MODEL, response)
     text = response.text
     if not text:
         raise ValueError("Empty translation response")

@@ -566,7 +566,9 @@ AI/ML と無関係な記事はスキップしてください。
         stage_label: str = "unknown",
     ) -> dict:
         try:
-            return self._call_gemini_single(model, prompt, schema, thinking_budget)
+            return self._call_gemini_single(
+                model, prompt, schema, thinking_budget, stage_label=stage_label
+            )
         except Exception as e:
             if fallback_model and self._is_server_error(e):
                 logger.warning(
@@ -575,7 +577,8 @@ AI/ML と無関係な記事はスキップしてください。
                 )
                 self.fallback_used_stages.append(stage_label)
                 return self._call_gemini_single(
-                    fallback_model, prompt, schema, thinking_budget
+                    fallback_model, prompt, schema, thinking_budget,
+                    stage_label=stage_label,
                 )
             raise
 
@@ -593,7 +596,8 @@ AI/ML と無関係な記事はスキップしてください。
 
     @retry(max_retries=4, base_delay=15, max_delay=120)
     def _call_gemini_single(
-        self, model: str, prompt: str, schema: dict | None = None, thinking_budget: int = 128
+        self, model: str, prompt: str, schema: dict | None = None,
+        thinking_budget: int = 128, stage_label: str = "unknown",
     ) -> dict:
         from google.genai import types
 
@@ -616,6 +620,9 @@ AI/ML と無関係な記事はスキップしてください。
 
         elapsed = time.time() - t0
         logger.info("Gemini responded in %.1fs (%s)", elapsed, model)
+
+        from gemini_usage import log_usage
+        log_usage(f"analyzer:{stage_label}", model, response)
 
         text = response.text
         if not text:

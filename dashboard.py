@@ -589,6 +589,8 @@ def _translate_hn_missing(items: list[dict]) -> None:
     )
     try:
         resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+        from gemini_usage import log_usage
+        log_usage("dashboard_hn_translate", "gemini-2.5-flash", resp)
         import re as _re
         for m in _re.finditer(r'\[(\d+)\]\s*(.+)', resp.text or ""):
             idx = int(m.group(1))

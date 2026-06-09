@@ -818,6 +818,8 @@ def classify_items(items: list[dict], config: dict, *, titles_only: bool = False
                         thinking_config=types.ThinkingConfig(thinking_budget=128),
                     ),
                 )
+                from gemini_usage import log_usage
+                log_usage("gemini_collector", model_name, response)
                 raw = json.loads(response.text)
                 break
             except Exception as e:
