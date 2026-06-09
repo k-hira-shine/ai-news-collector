@@ -17,6 +17,15 @@
 
 ---
 
+## 2026-06-10 G3追加検証: Pro vs Pro 揺らぎ基準を測定
+
+- 結果（`data/stage1_verification_gemini-2.5-pro_vs_gemini-2.5-pro.json`）:
+  - Pro自身の実行揺らぎ: 採用一致 0.829 / スコア差 0.68 / カテゴリ一致 0.941 / Top30重複 0.875
+  - 比較すると Flash は「採用判定」は揺らぎ以下（=安全）、「スコア・カテゴリ」は揺らぎ超の実差あり
+- 結論（未実行）: ニュース stage1 のみ Flash 化を推奨（Stage2=Pro が最終順位を補正するため）。Money/SNS は2段目補正がなく未検証のため Pro 維持で設定キー分離を提案。**ユーザーの実行判断待ち**。
+- 実装する場合: config.yaml `models.stage1_filter` を flash に変更し、money_analyzer.py / sns_analyzer.py の参照キーを新設の Pro キーへ分離する。
+- 検証WFは `verify-stage1-flash.yml`（model_a/model_b 指定可、同一指定で揺らぎ測定）。
+
 ## 2026-06-10 Gemini コスト削減 G1+G2 実装、G3 検証完了
 
 - 実費確認結果: **有料 Tier 1**。6/1〜9 実費 ¥2,892（月ペース約¥9,600）。**Pro が費用の92%**（28日間 Pro ¥2,450 / Flash ¥206）。Apify（月$20）より大きい。キーは本プロジェクト専用（プロジェクト名 Sedori、ユーザー確認済み）。
