@@ -9,6 +9,7 @@ G3（1次フィルタの Pro→Flash 化）の事前検証。直近の保存済�
 """
 
 import json
+import os
 import sys
 import time
 from datetime import datetime, timedelta, timezone
@@ -21,7 +22,10 @@ sys.path.insert(0, str(BASE))
 
 from analyzer import NewsAnalyzer  # noqa: E402
 
-OUTPUT = BASE / "data" / "stage1_flash_verification.json"
+# MODEL_A/MODEL_B を同一にすれば「同一モデルの実行揺らぎ」の基準が取れる
+MODEL_A = os.environ.get("MODEL_A", "gemini-2.5-pro")
+MODEL_B = os.environ.get("MODEL_B", "gemini-2.5-flash")
+OUTPUT = BASE / "data" / f"stage1_verification_{MODEL_A}_vs_{MODEL_B}.json"
 MAX_ITEMS = 120
 JST = timezone(timedelta(hours=9))
 
@@ -54,37 +58,37 @@ def run_stage1(items: list[dict], model: str) -> list[dict]:
     return analyzer._stage1_filter(items)
 
 
-def compare(pro: list[dict], flash: list[dict]) -> dict:
-    pro_by_id = {r["id"]: r for r in pro if r.get("id")}
-    flash_by_id = {r["id"]: r for r in flash if r.get("id")}
-    pro_ids, flash_ids = set(pro_by_id), set(flash_by_id)
-    common = pro_ids & flash_ids
-    union = pro_ids | flash_ids
+def compare(result_a: list[dict], result_b: list[dict]) -> dict:
+    a_by_id = {r["id"]: r for r in result_a if r.get("id")}
+    b_by_id = {r["id"]: r for r in result_b if r.get("id")}
+    a_ids, b_ids = set(a_by_id), set(b_by_id)
+    common = a_ids & b_ids
+    union = a_ids | b_ids
 
     score_diffs = []
     category_match = 0
     for item_id in common:
-        p, f = pro_by_id[item_id], flash_by_id[item_id]
+        a, b = a_by_id[item_id], b_by_id[item_id]
         score_diffs.append(
-            abs(float(p.get("importance_score") or 0) - float(f.get("importance_score") or 0))
+            abs(float(a.get("importance_score") or 0) - float(b.get("importance_score") or 0))
         )
-        if (p.get("category") or "") == (f.get("category") or ""):
+        if (a.get("category") or "") == (b.get("category") or ""):
             category_match += 1
 
     def top_ids(rows: list[dict], n: int = 30) -> set[str]:
         ranked = sorted(rows, key=lambda r: float(r.get("importance_score") or 0), reverse=True)
         return {r["id"] for r in ranked[:n] if r.get("id")}
 
-    top_pro, top_flash = top_ids(pro), top_ids(flash)
+    top_a, top_b = top_ids(result_a), top_ids(result_b)
     return {
-        "pro_selected": len(pro_ids),
-        "flash_selected": len(flash_ids),
+        "a_selected": len(a_ids),
+        "b_selected": len(b_ids),
         "selection_jaccard": round(len(common) / len(union), 3) if union else 0.0,
         "common_count": len(common),
         "avg_importance_diff": round(sum(score_diffs) / len(score_diffs), 2) if score_diffs else None,
         "category_agreement": round(category_match / len(common), 3) if common else None,
         "top30_overlap": round(
-            len(top_pro & top_flash) / max(len(top_pro | top_flash), 1), 3
+            len(top_a & top_b) / max(len(top_a | top_b), 1), 3
         ),
     }
 
@@ -96,18 +100,20 @@ def main() -> None:
         sys.exit(1)
     print(f"入力: {len(items)}件（data/hn 直近3日分）")
 
-    print("Pro で Stage1 実行中…")
-    pro = run_stage1(items, "gemini-2.5-pro")
+    print(f"{MODEL_A} で Stage1 実行中…")
+    result_a = run_stage1(items, MODEL_A)
     time.sleep(15)
-    print("Flash で Stage1 実行中…")
-    flash = run_stage1(items, "gemini-2.5-flash")
+    print(f"{MODEL_B} で Stage1 実行中…")
+    result_b = run_stage1(items, MODEL_B)
 
-    metrics = compare(pro, flash)
+    metrics = compare(result_a, result_b)
     result = {
         "verified_at": datetime.now(JST).isoformat(timespec="seconds"),
+        "model_a": MODEL_A,
+        "model_b": MODEL_B,
         "input_items": len(items),
         "metrics": metrics,
-        "note": "selection_jaccard/top30_overlap が 0.8 以上、category_agreement 0.85 以上なら Flash 化を可とする目安",
+        "note": "selection_jaccard/top30_overlap が 0.8 以上、category_agreement 0.85 以上なら Flash 化を可とする目安。同一モデル同士の結果は実行揺らぎの基準値",
     }
     OUTPUT.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False, indent=2))

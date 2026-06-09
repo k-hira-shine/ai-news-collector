@@ -2,6 +2,15 @@ name: Verify Stage1 Pro vs Flash
 
 on:
   workflow_dispatch:
+    inputs:
+      model_a:
+        description: '比較モデルA'
+        required: false
+        default: 'gemini-2.5-pro'
+      model_b:
+        description: '比較モデルB（Aと同じにすると揺らぎ測定）'
+        required: false
+        default: 'gemini-2.5-flash'
 
 permissions:
   contents: write
@@ -21,13 +30,15 @@ jobs:
           python-version: '3.12'
           cache: 'pip'
       - run: pip install -r requirements.txt
-      - name: Run Pro vs Flash comparison
+      - name: Run model comparison
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODEL_A: ${{ inputs.model_a || 'gemini-2.5-pro' }}
+          MODEL_B: ${{ inputs.model_b || 'gemini-2.5-flash' }}
         run: python scripts/verify_stage1_flash.py
       - name: Commit result
         run: |
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
-            "verify: stage1 Pro vs Flash comparison" \
-            data/stage1_flash_verification.json data/gemini_usage/
+            "verify: stage1 model comparison" \
+            data/ 
