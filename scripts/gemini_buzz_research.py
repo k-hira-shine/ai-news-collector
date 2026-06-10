@@ -61,6 +61,40 @@ EXTERNAL_DETAIL_HINTS = re.compile(
     r"\bthread\b|\brepl(?:y|ies)\b|\bdetails below\b|\blink in bio\b",
     re.I,
 )
+GEMINI_HINTS = re.compile(r"\bGemini\b|ジェミニ", re.I)
+RELEASE_HINTS = re.compile(
+    r"新機能|新しい|登場|発表|公開|提供開始|アップデート|刷新|ついに|"
+    r"\bnew (?:feature|capabilit(?:y|ies)|model|tool|file search|session management)\b|"
+    r"\bupdate[ds]?\b|\blaunch(?:ed|ing)?\b|\breleas(?:e|ed|ing)\b|"
+    r"\bintroduc(?:e|ed|ing)\b|\benhanced\b|\breworked\b|\brolling out\b",
+    re.I,
+)
+EXCITEMENT_HINTS = re.compile(
+    r"すごい|凄い|ヤバ|やば|衝撃|驚|神アプデ|異次元|待ち焦がれ|"
+    r"信じられ|とんでもな|バケモン|世界が変わ|"
+    r"\bcrazy\b|\binsane\b|\bwild\b|\bmind[- ]?blow(?:ing|n)?\b|"
+    r"\bomg\b|\boh my\b|\bcan't believe\b|\bcannot believe\b|"
+    r"\bblown away\b|\bgame[ -]?changer\b|\bthis is over\b|"
+    r"\bkills?\b|\bno way\b|\bslept on\b|\brewired\b",
+    re.I,
+)
+CAPABILITY_HINTS = re.compile(
+    r"デモ|動画|画像|音声|3D|リアルタイム|ワークフロー|アプリ|サイト|"
+    r"できるようにな|生成でき|作れる|構築でき|変換でき|自動化|"
+    r"自動保存|再開でき|接続でき|操作でき|コード不要|コードは1行も|プロンプトだけ|"
+    r"\bdemo\b|\bvideo\b|\bimage\b|\baudio\b|\b3d\b|\breal[- ]?time\b|"
+    r"\bworkflow\b|\bapp\b|\bwebsite\b|\bno cod(?:e|ing)\b|"
+    r"\bsingle prompt\b|\btext prompt\b|\bcan\b|"
+    r"\bbuilds?\b|\bcreates?\b|\bgenerates?\b|\btransforms?\b|\bautomates?\b|"
+    r"\bwrites?\b|\bfilms?\b|\bresearches?\b|\bdesigns?\b",
+    re.I,
+)
+GENERIC_HYPE_HINTS = re.compile(
+    r"9割|性能の(?:10|30|半分)%|神プロンプト|コピペOK|全部パクって|"
+    r"使い方が.*間違|初期設定のまま|リプに置|"
+    r"\bmost people\b|\bbookmark this\b|\bsteal the prompt\b",
+    re.I,
+)
 
 
 def _parse_args() -> argparse.Namespace:
@@ -72,6 +106,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--max-charge-usd", type=Decimal, default=Decimal("0.08"))
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--refresh-costs-only", action="store_true")
+    parser.add_argument("--reclassify-only", action="store_true")
     return parser.parse_args()
 
 
@@ -159,6 +194,39 @@ def classify_relevance(text: str) -> dict:
         "needs_review": accepted and news,
         "mentions_other_ai": bool(OTHER_AI_HINTS.search(text)),
         "needs_external_detail": bool(EXTERNAL_DETAIL_HINTS.search(text)),
+        **classify_discovery(text),
+    }
+
+
+def classify_discovery(text: str) -> dict:
+    """新機能や具体的な能力に驚いて紹介する投稿を判定する。"""
+    matches = list(GEMINI_HINTS.finditer(text))
+    context = " ".join(
+        text[max(0, match.start() - 180) : match.end() + 220]
+        for match in matches
+    )
+    gemini = bool(matches)
+    release = bool(RELEASE_HINTS.search(context))
+    excitement = bool(EXCITEMENT_HINTS.search(context))
+    capability = bool(CAPABILITY_HINTS.search(context))
+    generic_hype = bool(GENERIC_HYPE_HINTS.search(text))
+    score = int(release) * 2 + int(excitement) * 2 + int(capability)
+    is_discovery = (
+        gemini
+        and capability
+        and (release or excitement)
+        and not (generic_hype and not release)
+    )
+    if not is_discovery:
+        kind = ""
+    elif excitement:
+        kind = "surprise"
+    else:
+        kind = "new_feature"
+    return {
+        "is_discovery": is_discovery,
+        "discovery_kind": kind,
+        "discovery_score": score if is_discovery else 0,
     }
 
 
@@ -266,6 +334,41 @@ def refresh_manifest_costs() -> None:
     logger.info("Refreshed costs for %d runs: $%.4f", len(manifest.get("runs", [])), total_cost)
 
 
+def reclassify_snapshot() -> None:
+    if not MANIFEST_PATH.exists():
+        raise SystemExit(f"Manifest missing: {MANIFEST_PATH}")
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    raw_path = ROOT / manifest["raw_snapshot"]
+    snapshot = json.loads(raw_path.read_text(encoding="utf-8"))
+    posts = snapshot.get("posts", [])
+    for post in posts:
+        post.update(classify_relevance(post.get("text") or ""))
+    accepted = sorted(
+        (post for post in posts if post["accepted"]),
+        key=lambda post: (post["likes"], post["retweets"], post["published_at"]),
+        reverse=True,
+    )
+    snapshot["accepted_count"] = len(accepted)
+    _write_json(raw_path, snapshot)
+    _write_json(
+        RANKING_PATH,
+        {
+            "snapshot_id": snapshot["snapshot_id"],
+            "fetched_at": snapshot["fetched_at"],
+            "ranking_basis": "likes_desc",
+            "engagement_is_snapshot": True,
+            "count": len(accepted),
+            "discovery_count": sum(bool(post["is_discovery"]) for post in accepted),
+            "posts": accepted,
+        },
+    )
+    logger.info(
+        "Reclassified %d accepted posts: %d discovery posts",
+        len(accepted),
+        sum(bool(post["is_discovery"]) for post in accepted),
+    )
+
+
 def run_research(args: argparse.Namespace) -> None:
     token = os.environ.get("APIFY_TOKEN")
     if not token:
@@ -346,6 +449,8 @@ def main() -> None:
     _validate_args(args)
     if args.refresh_costs_only:
         refresh_manifest_costs()
+    elif args.reclassify_only:
+        reclassify_snapshot()
     elif not args.build_only:
         run_research(args)
     from build_gemini_buzz import build

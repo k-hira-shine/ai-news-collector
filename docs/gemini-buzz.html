@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ja"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Gemini 活用法バズ調査</title>
+<title>Gemini 驚き・新機能バズ調査</title>
 <style>
 :root{--bg:#0f172a;--surface:#1e293b;--border:#334155;--text:#e2e8f0;--muted:#94a3b8;--accent:#8b5cf6}
 *{box-sizing:border-box} body{margin:0;padding-top:48px;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -18,14 +18,18 @@
 main{max-width:1050px;margin:auto;padding:28px 18px} h1{margin:0;color:#c4b5fd} .lead{color:var(--muted);line-height:1.7}
 .notice{padding:12px 14px;border:1px solid #7c3aed;background:#2e1065;border-radius:10px;margin:18px 0;font-size:.86rem}
 .sortbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:18px 0;color:var(--muted);font-size:.85rem}
+.filterbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:18px 0;color:var(--muted);font-size:.85rem}
 .sortbtn{cursor:pointer;padding:6px 12px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;font-size:.82rem}
 .sortbtn:hover{border-color:var(--accent)} .sortbtn.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.filterbtn{cursor:pointer;padding:6px 12px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;font-size:.82rem}
+.filterbtn:hover{border-color:#f59e0b} .filterbtn.active{background:#f59e0b;border-color:#f59e0b;color:#111827;font-weight:700}
 .card{display:flex;gap:14px;align-items:flex-start;padding:16px;margin:12px 0;background:var(--surface);border:1px solid var(--border);border-radius:12px}
 .rank{font-size:1.2rem;font-weight:800;color:#fbbf24;min-width:42px} .content{flex:1;min-width:0}
 .meta{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-size:.8rem} .meta strong{color:var(--text)} .meta .handle{color:var(--muted)} .content p{white-space:pre-wrap;line-height:1.65}
 .stats{display:flex;gap:14px;flex-wrap:wrap;align-items:center;color:var(--muted);font-size:.82rem} .stats a{color:#60a5fa}
 .er{font-weight:700;color:#0f172a;background:#34d399;padding:1px 8px;border-radius:999px;font-size:.78rem}
 .thumb{width:160px;max-height:120px;object-fit:cover;border-radius:8px} .review{color:#fbbf24}
+.discovery{color:#111827;background:#fbbf24;padding:1px 7px;border-radius:999px;font-weight:700}
 .empty{padding:60px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px}
 @media(max-width:650px){.thumb{display:none}.card{gap:6px}}
 </style></head><body>
@@ -43,9 +47,13 @@ main{max-width:1050px;margin:auto;padding:28px 18px} h1{margin:0;color:#c4b5fd} 
   <a href="gemini-buzz.html" class="active">🏆 Gemini活用</a>
   <a href="gemini-omni.html">🎬 Gemini Omni</a>
 </nav>
-<main><h1>Gemini 活用法バズ調査</h1>
-<p class="lead">過去に反響が大きかったGeminiの使い方・プロンプト・活用事例を、取得時点のいいね数順に保存した調査資料です。</p>
-<div class="notice">対象: 2025-06-10〜2026-06-10 / 取得 150件 / 採用 95件 / Apify $0.0226<br>最終調査: 2026-06-10 03:59:03 UTC。XのTop検索は完全な全件取得ではありません。</div>
+<main><h1>Gemini 驚き・新機能バズ調査</h1>
+<p class="lead">Geminiの新機能や具体的な能力を見て「これはすごい」と紹介している人気投稿を優先表示します。</p>
+<div class="notice">対象: 2025-06-10〜2026-06-10 / 取得 150件 / 採用 95件 / 驚き・新機能 14件 / Apify $0.0226<br>最終調査: 2026-06-10 03:59:03 UTC。XのTop検索は完全な全件取得ではありません。</div>
+<div class="filterbar">表示:
+  <button class="filterbtn active" data-filter="discovery">驚き・新機能</button>
+  <button class="filterbtn" data-filter="all">すべて</button>
+</div>
 <div class="sortbar">並べ替え:
   <button class="sortbtn active" data-key="buzz">バズスコア</button>
   <button class="sortbtn" data-key="likes">いいね</button>
@@ -54,7 +62,7 @@ main{max-width:1050px;margin:auto;padding:28px 18px} h1{margin:0;color:#c4b5fd} 
   <button class="sortbtn" data-key="er">エンゲージメント率</button>
 </div>
 <div id="cards">
-<article class="card" data-likes="51711" data-retweets="3862" data-bookmarks="24663" data-er="88.5550" data-buzz="113237">
+<article class="card" data-likes="51711" data-retweets="3862" data-bookmarks="24663" data-er="88.5550" data-buzz="113237" data-discovery="0">
   <div class="rank">#1</div>
   <div class="content">
     <div class="meta"><strong>PJ Ace</strong>
@@ -78,12 +86,12 @@ Made with Dreamina AI using Octo &amp;amp; Dreamina Seedance 2.0, full workflow 
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2062758718484385793/img/Mci9LejZ2NYQUKSC.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="11597" data-retweets="1162" data-bookmarks="12170" data-er="19.1789" data-buzz="39693">
+<article class="card" data-likes="11597" data-retweets="1162" data-bookmarks="12170" data-er="19.1789" data-buzz="39693" data-discovery="1">
   <div class="rank">#2</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
       <span class="handle">@EHuanglu</span>
-      <span>2025年12月1日</span></div>
+      <span>2025年12月1日</span><span class="discovery">驚き</span></div>
     <p>oh my… this shouldn’t be possible
 
 Gemini 3 can generate 3D interactive scenes with three.js… and you can literally move particles with your hands
@@ -102,7 +110,7 @@ tutorial + prompts in the comments https://t.co/WRRm3oKCpJ</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1995502042651963392/img/a5LrcVytVKZPILJy.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="10934" data-retweets="1582" data-bookmarks="14493" data-er="674.6854" data-buzz="44776">
+<article class="card" data-likes="10934" data-retweets="1582" data-bookmarks="14493" data-er="674.6854" data-buzz="44776" data-discovery="0">
   <div class="rank">#3</div>
   <div class="content">
     <div class="meta"><strong>ユナ│AI副業</strong>
@@ -129,7 +137,7 @@ ChatGPT・Claude・Gemini
     </div>
   </div>
 </article>
-<article class="card" data-likes="9211" data-retweets="822" data-bookmarks="17091" data-er="10.7789" data-buzz="45909">
+<article class="card" data-likes="9211" data-retweets="822" data-bookmarks="17091" data-er="10.7789" data-buzz="45909" data-discovery="0">
   <div class="rank">#4</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
@@ -149,7 +157,7 @@ https://t.co/AinuKm5gkn</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2044751705523593216/img/GcAvLuCBfs0gMTEg.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="8412" data-retweets="629" data-bookmarks="14637" data-er="6.3824" data-buzz="39659">
+<article class="card" data-likes="8412" data-retweets="629" data-bookmarks="14637" data-er="6.3824" data-buzz="39659" data-discovery="0">
   <div class="rank">#5</div>
   <div class="content">
     <div class="meta"><strong>Min Choi</strong>
@@ -176,7 +184,7 @@ Bookmark this.</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="7729" data-retweets="758" data-bookmarks="13829" data-er="13.1287" data-buzz="37769">
+<article class="card" data-likes="7729" data-retweets="758" data-bookmarks="13829" data-er="13.1287" data-buzz="37769" data-discovery="0">
   <div class="rank">#6</div>
   <div class="content">
     <div class="meta"><strong>Meng To</strong>
@@ -194,12 +202,12 @@ Bookmark this.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1996965589991280640/img/Pcpt_kt9JSv8P-Rn.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="5835" data-retweets="520" data-bookmarks="4485" data-er="8.3870" data-buzz="16487">
+<article class="card" data-likes="5835" data-retweets="520" data-bookmarks="4485" data-er="8.3870" data-buzz="16487" data-discovery="1">
   <div class="rank">#7</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
       <span class="handle">@EHuanglu</span>
-      <span>2025年12月17日</span></div>
+      <span>2025年12月17日</span><span class="discovery">驚き</span></div>
     <p>Gemini 3 kills chatgpt 5.2 completely 
 
 it can generate 3d interactive AR shooting game with single prompt.. 
@@ -218,12 +226,12 @@ tutorial and prompt in comments https://t.co/lxUdLY44I0</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2001351576502616064/img/cf0w_PhM-5Xnh8yu.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="4878" data-retweets="550" data-bookmarks="4311" data-er="7.5096" data-buzz="15234">
+<article class="card" data-likes="4878" data-retweets="550" data-bookmarks="4311" data-er="7.5096" data-buzz="15234" data-discovery="1">
   <div class="rank">#8</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
       <span class="handle">@EHuanglu</span>
-      <span>2025年12月2日</span></div>
+      <span>2025年12月2日</span><span class="discovery">驚き</span></div>
     <p>Gemini 3 can do 3D interactive website in a few mins
 
 it detects hand gestures using your camera and interact.. this is crazy 
@@ -242,12 +250,12 @@ tutorial and prompts below https://t.co/UdBii5Y2LE</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1995887770066173952/img/_WnWR0hoNeQsyH5p.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="4097" data-retweets="366" data-bookmarks="4845" data-er="7.1235" data-buzz="14929">
+<article class="card" data-likes="4097" data-retweets="366" data-bookmarks="4845" data-er="7.1235" data-buzz="14929" data-discovery="1">
   <div class="rank">#9</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
       <span class="handle">@EHuanglu</span>
-      <span>2026年1月12日</span></div>
+      <span>2026年1月12日</span><span class="discovery">驚き</span></div>
     <p>totally blown away by Google Gemini 3 + three.js..
 
 just generated a 3D product interactive app with zero coding.. use hand gesture to rotate, scale, control xyz and lighting of 3D model
@@ -266,7 +274,7 @@ tutorial with prompts &amp;amp; code below: https://t.co/l3R99B1GEu</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2010730729827958784/img/9E2QG49htZXgKDC3.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="3588" data-retweets="377" data-bookmarks="2717" data-er="37.2662" data-buzz="10203">
+<article class="card" data-likes="3588" data-retweets="377" data-bookmarks="2717" data-er="37.2662" data-buzz="10203" data-discovery="0">
   <div class="rank">#10</div>
   <div class="content">
     <div class="meta"><strong>Kōda</strong>
@@ -288,12 +296,12 @@ Workflow and prompts are in the replies. https://t.co/VoC7oBhLir</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2062516055684063232/img/y-ecg5DDwdSKWLce.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="3131" data-retweets="326" data-bookmarks="3343" data-er="5.2113" data-buzz="10825">
+<article class="card" data-likes="3131" data-retweets="326" data-bookmarks="3343" data-er="5.2113" data-buzz="10825" data-discovery="1">
   <div class="rank">#11</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
       <span class="handle">@EHuanglu</span>
-      <span>2025年12月6日</span></div>
+      <span>2025年12月6日</span><span class="discovery">驚き</span></div>
     <p>omg.. I can&#x27;t believe Gemini 3 can do this
 
 it can generate an entire 3D interactive building facility management system(digital twin) using Three.js.. no code, just text prompt
@@ -312,7 +320,7 @@ tutorial and prompts in comments https://t.co/k6Xa0z69tX</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1997105947970609152/img/pJqn_2ATVNFnzZQB.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="2857" data-retweets="253" data-bookmarks="3393" data-er="1.7847" data-buzz="10432">
+<article class="card" data-likes="2857" data-retweets="253" data-bookmarks="3393" data-er="1.7847" data-buzz="10432" data-discovery="0">
   <div class="rank">#12</div>
   <div class="content">
     <div class="meta"><strong>Min Choi</strong>
@@ -340,12 +348,12 @@ Bookmark this.</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="2774" data-retweets="296" data-bookmarks="2949" data-er="4.6428" data-buzz="9606">
+<article class="card" data-likes="2774" data-retweets="296" data-bookmarks="2949" data-er="4.6428" data-buzz="9606" data-discovery="1">
   <div class="rank">#13</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
       <span class="handle">@EHuanglu</span>
-      <span>2025年12月4日</span></div>
+      <span>2025年12月4日</span><span class="discovery">驚き</span></div>
     <p>oh my.. this is over for developers
 
 Gemini 3 can create interactive 3D webpage in mins, just a few simple text prompts, it generates all the code
@@ -364,7 +372,7 @@ tutorial and prompts below: https://t.co/Nn95aFZIKP</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1996670675701190657/img/IWQ5i24IStXmP-Zz.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="2681" data-retweets="201" data-bookmarks="185" data-er="1.9729" data-buzz="3806">
+<article class="card" data-likes="2681" data-retweets="201" data-bookmarks="185" data-er="1.9729" data-buzz="3806" data-discovery="0">
   <div class="rank">#14</div>
   <div class="content">
     <div class="meta"><strong>Google Antigravity</strong>
@@ -382,7 +390,7 @@ tutorial and prompts below: https://t.co/Nn95aFZIKP</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HBi3isLWwAAaH4W.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="2452" data-retweets="473" data-bookmarks="1602" data-er="51.3252" data-buzz="7183">
+<article class="card" data-likes="2452" data-retweets="473" data-bookmarks="1602" data-er="51.3252" data-buzz="7183" data-discovery="0">
   <div class="rank">#15</div>
   <div class="content">
     <div class="meta"><strong>EDINET DB</strong>
@@ -403,7 +411,7 @@ https://t.co/v3n5qSax2P</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="2396" data-retweets="146" data-bookmarks="3693" data-er="249.8411" data-buzz="10234">
+<article class="card" data-likes="2396" data-retweets="146" data-bookmarks="3693" data-er="249.8411" data-buzz="10234" data-discovery="0">
   <div class="rank">#16</div>
   <div class="content">
     <div class="meta"><strong>ゆら</strong>
@@ -426,12 +434,12 @@ https://t.co/v3n5qSax2P</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="2064" data-retweets="200" data-bookmarks="3526" data-er="0.8862" data-buzz="9758">
+<article class="card" data-likes="2064" data-retweets="200" data-bookmarks="3526" data-er="0.8862" data-buzz="9758" data-discovery="1">
   <div class="rank">#17</div>
   <div class="content">
     <div class="meta"><strong>GREG ISENBERG</strong>
       <span class="handle">@gregisenberg</span>
-      <span>2025年7月21日</span></div>
+      <span>2025年7月21日</span><span class="discovery">驚き</span></div>
     <p>wait, i legit slept on google’s AI suite.
 
 gemini writes, flow films, notebooklm researches, stitch designs, project mariner automates.
@@ -448,7 +456,7 @@ i filmed a 38-minute tutorial with google’s VP of gemini and it just rewired m
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1947387451829366784/img/Rvh1tCE9HEHdQPu-.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="1586" data-retweets="119" data-bookmarks="2643" data-er="173.0739" data-buzz="7233">
+<article class="card" data-likes="1586" data-retweets="119" data-bookmarks="2643" data-er="173.0739" data-buzz="7233" data-discovery="0">
   <div class="rank">#18</div>
   <div class="content">
     <div class="meta"><strong>ゆら</strong>
@@ -467,7 +475,7 @@ i filmed a 38-minute tutorial with google’s VP of gemini and it just rewired m
     </div>
   </div>
 </article>
-<article class="card" data-likes="1543" data-retweets="144" data-bookmarks="2017" data-er="35.7459" data-buzz="6027">
+<article class="card" data-likes="1543" data-retweets="144" data-bookmarks="2017" data-er="35.7459" data-buzz="6027" data-discovery="0">
   <div class="rank">#19</div>
   <div class="content">
     <div class="meta"><strong>いち＠AI×就活</strong>
@@ -490,7 +498,7 @@ Googleが出しているAI「Gemini」。
     </div>
   </div>
 </article>
-<article class="card" data-likes="1473" data-retweets="163" data-bookmarks="1355" data-er="27.4047" data-buzz="4684">
+<article class="card" data-likes="1473" data-retweets="163" data-bookmarks="1355" data-er="27.4047" data-buzz="4684" data-discovery="0">
   <div class="rank">#20</div>
   <div class="content">
     <div class="meta"><strong>しゅん｜ホワイト転職</strong>
@@ -520,12 +528,12 @@ Googleが出しているAI「Gemini」。
     </div>
   </div>
 </article>
-<article class="card" data-likes="1354" data-retweets="142" data-bookmarks="3035" data-er="3.1182" data-buzz="7862">
+<article class="card" data-likes="1354" data-retweets="142" data-bookmarks="3035" data-er="3.1182" data-buzz="7862" data-discovery="1">
   <div class="rank">#21</div>
   <div class="content">
     <div class="meta"><strong>Julian Goldie SEO</strong>
       <span class="handle">@JulianGoldieSEO</span>
-      <span>2025年10月14日</span></div>
+      <span>2025年10月14日</span><span class="discovery">驚き</span></div>
     <p>I ranked a full website in under 1 hour using Gemini + NotebookLM.
 
 Here’s how 👇
@@ -555,7 +563,7 @@ Comment “NOTEBOOK” and I’ll DM you the full workflow.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G3QKawcasAAbnvT.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="1146" data-retweets="113" data-bookmarks="1513" data-er="1.1087" data-buzz="4517">
+<article class="card" data-likes="1146" data-retweets="113" data-bookmarks="1513" data-er="1.1087" data-buzz="4517" data-discovery="0">
   <div class="rank">#22</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
@@ -577,7 +585,7 @@ https://t.co/y2iOYn6hGq</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2057107527331160065/img/T8y7d1esivk8R9nF.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="1129" data-retweets="109" data-bookmarks="513" data-er="1.5571" data-buzz="2488">
+<article class="card" data-likes="1129" data-retweets="109" data-bookmarks="513" data-er="1.5571" data-buzz="2488" data-discovery="0">
   <div class="rank">#23</div>
   <div class="content">
     <div class="meta"><strong>Google AI Developers</strong>
@@ -595,7 +603,7 @@ https://t.co/y2iOYn6hGq</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2007134985862430720/img/RdILuJUpaa2k9Mtk.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="1128" data-retweets="118" data-bookmarks="168" data-er="46.7023" data-buzz="1820">
+<article class="card" data-likes="1128" data-retweets="118" data-bookmarks="168" data-er="46.7023" data-buzz="1820" data-discovery="0">
   <div class="rank">#24</div>
   <div class="content">
     <div class="meta"><strong>Restrained Depth AI</strong>
@@ -682,7 +690,7 @@ https://t.co/FIROQd5Xp0</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2064341199083937792/img/Odj0wLRXP6GbLZZq.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="1117" data-retweets="107" data-bookmarks="1775" data-er="0.8337" data-buzz="5008">
+<article class="card" data-likes="1117" data-retweets="107" data-bookmarks="1775" data-er="0.8337" data-buzz="5008" data-discovery="0">
   <div class="rank">#25</div>
   <div class="content">
     <div class="meta"><strong>Min Choi</strong>
@@ -709,7 +717,7 @@ Bookmark this.</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="1094" data-retweets="69" data-bookmarks="1777" data-er="447.1927" data-buzz="4857">
+<article class="card" data-likes="1094" data-retweets="69" data-bookmarks="1777" data-er="447.1927" data-buzz="4857" data-discovery="0">
   <div class="rank">#26</div>
   <div class="content">
     <div class="meta"><strong>れな｜AI副業</strong>
@@ -735,7 +743,7 @@ ChatGPT、Gemini、Claudeの性能を一気に引き上げる「神プロンプ�
     </div>
   </div>
 </article>
-<article class="card" data-likes="1040" data-retweets="106" data-bookmarks="1225" data-er="0.7830" data-buzz="3814">
+<article class="card" data-likes="1040" data-retweets="106" data-bookmarks="1225" data-er="0.7830" data-buzz="3814" data-discovery="0">
   <div class="rank">#27</div>
   <div class="content">
     <div class="meta"><strong>elvis</strong>
@@ -768,7 +776,7 @@ Stay tuned! We have a few releases on this front.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2053572526207307776/img/S-JCkXTeUl7rOcjI.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="950" data-retweets="106" data-bookmarks="667" data-er="6.2160" data-buzz="2622">
+<article class="card" data-likes="950" data-retweets="106" data-bookmarks="667" data-er="6.2160" data-buzz="2622" data-discovery="0">
   <div class="rank">#28</div>
   <div class="content">
     <div class="meta"><strong>エム・リナ(M・LINA)</strong>
@@ -788,7 +796,7 @@ Geminiは商用利用OKですし（YouTube、CM、配信リリースOK）
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2041367657505812480/pu/img/xRtcR6ctNPmT0kvX.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="949" data-retweets="139" data-bookmarks="985" data-er="1.9890" data-buzz="3358">
+<article class="card" data-likes="949" data-retweets="139" data-bookmarks="985" data-er="1.9890" data-buzz="3358" data-discovery="0">
   <div class="rank">#29</div>
   <div class="content">
     <div class="meta"><strong>すぐる | ChatGPTガチ勢 𝕏</strong>
@@ -806,12 +814,12 @@ Geminiは商用利用OKですし（YouTube、CM、配信リリースOK）
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HFHRxQubcAAC_if.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="864" data-retweets="108" data-bookmarks="582" data-er="0.2798" data-buzz="2374">
+<article class="card" data-likes="864" data-retweets="108" data-bookmarks="582" data-er="0.2798" data-buzz="2374" data-discovery="1">
   <div class="rank">#30</div>
   <div class="content">
     <div class="meta"><strong>Google Cloud</strong>
       <span class="handle">@googlecloud</span>
-      <span>2026年4月25日</span></div>
+      <span>2026年4月25日</span><span class="discovery">新機能</span></div>
     <p>Use the enhanced Agent Designer in Gemini Enterprise to create an agent using natural language or a visual interface.
 
 You can inspect, test, and approve every step of a workflow before it ever runs, ensuring enterprise transparency and trust. Read more → https://t.co/wiIm7OFlud https://t.co/6K4Zk48Qew</p>
@@ -826,7 +834,7 @@ You can inspect, test, and approve every step of a workflow before it ever runs,
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HGwlxX-W8AASIJS.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="830" data-retweets="117" data-bookmarks="1856" data-er="4.9806" data-buzz="4895">
+<article class="card" data-likes="830" data-retweets="117" data-bookmarks="1856" data-er="4.9806" data-buzz="4895" data-discovery="0">
   <div class="rank">#31</div>
   <div class="content">
     <div class="meta"><strong>Hamza Khalid</strong>
@@ -864,7 +872,7 @@ the full guide in the article below ↓</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKIChHNbwAAT8Bl.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="725" data-retweets="35" data-bookmarks="722" data-er="75.4897" data-buzz="2280">
+<article class="card" data-likes="725" data-retweets="35" data-bookmarks="722" data-er="75.4897" data-buzz="2280" data-discovery="0">
   <div class="rank">#32</div>
   <div class="content">
     <div class="meta"><strong>セロイ@AIで起業</strong>
@@ -884,7 +892,7 @@ the full guide in the article below ↓</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2055567843245391872/img/CB2YeTpVce7Oyu73.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="667" data-retweets="77" data-bookmarks="600" data-er="0.9832" data-buzz="2110">
+<article class="card" data-likes="667" data-retweets="77" data-bookmarks="600" data-er="0.9832" data-buzz="2110" data-discovery="0">
   <div class="rank">#33</div>
   <div class="content">
     <div class="meta"><strong>AGIラボ</strong>
@@ -903,7 +911,7 @@ https://t.co/cYKQagElYC</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="637" data-retweets="43" data-bookmarks="1053" data-er="3.4211" data-buzz="2906">
+<article class="card" data-likes="637" data-retweets="43" data-bookmarks="1053" data-er="3.4211" data-buzz="2906" data-discovery="0">
   <div class="rank">#34</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -935,7 +943,7 @@ https://t.co/cYKQagElYC</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="619" data-retweets="154" data-bookmarks="238" data-er="0.7030" data-buzz="1645">
+<article class="card" data-likes="619" data-retweets="154" data-bookmarks="238" data-er="0.7030" data-buzz="1645" data-discovery="0">
   <div class="rank">#35</div>
   <div class="content">
     <div class="meta"><strong>木内翔大＠SHIFT AI代表「日本をAI先進国に」𝕏</strong>
@@ -960,7 +968,7 @@ https://t.co/g4j0EP1g1z</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1999560013128564737/img/crntqTPA34rWF57F.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="589" data-retweets="47" data-bookmarks="1107" data-er="1.3361" data-buzz="2954">
+<article class="card" data-likes="589" data-retweets="47" data-bookmarks="1107" data-er="1.3361" data-buzz="2954" data-discovery="0">
   <div class="rank">#36</div>
   <div class="content">
     <div class="meta"><strong>el.cine</strong>
@@ -986,7 +994,7 @@ finally, just open it with a browser. Remember to turn on the camera</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="574" data-retweets="58" data-bookmarks="660" data-er="2.5730" data-buzz="2104">
+<article class="card" data-likes="574" data-retweets="58" data-bookmarks="660" data-er="2.5730" data-buzz="2104" data-discovery="0">
   <div class="rank">#37</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -1019,7 +1027,7 @@ SNS・長文ライティングまで
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2049590817183105024/pu/img/_hiNqyrqvP84EPUM.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="562" data-retweets="59" data-bookmarks="654" data-er="31.8529" data-buzz="2053">
+<article class="card" data-likes="562" data-retweets="59" data-bookmarks="654" data-er="31.8529" data-buzz="2053" data-discovery="0">
   <div class="rank">#38</div>
   <div class="content">
     <div class="meta"><strong>ユナ│AI副業</strong>
@@ -1043,7 +1051,7 @@ SNS・長文ライティングまで
     </div>
   </div>
 </article>
-<article class="card" data-likes="558" data-retweets="42" data-bookmarks="823" data-er="2.9624" data-buzz="2388">
+<article class="card" data-likes="558" data-retweets="42" data-bookmarks="823" data-er="2.9624" data-buzz="2388" data-discovery="0">
   <div class="rank">#39</div>
   <div class="content">
     <div class="meta"><strong>えーたん/AI×時短で仕事効率化</strong>
@@ -1065,7 +1073,7 @@ SNS・長文ライティングまで
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2062278189292867584/pu/img/3hoYXjgn31ZwXSdU.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="549" data-retweets="58" data-bookmarks="772" data-er="2.7185" data-buzz="2295">
+<article class="card" data-likes="549" data-retweets="58" data-bookmarks="772" data-er="2.7185" data-buzz="2295" data-discovery="0">
   <div class="rank">#40</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -1097,7 +1105,7 @@ Geminiに「骨組み」を与えると
     </div>
   </div>
 </article>
-<article class="card" data-likes="545" data-retweets="90" data-bookmarks="323" data-er="0.2925" data-buzz="1529">
+<article class="card" data-likes="545" data-retweets="90" data-bookmarks="323" data-er="0.2925" data-buzz="1529" data-discovery="0">
   <div class="rank">#41</div>
   <div class="content">
     <div class="meta"><strong>clem 🤗</strong>
@@ -1132,7 +1140,7 @@ https://t.co/Y7q6yuxZrZ</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKEm7U0W8AAk0zo.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="528" data-retweets="115" data-bookmarks="671" data-er="3.9667" data-buzz="2245">
+<article class="card" data-likes="528" data-retweets="115" data-bookmarks="671" data-er="3.9667" data-buzz="2245" data-discovery="0">
   <div class="rank">#42</div>
   <div class="content">
     <div class="meta"><strong>Elias Al</strong>
@@ -1206,7 +1214,7 @@ Source: GitHub · Gizmodo · NerdZap · ExplainX · Dhaka Tribune · June 1, 202
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HJ4I9IVbEAAT2hq.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="528" data-retweets="69" data-bookmarks="808" data-er="22.0934" data-buzz="2361">
+<article class="card" data-likes="528" data-retweets="69" data-bookmarks="808" data-er="22.0934" data-buzz="2361" data-discovery="0">
   <div class="rank">#43</div>
   <div class="content">
     <div class="meta"><strong>FHILY👑</strong>
@@ -1226,7 +1234,7 @@ You can now build stunning marketing sites fully with AI https://t.co/Y6LrIsIcPe
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2044751705523593216/img/GcAvLuCBfs0gMTEg.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="494" data-retweets="47" data-bookmarks="514" data-er="20.3531" data-buzz="1677">
+<article class="card" data-likes="494" data-retweets="47" data-bookmarks="514" data-er="20.3531" data-buzz="1677" data-discovery="0">
   <div class="rank">#44</div>
   <div class="content">
     <div class="meta"><strong>そら | AIで暮らす人</strong>
@@ -1258,7 +1266,7 @@ AI歴3年のベテランを超えられます。
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HIMAur7a8AAytvy.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="464" data-retweets="15" data-bookmarks="521" data-er="84.3443" data-buzz="1553">
+<article class="card" data-likes="464" data-retweets="15" data-bookmarks="521" data-er="84.3443" data-buzz="1553" data-discovery="0">
   <div class="rank">#45</div>
   <div class="content">
     <div class="meta"><strong>Momo⛩️</strong>
@@ -1276,7 +1284,7 @@ AI歴3年のベテランを超えられます。
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2063189658092048384/img/TDGeb1k1B-5i7YPM.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="453" data-retweets="52" data-bookmarks="228" data-er="0.4320" data-buzz="1075">
+<article class="card" data-likes="453" data-retweets="52" data-bookmarks="228" data-er="0.4320" data-buzz="1075" data-discovery="0">
   <div class="rank">#46</div>
   <div class="content">
     <div class="meta"><strong>Google AI Studio</strong>
@@ -1296,7 +1304,7 @@ a guide by @patloeber: https://t.co/pN68C7MxxZ</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2064009405117374464/img/mZqEiDkSm2OE1lQz.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="446" data-retweets="45" data-bookmarks="622" data-er="1.6992" data-buzz="1837">
+<article class="card" data-likes="446" data-retweets="45" data-bookmarks="622" data-er="1.6992" data-buzz="1837" data-discovery="0">
   <div class="rank">#47</div>
   <div class="content">
     <div class="meta"><strong>AmirMušić</strong>
@@ -1322,7 +1330,7 @@ Steal the prompt + action plan 👇</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G3PgR4OWIAAXgSG.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="440" data-retweets="38" data-bookmarks="550" data-er="2.0370" data-buzz="1682">
+<article class="card" data-likes="440" data-retweets="38" data-bookmarks="550" data-er="2.0370" data-buzz="1682" data-discovery="0">
   <div class="rank">#48</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -1340,7 +1348,7 @@ Steal the prompt + action plan 👇</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2027851340907491328/pu/img/El7JKlr2Vkw26Ssv.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="425" data-retweets="52" data-bookmarks="454" data-er="17.8090" data-buzz="1493">
+<article class="card" data-likes="425" data-retweets="52" data-bookmarks="454" data-er="17.8090" data-buzz="1493" data-discovery="0">
   <div class="rank">#49</div>
   <div class="content">
     <div class="meta"><strong>そら | AIで暮らす人</strong>
@@ -1362,7 +1370,7 @@ Steal the prompt + action plan 👇</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="419" data-retweets="52" data-bookmarks="554" data-er="0.4095" data-buzz="1683">
+<article class="card" data-likes="419" data-retweets="52" data-bookmarks="554" data-er="0.4095" data-buzz="1683" data-discovery="0">
   <div class="rank">#50</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
@@ -1382,7 +1390,7 @@ https://t.co/Hw6b2l21Fu</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2050586856740487168/img/yrHu9u26ybiw0pfA.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="411" data-retweets="45" data-bookmarks="574" data-er="0.4155" data-buzz="1696">
+<article class="card" data-likes="411" data-retweets="45" data-bookmarks="574" data-er="0.4155" data-buzz="1696" data-discovery="0">
   <div class="rank">#51</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
@@ -1404,7 +1412,7 @@ https://t.co/Mmk21XMy8P</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2037150709008027648/img/iirBsBKKhPcUaehp.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="408" data-retweets="60" data-bookmarks="165" data-er="0.0492" data-buzz="924">
+<article class="card" data-likes="408" data-retweets="60" data-bookmarks="165" data-er="0.0492" data-buzz="924" data-discovery="0">
   <div class="rank">#52</div>
   <div class="content">
     <div class="meta"><strong>Google Cloud Tech</strong>
@@ -1424,7 +1432,7 @@ Because they run synchronously, any delay in your script will delay the agent’
     </div>
   </div>
 </article>
-<article class="card" data-likes="399" data-retweets="56" data-bookmarks="821" data-er="39.8282" data-buzz="2219">
+<article class="card" data-likes="399" data-retweets="56" data-bookmarks="821" data-er="39.8282" data-buzz="2219" data-discovery="0">
   <div class="rank">#53</div>
   <div class="content">
     <div class="meta"><strong>AutoTube</strong>
@@ -1445,7 +1453,7 @@ I’m breaking down the exact prompts and settings I use to get these results.
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G-hSkqHXgAAbWuk.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="380" data-retweets="30" data-bookmarks="725" data-er="1.1441" data-buzz="1926">
+<article class="card" data-likes="380" data-retweets="30" data-bookmarks="725" data-er="1.1441" data-buzz="1926" data-discovery="0">
   <div class="rank">#54</div>
   <div class="content">
     <div class="meta"><strong>The Boring Marketer</strong>
@@ -1469,12 +1477,12 @@ Plus ideas for taking this to the next level if you want to build it https://t.c
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1981094237170016256/img/MgikREwG97eu1-CA.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="378" data-retweets="47" data-bookmarks="118" data-er="0.0239" data-buzz="767">
+<article class="card" data-likes="378" data-retweets="47" data-bookmarks="118" data-er="0.0239" data-buzz="767" data-discovery="1">
   <div class="rank">#55</div>
   <div class="content">
     <div class="meta"><strong>Google AI</strong>
       <span class="handle">@GoogleAI</span>
-      <span>2025年11月19日</span></div>
+      <span>2025年11月19日</span><span class="discovery">新機能</span></div>
     <p>For developers, Gemini 3 Pro offers unparalleled results across every major AI benchmark compared to Gemini 2.5 Pro.
 
 Here three ways Gemini 3 Pro can improve your workflow today:
@@ -1497,7 +1505,7 @@ Whether you’re building a one-shot prompt game or an interactive landing page 
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G6JPZI8WQAAsb_v.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="366" data-retweets="45" data-bookmarks="521" data-er="1.8589" data-buzz="1567">
+<article class="card" data-likes="366" data-retweets="45" data-bookmarks="521" data-er="1.8589" data-buzz="1567" data-discovery="0">
   <div class="rank">#56</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -1515,7 +1523,7 @@ Whether you’re building a one-shot prompt game or an interactive landing page 
     </div>
   </div>
 </article>
-<article class="card" data-likes="362" data-retweets="24" data-bookmarks="280" data-er="0.2726" data-buzz="996">
+<article class="card" data-likes="362" data-retweets="24" data-bookmarks="280" data-er="0.2726" data-buzz="996" data-discovery="0">
   <div class="rank">#57</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
@@ -1537,7 +1545,7 @@ https://t.co/Q03hoen3uD</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2062833056965386240/img/Szy-ew81KAmsnelL.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="354" data-retweets="40" data-bookmarks="574" data-er="3.4501" data-buzz="1624">
+<article class="card" data-likes="354" data-retweets="40" data-bookmarks="574" data-er="3.4501" data-buzz="1624" data-discovery="0">
   <div class="rank">#58</div>
   <div class="content">
     <div class="meta"><strong>Rory Flynn</strong>
@@ -1573,12 +1581,12 @@ Pretty obsessed with this tool.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1948395182199615488/img/OZExShWcTeLIssC8.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="349" data-retweets="42" data-bookmarks="92" data-er="0.4374" data-buzz="671">
+<article class="card" data-likes="349" data-retweets="42" data-bookmarks="92" data-er="0.4374" data-buzz="671" data-discovery="1">
   <div class="rank">#59</div>
   <div class="content">
     <div class="meta"><strong>Google AI Developers</strong>
       <span class="handle">@googleaidevs</span>
-      <span>2025年12月10日</span></div>
+      <span>2025年12月10日</span><span class="discovery">新機能</span></div>
     <p>Automatically save your context and workflow.
 
 Gemini CLI&#x27;s new Session Management automatically saves your entire workflow (prompts, tool outputs, token usage, and reasoning). 
@@ -1595,7 +1603,7 @@ Resume exactly where you left off with /resume or gemini --resume. Available in 
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1998898980638392323/img/seV3CoG4WdoCFbQa.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="339" data-retweets="56" data-bookmarks="569" data-er="0.6384" data-buzz="1647">
+<article class="card" data-likes="339" data-retweets="56" data-bookmarks="569" data-er="0.6384" data-buzz="1647" data-discovery="0">
   <div class="rank">#60</div>
   <div class="content">
     <div class="meta"><strong>Vaibhav Sisinty</strong>
@@ -1627,7 +1635,7 @@ Ideas just became more valuable than technical skills.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKDv8FEaEAA3PLy.png" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="332" data-retweets="56" data-bookmarks="209" data-er="0.5315" data-buzz="930">
+<article class="card" data-likes="332" data-retweets="56" data-bookmarks="209" data-er="0.5315" data-buzz="930" data-discovery="0">
   <div class="rank">#61</div>
   <div class="content">
     <div class="meta"><strong>Google AI Developers</strong>
@@ -1652,7 +1660,7 @@ Ideas just became more valuable than technical skills.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1938632091203420160/img/UXZYqt2fCg7Obnf8.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="327" data-retweets="13" data-bookmarks="475" data-er="0.4598" data-buzz="1320">
+<article class="card" data-likes="327" data-retweets="13" data-bookmarks="475" data-er="0.4598" data-buzz="1320" data-discovery="0">
   <div class="rank">#62</div>
   <div class="content">
     <div class="meta"><strong>Ryan Carson</strong>
@@ -1681,7 +1689,7 @@ AEO locked in.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G8DqsnCWoAISJWe.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="311" data-retweets="51" data-bookmarks="347" data-er="0.6632" data-buzz="1164">
+<article class="card" data-likes="311" data-retweets="51" data-bookmarks="347" data-er="0.6632" data-buzz="1164" data-discovery="0">
   <div class="rank">#63</div>
   <div class="content">
     <div class="meta"><strong>Abhishek</strong>
@@ -1705,7 +1713,7 @@ step by step tutorial with prompts: 👇 https://t.co/FtjBdYYCKo</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2063270941598322688/img/CfGEkEUuNQJoyDLM.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="307" data-retweets="36" data-bookmarks="377" data-er="18.0113" data-buzz="1171">
+<article class="card" data-likes="307" data-retweets="36" data-bookmarks="377" data-er="18.0113" data-buzz="1171" data-discovery="0">
   <div class="rank">#64</div>
   <div class="content">
     <div class="meta"><strong>ユナ│AI副業</strong>
@@ -1727,7 +1735,7 @@ step by step tutorial with prompts: 👇 https://t.co/FtjBdYYCKo</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="305" data-retweets="23" data-bookmarks="260" data-er="3.4916" data-buzz="900">
+<article class="card" data-likes="305" data-retweets="23" data-bookmarks="260" data-er="3.4916" data-buzz="900" data-discovery="0">
   <div class="rank">#65</div>
   <div class="content">
     <div class="meta"><strong>Purz.ai</strong>
@@ -1752,7 +1760,7 @@ It&#x27;s faster on API nodes, but if you want to do it local you can also use Q
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G3zwziGWUAAQiAj.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="303" data-retweets="10" data-bookmarks="242" data-er="62.8035" data-buzz="821">
+<article class="card" data-likes="303" data-retweets="10" data-bookmarks="242" data-er="62.8035" data-buzz="821" data-discovery="0">
   <div class="rank">#66</div>
   <div class="content">
     <div class="meta"><strong>michelle</strong>
@@ -1782,7 +1790,7 @@ It&#x27;s faster on API nodes, but if you want to do it local you can also use Q
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKMxpVvb0AAMbV-.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="302" data-retweets="141" data-bookmarks="61" data-er="7.9925" data-buzz="857">
+<article class="card" data-likes="302" data-retweets="141" data-bookmarks="61" data-er="7.9925" data-buzz="857" data-discovery="0">
   <div class="rank">#67</div>
   <div class="content">
     <div class="meta"><strong>GeminiFourth Team 🏳️‍🌈🪽</strong>
@@ -1810,7 +1818,7 @@ And please DM us and tag us if you see it trending in your country! 💌💌</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2060245052522467328/pu/img/5XMF9MdbwHd_LNuz.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="279" data-retweets="30" data-bookmarks="382" data-er="0.2789" data-buzz="1135">
+<article class="card" data-likes="279" data-retweets="30" data-bookmarks="382" data-er="0.2789" data-buzz="1135" data-discovery="0">
   <div class="rank">#68</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
@@ -1830,7 +1838,7 @@ https://t.co/lxNmq7ovDS</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2045142570393632768/img/AsG9_sFl5AxjJUdE.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="273" data-retweets="46" data-bookmarks="81" data-er="1.3671" data-buzz="585">
+<article class="card" data-likes="273" data-retweets="46" data-bookmarks="81" data-er="1.3671" data-buzz="585" data-discovery="0">
   <div class="rank">#69</div>
   <div class="content">
     <div class="meta"><strong>EMAKI📧</strong>
@@ -1871,12 +1879,12 @@ girl&#x27;s body decorated with 10 street-style stickers, background decorated w
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G3HWS8GawAA4X7u.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="272" data-retweets="35" data-bookmarks="449" data-er="0.4438" data-buzz="1275">
+<article class="card" data-likes="272" data-retweets="35" data-bookmarks="449" data-er="0.4438" data-buzz="1275" data-discovery="1">
   <div class="rank">#70</div>
   <div class="content">
     <div class="meta"><strong>Charly Wargnier</strong>
       <span class="handle">@DataChaz</span>
-      <span>2025年11月24日</span></div>
+      <span>2025年11月24日</span><span class="discovery">驚き</span></div>
     <p>Wild.
 
 Gemini’s new File Search makes RAG 10x simpler and cheaper.
@@ -1902,12 +1910,12 @@ Nate turned it into a fully automated RAG agent flow inside @n8n_io 🤯
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1992973608487124992/img/hxA_8VlQW9O-dI8c.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="266" data-retweets="16" data-bookmarks="125" data-er="0.4948" data-buzz="574">
+<article class="card" data-likes="266" data-retweets="16" data-bookmarks="125" data-er="0.4948" data-buzz="574" data-discovery="1">
   <div class="rank">#71</div>
   <div class="content">
     <div class="meta"><strong>Ammaar Reshi</strong>
       <span class="handle">@ammaar</span>
-      <span>2026年4月15日</span></div>
+      <span>2026年4月15日</span><span class="discovery">新機能</span></div>
     <p>Introducing Gemini 3.1 Flash TTS, our most expressive model yet, topping quality and cost on the Artificial Analysis leaderboard 🔊
 
 Control style, pace, add multiple speakers, and delivery with audio tags, switch expression mid-sentence in 70+ languages.
@@ -1924,7 +1932,7 @@ Tutorial below! https://t.co/Ozam4wdBER</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2044431057101967360/img/TEe9RGMEOjNKLFM0.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="264" data-retweets="26" data-bookmarks="557" data-er="7.7383" data-buzz="1474">
+<article class="card" data-likes="264" data-retweets="26" data-bookmarks="557" data-er="7.7383" data-buzz="1474" data-discovery="0">
   <div class="rank">#72</div>
   <div class="content">
     <div class="meta"><strong>ふっく｜東大卒AI社長</strong>
@@ -1946,7 +1954,7 @@ Tutorial below! https://t.co/Ozam4wdBER</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="259" data-retweets="28" data-bookmarks="200" data-er="0.6622" data-buzz="745">
+<article class="card" data-likes="259" data-retweets="28" data-bookmarks="200" data-er="0.6622" data-buzz="745" data-discovery="0">
   <div class="rank">#73</div>
   <div class="content">
     <div class="meta"><strong>Jerry Liu</strong>
@@ -1973,7 +1981,7 @@ Check it out: https://t.co/6dd7mKNkyk</p>
     </div>
   </div>
 </article>
-<article class="card" data-likes="252" data-retweets="16" data-bookmarks="163" data-er="13.6790" data-buzz="628">
+<article class="card" data-likes="252" data-retweets="16" data-bookmarks="163" data-er="13.6790" data-buzz="628" data-discovery="0">
   <div class="rank">#74</div>
   <div class="content">
     <div class="meta"><strong>ゆめ｜AIクリエイター</strong>
@@ -1992,7 +2000,7 @@ Check it out: https://t.co/6dd7mKNkyk</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKHYQ4maAAAh0Wh.png" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="219" data-retweets="101" data-bookmarks="155" data-er="0.2029" data-buzz="834">
+<article class="card" data-likes="219" data-retweets="101" data-bookmarks="155" data-er="0.2029" data-buzz="834" data-discovery="0">
   <div class="rank">#75</div>
   <div class="content">
     <div class="meta"><strong>Doreen</strong>
@@ -2016,7 +2024,7 @@ I tested a different workflow using EvoMap and the results were surprisingly pra
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HJ9m1gya4AARiN7.png" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="202" data-retweets="42" data-bookmarks="190" data-er="0.8921" data-buzz="718">
+<article class="card" data-likes="202" data-retweets="42" data-bookmarks="190" data-er="0.8921" data-buzz="718" data-discovery="0">
   <div class="rank">#76</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -2050,7 +2058,7 @@ Gemini業務効率化の使い方を
     </div>
   </div>
 </article>
-<article class="card" data-likes="188" data-retweets="30" data-bookmarks="151" data-er="0.7715" data-buzz="588">
+<article class="card" data-likes="188" data-retweets="30" data-bookmarks="151" data-er="0.7715" data-buzz="588" data-discovery="0">
   <div class="rank">#77</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -2068,7 +2076,7 @@ Gemini業務効率化の使い方を
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2026039547394506752/pu/img/DmXyZOdkqnCRV5dy.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="181" data-retweets="22" data-bookmarks="151" data-er="0.7457" data-buzz="553">
+<article class="card" data-likes="181" data-retweets="22" data-bookmarks="151" data-er="0.7457" data-buzz="553" data-discovery="0">
   <div class="rank">#78</div>
   <div class="content">
     <div class="meta"><strong>ComfyUI</strong>
@@ -2091,7 +2099,7 @@ Using natural language prompts, you can effortlessly experiment with new locatio
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/1981103309374312451/img/XsjTir6KV25KLmvn.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="174" data-retweets="47" data-bookmarks="57" data-er="2.1194" data-buzz="431">
+<article class="card" data-likes="174" data-retweets="47" data-bookmarks="57" data-er="2.1194" data-buzz="431" data-discovery="0">
   <div class="rank">#79</div>
   <div class="content">
     <div class="meta"><strong>Sripathi Teja</strong>
@@ -2153,7 +2161,7 @@ Follow @sripathiteja4 for more</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G9ur0AdXUAA49cI.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="174" data-retweets="12" data-bookmarks="106" data-er="27.9492" data-buzz="424">
+<article class="card" data-likes="174" data-retweets="12" data-bookmarks="106" data-er="27.9492" data-buzz="424" data-discovery="0">
   <div class="rank">#80</div>
   <div class="content">
     <div class="meta"><strong>danqi</strong>
@@ -2177,7 +2185,7 @@ brief tutorial in the comment! https://t.co/7NFw7qGNkS</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2055330410423300096/img/KXLWJcOEHHMKWnpP.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="172" data-retweets="49" data-bookmarks="72" data-er="3.2271" data-buzz="467">
+<article class="card" data-likes="172" data-retweets="49" data-bookmarks="72" data-er="3.2271" data-buzz="467" data-discovery="0">
   <div class="rank">#81</div>
   <div class="content">
     <div class="meta"><strong>Evon</strong>
@@ -2239,7 +2247,7 @@ follow @_evon3929  for more</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G-wcqqGbQAI_7vQ.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="165" data-retweets="1" data-bookmarks="105" data-er="1.1023" data-buzz="382">
+<article class="card" data-likes="165" data-retweets="1" data-bookmarks="105" data-er="1.1023" data-buzz="382" data-discovery="0">
   <div class="rank">#82</div>
   <div class="content">
     <div class="meta"><strong>nexxel</strong>
@@ -2261,7 +2269,7 @@ also, this is such a good agent workflow. have a subagent (gemini flash works gr
     </div>
   </div>
 </article>
-<article class="card" data-likes="164" data-retweets="7" data-bookmarks="275" data-er="5.1282" data-buzz="737">
+<article class="card" data-likes="164" data-retweets="7" data-bookmarks="275" data-er="5.1282" data-buzz="737" data-discovery="0">
   <div class="rank">#83</div>
   <div class="content">
     <div class="meta"><strong>月島くん</strong>
@@ -2298,7 +2306,7 @@ also, this is such a good agent workflow. have a subagent (gemini flash works gr
     </div>
   </div>
 </article>
-<article class="card" data-likes="154" data-retweets="5" data-bookmarks="17" data-er="0.1082" data-buzz="205">
+<article class="card" data-likes="154" data-retweets="5" data-bookmarks="17" data-er="0.1082" data-buzz="205" data-discovery="0">
   <div class="rank">#84</div>
   <div class="content">
     <div class="meta"><strong>Jane Manchun Wong</strong>
@@ -2318,7 +2326,7 @@ It frees up my mind from the scut works so I can focus on the creative, high lev
     </div>
   </div>
 </article>
-<article class="card" data-likes="153" data-retweets="30" data-bookmarks="145" data-er="0.6969" data-buzz="551">
+<article class="card" data-likes="153" data-retweets="30" data-bookmarks="145" data-er="0.6969" data-buzz="551" data-discovery="0">
   <div class="rank">#85</div>
   <div class="content">
     <div class="meta"><strong>たか田</strong>
@@ -2336,7 +2344,7 @@ It frees up my mind from the scut works so I can focus on the creative, high lev
     </div>
   </div>
 </article>
-<article class="card" data-likes="150" data-retweets="32" data-bookmarks="76" data-er="0.8664" data-buzz="400">
+<article class="card" data-likes="150" data-retweets="32" data-bookmarks="76" data-er="0.8664" data-buzz="400" data-discovery="0">
   <div class="rank">#86</div>
   <div class="content">
     <div class="meta"><strong>Suryansh Tiwari</strong>
@@ -2397,7 +2405,7 @@ Follow @Suryanshti777 for real-world AI workflows.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G941dz8aUAA_LnW.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="142" data-retweets="41" data-bookmarks="58" data-er="0.8133" data-buzz="387">
+<article class="card" data-likes="142" data-retweets="41" data-bookmarks="58" data-er="0.8133" data-buzz="387" data-discovery="0">
   <div class="rank">#87</div>
   <div class="content">
     <div class="meta"><strong>Suryansh Tiwari</strong>
@@ -2458,7 +2466,7 @@ Follow @Suryanshti777 for real-world AI workflows.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/G-NAPvha0AArsds.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="137" data-retweets="28" data-bookmarks="126" data-er="1.1009" data-buzz="483">
+<article class="card" data-likes="137" data-retweets="28" data-bookmarks="126" data-er="1.1009" data-buzz="483" data-discovery="0">
   <div class="rank">#88</div>
   <div class="content">
     <div class="meta"><strong>russianblue</strong>
@@ -2527,7 +2535,7 @@ NotebookLMの今後の展開は、無料ユーザーへの提供範囲と、ソ�
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HKXGI0cbUAAurEN.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="136" data-retweets="20" data-bookmarks="101" data-er="5.7280" data-buzz="402">
+<article class="card" data-likes="136" data-retweets="20" data-bookmarks="101" data-er="5.7280" data-buzz="402" data-discovery="0">
   <div class="rank">#89</div>
   <div class="content">
     <div class="meta"><strong>RGK🌹</strong>
@@ -2568,7 +2576,7 @@ The channels do.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2062475993520939008/img/7Aced6RwCoBtLBoU.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="133" data-retweets="2" data-bookmarks="2" data-er="0.9444" data-buzz="143">
+<article class="card" data-likes="133" data-retweets="2" data-bookmarks="2" data-er="0.9444" data-buzz="143" data-discovery="0">
   <div class="rank">#90</div>
   <div class="content">
     <div class="meta"><strong>Shami</strong>
@@ -2595,7 +2603,7 @@ Try both 👉 https://t.co/ImoVxLtHiy</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/2057117989225578497/pu/img/3czzwF6i3IemPMgZ.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="128" data-retweets="28" data-bookmarks="18" data-er="42.5339" data-buzz="250">
+<article class="card" data-likes="128" data-retweets="28" data-bookmarks="18" data-er="42.5339" data-buzz="250" data-discovery="0">
   <div class="rank">#91</div>
   <div class="content">
     <div class="meta"><strong>Saket Saurabh 🚀</strong>
@@ -2633,12 +2641,12 @@ MCP Studio is in Early Access now. I&#x27;d love for you to give it a try and te
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2064366327318626304/img/tsZ0-FGyqVBFlO7-.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="125" data-retweets="8" data-bookmarks="67" data-er="0.0819" data-buzz="283">
+<article class="card" data-likes="125" data-retweets="8" data-bookmarks="67" data-er="0.0819" data-buzz="283" data-discovery="1">
   <div class="rank">#92</div>
   <div class="content">
     <div class="meta"><strong>0xMarioNawfal</strong>
       <span class="handle">@RoundtableSpace</span>
-      <span>2026年5月5日</span></div>
+      <span>2026年5月5日</span><span class="discovery">新機能</span></div>
     <p>GOOGLE JUST REWORKED GEMINI INTO A FULL WORKFLOW ENGINE MOST PEOPLE HAVEN’T NOTICED YET.
 
 It now connects across apps, runs long tasks autonomously, and turns simple prompts into full outputs like reports, slides, and structured workflows.
@@ -2655,7 +2663,7 @@ https://t.co/BLAG9CPVsr</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/amplify_video_thumb/2051252767143174144/img/DiDDdL6NHzyH-XPT.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="121" data-retweets="41" data-bookmarks="62" data-er="8.7800" data-buzz="370">
+<article class="card" data-likes="121" data-retweets="41" data-bookmarks="62" data-er="8.7800" data-buzz="370" data-discovery="0">
   <div class="rank">#93</div>
   <div class="content">
     <div class="meta"><strong>Brij Pandey</strong>
@@ -2716,7 +2724,7 @@ Follow @Suryanshti777 for real-world AI workflows.</p>
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/media/HHAJ6EeaMAAjFhK.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="121" data-retweets="12" data-bookmarks="185" data-er="1.0962" data-buzz="527">
+<article class="card" data-likes="121" data-retweets="12" data-bookmarks="185" data-er="1.0962" data-buzz="527" data-discovery="0">
   <div class="rank">#94</div>
   <div class="content">
     <div class="meta"><strong>Cas.Fyn</strong>
@@ -2751,7 +2759,7 @@ Comment “AD” and I’ll send it over.
     </div>
   </div><img class="thumb" src="https://pbs.twimg.com/ext_tw_video_thumb/1993715002914574336/pu/img/74rDsaY13RJJjpD7.jpg" loading="lazy" alt="">
 </article>
-<article class="card" data-likes="73" data-retweets="38" data-bookmarks="114" data-er="16.2527" data-buzz="419">
+<article class="card" data-likes="73" data-retweets="38" data-bookmarks="114" data-er="16.2527" data-buzz="419" data-discovery="0">
   <div class="rank">#95</div>
   <div class="content">
     <div class="meta"><strong>たぬ</strong>
@@ -2775,6 +2783,15 @@ Comment “AD” and I’ll send it over.
   var container=document.getElementById("cards");
   var cards=Array.prototype.slice.call(container.querySelectorAll(".card"));
   var buttons=document.querySelectorAll(".sortbtn");
+  var filterButtons=document.querySelectorAll(".filterbtn");
+  var currentFilter="discovery";
+  function applyFilter(){
+    cards.forEach(function(card){
+      card.hidden=currentFilter==="discovery" && card.dataset.discovery!=="1";
+    });
+    var visible=cards.filter(function(card){return !card.hidden;});
+    visible.forEach(function(card,i){card.querySelector(".rank").textContent="#"+(i+1);});
+  }
   function sortBy(key){
     cards.sort(function(a,b){
       return parseFloat(b.dataset[key])-parseFloat(a.dataset[key]);
@@ -2783,6 +2800,7 @@ Comment “AD” and I’ll send it over.
       card.querySelector(".rank").textContent="#"+(i+1);
       container.appendChild(card);
     });
+    applyFilter();
   }
   buttons.forEach(function(btn){
     btn.addEventListener("click",function(){
@@ -2791,6 +2809,15 @@ Comment “AD” and I’ll send it over.
       sortBy(btn.dataset.key);
     });
   });
+  filterButtons.forEach(function(btn){
+    btn.addEventListener("click",function(){
+      filterButtons.forEach(function(b){b.classList.remove("active");});
+      btn.classList.add("active");
+      currentFilter=btn.dataset.filter;
+      applyFilter();
+    });
+  });
+  applyFilter();
 })();
 </script>
 </body></html>
