@@ -24,6 +24,11 @@ on:
         required: false
         type: boolean
         default: false
+      review_only:
+        description: '既存候補をAI二次判定だけ実行する'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -50,6 +55,8 @@ jobs:
         run: |
           if [[ "${{ inputs.refresh_costs_only }}" == "true" ]]; then
             python scripts/gemini_buzz_research.py --refresh-costs-only
+          elif [[ "${{ inputs.review_only }}" == "true" ]]; then
+            python scripts/gemini_buzz_research.py --review-only
           else
             python scripts/gemini_buzz_research.py \
               --mode "${{ inputs.mode || 'discovery' }}" \

@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 import os
@@ -25,7 +26,10 @@ DATA_DIR = ROOT / "data" / "gemini_buzz"
 RAW_DIR = DATA_DIR / "raw"
 RANKING_PATH = DATA_DIR / "ranking.json"
 MANIFEST_PATH = DATA_DIR / "search_manifest.json"
+REVIEWS_PATH = DATA_DIR / "discovery_reviews.json"
 ACTOR_ID = "xquik/x-tweet-scraper"
+DISCOVERY_REVIEW_MODEL = "gemini-2.5-flash-lite"
+DISCOVERY_REVIEW_VERSION = 1
 
 USAGE_QUERIES = [
     "Gemini 使い方 lang:ja min_faves:100",
@@ -70,6 +74,11 @@ EXTERNAL_DETAIL_HINTS = re.compile(
     re.I,
 )
 GEMINI_HINTS = re.compile(r"\bGemini\b|ジェミニ", re.I)
+GEMINI_VERSION_HINTS = re.compile(
+    r"\bGemini\s+(?:\d(?:\.\d)?|CLI|Deep Think|Live Translate|Code Wiki|"
+    r"Robotics|Omni|Flash|Pro|Nano Banana)\b",
+    re.I,
+)
 RELEASE_HINTS = re.compile(
     r"新機能|新しい|登場|発表|公開|提供開始|アップデート|刷新|ついに|"
     r"\bnew (?:feature|capabilit(?:y|ies)|model|tool|file search|session management)\b|"
@@ -103,6 +112,39 @@ GENERIC_HYPE_HINTS = re.compile(
     r"\bmost people\b|\bbookmark this\b|\bsteal the prompt\b",
     re.I,
 )
+SUBJECT_ACTION_HINTS = re.compile(
+    r"(?:Gemini|ジェミニ)[^.!?\n。！？]{0,180}(?:新機能|新登場|登場|リリース|公開|"
+    r"アップデート|できる|生成|作れる|構築|変換|自動化|"
+    r"\bnew feature\b|\breleas(?:e|ed|ing)\b|\blaunch(?:ed|ing)?\b|"
+    r"\bcan\b|\bbuilds?\b|\bcreates?\b|\bgenerates?\b|\btransforms?\b)|"
+    r"(?:新機能|新登場|リリース|公開|発表)[^.!?\n。！？]{0,50}"
+    r"(?:Gemini|ジェミニ)|"
+    r"\b(?:introduc(?:e|ed|ing)|releas(?:e|ed|ing)|launch(?:ed|ing)?)"
+    r"\s+(?:Google\s+)?Gemini\b",
+    re.I | re.S,
+)
+DISCOVERY_REVIEW_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "is_gemini_feature": {"type": "boolean"},
+                    "kind": {
+                        "type": "string",
+                        "enum": ["surprise", "new_feature", "reject"],
+                    },
+                    "reason": {"type": "string"},
+                },
+                "required": ["id", "is_gemini_feature", "kind", "reason"],
+            },
+        }
+    },
+    "required": ["items"],
+}
 
 
 def _parse_args() -> argparse.Namespace:
@@ -116,11 +158,12 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--start", default=(today - timedelta(days=365)).isoformat())
     parser.add_argument("--end", default=today.isoformat())
-    parser.add_argument("--max-items-per-query", type=int, default=100)
-    parser.add_argument("--max-charge-usd", type=Decimal, default=Decimal("0.08"))
+    parser.add_argument("--max-items-per-query", type=int, default=25)
+    parser.add_argument("--max-charge-usd", type=Decimal, default=Decimal("0.05"))
     parser.add_argument("--build-only", action="store_true")
     parser.add_argument("--refresh-costs-only", action="store_true")
     parser.add_argument("--reclassify-only", action="store_true")
+    parser.add_argument("--review-only", action="store_true")
     return parser.parse_args()
 
 
@@ -129,6 +172,13 @@ def _validate_args(args: argparse.Namespace) -> None:
     end = date.fromisoformat(args.end)
     if start >= end:
         raise SystemExit("--start must be before --end")
+    if (
+        args.build_only
+        or args.refresh_costs_only
+        or args.reclassify_only
+        or args.review_only
+    ):
+        return
     if not 1 <= args.max_items_per_query <= 100:
         raise SystemExit("Test mode limits --max-items-per-query to 1..100")
     expected = len(_queries_for_mode(args.mode)) * args.max_items_per_query * 0.00015
@@ -228,11 +278,14 @@ def classify_discovery(text: str) -> dict:
     excitement = bool(EXCITEMENT_HINTS.search(context))
     capability = bool(CAPABILITY_HINTS.search(context))
     generic_hype = bool(GENERIC_HYPE_HINTS.search(text))
+    gemini_subject = bool(SUBJECT_ACTION_HINTS.search(text))
+    versioned_demo = bool(GEMINI_VERSION_HINTS.search(text)) and excitement and capability
     score = int(release) * 2 + int(excitement) * 2 + int(capability)
     is_discovery = (
         gemini
         and capability
         and (release or excitement)
+        and (gemini_subject or versioned_demo)
         and not (generic_hype and not release)
     )
     if not is_discovery:
@@ -262,6 +315,131 @@ def _write_json(path: Path, value: dict) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     tmp.replace(path)
+
+
+def _text_hash(text: str) -> str:
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()[:16]
+
+
+def _load_discovery_reviews() -> dict[str, dict]:
+    if not REVIEWS_PATH.exists():
+        return {}
+    try:
+        data = json.loads(REVIEWS_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    if data.get("version") != DISCOVERY_REVIEW_VERSION:
+        return {}
+    return {
+        key: value
+        for key, value in (data.get("by_url") or {}).items()
+        if isinstance(value, dict)
+    }
+
+
+def _apply_discovery_reviews(
+    posts: list[dict],
+    reviews: dict[str, dict],
+) -> list[dict]:
+    enriched = []
+    for post in posts:
+        copy = dict(post)
+        review = reviews.get(copy.get("url") or "")
+        if review and review.get("text_hash") == _text_hash(copy.get("text") or ""):
+            approved = bool(review.get("is_gemini_feature"))
+            copy["is_discovery"] = approved
+            copy["discovery_kind"] = review.get("kind") if approved else ""
+            copy["discovery_score"] = copy.get("discovery_score", 0) if approved else 0
+            copy["discovery_reviewed"] = True
+            copy["discovery_review_reason"] = review.get("reason") or ""
+        enriched.append(copy)
+    return enriched
+
+
+def review_discovery_posts(posts: list[dict]) -> list[dict]:
+    """Gemini自身の新機能・具体デモかを低コストモデルで二次判定する。"""
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if not api_key:
+        logger.warning("GEMINI_API_KEY missing: using rule-based discovery labels")
+        return posts
+    from google import genai
+
+    reviews = _load_discovery_reviews()
+    missing = [
+        post
+        for post in posts
+        if (
+            not reviews.get(post.get("url") or "")
+            or reviews[post.get("url") or ""].get("text_hash")
+            != _text_hash(post.get("text") or "")
+        )
+    ]
+    client = genai.Client(api_key=api_key)
+    for start in range(0, len(missing), 25):
+        batch = missing[start : start + 25]
+        blocks = "\n\n".join(
+            f"[ID: {post.get('url') or ''}]\n{post.get('text') or ''}"
+            for post in batch
+        )
+        prompt = f"""以下のX投稿が「Google Gemini自身の新機能・新モデル・具体的な能力デモ」
+を主題にした投稿か判定してください。
+
+採用:
+- Gemini本体、Geminiアプリ、Gemini API、Gemini CLI、Gemini Enterprise、
+  Gemini Flash/Pro/Deep Think/Live Translate/Robotics/Omni等の新機能・新モデル
+- Geminiが生成・構築・自動化した具体的なデモ
+- 新機能やデモへの驚き・興奮を示す投稿
+
+除外:
+- Gemma、NotebookLM、Google Workspace、他社製品が主題でGeminiは比較・基盤として出るだけ
+- 他AIとの一覧、一般的な使い方、神プロンプト配布
+- 噂・今後の予想だけで、公開済み機能や実デモがない
+- Geminiの能力を誤解させていると批判する投稿
+- 文脈不足で具体的な機能が分からない投稿
+
+kind:
+- surprise: 驚きや興奮を伴う具体デモ
+- new_feature: リリース・更新・新機能の説明
+- reject: 除外対象
+
+投稿:
+{blocks}"""
+        response = client.models.generate_content(
+            model=DISCOVERY_REVIEW_MODEL,
+            contents=prompt,
+            config={
+                "response_mime_type": "application/json",
+                "response_json_schema": DISCOVERY_REVIEW_SCHEMA,
+                "thinking_config": {"thinking_budget": 0},
+                "max_output_tokens": 6000,
+            },
+        )
+        from gemini_usage import log_usage
+
+        log_usage("gemini_buzz_discovery_review", DISCOVERY_REVIEW_MODEL, response)
+        parsed = json.loads(response.text or "{}")
+        post_by_url = {post.get("url") or "": post for post in batch}
+        for row in parsed.get("items") or []:
+            url = row.get("id") or ""
+            post = post_by_url.get(url)
+            if not post:
+                continue
+            reviews[url] = {
+                "text_hash": _text_hash(post.get("text") or ""),
+                "is_gemini_feature": bool(row.get("is_gemini_feature")),
+                "kind": row.get("kind") or "reject",
+                "reason": (row.get("reason") or "")[:300],
+            }
+        _write_json(
+            REVIEWS_PATH,
+            {
+                "version": DISCOVERY_REVIEW_VERSION,
+                "model": DISCOVERY_REVIEW_MODEL,
+                "updated_at": datetime.now(timezone.utc).isoformat(),
+                "by_url": reviews,
+            },
+        )
+    return _apply_discovery_reviews(posts, reviews)
 
 
 def save_results(
@@ -388,12 +566,17 @@ def reclassify_snapshot() -> None:
     posts = snapshot.get("posts", [])
     for post in posts:
         post.update(classify_relevance(post.get("text") or ""))
+    ranking = json.loads(RANKING_PATH.read_text(encoding="utf-8")) if RANKING_PATH.exists() else {}
+    ranking_posts = ranking.get("posts", [])
+    for post in ranking_posts:
+        post.update(classify_relevance(post.get("text") or ""))
     accepted = sorted(
-        (post for post in posts if post["accepted"]),
+        _accepted_posts(_dedupe(ranking_posts + posts), "discovery"),
         key=lambda post: (post["likes"], post["retweets"], post["published_at"]),
         reverse=True,
     )
-    snapshot["accepted_count"] = len(accepted)
+    snapshot["accepted_count"] = len(_accepted_posts(posts, "discovery"))
+    snapshot["accumulated_ranking_count"] = len(accepted)
     _write_json(raw_path, snapshot)
     _write_json(
         RANKING_PATH,
@@ -412,6 +595,44 @@ def reclassify_snapshot() -> None:
         len(accepted),
         sum(bool(post["is_discovery"]) for post in accepted),
     )
+
+
+def review_discovery_snapshot() -> None:
+    if not MANIFEST_PATH.exists():
+        raise SystemExit(f"Manifest missing: {MANIFEST_PATH}")
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    raw_path = ROOT / manifest["raw_snapshot"]
+    snapshot = json.loads(raw_path.read_text(encoding="utf-8"))
+    ranking = json.loads(RANKING_PATH.read_text(encoding="utf-8"))
+    combined = _dedupe((ranking.get("posts") or []) + (snapshot.get("posts") or []))
+    reviewed = review_discovery_posts(combined)
+    accepted = sorted(
+        _accepted_posts(reviewed, "discovery"),
+        key=lambda post: (post["likes"], post["retweets"], post["published_at"]),
+        reverse=True,
+    )
+    reviewed_by_url = {post["url"]: post for post in reviewed}
+    snapshot["posts"] = [
+        reviewed_by_url.get(post["url"], post) for post in snapshot.get("posts", [])
+    ]
+    snapshot["accepted_count"] = len(
+        _accepted_posts(snapshot["posts"], "discovery")
+    )
+    snapshot["accumulated_ranking_count"] = len(accepted)
+    manifest["accepted_count"] = snapshot["accepted_count"]
+    manifest["accumulated_ranking_count"] = len(accepted)
+    _write_json(raw_path, snapshot)
+    _write_json(MANIFEST_PATH, manifest)
+    _write_json(
+        RANKING_PATH,
+        {
+            **{key: value for key, value in ranking.items() if key != "posts"},
+            "count": len(accepted),
+            "discovery_count": len(accepted),
+            "posts": accepted,
+        },
+    )
+    logger.info("AI-reviewed discovery ranking: %d posts", len(accepted))
 
 
 def run_research(args: argparse.Namespace) -> None:
@@ -477,6 +698,8 @@ def run_research(args: argparse.Namespace) -> None:
             len(query_posts),
             query_cost,
         )
+    if args.mode == "discovery":
+        posts = review_discovery_posts(posts)
     cost = sum(run["apify_cost_usd"] for run in runs)
     if Decimal(str(cost)) > args.max_charge_usd:
         raise SystemExit(
@@ -498,6 +721,8 @@ def main() -> None:
     _validate_args(args)
     if args.refresh_costs_only:
         refresh_manifest_costs()
+    elif args.review_only:
+        review_discovery_snapshot()
     elif args.reclassify_only:
         reclassify_snapshot()
     elif not args.build_only:

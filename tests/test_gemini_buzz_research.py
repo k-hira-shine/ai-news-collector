@@ -4,6 +4,7 @@ from scripts.gemini_buzz_research import (
     DISCOVERY_QUERIES,
     USAGE_QUERIES,
     _accepted_posts,
+    _apply_discovery_reviews,
     _dedupe,
     _query_with_dates,
     _queries_for_mode,
@@ -84,6 +85,21 @@ class GeminiBuzzResearchTests(unittest.TestCase):
 
         self.assertFalse(result["is_discovery"])
 
+    def test_rejects_other_product_release_that_only_mentions_gemini(self) -> None:
+        result = classify_discovery(
+            "We released Gemma 4, built from the same research as Gemini 3. "
+            "Gemma can run on your own hardware."
+        )
+
+        self.assertFalse(result["is_discovery"])
+
+    def test_rejects_notebooklm_feature_using_gemini_model(self) -> None:
+        result = classify_discovery(
+            "NotebookLMの新機能スライド資料がすごい。Gemini 3のデザイン力も発揮。"
+        )
+
+        self.assertFalse(result["is_discovery"])
+
     def test_query_has_bounded_dates(self) -> None:
         query = _query_with_dates("Gemini prompt", "2025-01-01", "2026-01-01")
 
@@ -106,6 +122,30 @@ class GeminiBuzzResearchTests(unittest.TestCase):
         ]
 
         self.assertEqual(_accepted_posts(posts, "discovery"), [posts[0]])
+
+    def test_ai_review_overrides_rule_label(self) -> None:
+        post = {
+            "url": "https://x.com/example/status/1",
+            "text": "NotebookLM released a feature using Gemini.",
+            "is_discovery": True,
+            "discovery_kind": "new_feature",
+            "discovery_score": 3,
+        }
+        from scripts.gemini_buzz_research import _text_hash
+
+        reviews = {
+            post["url"]: {
+                "text_hash": _text_hash(post["text"]),
+                "is_gemini_feature": False,
+                "kind": "reject",
+                "reason": "NotebookLM is the subject",
+            }
+        }
+
+        result = _apply_discovery_reviews([post], reviews)[0]
+
+        self.assertFalse(result["is_discovery"])
+        self.assertTrue(result["discovery_reviewed"])
 
     def test_dedupe_keeps_higher_engagement_snapshot(self) -> None:
         posts = [
