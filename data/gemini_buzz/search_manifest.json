@@ -1,25 +1,56 @@
 {
-  "snapshot_id": "20260609T205255Z",
-  "fetched_at": "2026-06-09T20:52:55.572903+00:00",
+  "snapshot_id": "20260610T035903Z",
+  "fetched_at": "2026-06-10T03:59:03.779637+00:00",
   "actor": "xquik/x-tweet-scraper",
-  "run_id": "6FdGJYI3amf7eAmK0",
+  "run_ids": [
+    "R7K3RI0on2CnT4bmJ",
+    "UvtFErpNzOuycDF0B",
+    "KIe2hez4yER4KErG9",
+    "aY8f58Nojtjez8qcT"
+  ],
+  "runs": [
+    {
+      "query": "Gemini 使い方 lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "R7K3RI0on2CnT4bmJ",
+      "raw_count": 50,
+      "apify_cost_usd": 0.0
+    },
+    {
+      "query": "Gemini プロンプト lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "UvtFErpNzOuycDF0B",
+      "raw_count": 0,
+      "apify_cost_usd": 0.0
+    },
+    {
+      "query": "Gemini workflow lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "KIe2hez4yER4KErG9",
+      "raw_count": 50,
+      "apify_cost_usd": 0.0
+    },
+    {
+      "query": "Gemini tutorial lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "aY8f58Nojtjez8qcT",
+      "raw_count": 50,
+      "apify_cost_usd": 0.0
+    }
+  ],
   "period": {
     "start": "2025-06-10",
     "end": "2026-06-10"
   },
   "queries": [
-    "Gemini (使い方 OR 活用法 OR プロンプト) -filter:replies lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
-    "Gemini (仕事 OR 業務効率化 OR 資料作成) -filter:replies lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
-    "Gemini (workflow OR tutorial OR \"use case\") -filter:replies lang:en min_faves:200 since:2025-06-10 until:2026-06-11",
-    "\"Gemini prompt\" (\"how I use\" OR guide OR workflow) -filter:replies lang:en min_faves:200 since:2025-06-10 until:2026-06-11"
+    "Gemini 使い方 lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini プロンプト lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini workflow lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini tutorial lang:en min_faves:100 since:2025-06-10 until:2026-06-11"
   ],
-  "max_items_per_query": 100,
-  "max_possible_results": 400,
-  "apify_cost_usd": 0.0145,
-  "raw_count": 97,
-  "deduplicated_count": 97,
-  "accepted_count": 42,
-  "raw_snapshot": "data/gemini_buzz/raw/20260609T205255Z.json",
+  "max_items_per_query": 50,
+  "max_possible_results": 200,
+  "apify_cost_usd": 0.0,
+  "raw_count": 150,
+  "deduplicated_count": 142,
+  "accepted_count": 95,
+  "raw_snapshot": "data/gemini_buzz/raw/20260610T035903Z.json",
   "limitations": [
     "X Top search is relevance-ranked and not exhaustive.",
     "Engagement values are a snapshot at collection time.",
