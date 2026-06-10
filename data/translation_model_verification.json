@@ -1,0 +1,487 @@
+{
+  "verified_at": "2026-06-10T13:23:50+09:00",
+  "model_a": "gemini-2.5-flash",
+  "model_b": "gemini-2.5-flash-lite",
+  "judge_model": "gemini-2.5-pro",
+  "sample_count": 20,
+  "usage": {
+    "model_a": {
+      "prompt_tokens": 1857,
+      "output_tokens": 1612,
+      "thinking_tokens": 0,
+      "estimated_usd": 0.004587
+    },
+    "model_b": {
+      "prompt_tokens": 1857,
+      "output_tokens": 1705,
+      "thinking_tokens": 0,
+      "estimated_usd": 0.000868
+    },
+    "judge": {
+      "prompt_tokens": 4594,
+      "output_tokens": 3106,
+      "thinking_tokens": 262,
+      "estimated_usd": 0.039422
+    }
+  },
+  "metrics": {
+    "all": {
+      "a_average": 4.787,
+      "b_average": 4.7,
+      "a_wins": 11,
+      "b_wins": 6,
+      "ties": 3
+    },
+    "hn_title": {
+      "a_average": 4.7,
+      "b_average": 4.95,
+      "a_wins": 1,
+      "b_wins": 4,
+      "ties": 0
+    },
+    "arxiv": {
+      "a_average": 4.95,
+      "b_average": 4.85,
+      "a_wins": 3,
+      "b_wins": 1,
+      "ties": 1
+    },
+    "gemini_summary": {
+      "a_average": 4.5,
+      "b_average": 4.55,
+      "a_wins": 2,
+      "b_wins": 1,
+      "ties": 2
+    },
+    "x_post": {
+      "a_average": 5.0,
+      "b_average": 4.45,
+      "a_wins": 5,
+      "b_wins": 0,
+      "ties": 0
+    }
+  },
+  "samples": [
+    {
+      "id": "hn-0",
+      "category": "hn_title",
+      "instruction": "記事タイトルを自然な日本語へ翻訳する。要約しない。",
+      "source": "Claude Mythos 5 / Fable 5",
+      "output_a": "Claude Mythos 5 / Fable 5",
+      "output_b": "クロード・ミソス5 / フェイブル5",
+      "judgment": {
+        "id": "hn-0",
+        "a_accuracy": 5,
+        "a_naturalness": 3,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "B",
+        "reason": "固有名詞をカタカナ表記にしているBの方が、日本語のタイトルとしてより自然で読みやすい。"
+      }
+    },
+    {
+      "id": "hn-1",
+      "category": "hn_title",
+      "instruction": "記事タイトルを自然な日本語へ翻訳する。要約しない。",
+      "source": "System Card: Claude Fable 5 and Claude Mythos 5 [pdf]",
+      "output_a": "システムカード：Claude Fable 5とClaude Mythos 5 [pdf]",
+      "output_b": "システムカード：クロード・フェイブル5とクロード・ミソス5 [pdf]",
+      "judgment": {
+        "id": "hn-1",
+        "a_accuracy": 5,
+        "a_naturalness": 4,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "B",
+        "reason": "固有名詞をカタカナ表記にしているBの方が、日本語のタイトルとしてより自然で読みやすい。"
+      }
+    },
+    {
+      "id": "hn-2",
+      "category": "hn_title",
+      "instruction": "記事タイトルを自然な日本語へ翻訳する。要約しない。",
+      "source": "Claude Fable 5",
+      "output_a": "Claude Fable 5",
+      "output_b": "クロード・フェイブル5",
+      "judgment": {
+        "id": "hn-2",
+        "a_accuracy": 5,
+        "a_naturalness": 3,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "B",
+        "reason": "固有名詞をカタカナ表記にしているBの方が、日本語のタイトルとしてより自然で読みやすい。"
+      }
+    },
+    {
+      "id": "hn-3",
+      "category": "hn_title",
+      "instruction": "記事タイトルを自然な日本語へ翻訳する。要約しない。",
+      "source": "'Sloppenheimer:' Amazon Employees Mock the Company's AI on Slack",
+      "output_a": "「スロッペンハイマー」：Amazon従業員がSlackで会社のAIを嘲笑",
+      "output_b": "'スロッペンハイマー'：アマゾン従業員、Slackで同社のAIを嘲笑",
+      "judgment": {
+        "id": "hn-3",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "A",
+        "reason": "Aは引用符に「」を使用しており、日本語の一般的な表記としてより自然である。Bの' 'は不自然ではないものの、Aがわずかに優れている。"
+      }
+    },
+    {
+      "id": "hn-4",
+      "category": "hn_title",
+      "instruction": "記事タイトルを自然な日本語へ翻訳する。要約しない。",
+      "source": "Judge Learns Both Sides Used AI, Cancels Trial, Kicks Everyone Off the Case",
+      "output_a": "裁判官、双方のAI使用を学び、裁判を中止し、全員を案件から外す",
+      "output_b": "裁判官、両者がAIを使用したことを知り、裁判を中止し、全員を事件から除外する",
+      "judgment": {
+        "id": "hn-4",
+        "a_accuracy": 5,
+        "a_naturalness": 4,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "B",
+        "reason": "Aの「学び」という表現は少し硬く、文語的。Bの「知り」の方が、ニュースの見出しとしてより自然な日本語になっている。"
+      }
+    },
+    {
+      "id": "arxiv-0",
+      "category": "arxiv",
+      "instruction": "論文タイトルと要旨を日本語へ翻訳する。内容を省略しない。",
+      "source": "TITLE: Learning to Attack and Defend: Adaptive Red Teaming of Language Models via GRPO\nSUMMARY: AI red teaming must continually adapt to evolving attackers and defenders. Reinforcement learning offers a promising approach to discovering novel attacks, and co-training methods can produce more robust defenders in tandem. Recent works have demonstrated the efficacy of attacker-defender co-trainin",
+      "output_a": "タイトル：攻撃と防御を学習する：GRPOによる言語モデルの適応的レッドチーミング\n要旨：AIのレッドチーミングは、進化する攻撃者と防御者に継続的に適応しなければならない。強化学習は新たな攻撃を発見するための有望なアプローチを提供し、共同訓練手法は連携してより堅牢な防御者を生成できる。最近の研究では、攻撃者と防御者の共同訓練の有効性が実証されている。",
+      "output_b": "タイトル：攻撃と防御の学習：GRPOによる言語モデルの適応的レッドチーミング\n要旨：AIレッドチーミングは、進化する攻撃者と防御者に継続的に適応する必要がある。強化学習は、新しい攻撃を発見するための有望なアプローチを提供し、共同訓練法は、より堅牢な防御者を同時に生成することができる。最近の研究では、攻撃者-防御者の共同訓練の有効性が示されている。",
+      "judgment": {
+        "id": "arxiv-0",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "A",
+        "reason": "Aの「連携して」や「生成できる」といった表現が、Bの「同時に」「生成することができる」よりも簡潔で自然な日本語になっている。"
+      }
+    },
+    {
+      "id": "arxiv-1",
+      "category": "arxiv",
+      "instruction": "論文タイトルと要旨を日本語へ翻訳する。内容を省略しない。",
+      "source": "TITLE: BrainSurgery: Reproducible and Reliable Declarative Weight Manipulations for Model Editing and Upcycling\nSUMMARY: As deep learning models scale, managing, inspecting, and modifying large checkpoints has become increasingly challenging. Researchers often need to alter model weights for layer restructuring, precision casting, low-rank factorization, and architectural debugging, yet these workflows often rely on f",
+      "output_a": "タイトル：BrainSurgery: モデル編集とアップサイクリングのための再現性・信頼性の高い宣言的重み操作\n要旨：ディープラーニングモデルが大規模になるにつれて、大きなチェックポイントの管理、検査、修正はますます困難になっている。研究者はしばしば、層の再構築、精度変換、低ランク因数分解、アーキテクチャのデバッグのためにモデルの重みを変更する必要があるが、これらのワークフローはしばに依存している。",
+      "output_b": "タイトル：BrainSurgery：モデル編集とアップサイクリングのための再現可能で信頼性の高い宣言型重み操作\n要旨：ディープラーニングモデルがスケーリングするにつれて、大規模なチェックポイントの管理、検査、変更がますます困難になっている。研究者は、層の再構築、精度キャスティング、低ランク分解、およびアーキテクチャのデバッグのためにモデルの重みを変更する必要があることが多いが、これらのワークフローはしばしばfに依存している。",
+      "judgment": {
+        "id": "arxiv-1",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "tie",
+        "reason": "両候補ともに専門用語の訳語選択を含め、精度、自然さにおいて同等レベルの高品質な翻訳である。「宣言的」「宣言型」などの細かな違いはあるが、どちらも文脈上許容されるため優劣はつけがたい。"
+      }
+    },
+    {
+      "id": "arxiv-2",
+      "category": "arxiv",
+      "instruction": "論文タイトルと要旨を日本語へ翻訳する。内容を省略しない。",
+      "source": "TITLE: IS-CoT: Breaking the Long-form Generation Collapse via Interleaved Structural Thinking\nSUMMARY: Generating coherent and controllable long-form content remains a persistent challenge for Large Language Models (LLMs). While reasoning-enhanced models have demonstrated success in logic-intensive domains, our evaluation reveals that they suffer from a severe length collapse in open-ended writing, w",
+      "output_a": "タイトル：IS-CoT: 構造的思考のインターリーブによる長文生成崩壊の打破\n要旨：一貫性があり制御可能な長文コンテンツの生成は、大規模言語モデル（LLM）にとって依然として課題である。推論強化モデルは論理集約的な領域で成功を収めているが、我々の評価によると、オープンエンドな文章作成において深刻な長さの崩壊に苦しんでいる。",
+      "output_b": "タイトル：IS-CoT：インターリーブ構造思考による長文生成崩壊の打破\n要旨：首尾一貫した制御可能な長文コンテンツの生成は、大規模言語モデル（LLM）にとって依然として永続的な課題である。推論強化モデルは論理集約型ドメインで成功を示しているが、我々の評価によると、それらはオープンエンドのライティングにおいて深刻な長さの崩壊に苦しんでいる。",
+      "judgment": {
+        "id": "arxiv-2",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "A",
+        "reason": "Aは「構造的思考のインターリーブ」や「依然として課題である」といった表現が、専門分野の論文翻訳としてより自然で適切である。Bは全体的にやや直訳調に感じる。"
+      }
+    },
+    {
+      "id": "arxiv-3",
+      "category": "arxiv",
+      "instruction": "論文タイトルと要旨を日本語へ翻訳する。内容を省略しない。",
+      "source": "TITLE: The Neutral Mask: How RLHF Provides Shallow Alignment while Leaving Partisan Structure Intact in a Large Language Model\nSUMMARY: The ambition behind alignment training is to make large language models safe and useful. The primary mechanism, reinforcement learning from human feedback (RLHF), shapes the behavior of deployed language models by aligning them with ``human values.'' Yet the process is opaque. What values are being ",
+      "output_a": "タイトル：中立的なマスク：RLHFが、大規模言語モデルにおいて党派的構造をそのまま残しつつ、表層的なアライメントをどのように提供するか\n要旨：アライメント訓練の野心は、大規模言語モデルを安全で有用なものにすることである。主要なメカニズムである人間のフィードバックからの強化学習（RLHF）は、展開された言語モデルの振る舞いを「人間の価値観」に合わせることで形成する。しかし、このプロセスは不透明である。どのような価値観が",
+      "output_b": "タイトル：ニュートラルマスク：RLHFはどのようにして、大規模言語モデルにおいて、党派的構造をそのままにして浅いアライメントを提供するのか\n要旨：アライメントトレーニングの野心は、大規模言語モデルを安全で有用なものにすることである。主要なメカニズムである人間のフィードバックからの強化学習（RLHF）は、「人間の価値観」に沿って展開された言語モデルの挙動を形成する。しかし、そのプロセスは不透明である。どのような価値観が",
+      "judgment": {
+        "id": "arxiv-3",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "A",
+        "reason": "Aのタイトルの訳「表層的なアライメントをどのように提供するか」の方が、Bの「浅いアライメントを提供するのか」よりも自然で専門的な響きがある。"
+      }
+    },
+    {
+      "id": "arxiv-4",
+      "category": "arxiv",
+      "instruction": "論文タイトルと要旨を日本語へ翻訳する。内容を省略しない。",
+      "source": "TITLE: Multi-Turn Evaluation of Deep Research Agents Under Process-Level Feedback\nSUMMARY: Existing benchmarks for deep research agents (DRAs) assess only single-shot outputs, ignoring a key question: can DRAs improve their reports when guided by feedback? To investigate this, we conduct a multi-turn evaluation of DRAs under two feedback settings: self-reflection, in which the agent revis",
+      "output_a": "タイトル：プロセスレベルフィードバックの下での深層研究エージェントの多段階評価\n要旨：深層研究エージェント（DRA）の既存のベンチマークは、単一ショットの出力のみを評価しており、主要な疑問を無視している。つまり、DRAはフィードバックによって導かれたときに報告を改善できるのか？これを調査するため、我々は2つのフィードバック設定（エージェントが自己反省する自己反省と）の下でDRAの多段階評価を実施する。",
+      "output_b": "タイトル：プロセスレベルのフィードバック下でのディープリサーチエージェントのマルチターン評価\n要旨：ディープリサーチエージェント（DRA）の既存のベンチマークは、単発の出力のみを評価し、重要な疑問を無視している。DRAはフィードバックによって誘導されるとレポートを改善できるのか？これを調査するために、我々は2つのフィードバック設定下でのDRAのマルチターン評価を実施する：エージェントが改訂するセルフリフレクション",
+      "judgment": {
+        "id": "arxiv-4",
+        "a_accuracy": 5,
+        "a_naturalness": 4,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "B",
+        "reason": "Bの「ディープリサーチエージェント」「マルチターン評価」という訳語の方が、Aの「深層研究エージェント」「多段階評価」よりも一般的で自然に感じられる。"
+      }
+    },
+    {
+      "id": "gemini-0",
+      "category": "gemini_summary",
+      "instruction": "内容を日本語で80字以内に要約する。製品名、機能、何ができるかを具体的に残す。",
+      "source": "Gemini 3.5 Flash can process complex visual data and translate it into functional, interactive code.\n\nWatch Gemini analyze lighting from a reference image, and build an interactive 3D visualizer to preview the setup.",
+      "output_a": "Gemini 3.5 Flashは複雑な視覚データを処理し、機能的でインタラクティブなコードに変換。参照画像の照明を分析し、セットアップをプレビューするインタラクティブな3Dビジュアライザーを構築する。",
+      "output_b": "Gemini 3.5 Flashは、複雑な視覚データを処理し、機能的でインタラクティブなコードに変換できます。参考画像から照明を分析し、プレビュー用のインタラクティブな3Dビジュアライザーを構築します。",
+      "judgment": {
+        "id": "gemini-0",
+        "a_accuracy": 5,
+        "a_naturalness": 4,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "B",
+        "reason": "Bは文末が「〜です」で統一されており、説明文としてより自然で丁寧な印象を与える。Aは体言止めでややぶっきらぼうに聞こえる。"
+      }
+    },
+    {
+      "id": "gemini-1",
+      "category": "gemini_summary",
+      "instruction": "内容を日本語で80字以内に要約する。製品名、機能、何ができるかを具体的に残す。",
+      "source": "For over 20 years, we've dedicated ourselves to removing language barriers so people can learn, speak and connect more deeply than ever before.\n\nToday, we’re taking our next step with the release of Gemini 3.5 Live Translate — our latest audio model for live, speech-to-speech translation across 70+ languages. 🧵",
+      "output_a": "Googleは、20年以上かけて言語の壁を取り除き、人々がより深く学び、話し、つながることを可能にしてきました。本日、Googleは70以上の言語に対応するライブ音声間翻訳の最新オーディオモデル、Gemini 3.5 Live Translateを発表しました。",
+      "output_b": "20年以上、言語の壁を取り除き、人々がこれまで以上に深く学び、話し、つながれるようにすることに専念してきました。本日、70以上の言語でのライブ音声間音声翻訳のための最新オーディオモデル、Gemini 3.5 Live Translateをリリースし、次のステップを踏み出します。",
+      "judgment": {
+        "id": "gemini-1",
+        "a_accuracy": 4,
+        "a_naturalness": 3,
+        "a_preservation": 5,
+        "a_instruction": 2,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 2,
+        "winner": "tie",
+        "reason": "両候補とも80字という文字数制限を大幅に超過しており、指示を遵守できていない。翻訳の自然さはBがやや優れるが、指示違反という大きな欠点があるため、同等と評価する。"
+      }
+    },
+    {
+      "id": "gemini-2",
+      "category": "gemini_summary",
+      "instruction": "内容を日本語で80字以内に要約する。製品名、機能、何ができるかを具体的に残す。",
+      "source": "Today, we released Gemini 3.5 Live Translate, our latest audio model for live speech-to-speech translation.\n\nIt supports over 70 languages and starts translating as soon as you start talking, streaming translations while listening to what you say next. No awkward pauses or choppy audio, just real connection without language barriers.\n\nSo, how does it work? 🤔\n\nThe model is able to make split-second decisions to juggle speed and translation quality so conversations actually feel fluid, human, and natural. In order to do this, the model must receive and contextualize the input while simultaneously outputting the translated speech.\n\nThrough this process, Gemini 3.5 Live Translate manages to stay mere seconds behind each speaker and can even maintain pacing, pitch, and intonation across extended sessions.\n\nSee it in action below, or try it yourself in the Google Translate app on iOS & Android.",
+      "output_a": "Gemini 3.5 Live Translateは、70以上の言語に対応した音声間翻訳モデル。話し始めるとすぐに翻訳を開始し、次の発話を聴きながらリアルタイムで翻訳をストリーミング。会話は自然で途切れず、Google翻訳アプリで試せる。",
+      "output_b": "Gemini 3.5 Live Translateは、70以上の言語をサポートし、話し始めるとすぐに翻訳を開始し、次に話すことを聞きながら翻訳をストリーミングします。会話が流暢で、人間らしく、自然に感じられるように、速度と翻訳品質を両立させるための瞬時の意思決定を行います。",
+      "judgment": {
+        "id": "gemini-2",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 2,
+        "b_accuracy": 5,
+        "b_naturalness": 5,
+        "b_preservation": 5,
+        "b_instruction": 2,
+        "winner": "tie",
+        "reason": "両候補とも80字という文字数制限を大幅に超過しており、指示を遵守できていない。要約の質自体はどちらも悪くないが、指示違反という大きな欠点があるため、同等と評価する。"
+      }
+    },
+    {
+      "id": "gemini-3",
+      "category": "gemini_summary",
+      "instruction": "内容を日本語で80字以内に要約する。製品名、機能、何ができるかを具体的に残す。",
+      "source": "Say hello, hola, 你好 to Gemini 3.5 Live Translate: our latest audio model built for fast, cross-language communication. 🌐",
+      "output_a": "Gemini 3.5 Live Translateは、高速で多言語間コミュニケーションを実現する最新オーディオモデルです。",
+      "output_b": "Gemini 3.5 Live Translateは、高速なクロス言語コミュニケーションのために構築された最新のオーディオモデルです。挨拶しましょう！",
+      "judgment": {
+        "id": "gemini-3",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "A",
+        "reason": "Aは原文の要点を簡潔かつ自然に要約している。Bは「挨拶しましょう！」という蛇足の一文があり、要約として不適切。"
+      }
+    },
+    {
+      "id": "gemini-4",
+      "category": "gemini_summary",
+      "instruction": "内容を日本語で80字以内に要約する。製品名、機能、何ができるかを具体的に残す。",
+      "source": "Gemini 3.5 Live Translate brings near real-time, natural speech translation to Google AI Studio, Google Translate and Google Meet.",
+      "output_a": "Gemini 3.5 Live Translateは、Google AI Studio、Google Translate、Google Meetでほぼリアルタイムの自然な音声翻訳を提供します。",
+      "output_b": "Gemini 3.5 Live Translateは、Google AI Studio、Google翻訳、Google Meetに、ほぼリアルタイムで自然な音声翻訳をもたらします。",
+      "judgment": {
+        "id": "gemini-4",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 5,
+        "winner": "A",
+        "reason": "Aの「〜提供します」という表現の方が、Bの「〜もたらします」よりも、製品機能の説明として自然で分かりやすい。"
+      }
+    },
+    {
+      "id": "buzz-0",
+      "category": "x_post",
+      "instruction": "X投稿を熱量や煽り表現も含めて自然な日本語へ全文翻訳する。",
+      "source": "oh my… this shouldn’t be possible\n\nGemini 3 can generate 3D interactive scenes with three.js… and you can literally move particles with your hands\n\nno coding skills needed at all, it's all free\n\ntutorial + prompts in the comments https://t.co/WRRm3oKCpJ",
+      "output_a": "なんてこった…こんなことありえないだろ\n\nGemini 3はthree.jsで3Dインタラクティブシーンを生成できる…しかも手でパーティクルを動かせるんだぜ\n\nプログラミングスキルは一切不要、しかも全部無料だ\n\nチュートリアルとプロンプトはコメント欄に https://t.co/WRRm3oKCpJ",
+      "output_b": "信じられない…これはありえないはずだ。Gemini 3はthree.jsで3Dインタラクティブシーンを生成できる…しかも、コーディングスキルは一切不要で、手を動かしてパーティクルを動かすことができる。しかも無料。チュートリアルとプロンプトはコメント欄に。",
+      "judgment": {
+        "id": "buzz-0",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 3,
+        "b_preservation": 5,
+        "b_instruction": 4,
+        "winner": "A",
+        "reason": "Aは「〜だろ」「〜だぜ」といった口語表現を使い、原文の興奮した熱量を非常によく再現している。Bは翻訳が硬く、指示された「熱量」の再現が不十分。"
+      }
+    },
+    {
+      "id": "buzz-1",
+      "category": "x_post",
+      "instruction": "X投稿を熱量や煽り表現も含めて自然な日本語へ全文翻訳する。",
+      "source": "Gemini 3 kills chatgpt 5.2 completely \n\nit can generate 3d interactive AR shooting game with single prompt.. \n\nuse camera to recognize multiple hand gestures like index finger aiming, thumb pulling the trigger to shoot\n\ntutorial and prompt in comments https://t.co/lxUdLY44I0",
+      "output_a": "Gemini 3はChatGPT 5.2を完全に葬り去った。\n\n単一のプロンプトで3DインタラクティブARシューティングゲームを生成できるんだ…\n\nカメラを使って人差し指で狙いを定め、親指でトリガーを引いて撃つといった複数の手のジェスチャーを認識する。\n\nチュートリアルとプロンプトはコメント欄に https://t.co/lxUdLY44I0",
+      "output_b": "Gemini 3がChatGPT 5.2を完全に凌駕する。シングルプロンプトでAR 3Dシューティングゲームを生成できる。カメラを使って、指を狙う、トリガーを引くといった複数のハンドジェスチャーを認識して撃つことができる。チュートリアルとプロンプトはコメント欄に。",
+      "judgment": {
+        "id": "buzz-1",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 4,
+        "winner": "A",
+        "reason": "Aは「葬り去った」「〜できるんだ」といった表現で、原文の煽りや興奮をうまく表現している。Bの「凌駕する」はやや硬く、熱量の再現が不足している。"
+      }
+    },
+    {
+      "id": "buzz-2",
+      "category": "x_post",
+      "instruction": "X投稿を熱量や煽り表現も含めて自然な日本語へ全文翻訳する。",
+      "source": "Gemini 3 can do 3D interactive website in a few mins\n\nit detects hand gestures using your camera and interact.. this is crazy \n\nno need to know code, just simple texts\n\ntutorial and prompts below https://t.co/UdBii5Y2LE",
+      "output_a": "Gemini 3なら数分で3Dインタラクティブウェブサイトが作れるんだぜ\n\nカメラで手のジェスチャーを検知してインタラクトする…これマジやばい\n\nコード知らなくても、簡単なテキストだけでOK\n\nチュートリアルとプロンプトは以下に https://t.co/UdBii5Y2LE",
+      "output_b": "Gemini 3なら、数分で3Dインタラクティブウェブサイトが作れる。カメラでハンドジェスチャーを検知してインタラクトできる…これはクレイジーだ。コードを知る必要はなく、簡単なテキストだけでOK。チュートリアルとプロンプトは下記に。",
+      "judgment": {
+        "id": "buzz-2",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 4,
+        "winner": "A",
+        "reason": "Aは「〜だぜ」「マジやばい」といった口語表現を用いることで、指示された「熱量や煽り表現」を的確に再現している。Bは丁寧語が混じるなど、表現に一貫性がなく熱量が伝わりにくい。"
+      }
+    },
+    {
+      "id": "buzz-3",
+      "category": "x_post",
+      "instruction": "X投稿を熱量や煽り表現も含めて自然な日本語へ全文翻訳する。",
+      "source": "totally blown away by Google Gemini 3 + three.js..\n\njust generated a 3D product interactive app with zero coding.. use hand gesture to rotate, scale, control xyz and lighting of 3D model\n\nAI is taking over.. accept or not\n\ntutorial with prompts &amp; code below: https://t.co/l3R99B1GEu",
+      "output_a": "Google Gemini 3 + three.jsには完全にぶっ飛ばされた…\n\nゼロコーディングで3D製品インタラクティブアプリを生成できたんだ…手のジェスチャーで3Dモデルの回転、拡大縮小、XYZ、照明を制御できる。\n\nAIがすべてを乗っ取っている…受け入れるか否かだ。\n\nプロンプトとコード付きのチュートリアルは以下に: https://t.co/l3R99B1GEu",
+      "output_b": "Google Gemini 3 + three.jsには完全に度肝を抜かれた…。コーディングゼロで3D製品インタラクティブアプリを生成した。ハンドジェスチャーで3Dモデルの回転、スケーリング、XYZ、ライティングをコントロールできる。AIはもうすぐそこまで来ている…受け入れるか否か。チュートリアルとプロンプト＆コードは以下に。",
+      "judgment": {
+        "id": "buzz-3",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 4,
+        "winner": "A",
+        "reason": "Aの「ぶっ飛ばされた」という訳は、原文の\"totally blown away\"の驚きと興奮を非常によく伝えている。Bの「度肝を抜かれた」も良いが、Aの方がより熱量が高い。"
+      }
+    },
+    {
+      "id": "buzz-4",
+      "category": "x_post",
+      "instruction": "X投稿を熱量や煽り表現も含めて自然な日本語へ全文翻訳する。",
+      "source": "omg.. I can't believe Gemini 3 can do this\n\nit can generate an entire 3D interactive building facility management system(digital twin) using Three.js.. no code, just text prompt\n\nit analyse, simulate real time data to identify potential issues\n\ntutorial and prompts in comments https://t.co/k6Xa0z69tX",
+      "output_a": "なんてことだ…Gemini 3がこんなことできるなんて信じられない\n\nThree.jsを使って、3Dインタラクティブなビル設備管理システム（デジタルツイン）全体を生成できるんだ…コードなし、テキストプロンプトだけで。\n\nリアルタイムデータを分析、シミュレートして潜在的な問題を特定するんだ。\n\nチュートリアルとプロンプトはコメント欄に https://t.co/k6Xa0z69X",
+      "output_b": "OMG… Gemini 3がこんなことができるなんて信じられない。Three.jsを使って、全体的な3Dインタラクティブ施設管理システム（デジタルツイン）を生成できる…コード不要、テキストプロンプトのみ。リアルタイムデータを分析・シミュレートして潜在的な問題を特定できる。チュートリアルとプロンプトはコメント欄に。",
+      "judgment": {
+        "id": "buzz-4",
+        "a_accuracy": 5,
+        "a_naturalness": 5,
+        "a_preservation": 5,
+        "a_instruction": 5,
+        "b_accuracy": 5,
+        "b_naturalness": 4,
+        "b_preservation": 5,
+        "b_instruction": 4,
+        "winner": "A",
+        "reason": "Aは「なんてことだ」「〜できるんだ」といった口語表現を効果的に使い、原文の驚きと興奮（熱量）をうまく再現している。Bはやや直訳的で、Aほどの感情が伝わってこない。"
+      }
+    }
+  ],
+  "acceptance_rule": "Flash-Liteの全体平均がFlash比0.25点以内、accuracyとpreservationで3点未満がなく、カテゴリ別で重大な劣化がなければ切替候補。"
+}
