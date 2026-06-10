@@ -71,6 +71,7 @@ def _parse_args() -> argparse.Namespace:
     parser.add_argument("--max-items-per-query", type=int, default=100)
     parser.add_argument("--max-charge-usd", type=Decimal, default=Decimal("0.08"))
     parser.add_argument("--build-only", action="store_true")
+    parser.add_argument("--refresh-costs-only", action="store_true")
     return parser.parse_args()
 
 
@@ -238,6 +239,33 @@ def save_results(
     )
 
 
+def refresh_manifest_costs() -> None:
+    token = os.environ.get("APIFY_TOKEN")
+    if not token:
+        raise SystemExit("APIFY_TOKEN missing")
+    if not MANIFEST_PATH.exists():
+        raise SystemExit(f"Manifest missing: {MANIFEST_PATH}")
+    from apify_client import ApifyClient
+
+    manifest = json.loads(MANIFEST_PATH.read_text(encoding="utf-8"))
+    client = ApifyClient(token)
+    total_cost = 0.0
+    for run in manifest.get("runs", []):
+        details = client.run(run["run_id"]).get() or {}
+        run_cost = float(apify_run_get(details, "usageTotalUsd") or 0)
+        run["apify_cost_usd"] = round(run_cost, 4)
+        total_cost += run_cost
+    manifest["apify_cost_usd"] = round(total_cost, 4)
+    _write_json(MANIFEST_PATH, manifest)
+
+    raw_path = ROOT / manifest["raw_snapshot"]
+    snapshot = json.loads(raw_path.read_text(encoding="utf-8"))
+    snapshot["runs"] = manifest.get("runs", [])
+    snapshot["apify_cost_usd"] = manifest["apify_cost_usd"]
+    _write_json(raw_path, snapshot)
+    logger.info("Refreshed costs for %d runs: $%.4f", len(manifest.get("runs", [])), total_cost)
+
+
 def run_research(args: argparse.Namespace) -> None:
     token = os.environ.get("APIFY_TOKEN")
     if not token:
@@ -279,11 +307,13 @@ def run_research(args: argparse.Namespace) -> None:
             if post:
                 post["search_term"] = query
                 query_posts.append(post)
-        query_cost = float(apify_run_get(run, "usageTotalUsd") or 0)
+        run_id = apify_run_get(run, "id", "")
+        run_details = client.run(run_id).get() or run
+        query_cost = float(apify_run_get(run_details, "usageTotalUsd") or 0)
         runs.append(
             {
                 "query": query,
-                "run_id": apify_run_get(run, "id", ""),
+                "run_id": run_id,
                 "raw_count": len(query_posts),
                 "apify_cost_usd": round(query_cost, 4),
             }
@@ -314,7 +344,9 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = _parse_args()
     _validate_args(args)
-    if not args.build_only:
+    if args.refresh_costs_only:
+        refresh_manifest_costs()
+    elif not args.build_only:
         run_research(args)
     from build_gemini_buzz import build
     build()

@@ -11,6 +11,11 @@ on:
         description: '検索終了日 YYYY-MM-DD'
         required: false
         default: '2026-06-10'
+      refresh_costs_only:
+        description: '既存runの費用だけ再取得する'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -34,11 +39,15 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: |
-          python scripts/gemini_buzz_research.py \
-            --start "${{ inputs.start }}" \
-            --end "${{ inputs.end }}" \
-            --max-items-per-query 50 \
-            --max-charge-usd 0.08
+          if [[ "${{ inputs.refresh_costs_only }}" == "true" ]]; then
+            python scripts/gemini_buzz_research.py --refresh-costs-only
+          else
+            python scripts/gemini_buzz_research.py \
+              --start "${{ inputs.start }}" \
+              --end "${{ inputs.end }}" \
+              --max-items-per-query 50 \
+              --max-charge-usd 0.08
+          fi
       - name: Sync navigation across all pages
         run: python sync_nav.py
 
