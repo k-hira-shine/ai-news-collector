@@ -1,37 +1,58 @@
 {
-  "snapshot_id": "20260610T035903Z",
-  "fetched_at": "2026-06-10T03:59:03.779637+00:00",
+  "snapshot_id": "20260610T044146Z",
+  "fetched_at": "2026-06-10T04:41:46.875672+00:00",
   "actor": "xquik/x-tweet-scraper",
+  "search_mode": "discovery",
   "run_ids": [
-    "R7K3RI0on2CnT4bmJ",
-    "UvtFErpNzOuycDF0B",
-    "KIe2hez4yER4KErG9",
-    "aY8f58Nojtjez8qcT"
+    "oOV0hFJCBH6ABt4Zx",
+    "VlxWQYLUNbQt6SZo2",
+    "GGqiqL9dMPP6vJqeL",
+    "CbIl1XqZztL3VLDVs",
+    "tA6wLJhn9cVoEKn3T",
+    "YbsMGlcIZPZwmh4tW"
   ],
   "runs": [
     {
-      "query": "Gemini 使い方 lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
-      "run_id": "R7K3RI0on2CnT4bmJ",
-      "raw_count": 50,
-      "apify_cost_usd": 0.0075
+      "query": "Gemini 新機能 lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "oOV0hFJCBH6ABt4Zx",
+      "raw_count": 25,
+      "accepted_count": 5,
+      "apify_cost_usd": 0.003
     },
     {
-      "query": "Gemini プロンプト lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
-      "run_id": "UvtFErpNzOuycDF0B",
-      "raw_count": 0,
-      "apify_cost_usd": 0.0001
+      "query": "Gemini アップデート lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "VlxWQYLUNbQt6SZo2",
+      "raw_count": 25,
+      "accepted_count": 8,
+      "apify_cost_usd": 0.003
     },
     {
-      "query": "Gemini workflow lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
-      "run_id": "KIe2hez4yER4KErG9",
-      "raw_count": 50,
-      "apify_cost_usd": 0.0075
+      "query": "Gemini すごい lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "GGqiqL9dMPP6vJqeL",
+      "raw_count": 25,
+      "accepted_count": 7,
+      "apify_cost_usd": 0.0
     },
     {
-      "query": "Gemini tutorial lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
-      "run_id": "aY8f58Nojtjez8qcT",
-      "raw_count": 50,
-      "apify_cost_usd": 0.0075
+      "query": "Gemini new feature lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "CbIl1XqZztL3VLDVs",
+      "raw_count": 25,
+      "accepted_count": 3,
+      "apify_cost_usd": 0.0037
+    },
+    {
+      "query": "Gemini released lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "tA6wLJhn9cVoEKn3T",
+      "raw_count": 25,
+      "accepted_count": 12,
+      "apify_cost_usd": 0.003
+    },
+    {
+      "query": "Gemini insane lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+      "run_id": "YbsMGlcIZPZwmh4tW",
+      "raw_count": 25,
+      "accepted_count": 8,
+      "apify_cost_usd": 0.0
     }
   ],
   "period": {
@@ -39,18 +60,21 @@
     "end": "2026-06-10"
   },
   "queries": [
-    "Gemini 使い方 lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
-    "Gemini プロンプト lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
-    "Gemini workflow lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
-    "Gemini tutorial lang:en min_faves:100 since:2025-06-10 until:2026-06-11"
+    "Gemini 新機能 lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini アップデート lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini すごい lang:ja min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini new feature lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini released lang:en min_faves:100 since:2025-06-10 until:2026-06-11",
+    "Gemini insane lang:en min_faves:100 since:2025-06-10 until:2026-06-11"
   ],
-  "max_items_per_query": 50,
-  "max_possible_results": 200,
-  "apify_cost_usd": 0.0226,
+  "max_items_per_query": 25,
+  "max_possible_results": 150,
+  "apify_cost_usd": 0.0127,
   "raw_count": 150,
-  "deduplicated_count": 142,
-  "accepted_count": 95,
-  "raw_snapshot": "data/gemini_buzz/raw/20260610T035903Z.json",
+  "deduplicated_count": 147,
+  "accepted_count": 40,
+  "accumulated_ranking_count": 54,
+  "raw_snapshot": "data/gemini_buzz/raw/20260610T044146Z.json",
   "limitations": [
     "X Top search is relevance-ranked and not exhaustive.",
     "Engagement values are a snapshot at collection time.",
