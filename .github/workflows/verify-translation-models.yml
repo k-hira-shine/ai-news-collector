@@ -1,0 +1,33 @@
+name: Verify Translation Flash vs Flash-Lite
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-data-push
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: Compare translation models
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python scripts/verify_translation_models.py
+      - name: Commit comparison result
+        run: |
+          chmod +x .github/scripts/push_data.sh
+          .github/scripts/push_data.sh \
+            "verify: translation Flash vs Flash-Lite" \
+            data/translation_model_verification.json
