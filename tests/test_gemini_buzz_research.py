@@ -2,6 +2,7 @@ import unittest
 
 from scripts.gemini_buzz_research import (
     DISCOVERY_QUERIES,
+    FEATURE_QUERIES,
     USAGE_QUERIES,
     _accepted_posts,
     _apply_discovery_reviews,
@@ -124,6 +125,18 @@ class GeminiBuzzResearchTests(unittest.TestCase):
         self.assertNotEqual(queries, USAGE_QUERIES)
         self.assertTrue(any("新機能" in query for query in queries))
         self.assertTrue(any("new feature" in query for query in queries))
+
+    def test_discovery_feature_profile_uses_feature_queries(self) -> None:
+        queries = _queries_for_mode("discovery", "features")
+
+        self.assertEqual(queries, FEATURE_QUERIES)
+        self.assertTrue(any("Nano Banana" in query for query in queries))
+        self.assertTrue(any("Deep Think" in query for query in queries))
+        self.assertTrue(any("Gemini CLI" in query for query in queries))
+
+    def test_usage_mode_rejects_feature_profile(self) -> None:
+        with self.assertRaisesRegex(SystemExit, "only valid with discovery"):
+            _queries_for_mode("usage", "features")
 
     def test_discovery_mode_accepts_only_discovery_posts(self) -> None:
         posts = [

@@ -19,6 +19,14 @@ on:
         options:
           - discovery
           - usage
+      query_profile:
+        description: '検索クエリ群'
+        required: false
+        type: choice
+        default: 'broad'
+        options:
+          - broad
+          - features
       refresh_costs_only:
         description: '既存runの費用だけ再取得する'
         required: false
@@ -60,6 +68,7 @@ jobs:
           else
             python scripts/gemini_buzz_research.py \
               --mode "${{ inputs.mode || 'discovery' }}" \
+              --query-profile "${{ inputs.query_profile || 'broad' }}" \
               --start "${{ inputs.start }}" \
               --end "${{ inputs.end }}" \
               --max-items-per-query 25 \
