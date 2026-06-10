@@ -1,6 +1,6 @@
 # ai-news-collector 現状整理
 
-最終更新: 2026-06-10
+最終更新: 2026-06-11
 
 > Gemini活用法バズ調査を再開する場合は、最初に
 > `.cursor/docs/gemini-buzz-research-log.md` を参照する。
@@ -24,11 +24,11 @@
 
 | ワークフロー | 時刻 | 頻度 | 内容 |
 |---|---|---|---|
-| `collect.yml` (ニュース) | **03:00 / 16:00** | 毎日2回 | Xニュース収集 → Gemini分析 → index.html / strategy.html 更新 |
-| `buzz-collect.yml` | **03:10** | 毎日1回 | バズりアカウント全件収集 → buzz.html 更新 |
+| `collect.yml` (ニュース) | **02:00 / 16:00** | 毎日2回 | Xニュース収集 → Gemini分析 → index.html / strategy.html 更新 |
+| `buzz-collect.yml` | **02:10** | 月・水・金 | バズりアカウント全件収集 → buzz.html 更新 |
 | `money-collect.yml` | **02:20** | 毎日1回 | マネタイズ・SNS共通差分収集 → Gemini分析 |
 
-> 02:00 / 02:10 / 02:20 と10分ずらし、pushは共通concurrencyで直列化している
+> 朝は02:00 / 02:10 / 02:20とずらし、pushは共通concurrencyで直列化している
 
 ---
 
@@ -49,9 +49,10 @@
 
 ### Gemini API
 
-- ニュース分析: Stage1 (Gemini 2.5 Pro) + Stage2 (Gemini 2.5 Pro)、fallback: Flash
+- ニュース分析: Stage1=Gemini 2.5 Flash、Stage2/3=Gemini 2.5 Pro
 - thinking_budget: stage1=128 / stage2=512 / stage3=256
-- マネタイズ分析: Gemini 2.5 Pro（カテゴリ・difficulty・income_mentioned を抽出）
+- マネタイズ/SNS分析: Gemini 2.5 Flash
+- 2026-06-11実測: `$0.6180/日`。品質フィルターとSNSバックログ停止後を測定中
 
 ### 停止済みの外部ワークフロー（コスト削減済み）
 
@@ -88,6 +89,7 @@
 | SNS広域検索 | 18本、3日に1回、1クエリ100件 |
 | 重複排除キャッシュ | **180日** |
 | 最低フォロワー数 | 1,000人以上 |
+| SNS通常実行の過去バックログ | 0件（不採用投稿の再分析防止） |
 
 ### バズりランキング
 

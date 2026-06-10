@@ -1,6 +1,95 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-10（Geminiバズ初期アーカイブ完了）
+最終更新: 2026-06-11（Money/SNS品質・コスト改善を本番反映）
+
+---
+
+## 次回最初に確認: Money/SNS品質・Geminiコスト改善
+
+> **エージェントへ**: 2026-06-12朝の`AI Money Cases Collector`完了後に
+> 以下を確認する。6月13日のApify判定も期日が来たら冒頭でリマインドする。
+
+### 2026-06-11に実施した変更
+
+- コミット: `2686829` (`fix: improve money and sns analysis quality`)
+- `main`へpush済み。GitHub Pages run `27302356972`も成功。
+- `analysis_quality.py`を追加し、Money/SNS共通で以下を実施:
+  - Gemini投入前: 最低フォロワー未満、短い返信、明白な販促、
+    権利侵害を収益手法として勧める投稿を除外
+  - Gemini判定後: 販促、権利侵害推奨、近似重複を再除外
+  - 権利侵害への批判・注意喚起は保持
+- Money/SNSプロンプトにも販促・権利侵害推奨の除外条件を明記。
+- SNSの通常実行時バックログ追加を`500件`から`0件`へ変更。
+  不採用投稿は処理済みIDに残らず毎日再分析されていたため、空回りを停止した。
+- 2026-06-11朝の既存結果を再処理:
+  - Money: 9件 → 5件
+  - SNS: 90件 → 89件
+  - `docs/money.html` / `docs/sns_success.html`再生成済み
+- 最終テスト: `95 passed, 17 subtests passed`
+
+### 次回実行後の確認手順（2026-06-12朝）
+
+```bash
+git fetch origin main
+git pull --ff-only
+gh run list --repo k-hira-shine/ai-news-collector --limit 10
+python3 gemini_usage.py
+python3 check_cost.py
+```
+
+最新のMoney/SNS分析とログも確認する。
+
+```bash
+ls -lt data/money/*_analysis.json data/sns_success/*_analysis.json | head
+tail -20 data/logs/2026-06-12.jsonl
+```
+
+### 合格条件
+
+1. `AI Money Cases Collector`が成功。
+2. Money/SNS上位に、無料勉強会・特典配布などの販促主体投稿がない。
+3. 無断転載・違法アップロードを稼ぎ方として勧める投稿がない。
+4. 同一本文の微修正版が複数採用されていない。
+5. 権利侵害への批判・注意喚起は誤って消えていない。
+6. `gemini_usage.py`で`sns_analyzer`の呼び出し回数・費用が6/11より減少。
+
+### 比較基準と見込み
+
+- 6/11実測: Gemini合計 `$0.6180/日`
+- 6/11の`sns_analyzer`: 21回、約`$0.2658`
+- 修正前データでの事前フィルター試算:
+  - Money候補 229件 → 144件（37.1%減）
+  - SNS候補 512件 → 262件（48.8%減）
+- バックログ再分析停止も含め、Gemini全体で約30〜35%削減を見込む。
+  ただし確定値ではないため、6/12実測を優先する。
+
+### 異常時の調査・復旧
+
+- 誤除外が多い:
+  - `analysis_quality.py`のマーカーと類似判定閾値を確認
+  - `tests/test_analysis_quality.py`へ再現ケースを追加してから修正
+- 販促や権利侵害推奨が残る:
+  - `analysis_quality.py`のマーカーを追加
+  - Money/SNS両方に影響するため全テストを実行
+- SNSの情報量が不足:
+  - `config.yaml`の`sns_success.backlog_limit_per_run`を小さな値で試す
+  - ただし不採用投稿の再分析が再発するため、安易に500へ戻さない
+- Flash自体の品質劣化が明確な場合のみ、
+  `config.yaml`の`analysis.models.stage1_filter`を
+  `gemini-2.5-pro`へ戻す。今回の問題は主にプロンプト・後処理側だった。
+
+### 2026-06-13頃の確認
+
+- `python3 check_cost.py`でApify 7日移動平均を確認。
+- 合格: 月換算`$12`以下。
+- Geminiも3日分の実測から月額を再計算する。
+
+### 既知の警告
+
+- GitHub Pages runでNode.js 20廃止予定の警告が出た。
+- `pages-build-deployment`内部の`actions/checkout@v4` /
+  `actions/upload-artifact@v4`由来で、今回のリポジトリ変更には影響なし。
+- GitHub側の移行状況を見て対応する。現時点では作業不要。
 
 ---
 
@@ -63,11 +152,9 @@
 
 ---
 
-## 次回最初に確認: 2026-06-10 朝セッションの総括と次回アクション
+## 2026-06-10 朝セッションの総括と経過観察
 
-> **エージェントへ**: 会話開始時にこの節の期日（6/11、6/13）を今日の日付と照合し、
-> 期日が来ている項目はユーザーの依頼に関係なく冒頭でリマインドすること
-> （ルール `.cursor/rules/pending-reminders.mdc` 参照）。完了した項目はこの節から消し込む。
+> 6/11確認は完了。残る6/13の確認は、文書先頭の次回アクション節を参照する。
 
 ### コスト状況（このセッションで判明・対策済み）
 
@@ -78,11 +165,14 @@
 
 - Gemini は **有料 Tier 1**（プロジェクト名 Sedori、本プロジェクト専用とユーザー確認済み）。無料枠は別プロジェクトのキーでのみ使える（公式確認済み、詳細は `.cursor/docs/gemini-cost-reduction-plan.md`）。
 
-### 6/11（翌日）にやること
+### 6/11確認結果（完了）
 
-1. **Flash化の品質目視**: data/analysis の新規分析、money/sns ページの要約に劣化がないか確認。劣化時は config.yaml `models.stage1_filter` を `gemini-2.5-pro` に戻すだけで復旧。
-2. **Gemini実測**: `python3 gemini_usage.py` — 6/10夜以降の呼び出し別トークン・推定額が出る。Pro が stage2/3 だけになっているか確認。
-3. **Apify初回効果**: `python3 check_cost.py` と `data/logs/` で Money 収集のコスト・件数が下がったか確認。
+1. Flash化: News Stage1 / Money / SNSはFlash、News Stage2/3のみProで意図どおり。
+2. 品質: Newsは問題なし。Money/SNSは販促・重複・権利侵害推奨の混入を確認し、
+   モデルをProへ戻さず共通品質フィルターで修正。
+3. Gemini: 6/11合計`$0.6180`。最大費用源は`sns_analyzer`の約`$0.2658`。
+4. Apify: 6/11合計`$0.2196/日`、単日月換算`$6.59`。
+   7日移動平均の正式判定は6/13に実施。
 
 ### 6/13頃にやること
 
