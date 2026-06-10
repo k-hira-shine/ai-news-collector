@@ -100,6 +100,17 @@ class GeminiBuzzResearchTests(unittest.TestCase):
 
         self.assertFalse(result["is_discovery"])
 
+    def test_rejects_other_google_product_powered_by_gemini(self) -> None:
+        cases = [
+            "NotebookLM gets Planning Mode powered by the released Gemini Omni.",
+            "Introducing Prompt Expanders! This new Flow feature uses Gemini.",
+            "Workspace Studio is now available in Japanese and integrates Gemini.",
+        ]
+
+        for text in cases:
+            with self.subTest(text=text):
+                self.assertFalse(classify_discovery(text)["is_discovery"])
+
     def test_query_has_bounded_dates(self) -> None:
         query = _query_with_dates("Gemini prompt", "2025-01-01", "2026-01-01")
 

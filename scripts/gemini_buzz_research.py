@@ -68,6 +68,11 @@ OTHER_AI_HINTS = re.compile(
     r"(?<![A-Za-z0-9_])(?:ChatGPT|Claude)(?![A-Za-z0-9_])",
     re.I,
 )
+OTHER_PRODUCT_HINTS = re.compile(
+    r"\bGemma\b|\bNotebookLM\b|\bPrompt Expanders?\b|"
+    r"\bWorkspace Studio\b|\bDisco\b|\bGenTabs\b|\bStepFun\b",
+    re.I,
+)
 EXTERNAL_DETAIL_HINTS = re.compile(
     r"リプ欄|返信欄|続きはリプ|詳細はリプ|スレッド|"
     r"\bthread\b|\brepl(?:y|ies)\b|\bdetails below\b|\blink in bio\b",
@@ -269,6 +274,10 @@ def classify_relevance(text: str) -> dict:
 def classify_discovery(text: str) -> dict:
     """新機能や具体的な能力に驚いて紹介する投稿を判定する。"""
     matches = list(GEMINI_HINTS.finditer(text))
+    other_product = OTHER_PRODUCT_HINTS.search(text)
+    other_product_is_subject = bool(
+        other_product and matches and other_product.start() < matches[0].start()
+    )
     context = " ".join(
         text[max(0, match.start() - 180) : match.end() + 220]
         for match in matches
@@ -286,6 +295,7 @@ def classify_discovery(text: str) -> dict:
         and capability
         and (release or excitement)
         and (gemini_subject or versioned_demo)
+        and not other_product_is_subject
         and not (generic_hype and not release)
     )
     if not is_discovery:
