@@ -57,6 +57,16 @@ FEATURE_QUERIES = [
     "Gemini 2.0 lang:en min_faves:100",
     "Gemini 3 lang:en min_faves:100",
 ]
+FEATURE_EXPANSION_QUERIES = [
+    "Gemini Flash Image lang:en min_faves:100",
+    "Gemini Robotics lang:en min_faves:100",
+    "Gemini Code Wiki lang:en min_faves:100",
+    "Gemini TTS lang:en min_faves:100",
+    "Gemini Gems lang:en min_faves:100",
+    "Gemini extensions lang:en min_faves:100",
+    "Gemini audio model lang:en min_faves:100",
+    "Gemini agent mode lang:en min_faves:100",
+]
 
 USAGE_HINTS = re.compile(
     r"使い方|活用|プロンプト|手順|方法|やり方|作り方|効率化|"
@@ -176,9 +186,9 @@ def _parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--query-profile",
-        choices=("broad", "features"),
+        choices=("broad", "features", "feature-expansion"),
         default="broad",
-        help="broad=一般語検索、features=Geminiの機能名別検索",
+        help="broad=一般語、features=主要機能、feature-expansion=追加機能",
     )
     parser.add_argument("--start", default=(today - timedelta(days=365)).isoformat())
     parser.add_argument("--end", default=today.isoformat())
@@ -216,9 +226,13 @@ def _validate_args(args: argparse.Namespace) -> None:
 def _queries_for_mode(mode: str, query_profile: str = "broad") -> list[str]:
     if mode == "usage":
         if query_profile != "broad":
-            raise SystemExit("--query-profile features is only valid with discovery mode")
+            raise SystemExit("non-broad query profiles require discovery mode")
         return USAGE_QUERIES
-    return FEATURE_QUERIES if query_profile == "features" else DISCOVERY_QUERIES
+    if query_profile == "features":
+        return FEATURE_QUERIES
+    if query_profile == "feature-expansion":
+        return FEATURE_EXPANSION_QUERIES
+    return DISCOVERY_QUERIES
 
 
 def _query_with_dates(query: str, start: str, end: str) -> str:
