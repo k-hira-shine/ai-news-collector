@@ -499,12 +499,12 @@ def _render_case_card(case: dict) -> str:
     <span class="case-category">{icon} {category}</span>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:0;">
       {f'<span style="font-size:0.72rem;color:#aaa;white-space:nowrap;">{diff_label}</span>' if diff_label else ''}
-      {income_html}
+{f'      {income_html}' if income_html else ''}
     </div>
   </div>
   <div class="case-summary">{summary}</div>
   {f'<div class="case-method">📌 {method}</div>' if method else ''}
-  {f'<div class="case-tools">{tools_html}{media_html}</div>' if tools_html or media_html else ''}
+{f'  <div class="case-tools">{tools_html}{media_html}</div>' if tools_html or media_html else ''}
   {f'<div class="case-body">"{content_escaped}"</div>' if content_escaped else ''}
   <div class="case-footer">
     <span>{flag} @{author} · {pub_date}</span>

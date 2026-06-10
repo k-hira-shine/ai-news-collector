@@ -9,6 +9,8 @@ import json
 import logging
 import os
 
+from analysis_quality import filter_analysis_results, prefilter_analysis_items
+
 logger = logging.getLogger("ai-news.sns_analyzer")
 
 SNS_MIND_SCHEMA = {
@@ -66,12 +68,15 @@ def analyze_sns_posts(items: list[dict], config: dict) -> list[dict]:
         return []
 
     model_name = config.get("analysis", {}).get("models", {}).get("stage1_filter", "gemini-2.5-pro")
+    min_followers = config.get("sns_success", {}).get("min_followers", 5000)
+    candidates = prefilter_analysis_items(items, min_followers)
+    logger.info("SNS prefilter: %d → %d candidates", len(items), len(candidates))
 
     batch_size = 50
     all_posts: list[dict] = []
 
-    for batch_start in range(0, len(items), batch_size):
-        batch = items[batch_start: batch_start + batch_size]
+    for batch_start in range(0, len(candidates), batch_size):
+        batch = candidates[batch_start: batch_start + batch_size]
         posts = _analyze_batch(batch, model_name, api_key, config)
         all_posts.extend(posts)
         logger.info(
@@ -79,7 +84,9 @@ def analyze_sns_posts(items: list[dict], config: dict) -> list[dict]:
             batch_start, batch_start + len(batch), len(posts),
         )
 
-    return all_posts
+    filtered = filter_analysis_results(all_posts)
+    logger.info("SNS postfilter: %d → %d posts", len(all_posts), len(filtered))
+    return filtered
 
 
 def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
@@ -122,6 +129,8 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 
 ## 除外するもの（is_valuable: false）
 - 単なる商品・サービスの宣伝・セールス（実質的なコンテンツがない）
+- 無料勉強会・教材・コンサル・特典配布への誘導が主目的の投稿
+- 無断転載・違法アップロード・著作権侵害を成功手法として勧める投稿
 - 具体性のない「頑張ろう」系の応援ポスト
 - 短い引用・格言のみで、具体例や実践方法がない投稿
 - 特定の情報商材・コンサルへの誘導が主目的（本質的なコンテンツがない）
@@ -178,7 +187,7 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
             merged = {**original, **post}
             valuable_posts.append(merged)
 
-        return valuable_posts
+        return filter_analysis_results(valuable_posts)
 
     except Exception as e:
         logger.error("SNS analysis batch failed: %s", e)
@@ -205,12 +214,12 @@ def save_sns_analysis(posts: list[dict], date_str: str, slot: str) -> str:
         except Exception as e:
             logger.warning("Failed to merge existing SNS analysis %s: %s", path, e)
 
-    for post in posts:
+    for post in filter_analysis_results(posts):
         post_id = post.get("id") or post.get("post_id")
         if post_id:
             merged_posts[post_id] = post
 
-    merged_list = list(merged_posts.values())
+    merged_list = filter_analysis_results(list(merged_posts.values()))
     output = {
         "date": date_str,
         "slot": slot,
@@ -251,5 +260,6 @@ def load_all_sns_analyses() -> list[dict]:
         except Exception as e:
             logger.warning("Failed to load %s: %s", fname, e)
 
-    logger.info("Loaded %d total sns posts", len(all_posts))
-    return all_posts
+    filtered = filter_analysis_results(all_posts)
+    logger.info("Loaded %d total sns posts", len(filtered))
+    return filtered

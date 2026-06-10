@@ -273,6 +273,8 @@ sns_success:
   search_interval_days: 3
   # 1クエリあたりの最大取得件数
   max_items_per_query: 100
+  # 不採用投稿は処理済みIDに残らず再分析されるため、通常実行では過去分を足さない。
+  backlog_limit_per_run: 0
   # 検索では漏れやすいが、継続的に拾いたい成功者アカウント
   accounts:
     - handle: "teihen_ns_fire"

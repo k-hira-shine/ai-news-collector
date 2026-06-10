@@ -8,6 +8,8 @@ import json
 import logging
 import os
 
+from analysis_quality import filter_analysis_results, prefilter_analysis_items
+
 logger = logging.getLogger("ai-news.money_analyzer")
 
 MONEY_CASE_SCHEMA = {
@@ -64,18 +66,23 @@ def analyze_money_cases(items: list[dict], config: dict) -> list[dict]:
         return []
 
     model_name = config.get("analysis", {}).get("models", {}).get("stage1_filter", "gemini-2.5-pro")
+    min_followers = config.get("money_collection", {}).get("min_followers", 1000)
+    candidates = prefilter_analysis_items(items, min_followers)
+    logger.info("Money prefilter: %d → %d candidates", len(items), len(candidates))
 
     # バッチサイズを50件に分割して処理
     batch_size = 50
     all_cases: list[dict] = []
 
-    for batch_start in range(0, len(items), batch_size):
-        batch = items[batch_start : batch_start + batch_size]
+    for batch_start in range(0, len(candidates), batch_size):
+        batch = candidates[batch_start : batch_start + batch_size]
         cases = _analyze_batch(batch, model_name, api_key, config)
         all_cases.extend(cases)
         logger.info("Money analysis batch %d-%d: %d cases found", batch_start, batch_start + len(batch), len(cases))
 
-    return all_cases
+    filtered = filter_analysis_results(all_cases)
+    logger.info("Money postfilter: %d → %d cases", len(all_cases), len(filtered))
+    return filtered
 
 
 def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
@@ -122,6 +129,8 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 ## 除外するもの（is_money_case: false）
 - 動画ツールの単なる紹介・感想（稼ぎに無関係）
 - 「動画で稼ごう」という呼びかけのみで実例なし（具体的金額や手法がない）
+- 無料勉強会・教材・コンサル・特典配布などへの集客が主目的の販促投稿
+- 無断転載・違法アップロード・著作権侵害を収益手法として勧める投稿
 - リポスト（RTで始まるもの）
 - 動画と無関係な事例（コーディング代行・テキスト副業など）
 - 質問・相談のみ（「How do I monetize?」など）
@@ -180,7 +189,7 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
             merged = {**original, **case}
             money_cases.append(merged)
 
-        return money_cases
+        return filter_analysis_results(money_cases)
 
     except Exception as e:
         logger.error("Money analysis batch failed: %s", e)
@@ -196,6 +205,7 @@ def save_money_analysis(cases: list[dict], date_str: str, slot: str) -> str:
     os.makedirs(money_dir, exist_ok=True)
     path = os.path.join(money_dir, f"{date_str}_{slot}_analysis.json")
 
+    cases = filter_analysis_results(cases)
     output = {
         "date": date_str,
         "slot": slot,
@@ -237,5 +247,6 @@ def load_all_money_analyses() -> list[dict]:
         except Exception as e:
             logger.warning("Failed to load %s: %s", fname, e)
 
-    logger.info("Loaded %d total money cases", len(all_cases))
-    return all_cases
+    filtered = filter_analysis_results(all_cases)
+    logger.info("Loaded %d total money cases", len(filtered))
+    return filtered
