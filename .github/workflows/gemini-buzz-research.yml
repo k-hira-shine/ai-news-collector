@@ -38,6 +38,7 @@ jobs:
       - name: Run capped one-off research
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           if [[ "${{ inputs.refresh_costs_only }}" == "true" ]]; then
             python scripts/gemini_buzz_research.py --refresh-costs-only

@@ -37,6 +37,24 @@
 3. 無料キー切替の試行（実測を見てから判断。リスク: Pro無料枠50〜100回/日、データがGoogle製品改善に利用される）
 4. Gemini活用法バズ調査の日本語代替クエリ確認（第2回は完了、下記参照）
 
+### 翻訳モデルの用途別切替（2026-06-10実測）
+
+- 比較: `gemini-2.5-flash` vs `gemini-2.5-flash-lite`
+- サンプル: HNタイトル、arXiv、Gemini公式短要約、X投稿を各5件（計20件）
+- 費用: Flash `$0.004587` / Flash-Lite `$0.000868`（同一入力で約81%削減）
+- 全体品質: Flash `4.787` / Flash-Lite `4.700`
+- 採用判断:
+  - HNタイトル、arXiv、Gemini公式の再翻訳: Flash-Lite
+  - Geminiバズ、Gemini OmniなどX投稿全文: Flash維持
+  - ニュース分析、重要度判定、Money/SNS分析: 変更なし
+- 理由: X投稿は正確性は同等だが、熱量・口調の再現で5件すべてFlashが勝利。
+- 共通設定: `config.yaml` の `analysis.models.translation` と
+  `analysis.models.social_translation`
+- 比較結果: `data/translation_model_verification.json`
+- 復旧: 品質問題時は `translation` を `gemini-2.5-flash` に戻す。
+- 次回確認: 定期実行後に `python3 gemini_usage.py` で
+  `hn_translate` / `arxiv_translate` のモデルと実測費用を確認する。
+
 ### このセッションで実装したもの（詳細は各日付の節）
 
 - gemini-buzz ページ: 日付の日本語化、表示名、ER表示、並べ替え（`e751e38`〜`d0da798`）

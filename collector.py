@@ -623,7 +623,7 @@ def collect_arxiv(config: dict) -> list[dict]:
 
 
 def _translate_hn_items(items: list[dict]) -> None:
-    """Gemini Flash でHNタイトルをまとめて日本語訳（in-place）"""
+    """低コスト翻訳モデルでHNタイトルをまとめて日本語訳（in-place）"""
     gemini_key = os.environ.get("GEMINI_API_KEY")
     if not gemini_key:
         return
@@ -643,12 +643,16 @@ def _translate_hn_items(items: list[dict]) -> None:
     )
 
     try:
+        from translation_config import get_translation_model
+
+        model_name = get_translation_model()
         resp = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model=model_name,
             contents=prompt,
+            config={"thinking_config": {"thinking_budget": 0}, "max_output_tokens": 4096},
         )
         from gemini_usage import log_usage
-        log_usage("hn_translate", "gemini-2.5-flash", resp)
+        log_usage("hn_translate", model_name, resp)
         text = resp.text or ""
         import re as _re
         pattern = _re.compile(r'\[(\d+)\]\s*(.+)')
@@ -663,7 +667,7 @@ def _translate_hn_items(items: list[dict]) -> None:
 
 
 def _translate_arxiv_items(items: list[dict]) -> None:
-    """Gemini Flash でタイトル・要旨をまとめて日本語訳（in-place）"""
+    """低コスト翻訳モデルでタイトル・要旨をまとめて日本語訳（in-place）"""
     gemini_key = os.environ.get("GEMINI_API_KEY")
     if not gemini_key:
         return
@@ -689,12 +693,16 @@ def _translate_arxiv_items(items: list[dict]) -> None:
     )
 
     try:
+        from translation_config import get_translation_model
+
+        model_name = get_translation_model()
         resp = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model=model_name,
             contents=prompt,
+            config={"thinking_config": {"thinking_budget": 0}, "max_output_tokens": 16384},
         )
         from gemini_usage import log_usage
-        log_usage("arxiv_translate", "gemini-2.5-flash", resp)
+        log_usage("arxiv_translate", model_name, resp)
         text = resp.text or ""
         # パース: [番号] TITLE: ... SUMMARY: ... を抽出
         import re as _re

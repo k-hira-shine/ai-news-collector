@@ -1,16 +1,40 @@
 """Gemini活用法の過去バズ調査ページを生成する。"""
 
 import json
+import logging
+import os
+import re
 from datetime import datetime
-from html import escape
+from html import escape, unescape
 from pathlib import Path
 
 from site_nav import NAV_CSS, render_nav
+from translation_config import get_social_translation_model
 
+logger = logging.getLogger("ai-news.build_gemini_buzz")
 BASE = Path(__file__).parent
 DATA_PATH = BASE / "data" / "gemini_buzz" / "ranking.json"
 MANIFEST_PATH = BASE / "data" / "gemini_buzz" / "search_manifest.json"
+TRANSLATIONS_PATH = BASE / "data" / "gemini_buzz" / "translations.json"
 OUTPUT_PATH = BASE / "docs" / "gemini-buzz.html"
+TRANSLATE_BATCH = 20
+TRANSLATE_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "items": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "id": {"type": "string"},
+                    "text_ja": {"type": "string"},
+                },
+                "required": ["id", "text_ja"],
+            },
+        }
+    },
+    "required": ["items"],
+}
 
 
 def _load(path: Path) -> dict:
@@ -18,6 +42,122 @@ def _load(path: Path) -> dict:
         return json.loads(path.read_text(encoding="utf-8"))
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
+
+
+def _load_env_file() -> None:
+    path = BASE / ".env"
+    if not path.is_file():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+def _contains_japanese(text: str) -> bool:
+    return bool(re.search(r"[\u3040-\u30ff\u3400-\u9fff]", text or ""))
+
+
+def _load_translation_cache() -> dict[str, str]:
+    data = _load(TRANSLATIONS_PATH)
+    return {
+        key: value
+        for key, value in (data.get("by_url") or {}).items()
+        if isinstance(value, str) and value.strip()
+    }
+
+
+def _save_translation_cache(cache: dict[str, str]) -> None:
+    TRANSLATIONS_PATH.parent.mkdir(parents=True, exist_ok=True)
+    TRANSLATIONS_PATH.write_text(
+        json.dumps(
+            {"by_url": cache, "updated_at": datetime.now().astimezone().isoformat()},
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+
+def _translate_batch(client, posts: list[dict]) -> dict[str, str]:
+    from google.genai import types
+
+    model_name = get_social_translation_model()
+    blocks = []
+    for post in posts:
+        url = post.get("url") or ""
+        text = unescape(re.sub(r"\s+", " ", post.get("text") or "").strip())
+        blocks.append(f"[ID: {url}]\n{text[:3500]}\n---")
+    prompt = f"""以下のX投稿を自然な日本語へ翻訳してください。
+
+## ルール
+- 要約せず、意味と熱量を保って全文を翻訳する
+- URL、@ユーザー名、製品名、モデル名は原文のままでよい
+- 大文字による強調、絵文字、箇条書きのニュアンスを維持する
+- 煽り表現も弱めず、そのまま日本語化する
+
+## 投稿
+{chr(10).join(blocks)}"""
+    response = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config={
+            "response_mime_type": "application/json",
+            "response_json_schema": TRANSLATE_SCHEMA,
+            "thinking_config": {"thinking_budget": 0},
+            "max_output_tokens": 12000,
+            "http_options": types.HttpOptions(timeout=120_000),
+        },
+    )
+    from gemini_usage import log_usage
+
+    log_usage("gemini_buzz_translate", model_name, response)
+    parsed = json.loads(response.text or "{}")
+    return {
+        item.get("id"): (item.get("text_ja") or "").strip()
+        for item in parsed.get("items") or []
+        if item.get("id") and (item.get("text_ja") or "").strip()
+    }
+
+
+def ensure_post_translations(posts: list[dict]) -> list[dict]:
+    """英語投稿だけをURL単位で翻訳し、既存翻訳は再利用する。"""
+    _load_env_file()
+    cache = _load_translation_cache()
+    missing = [
+        post
+        for post in posts
+        if not _contains_japanese(post.get("text") or "")
+        and (post.get("url") or "") not in cache
+    ]
+    api_key = os.environ.get("GEMINI_API_KEY")
+    if missing and api_key:
+        from google import genai
+
+        client = genai.Client(api_key=api_key)
+        for start in range(0, len(missing), TRANSLATE_BATCH):
+            batch = missing[start : start + TRANSLATE_BATCH]
+            try:
+                cache.update(_translate_batch(client, batch))
+                _save_translation_cache(cache)
+            except Exception as exc:
+                logger.error("Translation batch failed: %s", exc)
+                break
+    elif missing:
+        logger.warning("GEMINI_API_KEY not set: %d English posts remain untranslated", len(missing))
+
+    enriched = []
+    for post in posts:
+        copy = dict(post)
+        copy["text_ja"] = cache.get(copy.get("url") or "") or ""
+        enriched.append(copy)
+    return enriched
 
 
 def _format_date(raw: str) -> str:
@@ -83,13 +223,22 @@ def _card(rank: int, post: dict) -> str:
     retweets = int(post.get("retweets") or 0)
     bookmarks = int(post.get("bookmarks") or 0)
     buzz = int(post.get("buzz_score") or 0)
+    original = post.get("text") or ""
+    translated = (post.get("text_ja") or "").strip()
+    display_text = translated or original
+    original_html = ""
+    if translated:
+        original_html = (
+            '\n    <details class="original"><summary>英語原文</summary>'
+            f"<p>{escape(original)}</p></details>"
+        )
     return f"""<article class="card" data-likes="{likes}" data-retweets="{retweets}" data-bookmarks="{bookmarks}" data-er="{er_value:.4f}" data-buzz="{buzz}" data-discovery="{int(bool(post.get("is_discovery")))}">
   <div class="rank">#{rank}</div>
   <div class="content">
     <div class="meta"><strong>{escape(post.get("author_display") or "")}</strong>
       <span class="handle">@{escape(post.get("author") or "")}</span>
       <span>{escape(_format_date(post.get("published_at") or ""))}</span>{discovery}{review}</div>
-    <p>{escape(post.get("text") or "")}</p>
+    <p>{escape(display_text)}</p>{original_html}
     <div class="stats">
       {er_html}
       <span>♥ {int(post.get("likes") or 0):,}</span>
@@ -106,7 +255,7 @@ def _card(rank: int, post: dict) -> str:
 def build() -> None:
     data = _load(DATA_PATH)
     manifest = _load(MANIFEST_PATH)
-    posts = data.get("posts") or []
+    posts = ensure_post_translations(data.get("posts") or [])
     discovery_count = sum(bool(post.get("is_discovery")) for post in posts)
     cards = "\n".join(_card(i, post) for i, post in enumerate(posts, 1))
     if not cards:
@@ -142,6 +291,7 @@ main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5f
 .er{{font-weight:700;color:#0f172a;background:#34d399;padding:1px 8px;border-radius:999px;font-size:.78rem}}
 .thumb{{width:160px;max-height:120px;object-fit:cover;border-radius:8px}} .review{{color:#fbbf24}}
 .discovery{{color:#111827;background:#fbbf24;padding:1px 7px;border-radius:999px;font-weight:700}}
+.original{{margin:8px 0;color:var(--muted);font-size:.84rem}} .original summary{{cursor:pointer;color:#60a5fa}} .original p{{padding-left:12px;border-left:2px solid var(--border)}}
 .empty{{padding:60px;text-align:center;color:var(--muted);border:1px dashed var(--border);border-radius:12px}}
 @media(max-width:650px){{.thumb{{display:none}}.card{{gap:6px}}}}
 </style></head><body>

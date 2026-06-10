@@ -11,6 +11,7 @@ from html import escape, unescape
 from zoneinfo import ZoneInfo
 
 from site_nav import NAV_CSS, render_nav
+from translation_config import get_social_translation_model
 
 logger = logging.getLogger("ai-news.build_gemini_omni")
 
@@ -20,7 +21,6 @@ TRANSLATIONS_PATH = os.path.join(BASE_DIR, "data", "gemini_omni_post_translation
 OUTPUT_PATH = os.path.join(BASE_DIR, "docs", "gemini-omni.html")
 DOCS_DIR = os.path.join(BASE_DIR, "docs")
 JST = ZoneInfo("Asia/Tokyo")
-TRANSLATE_MODEL = "gemini-2.5-flash"
 TRANSLATE_BATCH = 8
 
 TRANSLATE_SCHEMA = {
@@ -122,6 +122,7 @@ def _save_translation_cache(cache: dict[str, str]) -> None:
 def _translate_batch(client, posts: list[dict]) -> dict[str, str]:
     from google.genai import types
 
+    model_name = get_social_translation_model()
     blocks = []
     for p in posts:
         url = p.get("url") or ""
@@ -139,17 +140,18 @@ def _translate_batch(client, posts: list[dict]) -> dict[str, str]:
 {chr(10).join(blocks)}"""
 
     response = client.models.generate_content(
-        model=TRANSLATE_MODEL,
+        model=model_name,
         contents=prompt,
         config={
             "response_mime_type": "application/json",
             "response_json_schema": TRANSLATE_SCHEMA,
             "thinking_config": {"thinking_budget": 0},
+            "max_output_tokens": 12000,
             "http_options": types.HttpOptions(timeout=120_000),
         },
     )
     from gemini_usage import log_usage
-    log_usage("gemini_omni_translate", TRANSLATE_MODEL, response)
+    log_usage("gemini_omni_translate", model_name, response)
     text = response.text
     if not text:
         raise ValueError("Empty translation response")

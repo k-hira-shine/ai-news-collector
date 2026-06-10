@@ -588,9 +588,16 @@ def _translate_hn_missing(items: list[dict]) -> None:
         + "\n".join(lines)
     )
     try:
-        resp = client.models.generate_content(model="gemini-2.5-flash", contents=prompt)
+        from translation_config import get_translation_model
+
+        model_name = get_translation_model()
+        resp = client.models.generate_content(
+            model=model_name,
+            contents=prompt,
+            config={"thinking_config": {"thinking_budget": 0}, "max_output_tokens": 4096},
+        )
         from gemini_usage import log_usage
-        log_usage("dashboard_hn_translate", "gemini-2.5-flash", resp)
+        log_usage("dashboard_hn_translate", model_name, resp)
         import re as _re
         for m in _re.finditer(r'\[(\d+)\]\s*(.+)', resp.text or ""):
             idx = int(m.group(1))
@@ -996,5 +1003,4 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
         )
 
     return "\n".join(parts) if parts else '<p class="empty">施策データがありません。</p>'
-
 

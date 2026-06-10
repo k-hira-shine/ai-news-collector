@@ -745,7 +745,15 @@ def classify_items(items: list[dict], config: dict, *, titles_only: bool = False
         logger.warning("google-genai not installed")
         return items
 
-    model_name = config.get("analysis", {}).get("models", {}).get("fallback", "gemini-2.5-flash")
+    models = config.get("analysis", {}).get("models", {})
+    if titles_only:
+        from translation_config import get_translation_model
+
+        model_name = get_translation_model()
+        thinking_budget = 0
+    else:
+        model_name = models.get("fallback", "gemini-2.5-flash")
+        thinking_budget = 128
     client = genai.Client(api_key=api_key)
     batch_size = 25
     id_map = {item["id"]: item for item in items if item.get("id")}
@@ -815,7 +823,8 @@ def classify_items(items: list[dict], config: dict, *, titles_only: bool = False
                     config=types.GenerateContentConfig(
                         response_mime_type="application/json",
                         response_schema=schema,
-                        thinking_config=types.ThinkingConfig(thinking_budget=128),
+                        thinking_config=types.ThinkingConfig(thinking_budget=thinking_budget),
+                        max_output_tokens=8192,
                     ),
                 )
                 from gemini_usage import log_usage
