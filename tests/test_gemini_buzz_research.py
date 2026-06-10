@@ -147,6 +147,50 @@ class GeminiBuzzResearchTests(unittest.TestCase):
         self.assertFalse(result["is_discovery"])
         self.assertTrue(result["discovery_reviewed"])
 
+    def test_ai_review_cannot_revive_rule_rejection(self) -> None:
+        post = {
+            "url": "https://x.com/example/status/2",
+            "text": "Gemma uses research related to Gemini.",
+            "is_discovery": False,
+            "discovery_kind": "",
+        }
+        from scripts.gemini_buzz_research import _text_hash
+
+        reviews = {
+            post["url"]: {
+                "text_hash": _text_hash(post["text"]),
+                "is_gemini_feature": True,
+                "kind": "new_feature",
+                "reason": "incorrect approval",
+            }
+        }
+
+        result = _apply_discovery_reviews([post], reviews)[0]
+
+        self.assertFalse(result["is_discovery"])
+
+    def test_reject_kind_cannot_be_accepted(self) -> None:
+        post = {
+            "url": "https://x.com/example/status/3",
+            "text": "Gemini released something.",
+            "is_discovery": True,
+            "discovery_kind": "new_feature",
+        }
+        from scripts.gemini_buzz_research import _text_hash
+
+        reviews = {
+            post["url"]: {
+                "text_hash": _text_hash(post["text"]),
+                "is_gemini_feature": True,
+                "kind": "reject",
+                "reason": "not a concrete feature",
+            }
+        }
+
+        result = _apply_discovery_reviews([post], reviews)[0]
+
+        self.assertFalse(result["is_discovery"])
+
     def test_dedupe_keeps_higher_engagement_snapshot(self) -> None:
         posts = [
             {"url": "https://x.com/a/status/1", "likes": 10},

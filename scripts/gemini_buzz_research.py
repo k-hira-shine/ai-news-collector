@@ -346,7 +346,11 @@ def _apply_discovery_reviews(
         copy = dict(post)
         review = reviews.get(copy.get("url") or "")
         if review and review.get("text_hash") == _text_hash(copy.get("text") or ""):
-            approved = bool(review.get("is_gemini_feature"))
+            approved = (
+                bool(copy.get("is_discovery"))
+                and bool(review.get("is_gemini_feature"))
+                and review.get("kind") != "reject"
+            )
             copy["is_discovery"] = approved
             copy["discovery_kind"] = review.get("kind") if approved else ""
             copy["discovery_score"] = copy.get("discovery_score", 0) if approved else 0
@@ -368,7 +372,8 @@ def review_discovery_posts(posts: list[dict]) -> list[dict]:
     missing = [
         post
         for post in posts
-        if (
+        if post.get("is_discovery")
+        and (
             not reviews.get(post.get("url") or "")
             or reviews[post.get("url") or ""].get("text_hash")
             != _text_hash(post.get("text") or "")
@@ -605,6 +610,8 @@ def review_discovery_snapshot() -> None:
     snapshot = json.loads(raw_path.read_text(encoding="utf-8"))
     ranking = json.loads(RANKING_PATH.read_text(encoding="utf-8"))
     combined = _dedupe((ranking.get("posts") or []) + (snapshot.get("posts") or []))
+    for post in combined:
+        post.update(classify_relevance(post.get("text") or ""))
     reviewed = review_discovery_posts(combined)
     accepted = sorted(
         _accepted_posts(reviewed, "discovery"),
