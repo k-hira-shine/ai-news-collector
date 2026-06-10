@@ -89,10 +89,11 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>AI 英語一次情報</h1>
-  <div class="updated">Last updated: 2026-06-10 17:33 JST</div>
+  <div class="updated">Last updated: 2026-06-11 03:08 JST</div>
 </header>
 <div class="date-tabs">
-<button class="date-tab active" data-panel="panel-2026-06-10">6/10 <small>今日</small></button>
+<button class="date-tab active" data-panel="panel-2026-06-11">6/11 <small>今日</small></button>
+<button class="date-tab" data-panel="panel-2026-06-10">6/10</button>
 <button class="date-tab" data-panel="panel-2026-06-09">6/9</button>
 <button class="date-tab" data-panel="panel-2026-06-08">6/8</button>
 <button class="date-tab" data-panel="panel-2026-06-07">6/7</button>
@@ -105,9 +106,265 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <button class="date-tab" data-panel="panel-2026-05-31">5/31</button>
 <button class="date-tab" data-panel="panel-2026-05-30">5/30</button>
 <button class="date-tab" data-panel="panel-2026-05-29">5/29</button>
-<button class="date-tab" data-panel="panel-2026-05-28">5/28</button>
 </div>
-<div class="date-panel active" id="panel-2026-06-10">
+<div class="date-panel active" id="panel-2026-06-11">
+  <div class="stats-bar">
+    <div class="stat-badge"><span>1</span>HN 記事</div>
+    <div class="stat-badge"><span>25</span>arxiv 論文</div>
+  </div>
+  <div class="columns">
+    <div>
+      <div class="col-header">
+        <h2>HackerNews</h2>
+        <span class="col-count">スコア順 · 直近48時間</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://github.com/anthropics/claude-code/issues/29045" target="_blank" rel="noopener">Claude Desktopが停止不能なVMを起動</a></div>
+  <div class="item-title-en">Claude Desktop spins up a VM without no way of stopping it</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 12</span>
+    <span class="badge badge-comments">💬 3</span>
+    <span class="meta-author">by tonyrice</span>
+    <span class="meta-age">2026/06/11 02:11</span>
+    <a href="https://news.ycombinator.com/item?id=48479452" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="col-header">
+        <h2>arxiv 新着論文</h2>
+        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11190v1" target="_blank" rel="noopener">When to Align, When to Predict: A Phase Diagram for Multimodal Learning</a></div>
+  <div class="item-title-en">When to Align, When to Predict: A Phase Diagram for Multimodal Learning</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Ilay Kamai, Hugues Van Assel, Aviv Regev</span>
+    <span class="meta-age">2026/06/10 02:59</span>
+  </div>
+  <div class="item-summary">クロスモーダルアライメント（CA）とクロスモーダル予測（CP）は、マルチモーダル表現学習の主要なパラダイムですが、それぞれがいつ成功し、いつ失敗し、クロスモーダルトレーニングがいつ役立つのかについての系統的な理解がありません。これは、特に</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11189v1" target="_blank" rel="noopener">A Unifying Lens on Supervised Fine-Tuning Through Target Distribution Design</a></div>
+  <div class="item-title-en">A Unifying Lens on Supervised Fine-Tuning Through Target Distribution Design</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Tong Xie, Yuanhao Ban, Yunqi Hong</span>
+    <span class="meta-age">2026/06/10 02:59</span>
+  </div>
+  <div class="item-summary">教師ありファインチューニング（SFT）は、通常、実証された軌跡の各トークンの尤度を最大化します。しかし、観測されたトークンは一意でない、ノイズが多い、またはモデルの事前知識と一致しない可能性があります。このワンホットターゲットに厳密に適合させることは、特に事前学習済みモデルの場合、最適ではない可能性があります。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11182v1" target="_blank" rel="noopener">EEVEE: Towards Test-time Prompt Learning in the Real World for Self-Improving Agents</a></div>
+  <div class="item-title-en">EEVEE: Towards Test-time Prompt Learning in the Real World for Self-Improving Agents</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Weixian Xu, Shilong Liu, Mengdi Wang</span>
+    <span class="meta-age">2026/06/10 02:57</span>
+  </div>
+  <div class="item-summary">本論文では、LLMエージェント向けの初のマルチデータセットテストタイムプロンプト学習フレームワークであるEEVEEを提案し、現実世界のタスクストリーム下でのテストタイムプロンプト学習を可能にします。既存の方法の多くは単一データセットの設定向けに設計されていますが、現実世界のアプリケーションでは、モデルが異種タスクを処理する必要があります。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11176v1" target="_blank" rel="noopener">Data Journalist Agent: Transforming Data into Verifiable Multimodal Stories</a></div>
+  <div class="item-title-en">Data Journalist Agent: Transforming Data into Verifiable Multimodal Stories</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Kevin Qinghong Lin, Batu EI, Yuhong Shi</span>
+    <span class="meta-age">2026/06/10 02:51</span>
+  </div>
+  <div class="item-summary">データは社会を形成する物語を語ります。データジャーナリストの仕事は、生の情報を非専門家が信頼できる物語に変えることです。高品質のニュース記事は、ニュースルームのチームが数週間かけて、コンテキストの検索、統計の実行、アングルの選択、ビジュアルのデザインを行います。最近のエージェントは個々のタスクを処理します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11173v1" target="_blank" rel="noopener">The Role of Feedback Alignment in Self-Distillation</a></div>
+  <div class="item-title-en">The Role of Feedback Alignment in Self-Distillation</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Semih Kara, Oğuzhan Ersoy</span>
+    <span class="meta-age">2026/06/10 02:50</span>
+  </div>
+  <div class="item-summary">言語モデルを、以前の試みに関するフィードバックなどの追加のコンテキストで条件付けすることは、通常、その応答を改善します。自己蒸留は、コンテキストが存在しない場合にこの改善を維持するようにモデルをトレーニングします。この方法は、2つの設定下でのモデルの出力分布を一致させることによって機能します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11172v1" target="_blank" rel="noopener">Predicting Future Behaviors in Reasoning Models Enables Better Steering</a></div>
+  <div class="item-title-en">Predicting Future Behaviors in Reasoning Models Enables Better Steering</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Evgenii Kortukov, Piotr Komorowski, Florian Klein</span>
+    <span class="meta-age">2026/06/10 02:49</span>
+  </div>
+  <div class="item-summary">展開されている大規模推論モデル（LRM）は、しばしば予期しない振る舞いをします。テストタイムステアリングは、隠れ表現に介入することでLRMの出力を制御しますが、出力品質を低下させる可能性があります。我々は、以前のステアリング作業が、すでに生成されている行動を検出する内部機能に暗黙的に依存していると主張します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11171v1" target="_blank" rel="noopener">Algorithmic and Minimax Complexities in Kernel Bandits</a></div>
+  <div class="item-title-en">Algorithmic and Minimax Complexities in Kernel Bandits</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Yunbei Xu</span>
+    <span class="meta-age">2026/06/10 02:49</span>
+  </div>
+  <div class="item-summary">ガウス過程上限信頼度（GP-UCB）および決定推定係数（DEC）法は、一見すると異なる理論に属するように見えるかもしれません。本稿では、頻度論的RKHSバンディットのための共通のアルゴリズム情報言語において、両方の視点を位置づけます。GP-UCBはアルゴリズムを固定し、</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11169v1" target="_blank" rel="noopener">Piper: A Programmable Distributed Training System</a></div>
+  <div class="item-title-en">Piper: A Programmable Distributed Training System</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Megan Frisella, Shubham Tiwari, Andy Ruan</span>
+    <span class="meta-age">2026/06/10 02:48</span>
+  </div>
+  <div class="item-summary">大規模モデルのトレーニングは、データ並列、パイプライン並列、エキスパート並列などの複数の並列化戦略と、ZeROのようなメモリ節約最適化を組み合わせて行うことが増えています。基盤モデルの事前トレーニングのために展開されているシステムは、多くの場合、人間が専門家となって、高性能なシステムを手動で設計することに依存しています。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11167v1" target="_blank" rel="noopener">Multi-Faceted Interactivity Alignment in Full-Duplex Speech Models</a></div>
+  <div class="item-title-en">Multi-Faceted Interactivity Alignment in Full-Duplex Speech Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Atsumoto Ohashi, Neil Zeghidour, Alexandre Défossez</span>
+    <span class="meta-age">2026/06/10 02:46</span>
+  </div>
+  <div class="item-summary">全二重会話モデルは、同時に聞いたり話したりできるため、自然な会話のための有望なアーキテクチャです。しかし、現在のモデルは、トークンレベルの尤度最大化を通じた教師あり学習のみでトレーニングされていますが、これはインタラクションレベルの目標を直接最適化しません。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11166v1" target="_blank" rel="noopener">Flaws in the LLM Automation Narrative</a></div>
+  <div class="item-title-en">Flaws in the LLM Automation Narrative</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">George Perrett, Javae Elliott, Jennifer Hill</span>
+    <span class="meta-age">2026/06/10 02:46</span>
+  </div>
+  <div class="item-summary">大規模言語モデル（LLM）は、知識経済タスクにおいて人間と同等の専門家レベルでパフォーマンスを発揮するとますます言われています。これらの主張は、主に標準化されたデータセット全体での平均パフォーマンスを測定するベンチマークタスクでのLLMのパフォーマンスに基づいています。多くのベンチマークの主な限界は、</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11164v1" target="_blank" rel="noopener">ReasonAlloc: Hierarchical Decoding-Time KV Cache Budget Allocation for Reasoning Models</a></div>
+  <div class="item-title-en">ReasonAlloc: Hierarchical Decoding-Time KV Cache Budget Allocation for Reasoning Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Wenhao Liu, Hao Shi, Yunhe Li</span>
+    <span class="meta-age">2026/06/10 02:44</span>
+  </div>
+  <div class="item-summary">大規模言語モデル（LLM）の推論における長い思考連鎖（CoT）の軌跡は、キーバリュー（KV）キャッシュの急速な成長により、深刻な推論ボトルネックを引き起こします。現在のデコーディングタイム圧縮方法は、トークン追放によってこの問題を緩和しますが、通常、すべての</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11162v1" target="_blank" rel="noopener">COGENT: Continuous Graph Emulators with Neural Ordinary Differential Equations for Long-Term Physical Forecasting</a></div>
+  <div class="item-title-en">COGENT: Continuous Graph Emulators with Neural Ordinary Differential Equations for Long-Term Physical Forecasting</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Zesheng Liu, Maryam Rahnemoonfar</span>
+    <span class="meta-age">2026/06/10 02:43</span>
+  </div>
+  <div class="item-summary">本研究では、不規則な地理空間メッシュ上での長期物理予測のための、ニューラル常微分方程式を備えた連続グラフエミュレーターであるCOGENTを提案します。COGENTは、グラフベースの履歴を持つシステムの状態と関連する強制場および外部強制の有限履歴をエンコードします。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11156v1" target="_blank" rel="noopener">Itô maps for any-step SDEs</a></div>
+  <div class="item-title-en">Itô maps for any-step SDEs</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Zhengkai Pan, Peter Potaptchik, Wenxi Yao</span>
+    <span class="meta-age">2026/06/10 02:39</span>
+  </div>
+  <div class="item-summary">最近の一歩生成モデルは、基盤となるダイナミクスの決定論的なフローマップを学習することによってサンプリングを加速します。これらの方法は、常微分方程式からの学習に依存しており、確率的ダイナミクスの正確な蒸留手順をどのように定義できるかについては未解決です。イットーマップを導入します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11150v1" target="_blank" rel="noopener">ABC-Bench: An Agentic Bio-Capabilities Benchmark for Biosecurity</a></div>
+  <div class="item-title-en">ABC-Bench: An Agentic Bio-Capabilities Benchmark for Biosecurity</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Andrew Bo Liu, Samira Nedungadi, Bryce Cai</span>
+    <span class="meta-age">2026/06/10 02:35</span>
+  </div>
+  <div class="item-summary">大規模言語モデル（LLM）は、文献合成から実験データの解釈まで、生物学研究に関連する能力を急速に獲得しています。ますます、LLMエージェントは、以前は経験豊富な生物学者を必要としていたインシリコ生物学タスクを実行することもできます。これらの新たな能力は</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11149v1" target="_blank" rel="noopener">Efficiently Learning Drifting Halfspaces with Massart Noise</a></div>
+  <div class="item-title-en">Efficiently Learning Drifting Halfspaces with Massart Noise</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Mingchen Ma, Guyang Cao, Jelena Diakonikolas</span>
+    <span class="meta-age">2026/06/10 02:35</span>
+  </div>
+  <div class="item-summary">Massartノイズが存在する漂流概念の学習問題について考察します。このフレームワークでは、オンライン学習者は、ラウンドごとに変化する可能性のあるターゲット概念のノイズバージョンであるラベルを持つ独立したサンプルの履歴にアクセスできます。目標は、各ラウンドで、</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11144v1" target="_blank" rel="noopener">OncoTraj: a public benchmark for longitudinal resistance prediction in EGFR-mutant non-small-cell lung cancer on osimertinib</a></div>
+  <div class="item-title-en">OncoTraj: a public benchmark for longitudinal resistance prediction in EGFR-mutant non-small-cell lung cancer on osimertinib</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Abhijoy Sarkar, Aarchi Singh Thakur</span>
+    <span class="meta-age">2026/06/10 02:33</span>
+  </div>
+  <div class="item-summary">EGFR変異型非小細胞肺癌（NSCLC）における一次オシメルチニブへの耐性は、治療圧下での予測可能なクローナル進化の典型的な例ですが、対応する縦断的患者軌跡で計算モデルをトレーニングまたは評価するための公開ベンチマークは存在しません。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11140v1" target="_blank" rel="noopener">Data assimilation for subsurface flow using latent diffusion model parameterization: performance of ensemble-Kalman and Monte Carlo techniques</a></div>
+  <div class="item-title-en">Data assimilation for subsurface flow using latent diffusion model parameterization: performance of ensemble-Kalman and Monte Carlo techniques</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Guido Di Federico, Wenchao Teng, Louis J. Durlofsky</span>
+    <span class="meta-age">2026/06/10 02:29</span>
+  </div>
+  <div class="item-summary">地下流動におけるデータ同化（DA）は、地質学的な現実性を維持しながら、通常は坑井で観測データに一致するようにモデルパラメータを校正することを含みます。潜在拡散モデル（LDM）は、高次元の地質モデル空間から低次元の潜在変数への効率的なマッピングを提供します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11127v1" target="_blank" rel="noopener">Provenance-Grounded Gating and Adaptive Recovery in Synthetic Post-Training Data Curation</a></div>
+  <div class="item-title-en">Provenance-Grounded Gating and Adaptive Recovery in Synthetic Post-Training Data Curation</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Soham Bhattacharjee, Karun Sharma, Vinay Kumar Sankarapu</span>
+    <span class="meta-age">2026/06/10 02:24</span>
+  </div>
+  <div class="item-summary">合成ポストトレーニングパイプラインは、一般的に生成されたサンプルを報酬モデルまたは包括的なLLMジャッジでフィルタリングしますが、2つの実践は一緒にほとんど調査されていません。フィルタリング信号が各生成を誘発したソース証拠に根ざしているかどうか、および却下されたサンプルが系統的に</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11120v1" target="_blank" rel="noopener">Monte Carlo Pass Search: Using Trajectory Generation for 3D Counterfactual Pass Evaluation in Football</a></div>
+  <div class="item-title-en">Monte Carlo Pass Search: Using Trajectory Generation for 3D Counterfactual Pass Evaluation in Football</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Andrew Kang, Priya Narasimhan</span>
+    <span class="meta-age">2026/06/10 02:16</span>
+  </div>
+  <div class="item-summary">サッカーにおけるパス評価を、モンテカルロ木探索（MCTS）のような評価問題として再構成します。そのコンポーネントは、ほとんどが異なる名前で文献に存在しています。値モデル（ポゼッション価値）、世界モデル（ボールインタラクションを伴うマルチエージェント軌跡）、およびカウントにおけるポリシー。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11119v1" target="_blank" rel="noopener">TRACE: A Unified Rollout Budget Allocation Framework for Efficient Agentic Reinforcement Learning</a></div>
+  <div class="item-title-en">TRACE: A Unified Rollout Budget Allocation Framework for Efficient Agentic Reinforcement Learning</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Heming Zou, Qi Wang, Yun Qu</span>
+    <span class="meta-age">2026/06/10 02:16</span>
+  </div>
+  <div class="item-summary">検証可能な報酬（RLVR）を備えた強化学習は、大規模言語モデルにおける推論とエージェント的な行動を強化するための有望なアプローチです。しかし、ロールアウト集約的なポリシー最適化は、過度に単純または複雑なプロンプトが生成する際に生じる、不十分な報酬コントラストによってしばしば制限されます。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11105v1" target="_blank" rel="noopener">PhantomBench: Benchmarking the Non-existential Threat of Language Models</a></div>
+  <div class="item-title-en">PhantomBench: Benchmarking the Non-existential Threat of Language Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Haeji Jung, Hila Gonen</span>
+    <span class="meta-age">2026/06/10 02:03</span>
+  </div>
+  <div class="item-summary">言語モデル（LM）が事実に基づかない応答を生成する幻覚は、ユーザーが盲目的に頼る傾向があるため、深刻なリスクをもたらします。これは特に高リスクのドメインで懸念されており、そのようなモデルの振る舞いの結果は重大な危害につながる可能性があります。目覚ましい進歩にもかかわらず</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11082v1" target="_blank" rel="noopener">The Shibboleth Effect: Auditing the Cross-Lingual Distributional Skew of Large Language Models</a></div>
+  <div class="item-title-en">The Shibboleth Effect: Auditing the Cross-Lingual Distributional Skew of Large Language Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Hakan Mehmetcik</span>
+    <span class="meta-age">2026/06/10 01:42</span>
+  </div>
+  <div class="item-summary">本研究では、持続的な敵対的条件下に置かれた最先端の大規模言語モデル（LLM）におけるクロスリンガル分布スキュー（シボラエト効果）を調査します。地政学的ウォーゲーム、セラリアン海危機、合成海事領土紛争を設計し、</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11079v1" target="_blank" rel="noopener">VISTA: A Versatile Interactive User Simulation Toolkit for Agent Evaluation</a></div>
+  <div class="item-title-en">VISTA: A Versatile Interactive User Simulation Toolkit for Agent Evaluation</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Yunan Lu, Ryan Shea, Yusen Zhang</span>
+    <span class="meta-age">2026/06/10 01:39</span>
+  </div>
+  <div class="item-summary">評価は、インタラクティブエージェント開発の重要なボトルネックであり続けています。既存の評価方法論は静的ベンチマークに依存することが多く、エージェント的な行動の動的で多段階的な性質を捉えきれず、意味のある失敗モードを明らかにすることに苦労しています。ユーザーシミュレーションベースの評価は</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11078v1" target="_blank" rel="noopener">A History-Aware Visually Grounded Critic for Computer Use Agents</a></div>
+  <div class="item-title-en">A History-Aware Visually Grounded Critic for Computer Use Agents</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Jaewoo Lee, Zaid Khan, Archiki Prasad</span>
+    <span class="meta-age">2026/06/10 01:39</span>
+  </div>
+  <div class="item-summary">コンピュータ利用エージェント（CUA）のための様々なテストタイム介入（批評モデルを含む）は、複雑なグラフィカルユーザインタフェース（GUI）環境での実行前の行動評価を通じてパフォーマンスを向上させるために開発されてきました。しかし、既存の批評モデルは2つの主要な制限に苦しんでいます。それらは（1）焦点を当て、</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.11074v1" target="_blank" rel="noopener">Modeling Complex Behaviors: Multi-Personality Composition and Dynamic Switching in Vision-Language Models</a></div>
+  <div class="item-title-en">Modeling Complex Behaviors: Multi-Personality Composition and Dynamic Switching in Vision-Language Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Peiqi Jia, Haonan Jia, Ziqi Miao</span>
+    <span class="meta-age">2026/06/10 01:34</span>
+  </div>
+  <div class="item-summary">マルチモーダル大規模言語モデル（MLLM）がソーシャルインタラクションで広く展開されるにつれて、複雑なパーソナリティ条件下でのその行動の理解と制御が不可欠です。本論文では、明示的なパーソナリティ条件付けを導入し、体系的な評価フレームワークを確立します。</div>
+</div>
+    </div>
+  </div>
+</div>
+<div class="date-panel" id="panel-2026-06-10">
   <div class="stats-bar">
     <div class="stat-badge"><span>7</span>HN 記事</div>
     <div class="stat-badge"><span>49</span>arxiv 論文</div>
@@ -4268,486 +4525,6 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">2026/05/28 02:22</span>
   </div>
   <div class="item-summary">ゲームやシミュレーションで使用されるインタラクティブな3Dアセットは、アニメーション、物理、スクリプト化された動作をサポートするために、通常、特定の意味を持つ部分に分解される。しかし、ほとんどの生成型3Dモデルは、モノリシックなメッシュ、またはアプリケーション固有の要件と一致させることができない任意の部品分解を生成する。</div>
-</div>
-    </div>
-  </div>
-</div>
-<div class="date-panel" id="panel-2026-05-28">
-  <div class="stats-bar">
-    <div class="stat-badge"><span>8</span>HN 記事</div>
-    <div class="stat-badge"><span>42</span>arxiv 論文</div>
-  </div>
-  <div class="columns">
-    <div>
-      <div class="col-header">
-        <h2>HackerNews</h2>
-        <span class="col-count">スコア順 · 直近48時間</span>
-      </div>
-      <div class="item-card">
-  <div class="item-title"><a href="https://www.pcgamer.com/hardware/duckduckgos-ai-free-search-saw-nearly-28-percent-more-visits-in-the-week-following-googles-insistence-that-people-love-ai-mode/" target="_blank" rel="noopener">Googleが「人々はAIモードを気に入っている」と発言した後、DuckDuckGo検索の訪問数が28%増加した</a></div>
-  <div class="item-title-en">DuckDuckGo search saw 28% more visits after Google said people love AI mode</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 206</span>
-    <span class="badge badge-comments">💬 80</span>
-    <span class="meta-author">by HelloUsername</span>
-    <span class="meta-age">2026/05/28 01:28</span>
-    <a href="https://news.ycombinator.com/item?id=48296649" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://posthog.com/blog/training-ai-models" target="_blank" rel="noopener">独自のAIモデルを訓練する</a></div>
-  <div class="item-title-en">Training our own AI models</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 131</span>
-    <span class="badge badge-comments">💬 94</span>
-    <span class="meta-author">by tartieret</span>
-    <span class="meta-age">2026/05/28 01:08</span>
-    <a href="https://news.ycombinator.com/item?id=48296359" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://simonwillison.net/2026/May/27/product-market-fit/" target="_blank" rel="noopener">AnthropicとOpenAIはプロダクトマーケットフィットを見つけたと私は思う</a></div>
-  <div class="item-title-en">I think Anthropic and OpenAI have found product-market fit</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 81</span>
-    <span class="badge badge-comments">💬 70</span>
-    <span class="meta-author">by simonw</span>
-    <span class="meta-age">2026/05/28 01:39</span>
-    <a href="https://news.ycombinator.com/item?id=48296794" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.nytimes.com/2026/05/27/us/politics/criminal-inquiry-e-jean-carroll-trump-accusations.html" target="_blank" rel="noopener">司法省、E・ジーン・キャロル氏に対する刑事捜査を開始したと報じられる</a></div>
-  <div class="item-title-en">Justice Dept. Is Said to Open Criminal Inquiry of E. Jean Carroll</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 58</span>
-    <span class="badge badge-comments">💬 19</span>
-    <span class="meta-author">by JumpCrisscross</span>
-    <span class="meta-age">2026/05/28 10:23</span>
-    <a href="https://news.ycombinator.com/item?id=48303131" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.youtube.com/watch?v=iqddnwKF8HQ" target="_blank" rel="noopener">Zig 2026：AI利用禁止ポリシー、67万ドル財団、GitHub離脱、そしてなぜZigは1.0ではないのか [動画]</a></div>
-  <div class="item-title-en">Zig 2026: No-AI Policy, $670K Foundation, Left GitHub and Why Zig Isn&#x27;t 1.0 [video]</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 49</span>
-    <span class="badge badge-comments">💬 4</span>
-    <span class="meta-author">by doppp</span>
-    <span class="meta-age">2026/05/28 10:40</span>
-    <a href="https://news.ycombinator.com/item?id=48303273" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://iisc.ac.in/a-eureka-machine-that-thinks-like-nature-and-explores-what-ai-cannot/" target="_blank" rel="noopener">自然のように考え、AIにできないことを探求するユリイカ・マシン</a></div>
-  <div class="item-title-en">A Eureka machine that thinks like nature and explores what AI cannot</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 42</span>
-    <span class="badge badge-comments">💬 3</span>
-    <span class="meta-author">by kunalsin9h</span>
-    <span class="meta-age">2026/05/28 15:40</span>
-    <a href="https://news.ycombinator.com/item?id=48305446" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://blog.packagist.com/an-update-on-composer-packagist-supply-chain-security/" target="_blank" rel="noopener">ComposerとPackagistのサプライチェーンセキュリティに関する更新</a></div>
-  <div class="item-title-en">An Update on Composer and Packagist Supply Chain Security</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 15</span>
-    <span class="badge badge-comments">💬 1</span>
-    <span class="meta-author">by Seldaek</span>
-    <span class="meta-age">2026/05/28 00:31</span>
-    <a href="https://news.ycombinator.com/item?id=48295838" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.wired.com/story/illinois-pass-major-ai-safety-law-pritzker/" target="_blank" rel="noopener">イリノイ州議員、米国で最も強力なAI安全法案を可決</a></div>
-  <div class="item-title-en">Illinois Lawmakers Just Passed America&#x27;s Strongest AI Safety Bill</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 11</span>
-    <span class="badge badge-comments">💬 7</span>
-    <span class="meta-author">by droidjj</span>
-    <span class="meta-age">2026/05/28 10:05</span>
-    <a href="https://news.ycombinator.com/item?id=48302940" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div>
-    </div>
-    <div>
-      <div class="col-header">
-        <h2>arxiv 新着論文</h2>
-        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
-      </div>
-      <div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28819v1" target="_blank" rel="noopener">PEFT-Arena: 安定性-可塑性の観点からパラメータ効率の良いファインチューニングを理解する</a></div>
-  <div class="item-title-en">PEFT-Arena: Understanding Parameter-Efficient Finetuning from a Stability-Plasticity Perspective</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Yangyi Huang, Ruotian Peng, Zeju Qiu</span>
-    <span class="meta-age">2026/05/28 02:59</span>
-  </div>
-  <div class="item-summary">パラメータ効率の良いファインチューニング（PEFT）は、大規模言語モデルを適応させるための標準的なアプローチとなっているが、評価は主に下流タスクの精度に重点を置き、事前学習された能力の保持を見落としている。我々は、PEFTを安定性-可塑性のジレンマを通じて評価すべきであると主張する...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28818v1" target="_blank" rel="noopener">VLMは自然読解中にLLMに対する人間とのアライメントをグローバルに強化しない可能性がある</a></div>
-  <div class="item-title-en">VLMs May Not Globally Enhance Human Alignment over LLMs During Natural Reading</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Jinzhou Wu, Zhengwu Ma, Jixing Li</span>
-    <span class="meta-age">2026/05/28 02:59</span>
-  </div>
-  <div class="item-summary">大規模言語モデル（LLM）は、人間の言語処理の計算モデルとしてますます有用になっているが、視覚-言語学習が自然読解中のテキスト表現をより人間らしくするかどうかは不明瞭である。本研究では、厳密にマッチングされたLLMと...を比較することでこの問題に取り組む。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28814v1" target="_blank" rel="noopener">双方向進化的探索による自己改善型言語モデル</a></div>
-  <div class="item-title-en">Self-Improving Language Models with Bidirectional Evolutionary Search</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Guowei Xu, Zhenting Qi, Huangyuan Su</span>
-    <span class="meta-age">2026/05/28 02:59</span>
-  </div>
-  <div class="item-summary">探索は、トレーニング後のサンプル生成と推論の両方において、自己改善型言語モデルおよびエージェントシステムの効果的な方法として提案されてきた。しかし、ベストオブNサンプリングやツリー探索などの広く使われている手法には、2つの根本的な限界がある。それらは疎な検証によって導かれ...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28812v1" target="_blank" rel="noopener">バイナリを超えて：物理に基づいた接触表現を用いたシミュレーションから実世界への器用な操作</a></div>
-  <div class="item-title-en">Beyond Binary: Sim-to-Real Dexterous Manipulation with Physics-Grounded Contact Representation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Jiahe Pan, Stelian Coros, Jitendra Malik</span>
-    <span class="meta-age">2026/05/28 02:59</span>
-  </div>
-  <div class="item-summary">接触が多い操作における主なボトルネックは、実世界データの収集の難しさである。シミュレーションから実世界への強化学習はスケーラブルな代替手段を提供するが、シミュレーションと現実のギャップにより、触覚のような情報密度の高いモダリティが効果的に使用されるのを妨げている。既存のシミュレーションから実世界への手法は...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28810v1" target="_blank" rel="noopener">情動音楽推薦：オフライン選好最適化のためのロールアウトベースのワールドモデル</a></div>
-  <div class="item-title-en">Affective Music Recommendation: A Rollout-Based World Model for Offline Preference Optimization</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Audrey Chan, Aaron Labbé, Jacob Lavoie</span>
-    <span class="meta-age">2026/05/28 02:58</span>
-  </div>
-  <div class="item-summary">消費者の集中力向上や睡眠補助から臨床介入まで、機能的な音楽アプリケーションは特徴的な推薦問題を共有している。成功はリスナーの情動状態によって定義されるが、感情に関するオンライン実験は倫理的に制約があり、特に臨床集団では...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28809v1" target="_blank" rel="noopener">AREA: CLIPベースのクラス増分学習のための属性抽出と集約</a></div>
-  <div class="item-title-en">AREA: Attribute Extraction and Aggregation for CLIP-Based Class-Incremental Learning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Zhen-Hao Xie, Yu-Cheng Shi, Da-Wei Zhou</span>
-    <span class="meta-age">2026/05/28 02:58</span>
-  </div>
-  <div class="item-summary">クラス増分学習（CIL）は、実世界学習システムの構築において重要である。CLIPベースのCILでは、モデルはテンプレートプロンプト、例えば「[クラス]の写真」から得られた視覚埋め込みとテキスト埋め込み間の類似性を比較することで分類を実行する。この一見モノリシックなマッチングは...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28807v1" target="_blank" rel="noopener">スケーラブルな監視のための保守主義の調整</a></div>
-  <div class="item-title-en">Calibrating Conservatism for Scalable Oversight</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">William Overman, Mohsen Bayati</span>
-    <span class="meta-age">2026/05/28 02:56</span>
-  </div>
-  <div class="item-summary">自律的な計画と環境との広範な相互作用が可能なエージェントAIシステムは、根本的な制御問題を引き起こす。すなわち、人間が自身の能力を超える可能性のあるシステムをいかにして意味のある形で監視し続けるか、である。スケーラブルな監視に対する既存のアプローチは、複雑な仮定に依存し、限定的である...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28806v1" target="_blank" rel="noopener">明示的および暗示的証拠からの個人視覚記憶</a></div>
-  <div class="item-title-en">Personal Visual Memory from Explicit and Implicit Evidence</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Viet Nguyen, Thao Nguyen, Vishal M. Patel</span>
-    <span class="meta-age">2026/05/28 02:56</span>
-  </div>
-  <div class="item-summary">長期記憶はパーソナライズされたAIエージェントにとってますます重要になっているが、既存のベンチマークと方法は依然として大部分がテキスト中心である。画像が含まれる場合でも、後で必要となるユーザー固有の情報は通常テキストのみから回復可能であり、ほとんどの記憶システムは画像を簡略化する...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28805v1" target="_blank" rel="noopener">OmniVerifier-M1: 明示的な構造化再キャリブレーションを備えたマルチモーダルメタベリファイア</a></div>
-  <div class="item-title-en">OmniVerifier-M1: Multimodal Meta-Verifier with Explicit Structured Recalibration</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Xinchen Zhang, Bowei Liu, Jiale Liu</span>
-    <span class="meta-age">2026/05/28 02:56</span>
-  </div>
-  <div class="item-summary">視覚的結果はマルチモーダル大規模言語モデルにとってますます中心的になっており、汎用基盤モデルをスケールアップするためには信頼性の高いきめ細かな検証が不可欠である。本研究では、決定ではなく検証器が生成した根拠を活用するマルチモーダルメタ検証を調査する...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28803v1" target="_blank" rel="noopener">Ω-QVLA: 複合回転とステップごとのスケーリングによるビジョン-言語-アクションモデルのためのロバストな量子化</a></div>
-  <div class="item-title-en">Ω-QVLA: Robust Quantization for Vision-Language-Action Models via Composite Rotation and Per-step Scaling</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Xinyu Wang, Mingze Li, Sicheng Lyu</span>
-    <span class="meta-age">2026/05/28 02:55</span>
-  </div>
-  <div class="item-summary">ビジョン-言語-アクション（VLA）モデルは、知覚、推論、制御を単一のポリシー内で統合するが、その数十億のパラメータを持つバックボーンと拡散ベースのアクションヘッドは、デバイス上での展開を法外な費用にする。以前の量子化の取り組みは部分的な解決策しか提供せず、...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28802v1" target="_blank" rel="noopener">安定した信号としての人間によるラベルのばらつき：アノテーター横断的選好最適化によるアノテーター固有の解説行動の学習</a></div>
-  <div class="item-title-en">Human Label Variation as Stable Signal: Learning Annotator-Specific Explanation Behavior via Cross-Annotator Preference Optimization</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Beiduo Chen, Pingjun Hong, Ziyun Zhang</span>
-    <span class="meta-age">2026/05/28 02:55</span>
-  </div>
-  <div class="item-summary">自由形式のテキスト説明は、アノテーターの決定の背後にある推論と選好を明らかにすることで、ラベルの不一致を超えて人間によるラベルのばらつき（HLV）を拡張する。我々は、大規模言語モデル（LLM）がそのようなアノテーター固有のラベル-説明行動を学習し、再現できるかどうかを研究する。2つの文-ペアを使って...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28792v1" target="_blank" rel="noopener">CaMBRAIN: 因果状態空間モデルによるリアルタイム連続EEG推論</a></div>
-  <div class="item-title-en">CaMBRAIN: Real-time, Continuous EEG Inference with Causal State Space Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Abhilash Durgam, Nyle Siddiqui, Jeffrey A. Chan-Santiago</span>
-    <span class="meta-age">2026/05/28 02:50</span>
-  </div>
-  <div class="item-summary">脳波検査（EEG）は、脳の電気活動を監視するための重要な非侵襲的方法である。EEGは数秒から数時間にわたることがあり、既存の深層学習手法にとって大きな障害となっている。これは主に2つの要因によるものである。(1) 既存のEEGモデルは主に...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28791v1" target="_blank" rel="noopener">スキル条件付きゲート付き自己蒸留によるLLM推論</a></div>
-  <div class="item-title-en">Skill-Conditioned Gated Self-Distillation for LLM Reasoning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Jiazhen Huang, Xiao Chen, Xiao Luo</span>
-    <span class="meta-age">2026/05/28 02:49</span>
-  </div>
-  <div class="item-summary">オンポリシー自己蒸留（SD）は、教師側の特権情報（PI）を利用して、疎な検証器の結果を密なトークンレベルの教師信号に変換することで、LLMの推論を改善する。既存の手法は通常、参照回答や成功した軌跡などの信頼できるPIを仮定している。我々は、PIが代わりにどのように...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28787v1" target="_blank" rel="noopener">エージェントはセマンティックメタデータを必要とするか？エージェント的データ検索における比較研究</a></div>
-  <div class="item-title-en">Do Agents Need Semantic Metadata? A Comparative Study in Agentic Data Retrieval</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Shiyu Chen, Tarfah Alrashed, Alon Halevy</span>
-    <span class="meta-age">2026/05/28 02:46</span>
-  </div>
-  <div class="item-summary">自律エージェントの時代において、機械処理可能なデータはデータ駆動型ワークフローにとって不可欠である。10年以上にわたり、schema.orgのようなセマンティックメタデータは、機械処理可能なデータのFAIR原則（Findable、Accessible、Interoperable、and Reusable）の基盤となり、検索ツールを可能にしてきた...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28782v1" target="_blank" rel="noopener">大規模言語モデルは談話標識を扱えるか？口語マレー語の事例研究</a></div>
-  <div class="item-title-en">Can Large Language Models Handle Discourse Particles? A Case Study of Colloquial Malay</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Mariah Al Giptiah Binte Yusoff, Jakin Tan, Bocheng Chen</span>
-    <span class="meta-age">2026/05/28 02:42</span>
-  </div>
-  <div class="item-summary">\textit{well} や \textit{kind of} のような談話標識は、LLMがより人間らしく「話す」ことを可能にする重要な要素である。それらは感情、意図、対人関係の意味を伝えるために使われる。しかし、既存の研究では、LLMの能力に関する包括的な理解はまだ構築されていない...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28780v1" target="_blank" rel="noopener">バイアスは勾配の痕跡を残す：概念分解における勾配プローブによるラベルフリーバイアス特定</a></div>
-  <div class="item-title-en">Bias Leaves a Gradient Trail: Label-Free Bias Identification via Gradient Probes on Concept Decompositions</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Thomas Vitry, Kieran Edgeworth, Stefan Wermter</span>
-    <span class="meta-age">2026/05/28 02:39</span>
-  </div>
-  <div class="item-summary">視覚分類器は疑似相関を利用して、分布内では高い精度を達成するものの、分布シフト下では失敗することがある。バイアス緩和と分析のための既存のアプローチは、しばしばキュレーションされたデータセット、疑似属性またはグループラベル、あるいは再トレーニングに依存するが、これらは一度...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28779v1" target="_blank" rel="noopener">ビジョン-言語因果推論における抽象化ギャップ</a></div>
-  <div class="item-title-en">The Abstraction Gap in Vision-Language Causal Reasoning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Chinh Hoang, Mohammad Rashedul Hasan</span>
-    <span class="meta-age">2026/05/28 02:38</span>
-  </div>
-  <div class="item-summary">ビジョン-言語モデル（VLM）は流暢な因果説明を生成するが、現在の評価では言語的な妥当性と忠実な因果推論を区別できない。我々はこれらの特性を分離するデュアルプローブ手法を導入する。テキストオンリープローブは言語の質を測定する。チェーン-テキストは...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28778v1" target="_blank" rel="noopener">LLMは言語的不確実性マーカーを用いて内在的な確信度を信頼性高く反映できるか？</a></div>
-  <div class="item-title-en">Can LLMs Use Linguistic Uncertainty Markers to Reliably Reflect Intrinsic Confidence?</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Gabrielle Kaili-May Liu, Arman Cohan</span>
-    <span class="meta-age">2026/05/28 02:38</span>
-  </div>
-  <div class="item-summary">LLMが言語的に表現する確信度は、その内在的な不確実性を忠実に反映するはずである。最近の研究では、LLMが認識論的マーカー（例：「〜の可能性が高い」）を人間と整合する形で使用することに苦労していることが示されているが、モデルが自身の言語的確信度フレームワークを適用できるかどうかは不明である...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28775v1" target="_blank" rel="noopener">弱点から学ぶ：小型コンピュータ利用エージェントのための自動ドメイン特化</a></div>
-  <div class="item-title-en">Learn from Weaknesses: Automated Domain Specialization for Small Computer-Use Agents</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Suji Kim, Kangsan Kim, Sung Ju Hwang</span>
-    <span class="meta-age">2026/05/28 02:37</span>
-  </div>
-  <div class="item-summary">コンピュータ利用エージェント（CUA）は近年目覚ましい進歩を遂げているが、各ソフトウェアドメインに個別の大規模な専門家を配備することは依然として費用がかかる。小型のオープンなコンピュータ利用エージェントは、より実用的な特化の対象となるが、依然として大幅に弱く、ドメイン固有の失敗が不均一に現れる...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28773v1" target="_blank" rel="noopener">記憶を絶えず進化する結合として再考する</a></div>
-  <div class="item-title-en">Rethinking Memory as Continuously Evolving Connectivity</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Jizhan Fang, Buqiang Xu, Zhixian Wang</span>
-    <span class="meta-age">2026/05/28 02:35</span>
-  </div>
-  <div class="item-summary">既存の記憶増強型LLMエージェントは、記憶を事前に定義された表現と固定された検索パイプラインを持つ静的なリポジトリとして扱うことが多く、フィードバック、タスクのバリエーション、異質な信号が何を記憶すべきかを絶えず再形成する動的なエージェント環境では脆い...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28764v1" target="_blank" rel="noopener">SwarmHarness: 分散型インセンティブ調整済みAIエージェントネットワークによるスキルベースのタスクルーティング</a></div>
-  <div class="item-title-en">SwarmHarness: Skill-Based Task Routing via Decentralized Incentive-Aligned AI Agent Networks</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Edwin Jose</span>
-    <span class="meta-age">2026/05/28 02:23</span>
-  </div>
-  <div class="item-summary">大量の計算リソース（個人のワークステーションのGPUサイクル、アイドル状態の推論サーバー、ジョブ間のエッジデバイス）は、所有者がそれらを安全かつ収益的に共有するためのインセンティブ調整プロトコルが存在しないため、未使用のままである。既存のアプローチは、信頼できる中央コーディネーター（クラウド）を必要とするか、あるいは...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.28763v1" target="_blank" rel="noopener">CubePart: オープンボキャブラリーの部品制御可能な3Dジェネレーター</a></div>
-  <div class="item-title-en">CubePart: An Open-Vocabulary Part-Controllable 3D Generator</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Yiheng Zhu, Kangle Deng, Jean-Philippe Fauconnier</span>
-    <span class="meta-age">2026/05/28 02:22</span>
-  </div>
-  <div class="item-summary">ゲームやシミュレーションで使われるインタラクティブな3Dアセットは、アニメーション、物理、スクリプト化された挙動をサポートするために通常特定のセマンティックな部品に分解される。しかし、ほとんどの生成型3Dモデルは、モノリシックなメッシュを生成するか、またはアプリケーションの仕様に合わせられない任意の部品分解を生成する...</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27371v1" target="_blank" rel="noopener">採用におけるアルゴリズム的モノカルチャー</a></div>
-  <div class="item-title-en">Algorithmic Monocultures in Hiring</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Rishi Bommasani, Sarah H. Bana, Kathleen A. Creel</span>
-    <span class="meta-age">2026/05/27 02:59</span>
-  </div>
-  <div class="item-summary">多くの雇用主が、ごく少数の同じアルゴリズムベンダーによって構築されたアルゴリズムで求職者をスクリーニングしています。我々は、アルゴリズム的モノカルチャーが、同じ個人や同じ人種グループのメンバーが不採用になる原因となると仮説を立てています。我々は、300万人の応募者が4件の応募をした新規データセットを取得・分析し</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27366v1" target="_blank" rel="noopener">MUSE-Autoskill: スキル作成、記憶、管理、評価による自己進化型エージェント</a></div>
-  <div class="item-title-en">MUSE-Autoskill: Self-Evolving Agents via Skill Creation, Memory, Management, and Evaluation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Huawei Lin, Peng Li, Jie Song</span>
-    <span class="meta-age">2026/05/27 02:59</span>
-  </div>
-  <div class="item-summary">大規模言語モデル（LLM）エージェントは、複雑なタスクを解決するために再利用可能なスキルに依存します。しかし、既存のスキル作成アプローチは、スキルを孤立した静的な成果物として扱い、その再利用性、信頼性、長期的な改善を制限しています。我々は、MUSE-Autoskillエージェント（Memory-Utilizing Skill Evo）を提案します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27365v1" target="_blank" rel="noopener">LocateAnything: 並列ボックスデコーディングによる高速かつ高品質な視覚言語グラウンディング</a></div>
-  <div class="item-title-en">LocateAnything: Fast and High-Quality Vision-Language Grounding with Parallel Box Decoding</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Shihao Wang, Shilong Liu, Yuanguo Kuang</span>
-    <span class="meta-age">2026/05/27 02:59</span>
-  </div>
-  <div class="item-summary">視覚言語モデル（VLM）は、視覚グラウンディングと検出を座標トークン生成問題として定式化し、各2Dボックスを複数の1Dトークンに逐次化し、これらがほぼ独立して学習およびデコードされます。このトークンごとのデコードは、ボックスジオメトリの結合された構造と一致しません。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27361v1" target="_blank" rel="noopener">検索エージェントのための自然言語クエリから設定への変換</a></div>
-  <div class="item-title-en">Natural Language Query to Configuration for Retrieval Agents</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Melissa Z. Pan, Negar Arabzadeh, Mathew Jacob</span>
-    <span class="meta-age">2026/05/27 02:58</span>
-  </div>
-  <div class="item-summary">現代の検索エージェントは、LLM、レトリバー、ドキュメント数、ホップ数、統合戦略など、多くの設定選択肢を提供しており、それぞれが回答品質と提供コストの両方を左右します。現在、これらのパイプラインは通常、ワークロードごとに一度手動で調整されており、クエリごとの最適化はほとんど行われていません。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27360v1" target="_blank" rel="noopener">GENESIS: AIエージェントを活用した自律的な6G RANの合成、研究、およびテスト</a></div>
-  <div class="item-title-en">GENESIS: Harnessing AI Agents for Autonomous 6G RAN Synthesis, Research, and Testing</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Tamerlan Aghayev, Maxime Elkael, Michele Polese</span>
-    <span class="meta-age">2026/05/27 02:58</span>
-  </div>
-  <div class="item-summary">セルラーの研究開発（R&amp;D）は、反復ごとに数ヶ月の人間によるエンジニアリング作業を消費する6つの構造的プロセスによって妨げられています。(i)標準や研究論文から新機能を生産コードに合成する作業。(ii)適合性および相互運用性テスト。(iii)耐性の強化</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27358v1" target="_blank" rel="noopener">MobileMoE: オンデバイス混合エキスパートのスケーリング</a></div>
-  <div class="item-title-en">MobileMoE: Scaling On-Device Mixture of Experts</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Yanbei Chen, Hanxian Huang, Ernie Chang</span>
-    <span class="meta-age">2026/05/27 02:58</span>
-  </div>
-  <div class="item-summary">混合エキスパート（MoE）は、数千億パラメータを持つ言語モデルの事実上のアーキテクチャとなっていますが、オンデバイス展開における数億未満の規模でのその利点は、ほとんど未開拓のままです。このギャップを埋めるため、我々はMobileMoEを提案します。これは、数億未満のパラメータを持つオンデバイスMoE言語モデルのファミリーです。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27355v1" target="_blank" rel="noopener">アライメント改ざん：人間フィードバックからの強化学習が誤ったバイアスを最適化するためにどのように悪用されるか</a></div>
-  <div class="item-title-en">Alignment Tampering: How Reinforcement Learning from Human Feedback Is Exploited to Optimize Misaligned Biases</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Dongyoon Hahm, Dylan Hadfield-Menell, Kimin Lee</span>
-    <span class="meta-age">2026/05/27 02:57</span>
-  </div>
-  <div class="item-summary">人間フィードバックからの強化学習（RLHF）は、大規模言語モデル（LLM）を人間の好みと整合させるための標準的な手法です。本研究では、アライメント改ざんを紹介します。これは、アライメント中のLLMが選好データセットに影響を与え、RLHFが拡大する原因となる潜在的な脆弱性です。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27354v1" target="_blank" rel="noopener">スパースオートエンコーダのモデル内部情報を用いたLLM訓練後データエンジニアリングの誘導</a></div>
-  <div class="item-title-en">Guiding LLM Post-training Data Engineering with Model Internals from Sparse Autoencoders</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Yi Jing, Zao Dai, Jinwu Hu</span>
-    <span class="meta-age">2026/05/27 02:55</span>
-  </div>
-  <div class="item-summary">モデル内部は、大規模言語モデル（LLM）が訓練データをどのように処理するかについて豊富な情報を符号化しています。しかし、訓練後のデータエンジニアリングは主に外部信号に依存し、モデル内部にある豊かな内在信号を無視しています。我々は、LLM再学習のためのデータエンジニアリングフレームワークであるSAERLを提案します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27352v1" target="_blank" rel="noopener">スコアからギブス補正器へ：一様レート離散拡散モデルの高速化</a></div>
-  <div class="item-title-en">From Scores to Gibbs Correctors: Accelerating Uniform-Rate Discrete Diffusion Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Yuchen Liang, Ness Shroff, Yingbin Liang</span>
-    <span class="meta-age">2026/05/27 02:52</span>
-  </div>
-  <div class="item-summary">離散拡散モデルは、テキストや他の記号ドメインで強力な経験的性能を達成していますが、特に一様レートモデルの場合、単一のサンプルを生成するのに多くのステップを必要とすることがよくあります。既存の高速化手法は、追加の量を訓練するか、遅い問題に苦しみます。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27348v1" target="_blank" rel="noopener">目がAIを裏切るとき：AI生成画像検出における社会的視線の一貫性というセマンティックな手がかり</a></div>
-  <div class="item-title-en">When Eyes Betray AI: Social Gaze Consistency as a Semantic Cue for AI-Generated Image Detection</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Kim Jihyeon, Sohee Kim, Soosan Lee</span>
-    <span class="meta-age">2026/05/27 02:50</span>
-  </div>
-  <div class="item-summary">最近の生成モデルは、低レベルのアーティファクト（ピクセルの指紋、周波数異常、アップサンプリングの痕跡）に関して、特に操作された領域が小さく、写真測量的に本物のコンテンツに囲まれている人物中心および部分編集の設定において、そのギャップをほぼ解消しました。我々は以下を紹介します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27345v1" target="_blank" rel="noopener">MATCHA: 対照的意味アライメントによるテキストマッチング</a></div>
-  <div class="item-title-en">MATCHA: Matching Text via Contrastive Semantic Alignment</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Siran Li, Ece Sena Etoglu, Carsten Eickhoff</span>
-    <span class="meta-age">2026/05/27 02:47</span>
-  </div>
-  <div class="item-summary">大規模言語モデル（LLM）の性能を理解するためには、信頼性の高い評価が不可欠ですが、今日の一般的な指標、すなわちトークン重複スコア（例：ROUGE）や埋め込みベースの尺度（例：BERTScore）は、文書の意味的類似性を誤って判断することがよくあります。我々の研究は、トークン重複指標と</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27343v1" target="_blank" rel="noopener">表現条件付け拡散モデルによる制御可能な画像生成の実現に向けて</a></div>
-  <div class="item-title-en">Towards Controllable Image Generation through Representation-Conditioned Diffusion Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Nithesh Chandher Karthikeyan, Jonas Unger, Gabriel Eilertsen</span>
-    <span class="meta-age">2026/05/27 02:46</span>
-  </div>
-  <div class="item-summary">拡散モデルは、高品質な画像生成と編集のための強力なツールとして登場しましたが、これらのモデルを特定の出力を生成するように導くことは依然として課題です。従来のDALL-EやStable Diffusionなどのアプローチは、テキストプロンプトやセマンティックマップなどの条件付けメカニズムに依存しており、これらは広範な注釈付けを必要とします。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27338v1" target="_blank" rel="noopener">弱い制約を持つ2-ASP(Q)プログラム：複雑さと効率的な実装</a></div>
-  <div class="item-title-en">2-ASP(Q) programs with weak constraints: Complexity and efficient implementation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Andrea Cuteri, Giuseppe Mazzotta, Francesco Ricca</span>
-    <span class="meta-age">2026/05/27 02:44</span>
-  </div>
-  <div class="item-summary">ASP(Q)は、解答集合上の量化子で解答集合プログラミング（ASP）を拡張したものです。本論文では、2つの量化子と弱い制約を持つASP(Q)プログラムのクラス、すなわち2-ASP(Q)^wに焦点を当てます。2-ASP(Q)^wは、ASP(Q)の実用上重要なフラグメントであり、最適化問題を捉えるのに十分な表現力を持っています。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27333v1" target="_blank" rel="noopener">FinHarness: 金融LLMエージェントのためのインラインライフサイクル安全ハーネス</a></div>
-  <div class="item-title-en">FinHarness: An Inline Lifecycle Safety Harness for Finance LLM Agents</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Haoxuan Jia, Yang Liu, Bin Chong</span>
-    <span class="meta-age">2026/05/27 02:41</span>
-  </div>
-  <div class="item-summary">金融LLMエージェントは、プロンプトによって誘発される不正な行動をブロックすると同時に、正当な多段階ビジネスワークフローを承認する必要があります。しかし、境界フィルターは不可逆的な途中でのツール呼び出しを見逃すことが多く、事後的なLLMジャッジは終了後にのみ監査を実行するため、介入には遅すぎます。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27322v1" target="_blank" rel="noopener">SSDにおける意味勾配の相互作用：人種的アイデンティティとヘイトスピーチのケーススタディ</a></div>
-  <div class="item-title-en">Semantic Gradients Interactions in SSD: A Case Study in Racial Identity and Hate Speech</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Felix Ostrowicki, Hubert Plisiecki</span>
-    <span class="meta-age">2026/05/27 02:33</span>
-  </div>
-  <div class="item-summary">我々は、教師あり意味差分法（SSD）の拡張である相互作用SSDを導入します。これは、グループ、特性、条件などの調整要因によって意味がどのように変化するかをモデル化し、この変化をテスト可能で解釈可能にします。この手法は、主意味勾配、相互作用勾配、および</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27316v1" target="_blank" rel="noopener">大域的最適化のための比率単調変換を用いた確率的平滑化</a></div>
-  <div class="item-title-en">Probabilistic Smoothing with Ratio-Monotone Transforms for Global Optimization</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Kukyoung Jang, Taehyun Cho, Junrui Zhang</span>
-    <span class="meta-age">2026/05/27 02:25</span>
-  </div>
-  <div class="item-summary">確率的平滑化は大域的最適化の標準的なツールですが、既存の方法はガウスカーネルと特定の変換に依存しており、しばしば強いハイパーパラメータ感度と限られたロバスト性をもたらします。我々は、柔軟な対称単峰カーネルを組み合わせた汎用的な平滑化フレームワークを提案します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27315v1" target="_blank" rel="noopener">実画像、劣悪な判断：具体性とイメージングに関する視覚言語モデルの評価</a></div>
-  <div class="item-title-en">Real Images, Worse Judgments: Evaluating Vision-Language Models on Concreteness and Imagery</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Yifan Jiang, Ruoxi Ning, Sheng Yao</span>
-    <span class="meta-age">2026/05/27 02:24</span>
-  </div>
-  <div class="item-summary">視覚入力は、マルチモーダルモデルにおける言語理解を向上させるとしばしば仮定されます。我々は、視覚言語モデル（VLM）が語彙判断において、偶発的な画像コンテキストから有用な視覚的証拠を区別できるかどうかを問い、この仮定を検証します。我々は、人間の具体性とイメージング評価を用います。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27313v1" target="_blank" rel="noopener">人口統計情報はいつ役立つのか？視点認識型ヘイトスピーチ検出のためのデータとモデリングの体制</a></div>
-  <div class="item-title-en">When Does Demographic Information Help? Data and Modeling Regimes for Perspective-Aware Hate Speech Detection</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Weibin Cai, Reza Zafarani</span>
-    <span class="meta-age">2026/05/27 02:24</span>
-  </div>
-  <div class="item-summary">人口統計情報は、ヘイトスピーチ検出のような主観的なタスクでアノテーターの視点をモデル化するためによく使用されますが、その利点は一貫していません。ある設定ではパフォーマンスを向上させ、別の設定ではノイズとして機能します。本論文では、人口統計学的特徴がいつ役立つのかを問いかけます。我々は人口統計学的ギャップを分析します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27309v1" target="_blank" rel="noopener">精度とレイテンシを考慮したユーザーインセンティブによるAI推論のグリーン化</a></div>
-  <div class="item-title-en">Greening AI Inference with Accuracy and Latency-aware User Incentives</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Vasilios A. Siris, Adamantia Stamou, George D. Stamoulis</span>
-    <span class="meta-age">2026/05/27 02:19</span>
-  </div>
-  <div class="item-summary">AIサービスの普及は、その環境持続可能性に対する懸念を高めており、近年の研究ではAI推論の炭素排出が主要な要因として特定されています。本論文では、ユーザーの評価に基づいてAI推論のインセンティブを設計するためのフレームワークを導入します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2605.27306v1" target="_blank" rel="noopener">注意力に必要なのは法線ガイダンスである</a></div>
-  <div class="item-title-en">Normal Guidance is what Attention Needs</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Ethan Harvey, Dennis Johan Loevlie, Michael C. Hughes</span>
-    <span class="meta-age">2026/05/27 02:17</span>
-  </div>
-  <div class="item-summary">我々は、3D医用画像の分類器を、各2Dスライスに対するラベルではなく、ボリューム全体に対する1つの二値ラベルのみを用いて訓練することを検討します。このような弱教師あり設定において、スライスレベルの予測に対して正確な分類器を学習できるでしょうか？注意ベースの多インスタンス学習（MIL）は、</div>
 </div>
     </div>
   </div>
