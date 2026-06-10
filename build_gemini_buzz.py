@@ -232,7 +232,8 @@ def _card(rank: int, post: dict) -> str:
             '\n    <details class="original"><summary>英語原文</summary>'
             f"<p>{escape(original)}</p></details>"
         )
-    return f"""<article class="card" data-likes="{likes}" data-retweets="{retweets}" data-bookmarks="{bookmarks}" data-er="{er_value:.4f}" data-buzz="{buzz}" data-discovery="{int(bool(post.get("is_discovery")))}">
+    kind = post.get("discovery_kind") or ""
+    return f"""<article class="card" data-likes="{likes}" data-retweets="{retweets}" data-bookmarks="{bookmarks}" data-er="{er_value:.4f}" data-buzz="{buzz}" data-discovery="{int(bool(post.get("is_discovery")))}" data-kind="{escape(kind)}">
   <div class="rank">#{rank}</div>
   <div class="content">
     <div class="meta"><strong>{escape(post.get("author_display") or "")}</strong>
@@ -300,8 +301,9 @@ main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5f
 <p class="lead">Geminiの新機能や具体的な能力を見て「これはすごい」と紹介している人気投稿を優先表示します。</p>
 <div class="notice">{escape(summary)}<br>最終調査: {escape(updated)} UTC。XのTop検索は完全な全件取得ではありません。</div>
 <div class="filterbar">表示:
-  <button class="filterbtn active" data-filter="discovery">驚き・新機能</button>
-  <button class="filterbtn" data-filter="all">すべて</button>
+  <button class="filterbtn active" data-filter="all">すべて</button>
+  <button class="filterbtn" data-filter="surprise">驚きデモ</button>
+  <button class="filterbtn" data-filter="new_feature">新機能</button>
 </div>
 <div class="sortbar">並べ替え:
   <button class="sortbtn active" data-key="buzz">バズスコア</button>
@@ -319,10 +321,10 @@ main{{max-width:1050px;margin:auto;padding:28px 18px}} h1{{margin:0;color:#c4b5f
   var cards=Array.prototype.slice.call(container.querySelectorAll(".card"));
   var buttons=document.querySelectorAll(".sortbtn");
   var filterButtons=document.querySelectorAll(".filterbtn");
-  var currentFilter="discovery";
+  var currentFilter="all";
   function applyFilter(){{
     cards.forEach(function(card){{
-      card.hidden=currentFilter==="discovery" && card.dataset.discovery!=="1";
+      card.hidden=currentFilter!=="all" && card.dataset.kind!==currentFilter;
     }});
     var visible=cards.filter(function(card){{return !card.hidden;}});
     visible.forEach(function(card,i){{card.querySelector(".rank").textContent="#"+(i+1);}});
