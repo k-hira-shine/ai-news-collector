@@ -32,6 +32,20 @@ class GeminiBuzzResearchTests(unittest.TestCase):
         self.assertTrue(result["accepted"])
         self.assertTrue(result["needs_review"])
 
+    def test_marks_other_ai_mentions(self) -> None:
+        result = classify_relevance(
+            "GeminiとChatGPT、Claudeで同じプロンプトを比較しました。"
+        )
+
+        self.assertTrue(result["mentions_other_ai"])
+
+    def test_marks_posts_requiring_external_details(self) -> None:
+        result = classify_relevance(
+            "Geminiの使い方をまとめました。詳しい手順はリプ欄に続きます。"
+        )
+
+        self.assertTrue(result["needs_external_detail"])
+
     def test_query_has_bounded_dates(self) -> None:
         query = _query_with_dates("Gemini prompt", "2025-01-01", "2026-01-01")
 

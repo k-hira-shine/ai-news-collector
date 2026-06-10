@@ -37,7 +37,7 @@ jobs:
           python scripts/gemini_buzz_research.py \
             --start "${{ inputs.start }}" \
             --end "${{ inputs.end }}" \
-            --max-items-per-query 100 \
+            --max-items-per-query 50 \
             --max-charge-usd 0.08
       - name: Sync navigation across all pages
         run: python sync_nav.py

@@ -28,10 +28,10 @@ MANIFEST_PATH = DATA_DIR / "search_manifest.json"
 ACTOR_ID = "xquik/x-tweet-scraper"
 
 TEST_QUERIES = [
-    'Gemini (使い方 OR 活用法 OR プロンプト) -filter:replies lang:ja min_faves:100',
-    'Gemini (仕事 OR 業務効率化 OR 資料作成) -filter:replies lang:ja min_faves:100',
-    'Gemini (workflow OR tutorial OR "use case") -filter:replies lang:en min_faves:200',
-    '"Gemini prompt" ("how I use" OR guide OR workflow) -filter:replies lang:en min_faves:200',
+    "Gemini 使い方 lang:ja min_faves:100",
+    "Gemini プロンプト lang:ja min_faves:100",
+    "Gemini workflow lang:en min_faves:100",
+    "Gemini tutorial lang:en min_faves:100",
 ]
 
 USAGE_HINTS = re.compile(
@@ -50,6 +50,15 @@ PROMO_HINTS = re.compile(
     r"無料配布|プレゼント|フォロー.*リプ|DMします|"
     r"comment ['\"]?\w+['\"]?|reply ['\"]?\w+['\"]?|"
     r"follow me|link in bio|limited offer",
+    re.I,
+)
+OTHER_AI_HINTS = re.compile(
+    r"(?<![A-Za-z0-9_])(?:ChatGPT|Claude)(?![A-Za-z0-9_])",
+    re.I,
+)
+EXTERNAL_DETAIL_HINTS = re.compile(
+    r"リプ欄|返信欄|続きはリプ|詳細はリプ|スレッド|"
+    r"\bthread\b|\brepl(?:y|ies)\b|\bdetails below\b|\blink in bio\b",
     re.I,
 )
 
@@ -147,6 +156,8 @@ def classify_relevance(text: str) -> dict:
         "accepted": accepted,
         "filter_reason": reason,
         "needs_review": accepted and news,
+        "mentions_other_ai": bool(OTHER_AI_HINTS.search(text)),
+        "needs_external_detail": bool(EXTERNAL_DETAIL_HINTS.search(text)),
     }
 
 
@@ -170,7 +181,7 @@ def save_results(
     posts: list[dict],
     *,
     args: argparse.Namespace,
-    run_id: str,
+    runs: list[dict],
     cost: float,
     queries: list[str],
 ) -> None:
@@ -187,7 +198,8 @@ def save_results(
         "snapshot_id": snapshot_id,
         "fetched_at": now.isoformat(),
         "actor": ACTOR_ID,
-        "run_id": run_id,
+        "run_ids": [run["run_id"] for run in runs],
+        "runs": runs,
         "period": {"start": args.start, "end": args.end},
         "queries": queries,
         "max_items_per_query": args.max_items_per_query,
@@ -233,39 +245,65 @@ def run_research(args: argparse.Namespace) -> None:
     from apify_client import ApifyClient
 
     queries = [_query_with_dates(query, args.start, args.end) for query in TEST_QUERIES]
-    run_input = {
-        "searchTerms": queries,
-        "queryType": "Top",
-        "maxItems": args.max_items_per_query,
-        "includeSearchTerms": True,
-    }
     logger.info(
-        "Starting one-off test: %d queries, max %d results, charge cap $%s",
+        "Starting one-off test: %d separate queries, max %d results, total charge cap $%s",
         len(queries),
         len(queries) * args.max_items_per_query,
         args.max_charge_usd,
     )
     actor = ApifyClient(token).actor(ACTOR_ID)
-    run = actor.call(
-        run_input=run_input,
-        max_items=len(queries) * args.max_items_per_query,
-        max_total_charge_usd=args.max_charge_usd,
-        timeout_secs=600,
-    )
-    status = apify_run_get(run, "status", "")
-    if status != "SUCCEEDED":
-        raise SystemExit(f"Apify run failed: {status}")
     client = ApifyClient(token)
     posts = []
-    for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
-        post = _normalize(tweet)
-        if post:
-            posts.append(post)
-    cost = float(apify_run_get(run, "usageTotalUsd") or 0)
+    runs = []
+    per_query_cap = args.max_charge_usd / len(queries)
+    for query in queries:
+        run = actor.call(
+            run_input={
+                "searchTerms": [query],
+                "queryType": "Top",
+                "maxItems": args.max_items_per_query,
+                "includeSearchTerms": True,
+            },
+            max_items=args.max_items_per_query,
+            max_total_charge_usd=per_query_cap,
+            timeout_secs=600,
+        )
+        status = apify_run_get(run, "status", "")
+        if status != "SUCCEEDED":
+            raise SystemExit(f"Apify run failed for {query!r}: {status}")
+        query_posts = []
+        for tweet in client.dataset(
+            apify_run_get(run, "defaultDatasetId")
+        ).iterate_items():
+            post = _normalize(tweet)
+            if post:
+                post["search_term"] = query
+                query_posts.append(post)
+        query_cost = float(apify_run_get(run, "usageTotalUsd") or 0)
+        runs.append(
+            {
+                "query": query,
+                "run_id": apify_run_get(run, "id", ""),
+                "raw_count": len(query_posts),
+                "apify_cost_usd": round(query_cost, 4),
+            }
+        )
+        posts.extend(query_posts)
+        logger.info(
+            "Query completed: %s, raw=%d, cost=$%.4f",
+            query,
+            len(query_posts),
+            query_cost,
+        )
+    cost = sum(run["apify_cost_usd"] for run in runs)
+    if Decimal(str(cost)) > args.max_charge_usd:
+        raise SystemExit(
+            f"Actual total charge ${cost:.4f} exceeds cap ${args.max_charge_usd}"
+        )
     save_results(
         posts,
         args=args,
-        run_id=apify_run_get(run, "id", ""),
+        runs=runs,
         cost=cost,
         queries=queries,
     )
