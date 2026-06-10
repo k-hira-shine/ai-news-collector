@@ -11,6 +11,14 @@ on:
         description: '検索終了日 YYYY-MM-DD'
         required: false
         default: '2026-06-10'
+      mode:
+        description: '検索目的'
+        required: false
+        type: choice
+        default: 'discovery'
+        options:
+          - discovery
+          - usage
       refresh_costs_only:
         description: '既存runの費用だけ再取得する'
         required: false
@@ -44,10 +52,11 @@ jobs:
             python scripts/gemini_buzz_research.py --refresh-costs-only
           else
             python scripts/gemini_buzz_research.py \
+              --mode "${{ inputs.mode || 'discovery' }}" \
               --start "${{ inputs.start }}" \
               --end "${{ inputs.end }}" \
-              --max-items-per-query 50 \
-              --max-charge-usd 0.08
+              --max-items-per-query 25 \
+              --max-charge-usd 0.05
           fi
       - name: Sync navigation across all pages
         run: python sync_nav.py

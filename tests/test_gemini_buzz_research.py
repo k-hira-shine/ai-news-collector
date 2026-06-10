@@ -1,8 +1,12 @@
 import unittest
 
 from scripts.gemini_buzz_research import (
+    DISCOVERY_QUERIES,
+    USAGE_QUERIES,
+    _accepted_posts,
     _dedupe,
     _query_with_dates,
+    _queries_for_mode,
     classify_discovery,
     classify_relevance,
 )
@@ -85,6 +89,23 @@ class GeminiBuzzResearchTests(unittest.TestCase):
 
         self.assertIn("since:2025-01-01", query)
         self.assertIn("until:2026-01-02", query)
+
+    def test_discovery_mode_uses_dedicated_queries(self) -> None:
+        queries = _queries_for_mode("discovery")
+
+        self.assertEqual(queries, DISCOVERY_QUERIES)
+        self.assertNotEqual(queries, USAGE_QUERIES)
+        self.assertTrue(any("新機能" in query for query in queries))
+        self.assertTrue(any("new feature" in query for query in queries))
+
+    def test_discovery_mode_accepts_only_discovery_posts(self) -> None:
+        posts = [
+            {"is_discovery": True, "filter_reason": "news_only"},
+            {"is_discovery": False, "accepted": True, "filter_reason": "usage"},
+            {"is_discovery": True, "filter_reason": "promotion"},
+        ]
+
+        self.assertEqual(_accepted_posts(posts, "discovery"), [posts[0]])
 
     def test_dedupe_keeps_higher_engagement_snapshot(self) -> None:
         posts = [

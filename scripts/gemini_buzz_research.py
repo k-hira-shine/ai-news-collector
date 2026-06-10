@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""過去にバズったGemini活用投稿を単発調査する。"""
+"""過去にバズったGemini新機能・活用投稿を単発調査する。"""
 
 from __future__ import annotations
 
@@ -27,11 +27,19 @@ RANKING_PATH = DATA_DIR / "ranking.json"
 MANIFEST_PATH = DATA_DIR / "search_manifest.json"
 ACTOR_ID = "xquik/x-tweet-scraper"
 
-TEST_QUERIES = [
+USAGE_QUERIES = [
     "Gemini 使い方 lang:ja min_faves:100",
     "Gemini プロンプト lang:ja min_faves:100",
     "Gemini workflow lang:en min_faves:100",
     "Gemini tutorial lang:en min_faves:100",
+]
+DISCOVERY_QUERIES = [
+    "Gemini 新機能 lang:ja min_faves:100",
+    "Gemini アップデート lang:ja min_faves:100",
+    "Gemini すごい lang:ja min_faves:100",
+    "Gemini new feature lang:en min_faves:100",
+    "Gemini released lang:en min_faves:100",
+    "Gemini insane lang:en min_faves:100",
 ]
 
 USAGE_HINTS = re.compile(
@@ -99,7 +107,13 @@ GENERIC_HYPE_HINTS = re.compile(
 
 def _parse_args() -> argparse.Namespace:
     today = date.today()
-    parser = argparse.ArgumentParser(description="Gemini活用法の過去バズ投稿を単発調査")
+    parser = argparse.ArgumentParser(description="Geminiの過去バズ投稿を単発調査")
+    parser.add_argument(
+        "--mode",
+        choices=("discovery", "usage"),
+        default="discovery",
+        help="discovery=新機能・驚き投稿、usage=使い方・チュートリアル",
+    )
     parser.add_argument("--start", default=(today - timedelta(days=365)).isoformat())
     parser.add_argument("--end", default=today.isoformat())
     parser.add_argument("--max-items-per-query", type=int, default=100)
@@ -117,11 +131,15 @@ def _validate_args(args: argparse.Namespace) -> None:
         raise SystemExit("--start must be before --end")
     if not 1 <= args.max_items_per_query <= 100:
         raise SystemExit("Test mode limits --max-items-per-query to 1..100")
-    expected = len(TEST_QUERIES) * args.max_items_per_query * 0.00015
+    expected = len(_queries_for_mode(args.mode)) * args.max_items_per_query * 0.00015
     if Decimal(str(expected)) > args.max_charge_usd:
         raise SystemExit(
             f"Expected result charge ${expected:.4f} exceeds cap ${args.max_charge_usd}"
         )
+
+
+def _queries_for_mode(mode: str) -> list[str]:
+    return DISCOVERY_QUERIES if mode == "discovery" else USAGE_QUERIES
 
 
 def _query_with_dates(query: str, start: str, end: str) -> str:
@@ -258,8 +276,19 @@ def save_results(
     snapshot_id = now.strftime("%Y%m%dT%H%M%SZ")
     raw_path = RAW_DIR / f"{snapshot_id}.json"
     deduped = _dedupe(posts)
-    accepted = sorted(
-        (post for post in deduped if post["accepted"]),
+    current_accepted = _accepted_posts(deduped, args.mode)
+    ranking_posts = current_accepted
+    if args.mode == "discovery":
+        previous = json.loads(RANKING_PATH.read_text(encoding="utf-8")) if RANKING_PATH.exists() else {}
+        previous_discovery = [
+            post for post in previous.get("posts", []) if post.get("is_discovery")
+        ]
+        ranking_posts = _accepted_posts(
+            _dedupe(previous_discovery + current_accepted),
+            args.mode,
+        )
+    ranking_posts = sorted(
+        ranking_posts,
         key=lambda post: (post["likes"], post["retweets"], post["published_at"]),
         reverse=True,
     )
@@ -267,6 +296,7 @@ def save_results(
         "snapshot_id": snapshot_id,
         "fetched_at": now.isoformat(),
         "actor": ACTOR_ID,
+        "search_mode": args.mode,
         "run_ids": [run["run_id"] for run in runs],
         "runs": runs,
         "period": {"start": args.start, "end": args.end},
@@ -276,7 +306,8 @@ def save_results(
         "apify_cost_usd": round(cost, 4),
         "raw_count": len(posts),
         "deduplicated_count": len(deduped),
-        "accepted_count": len(accepted),
+        "accepted_count": len(current_accepted),
+        "accumulated_ranking_count": len(ranking_posts),
         "posts": deduped,
     }
     _write_json(raw_path, snapshot)
@@ -287,8 +318,12 @@ def save_results(
             "fetched_at": now.isoformat(),
             "ranking_basis": "likes_desc",
             "engagement_is_snapshot": True,
-            "count": len(accepted),
-            "posts": accepted,
+            "count": len(ranking_posts),
+            "discovery_count": sum(
+                bool(post.get("is_discovery")) for post in ranking_posts
+            ),
+            "search_mode": args.mode,
+            "posts": ranking_posts,
         },
     )
     _write_json(
@@ -305,6 +340,16 @@ def save_results(
             ],
         },
     )
+
+
+def _accepted_posts(posts: list[dict], mode: str) -> list[dict]:
+    if mode == "discovery":
+        return [
+            post
+            for post in posts
+            if post.get("is_discovery") and post.get("filter_reason") != "promotion"
+        ]
+    return [post for post in posts if post.get("accepted")]
 
 
 def refresh_manifest_costs() -> None:
@@ -375,7 +420,10 @@ def run_research(args: argparse.Namespace) -> None:
         raise SystemExit("APIFY_TOKEN missing")
     from apify_client import ApifyClient
 
-    queries = [_query_with_dates(query, args.start, args.end) for query in TEST_QUERIES]
+    queries = [
+        _query_with_dates(query, args.start, args.end)
+        for query in _queries_for_mode(args.mode)
+    ]
     logger.info(
         "Starting one-off test: %d separate queries, max %d results, total charge cap $%s",
         len(queries),
@@ -418,6 +466,7 @@ def run_research(args: argparse.Namespace) -> None:
                 "query": query,
                 "run_id": run_id,
                 "raw_count": len(query_posts),
+                "accepted_count": len(_accepted_posts(query_posts, args.mode)),
                 "apify_cost_usd": round(query_cost, 4),
             }
         )
