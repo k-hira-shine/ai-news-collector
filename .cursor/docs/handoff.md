@@ -54,6 +54,8 @@
 - 復旧: 品質問題時は `translation` を `gemini-2.5-flash` に戻す。
 - 次回確認: 定期実行後に `python3 gemini_usage.py` で
   `hn_translate` / `arxiv_translate` のモデルと実測費用を確認する。
+- Geminiバズの英語投稿63件はFlashで初回翻訳・URLキャッシュ済み。
+  今後は新規英語投稿だけ翻訳される。
 
 ### このセッションで実装したもの（詳細は各日付の節）
 

@@ -57,4 +57,4 @@ jobs:
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
             "research: Gemini buzz ${{ inputs.start }} to ${{ inputs.end }}" \
-            data/gemini_buzz/ docs/
+            data/gemini_buzz/ data/gemini_usage/ docs/
