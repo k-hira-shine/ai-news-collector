@@ -79,6 +79,14 @@ class GeminiBuzzResearchTests(unittest.TestCase):
 
         self.assertFalse(result["is_discovery"])
 
+    def test_rejects_speculation_that_explicitly_denies_a_release(self) -> None:
+        result = classify_discovery(
+            "People are not ready for Gemini 3. Imagine what it can automate. "
+            "Gemini 3 is not an app release; it is a phase transition."
+        )
+
+        self.assertFalse(result["is_discovery"])
+
     def test_rejects_incidental_gemini_workflow_mention(self) -> None:
         result = classify_discovery(
             "My workflow is Grok for research, Claude for tests, Gemini for checking, "

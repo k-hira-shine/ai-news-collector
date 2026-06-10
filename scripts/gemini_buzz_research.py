@@ -114,6 +114,10 @@ RELEASE_HINTS = re.compile(
     r"\bintroduc(?:e|ed|ing)\b|\benhanced\b|\breworked\b|\brolling out\b",
     re.I,
 )
+NEGATED_RELEASE_HINTS = re.compile(
+    r"\bnot (?:an? )?(?:app |model |feature )?release\b",
+    re.I,
+)
 EXCITEMENT_HINTS = re.compile(
     r"すごい|凄い|ヤバ|やば|衝撃|驚|神アプデ|異次元|待ち焦がれ|"
     r"信じられ|とんでもな|バケモン|世界が変わ|"
@@ -322,6 +326,7 @@ def classify_discovery(text: str) -> dict:
     )
     gemini = bool(matches)
     release = bool(RELEASE_HINTS.search(context))
+    negated_release = bool(NEGATED_RELEASE_HINTS.search(context))
     excitement = bool(EXCITEMENT_HINTS.search(context))
     capability = bool(CAPABILITY_HINTS.search(context))
     generic_hype = bool(GENERIC_HYPE_HINTS.search(text))
@@ -334,6 +339,7 @@ def classify_discovery(text: str) -> dict:
         and (release or excitement)
         and (gemini_subject or versioned_demo)
         and not other_product_is_subject
+        and not negated_release
         and not (generic_hype and not release)
     )
     if not is_discovery:
