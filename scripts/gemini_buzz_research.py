@@ -71,9 +71,9 @@ NEWS_HINTS = re.compile(
     re.I,
 )
 PROMO_HINTS = re.compile(
-    r"無料配布|プレゼント|フォロー.*リプ|DMします|"
+    r"無料配布|プレゼント|フォロー.*リプ|いいねとリプ|DMします|"
     r"comment ['\"]?\w+['\"]?|reply ['\"]?\w+['\"]?|"
-    r"follow me|link in bio|limited offer",
+    r"follow me|link in bio|link in comment|limited offer",
     re.I,
 )
 OTHER_AI_HINTS = re.compile(
@@ -82,7 +82,8 @@ OTHER_AI_HINTS = re.compile(
 )
 OTHER_PRODUCT_HINTS = re.compile(
     r"\bGemma\b|\bNotebookLM\b|\bPrompt Expanders?\b|"
-    r"\bWorkspace Studio\b|\bDisco\b|\bGenTabs\b|\bStepFun\b",
+    r"\bWorkspace Studio\b|\bDisco\b|\bGenTabs\b|\bStepFun\b|"
+    r"\bFLORA\b|\bProject Genie\b",
     re.I,
 )
 EXTERNAL_DETAIL_HINTS = re.compile(

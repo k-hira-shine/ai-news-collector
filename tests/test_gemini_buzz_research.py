@@ -106,11 +106,20 @@ class GeminiBuzzResearchTests(unittest.TestCase):
             "NotebookLM gets Planning Mode powered by the released Gemini Omni.",
             "Introducing Prompt Expanders! This new Flow feature uses Gemini.",
             "Workspace Studio is now available in Japanese and integrates Gemini.",
+            "Project Genie is a prototype powered by Genie 3 and Gemini.",
+            "Use the Gemini image editor on FLORA to create a commercial video.",
         ]
 
         for text in cases:
             with self.subTest(text=text):
                 self.assertFalse(classify_discovery(text)["is_discovery"])
+
+    def test_rejects_engagement_bait(self) -> None:
+        result = classify_relevance(
+            "Geminiの新機能を解説します。いいねとリプ『作りたい』で教えて！"
+        )
+
+        self.assertEqual(result["filter_reason"], "promotion")
 
     def test_query_has_bounded_dates(self) -> None:
         query = _query_with_dates("Gemini prompt", "2025-01-01", "2026-01-01")
