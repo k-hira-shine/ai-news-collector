@@ -1,0 +1,20 @@
+name: Buzz Daily Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '15 19 * * *' # JST 04:15
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Check Buzz freshness and quality guardrails
+        run: python scripts/check_buzz_health.py

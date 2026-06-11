@@ -8,9 +8,13 @@ on:
         required: false
         default: ''
       days:
-        description: '何日前まで遡るか'
+        description: '日数を一時上書き（空欄ならprofile設定）'
         required: false
-        default: '30'
+        default: ''
+      profile:
+        description: '収集プロファイル: auto / reduced / full'
+        required: false
+        default: 'auto'
   repository_dispatch:
     types: [buzz-add-account]
   schedule:
@@ -47,11 +51,16 @@ jobs:
         run: |
           # workflow_dispatch か repository_dispatch かで引数を分岐
           ACCOUNT="${{ github.event.inputs.account || github.event.client_payload.account }}"
-          DAYS="${{ github.event.inputs.days || github.event.client_payload.days || '30' }}"
+          DAYS="${{ github.event.inputs.days || github.event.client_payload.days }}"
+          PROFILE="${{ github.event.inputs.profile || github.event.client_payload.profile || 'auto' }}"
+          EXTRA_ARGS=(--profile "$PROFILE")
+          if [ -n "$DAYS" ]; then
+            EXTRA_ARGS+=(--days "$DAYS")
+          fi
           if [ -n "$ACCOUNT" ]; then
-            python run_buzz.py --add "$ACCOUNT" --days "$DAYS" --max-items 100
+            python run_buzz.py --add "$ACCOUNT" "${EXTRA_ARGS[@]}"
           else
-            python run_buzz.py --days "$DAYS" --max-items 100
+            python run_buzz.py "${EXTRA_ARGS[@]}"
           fi
 
       - name: Rebuild buzz.html with PAT embedded
@@ -72,4 +81,4 @@ jobs:
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
             "buzz: $(date -u +%Y-%m-%d_%H%M) ${{ github.event.inputs.account }}" \
-            data/buzz.json data/logs/ data/cost_tracking.json docs/ config.yaml
+            data/buzz.json data/buzz_collection_metrics.jsonl data/logs/ data/cost_tracking.json docs/ config.yaml

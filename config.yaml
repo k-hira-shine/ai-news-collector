@@ -443,6 +443,21 @@ buzz_accounts:
   - handle: "genel_ai"
     display_name: "genel_ai"
 
+buzz_collection:
+  active_profile: "reduced"
+  # 月・水は縮小収集、金曜は全件再同期して古い投稿の反応数と順位を更新する。
+  full_refresh_weekday: 5
+  retention_days: 30
+  retention_max_items: 100
+  min_weekly_top20_overlap_pct: 75
+  profiles:
+    reduced:
+      days: 7
+      max_items: 50
+    full:
+      days: 30
+      max_items: 100
+
 # ── AIツール・機能リリース追跡 ────────────────────────────────
 tools_tracking:
   enabled: true
