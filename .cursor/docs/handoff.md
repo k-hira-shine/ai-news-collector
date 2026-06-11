@@ -108,6 +108,9 @@ python3 check_cost.py
 - 87テスト成功
 - `python3 -m py_compile run_buzz.py scripts/check_buzz_health.py`
 - `config.yaml`、Buzz関連workflowのYAML parse成功
+- `Buzz Daily Health Check`初回手動run `27372539735` 成功。
+  初回はメトリクス未生成の互換モードで、2026-06-15のBuzz収集後から
+  `data/buzz_collection_metrics.jsonl`を使う実測監視へ切り替わる。
 
 ---
 
