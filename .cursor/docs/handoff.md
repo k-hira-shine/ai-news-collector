@@ -1,6 +1,113 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-11（Money/SNS品質・コスト改善を本番反映）
+最終更新: 2026-06-12（Buzz品質維持型コスト削減テストを開始）
+
+---
+
+## 次回最初に確認: Buzzコスト削減テストの経過観察
+
+> **これは確定削減ではなく、品質を毎日監視しながら進める段階的テスト。**
+> コストだけを見て成功扱いにしない。新着取得、ランキング品質、欠落リスクを
+> 同時に確認し、悪化時はフル収集へ戻す。
+
+### 2026-06-12に実施した変更
+
+- 実装コミット: `47ceb10` (`feat: reduce buzz cost with quality guardrails`)
+- Buzz収集をハイブリッド化:
+  - 月曜・水曜: 直近7日、1アカウント最大50件
+  - 金曜: 直近30日、1アカウント最大100件で全体再同期
+- 縮小取得した投稿を既存データへURL単位でマージし、30日・各100件の
+  ランキング母集団を維持する。
+- 50件上限に達し、取得した最古投稿が前回最新投稿より新しい場合は、
+  欠落リスクと判定して同じ実行内で30日・100件へ自動フォールバックする。
+- 各実行の品質・費用を`data/buzz_collection_metrics.jsonl`へ追記する。
+- `.github/workflows/buzz-health-check.yml`を追加。
+  毎日JST 04:15に有料APIを呼ばず、鮮度と品質指標を確認する。
+- 手動実行時は`profile=full`で即座にフル収集へ戻せる。
+  恒久的に戻す場合は`config.yaml`の
+  `buzz_collection.active_profile`を`full`へ変更する。
+
+### 実データによる事前バックテスト
+
+比較対象:
+
+- 開始データ: 2026-06-10のBuzzスナップショット
+- 正解データ: 2026-06-12の30日・100件フル収集
+- テスト条件: 7日・50件を取得したと仮定し、開始データへ差分マージ
+
+結果:
+
+| 指標 | 結果 | 判定 |
+|---|---:|---|
+| フル取得件数 | 1,309件 | 基準 |
+| 縮小取得件数 | 410件 | 68.7%減 |
+| 新着200件の保持率 | 99.0% | 合格 |
+| 30日URL母集団の保持率 | 99.0% | 合格 |
+| 全体ランキング上位20件一致率 | 100.0% | 合格 |
+| 欠落リスクアカウント | 0件 | 合格 |
+| Buzz月額見込み | `$2.36 → $1.28` | 約46%減 |
+
+最初に「毎回7日・50件」だけで試算した際は、過去投稿のいいね数が
+更新されず上位20件一致率が80%まで落ちた。このため、毎週金曜の
+フル再同期を残すハイブリッド方式へ修正した。
+
+### 毎日の確認項目
+
+```bash
+gh run list --workflow "Buzz Daily Health Check" --limit 5
+gh run list --workflow "Buzz Ranking Collector" --limit 5
+python3 scripts/check_buzz_health.py
+tail -5 data/buzz_collection_metrics.jsonl
+python3 check_cost.py
+```
+
+見る項目:
+
+1. `guardrail_status`が`pass`または自動復旧済みの`fallback`
+2. `gap_risk_accounts`が空
+3. `fallback_triggered`が通常は`false`
+4. `new_items`が前回までの傾向から急減していない
+5. `prior_top20_retention_pct`が95%以上
+6. 金曜フル再同期の`ranking_top20_overlap_pct`が75%以上
+7. 縮小日のApifyコストが概ね`$0.05〜0.08/回`
+8. 金曜フル日のApifyコストが概ね`$0.17〜0.20/回`
+
+### 最初の観測日
+
+- **2026-06-15（月）**: 最初の縮小収集。取得件数、費用、新着、欠落リスク確認。
+- **2026-06-17（水）**: 2回目の縮小収集。同じ指標が安定しているか確認。
+- **2026-06-19（金）**: 最初のフル再同期。
+  `ranking_top20_overlap_pct`で縮小期間中のランキング劣化を判定。
+- 少なくとも2026-06-26まで毎日ヘルスチェックを確認し、2週間分の実績で
+  設定を維持するか判断する。
+
+### 合格条件
+
+- 新着保持率の実測が概ね98%以上。
+- 欠落リスクが継続発生しない。
+- 週次フル再同期時の上位20件一致率が75%以上。
+- 公開ページのランキング件数と主要上位投稿に明らかな欠落がない。
+- Buzz月額換算が従来比30%以上削減。
+
+### 異常判定と復旧
+
+- `gap_risk_accounts`あり:
+  同じ実行内で自動フル再取得される。`fallback_triggered=true`を確認する。
+- `guardrail_status=warning`、上位20件一致率75%未満、または新着急減:
+  次回を手動`profile=full`で実行する。
+- 問題が2回続く:
+  `config.yaml`の`buzz_collection.active_profile: "full"`へ戻す。
+- 調査開始箇所:
+  `data/buzz_collection_metrics.jsonl`、`run_buzz.py`の
+  `collection_gap_risk()` / `merge_account_data()`、
+  GitHub Actionsの`Buzz Ranking Collector`ログ。
+
+### テスト
+
+- `python3 -m unittest discover -s tests -p 'test_*.py' -v`
+- 87テスト成功
+- `python3 -m py_compile run_buzz.py scripts/check_buzz_health.py`
+- `config.yaml`、Buzz関連workflowのYAML parse成功
 
 ---
 
