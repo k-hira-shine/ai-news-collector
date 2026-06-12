@@ -1,0 +1,44 @@
+name: Verify SNS-Tools Flash vs Lite
+
+on:
+  workflow_dispatch:
+    inputs:
+      model_a:
+        description: '比較モデルA'
+        required: false
+        default: 'gemini-2.5-flash'
+      model_b:
+        description: '比較モデルB（Aと同じにすると揺らぎ測定）'
+        required: false
+        default: 'gemini-2.5-flash-lite'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-data-push
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      - run: pip install -r requirements.txt
+      - name: Run model comparison
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          MODEL_A: ${{ inputs.model_a || 'gemini-2.5-flash' }}
+          MODEL_B: ${{ inputs.model_b || 'gemini-2.5-flash-lite' }}
+        run: python scripts/verify_sns_tools_lite.py
+      - name: Commit result
+        run: |
+          chmod +x .github/scripts/push_data.sh
+          .github/scripts/push_data.sh \
+            "verify: sns/tools model comparison" \
+            data/
