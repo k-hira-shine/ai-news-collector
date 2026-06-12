@@ -132,6 +132,7 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 is_tool_release=falseの記事も必ず結果に含めてください。"""
 
     client = genai.Client(api_key=api_key)
+    thinking_budget = config.get("analysis", {}).get("thinking_budget", {}).get("tools", 128)
     try:
         response = client.models.generate_content(
             model=model_name,
@@ -139,7 +140,7 @@ is_tool_release=falseの記事も必ず結果に含めてください。"""
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
                 response_schema=TOOLS_SCHEMA,
-                thinking_config=types.ThinkingConfig(thinking_budget=128),
+                thinking_config=types.ThinkingConfig(thinking_budget=thinking_budget),
             ),
         )
         from gemini_usage import log_usage

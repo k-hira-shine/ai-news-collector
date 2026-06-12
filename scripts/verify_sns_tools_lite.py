@@ -55,6 +55,12 @@ def config_with(model_key: str, model: str) -> dict:
     config = yaml.safe_load((BASE / "config.yaml").read_text(encoding="utf-8"))
     config = copy.deepcopy(config)
     config.setdefault("analysis", {}).setdefault("models", {})[model_key] = model
+    if "lite" in model:
+        # Flash-Lite は thinking_budget 128 を受け付けない（0=無効 または 512以上）。
+        # Lite 本来のデフォルト（thinking なし）で測る
+        budgets = config["analysis"].setdefault("thinking_budget", {})
+        budgets["stage1"] = 0
+        budgets["tools"] = 0
     return config
 
 
