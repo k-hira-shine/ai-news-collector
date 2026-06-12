@@ -34,10 +34,11 @@
   **6/12分の収集データ18件が未保存のまま消失**（リポジトリは6/11まで）。
 - 対応済み: commitステップに `if: ${{ !cancelled() }}` を追加し、
   通知失敗でもデータを保存するよう修正（commit `6f727c0`、push済み）。
-- **残タスク（ユーザー作業）**: Discordで新しいWebhookを作成し、
-  `gh secret set JP_VOYEUR_DISCORD_WEBHOOK_URL --repo k-hira-shine/jp-voyeur-news-collector`
-  で更新する。次回実行は毎日 JST 08:00 / 20:00。
-  更新するまで通知は失敗し続ける（データは保存される）。
+- **解決済み**: Discordサーバー自体を削除済みとのことで、通知機能を撤去。
+  ワークフローからwebhook envを削除（commit `c9e1d42`）、
+  リポジトリSecret `JP_VOYEUR_DISCORD_WEBHOOK_URL` も削除。
+  手動run `27439196583` で正常終了を確認（16件収集、notify skip、データcommit済み）。
+  以後は収集とリポジトリへの蓄積のみ動作する。
 
 ---
 
