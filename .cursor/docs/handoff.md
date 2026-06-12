@@ -1,6 +1,22 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-13（日次チェック: Apify暫定合格、Money回復、jp-voyeur通知障害対応）
+最終更新: 2026-06-13（日次チェック完了 / コスト削減シリーズ完了 / jp-voyeur障害解決）
+
+## 次回アクション（日付つき・最新版）
+
+1. **2026-06-13（当日中）**: 朝8:34・夕方のAI Newsレポートを目視。
+   Flash化したstage2/3の初本番。劣化があれば config.yaml の
+   `stage2_analysis` を `gemini-2.5-pro` に戻す（1行）。
+   jp-voyeurの朝8:00実行はエラーメールが来なければ正常。
+2. **2026-06-14**: 日次チェックで①の効果測定。
+   `python3 gemini_usage.py` で `analyzer:stage2/3` が約1/4
+   （$0.16/日前後→$0.04/日前後）に下がったか確認。
+3. **2026-06-15**: Buzz最初の7日・50件縮小実行を確認
+   （費用、新着件数、`gap_risk_accounts`、`guardrail_status`）。
+4. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
+   合格は月換算$12以下）＋ Buzz縮小実行2回目の安定性確認。
+5. **2026-06-19**: Buzz 30日・100件フル再同期。
+   `ranking_top20_overlap_pct >= 75%` を確認。
 
 ---
 
@@ -49,9 +65,9 @@
 ### 定期実行
 
 - AI News（朝・夕）/ Money / Buzz / Pages すべて成功。
-- `Buzz Daily Health Check` の初回スケジュール実行（JST 04:15）は
-  04:44時点で未発火。GitHub Actionsのcron遅延の範囲内だが、
-  本日中に実行されたか後で確認する。
+- `Buzz Daily Health Check` の初回スケジュール実行は予定4:15に対し
+  4:55 JSTに発火し成功（GitHub cron遅延、run `27439496147`）。
+  出力は「品質メトリクスは次回Buzz収集から記録」で正常。
 
 ### Apify費用判定
 
@@ -79,6 +95,14 @@
   リポジトリSecret `JP_VOYEUR_DISCORD_WEBHOOK_URL` も削除。
   手動run `27439196583` で正常終了を確認（16件収集、notify skip、データcommit済み）。
   以後は収集とリポジトリへの蓄積のみ動作する。
+  収集結果を見たいときは同リポジトリの `data/daily/` を直接参照。
+
+### GitHub Actions Node 24強制（6/16）対応
+
+- GitHubが2026-06-16からactionsをNode.js 24で強制実行する。
+- jp-voyeurの `collect.yml` が古いaction（checkout@v4 / setup-python@v5）
+  だったため v5 / v6 に更新（commit `8ba64ca`、push済み）。
+- ai-news-collector側は全11ワークフローとも対応済みを確認。対応不要。
 
 ---
 
