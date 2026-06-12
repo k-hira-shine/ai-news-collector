@@ -1,6 +1,43 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-12（Buzz品質維持型コスト削減テストを開始）
+最終更新: 2026-06-13（日次チェック: Apify暫定合格、Money回復、jp-voyeur通知障害対応）
+
+---
+
+## 2026-06-13 日次チェック結果
+
+### 定期実行
+
+- AI News（朝・夕）/ Money / Buzz / Pages すべて成功。
+- `Buzz Daily Health Check` の初回スケジュール実行（JST 04:15）は
+  04:44時点で未発火。GitHub Actionsのcron遅延の範囲内だが、
+  本日中に実行されたか後で確認する。
+
+### Apify費用判定
+
+- `check_cost.py` 実行。施策後（6/11〜6/12）の平均 `$0.3329/日`、
+  月換算 `$9.99` で基準の `$12` 以下 → **暫定合格**。
+- ただし施策後データはまだ2日分。施策後7日が揃う
+  **6/17に再判定**するのが正式（既存の6/17 Buzzチェックと同日）。
+
+### Money分析0件問題 → 解消
+
+- 6/12夜の実行（run `27433703521`）で
+  prefilter 182→110、採用10件（postfilter 10→10）。
+- 0件は6/12朝の単発事象と判断。フィルター修正は不要。
+
+### jp-voyeur-news-collector 通知障害（エラーメール対応）
+
+- `Collect JP Voyeur News` が6/11 21:23 JSTから3連続失敗。
+- 原因: Discord Webhookが404（削除/無効化）。収集・Gemini分析は成功。
+- 副作用: notify失敗→exit 1でcommitステップが飛び、
+  **6/12分の収集データ18件が未保存のまま消失**（リポジトリは6/11まで）。
+- 対応済み: commitステップに `if: ${{ !cancelled() }}` を追加し、
+  通知失敗でもデータを保存するよう修正（commit `6f727c0`、push済み）。
+- **残タスク（ユーザー作業）**: Discordで新しいWebhookを作成し、
+  `gh secret set JP_VOYEUR_DISCORD_WEBHOOK_URL --repo k-hira-shine/jp-voyeur-news-collector`
+  で更新する。次回実行は毎日 JST 08:00 / 20:00。
+  更新するまで通知は失敗し続ける（データは保存される）。
 
 ---
 
