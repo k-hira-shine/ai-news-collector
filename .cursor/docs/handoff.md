@@ -19,10 +19,23 @@
   - `gemini_usage.py` で `analyzer:stage2/3` が約1/4に下がったか。
   - 6/13朝・夕の本番レポート品質に劣化がないか目視。
   - 劣化があれば config.yaml の `stage2_analysis` を `gemini-2.5-pro` に戻す。
-- 残りの候補（ひとつずつ効果確認後に実施）:
-  ④ post_generator・buzz/omni翻訳のFlash-Lite化（約$1.5/月）→
-  ③ sns/tools analyzerのFlash-Lite検証（約$3.8/月）→
-  ② Batch API化（残額の半減、工数大）。
+- 残りの候補の検証結果（2026-06-13 同日実施）:
+  - **④ post_generator・buzz/omni翻訳のLite化 → スキップ（根拠あり）**。
+    対象はすべてX投稿のトーン再現タスクで、6/10の翻訳モデル検証で
+    x_postカテゴリはFlashがLiteに5勝0敗（`data/translation_model_verification.json`）。
+    Lite化は検証済みの判断に逆行するため見送り。
+  - **③ sns/tools analyzerのLite化 → 検証の結果、不合格で見送り**。
+    `verify-sns-tools-lite.yml` / `scripts/verify_sns_tools_lite.py`（新規作成、
+    run `27440994588`）。SNS: jaccard `0.61`・カテゴリ一致 `20%`（Liteは過剰選定
+    41件 vs 25件）。Tools: jaccard `0.714`・カテゴリ一致 `100%`（基準jaccard 0.8未達）。
+    判定タスクでもLiteは品質不足。Flash維持が確定。
+    - 付随修正: `tools_analyzer.py` のthinking_budgetをハードコード128から
+      config（`analysis.thinking_budget.tools`、デフォルト128で本番挙動不変）に変更。
+    - 初回検証はLiteがthinking_budget=128を拒否して全バッチ400エラー→
+      Liteはthinking無効(0)で測るよう修正済み。Lite採用時はこの制約に注意。
+  - **② Batch API化（全ジョブ半額、工数大）が残る唯一の候補**。
+    ①の効果確認後、残額（Gemini約$10/月見込み）に対して約$5/月の削減と
+    ワークフロー分割（投入/回収）の工数を天秤にかけて判断する。
 
 ---
 
