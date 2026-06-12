@@ -4,6 +4,28 @@
 
 ---
 
+## 2026-06-13 コスト削減①: stage2/3をPro→Flash化
+
+- Geminiコストの42%（月換算約$6.2）を占める analyzer stage2/3 を
+  検証付きでFlashへ移行。期待削減は約$4.6/月（Pro比1/4）。
+- 検証: `verify-stage2-flash.yml` / `scripts/verify_stage2_flash.py`（新規作成）。
+  同一のstage1結果を両モデルのstage2に与えて比較（run `27440125545`）。
+  - 選定jaccard `0.818`（基準0.8）/ カテゴリ一致 `100%`（基準0.85）/
+    順位相関 `0.842`（基準0.7）→ 全基準合格。
+  - 定性: trend_summary/x_trendsは遜色なし（Flashは批判的トピックも拾う）。
+    stage3のタイトルがやや誇張気味だが許容範囲。
+  - 詳細: `data/stage2_verification_gemini-2.5-pro_vs_gemini-2.5-flash.json`
+- **次回確認（6/14の日次チェック）**:
+  - `gemini_usage.py` で `analyzer:stage2/3` が約1/4に下がったか。
+  - 6/13朝・夕の本番レポート品質に劣化がないか目視。
+  - 劣化があれば config.yaml の `stage2_analysis` を `gemini-2.5-pro` に戻す。
+- 残りの候補（ひとつずつ効果確認後に実施）:
+  ④ post_generator・buzz/omni翻訳のFlash-Lite化（約$1.5/月）→
+  ③ sns/tools analyzerのFlash-Lite検証（約$3.8/月）→
+  ② Batch API化（残額の半減、工数大）。
+
+---
+
 ## 2026-06-13 日次チェック結果
 
 ### 定期実行

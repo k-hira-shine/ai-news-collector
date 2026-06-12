@@ -137,9 +137,12 @@ alerts:
 analysis:
   models:
     # stage1(1次フィルタ)とMoney/SNS分析はFlash。検証(2026-06-10)で採用判定の
-    # Pro一致率97.6%を確認済み。深い分析のstage2/3のみPro維持。
+    # Pro一致率97.6%を確認済み。
+    # stage2/3もFlash化(2026-06-13)。検証でPro比 選定jaccard0.818・
+    # カテゴリ一致100%・順位相関0.842を確認(data/stage2_verification_*.json)。
+    # 品質劣化を感じたら "gemini-2.5-pro" に戻す。
     stage1_filter: "gemini-2.5-flash"
-    stage2_analysis: "gemini-2.5-pro"
+    stage2_analysis: "gemini-2.5-flash"
     fallback: "gemini-2.5-flash"
     # 翻訳・短い日本語化だけに使う最安モデル。分析・判定には使わない。
     translation: "gemini-2.5-flash-lite"
