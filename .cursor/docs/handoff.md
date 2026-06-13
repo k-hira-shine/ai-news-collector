@@ -1,22 +1,37 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-13（日次チェック完了 / コスト削減シリーズ完了 / jp-voyeur障害解決）
+最終更新: 2026-06-14（日次チェック完了 / stage2/3 Flash化の効果はper-run確認OK・日次測定は6/15へ繰越）
 
 ## 次回アクション（日付つき・最新版）
 
-1. **2026-06-13（当日中）**: 朝8:34・夕方のAI Newsレポートを目視。
-   Flash化したstage2/3の初本番。劣化があれば config.yaml の
-   `stage2_analysis` を `gemini-2.5-pro` に戻す（1行）。
-   jp-voyeurの朝8:00実行はエラーメールが来なければ正常。
-2. **2026-06-14**: 日次チェックで①の効果測定。
-   `python3 gemini_usage.py` で `analyzer:stage2/3` が約1/4
+1. **2026-06-15**: stage2/3 Flash化①の日次効果測定（6/14から繰越）。
+   `python3 gemini_usage.py` で `analyzer:stage2/3` が日次で約1/4
    （$0.16/日前後→$0.04/日前後）に下がったか確認。
+   ※6/14時点ではper-runは確認済み（stage2 Pro $0.111→Flash $0.040、
+   stage3 Pro $0.0261→Flash $0.0066）だが、6/14朝8:34の本番Flash実行が
+   日次チェック実施時（JST04:30）に未実行だったため日次集計は未確定。
+   劣化を感じたら config.yaml の `stage2_analysis` を `gemini-2.5-pro` に戻す（1行）。
 3. **2026-06-15**: Buzz最初の7日・50件縮小実行を確認
    （費用、新着件数、`gap_risk_accounts`、`guardrail_status`）。
 4. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
    合格は月換算$12以下）＋ Buzz縮小実行2回目の安定性確認。
 5. **2026-06-19**: Buzz 30日・100件フル再同期。
    `ranking_top20_overlap_pct >= 75%` を確認。
+
+---
+
+## 2026-06-14 日次チェック（エラー＋コスト）
+
+- **エラー**: GitHub Actions（ai-news-collector）直近の定期実行はすべて success
+  （AI News 6/13夕、AI Money 6/13、pages build）。失敗・キャンセルは pages の
+  重複トリガ1件のみで無害。jp-voyeur もエラーメールなし。
+- **Apify**（check_cost.py）: 6/13 $0.2525/日。施策後平均 $9.33/月換算
+  （〜6/10の$21.01比 56%削減）。7日移動平均の正式判定は予定どおり6/17。
+- **Gemini**（gemini_usage.py）: 6/13 $0.68/日。stage2/3 Flash化はper-runで
+  効果確認（stage2 Pro $0.111→Flash $0.040、stage3 Pro $0.0261→Flash $0.0066）。
+- **①効果の日次測定は6/15へ繰越**: 日次チェック実施が JST04:30 で、6/14朝8:34の
+  本番Flash実行前だったため、日次集計ベースの1/4化はまだ未確定。per-run経済性が
+  期待どおりのため、本番品質に問題が出ない限りロールバック不要の見込み。
 
 ---
 
