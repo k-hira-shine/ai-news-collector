@@ -1,22 +1,53 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-14（日次チェック完了 / stage2/3 Flash化の効果はper-run確認OK・日次測定は6/15へ繰越）
+最終更新: 2026-06-15（日次チェック完了 / ①stage2/3 Flash化=日次効果確認OK・完了 / Buzz初回縮小収集がガードレール警告→手動フル再同期で即復旧）
 
 ## 次回アクション（日付つき・最新版）
 
-1. **2026-06-15**: stage2/3 Flash化①の日次効果測定（6/14から繰越）。
-   `python3 gemini_usage.py` で `analyzer:stage2/3` が日次で約1/4
-   （$0.16/日前後→$0.04/日前後）に下がったか確認。
-   ※6/14時点ではper-runは確認済み（stage2 Pro $0.111→Flash $0.040、
-   stage3 Pro $0.0261→Flash $0.0066）だが、6/14朝8:34の本番Flash実行が
-   日次チェック実施時（JST04:30）に未実行だったため日次集計は未確定。
-   劣化を感じたら config.yaml の `stage2_analysis` を `gemini-2.5-pro` に戻す（1行）。
-3. **2026-06-15**: Buzz最初の7日・50件縮小実行を確認
-   （費用、新着件数、`gap_risk_accounts`、`guardrail_status`）。
-4. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
-   合格は月換算$12以下）＋ Buzz縮小実行2回目の安定性確認。
-5. **2026-06-19**: Buzz 30日・100件フル再同期。
+1. **2026-06-17（最重要）**: Buzz縮小実行2回目の判定。**6/15の初回縮小収集は
+   prior_top20_retention=55%・ranking_overlap=70%でガードレール警告**（基準95%/75%未達）。
+   手動フル再同期（run `27509414816`）で95%/100%/passへ即復旧したが、
+   **縮小プロファイル(月/水)は1日でランキングが基準割れする**ことが実測で判明。
+   6/17の縮小収集でも `guardrail_status=warning` なら復旧プロトコルの
+   「2回連続」に該当 → `config.yaml` の `buzz_collection.active_profile` を
+   `full` へ戻す（縮小方式は不採用の方向で要判断）。
+   確認: `python3 scripts/check_buzz_health.py` と
+   `tail -1 data/buzz_collection_metrics.jsonl`。
+2. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
+   合格は月換算$12以下。6/15時点は施策後平均$9.50/月で内）。
+3. **2026-06-19**: Buzz 30日・100件フル再同期（縮小継続の場合）。
    `ranking_top20_overlap_pct >= 75%` を確認。
+   ※6/17で `full` へ戻した場合は通常のフル収集として確認するだけ。
+
+> **①stage2/3 Flash化は完了**: 6/14・6/15ともPro使用ゼロ、per-runで約1/4
+> （stage2 $0.111→$0.029、stage3 $0.026→$0.006）。日次Geminiも
+> 6/13 $0.76→6/14 $0.258→6/15 $0.177へ低下。ロールバック不要。
+
+---
+
+## 2026-06-15 日次チェック（エラー＋コスト＋Buzz初回縮小）
+
+- **エラー**: GitHub Actions（ai-news-collector）直近すべて success
+  （AI News 朝/夕、AI Money、Buzz Ranking、pages build）。失敗・キャンセルなし。
+  jp-voyeur のエラーメールもなし。
+- **Apify**（check_cost.py）: 6/15 $0.4008/日（うち Buzz縮小$0.0561＋手動フル$0.1701）。
+  施策後（5/15〜）平均 $9.50/月換算（59%削減）。7日移動平均の正式判定は6/17。
+- **Gemini ①効果（日次測定・6/14繰越）→ 確認OK・完了**:
+  6/14 $0.258 / 6/15 $0.177 ともPro使用ゼロ。per-runでstage2 Flash $0.029
+  （Pro $0.111）、stage3 Flash $0.006（Pro $0.026）= 合計約1/4。ロールバック不要。
+- **Buzz 初回縮小収集（本日が最初の観測日）→ ガードレール警告→手動フルで即復旧**:
+  - 縮小(reduced)初回: fetched=476, new=214, retained=1262,
+    `prior_top20_retention=55.0%`（基準95%未達）、
+    `ranking_top20_overlap=70.0%`（基準75%未達）、`guardrail_status=warning`、
+    cost $0.0561。`gap_risk_accounts`は空・`fallback_triggered=false`で
+    **データ欠落ではなく「古い投稿のいいね数が未更新→順位ずれ」**（既知の失敗モード）。
+  - ユーザー判断で**今すぐ手動 profile=full 収集**を実施（run `27509414816`、成功）。
+    結果: retention=95.0% / overlap=100.0% / `guardrail_status=pass` で即復旧。
+    cost $0.1701（フル日想定$0.17〜0.20内）。
+  - **重要な実測知見**: バックテストは縮小日でも保持率99%予測だったが、
+    実本番の初回縮小は1日で基準割れ。縮小方式(月/水)はランキング鮮度を
+    維持できない可能性が高い。6/17の2回目で再度warningなら
+    `active_profile: full` へ戻す（次回アクション①参照）。
 
 ---
 
