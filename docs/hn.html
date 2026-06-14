@@ -89,10 +89,11 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>AI 英語一次情報</h1>
-  <div class="updated">Last updated: 2026-06-14 17:30 JST</div>
+  <div class="updated">Last updated: 2026-06-15 02:34 JST</div>
 </header>
 <div class="date-tabs">
-<button class="date-tab active" data-panel="panel-2026-06-14">6/14 <small>今日</small></button>
+<button class="date-tab active" data-panel="panel-2026-06-15">6/15 <small>今日</small></button>
+<button class="date-tab" data-panel="panel-2026-06-14">6/14</button>
 <button class="date-tab" data-panel="panel-2026-06-13">6/13</button>
 <button class="date-tab" data-panel="panel-2026-06-12">6/12</button>
 <button class="date-tab" data-panel="panel-2026-06-11">6/11</button>
@@ -105,9 +106,70 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <button class="date-tab" data-panel="panel-2026-06-04">6/4</button>
 <button class="date-tab" data-panel="panel-2026-06-03">6/3</button>
 <button class="date-tab" data-panel="panel-2026-06-02">6/2</button>
-<button class="date-tab" data-panel="panel-2026-06-01">6/1</button>
 </div>
-<div class="date-panel active" id="panel-2026-06-14">
+<div class="date-panel active" id="panel-2026-06-15">
+  <div class="stats-bar">
+    <div class="stat-badge"><span>4</span>HN 記事</div>
+    <div class="stat-badge"><span>0</span>arxiv 論文</div>
+  </div>
+  <div class="columns">
+    <div>
+      <div class="col-header">
+        <h2>HackerNews</h2>
+        <span class="col-count">スコア順 · 直近48時間</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://gabrielweinberg.com/p/people-are-consuming-ai-like-they" target="_blank" rel="noopener">いいえ、誰もがAIをあらゆることに使っているわけではありません</a></div>
+  <div class="item-title-en">No, everyone is not using AI for everything</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 236</span>
+    <span class="badge badge-comments">💬 235</span>
+    <span class="meta-author">by yegg</span>
+    <span class="meta-age">2026/06/14 23:44</span>
+    <a href="https://news.ycombinator.com/item?id=48527700" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://github.com/nex-agi/Nex-N2/issues/4" target="_blank" rel="noopener">リオデジャネイロの「国産」LLMは、既存モデルのマージのようです</a></div>
+  <div class="item-title-en">Rio de Janeiro&#x27;s &quot;homegrown&quot; LLM appears to be a merge of an existing model</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 77</span>
+    <span class="badge badge-comments">💬 42</span>
+    <span class="meta-author">by unrvl22</span>
+    <span class="meta-age">2026/06/15 00:37</span>
+    <a href="https://news.ycombinator.com/item?id=48528371" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://techcrunch.com/2026/06/13/kpmg-pulls-report-on-ai-usage-due-to-apparent-hallucinations/" target="_blank" rel="noopener">KPMG、明らかな幻覚のためAI利用に関する報告書を撤回</a></div>
+  <div class="item-title-en">KPMG pulls report on AI usage due to apparent hallucinations</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 75</span>
+    <span class="badge badge-comments">💬 6</span>
+    <span class="meta-author">by Brajeshwar</span>
+    <span class="meta-age">2026/06/14 23:01</span>
+    <a href="https://news.ycombinator.com/item?id=48527297" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://www.reuters.com/legal/litigation/eu-commission-looking-practical-consequences-anthropic-decision-spokesperson-2026-06-14/" target="_blank" rel="noopener">EU委員会、Anthropic決定の実質的な結果を検討</a></div>
+  <div class="item-title-en">EU Commission looking at practical consequences of Anthropic decision</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 55</span>
+    <span class="badge badge-comments">💬 65</span>
+    <span class="meta-author">by tartoran</span>
+    <span class="meta-age">2026/06/14 23:33</span>
+    <a href="https://news.ycombinator.com/item?id=48527574" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="col-header">
+        <h2>arxiv 新着論文</h2>
+        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+      </div>
+      <div class="empty">データなし</div>
+    </div>
+  </div>
+</div>
+<div class="date-panel" id="panel-2026-06-14">
   <div class="stats-bar">
     <div class="stat-badge"><span>15</span>HN 記事</div>
     <div class="stat-badge"><span>22</span>arxiv 論文</div>
@@ -4753,138 +4815,6 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
   </div>
   <div class="item-summary">古典的な有限差分解法は偏微分方程式に対する信頼性の高いツールであるが、その効率はメッシュ分解能がどこに配置されるかに依存する。一様な細分化は、解の困難度が急峻な勾配、前線、振動、または制約の近くに局所化している場合に、自由度を無駄にすることがある。</div>
 </div>
-    </div>
-  </div>
-</div>
-<div class="date-panel" id="panel-2026-06-01">
-  <div class="stats-bar">
-    <div class="stat-badge"><span>11</span>HN 記事</div>
-    <div class="stat-badge"><span>0</span>arxiv 論文</div>
-  </div>
-  <div class="columns">
-    <div>
-      <div class="col-header">
-        <h2>HackerNews</h2>
-        <span class="col-count">スコア順 · 直近48時間</span>
-      </div>
-      <div class="item-card">
-  <div class="item-title"><a href="https://thoughts.hmmz.org/2026-05-31.html" target="_blank" rel="noopener">解決策は私のAIサブスクリプションをキャンセルすることかもしれない</a></div>
-  <div class="item-title-en">The solution might be cancelling my AI subscription</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 275</span>
-    <span class="badge badge-comments">💬 177</span>
-    <span class="meta-author">by dmw_ng</span>
-    <span class="meta-age">2026/05/31 23:23</span>
-    <a href="https://news.ycombinator.com/item?id=48345896" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://prismml.com/news/bonsai-image-4b" target="_blank" rel="noopener">1ビット盆栽画像 4B画像生成 ローカルデバイス向け</a></div>
-  <div class="item-title-en">1-Bit Bonsai Image 4B Image Generation for Local Devices</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 95</span>
-    <span class="badge badge-comments">💬 23</span>
-    <span class="meta-author">by modinfo</span>
-    <span class="meta-age">2026/06/01 00:04</span>
-    <a href="https://news.ycombinator.com/item?id=48346257" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://thesciverse.org/scientists-found-that-the-creatine-supplement-millions-take-for-muscle-gains-is-quietly-raising-brain-energy-levels-and-slowing-early-alzheimers-cognitive-decline-by-30/" target="_blank" rel="noopener">クレアチンが脳のエネルギーレベルを高め、アルツハイマー病の認知機能低下を30%遅らせる</a></div>
-  <div class="item-title-en">Creatine raise brain energy levels and slow Alzheimer&#x27;s cognitive decline by 30%</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 63</span>
-    <span class="badge badge-comments">💬 37</span>
-    <span class="meta-author">by MrJagil</span>
-    <span class="meta-age">2026/06/01 01:19</span>
-    <a href="https://news.ycombinator.com/item?id=48346947" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.vox.com/future-perfect/489976/ai-successionism-transhumanism-posthumanism" target="_blank" rel="noopener">AIが人類に取って代わることを実際に望んでいる人々</a></div>
-  <div class="item-title-en">The people who actually want AI to replace humanity</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 63</span>
-    <span class="badge badge-comments">💬 63</span>
-    <span class="meta-author">by plastic-enjoyer</span>
-    <span class="meta-age">2026/05/31 23:20</span>
-    <a href="https://news.ycombinator.com/item?id=48345881" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.theguardian.com/society/2026/may/31/daily-pill-daraxonrasib-double-survival-time-pancreatic-pancreas-cancer-clinical-trial" target="_blank" rel="noopener">毎日服用する錠剤が最も致死的な癌の生存期間を倍増させる可能性、治験で判明</a></div>
-  <div class="item-title-en">Daily pill can double survival time for deadliest cancer, trial shows</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 58</span>
-    <span class="badge badge-comments">💬 7</span>
-    <span class="meta-author">by c-oreills</span>
-    <span class="meta-age">2026/06/01 00:43</span>
-    <a href="https://news.ycombinator.com/item?id=48346629" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://github.com/pewdiepie-archdaemon/odysseus" target="_blank" rel="noopener">オデュッセウス – セルフホスト型AIワークスペース</a></div>
-  <div class="item-title-en">Odysseus – self-hosted AI workspace</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 36</span>
-    <span class="badge badge-comments">💬 25</span>
-    <span class="meta-author">by Dzheky</span>
-    <span class="meta-age">2026/06/01 00:50</span>
-    <a href="https://news.ycombinator.com/item?id=48346693" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.quantamagazine.org/rubin-tracks-skyscraper-size-asteroids-failed-supernovas-and-interstellar-visitors-20260515/" target="_blank" rel="noopener">ルービン、超高層ビルサイズの小惑星と失敗した超新星を追跡</a></div>
-  <div class="item-title-en">Rubin Tracks Skyscraper-Size Asteroids and Failed Supernovas</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 25</span>
-    <span class="badge badge-comments">💬 4</span>
-    <span class="meta-author">by adm4</span>
-    <span class="meta-age">2026/06/01 13:08</span>
-    <a href="https://news.ycombinator.com/item?id=48352500" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://darylcecile.net/notes/speed-of-prototyping-age-of-ai" target="_blank" rel="noopener">AI時代におけるプロトタイピングの速度</a></div>
-  <div class="item-title-en">The Speed of Prototyping in the Age of AI</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 17</span>
-    <span class="badge badge-comments">💬 3</span>
-    <span class="meta-author">by mooreds</span>
-    <span class="meta-age">2026/06/01 01:37</span>
-    <a href="https://news.ycombinator.com/item?id=48347153" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://technology.inquirer.net/147084/dunes-butlerian-jihad-and-the-future-of-ai" target="_blank" rel="noopener">デューンのバトラーの聖戦とAIの未来</a></div>
-  <div class="item-title-en">Dune&#x27;s Butlerian Jihad and the Future of AI</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 15</span>
-    <span class="badge badge-comments">💬 14</span>
-    <span class="meta-author">by SVI</span>
-    <span class="meta-age">2026/06/01 16:31</span>
-    <a href="https://news.ycombinator.com/item?id=48353670" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://unessays.substack.com/p/talk-is-cheap" target="_blank" rel="noopener">言うは易し：LLM利用の運用上の影響</a></div>
-  <div class="item-title-en">Talk Is Cheap: The Operational Impact of LLM Use</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 13</span>
-    <span class="badge badge-comments">💬 5</span>
-    <span class="meta-author">by oudlys</span>
-    <span class="meta-age">2026/06/01 01:37</span>
-    <a href="https://news.ycombinator.com/item?id=48347155" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://news.ycombinator.com/item?id=48352045" target="_blank" rel="noopener">私のクライアントがDevOps/インフラ全般とほとんどの機能開発で私をClaudeに置き換えようとしている</a></div>
-  <div class="item-title-en">My client is replacing me with Claude for all DevOps/infra and most feature dev</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 11</span>
-    <span class="badge badge-comments">💬 2</span>
-    <span class="meta-author">by goatwrangler</span>
-    <span class="meta-age">2026/06/01 11:35</span>
-    <a href="https://news.ycombinator.com/item?id=48352045" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div>
-    </div>
-    <div>
-      <div class="col-header">
-        <h2>arxiv 新着論文</h2>
-        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
-      </div>
-      <div class="empty">データなし</div>
     </div>
   </div>
 </div>
