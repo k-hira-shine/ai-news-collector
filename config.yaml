@@ -447,8 +447,12 @@ buzz_accounts:
     display_name: "genel_ai"
 
 buzz_collection:
-  active_profile: "reduced"
-  # 月・水は縮小収集、金曜は全件再同期して古い投稿の反応数と順位を更新する。
+  # 2026-06-15: 縮小プロファイルは初回実本番でランキング保持率55%/一致率70%と
+  # 基準割れ（merge_account_dataが日付順100件で古い高エンゲージ投稿を枠落ちさせ、
+  # いいね順ランキングが崩れる構造的問題）。節約は月$0.9未満でApifyは既に予算内のため、
+  # 品質最優先でフル収集へ恒久復帰。再縮小する場合は保持アルゴリズムの修正が前提。
+  active_profile: "full"
+  # full_refresh_weekday は active_profile=reduced のときのみ意味を持つ（金曜自動フル）。
   full_refresh_weekday: 5
   retention_days: 30
   retention_max_items: 100

@@ -1,23 +1,26 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-15（日次チェック完了 / ①stage2/3 Flash化=日次効果確認OK・完了 / Buzz初回縮小収集がガードレール警告→手動フル再同期で即復旧）
+最終更新: 2026-06-15（日次チェック完了 / ①stage2/3 Flash化=完了 / Buzz縮小収集は初回で基準割れ→構造的問題と判明し `active_profile: full` へ恒久復帰）
 
 ## 次回アクション（日付つき・最新版）
 
-1. **2026-06-17（最重要）**: Buzz縮小実行2回目の判定。**6/15の初回縮小収集は
-   prior_top20_retention=55%・ranking_overlap=70%でガードレール警告**（基準95%/75%未達）。
-   手動フル再同期（run `27509414816`）で95%/100%/passへ即復旧したが、
-   **縮小プロファイル(月/水)は1日でランキングが基準割れする**ことが実測で判明。
-   6/17の縮小収集でも `guardrail_status=warning` なら復旧プロトコルの
-   「2回連続」に該当 → `config.yaml` の `buzz_collection.active_profile` を
-   `full` へ戻す（縮小方式は不採用の方向で要判断）。
-   確認: `python3 scripts/check_buzz_health.py` と
-   `tail -1 data/buzz_collection_metrics.jsonl`。
-2. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
-   合格は月換算$12以下。6/15時点は施策後平均$9.50/月で内）。
-3. **2026-06-19**: Buzz 30日・100件フル再同期（縮小継続の場合）。
-   `ranking_top20_overlap_pct >= 75%` を確認。
-   ※6/17で `full` へ戻した場合は通常のフル収集として確認するだけ。
+1. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
+   合格は月換算$12以下。6/15時点は施策後平均$9.50/月で内）。`python3 check_cost.py`。
+2. **2026-06-17**: Buzz が `full` プロファイルで正常収集されたか確認
+   （`guardrail_status=pass`・`profile=full`）。`active_profile: full` 化により
+   毎回フル収集になっている想定。`python3 scripts/check_buzz_health.py`。
+
+> **Buzz縮小プロファイルは不採用が確定（2026-06-15）**: 初回実本番で
+> prior_top20_retention=55%・ranking_overlap=70%とガードレール警告。
+> 根本原因は `merge_account_data` が日付順100件で保持するため、縮小日に
+> 新規投稿が流入すると古い高エンゲージ投稿が枠落ちし、いいね順ランキングが崩れる
+> **構造的問題**（いいね陳腐化ではない）。節約は月$0.9未満でApifyは既に予算内のため、
+> 品質最優先で `config.yaml` の `active_profile` を `reduced`→`full` に変更（恒久）。
+> 再度コスト削減するなら per-run縮小ではなく頻度削減（週3→週2、各回フル）が筋。
+
+> **①stage2/3 Flash化は完了**: 6/14・6/15ともPro使用ゼロ、per-runで約1/4
+> （stage2 $0.111→$0.029、stage3 $0.026→$0.006）。日次Geminiも
+> 6/13 $0.76→6/14 $0.258→6/15 $0.177へ低下。ロールバック不要。
 
 > **①stage2/3 Flash化は完了**: 6/14・6/15ともPro使用ゼロ、per-runで約1/4
 > （stage2 $0.111→$0.029、stage3 $0.026→$0.006）。日次Geminiも
