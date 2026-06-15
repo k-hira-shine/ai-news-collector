@@ -35,44 +35,30 @@
     "note": "情報取得を停止せず、重複取得と過剰な再取得だけを削減した場合の概算"
   },
   "latest": {
-    "date": "2026-06-15",
+    "date": "2026-06-16",
     "workflows": {
-      "collect": 0.0954,
-      "money": 0.1362,
-      "buzz": 0.2262
+      "collect": 0.0819,
+      "money": 0.0,
+      "buzz": 0.0
     },
     "items_collected": {
-      "collect": 214,
-      "money": 429,
-      "buzz": 1768
+      "collect": 99,
+      "money": 0,
+      "buzz": 0
     },
-    "total_usd": 0.4578
+    "total_usd": 0.0819
   },
   "rolling": {
-    "days": 5,
+    "days": 6,
     "window": 7,
     "start_date": "2026-06-10",
-    "end_date": "2026-06-14",
-    "average_daily_usd": 0.3908,
-    "monthly_projection_usd": 11.72,
-    "reduction_vs_baseline_pct": 50.0,
-    "status": "on_target"
+    "end_date": "2026-06-15",
+    "average_daily_usd": 0.402,
+    "monthly_projection_usd": 12.06,
+    "reduction_vs_baseline_pct": 48.6,
+    "status": "above_target"
   },
   "daily": [
-    {
-      "date": "2026-05-17",
-      "workflows": {
-        "collect": 0.24,
-        "money": 0.7192,
-        "buzz": 0.2667
-      },
-      "items_collected": {
-        "collect": 339,
-        "money": 891,
-        "buzz": 1858
-      },
-      "total_usd": 1.2259
-    },
     {
       "date": "2026-05-18",
       "workflows": {
@@ -478,6 +464,20 @@
         "buzz": 1768
       },
       "total_usd": 0.4578
+    },
+    {
+      "date": "2026-06-16",
+      "workflows": {
+        "collect": 0.0819,
+        "money": 0.0,
+        "buzz": 0.0
+      },
+      "items_collected": {
+        "collect": 99,
+        "money": 0,
+        "buzz": 0
+      },
+      "total_usd": 0.0819
     }
   ]
 }
