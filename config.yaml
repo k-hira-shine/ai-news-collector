@@ -16,6 +16,11 @@ x_twitter:
     - "ChatGPT OR ジェミニ OR Gemini OR クロード OR Claude OR GPT OR 生成AI -filter:replies lang:ja"
     # 日本語：AI活用・開発・ビジネス
     - "AIエージェント OR AI自動化 OR AI副業 OR Claude Code OR プロンプト OR 大規模言語モデル -filter:replies lang:ja"
+    # 英語：著作権・法規制・利用規約・訴訟（日本＋米EUの法務トピック）
+    # 「規制/政策」カテゴリに分類される。min_faves:30 で法務系の低エンゲ良記事も拾う。
+    - "\"AI copyright\" OR \"AI lawsuit\" OR \"AI litigation\" OR \"fair use\" OR \"training data\" OR \"EU AI Act\" OR \"AI regulation\" OR \"terms of service\" AI -filter:replies lang:en min_faves:30"
+    # 日本語：著作権・法律・規約・裁判・係争
+    - "AI著作権 OR 生成AI 著作権 OR AI規制 OR AI 法律 OR AI 訴訟 OR AI 裁判 OR AI 係争 OR AI 利用規約 OR AI ガイドライン -filter:replies lang:ja"
   max_results_per_query: 150
   must_follow_accounts:
     # ── 公式アカウント ──────────────────────────────
@@ -220,6 +225,34 @@ arxiv:
     - cs.CL
   max_results_per_category: 10   # カテゴリごとの最大取得件数
   max_age_days: 2                # 何日前まで取得するか
+
+# ── AI 著作権・法規制・訴訟ニュース RSS（collect_all() 経由でX分析に合流） ──────
+# X検索と違い課金ゼロ（RSS）。stage1 が AI 無関係記事を除外するため広めの
+# 法務・政策フィードでも安全。分析側で「規制/政策」カテゴリに分類される。
+# フィードが死んでも警告ログのみで他に影響なし（graceful）。
+legal_news:
+  enabled: true
+  max_age_days: 5                # 裁判・判決は数日遅れの報道もあるためXより長め
+  max_items_per_feed: 20
+  rss_feeds:
+    # ── 米EU：著作権・知財・訴訟・政策 ──────────────────
+    - url: "https://ipwatchdog.com/feed/"
+      label: "IPWatchdog（知財・AI著作権）"
+    - url: "https://www.copyrightlately.com/feed/"
+      label: "Copyright Lately（著作権・学習データ訴訟）"
+    - url: "https://www.jurist.org/feed/"
+      label: "JURIST（法律ニュース・AI Act）"
+    - url: "https://www.theverge.com/rss/policy/index.xml"
+      label: "The Verge Policy（テック政策・訴訟）"
+    - url: "https://arstechnica.com/tag/policy/feed/"
+      label: "Ars Technica Policy（AI規制・訴訟）"
+    - url: "https://www.eff.org/rss/updates.xml"
+      label: "EFF（デジタル権利・AI政策）"
+    # ── 日本：AI法務・規制報道 ─────────────────────────
+    - url: "https://storialaw.jp/blog/feed"
+      label: "STORIA法律事務所（AI法務）"
+    - url: "https://internet.watch.impress.co.jp/data/rss/1.0/iw/feed.rdf"
+      label: "INTERNET Watch（AI規制報道）"
 
 # ── AIマネタイズ事例収集（run_money.py 専用） ──────────────
 money_collection:

@@ -721,6 +721,89 @@ def _translate_arxiv_items(items: list[dict]) -> None:
         logger.warning("arxiv translation failed: %s", e)
 
 
+# ━━━━━━━━━━━━━━━━ 著作権・法規制・訴訟 RSS ━━━━━━━━━━━━━━━━
+
+
+def collect_legal_rss(config: dict) -> list[dict]:
+    """legal_news.rss_feeds から AI 著作権・法規制・訴訟ニュースを収集し、
+    X 分析パイプライン互換（source="rss"）のアイテムとして返す。
+    dedup・保存は collect_all 側で行う。フィード障害は警告のみで他に影響させない。
+    """
+    legal_cfg = config.get("legal_news", {})
+    if not legal_cfg.get("enabled", False):
+        return []
+
+    try:
+        import feedparser
+    except ImportError:
+        logger.error("feedparser not installed — skipping legal RSS")
+        return []
+
+    feeds = legal_cfg.get("rss_feeds", [])
+    max_per_feed = legal_cfg.get("max_items_per_feed", 20)
+    max_age_days = legal_cfg.get("max_age_days", 5)
+    cutoff = datetime.now(timezone.utc) - timedelta(days=max_age_days)
+    collected_at = now_iso()
+
+    items: list[dict] = []
+    for feed_cfg in feeds:
+        url = feed_cfg.get("url", "")
+        label = feed_cfg.get("label", url)
+        limit = int(feed_cfg.get("max_items", max_per_feed))
+        if not url:
+            continue
+        try:
+            feed = feedparser.parse(url)
+            count = 0
+            for entry in feed.entries[:limit]:
+                link = entry.get("link", "")
+                if not link:
+                    continue
+
+                pub = entry.get("published_parsed") or entry.get("updated_parsed")
+                pub_dt: datetime | None = None
+                if pub:
+                    try:
+                        pub_dt = datetime.fromtimestamp(time.mktime(pub), tz=timezone.utc)
+                    except Exception:
+                        pass
+                if pub_dt and pub_dt < cutoff:
+                    continue
+
+                content = ""
+                if entry.get("content"):
+                    content = entry.content[0].get("value", "")
+                elif entry.get("summary"):
+                    content = entry.summary
+                content = re.sub(r"<[^>]+>", " ", content).strip()
+                content = re.sub(r"\s+", " ", content)[:2000]
+
+                title = entry.get("title", "").strip()
+                items.append({
+                    "id": hash_url(link),
+                    "source": "rss",
+                    "url": link,
+                    "title": title[:200],
+                    "content": content,
+                    "author": entry.get("author", ""),
+                    "published_at": pub_dt.isoformat() if pub_dt else "",
+                    "collected_at": collected_at,
+                    "source_name": label,
+                    "source_label": label,
+                    "priority": "normal",
+                    "is_official": False,
+                    "is_must_follow": False,
+                    "legal_news": True,
+                })
+                count += 1
+            logger.info("Legal RSS [%s]: %d items", label, count)
+        except Exception as e:
+            logger.warning("Legal RSS fetch failed [%s]: %s", label, e)
+
+    logger.info("Legal RSS total: %d items (last %dd)", len(items), max_age_days)
+    return items
+
+
 # ━━━━━━━━━━━━━━━━ HN/arxiv 専用保存 ━━━━━━━━━━━━━━━━
 
 
@@ -871,6 +954,19 @@ def collect_all(config: dict) -> tuple[list[dict], dict]:
 
     items = deduplicate(items, cache)
     items = _filter_old_items(items, max_age_days=config.get("collection", {}).get("max_age_days", 7))
+
+    # 著作権・法規制・訴訟 RSS を X 分析パイプラインに合流（stage1 が AI 無関係を除外）。
+    # legal は collect_legal_rss 内で独自の age 窓で絞るため、X 用の 2日フィルタは通さない。
+    try:
+        legal_items = collect_legal_rss(config)
+        legal_items = deduplicate(legal_items, cache)
+        if legal_items:
+            items = items + legal_items
+        x_meta["legal_rss_count"] = len(legal_items)
+    except Exception as e:
+        logger.error("Legal RSS collection failed: %s", e)
+        x_meta["legal_rss_count"] = 0
+
     save_daily_jsonl(items)
     cache.save()
 

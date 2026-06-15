@@ -56,9 +56,11 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         from collector import _should_warn_x_cookies, collect_all
         items, x_meta = collect_all(config)
 
+    legal_rss_count = x_meta.get("legal_rss_count", 0)
     stats = {
         "total": len(items),
-        "x_count": len(items),
+        "x_count": len(items) - legal_rss_count,
+        "legal_rss_count": legal_rss_count,
         "official_count": sum(1 for i in items if i.get("is_official")),
         "must_follow_count": sum(1 for i in items if i.get("is_must_follow")),
         "apify_cost_usd": x_meta.get("apify_cost_usd", 0),
