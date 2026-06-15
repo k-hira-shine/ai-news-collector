@@ -156,6 +156,10 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 .cat-card {{ background: var(--surface2); border-radius: 8px; padding: 1rem; }}
 .cat-card h3 {{ font-size: 1rem; margin-bottom: 0.5rem; }}
 .cat-card .cat-summary {{ font-size: 0.9rem; color: var(--muted); }}
+.cat-articles {{ list-style: none; margin: 0.6rem 0 0; padding: 0; border-top: 1px solid var(--surface); }}
+.cat-article {{ padding: 0.45rem 0; border-bottom: 1px solid var(--surface); font-size: 0.85rem; }}
+.cat-article a {{ font-weight: 600; }}
+.cat-article-summary {{ color: var(--muted); margin-top: 0.2rem; font-size: 0.8rem; }}
 .action {{ padding: 0.4rem 0; }}
 .action::before {{ content: "💡"; margin-right: 0.5rem; }}
 .x-trend {{ padding: 0.8rem 0; border-bottom: 1px solid var(--surface2); }}
@@ -410,9 +414,25 @@ def _render_latest(a: dict, max_streak: int = 0) -> str:
         summary = escape(cs.get("summary", ""))
         count = cs.get("count", "")
         count_str = f" ({count}件)" if count else ""
+        # 主要記事をリンク付きで一覧表示（データはあるが従来は要約文のみで未表示だった）
+        arts_html = ""
+        key_articles = cs.get("key_articles", [])
+        if key_articles:
+            li_html: list[str] = []
+            for ka in key_articles:
+                k_title = escape(ka.get("title", ""))
+                k_url = escape(ka.get("url", ""))
+                k_summary = escape(ka.get("summary", ""))
+                k_link = (
+                    f'<a href="{k_url}" target="_blank" rel="noopener">{k_title}</a>'
+                    if k_url else k_title
+                )
+                k_sum = f'<div class="cat-article-summary">{k_summary}</div>' if k_summary else ""
+                li_html.append(f'<li class="cat-article">{k_link}{k_sum}</li>')
+            arts_html = f'<ul class="cat-articles">{"".join(li_html)}</ul>'
         cats_html.append(
             f'<div class="cat-card"><h3>{cat}{count_str}</h3>'
-            f'<div class="cat-summary">{summary}</div></div>'
+            f'<div class="cat-summary">{summary}</div>{arts_html}</div>'
         )
     if cats_html:
         parts.append(f'<div class="card"><h2>📁 カテゴリ別</h2><div class="cat-grid">{"".join(cats_html)}</div></div>')
