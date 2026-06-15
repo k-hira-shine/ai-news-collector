@@ -1,12 +1,19 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-15（日次チェック完了 / ①stage2/3 Flash化=完了 / Buzz縮小収集は初回で基準割れ→構造的問題と判明し `active_profile: full` へ恒久復帰）
+最終更新: 2026-06-15（法務ニュース収集機能を追加＋カテゴリ別表示改善 / GH_PATトークン漏洩を発見し無効化＝止血済み / ①stage2/3 Flash化=完了 / Buzz `active_profile: full` 恒久復帰）
 
 ## 次回アクション（日付つき・最新版）
 
-1. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
+1. **2026-06-16 朝便後（JST 02:00ラン、レポート〜04:30）**: 法務ニュース収集機能の初反映を確認。
+   - index の「📁 カテゴリ別 → 規制/政策」に**記事リンク一覧**が出ているか（従来は要約文のみ）。
+   - 著作権・訴訟・規制・利用規約系の記事が増えているか。RSS流入は collect ログの
+     `Legal RSS total: N items`、件数会計は `legal_rss_count` を参照。
+   - **重要**: 反映は collect ラン後。push（6/15 夕方）は当日16:00便の後だったため、
+     初反映は6/16朝便から。collect は **JST 02:00 & 16:00** の1日2回（※README記載の20:00は誤り）。
+2. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
    合格は月換算$12以下。6/15時点は施策後平均$9.50/月で内）。`python3 check_cost.py`。
-2. **2026-06-17**: Buzz が `full` プロファイルで正常収集されたか確認
+   - **法務X検索クエリ2本追加（5→7本）でApify増分を併せて確認**（想定 月+$1未満）。
+3. **2026-06-17**: Buzz が `full` プロファイルで正常収集されたか確認
    （`guardrail_status=pass`・`profile=full`）。`active_profile: full` 化により
    毎回フル収集になっている想定。`python3 scripts/check_buzz_health.py`。
 
@@ -25,6 +32,61 @@
 > **①stage2/3 Flash化は完了**: 6/14・6/15ともPro使用ゼロ、per-runで約1/4
 > （stage2 $0.111→$0.029、stage3 $0.026→$0.006）。日次Geminiも
 > 6/13 $0.76→6/14 $0.258→6/15 $0.177へ低下。ロールバック不要。
+
+---
+
+## 2026-06-15 法務ニュース収集機能の追加＋GH_PAT漏洩対応＋カテゴリ別表示改善
+
+ユーザー要望「AIの著作権・法律・規約・裁判/係争のニュースを集めたい」への対応。
+**新ページは作らず既存パイプライン（index.html の「規制/政策」カテゴリ）に合流**する方針を採用
+（ユーザー選択）。作業中に GH_PAT トークン漏洩を発見し対応。
+
+### 1. 法務ニュース収集の追加（commit `46572c7`、push済み）
+
+- **X検索クエリ2本追加**（`config.yaml` `x_twitter.search_queries`、5→7本）:
+  - 英語: `"AI copyright" OR "AI lawsuit" OR "AI litigation" OR "fair use" OR "training data" OR "EU AI Act" OR "AI regulation" OR "terms of service" AI`（`min_faves:30`）→ 米EU・利用規約
+  - 日本語: `AI著作権 OR 生成AI 著作権 OR AI規制 OR AI 法律 OR AI 訴訟 OR AI 裁判 OR AI 係争 OR AI 利用規約 OR AI ガイドライン`
+- **法務RSS 8フィードを追加**（`config.yaml` 新設 `legal_news`、`max_age_days:5`、課金ゼロ）:
+  米EU=IPWatchdog / Copyright Lately / JURIST / The Verge Policy / Ars Technica Policy / EFF、
+  日本=STORIA法律事務所 / INTERNET Watch。
+- **`collector.py`**: `collect_legal_rss()` を新規追加し `collect_all()` に合流。
+  アイテムは `source="rss"` のアナライザ互換形。X用の2日フィルタは通さず legal 独自の age 窓で絞る。
+  dedup は共有 `SeenURLsCache`。**stage1（Flash）が AI 無関係記事を自動除外**するため広めの法務フィードでも安全。
+- **`main.py`**: `x_count` から法務RSS分を差し引き、`legal_rss_count` を別計上。
+- スモークテスト: `collect_legal_rss` 単体で45件取得を確認（INTERNET Watch 20・The Verge 10・EFF 8・IPWatchdog 7。
+  Copyright Lately/JURIST/Ars/STORIA は5日窓に新着なしで0、新着時に寄与）。
+- **コスト**: RSS=$0、Gemini=Flash無料枠。X クエリ分のみで**月+$1未満**見込み。6/17の `check_cost` で増分確認。
+- **アラート安全性**: アラートは `x_meta` 基準で `stats.total/x_count` を見ないため、RSS合流でX障害検知は壊れない。
+
+### 2. カテゴリ別表示の改善（commit `b94dc68`、push済み）
+
+- ユーザーが「index に法令ニュースのまとまりが無い」と指摘。原因は2つ:
+  (1) push が当日朝ランの後で**まだ未反映**、(2) **`dashboard.py` の「📁 カテゴリ別」が
+  `category_summaries` の要約文だけ表示し、`key_articles`（リンク付き記事5件）を捨てていた**。
+- `dashboard.py` のカテゴリカードに `key_articles` のリンク一覧（タイトル＋要約）を表示するよう修正。
+  CSS（`.cat-articles` 等）も追加。ローカル再生成で「規制/政策」にリンク一覧が出ることを確認済み。Gemini追加コストなし。
+- → 「📁 カテゴリ別 → 規制/政策」が法務ニュースの一覧場所になる。法務収集＋この表示は同じ collect ランで反映。
+
+### 3. GH_PATトークン漏洩の発見と対応（**要フォロー**）
+
+- 同一の classic PAT `ghp_mLJz…` が **3か所で共用**されていた:
+  (1) ローカル git remote URL、(2) GitHub Actions シークレット `GH_PAT`、
+  (3) **公開ページ `docs/buzz.html` に2分割で埋め込み**（`build_buzz.py` L240、シークレットスキャン回避目的）。
+  → GitHub Pages 上で誰でも復元可能な状態だった。用途は buzz.html の「ハンドル入力→収集起動」ボタン
+  （`api.github.com .../buzz-collect.yml/dispatches` を叩く、build_buzz.py L428-445）。
+- **対応済み**:
+  - ローカル remote から token 除去、`credential.helper=osxkeychain` に変更（コミット不要・ローカル設定）。
+  - **ユーザーが GitHub で classic PAT `ai-news-collector-2`（repo,workflow）を Delete＝revoke（止血完了）**。
+- **残（未了）**: buzz ボタンの復旧（新トークン発行→`GH_PAT`シークレット更新→buzz再ビルド）。
+  ただし**ユーザーは buzz ボタンを使っていないため当面放置でOK**（埋め込みトークンは死んでいるので害なし）。
+- **根本問題（将来 buzz ボタンを使う時）**: 新トークンを再発行してもまた公開ページに埋め込まれる構造。
+  正しくは `workers/`（Cloudflare Worker）等のサーバー側中継経由で起動し、PATをブラウザに出さないこと。
+  最小権限化（fine-grained / `workflow`スコープのみ）も推奨。buzz改修時はこの埋め込み方式を温存しない。
+- 別トークン `ai-news-collector`（repo のみ・無期限・用途不明・5週間前使用）が残存。未使用なら掃除推奨（任意）。
+
+### 未追跡ファイル（今回も未関与）
+
+`requirements-sdk.txt` / `scripts/cursor_sdk_try.py` には触れていない（従来どおり）。
 
 ---
 
