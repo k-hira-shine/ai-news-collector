@@ -1,15 +1,14 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-15（法務ニュース収集機能を追加＋カテゴリ別表示改善 / GH_PATトークン漏洩を発見し無効化＝止血済み / ①stage2/3 Flash化=完了 / Buzz `active_profile: full` 恒久復帰）
+最終更新: 2026-06-16（法務ニュース機能の初反映を確認＝正常稼働 / ①stage2/3 Flash化=維持 / Apify施策後平均$9.50月=予算内 / 正式7日判定は6/17）
 
 ## 次回アクション（日付つき・最新版）
 
-1. **2026-06-16 朝便後（JST 02:00ラン、レポート〜04:30）**: 法務ニュース収集機能の初反映を確認。
-   - index の「📁 カテゴリ別 → 規制/政策」に**記事リンク一覧**が出ているか（従来は要約文のみ）。
-   - 著作権・訴訟・規制・利用規約系の記事が増えているか。RSS流入は collect ログの
-     `Legal RSS total: N items`、件数会計は `legal_rss_count` を参照。
-   - **重要**: 反映は collect ラン後。push（6/15 夕方）は当日16:00便の後だったため、
-     初反映は6/16朝便から。collect は **JST 02:00 & 16:00** の1日2回（※README記載の20:00は誤り）。
+1. ~~**2026-06-16 朝便後**: 法務ニュース収集機能の初反映を確認。~~ ✅ **完了（6/16）**:
+   朝便（run 27567595146、6/16 03:29 JST）で `Legal RSS total: 36 items (last 5d)` →
+   stage1(Flash)除外/dedup後 `legal_rss_count: 3` が本収集に通過。流入源は The Verge Policy 10・
+   EFF 6・INTERNET Watch 20（IPWatchdog/Copyright Lately/JURIST/Ars/STORIA は5日窓に新着なし=0）。
+   レポートも公開済み（pages build success）。**index「規制/政策」のリンク一覧表示は未目視**（要ブラウザ確認）。
 2. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
    合格は月換算$12以下。6/15時点は施策後平均$9.50/月で内）。`python3 check_cost.py`。
    - **法務X検索クエリ2本追加（5→7本）でApify増分を併せて確認**（想定 月+$1未満）。
@@ -32,6 +31,19 @@
 > **①stage2/3 Flash化は完了**: 6/14・6/15ともPro使用ゼロ、per-runで約1/4
 > （stage2 $0.111→$0.029、stage3 $0.026→$0.006）。日次Geminiも
 > 6/13 $0.76→6/14 $0.258→6/15 $0.177へ低下。ロールバック不要。
+
+---
+
+## 2026-06-16 日次チェック（法務機能 初反映=正常 / コスト予算内 / エラーなし）
+
+- **GitHub Actions**: 全ジョブ success。AI News Collector 朝便（6/16 03:29 JST）正常完了。Buzz/Money/pages も成功。
+- **法務ニュース機能 初反映 ✅**: collect ログで `Legal RSS total: 36 items (last 5d)`、
+  stage1(Flash)除外/dedup後 `legal_rss_count: 3` が本収集へ。流入は The Verge Policy 10・EFF 6・INTERNET Watch 20。
+  広めの法務フィードでも stage1 が AI 無関係記事を自動除外する設計どおりに機能。残: index「規制/政策」のリンク一覧の目視確認。
+- **Apify**: 施策後平均 **$9.50/月**（目標$12以内）。6/15単日 $0.4008（Buzz full の日、第3列 $0.2262）。
+  **正式7日移動平均判定は6/17**（法務Xクエリ2本追加の増分も併せて確認）。
+- **Gemini**: 6/15 **$0.1771**、100% Flash・Pro=$0。stage2/3 Flash化を維持（ロールバック不要）。
+- **GH_PAT**: revoke 済みで止血継続。buzz.html に生トークンなし。根本対応（サーバー側中継）は未了。
 
 ---
 
