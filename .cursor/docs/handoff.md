@@ -15,6 +15,9 @@
 3. **2026-06-17**: Buzz が `full` プロファイルで正常収集されたか確認
    （`guardrail_status=pass`・`profile=full`）。`active_profile: full` 化により
    毎回フル収集になっている想定。`python3 scripts/check_buzz_health.py`。
+4. **2026-06-17〜数日（目視）**: 品質劣化チェック（下記で「劣化なし」判定済）の残監視2点 —
+   ① index「規制/政策」が法務RSS一色になっていないか（`legal_rss_count` は回によって最大48と多い）、
+   ② `must_follow_count` が連続ゼロでないか（6/15夕便で0、6/16朝は69で正常）。詳細は下の「品質劣化チェック」節。
 
 > **Buzz縮小プロファイルは不採用が確定（2026-06-15）**: 初回実本番で
 > prior_top20_retention=55%・ranking_overlap=70%とガードレール警告。
@@ -44,6 +47,27 @@
   **正式7日移動平均判定は6/17**（法務Xクエリ2本追加の増分も併せて確認）。
 - **Gemini**: 6/15 **$0.1771**、100% Flash・Pro=$0。stage2/3 Flash化を維持（ロールバック不要）。
 - **GH_PAT**: revoke 済みで止血継続。buzz.html に生トークンなし。根本対応（サーバー側中継）は未了。
+
+### 品質劣化チェック（コスト削減後）→ 劣化なしと判定
+
+直近のコスト削減（stage2/3 Flash化・Lite翻訳・Buzz full戻し・法務追加）が出力品質を落としていないかを `data/analysis/*.json` の5月〜6/16比較で検証。
+
+1. **stage2/3 Flash化（最大リスク）→ 劣化なし**。構造指標が Pro 時代と同一を維持:
+   `top_articles`=10件・`category_summaries`=5〜6・`action_items`=5・`fallback_used_stages`=[]
+   （※フォールバックはむしろPro時代の5/16・5/29で発生、Flash化後はゼロ）。
+   文章品質も Pro(6/13) vs Flash(6/16) を実読比較し遜色なし（trend要約・importance_reason の因果記述・
+   category要約のkey_articles すべて同等）。唯一 `trend_summary` 文字数がFlashでやや短め＆ばらつき
+   （6/15夜206が最短）だが Pro時代も247〜269の日があり**変動の範囲内**（6/16は288に回復）。
+2. **Lite翻訳 → 問題なし**（arxiv/hn/buzz_discovery のLite翻訳はエラー・リトライなし）。
+3. **法務追加のノイズ → 抑制されている**（stage1 Flash が AI無関係を除外。6/16トップは法務でなくClaudeエージェント機能）。
+
+**結論**: コスト59%削減（$22.93→$9.50/月相当）に対し出力品質は維持。ロールバック不要。
+
+#### 残す監視ポイント（劣化ではないが要観察）
+- **法務RSS流入量のばらつき**: 6/15夕便は `legal_rss_count: 48`（収集137件の35%）と多い回あり。
+  stage1で除外されるが、index「規制/政策」が法務一色にならないか数日は目視確認。
+- **`must_follow_count` のゼロ回**: 6/15夕便で `must_follow_count: 0`（6/16朝は69で正常）。
+  収集サイクル差分の可能性大だが、連続ゼロなら要調査。
 
 ---
 
