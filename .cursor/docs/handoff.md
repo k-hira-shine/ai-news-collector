@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-16（法務ニュース機能の初反映を確認＝正常稼働 / ①stage2/3 Flash化=維持 / Apify施策後平均$9.50月=予算内 / 正式7日判定は6/17）
+最終更新: 2026-06-17（Apify 7日正式判定=月$11.17で予算内合格 / Buzz full=top20_retention95%・overlap100%で正常 / Gemini 100%Flash維持 / 残監視2点クリア＝legal_rss_count7・must_follow_count92）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -9,15 +9,29 @@
    stage1(Flash)除外/dedup後 `legal_rss_count: 3` が本収集に通過。流入源は The Verge Policy 10・
    EFF 6・INTERNET Watch 20（IPWatchdog/Copyright Lately/JURIST/Ars/STORIA は5日窓に新着なし=0）。
    レポートも公開済み（pages build success）。**index「規制/政策」のリンク一覧表示は未目視**（要ブラウザ確認）。
-2. **2026-06-17**: Apify 7日移動平均の正式判定（施策後7日が揃う。
-   合格は月換算$12以下。6/15時点は施策後平均$9.50/月で内）。`python3 check_cost.py`。
-   - **法務X検索クエリ2本追加（5→7本）でApify増分を併せて確認**（想定 月+$1未満）。
-3. **2026-06-17**: Buzz が `full` プロファイルで正常収集されたか確認
-   （`guardrail_status=pass`・`profile=full`）。`active_profile: full` 化により
-   毎回フル収集になっている想定。`python3 scripts/check_buzz_health.py`。
-4. **2026-06-17〜数日（目視）**: 品質劣化チェック（下記で「劣化なし」判定済）の残監視2点 —
-   ① index「規制/政策」が法務RSS一色になっていないか（`legal_rss_count` は回によって最大48と多い）、
-   ② `must_follow_count` が連続ゼロでないか（6/15夕便で0、6/16朝は69で正常）。詳細は下の「品質劣化チェック」節。
+2. ~~**2026-06-17**: Apify 7日移動平均の正式判定。~~ ✅ **完了（6/17）**:
+   直近7日（6/10〜6/16）平均 $0.3723/日＝**月換算$11.17**で合格基準$12以内。
+   6/15時点$9.50→$11.17への増は Buzz full日（6/15 第3列$0.2262）と法務追加分を含むが予算内。
+3. ~~**2026-06-17**: Buzz が `full` で正常収集か確認。~~ ✅ **完了（6/17）**:
+   `profile=full`・top20_retention=**95%**・ranking_overlap=**100%**・cost=$0.17。
+   reduced時代の警告値（55%/70%）を大幅に上回り正常。恒久full運用に問題なし。
+4. ~~**残監視2点**~~ ✅ **クリア（6/17朝便 run 27639243105）**:
+   ① `legal_rss_count=7`（total 116・x_count 109中）→ 法務一色化なし。
+   ② `must_follow_count=92` → 連続ゼロ回避。**残: index「規制/政策」リンク一覧の目視確認のみ**（要ブラウザ）。
+5. **未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）は未着手。実施時は config 反映後にApify増分を確認。
+6. **未了（根本対応）**: GH_PAT のサーバー側中継。revoke 済みで止血中、根本対応は未着手（[[gh-pat-public-exposure]]）。
+
+---
+
+## 2026-06-17 日次チェック（全項目正常 / Apify・Buzz・残監視2点すべてクリア）
+
+- **GitHub Actions**: 全ジョブ success（直近12件）。News朝便（6/17 03:29 JST, run 27639243105）/ Buzz / Money / pages すべて正常完了。
+- **Apify 7日正式判定 ✅ 合格**: 直近7日平均 **$0.3723/日＝月換算$11.17**（基準$12以内）。
+  6/16単日 $0.1941。施策後平均$9.50→$11.17の増は Buzz full日＋法務追加を含むが予算内。
+- **Buzz full 健全性 ✅**: `profile=full`・fetched=1292・new=40・top20_retention=**95%**・ranking_overlap=**100%**・cost=$0.17。reduced警告値(55%/70%)を大幅クリア、恒久full運用に問題なし。
+- **Gemini ✅**: 6/16 **$0.2105**、100% Flash（flash-lite $0.0001・Pro=$0）。stage2/3 Flash化を維持、ロールバック不要。
+- **残監視2点 ✅ クリア**（6/17朝便）: ① `legal_rss_count=7`（total 116・x_count 109中）→法務一色化なし。② `must_follow_count=92`→連続ゼロ回避。
+- **残作業**: index「規制/政策」リンク一覧の目視（要ブラウザ）/ 法務Xクエリ2本追加（未着手）/ GH_PAT根本対応（未了）。
 
 > **Buzz縮小プロファイルは不採用が確定（2026-06-15）**: 初回実本番で
 > prior_top20_retention=55%・ranking_overlap=70%とガードレール警告。
