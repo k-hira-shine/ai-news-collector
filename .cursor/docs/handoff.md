@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節）
+最終更新: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -21,6 +21,39 @@
    ② `must_follow_count=92` → 連続ゼロ回避。**残: index「規制/政策」リンク一覧の目視確認のみ**（要ブラウザ）。
 5. **未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）は未着手。実施時は config 反映後にApify増分を確認。
 6. **未了（根本対応）**: GH_PAT のサーバー側中継。revoke 済みで止血中、根本対応は未着手（[[gh-pat-public-exposure]]）。
+7. **要確認（6/18朝）**: Buzzガードレール変更後、**次回のBuzz収集（schedule）→ Buzz Daily Health Check が success に戻るか**を確認。失敗メールが止まれば対応完了。詳細は下「2026-06-17 夜」節。
+
+---
+
+## 2026-06-17 夜 — Buzz Daily Health Check 初失敗への対応（品質ガードレール誤アラート）
+
+> このセッションでやったこと: ①Actions失敗メール（Buzz Daily Health Check）の原因調査 → ②データ欠落でなくガードレール誤アラートと特定 → ③判定軸をranking_overlap単独に変更 → ④純関数化＋テスト追加 → ⑤main へコミット/push → ⑥memory記録。経過を全部残す。
+
+### A. 事象
+- GitHub から失敗メール: **「Buzz Daily Health Check: All jobs have failed」**（run **27645430971**、2026-06-16 20:18 UTC = **6/17 05:18 JST**、16秒で失敗）。前日まで連続success。
+- 失敗ステップ: `python scripts/check_buzz_health.py` が **exit 1**。ログ出力は `profile=full / fetched=1271 / new=143 / retained=1261 / top20_retention=50.0% / ranking_overlap=95.0% / cost=$0.1824 / ERROR: ランキング保持率が基準未満`。
+
+### B. 原因（データ欠落ではない）
+- **収集本体（buzz-collect）は success**（run 27639857197）。fetched/retained正常でデータ欠落なし。公開ページのランキングも overlap=95% でほぼ無傷。
+- 落ちた理由は `run_buzz.py` の `guardrail_status` が **warning** を返し、`check_buzz_health.py:40-42` が warning を exit 1 扱いにしたため。
+- 旧判定: `min_top20_retention(全アカウント最小値) >= 95% かつ ranking_overlap >= 75%` で pass。6/17は overlap=95%（合格）なのに **retention=50%** で warning。
+- **根本原因**: top20_retention は [[buzz-reduced-profile-rejected]] と同じ「日付順100件保持 × いいね順ランキング」の構造問題。高いいねの古い投稿が保持枠から自然に押し出されるだけで1アカウント分が落ち、**full運用でも誤warning**になる。95%という全アカウント最小値基準は非現実的。
+
+### C. 対応（コミット b37951c / push済み）
+- `run_buzz.py`: ガードレール判定を純関数 **`evaluate_guardrail_status(ranking_overlap_pct, min_ranking_overlap_pct, fallback_triggered)`** に切り出し、**公開ランキングの実害指標 `ranking_overlap >= min_weekly_top20_overlap_pct(=75, config.yaml)` 単独**に変更。top20_retention はメトリクスとして記録継続だが **warning 条件から除外**。fallback優先は維持。
+- `tests/test_run_buzz.py`: `GuardrailStatusTests`（4ケース）追加。**overlap=95%/retention=50%（=6/17の値）が pass** になることを固定し再発防止。
+- テスト: `python3 -m unittest tests.test_run_buzz tests.test_check_buzz_health` → **12件 OK**。
+- `check_buzz_health.py` は変更不要（warning→失敗の挙動は正しいまま）。
+- コミット **b37951c** を main へ直接コミット＆**push済み**（a0bf31e..b37951c）。
+
+### D. 設計判断（次担当が踏襲すること）
+- **守るべきは公開ランキングが実際に崩れたか（overlap）**。retention は構造的に揺れる参考値。Buzzの健全性を語るときは overlap を実害指標として読む。
+- reduced運用などで**実際にランキングが崩れた場合（overlap<75%）は従来通り warning で検知**される。今回の変更は検知力を落とさず誤アラートだけ止めるもの。
+- 誤アラートが再発したら**閾値ではなく判定軸を疑う**。
+- memory: [[buzz-guardrail-overlap-only]] に記録済み。
+
+### E. 残作業
+- **6/18朝の確認**: 次回schedule収集後の Buzz Daily Health Check が success に戻るか（=失敗メールが止まるか）。これで対応完了とみなす。
 
 ---
 
