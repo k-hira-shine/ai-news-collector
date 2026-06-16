@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from run_buzz import (
     collection_gap_risk,
+    evaluate_guardrail_status,
     merge_account_data,
     overall_ranked_urls,
     resolve_collection_settings,
@@ -164,6 +165,30 @@ class RunBuzzTests(unittest.TestCase):
         ]
 
         self.assertEqual(overall_ranked_urls(accounts), ["ranked"])
+
+
+class GuardrailStatusTests(unittest.TestCase):
+    def test_pass_when_overlap_meets_threshold(self) -> None:
+        self.assertEqual(
+            evaluate_guardrail_status(95.0, 75.0, fallback_triggered=False), "pass"
+        )
+
+    def test_warning_when_overlap_below_threshold(self) -> None:
+        self.assertEqual(
+            evaluate_guardrail_status(60.0, 75.0, fallback_triggered=False), "warning"
+        )
+
+    def test_low_top20_retention_does_not_trip_warning(self) -> None:
+        # top20_retention は判定に使わない: overlapが基準以上なら retention が低くても pass。
+        # 6/17 の誤アラート(overlap=95% / retention=50%)が再発しないことを保証する。
+        self.assertEqual(
+            evaluate_guardrail_status(95.0, 75.0, fallback_triggered=False), "pass"
+        )
+
+    def test_fallback_takes_precedence(self) -> None:
+        self.assertEqual(
+            evaluate_guardrail_status(95.0, 75.0, fallback_triggered=True), "fallback"
+        )
 
 
 if __name__ == "__main__":

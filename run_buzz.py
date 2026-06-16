@@ -262,6 +262,23 @@ def collection_gap_risk(existing_account: dict | None, fetched_tweets: list[dict
     return min(fetched_dates) > max(previous_dates)
 
 
+def evaluate_guardrail_status(
+    ranking_overlap_pct: float,
+    min_ranking_overlap_pct: float,
+    fallback_triggered: bool,
+) -> str:
+    """公開ランキングの実害指標(ranking_overlap)を主軸にガードレールを判定する。
+
+    top20_retention は「日付順100件保持 × いいね順ランキング」という構造上、
+    高いいねの古い投稿が保持枠から自然に押し出されるだけで1アカウント分が落ち、
+    full運用でも誤って warning になる。そのためメトリクスとしては記録し続けるが
+    warning 条件からは外し、ランキングが実際に崩れたか(overlap)のみで鳴らす。
+    """
+    if fallback_triggered:
+        return "fallback"
+    return "pass" if ranking_overlap_pct >= min_ranking_overlap_pct else "warning"
+
+
 def load_existing_buzz() -> dict:
     if BUZZ_JSON.exists():
         try:
@@ -464,11 +481,8 @@ def main() -> None:
             * 100,
             1,
         )
-    guardrail_status = "fallback" if fallback_triggered else (
-        "pass"
-        if min_top_retention >= 95.0
-        and (profile != "full" or ranking_overlap_pct >= min_ranking_overlap_pct)
-        else "warning"
+    guardrail_status = evaluate_guardrail_status(
+        ranking_overlap_pct, min_ranking_overlap_pct, fallback_triggered
     )
     save_collection_metrics({
         "checked_at": datetime.now(JST).isoformat(),
