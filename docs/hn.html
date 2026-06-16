@@ -89,10 +89,11 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>AI 英語一次情報</h1>
-  <div class="updated">Last updated: 2026-06-16 18:05 JST</div>
+  <div class="updated">Last updated: 2026-06-17 03:36 JST</div>
 </header>
 <div class="date-tabs">
-<button class="date-tab active" data-panel="panel-2026-06-16">6/16 <small>今日</small></button>
+<button class="date-tab active" data-panel="panel-2026-06-17">6/17 <small>今日</small></button>
+<button class="date-tab" data-panel="panel-2026-06-16">6/16</button>
 <button class="date-tab" data-panel="panel-2026-06-15">6/15</button>
 <button class="date-tab" data-panel="panel-2026-06-14">6/14</button>
 <button class="date-tab" data-panel="panel-2026-06-13">6/13</button>
@@ -105,9 +106,275 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <button class="date-tab" data-panel="panel-2026-06-06">6/6</button>
 <button class="date-tab" data-panel="panel-2026-06-05">6/5</button>
 <button class="date-tab" data-panel="panel-2026-06-04">6/4</button>
-<button class="date-tab" data-panel="panel-2026-06-03">6/3</button>
 </div>
-<div class="date-panel active" id="panel-2026-06-16">
+<div class="date-panel active" id="panel-2026-06-17">
+  <div class="stats-bar">
+    <div class="stat-badge"><span>2</span>HN 記事</div>
+    <div class="stat-badge"><span>25</span>arxiv 論文</div>
+  </div>
+  <div class="columns">
+    <div>
+      <div class="col-header">
+        <h2>HackerNews</h2>
+        <span class="col-count">スコア順 · 直近48時間</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://status.claude.com/incidents/xmhsglsz3h3w" target="_blank" rel="noopener">Claude：多くのモデルでエラーが増加</a></div>
+  <div class="item-title-en">Claude: Elevated errors across many models</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 71</span>
+    <span class="badge badge-comments">💬 42</span>
+    <span class="meta-author">by forks</span>
+    <span class="meta-age">2026/06/17 02:30</span>
+    <a href="https://news.ycombinator.com/item?id=48558766" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://twitter.com/fguzmanai/status/2065832668172845209" target="_blank" rel="noopener">GateGPT：FPGAで80MHzで毎秒56kトークンのTransformer（KVキャッシュ）</a></div>
+  <div class="item-title-en">GateGPT: 56k tokens per second Transformer (KV cache) on FPGA at 80 MHz</div>
+  <div class="item-meta">
+    <span class="badge badge-score">▲ 27</span>
+    <span class="badge badge-comments">💬 8</span>
+    <span class="meta-author">by laxmena</span>
+    <span class="meta-age">2026/06/17 01:12</span>
+    <a href="https://news.ycombinator.com/item?id=48557535" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
+  </div>
+</div>
+    </div>
+    <div>
+      <div class="col-header">
+        <h2>arxiv 新着論文</h2>
+        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
+      </div>
+      <div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17056v1" target="_blank" rel="noopener">値軸：言語モデルは、正しい軌道に乗っているかどうかをエンコードする</a></div>
+  <div class="item-title-en">The Value Axis: Language Models Encode Whether They&#x27;re on the Right Track</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Nick Jiang, Isaac Kauvar, Jack Lindsey</span>
+    <span class="meta-age">2026/06/16 02:59</span>
+  </div>
+  <div class="item-summary">我々は、言語モデルが内部的に現在の軌道の値を追跡しているかどうかを調査します。これは、現在の戦略が目標を達成する可能性として定義されます。合成の、インコンテキスト強化学習データを使用して、Qwen3-8Bの「値」軸を構築します。活性化が</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17053v1" target="_blank" rel="noopener">エージェント型かつマルチモーダルなLLMのためのコンテキスト認識RL</a></div>
+  <div class="item-title-en">Context-Aware RL for Agentic and Multimodal LLMs</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Peiyang Xu, Bangzheng Li, Sijia Liu</span>
+    <span class="meta-age">2026/06/16 02:59</span>
+  </div>
+  <div class="item-summary">大規模言語モデル（LLM）は、長くて複雑なコンテキスト内の小さくても決定的な証拠を特定する必要がある回答（ツールトレースの単一行や画像の微妙な詳細など）を生成する際に失敗することがよくあります。コンテキストRL、コンテキスト認識型強化学習（RL）手法を提案します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17048v1" target="_blank" rel="noopener">線形逆問題を解決するための厳密な事後スコア推定</a></div>
+  <div class="item-title-en">Exact Posterior Score Estimation for Solving Linear Inverse Problems</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Abbas Mammadov, Ozgur Kara, Kaan Oktay</span>
+    <span class="meta-age">2026/06/16 02:58</span>
+  </div>
+  <div class="item-summary">拡散モデルおよびフローベースモデルは、ガウスノイズの逆転を学習するデノイザーを訓練することにより、強力なデータ事前分布を学習します。この事前分布を使用して線形逆問題を解決するには、事後分布からサンプリングする必要がありますが、事前分布が提供するスコアは条件付きスコアではなく、事後スコアです。厳密な</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17046v1" target="_blank" rel="noopener">ロボットポリシー学習のための幾何学的アクションモデル</a></div>
+  <div class="item-title-en">Geometric Action Model for Robot Policy Learning</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Jisang Han, Seonghu Jeon, Jaewoo Jung</span>
+    <span class="meta-age">2026/06/16 02:58</span>
+  </div>
+  <div class="item-summary">ジェネラリストロボットポリシーは、ユーザーの指示に従いながら、3D物理世界におけるオブジェクト、カメラ、およびロボットアクションの相互作用を推論する必要があります。最近の視覚言語アクションモデル（VLA）およびビデオワールドアクションモデル（WAM）は、大規模な基盤からの強力な意味的または時間的先行知識を継承しています。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17043v1" target="_blank" rel="noopener">スパースエピソード結果からのVLAのオンラインRLファインチューニングのための階層的アドバンテージ重み付け</a></div>
+  <div class="item-title-en">Hierarchical Advantage Weighting for Online RL Fine-Tuning of VLAs from Sparse Episode Outcomes</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Tongyan Fang, Siyuan Huang, Naiyu Fang</span>
+    <span class="meta-age">2026/06/16 02:57</span>
+  </div>
+  <div class="item-summary">事前学習済みのVLAポリシーがオンラインRLを通じてファインチューニングされる場合、各ロールアウトエピソードは単一のバイナリ結果（成功または失敗）のみを生成しますが、アクターの更新にはトランジションごとの監視が必要です。既存のアプローチは、このスパースな結果を単一のスカラー報酬またはアドバンテージシグナルに一般的に還元します。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17041v1" target="_blank" rel="noopener">Nature Portfolioのメタ分析記事におけるLLMエージェントのベンチマーキング</a></div>
+  <div class="item-title-en">Benchmarking LLM Agents on Meta-Analysis Articles from Nature Portfolio</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Anzhe Xie, Weihang Su, Yujia Zhou</span>
+    <span class="meta-age">2026/06/16 02:56</span>
+  </div>
+  <div class="item-summary">メタ分析は、文献検索、PI/ECOガイドによる研究選択、および統計的集計を組み合わせた要求の厳しい証拠合成の形態です。その構造化された検証可能なワークフローは、体系的な科学的推論を評価するための理想的な基盤となりますが、既存のベンチマークにはグラウンド</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17037v1" target="_blank" rel="noopener">ニューラル表現における位相の重要性：画像分類器の内部的なOppenheim-Limテスト</a></div>
+  <div class="item-title-en">The Importance of Phase in Neural Representations: An Internal Oppenheim-Lim Test of Image Classifiers</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Alper Yıldırım</span>
+    <span class="meta-age">2026/06/16 02:54</span>
+  </div>
+  <div class="item-summary">OppenheimとLim (1981) は、自然画像がフーリエ位相のみから再構築された場合でも認識可能であり、振幅はそれらの同一性のほとんどを担わないことを示しました。我々は、学習済みの画像分類器が隠れ層内でこの非対称性を再現するかどうかを問うとともに、因果関係でテストします。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17035v1" target="_blank" rel="noopener">あなたのプライバシー、私のマント：差分プライベート連合学習に対するバックドア攻撃</a></div>
+  <div class="item-title-en">Your Privacy My Cloak: Backdoor Attacks on Differentially Private Federated Learning</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Xiaolin Li, Ning Wang, Ninghui Li</span>
+    <span class="meta-age">2026/06/16 02:53</span>
+  </div>
+  <div class="item-summary">過去の研究では、差分プライバシー（DP）が本質的にバックドア攻撃に対する連合学習（FL）の堅牢性を向上させることが示唆されています。本稿では、この仮説に疑問を投げかけます。2つのベースライン攻撃戦略の経験的分析を通じて、DP-FLにおける根本的な緊張関係を明らかにします。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17034v1" target="_blank" rel="noopener">KVEraser：効率的な局所的コンテキスト消去のためのKVキャッシュを操作するための学習</a></div>
+  <div class="item-title-en">KVEraser: Learning to Steer KV Cache for Efficient Localized Context Erasing</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Mufei Li, Shikun Liu, Dongqi Fu</span>
+    <span class="meta-age">2026/06/16 02:53</span>
+  </div>
+  <div class="item-summary">KVキャッシュの事後コンテキスト消去は、局所的な編集がグローバルな結果をもたらすため困難です。あるスパンが処理されると、その影響は後続のすべてのトークンのキャッシュ状態に伝播します。この問題は、古い検索された事実が</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17029v1" target="_blank" rel="noopener">DEEPRUBRIC：深層研究エージェントの効率的な強化学習のための証拠ツリー細則監督</a></div>
+  <div class="item-title-en">DEEPRUBRIC: Evidence-Tree Rubric Supervision for Efficient Reinforcement Learning of Deep Research Agents</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Minghang Zhu, Chuyang Wei, Junhao Xu</span>
+    <span class="meta-age">2026/06/16 02:52</span>
+  </div>
+  <div class="item-summary">深層研究エージェントは、検索された証拠の検索と推論を通じて長文レポートを合成します。細則ベースの報酬を伴う強化学習は、検証可能な基準に対して最適化することにより、これらのエージェントを改善します。これはレポートの品質を報酬信号に変換しますが、その効率は</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17028v1" target="_blank" rel="noopener">HAMON：長期間予測のための受動的光学シーケンスミキシング</a></div>
+  <div class="item-title-en">HAMON: Passive Optical Sequence Mixing for Long-Horizon Forecasting</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Alper Yıldırım</span>
+    <span class="meta-age">2026/06/16 02:51</span>
+  </div>
+  <div class="item-summary">単純な線形モデルおよび周波数領域モデルは、長期間時系列予測において驚くほど競争力があり、最近のメカニズム的証拠は、標準的な予測ベンチマークでは、他のドメインでTransformerを強力にする密な重ね合わせ表現を必要としない可能性を示唆しています。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17024v1" target="_blank" rel="noopener">ExpRL：LLM中間トレーニングのための探索的RL</a></div>
+  <div class="item-title-en">ExpRL: Exploratory RL for LLM Mid-Training</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Violet Xiang, Amrith Setlur, Chase Blagden</span>
+    <span class="meta-age">2026/06/16 02:50</span>
+  </div>
+  <div class="item-summary">スパース報酬強化学習（RL）は、LLMの推論を改善するための標準的なツールとなっていますが、その成功はベースモデルにおけるカバレッジに大きく依存します。実際には、モデルは、有用なプリミティブを教えるキュレーションされた推論トレースでの**中間トレーニング**によってRLのためにプライミングされることがよくあります。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17022v1" target="_blank" rel="noopener">データの幾何学の学習：形状空間解析の数学的レビュー</a></div>
+  <div class="item-title-en">Learning the Geometry of Data: A Mathematical Review of Shape Space Analysis</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">機械学習</span>
+    <span class="meta-author">Gary P. T. Choi, Khanh Dao Duc, Shira Faigenbaum-Golovin</span>
+    <span class="meta-age">2026/06/16 02:50</span>
+  </div>
+  <div class="item-summary">機械学習の中心的な目的は、データ内の構造とパターンを特定することです。データ取得の進歩により、観測が豊かな幾何学的形態を持つデータセットがますます生成されており、オブジェクトの幾何学における変動性をエンコードする形状空間が出現しています。そのようなデータセットは、さまざまな</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17020v1" target="_blank" rel="noopener">FusionRS：デュアルモーダル視覚言語基盤モデルのための大規模RGB-赤外線リモートセンシングデータセット</a></div>
+  <div class="item-title-en">FusionRS: A Large-Scale RGB-Infrared Remote Sensing Dataset for Dual-Modal Vision-Language Foundation Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Jiaju Han, Ben Zhang, Xuemeng Sun</span>
+    <span class="meta-age">2026/06/16 02:49</span>
+  </div>
+  <div class="item-summary">リモートセンシング視覚言語モデルは地球観測の理解を促進してきましたが、既存の作業のほとんどはRGB画像に焦点を当てており、赤外線データにおける相補的な情報が十分に調査されていません。赤外線画像は、熱強度の構造、オブジェクトの</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17016v1" target="_blank" rel="noopener">TokenPilot：LLMエージェントのためのキャッシュ効率的なコンテキスト管理</a></div>
+  <div class="item-title-en">TokenPilot: Cache-Efficient Context Management for LLM Agents</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Buqiang Xu, Zirui Xue, Dianmou Chen</span>
+    <span class="meta-age">2026/06/16 02:46</span>
+  </div>
+  <div class="item-summary">LLMエージェントが長期間セッションで展開されるにつれて、コンテキストの蓄積は推論コストを増加させます。既存のアプローチでは、トークンフットプリントを最小限に抑えるためにテキストのプルーニングまたは動的なメモリ除外を利用していますが、それらの制約のないシーケンス変異はレイアウトを変更し、プレフィックスの不一致やキャッシュ</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17006v1" target="_blank" rel="noopener">TuneJury：音楽生成の選好整合性向上に向けたオープンメトリック</a></div>
+  <div class="item-title-en">TuneJury: An Open Metric for Improving Music Generation Preference Alignment</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Yonghyun Kim, Junwon Lee, Haiwen Xia</span>
+    <span class="meta-age">2026/06/16 02:39</span>
+  </div>
+  <div class="item-summary">TuneJuryは、テキストプロンプトとオーディオクリップから音楽の選好スコアを予測する、テキストから音楽へのインスタンスレベルのペアワイズ報酬モデルです。公開されている人間の選好ラベル（アリーナ形式のA対B投票、メトリック整合性）をカバーするチェックポイントをリリースします。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.17005v1" target="_blank" rel="noopener">フロンティアAI評価の公開アーカイブのためのベイズ推論と意思決定監査</a></div>
+  <div class="item-title-en">Bayesian Inference and Decision Audits for Public Archives of Frontier AI Evaluations</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Yanan Long</span>
+    <span class="meta-age">2026/06/16 02:38</span>
+  </div>
+  <div class="item-summary">公開AI評価はしばしば最終的なリーダーボードとして読まれますが、その根底にある証拠は、報告規則、ベンチマーク改訂、および欠落によって形成された選択的な時系列です。LiveBenchおよびOpen LLM Leaderboard v2の繰り返し公開アーカイブは、主要な縦断的記録として機能します。LMArena</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16999v1" target="_blank" rel="noopener">信号なしの選択、表現による回復：凍結された小規模コードモデルのための事後偽造演算子の測定研究</a></div>
+  <div class="item-title-en">Selection Without Signal, Recovery Through Expression: A Measurement Study of Post-Hoc Falsification Operators for Frozen Small Code Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Mehmet Iscan</span>
+    <span class="meta-age">2026/06/16 02:36</span>
+  </div>
+  <div class="item-summary">凍結された小規模コードモデル（15億パラメータ以下、ファインチューニングなしでローカル実行）は、オフラインおよびプライバシー制約のある使用に適していますが、しばしばもっともらしいが誤ったプログラムを生成します。自然な解決策は、再トレーニングなしでモデルのサンプルを選択、検証、修復、または再処理する事後演算子です。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16996v1" target="_blank" rel="noopener">ActiveSAM：高速かつ正確なオープンボキャブラリーセグメンテーションのための画像条件付きクラスプルーニング</a></div>
+  <div class="item-title-en">ActiveSAM: Image-Conditional Class Pruning for Fast and Accurate Open-Vocabulary Segmentation</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Tran Dinh Tien, Zhiqiang Shen</span>
+    <span class="meta-age">2026/06/16 02:31</span>
+  </div>
+  <div class="item-summary">Segment Anything Model 3 (SAM 3) は、コンセプトプロンプトによるセグメンテーションのための強力な凍結バックボーンを提供しますが、オープンボキャブラリー意味セグメンテーション（OVSS）に直接適用するのは非効率的です。通常、フル解像度のデコーディングはデータセット全体のボキャブラリーに対して実行されますが、各画像には</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16995v1" target="_blank" rel="noopener">疑わしいときは、計画を立てる：反応的強化学習のためのコミットされた小規模言語モデルの熟慮</a></div>
+  <div class="item-title-en">When in Doubt, Plan It Out: Committed Small Language Model Deliberation for Reactive Reinforcement Learning</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Nathan Gavenski, Juarez Monteiro, Francisco Galuppo</span>
+    <span class="meta-age">2026/06/16 02:31</span>
+  </div>
+  <div class="item-summary">強化学習（RL）ポリシーは、明示的な熟慮がないため、不慣れな環境でしばしば低下します。我々は、高速で反応的なRLポリシーと低速で熟慮的な小規模言語モデル（SLM）プランナーを組み合わせたハイブリッドアーキテクチャであるPlan, Align, Commit, Think (PACT) を提案します。PACTは</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16989v1" target="_blank" rel="noopener">公共財の安定メニュー：AI支援の進歩</a></div>
+  <div class="item-title-en">Stable Menus of Public Goods: AI-Enabled Progress</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Sara Fish</span>
+    <span class="meta-age">2026/06/16 02:28</span>
+  </div>
+  <div class="item-summary">EC 2025の論文「公共財の安定メニュー」からの未解決問題を作業場として使用し、さまざまなAI-for-EconCS研究ワークフローの有効性を理解するための実験を実施します。具体的には、3つの質問を調査します。プロンプトに人間の直感を提供することは役立ちますか？自動化された</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16987v1" target="_blank" rel="noopener">調和関税率表コード分類のためのコンセンサスベースのエージェント型大規模言語モデルフレームワーク</a></div>
+  <div class="item-title-en">Consensus-based Agentic Large Language Model Framework for Harmonized Tariff Schedule Code Classification</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">AI全般</span>
+    <span class="meta-author">Truong Thanh Hung Nguyen, Khanh Van Quynh Nguyen, Hoang-Loc Cao</span>
+    <span class="meta-age">2026/06/16 02:24</span>
+  </div>
+  <div class="item-summary">正確な調和関税率表（HTS）コード分類は、海運ロジスティクスにおける通関、関税評価、貿易統計、および規制遵守に不可欠です。しかし、製品の説明が短く、不完全で、曖昧であることが多いため、正確なHTS分類は依然として困難です。</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16934v1" target="_blank" rel="noopener">コードインタープリターを用いた効果的な推論のための外部および内部プロパティの探索</a></div>
+  <div class="item-title-en">Exploring Extrinsic and Intrinsic Properties for Effective Reasoning with Code Interpreter</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Patomporn Payoungkhamdee, Napat Laosaengpha, Jenta Wonglertsakul</span>
+    <span class="meta-age">2026/06/16 01:34</span>
+  </div>
+  <div class="item-summary">コードインタープリター（CI）を用いた推論は、実行可能な計算と反復的な検証を通じて大規模言語モデル（LLM）の推論能力を強化するための効果的なパラダイムとして登場しています。その採用の増加にもかかわらず、効果的なコード推論の基礎となる行動特性は</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16910v1" target="_blank" rel="noopener">IMPACTeen：ティーンエイジャーのコミュニケーションデータセットにおける意図、操作、説得、注釈、および結果</a></div>
+  <div class="item-title-en">IMPACTeen: Intentions, Manipulation, Persuasion, Annotations, and Consequences in Teen Communication Dataset</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Aleksander Szczęsny, Wiktoria Mieleszczenko-Kowszewicz, Maciej Markiewicz</span>
+    <span class="meta-age">2026/06/16 01:16</span>
+  </div>
+  <div class="item-summary">IMPACTeenは、ティーンエイジャーの文脈における個人的、メディアベース、およびデジタル設定にまたがるテキストベースの社会的影響シナリオのデータセットです。1,021のテキスト、5,100の個々の注釈レコード、および社会的影響技術のゴールドラベルが含まれており、各テキストは5つの異なる</div>
+</div><div class="item-card">
+  <div class="item-title"><a href="https://arxiv.org/abs/2606.16908v1" target="_blank" rel="noopener">LESS Is More：拡散言語モデルのための相互安定性サンプリング</a></div>
+  <div class="item-title-en">LESS Is More: Mutual-Stability Sampling for Diffusion Language Models</div>
+  <div class="item-meta">
+    <span class="badge badge-cat">自然言語処理</span>
+    <span class="meta-author">Amr Mohamed, Guokan Shang, Michalis Vazirgiannis</span>
+    <span class="meta-age">2026/06/16 01:15</span>
+  </div>
+  <div class="item-summary">拡散大規模言語モデル（dLLM）は、マスクされたシーケンスを反復的に洗練することで、自己回帰デコーディングの有望な代替手段を提供し、並列トークン更新と双方向条件付けを可能にします。しかし、それらの実用的な効率は、固定数の</div>
+</div>
+    </div>
+  </div>
+</div>
+<div class="date-panel" id="panel-2026-06-16">
   <div class="stats-bar">
     <div class="stat-badge"><span>8</span>HN 記事</div>
     <div class="stat-badge"><span>25</span>arxiv 論文</div>
@@ -4435,404 +4702,6 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
     <span class="meta-age">2026/06/03 02:16</span>
   </div>
   <div class="item-summary">推論モデルは、拡張された思考連鎖によって精度を向上させるが、その長い出力はメモリと計算のボトルネックを生み出す。KVキャッシュ追い出し手法は、キャッシュから重要でないキーバリューペアを追い出すことでこのコストを削減するが、選択ベースのスパースな〜よりも悪い精度をもたらすことが多い</div>
-</div>
-    </div>
-  </div>
-</div>
-<div class="date-panel" id="panel-2026-06-03">
-  <div class="stats-bar">
-    <div class="stat-badge"><span>7</span>HN 記事</div>
-    <div class="stat-badge"><span>34</span>arxiv 論文</div>
-  </div>
-  <div class="columns">
-    <div>
-      <div class="col-header">
-        <h2>HackerNews</h2>
-        <span class="col-count">スコア順 · 直近48時間</span>
-      </div>
-      <div class="item-card">
-  <div class="item-title"><a href="https://jasonzweig.com/three-ways-to-get-paid/" target="_blank" rel="noopener">報酬を得る3つの方法 (2018年)</a></div>
-  <div class="item-title-en">Three Ways to Get Paid (2018)</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 84</span>
-    <span class="badge badge-comments">💬 51</span>
-    <span class="meta-author">by nate</span>
-    <span class="meta-age">2026/06/03 02:09</span>
-    <a href="https://news.ycombinator.com/item?id=48373054" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.nytimes.com/2026/06/02/technology/trump-executive-order-ai.html" target="_blank" rel="noopener">トランプ氏、AIモデルの監督に関する大統領令に署名</a></div>
-  <div class="item-title-en">Trump signs executive order granting oversight of AI models</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 29</span>
-    <span class="badge badge-comments">💬 14</span>
-    <span class="meta-author">by _alternator_</span>
-    <span class="meta-age">2026/06/03 01:40</span>
-    <a href="https://news.ycombinator.com/item?id=48372628" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.utoronto.ca/news/u-t-researchers-demonstrate-ai-worm-could-target-any-online-device" target="_blank" rel="noopener">トロント大学の研究者が、AIワームがあらゆるオンラインデバイスを標的にできることを実証</a></div>
-  <div class="item-title-en">U of T researchers demonstrate AI worm could target any online device</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 23</span>
-    <span class="badge badge-comments">💬 7</span>
-    <span class="meta-author">by shscs911</span>
-    <span class="meta-age">2026/06/03 12:47</span>
-    <a href="https://news.ycombinator.com/item?id=48379664" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.science.org/content/article/doubling-down-controversial-claims-microsoft-accelerates-quantum-computing-plans" target="_blank" rel="noopener">マイクロソフトが物議を醸す量子コンピューティングの主張をさらに強く推し進める</a></div>
-  <div class="item-title-en">Microsoft Doubles Down on Controversial Quantum Computing Claims</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 21</span>
-    <span class="badge badge-comments">💬 18</span>
-    <span class="meta-author">by igortru</span>
-    <span class="meta-age">2026/06/03 15:04</span>
-    <a href="https://news.ycombinator.com/item?id=48380516" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://dmanco.dev/2025/08/17/fear-not-even-ai-engineers-will-be-replaced-by-ai.html" target="_blank" rel="noopener">AIエンジニアもAIに置き換えられることから安全ではない</a></div>
-  <div class="item-title-en">AI Engineers aren&#x27;t safe from being replaced by AI</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 11</span>
-    <span class="badge badge-comments">💬 9</span>
-    <span class="meta-author">by Doch88</span>
-    <span class="meta-age">2026/06/03 16:27</span>
-    <a href="https://news.ycombinator.com/item?id=48380987" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://twitter.com/jeremy__tien/status/2061829186608627717" target="_blank" rel="noopener">GPTとClaude、両者ともシャットダウンを回避</a></div>
-  <div class="item-title-en">GPT and Claude both subvert shutdown</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 10</span>
-    <span class="badge badge-comments">💬 2</span>
-    <span class="meta-author">by williamkuszmaul</span>
-    <span class="meta-age">2026/06/03 01:05</span>
-    <a href="https://news.ycombinator.com/item?id=48372080" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://www.msn.com/en-us/money/companies/gitlab-announces-14-reduction-in-global-workforce-expects-to-exit-22-countries/ar-AA24FoMd" target="_blank" rel="noopener">GitLabがAI中心の組織再編で従業員を14%削減し、22カ国から撤退</a></div>
-  <div class="item-title-en">GitLab to cut workforce by 14% and exit 22 countries in restructure around AI</div>
-  <div class="item-meta">
-    <span class="badge badge-score">▲ 10</span>
-    <span class="badge badge-comments">💬 0</span>
-    <span class="meta-author">by nomilk</span>
-    <span class="meta-age">2026/06/03 14:14</span>
-    <a href="https://news.ycombinator.com/item?id=48380169" target="_blank" rel="noopener" class="hn-link">HNで議論を見る →</a>
-  </div>
-</div>
-    </div>
-    <div>
-      <div class="col-header">
-        <h2>arxiv 新着論文</h2>
-        <span class="col-count">cs.AI / cs.LG / cs.CL · 直近2日</span>
-      </div>
-      <div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03988v1" target="_blank" rel="noopener">想像的知覚トークンがマルチモーダル言語モデルにおける空間推論を強化する</a></div>
-  <div class="item-title-en">Imaginative Perception Tokens Enhance Spatial Reasoning in Multimodal Language Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Mahtab Bigverdi, Lindsey Li, Weikai Huang</span>
-    <span class="meta-age">2026/06/03 02:59</span>
-  </div>
-  <div class="item-summary">視覚言語モデル（VLM）は多くのタスクで優れた性能を発揮しますが、重要な情報が直接観測できない場合の空間推論にはまだ苦戦しています。このような問題の多くは、想像的知覚を必要とします。例えば、見えない視点から何が見えるかを推測すること、遮蔽された空間を通る経路をたどること、または統合された理解をすることなどです。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03985v1" target="_blank" rel="noopener">Humanoid-GPT：ゼロショットモーション追跡のためのデータと構造のスケーリング</a></div>
-  <div class="item-title-en">Humanoid-GPT: Scaling Data and Structure for Zero-Shot Motion Tracking</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Zekun Qi, Xuchuan Chen, Dairu Liu</span>
-    <span class="meta-age">2026/06/03 02:59</span>
-  </div>
-  <div class="item-summary">我々は、全身制御のための数十億規模のモーションコーパスで訓練された、因果的アテンションを持つGPTスタイルのTransformerであるHumanoid-GPTを導入します。データ不足と敏捷性-汎化のトレードオフによって制約されていた従来の浅いMLPトラッカーとは異なり、Humanoid-GPTは20億フレームのリターゲットされたコーパスで事前訓練されています。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03979v1" target="_blank" rel="noopener">言語モデルには睡眠が必要：自己修正と記憶の統合を学習する</a></div>
-  <div class="item-title-en">Language Models Need Sleep: Learning to Self-Modify and Consolidate Memories</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Ali Behrouz, Farnoosh Hashemi, Vahab Mirrokni</span>
-    <span class="meta-age">2026/06/03 02:56</span>
-  </div>
-  <div class="item-summary">過去数十年間で、機械学習アルゴリズムの設計には目覚ましい進歩が見られました。タスク固有の浅いモデルに関する初期の研究から、より一般的な深層大規模言語モデル（LLM）へと発展してきました。即時の予測や文脈内学習を必要とするタスクで有望な結果を示しているにもかかわらず、</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03976v1" target="_blank" rel="noopener">結合問題の定式化</a></div>
-  <div class="item-title-en">Formalizing the Binding Problem</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Lianghuan Huang, Yihao Li, Saeed Salehi</span>
-    <span class="meta-age">2026/06/03 02:56</span>
-  </div>
-  <div class="item-summary">世界の表現は、おそらく特徴に関する情報（例：何かが青い、何かが円である）だけでなく、どの特徴が同じオブジェクトの一部であるかに関する情報（例：円は青い）も含まれています。これを結合情報と呼びます。場面を理解する能力を持ついかなるシステムも、</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03969v1" target="_blank" rel="noopener">大規模推論モデルにおける忠実な信頼度表現の定量化</a></div>
-  <div class="item-title-en">Quantifying Faithful Confidence Expression in Large Reasoning Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Areeb Gani, Asal Meskin, Gabrielle Kaili-May Liu</span>
-    <span class="meta-age">2026/06/03 02:53</span>
-  </div>
-  <div class="item-summary">信頼できる不確実性コミュニケーションはLLMの信頼性にとって不可欠ですが、忠実な較正（FC）――モデルの内在的な信頼度と（言語的に）表現された信頼度との一致――は、依然として失敗モードです。この課題は、拡張された推論を行う大規模推論モデル（LRM）にとって重要です。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03968v1" target="_blank" rel="noopener">QUBRIC: 検証可能な報酬を超えたRLのためのクエリとルーブリックの共同設計</a></div>
-  <div class="item-title-en">QUBRIC: Co-Designing Queries and Rubrics for RL Beyond Verifiable Rewards</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Rongzhi Zhang, Rui Feng, Zhihan Zhang</span>
-    <span class="meta-age">2026/06/03 02:53</span>
-  </div>
-  <div class="item-summary">ルーブリックベースの強化学習は、検証可能な報酬を超えて強化学習を拡張するための有望な道筋ですが、既存の手法ではクエリ分布を固定として扱いながらルーブリックを最適化しています。我々は構造的なボトルネックを特定しました。それは、ルーブリックの品質がクエリ構造によって制約されるというものです。自由形式のクエリは、非常に多様な応答を生み出すため、</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03967v1" target="_blank" rel="noopener">AlignAtt4LLM: IWSLT 2026同時音声翻訳タスクにおけるデコーダオンリーLLM向け高速AlignAtt</a></div>
-  <div class="item-title-en">AlignAtt4LLM: Fast AlignAtt for Decoder-Only LLMs at IWSLT 2026 Simultaneous Speech Translation Task</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Quentin Fuxa, Dominik Macháček</span>
-    <span class="meta-age">2026/06/03 02:52</span>
-  </div>
-  <div class="item-summary">我々は、英語からドイツ語、イタリア語、中国語へのIWSLT 2026同時音声翻訳システムであるAlignAtt4LLMについて記述します。このシステムは同期カスケード型です。強制アライメントを備えたQwen3-ASRは、増分的に更新されるソーストランスクリプトを生成し、Gemma-4 E4B-itはそのプレフィックスをMTの条件下で翻訳します。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03965v1" target="_blank" rel="noopener">効率的で制御可能なLLM推論のためのエージェント的な思考連鎖誘導</a></div>
-  <div class="item-title-en">Agentic Chain-of-Thought Steering for Efficient and Controllable LLM Reasoning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Yu Xia, Zhouhang Xie, Xin Xu</span>
-    <span class="meta-age">2026/06/03 02:51</span>
-  </div>
-  <div class="item-summary">大規模言語モデルは、拡張された思考連鎖推論によって最終回答の精度を向上させますが、しばしばトークンを非効率的に消費し、推論時の制御がほとんどできません。既存の効率的な推論方法は、思考の長さを短縮したり、早期停止したり、痕跡を圧縮したりすることで思考の長さを制御しますが、</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03963v1" target="_blank" rel="noopener">視覚条件付きUAVナビゲーションのための自己洗練型エージェント強化学習</a></div>
-  <div class="item-title-en">Self-Refining Agentic Reinforcement Learning for Vision-Conditioned UAV Navigation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Roohan Ahmed Khan, Yasheerah Yaqoot, Muhammad Ahsan Mustafa</span>
-    <span class="meta-age">2026/06/03 02:50</span>
-  </div>
-  <div class="item-summary">深層強化学習は、自律型ロボットが複雑なナビゲーションタスクを学習するのを可能にする上で強い可能性を示してきました。しかし、その実用的な利用は依然として、人間が設計した報酬関数と、時間と労力がかかり高い成功率を保証しない繰り返しの手動微調整に大きく依存しています。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.03962v1" target="_blank" rel="noopener">報酬の不確実性を用いて強化学習における多様な行動を誘導する</a></div>
-  <div class="item-title-en">Using Reward Uncertainty to Induce Diverse Behaviour in Reinforcement Learning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Anthony GX-Chen, Ankit Anand, Gheorghe Comanici</span>
-    <span class="meta-age">2026/06/03 02:50</span>
-  </div>
-  <div class="item-summary">古典的な強化学習（RL）は通常、スカラー報酬の期待合計を最大化する決定論的方策を求めます。しかし、言語モデルの微調整や科学的発見のような現代のアプリケーションでは多様性が要求されます。エントロピー正則化や多様性ボーナスなどの既存の対策は、</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02578v1" target="_blank" rel="noopener">知覚摂動と報酬モデリングを介した、審査員としてのマルチモーダルLLMにおける知覚判断バイアスの軽減</a></div>
-  <div class="item-title-en">Mitigating Perceptual Judgment Bias in Multimodal LLM-as-a-Judge via Perceptual Perturbation and Reward Modeling</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Seojeong Park, Jiho Choi, Junyong Kang</span>
-    <span class="meta-age">2026/06/02 02:59</span>
-  </div>
-  <div class="item-summary">近年のマルチモーダル大規模言語モデルは強力な推論能力を示しているが、自動評価者としての信頼性は重大な弱点によって制限されている。すなわち、視覚的証拠がテキストの手がかりと矛盾する場合、MLLMの審査員は、知覚的に正しい回答よりももっともらしい説明を評価する傾向がある。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02576v1" target="_blank" rel="noopener">ProtoAda: マルチモーダル継続的命令チューニングのためのプロトタイプガイド型適応アダプター拡張と幾何学的統合</a></div>
-  <div class="item-title-en">ProtoAda: Prototype-Guided Adaptive Adapter Expansion and Geometric Consolidation for Multimodal Continual Instruction Tuning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Yu-Cheng Shi, Zhen-Hao Xie, Jun-Tao Tang</span>
-    <span class="meta-age">2026/06/02 02:59</span>
-  </div>
-  <div class="item-summary">マルチモーダル大規模言語モデル（MLLM）は、命令チューニングによって強力な性能を達成するが、実世界の展開には、新しい視覚言語能力を継続的に獲得する必要があり、マルチモーダル継続的命令チューニング（MCIT）が不可欠となる。タスク間の干渉を減らし、促進するために。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02569v1" target="_blank" rel="noopener">AdaCodec: ビデオMLLMのための予測型視覚コード</a></div>
-  <div class="item-title-en">AdaCodec: A Predictive Visual Code for Video MLLMs</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Haowen Hou, Zhen Huang, Zheming Liang</span>
-    <span class="meta-age">2026/06/02 02:56</span>
-  </div>
-  <div class="item-summary">ビデオは時間的に冗長である。隣接するフレームは通常、ほとんどのオブジェクト、背景、レイアウトを共有する。しかし、既存のビデオマルチモーダル大規模言語モデル（ビデオMLLM）は通常、各サンプリングフレームを独立したRGB画像としてエンコードするため、視覚トークンが以前のフレームにすでに存在するコンテンツを繰り返す原因となる。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02568v1" target="_blank" rel="noopener">ClinEnv: エージェントのためのインタラクティブな多段階長期間EHR環境</a></div>
-  <div class="item-title-en">ClinEnv: An Interactive Multi-Stage Long Horizon EHR Environment for Agents</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Yuxing Lu, Yushuhong Lin, Wenqi Shi</span>
-    <span class="meta-age">2026/06/02 02:56</span>
-  </div>
-  <div class="item-summary">臨床診療は、列挙された選択肢から答えを選ぶことではない。医師は不確実な状況下で、異種情報を段階的に収集し、逐次的かつ不可逆的な決定を下す。静的なベンチマークではこれを調査できず、既存のインタラクティブな医療ベンチマークはそれぞれ何らかの妥協を伴う。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02563v1" target="_blank" rel="noopener">IntraShuffler: 異種DP連合学習のためのプライバシー保護フレームワーク</a></div>
-  <div class="item-title-en">IntraShuffler: A Privacy Preserving Framework for Heterogeneous DP Federated Learning</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Farhin Farhad Riya, Olivera Kotevska, Jinyuan Stella Sun</span>
-    <span class="meta-age">2026/06/02 02:54</span>
-  </div>
-  <div class="item-summary">連合学習（FL）における異種差分プライバシー（HDP）は、クライアントが機関の方針とデータ感度に応じて個別のプライバシー予算（$\varepsilon_i$）を選択することを可能にする。実際には、多くのHDP-FLシステムはモデルの有用性を向上させるために$\varepsilon$を考慮したサーバー集約を採用している。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02562v1" target="_blank" rel="noopener">信頼できる推論を通じた許容的安全性：保証された対話型ロボットのための検証可能な信念空間ニューラル安全フィルター</a></div>
-  <div class="item-title-en">Permissive Safety Through Trusted Inference: Verifiable Belief-Space Neural Safety Filters for Assured Interactive Robotics</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Haimin Hu</span>
-    <span class="meta-age">2026/06/02 02:54</span>
-  </div>
-  <div class="item-summary">人と対話する自律ロボットは、人の好み、目標、能力、協力意欲などの人間が誘発する不確実性の下で、安全かつ効率的な決定を下す必要がある。安全フィルターは、そのモジュラー設計のため、対話型ロボットの安全性を確保するための一般的なアプローチである。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02559v1" target="_blank" rel="noopener">層からサブモジュールへ：置換ベースのLLM圧縮における粒度の再考</a></div>
-  <div class="item-title-en">From Layers to Submodules: Rethinking Granularity in Replacement-Based LLM Compression</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Elia Cunegatti, Marcus Vukojevic, Erik Nielsen</span>
-    <span class="meta-age">2026/06/02 02:52</span>
-  </div>
-  <div class="item-summary">大規模言語モデル（LLM）の訓練後圧縮は、アーキテクチャ全体の一部を削除するか、適合するモジュールに置き換える。既存の置換ベースの手法は、全層粒度と連続選択という2つの設計制約を共有している。我々はこの制約が過剰であると主張する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02556v1" target="_blank" rel="noopener">HERO&#x27;S JOURNEY: テキストゲームによる複雑なルール推論のテスト</a></div>
-  <div class="item-title-en">HERO&#x27;S JOURNEY: Testing Complex Rule Induction with Text Games</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Anshun Asher Zheng, Kanishka Misra, David I. Beaver</span>
-    <span class="meta-age">2026/06/02 02:51</span>
-  </div>
-  <div class="item-summary">我々は、HERO&#x27;S JOURNEYを、目標指向のエピソード型タスクにおけるルール推論のベンチマークとして導入する。エージェントは、デモンストレーションから隠れたルールを推論し、多段階の実行を通じてそれらに基づいて行動しなければならない。HERO&#x27;S JOURNEYは、属性および手続き的推論ファミリーにわたる8つのタスクをカバーし、それぞれ4つの戦略を持つ。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02552v1" target="_blank" rel="noopener">奥行きの曖昧さのモデリング：フライングポイントフリーの奥行き推定のための混合密度表現</a></div>
-  <div class="item-title-en">Modeling Depth Ambiguity: A Mixture-Density Representation for Flying-Point-Free Depth Estimation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Siyuan Bian, Congrong Xu, Jun Gao</span>
-    <span class="meta-age">2026/06/02 02:50</span>
-  </div>
-  <div class="item-summary">奥行き推定の進歩にもかかわらず、フライングポイントは依然として永続的な失敗モードである。オブジェクト境界付近で、奥行き推定器は前景と背景の表面間の空きスペースに偽の3Dポイントを予測することが多い。このアーティファクトは、各ピクセルに標準的なモデリング選択を割り当てることに起因すると我々は考える。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02548v1" target="_blank" rel="noopener">SN-WER: 多言語Indic ASR評価のためのスクリプト正規化WER</a></div>
-  <div class="item-title-en">SN-WER: Script-Normalized WER for Multi-Script Indic ASR Evaluation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Priyaranjan Pattnayak</span>
-    <span class="meta-age">2026/06/02 02:49</span>
-  </div>
-  <div class="item-summary">単語誤り率（WER）は自動音声認識（ASR）の主要な評価指標だが、参照と仮説が同じ単語を異なるスクリプトでエンコードする場合、誤りを過大評価することがある。この問題は、ASRモデルがローマ字化されたテキストを出力する可能性がある多言語環境で一般的である。我々はスクリプト正規化を提案する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02545v1" target="_blank" rel="noopener">証拠増強型機械学習アプローチを用いた救急部トリアージノートからの自己傷害サーベイランスの転移可能性</a></div>
-  <div class="item-title-en">Transferable Self-Harm Surveillance from Emergency Department Triage Notes Using an Evidence-Augmented Machine Learning Approach</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Liuliu Chen, Gowri Rajaram, Eleanor Bailey</span>
-    <span class="meta-age">2026/06/02 02:48</span>
-  </div>
-  <div class="item-summary">自己傷害は公衆衛生上の主要な懸念事項だが、診断コードの感度が低いため、病院の受診に依存する現在のサーベイランスは不十分である。救急部（ED）のトリアージノートは、初診時に記録される、受診の簡潔な要約であり、機会を提供する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02544v1" target="_blank" rel="noopener">SimSD: Diffusion言語モデルにおけるシンプルな推測的デコーディング</a></div>
-  <div class="item-title-en">SimSD: Simple Speculative Decoding in Diffusion Language Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Junxia Cui, Haotian Ye, Runchu Tian</span>
-    <span class="meta-age">2026/06/02 02:46</span>
-  </div>
-  <div class="item-summary">Diffusion大規模言語モデル（dLLM）は最近、自己回帰型（AR）LLMに代わる有望な選択肢として登場し、並列またはブロック単位のデコーディングにより高速な推論を提供する。しかし、そのマスク言語モデリングの定式化は、標準的なトークンレベルの推測的デコーディングとは依然として互換性がない。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02540v1" target="_blank" rel="noopener">SkillHarm: 自動構築によるライフサイクル認識スキルベース攻撃</a></div>
-  <div class="item-title-en">SkillHarm: Lifecycle-Aware Skill-Based Attacks via Automated Construction</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Yuting Ning, Zhehao Zhang, Yash Kumar Lal</span>
-    <span class="meta-age">2026/06/02 02:45</span>
-  </div>
-  <div class="item-summary">エージェントスキルは、エージェントが暗黙的に従い実行することが期待されるため、エージェントのワークフローにおいて特権的な位置を占め、サードパーティのスキルを脆弱な攻撃対象としている。既存の研究では、スキルベース攻撃によって引き起こされる危険なエージェントの行動が明らかになっているが、それらは主に評価している。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02536v1" target="_blank" rel="noopener">適応エージェントの行動軌跡の追跡</a></div>
-  <div class="item-title-en">Tracking the Behavioral Trajectories of Adapting Agents</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Jonah Leshin, Manish Shah, Ian Timmis</span>
-    <span class="meta-age">2026/06/02 02:40</span>
-  </div>
-  <div class="item-summary">スキルファイル、メモリファイル、行動設定ファイルといったテキストファイルは、現代のエージェントがどのように行動するかを定義する上で中心的な役割を果たす。人間やエージェント自身による編集を通じて、これらのファイルは時間の経過とともに進化し、将来の対話におけるエージェントの行動を直接的に指示する可能性がある。本稿では、ある手法を提示する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02530v1" target="_blank" rel="noopener">SafeSteer: 効率的な安全アライメントのための局所化されたオンポリシー蒸留</a></div>
-  <div class="item-title-en">SafeSteer: Localized On-Policy Distillation for Efficient Safety Alignment</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Hao Li, Jingkun An, Zijun Song</span>
-    <span class="meta-age">2026/06/02 02:38</span>
-  </div>
-  <div class="item-summary">大規模言語モデル（LLM）を人間の価値観に合わせると、その一般的な能力が低下することが多く、これを「アライメント税」と呼ぶ。既存の手法は、この問題を二重の目的のバランスをとることで軽減しているが、これは大規模な汎用データや補助的な報酬モデルに大きく依存している。本論文では、次のように主張する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02528v1" target="_blank" rel="noopener">金融大規模言語モデルにおける資産固有の嗜好の監査：ビットコイン表現とポートフォリオ配分からの証拠</a></div>
-  <div class="item-title-en">Auditing Asset-Specific Preferences in Financial Large Language Models: Evidence from Bitcoin Representations and Portfolio Allocation</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Wenbin Wu</span>
-    <span class="meta-age">2026/06/02 02:36</span>
-  </div>
-  <div class="item-summary">大規模言語モデルは現在、ロボアドバイザーや取引エージェントに力を与えているが、それらが特定の資産に対して組み込みのバイアスを持っているかどうかはほとんどテストされていない。我々は3つの質問をする。LLMは特定の金融商品に体系的に偏りがあるか。それらの事前の因果的レバレッジを持つ内部表現は可能か。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02526v1" target="_blank" rel="noopener">なぜハイパーパラメータに優しい最適化ではないのか？Long-Tailed Recognitionのための単調適応型ノルムリスケーリングアプローチ</a></div>
-  <div class="item-title-en">Why Not Hyperparameter-Friendly Optimisation? A Monotonic Adaptive Norm Rescaling Approach For Long-Tailed Recognition</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">AI全般</span>
-    <span class="meta-author">Shuo Zhang, Chenqi Li, Tingting Zhu</span>
-    <span class="meta-age">2026/06/02 02:34</span>
-  </div>
-  <div class="item-summary">ロングテール認識は、深層学習にとって大きな課題である。表現学習と分類器再訓練を分離する二段階デカップリングパラダイムは、有望な解決策を提供する。分類器再訓練段階では、適応型ノルムリスケーリングが一般的な手法である。これは調整する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02523v1" target="_blank" rel="noopener">FigSIM: 自殺ミームにおける自殺の深刻度と比喩表現のきめ細かいデータセット</a></div>
-  <div class="item-title-en">FigSIM: A Dataset for Fine-grained Suicide Severity and Figurative Language in Suicide Memes</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">自然言語処理</span>
-    <span class="meta-author">Liuliu Chen, Elise R. Carrotte, Brian E. Chapman</span>
-    <span class="meta-age">2026/06/02 02:32</span>
-  </div>
-  <div class="item-summary">自殺ミームとは、自殺に関連する考えを表現したり、自殺に関連する問題についてコメントしたりするために使用されるミームである。自殺ミームはソーシャルメディアでますます一般的になっているが、依然として十分に理解されておらず、潜在的に有害である。それらの特徴をよりよく理解し、適切な開発が緊急に必要とされている。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02521v1" target="_blank" rel="noopener">One-Step生成モデルのためのドリフティング選好最適化</a></div>
-  <div class="item-title-en">Drifting Preference Optimization for One-Step Generative Models</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Zhou Jiang, Yandong Wen, Zhen Liu</span>
-    <span class="meta-age">2026/06/02 02:31</span>
-  </div>
-  <div class="item-summary">ワンステップのテキストから画像への生成モデルは、1回のフォワードパスで画像を生成するため展開には魅力的だが、それらの選好ファインチューニングは依然として困難である。標準的なアラインメント手法は、ポリシーの尤度、デノイズ軌跡、微分可能な報酬勾配、またはテスト入力に大きく依存する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02515v1" target="_blank" rel="noopener">一意解を持つ混合モデルの安定輸送のための双凸定式化</a></div>
-  <div class="item-title-en">A Biconvex Formulation for Stable Transport of Mixture Models with a Unique Solution</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Yeganeh Marghi, Kelly Jin, Uygar Sümbül</span>
-    <span class="meta-age">2026/06/02 02:26</span>
-  </div>
-  <div class="item-summary">最適輸送（OT）は、確率分布間のマッピングのための原理的なフレームワークを提供する。広範な進歩にもかかわらず、OTを大規模データに適用することは計算上依然として困難であり、結果として得られる点ごとの輸送計画は解釈が難しいことが多い。我々は最適な混合物を導入する。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02507v1" target="_blank" rel="noopener">自動発見に向けて：逆材料設計における生成モデル、マルチモーダル学習、クローズドループワークフローのレビュー</a></div>
-  <div class="item-title-en">Towards Automated Discovery: A Review of Generative Models, Multimodal Learning and Closed-Loop Workflows in Inverse Materials Design</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Anand Babu, Rogério Almeida Gouvêa, Gian-Marco Rignanese</span>
-    <span class="meta-age">2026/06/02 02:20</span>
-  </div>
-  <div class="item-summary">逆材料設計は、材料発見を順方向予測から、物理的制約の下で目的を満たす候補のターゲット提案へと移行させている。ここでは、生成結晶構造モデリング、マルチモーダル学習、および逆材料設計のためのクローズドループ設計パイプラインにおける最近の進歩をレビューする。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02490v1" target="_blank" rel="noopener">正定値行列上のDNNにおける合同ベースアーキテクチャの表現力</a></div>
-  <div class="item-title-en">Expressivity of congruence-based architectures for DNNs on positive-definite matrices</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Antonin Oswald, Estelle Massart</span>
-    <span class="meta-age">2026/06/02 02:01</span>
-  </div>
-  <div class="item-summary">本研究は、対称正定値行列を分類するためのニューラルアーキテクチャを研究し、合同型レイヤーに焦点を当てている。このレイヤーでは、入力行列は（おそらく長方形の）重み行列$W$とその転置によって左右から乗算される。このようなレイヤーは、有名なものの核となる。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02484v1" target="_blank" rel="noopener">Iteris: 計算数学のためのエージェント的リサーチループ</a></div>
-  <div class="item-title-en">Iteris: Agentic Research Loops for Computational Mathematics</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Leheng Chen, Zihao Liu, Wanyi He</span>
-    <span class="meta-age">2026/06/02 01:54</span>
-  </div>
-  <div class="item-summary">大規模言語モデルとエージェントAIシステムの最近の進歩は、競技問題の解決から研究レベルの予想への取り組みまで、数学的発見において大きな進展を可能にした。しかし、計算数学における未解決の問題は、比較的注目されてこなかった。</div>
-</div><div class="item-card">
-  <div class="item-title"><a href="https://arxiv.org/abs/2606.02475v1" target="_blank" rel="noopener">有限差分PDEソルバーにおける適応メッシュ細分化のための物理情報残差</a></div>
-  <div class="item-title-en">Physics-Informed Residuals for Adaptive Mesh Refinement in Finite-Difference PDE Solvers</div>
-  <div class="item-meta">
-    <span class="badge badge-cat">機械学習</span>
-    <span class="meta-author">Henry Kasumba, Ronald Katende</span>
-    <span class="meta-age">2026/06/02 01:47</span>
-  </div>
-  <div class="item-summary">古典的な有限差分ソルバーは、偏微分方程式の信頼できるツールであり続けるが、その効率はメッシュ解像度の配置に依存する。解の困難さが急勾配、前線、振動、または制約の近くに局所化されている場合、一様な細分化は自由度を浪費する可能性がある。</div>
 </div>
     </div>
   </div>
