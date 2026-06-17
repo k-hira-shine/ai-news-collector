@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。詳細は下「2026-06-18」節と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -23,6 +23,7 @@
 6. **未了（根本対応）**: GH_PAT のサーバー側中継。revoke 済みで止血中、根本対応は未着手（[[gh-pat-public-exposure]]）。
 7. ~~**要確認（6/18朝）**: Buzzガードレール変更後、Buzz Daily Health Check が success に戻るか。~~ ⏳ **6/18時点では未反映＝想定どおり（バグではない）。6/19に自己回復見込み**:
    `check_buzz_health.py` は `data/buzz_collection_metrics.jsonl` の**最終行 `guardrail_status` を読むだけ（再計算しない）**。最後のbuzz収集は **6/17 03:40 JST（run 27639857197）＝修正b37951c push（6/17夜）より前**なので、旧コードが書いた `guardrail_status=warning`（retention=50%/overlap=95%）が残り、6/18 04:56 JSTのヘルスチェック（run 27715836103）はそれを読んで失敗。指標が6/17失敗時と完全一致なのはstale行を読んでいるため。**修正自体は正しい**（`evaluate_guardrail_status` は overlap≥75→pass、6/17データは overlap=95%→pass。テスト12件OK・本日再実行で確認）。buzz-collect cron=`JST 月水金 02:10`なので**次回6/19 02:10（金）が新コードでpass行を書き、6/19 04:15のヘルスチェックでgreen復帰見込み**。6/18の失敗は実行済みのため追加失敗メールなし。**手動収集は見送り（自己回復を待つ、Apify$0.18節約）。6/19朝にgreen復帰を確認すれば対応完了。**
+   **⏰ 自動確認をセット済み**: claude.ai のクラウドルーティン（routine ID `trig_01YStz3sHazvZCi6Ktkt7fYa`、**2026-06-19 05:00 JST に一度だけ**実行）が green 復帰を判定する。**success ならこのファイル(handoff.md)の項目7を自動で「✅ 完了(6/19)」に書き換えて commit & push する**ので、6/19 のこのファイルは自動更新されている可能性がある。詳細・判定ロジックは下「2026-06-18」節E。
 
 ---
 
@@ -48,6 +49,16 @@
 
 ### D. 残作業（前日から変化なし）
 - 法務X検索クエリ2本追加（未着手）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
+
+### E. 6/19 green復帰の自動確認ジョブをセット（claude.ai クラウドルーティン）
+- **何**: `/schedule` で作成したワンショットのクラウドエージェント。**routine ID = `trig_01YStz3sHazvZCi6Ktkt7fYa`**、名前「Buzz Health Check 6/19 green復帰確認」、model=claude-sonnet-4-6、repo=ai-news-collector。
+- **いつ**: **2026-06-19 05:00 JST（= 2026-06-18T20:00:00Z）に一度だけ**（`run_once_at`、発火後 auto-disable）。6/19 04:15 のヘルスチェックより後に走る設計。
+- **判定ロジック**（プロンプトに内蔵）: まず `git pull --rebase` し、`data/buzz_collection_metrics.jsonl` の**最終行を主判定**（checked_at が 6/19 かつ `guardrail_status=="pass"`）、`gh run list` を補助（gh未認証ならスキップしメトリクス行を正とする）。
+  - **success**（6/19行が pass / health check success）→ **handoff.md の項目7を「✅ 完了(6/19)」に書き換え、最終更新日も 6/19 に更新して commit & push**（push拒否時は pull --rebase 後 再push）。← つまり6/19にこのファイルが自動更新され得る。
+  - **6/19収集行がまだ無い/古い**（buzz-collect 遅延）→ commit せず「手動再確認推奨」と報告のみ。
+  - **failure**（6/19行が warning ＝真に overlap<75）→ stale行ではなく真の問題。`gh run view --log-failed` でログ取得し overlap値・原因仮説を添えて報告、commit しない。
+- **結果の届き先**: https://claude.ai/code/routines/trig_01YStz3sHazvZCi6Ktkt7fYa （ルーティンの削除はこのUIから。CLIからは不可）。
+- **次担当へ**: 6/19にこのファイルへ自動コミットが入っていれば、それが自動ジョブによる項目7の完了反映。手動チェック時はまず最新の handoff を pull して二重作業を避けること。
 
 ---
 
