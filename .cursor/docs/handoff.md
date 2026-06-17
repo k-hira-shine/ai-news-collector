@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。詳細は下「2026-06-18」節と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -21,7 +21,33 @@
    ② `must_follow_count=92` → 連続ゼロ回避。**残: index「規制/政策」リンク一覧の目視確認のみ**（要ブラウザ）。
 5. **未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）は未着手。実施時は config 反映後にApify増分を確認。
 6. **未了（根本対応）**: GH_PAT のサーバー側中継。revoke 済みで止血中、根本対応は未着手（[[gh-pat-public-exposure]]）。
-7. **要確認（6/18朝）**: Buzzガードレール変更後、**次回のBuzz収集（schedule）→ Buzz Daily Health Check が success に戻るか**を確認。失敗メールが止まれば対応完了。詳細は下「2026-06-17 夜」節。
+7. ~~**要確認（6/18朝）**: Buzzガードレール変更後、Buzz Daily Health Check が success に戻るか。~~ ⏳ **6/18時点では未反映＝想定どおり（バグではない）。6/19に自己回復見込み**:
+   `check_buzz_health.py` は `data/buzz_collection_metrics.jsonl` の**最終行 `guardrail_status` を読むだけ（再計算しない）**。最後のbuzz収集は **6/17 03:40 JST（run 27639857197）＝修正b37951c push（6/17夜）より前**なので、旧コードが書いた `guardrail_status=warning`（retention=50%/overlap=95%）が残り、6/18 04:56 JSTのヘルスチェック（run 27715836103）はそれを読んで失敗。指標が6/17失敗時と完全一致なのはstale行を読んでいるため。**修正自体は正しい**（`evaluate_guardrail_status` は overlap≥75→pass、6/17データは overlap=95%→pass。テスト12件OK・本日再実行で確認）。buzz-collect cron=`JST 月水金 02:10`なので**次回6/19 02:10（金）が新コードでpass行を書き、6/19 04:15のヘルスチェックでgreen復帰見込み**。6/18の失敗は実行済みのため追加失敗メールなし。**手動収集は見送り（自己回復を待つ、Apify$0.18節約）。6/19朝にgreen復帰を確認すれば対応完了。**
+
+---
+
+## 2026-06-18 日次チェック（Apify・Gemini・他Actions合格 / Buzz Health Checkの失敗は想定どおりで6/19自己回復見込み）
+
+> このセッションでやったこと: ①日次チェック（gh run list / check_cost.py / gemini_usage.py）→ ②Buzz Health Checkが6/18も失敗していたため原因特定 → ③「バグではなくstale行の読み込み」と確定し新コードの正しさをテストで再確認 → ④手動収集は見送り自己回復を待つと判断 → ⑤本記録。
+
+### A. GitHub Actions
+- News朝便（run 27708894047 → 注: gh上の最新News run, 6/18 02:53 JST相当）/ Money / pages すべて **success**。
+- **Buzz Daily Health Check = failure（run 27715836103, 6/18 04:56 JST）**。← 下Cで詳説。バグではない。
+- 兄弟プロジェクト等の他エラーメールなし。
+
+### B. コスト
+- **Apify = 合格**: 施策後窓 6/11〜6/17 平均 **月換算$9.60**（横ばい）。日次は前節Bの表どおり振れもBuzz full日由来で設計どおり。※窓に6/10以前を混ぜない（[[cost-check-window-pitfall]]）。
+- **Gemini = 合格**: 直近 6/14〜6/17 は **$0.22〜0.28/日**（Flash化後）。月換算 約$7〜8。6/11・6/13のpro spike($0.8/$0.76)は施策前後の analyzer:stage2(pro) によるもので最近は解消。2系統合算 ≈ 月$17前後で従来どおり。
+
+### C. Buzz Daily Health Check の失敗＝想定どおり（バグではない・要記憶）
+- **症状**: 6/18 04:56 JST も exit 1。ログ指標は **6/17失敗時と完全一致**（fetched=1271 / top20_retention=50.0% / ranking_overlap=95.0% / cost=$0.1824 / ERROR: ランキング保持率が基準未満）。
+- **原因**: `check_buzz_health.py` は `data/buzz_collection_metrics.jsonl` の**最終行の `guardrail_status` を読むだけで再計算しない**（コード40-42行）。最終行は **6/17 03:43 JST 収集（旧コード）で `guardrail_status="warning"`**。修正 b37951c は 6/17 夜 push のため、**まだ新コードでのbuzz収集が走っておらず**stale行が残存。指標一致はこのため。
+- **修正の正しさ確認**: `evaluate_guardrail_status(overlap, min=75, fallback)` は `overlap≥75 → "pass"`（retention無関係）。6/17データ overlap=95% → **pass**。`python3 -m unittest tests.test_run_buzz tests.test_check_buzz_health` → **12件OK**（本日再実行）。
+- **回復見込み**: buzz-collect cron=`10 17 * * 0,2,4`＝**JST 月・水・金 02:10**。最後は6/17(水)、次は **6/19(金) 02:10** が新コードでpass行を書く → **6/19 04:15 のヘルスチェックでgreen復帰**見込み。6/18分は実行済みのため追加失敗メールは出ない。
+- **判断**: 手動 workflow_dispatch 収集は**見送り**（自己回復を待つ＝Apify$0.18節約、ユーザー承認済み）。**6/19朝にgreen復帰を目視確認すれば対応完了。** もし6/19も失敗ならstale行ではなく真に overlap<75 を疑う（[[buzz-guardrail-overlap-only]]）。
+
+### D. 残作業（前日から変化なし）
+- 法務X検索クエリ2本追加（未着手）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
 
 ---
 
