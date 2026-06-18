@@ -30,6 +30,47 @@ class CheckBuzzHealthTests(unittest.TestCase):
         self.assertFalse(healthy)
         self.assertTrue(any("4日以上" in message for message in messages))
 
+    def test_fresh_warning_fails_in_quality_mode(self) -> None:
+        now = datetime(2026, 6, 12, tzinfo=timezone.utc)
+        metrics = {
+            "checked_at": now.isoformat(),
+            "profile": "full",
+            "guardrail_status": "warning",
+        }
+
+        healthy, messages = evaluate_health(metrics, now)
+
+        self.assertFalse(healthy)
+        self.assertTrue(any("ランキング" in message for message in messages))
+
+    def test_warning_does_not_realarm_in_staleness_only_mode(self) -> None:
+        # 直近収集(2日前)のwarning行を日次cronが再読みしても再アラートしない＝重複失敗メール抑制。
+        now = datetime(2026, 6, 12, tzinfo=timezone.utc)
+        metrics = {
+            "checked_at": (now - timedelta(days=2)).isoformat(),
+            "profile": "full",
+            "guardrail_status": "warning",
+        }
+
+        healthy, messages = evaluate_health(metrics, now, quality_alarm=False)
+
+        self.assertTrue(healthy)
+        self.assertTrue(any("NOTICE" in message for message in messages))
+
+    def test_staleness_only_still_fails_on_collection_gap(self) -> None:
+        # 品質判定を切っても、収集が4日以上途絶していれば失敗させる。
+        now = datetime(2026, 6, 12, tzinfo=timezone.utc)
+        metrics = {
+            "checked_at": (now - timedelta(days=5)).isoformat(),
+            "profile": "full",
+            "guardrail_status": "pass",
+        }
+
+        healthy, messages = evaluate_health(metrics, now, quality_alarm=False)
+
+        self.assertFalse(healthy)
+        self.assertTrue(any("4日以上" in message for message in messages))
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -18,7 +18,20 @@ def load_latest_metrics(path: Path = METRICS_PATH) -> dict | None:
     return json.loads(lines[-1]) if lines else None
 
 
-def evaluate_health(metrics: dict | None, now: datetime | None = None) -> tuple[bool, list[str]]:
+def evaluate_health(
+    metrics: dict | None,
+    now: datetime | None = None,
+    *,
+    quality_alarm: bool = True,
+) -> tuple[bool, list[str]]:
+    """Buzzメトリクス最終行から健全性を判定する。
+
+    quality_alarm=True（既定／buzz-collect の収集直後ステップ）:
+        新鮮な収集行の品質guardrail(warning)も収集途絶(>4日)も hard-fail にする。
+    quality_alarm=False（--staleness-only／日次cron）:
+        収集途絶(>4日)のみ hard-fail。品質guardrailは収集ランが既に判定済みなので、
+        同じ stale 行を毎日再アラートしない（重複失敗メールの抑制）。NOTICE で残す。
+    """
     if metrics is None:
         return True, ["品質メトリクスは次回Buzz収集から記録されます"]
 
@@ -38,16 +51,35 @@ def evaluate_health(metrics: dict | None, now: datetime | None = None) -> tuple[
         healthy = False
         messages.append("ERROR: 最終Buzz収集から4日以上経過")
     if metrics.get("guardrail_status") == "warning":
-        healthy = False
-        messages.append("ERROR: ランキング保持率が基準未満")
+        if quality_alarm:
+            healthy = False
+            messages.append("ERROR: ランキング保持率が基準未満")
+        else:
+            messages.append(
+                "NOTICE: 直近収集のguardrail=warning（品質判定はbuzz-collectの収集直後に実施済み・"
+                "日次では再アラートしない）"
+            )
     if metrics.get("fallback_triggered"):
         messages.append("NOTICE: 欠落リスクを検知しフル収集へ自動復帰済み")
     return healthy, messages
 
 
-def main() -> int:
-    healthy, messages = evaluate_health(load_latest_metrics())
-    print("Buzz daily health check")
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Buzz収集の健全性チェック")
+    parser.add_argument(
+        "--staleness-only",
+        action="store_true",
+        help="品質guardrail(warning)では失敗させず、収集途絶(>4日)のみ失敗とする（日次cron用）",
+    )
+    args = parser.parse_args(argv)
+
+    healthy, messages = evaluate_health(
+        load_latest_metrics(), quality_alarm=not args.staleness_only
+    )
+    mode = "staleness-only" if args.staleness_only else "full"
+    print(f"Buzz daily health check ({mode})")
     for message in messages:
         print(f"- {message}")
     return 0 if healthy else 1

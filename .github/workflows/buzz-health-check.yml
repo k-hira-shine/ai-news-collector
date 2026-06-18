@@ -16,5 +16,7 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Check Buzz freshness and quality guardrails
-        run: python scripts/check_buzz_health.py
+      # 品質guardrail(warning)は buzz-collect の収集直後ステップが担当する。
+      # 日次cronは収集途絶(>4日)のみ見張る＝stale行の品質warningで毎日失敗メールを出さない。
+      - name: Check Buzz collection freshness (staleness only)
+        run: python scripts/check_buzz_health.py --staleness-only

@@ -128,13 +128,17 @@ def build_tracking(records: list[dict], plan: dict) -> dict:
             "total_usd": round(sum(workflows.values()), 4),
         })
 
-    rolling_days = int(plan.get("measurement", {}).get("rolling_average_days", 7))
+    measurement = plan.get("measurement", {})
+    rolling_days = int(measurement.get("rolling_average_days", 7))
     today_jst = datetime.now(ZoneInfo("Asia/Tokyo")).date().isoformat()
     implementation_date = plan.get("implementation_date")
+    # 計測窓のフロア。施策前の汚染日を混ぜないため measurement.start_date を優先し、
+    # 無ければ implementation_date にフォールバックする（[[cost-check-window-pitfall]]）。
+    floor_date = measurement.get("start_date") or implementation_date
     completed_daily = [
         day for day in daily
         if day["date"] < today_jst
-        and (not implementation_date or day["date"] >= implementation_date)
+        and (not floor_date or day["date"] >= floor_date)
     ]
     recent = completed_daily[-rolling_days:]
     rolling_avg = (
@@ -202,8 +206,20 @@ def main() -> None:
         print("ログが見つかりません。")
         return
 
+    plan = load_plan()
+
+    # 表示窓のフロア。--all 以外では施策前（measurement.start_date より前）を除外し、
+    # 相対7日窓が境界をまたいで月額換算を誤膨張させるのを防ぐ（[[cost-check-window-pitfall]]）。
+    floor_date = plan.get("measurement", {}).get("start_date")
+    floored_window = bool(floor_date) and not args.all
+    if floored_window:
+        records = [r for r in records if r.get("date", "") >= floor_date]
+        if not records:
+            print(f"ログが見つかりません（計測窓フロア {floor_date}〜 適用後）。")
+            return
+
     if args.record:
-        tracking = write_tracking(records, load_plan())
+        tracking = write_tracking(records, plan)
         if not args.quiet:
             rolling = tracking["rolling"]
             print(
@@ -223,6 +239,8 @@ def main() -> None:
 
     print()
     print("=" * 60)
+    if floored_window:
+        print(f"計測窓フロア: {floor_date}〜（施策前を自動除外。全期間は --all）")
     print(f"{'日付':<12} {'AI News':>8} {'Money/SNS':>10} {'Buzz':>7} {'合計':>8}")
     print("-" * 60)
 

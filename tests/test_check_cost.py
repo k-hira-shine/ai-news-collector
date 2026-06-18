@@ -60,6 +60,30 @@ class CheckCostTests(unittest.TestCase):
         self.assertEqual(tracking["rolling"]["days"], 1)
         self.assertEqual(tracking["rolling"]["average_daily_usd"], 0.2)
 
+    def test_measurement_start_date_floors_window_over_implementation_date(self) -> None:
+        # 施策日(6/10)は汚染日のため、measurement.start_date(6/11)を窓フロアに優先する。
+        records = [
+            {"date": "2026-06-10", "workflow": "money", "apify_cost_usd": 5.0},
+            {"date": "2026-06-11", "workflow": "collect", "apify_cost_usd": 0.3},
+            {"date": "2026-06-12", "workflow": "collect", "apify_cost_usd": 0.3},
+        ]
+        plan = {
+            "implementation_date": "2026-06-10",
+            "baseline": {"daily_usd": 0.8},
+            "projected_after": {
+                "daily_usd": 0.3,
+                "range_daily_usd": {"max": 0.4},
+            },
+            "measurement": {"rolling_average_days": 7, "start_date": "2026-06-11"},
+        }
+
+        tracking = build_tracking(records, plan)
+
+        # 6/10 の $5.0 は除外され、6/11・6/12 のみで平均される。
+        self.assertEqual(tracking["rolling"]["days"], 2)
+        self.assertEqual(tracking["rolling"]["average_daily_usd"], 0.3)
+        self.assertEqual(tracking["rolling"]["start_date"], "2026-06-11")
+
 
 if __name__ == "__main__":
     unittest.main()

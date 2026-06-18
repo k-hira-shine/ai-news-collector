@@ -83,6 +83,8 @@
   },
   "measurement": {
     "rolling_average_days": 7,
+    "start_date": "2026-06-11",
+    "start_date_note": "施策は6/10に実装したが6/10当日は施策前のSNS広域検索が混在し汚染されているため、計測窓は6/11から。check_cost.pyの相対7日窓がこの日より前に届かないようフロアとして使う（誤膨張$11.17の再発防止）。",
     "primary_metric": "7日移動平均の日額と月額換算",
     "success_condition": "実装後7日移動平均の月額換算が12ドル以下",
     "target_condition": "実装後14日移動平均が中心見込み9.96ドル付近",

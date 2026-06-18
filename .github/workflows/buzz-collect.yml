@@ -82,3 +82,8 @@ jobs:
           .github/scripts/push_data.sh \
             "buzz: $(date -u +%Y-%m-%d_%H%M) ${{ github.event.inputs.account }}" \
             data/buzz.json data/buzz_collection_metrics.jsonl data/logs/ data/cost_tracking.json docs/ config.yaml
+
+      # 品質guardrailは収集直後の新鮮な行で1回だけ判定する（push後に実行＝データは常に保存される）。
+      # 日次の Buzz Daily Health Check は --staleness-only で収集途絶のみ見張るため、stale行の重複アラートは出ない。
+      - name: Verify buzz quality guardrails (fresh)
+        run: python scripts/check_buzz_health.py

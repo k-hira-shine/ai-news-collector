@@ -50,8 +50,17 @@
 ### D. 残作業（前日から変化なし）
 - 法務X検索クエリ2本追加（未着手, 想定 月+$1未満）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
 
-### E. 次回（6/20朝）チェック観点
-- Buzz Health Check Actionが実際に success ログを残したか一覧で最終確認（本チェックは発火前のためデータ確定止まり）。Apify窓は施策後 6/13〜 を維持。
+### E. 運用改善を3点実装（同セッション・テスト95件green）
+今回の事象が裏付けた弱さをコードに焼き込んだ。
+1. **Buzz Health Checkの重複アラート解消**: 品質guardrail判定を**buzz-collectの収集直後ステップ**（`scripts/check_buzz_health.py`を最終stepに追加）に移し、新鮮な行で1回だけ判定。日次cron `buzz-health-check.yml` は **`--staleness-only`** に変更＝**収集途絶(>4日)のみ**見張る。`evaluate_health(..., quality_alarm=False)` を追加し、stale行のwarningはNOTICEに降格＝6/17→6/18のような毎日同じ失敗メールを構造的に止めた。
+2. **コスト窓フロアの焼き込み**: `cost_reduction_plan.json` に `measurement.start_date="2026-06-11"` を追加。`check_cost.py` は表示窓・`build_tracking` の両方でこの日より前を除外（implementation_date 6/10 より優先）。memory頼みだった「6/10混入で$11.17誤膨張」をツールが自動回避（[[cost-check-window-pitfall]]）。表示時に「計測窓フロア: 2026-06-11〜」を明示。
+3. **日次チェック一本化**: `daily_check.py` を新設。Actions成否(gh)・Apify月額・Gemini日額・Buzz最終行を**合否サマリ1画面**で出す（要確認時 exit 1）。「今日のチェック」はこれ1本でも回る。
+- テスト: `test_check_buzz_health`（freshness/staleness 2件追加）・`test_check_cost`（start_dateフロア1件追加）含め **全95件 green**。
+
+### F. 次回（6/20朝）チェック観点
+- **改善1の挙動確認**: 6/20(土)は収集なし（buzzは月水金）。日次 Buzz Health Check が `--staleness-only` で **success**（warningで落ちない）になるか。次の収集 6/22(月) の buzz-collect 末尾ステップでguardrailが正しく判定されるか。
+- Buzz Health Check Actionが6/19夜に実際 success ログを残したか一覧で最終確認。Apify窓は施策後フロア(6/11〜)を自動適用。
+- `daily_check.py` を実運用で1回回して体感確認。
 
 ---
 
