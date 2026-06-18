@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。詳細は下「2026-06-19」節。なお自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa` は05:00 JSTに発火予定だがこの手動更新で項目7は既に確定済み＝冗長になる。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -21,9 +21,37 @@
    ② `must_follow_count=92` → 連続ゼロ回避。**残: index「規制/政策」リンク一覧の目視確認のみ**（要ブラウザ）。
 5. **未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）は未着手。実施時は config 反映後にApify増分を確認。
 6. **未了（根本対応）**: GH_PAT のサーバー側中継。revoke 済みで止血中、根本対応は未着手（[[gh-pat-public-exposure]]）。
-7. ~~**要確認（6/18朝）**: Buzzガードレール変更後、Buzz Daily Health Check が success に戻るか。~~ ⏳ **6/18時点では未反映＝想定どおり（バグではない）。6/19に自己回復見込み**:
+7. ~~**要確認（6/18朝）**: Buzzガードレール変更後、Buzz Daily Health Check が success に戻るか。~~ ✅ **完了（6/19）＝データで自己回復を確定**:
+   6/19 03:13 JSTの新コードbuzz収集（run 27779839241, 6/18T18:11Z）が `guardrail_status="pass"`（`ranking_top20_overlap_pct=90.0% ≥ 閾値75%`、`prior_top20_retention_pct=55%`は判定不使用＝[[buzz-guardrail-overlap-only]]通り、fetched=1267, cost=$0.1756）をメトリクス最終行に書き込み。ヘルスチェック `check_buzz_health.py` は最終行を読むだけなので、6/19 ~05:00 JST発火分はこのpass行を読んでgreen復帰する。**stale行起因の失敗は解消済み＝対応完了。** 自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`（05:00 JST一度きり）は発火後auto-disableされる＝この手動更新で先に確定したため冗長（放置でOK）。
+   <details><summary>旧経緯（6/18時点）</summary>
    `check_buzz_health.py` は `data/buzz_collection_metrics.jsonl` の**最終行 `guardrail_status` を読むだけ（再計算しない）**。最後のbuzz収集は **6/17 03:40 JST（run 27639857197）＝修正b37951c push（6/17夜）より前**なので、旧コードが書いた `guardrail_status=warning`（retention=50%/overlap=95%）が残り、6/18 04:56 JSTのヘルスチェック（run 27715836103）はそれを読んで失敗。指標が6/17失敗時と完全一致なのはstale行を読んでいるため。**修正自体は正しい**（`evaluate_guardrail_status` は overlap≥75→pass、6/17データは overlap=95%→pass。テスト12件OK・本日再実行で確認）。buzz-collect cron=`JST 月水金 02:10`なので**次回6/19 02:10（金）が新コードでpass行を書き、6/19 04:15のヘルスチェックでgreen復帰見込み**。6/18の失敗は実行済みのため追加失敗メールなし。**手動収集は見送り（自己回復を待つ、Apify$0.18節約）。6/19朝にgreen復帰を確認すれば対応完了。**
    **⏰ 自動確認をセット済み**: claude.ai のクラウドルーティン（routine ID `trig_01YStz3sHazvZCi6Ktkt7fYa`、**2026-06-19 05:00 JST に一度だけ**実行）が green 復帰を判定する。**success ならこのファイル(handoff.md)の項目7を自動で「✅ 完了(6/19)」に書き換えて commit & push する**ので、6/19 のこのファイルは自動更新されている可能性がある。詳細・判定ロジックは下「2026-06-18」節E。
+   </details>
+
+---
+
+## 2026-06-19 日次チェック（全項目合格 / Buzz Health Check green復帰をデータで確定＝項目7クローズ）
+
+> このセッションでやったこと: ①`git pull --rebase`で6/19朝便分を取得 → ②`gh run list`で全Actions成否確認 → ③`check_cost.py`/`gemini_usage.py` → ④buzz_collection_metrics.jsonl 最終行で自己回復を確認 → ⑤項目7を「✅完了(6/19)」にクローズし本記録 → ⑥commit & push。実施時刻 6/19 04:39 JST。
+
+### A. GitHub Actions（6/19朝便）
+- **News朝便（run 27779228310, 6/18T18:00Z=6/19 03:00 JST）/ Money（27780086349）/ Buzz Ranking（27779839241）/ pages すべて success**。
+- **Buzz Daily Health Check**: 6/19分（~05:00 JST発火）は本チェック時点(04:39 JST)で**まだ未実行**。ただし下Cのとおりメトリクス最終行が `pass` のため green 確定。一覧上の最新失敗 27715836103 は6/18分（stale行起因、解消済み）。
+- 兄弟プロジェクト等のエラーメールなし。
+
+### B. コスト（合格）
+- **Apify**: 施策後窓 6/13〜6/19 平均 **月換算$9.59**（横ばい・合格）。6/19=$0.3452 はBuzz full日（buzz $0.1756）込みで設計どおり。窓に6/10以前を混ぜない（[[cost-check-window-pitfall]]）。
+- **Gemini**: 6/17 $0.347 / 6/18 $0.220 / 6/19 $0.206。Flash中心で月換算 約$7〜8。proスパイクは解消済み。2系統合算 ≈ 月$17前後で従来どおり。
+
+### C. Buzz Health Check 自己回復をデータで確定（項目7クローズ）
+- 6/19 03:13 JST 収集の最終行: `profile=full / fetched=1267 / ranking_top20_overlap_pct=90.0% / prior_top20_retention_pct=55.0% / guardrail_status="pass" / apify_cost=$0.1756`。
+- overlap 90% ≥ 閾値75% → pass。retention 55% は判定に使われない（[[buzz-guardrail-overlap-only]]）。6/19 dated の pass 行が書けたので、ヘルスチェックAction（最終行を読むだけ）は green 復帰する。**stale行起因の6/17〜6/18失敗は完全解消。手動収集見送り＝自己回復どおり、ユーザー判断どおり。**
+
+### D. 残作業（前日から変化なし）
+- 法務X検索クエリ2本追加（未着手, 想定 月+$1未満）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
+
+### E. 次回（6/20朝）チェック観点
+- Buzz Health Check Actionが実際に success ログを残したか一覧で最終確認（本チェックは発火前のためデータ確定止まり）。Apify窓は施策後 6/13〜 を維持。
 
 ---
 
