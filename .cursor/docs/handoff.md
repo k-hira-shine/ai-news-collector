@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。詳細は下「2026-06-19」節。なお自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa` は05:00 JSTに発火予定だがこの手動更新で項目7は既に確定済み＝冗長になる。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -61,6 +61,32 @@
 - **改善1の挙動確認**: 6/20(土)は収集なし（buzzは月水金）。日次 Buzz Health Check が `--staleness-only` で **success**（warningで落ちない）になるか。次の収集 6/22(月) の buzz-collect 末尾ステップでguardrailが正しく判定されるか。
 - Buzz Health Check Actionが6/19夜に実際 success ログを残したか一覧で最終確認。Apify窓は施策後フロア(6/11〜)を自動適用。
 - `daily_check.py` を実運用で1回回して体感確認。
+
+### G. このセッションの完全ログ（コミット・変更ファイル・検証）
+時系列。全コミットは main に push 済み。
+
+| # | commit | 内容 |
+|---|--------|------|
+| 1 | `77f6896` | docs: 2026-06-19 日次チェック記録＋項目7クローズ（handoff.md のみ） |
+| 2 | `eb2c8da` | ops: 運用改善3点＋テスト＋handoff節E/F |
+| 3 | `87a189a` | chore: 誤コミットのCursor SDK試用ファイル2点を追跡解除＋.gitignore |
+
+**コミット2 `eb2c8da` の変更ファイル（改善の実体）**:
+- `scripts/check_buzz_health.py` — `evaluate_health()` に `quality_alarm` 引数追加（warning時：True→ERROR/fail、False→NOTICE/healthy維持）。`main()` に `--staleness-only` フラグ追加。
+- `.github/workflows/buzz-collect.yml` — 末尾に `Verify buzz quality guardrails (fresh)` ステップ追加（push後に `python scripts/check_buzz_health.py` 実行＝データは常に保存しつつ新鮮行で品質判定）。
+- `.github/workflows/buzz-health-check.yml` — 日次cronの実行を `python scripts/check_buzz_health.py --staleness-only` に変更（収集途絶>4日のみ失敗、cron `15 19 * * *`=JST04:15は維持）。
+- `data/cost_reduction_plan.json` — `measurement.start_date="2026-06-11"`＋説明 `start_date_note` を追加。
+- `check_cost.py` — `build_tracking()` のフロアを `measurement.start_date`優先（無ければimplementation_date）に変更。`main()` で表示窓も同フロアで除外し「計測窓フロア: …〜」を表示。
+- `daily_check.py`（新規）— Actions(gh)/Apify/Gemini/Buzz を合否1画面集約。`from check_cost import build_tracking, load_logs, load_plan` と `from scripts.check_buzz_health import evaluate_health, load_latest_metrics` を利用。要確認時 exit 1。
+- `tests/test_check_buzz_health.py` — `test_fresh_warning_fails_in_quality_mode` / `test_warning_does_not_realarm_in_staleness_only_mode` / `test_staleness_only_still_fails_on_collection_gap` 追加。
+- `tests/test_check_cost.py` — `test_measurement_start_date_floors_window_over_implementation_date` 追加。
+
+**設計上の要点（引き継ぎ注意）**:
+- Buzz品質guardrailの「正本」は **buzz-collect末尾ステップ**（収集直後・新鮮行で1回）。日次cronはもう品質では落ちない＝**失敗メール＝本当に収集が4日以上途絶**を意味するよう役割分離した。手動で品質を見たい時は `python scripts/check_buzz_health.py`（フラグなし＝full）。
+- `check_cost.py` は既定で6/11フロア。**全期間を見たい時だけ `--all`**（フロア解除）。`--days N` は「直近Nファイル」を取ってからフロア適用。
+- SDK試用ファイル（`requirements-sdk.txt`/`scripts/cursor_sdk_try.py`）は `.gitignore` 済み＝今後 `git add -A` でも再混入しない。ローカルには残存。
+
+**検証**: `python3 -m unittest discover -s tests` → **全95件 OK**。`python3 daily_check.py`・`python3 check_cost.py`・`scripts/check_buzz_health.py`（full / --staleness-only 両方）を実データで実行し正常動作を確認済み。
 
 ---
 
