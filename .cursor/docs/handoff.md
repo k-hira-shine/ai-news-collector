@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-06-20（日次チェック実施＝**全項目合格**。`daily_check.py`を実運用初投入し1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.67（窓6/13〜6/19・横ばい合格）/ Gemini=6/20 $0.247・直近4日平均で月約$8.1合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**改善1の挙動を実データで確認＝6/19 F節①クローズ**: Buzz Daily Health Check の6/20分(run 27845632239, 6/20 04:53 JST)が`--staleness-only`で**success**＝土曜の収集なし日でもwarning落ちしない。6/16・6/17のfailure以降6/18から3連続success。Buzzメトリクス最終行は6/19のまま＝土曜は収集なし(月水金)で設計どおり。兄弟エラーメールなし。残作業は前日から変化なし(法務Xクエリ追加・GH_PAT根本対応・index目視)。詳細は下「2026-06-20」節。）<br>旧: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -27,6 +27,38 @@
    `check_buzz_health.py` は `data/buzz_collection_metrics.jsonl` の**最終行 `guardrail_status` を読むだけ（再計算しない）**。最後のbuzz収集は **6/17 03:40 JST（run 27639857197）＝修正b37951c push（6/17夜）より前**なので、旧コードが書いた `guardrail_status=warning`（retention=50%/overlap=95%）が残り、6/18 04:56 JSTのヘルスチェック（run 27715836103）はそれを読んで失敗。指標が6/17失敗時と完全一致なのはstale行を読んでいるため。**修正自体は正しい**（`evaluate_guardrail_status` は overlap≥75→pass、6/17データは overlap=95%→pass。テスト12件OK・本日再実行で確認）。buzz-collect cron=`JST 月水金 02:10`なので**次回6/19 02:10（金）が新コードでpass行を書き、6/19 04:15のヘルスチェックでgreen復帰見込み**。6/18の失敗は実行済みのため追加失敗メールなし。**手動収集は見送り（自己回復を待つ、Apify$0.18節約）。6/19朝にgreen復帰を確認すれば対応完了。**
    **⏰ 自動確認をセット済み**: claude.ai のクラウドルーティン（routine ID `trig_01YStz3sHazvZCi6Ktkt7fYa`、**2026-06-19 05:00 JST に一度だけ**実行）が green 復帰を判定する。**success ならこのファイル(handoff.md)の項目7を自動で「✅ 完了(6/19)」に書き換えて commit & push する**ので、6/19 のこのファイルは自動更新されている可能性がある。詳細・判定ロジックは下「2026-06-18」節E。
    </details>
+
+---
+
+## 2026-06-20 日次チェック（全項目合格 / daily_check.py 実運用初投入 / 改善1を実データで確認＝6/19 F節①クローズ）
+
+> このセッションでやったこと: ①`git pull --rebase`で6/20朝便分を取得 → ②`daily_check.py`を実運用で初めて回し合否1画面で確認 → ③F節重点の Buzz Daily Health Check の`--staleness-only`挙動を `gh run list` で個別確認 → ④本記録 → ⑤commit & push。実施時刻 6/20 07:18 JST。
+
+### A. daily_check.py の結果（合否1画面・全✅）
+```
+✅ GitHub Actions: 直近4種すべてsuccess
+✅ Apify: 月換算 $9.67（窓 2026-06-13〜2026-06-19・上限 $12・on_target）
+✅ Gemini: 2026-06-20 $0.247/日・直近4日平均で月換算 $8.1
+✅ Buzz: 最終 2026-06-19（28h前）・status=pass・overlap=90.0%
+✅ 全項目合格
+```
+- **実運用初投入の体感**: 6/19新設の `daily_check.py` 1本で従来の `gh run list`/`check_cost.py`/`gemini_usage.py`/buzz最終行確認が1画面に集約され、日次チェックがこれ1本で回ることを確認（6/19 F節③の宿題クリア）。コスト窓フロアも自動で6/13〜（施策後窓）が適用され、6/10混入の誤膨張は起きない（[[cost-check-window-pitfall]]）。
+
+### B. 改善1の挙動を実データで確認（6/19 F節①クローズ）
+- Buzz Daily Health Check（日次cron、`--staleness-only`化済み）の直近: **6/20 04:53 JST = run 27845632239 → success / 6/19 04:58 JST = 27785736243 → success**。6/16・6/17のfailure以降、**6/18から3連続success**。
+- **土曜(6/20)は収集なし日（buzzは月水金）だが warning で落ちず success** ＝ 改善1（日次cronは収集途絶>4日のみ見張る）が意図どおり機能。stale行起因の毎日失敗メールは構造的に解消済み。
+- Buzzメトリクス最終行は **6/19 03:13 JST（status=pass, overlap=90%, fetched=1267, cost=$0.1756）のまま**＝土曜は新規収集なしで設計どおり。次の品質判定は 6/22(月) の buzz-collect 末尾ステップ（=品質guardrailの正本）。
+
+### C. コスト（合格）
+- **Apify**: 施策後窓 6/13〜6/19 平均 **月換算$9.67**（横ばい・上限$12内）。6/19=Buzz full日込みで設計どおりの振れ。
+- **Gemini**: 6/20 $0.247、直近4日平均で月換算 **約$8.1**。Flash中心でproスパイクなし。2系統合算 ≈ 月$17〜18で従来どおり。
+
+### D. 残作業（前日から変化なし）
+- 法務X検索クエリ2本追加（未着手, 想定 月+$1未満）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
+
+### E. 次回（6/22月 or 翌日）チェック観点
+- **6/22(月)の buzz-collect 末尾ステップ**でguardrailが新鮮行で正しく判定されるか（=改善1の「品質判定の正本」側の初動確認）。土日はずっと収集なしのため、6/21(日)の日次ヘルスチェックも success（staleness-onlyで途絶<4日）になるはず。
+- `daily_check.py` 1本での運用を継続。深掘りが要るときのみ個別ツール。
 
 ---
 
