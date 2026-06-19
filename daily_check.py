@@ -6,6 +6,7 @@
   2. Apify コスト（施策後フロア窓の月額換算。check_cost.py と同じ計測ロジック）
   3. Gemini コスト（直近数日の日額）
   4. Buzz メトリクス最終行の鮮度と guardrail
+  5. 収集品質2点（法務一色化・must_follow連続ゼロ。data/logs の collect 行から）
 
 使い方:
   python3 daily_check.py            # サマリ表示
@@ -25,8 +26,13 @@ from scripts.check_buzz_health import evaluate_health, load_latest_metrics
 
 BASE = Path(__file__).resolve().parent
 GEMINI_USAGE_DIR = BASE / "data" / "gemini_usage"
+LOGS_DIR = BASE / "data" / "logs"
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
+
+# 品質監視2点の閾値（[[daily-check-routine]] の「残監視2点」をコード化）
+LEGAL_DOMINANCE_RATIO = 0.5   # legal_rss_count/total がこれ以上なら「規制/政策」一色化を疑う
+MUST_FOLLOW_ZERO_STREAK = 2   # must_follow_count=0 がこの連続回数で要調査（単発は許容）
 
 OK = "✅"
 WARN = "⚠️"
@@ -123,6 +129,61 @@ def check_buzz() -> tuple[bool, str]:
     return _line("Buzz", healthy, detail)
 
 
+def load_collect_entries() -> list[dict]:
+    """data/logs/*.jsonl から品質カウントを持つ collect 行を時系列で集める。"""
+    entries: list[dict] = []
+    if not LOGS_DIR.exists():
+        return entries
+    for path in sorted(LOGS_DIR.glob("*.jsonl")):
+        for line in path.read_text(encoding="utf-8").splitlines():
+            try:
+                r = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if r.get("workflow") == "collect" and "must_follow_count" in r:
+                entries.append(r)
+    entries.sort(key=lambda r: r.get("ts", ""))
+    return entries
+
+
+def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
+    """収集の品質監視2点を判定する純関数。
+
+    - 法務一色化: legal_rss_count / total が LEGAL_DOMINANCE_RATIO 以上で要確認。
+    - must_follow連続ゼロ: 末尾から MUST_FOLLOW_ZERO_STREAK 連続で0なら要確認（単発は許容）。
+    記録が無い間（旧コードのログのみ）は合格扱い＝次回収集から有効になる。
+    """
+    if not entries:
+        return _line("収集品質", True, "記録なし（次回収集から有効）")
+    latest = entries[-1]
+    total = latest.get("items_collected") or latest.get("total") or 0
+    legal = latest.get("legal_rss_count", 0)
+    must_follow = latest.get("must_follow_count", 0)
+    ratio = (legal / total) if total else 0.0
+
+    zero_streak = 0
+    for r in reversed(entries):
+        if (r.get("must_follow_count", 0) or 0) == 0:
+            zero_streak += 1
+        else:
+            break
+
+    problems = []
+    if ratio >= LEGAL_DOMINANCE_RATIO:
+        problems.append(f"法務一色化 legal={legal}/{total}={ratio:.0%}")
+    if zero_streak >= MUST_FOLLOW_ZERO_STREAK:
+        problems.append(f"must_follow連続ゼロ{zero_streak}回")
+
+    detail = f"legal_rss={legal}/{total}（{ratio:.0%}）・must_follow={must_follow}"
+    if problems:
+        detail += " → " + "; ".join(problems)
+    return _line("収集品質", not problems, detail)
+
+
+def check_collection_quality() -> tuple[bool, str]:
+    return evaluate_collection_quality(load_collect_entries())
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="日次運用チェック集約")
     parser.add_argument("--days", type=int, default=4, help="Gemini平均/表示の日数（既定4）")
@@ -137,6 +198,7 @@ def main(argv: list[str] | None = None) -> int:
         check_apify(),
         check_gemini(args.days),
         check_buzz(),
+        check_collection_quality(),
     ]
     all_ok = True
     for ok, msg in results:

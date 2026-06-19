@@ -56,7 +56,16 @@
 ### D. 残作業（前日から変化なし）
 - 法務X検索クエリ2本追加（未着手, 想定 月+$1未満）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
 
-### E. 次回（6/22月 or 翌日）チェック観点
+### E. 同セッションで改善実装＝daily_check.py に品質監視2点を追加（テスト+6=全101件green）
+6/20チェック中に判明した「`daily_check.py` のカバレッジ穴」を焼き込んだ。
+- **背景**: 品質監視2点（`legal_rss_count` / `must_follow_count`、[[daily-check-routine]]の「残監視2点」）は **JSONLに保存されずGitHub Actionsのstdoutログにしか出ない** ため、`daily_check.py` では拾えていなかった（毎日のチェックから事実上抜けていた）。今日は手で `gh run view --log | grep Collected:` して legal=6/95・must_follow=85 と確認＝問題なしだった。
+- **変更1（main.py）**: `log_run("collect", ...)` の `extra` に `legal_rss_count` / `must_follow_count` / `official_count` / `x_count` を追加＝既にcommitされる `data/logs/*.jsonl` に永続化（ghログ依存を解消）。**次回収集=6/21朝便から有効**（ロールアウト）。
+- **変更2（daily_check.py）**: 純関数 `evaluate_collection_quality(entries)` ＋ `check_collection_quality()` を追加し5番目の合否項目に。判定: ①**法務一色化**＝`legal_rss/total ≥ 0.5`（`LEGAL_DOMINANCE_RATIO`）で要確認、②**must_follow連続ゼロ**＝末尾2連続で0（`MUST_FOLLOW_ZERO_STREAK`）で要確認（単発は許容＝収集サイクル差分）。記録が無い間（旧ログのみ）は合格扱い。
+- **テスト**: `tests/test_daily_check.py` 新設（6ケース：no-entries合格/6/20実測合格/法務一色化fail/単発ゼロ許容/2連続ゼロfail/ts順で最新判定）。`python3 -m unittest discover -s tests` → **全101件 OK**。`daily_check.py` 実走で5項目表示を確認（収集品質は「記録なし（次回収集から有効）」＝想定どおり）。
+- **未実装（任意の次段）**: 分析構造指標（top/cat/action/fallback）の自動判定はまだ手動。`official_count` の監視（今日0、ベースライン未確立）も様子見。
+
+### F. 次回（6/21日 / 6/22月）チェック観点
+- **6/21朝便で「収集品質」項目が実値に切り替わるか**（記録なし→`legal_rss=…/… ・must_follow=…`）。変更1のロールアウト確認。`official_count` も併せて見る（継続0なら公式ソース収集を疑う）。
 - **6/22(月)の buzz-collect 末尾ステップ**でguardrailが新鮮行で正しく判定されるか（=改善1の「品質判定の正本」側の初動確認）。土日はずっと収集なしのため、6/21(日)の日次ヘルスチェックも success（staleness-onlyで途絶<4日）になるはず。
 - `daily_check.py` 1本での運用を継続。深掘りが要るときのみ個別ツール。
 

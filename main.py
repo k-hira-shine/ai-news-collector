@@ -321,6 +321,11 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
             "collection_anomalies": len(collection_anomalies),
             "post_analysis_anomalies": len(anomalies),
             "health_check_version": 2,
+            # 品質監視2点を data/logs に永続化（daily_check.py が読む。従来はghログのみ）
+            "legal_rss_count": stats["legal_rss_count"],
+            "must_follow_count": stats["must_follow_count"],
+            "official_count": stats["official_count"],
+            "x_count": stats["x_count"],
             "x_valid_count": x_meta.get("x_valid_count"),
             "invalid_stripped": x_meta.get("invalid_items_stripped", 0),
             "apify_hints": ",".join(x_meta.get("apify_failure_hints") or []),
