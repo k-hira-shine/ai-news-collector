@@ -53,8 +53,9 @@
 - **Apify**: 施策後窓 6/13〜6/19 平均 **月換算$9.67**（横ばい・上限$12内）。6/19=Buzz full日込みで設計どおりの振れ。
 - **Gemini**: 6/20 $0.247、直近4日平均で月換算 **約$8.1**。Flash中心でproスパイクなし。2系統合算 ≈ 月$17〜18で従来どおり。
 
-### D. 残作業（前日から変化なし）
-- 法務X検索クエリ2本追加（未着手, 想定 月+$1未満）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）/ index「規制/政策」リンク一覧の目視確認（要ブラウザ）。
+### D. 残作業
+- 法務X検索クエリ2本追加（未着手, 想定 月+$1未満）/ GH_PAT根本対応（未着手, [[gh-pat-public-exposure]]）。
+- ~~index「規制/政策」リンク一覧の目視確認~~ ✅ **完了（6/20）= 6/15からの積み残しをクローズ**: `docs/index.html` の「📁 カテゴリ別 → 規制/政策」カードを点検（ブラウザ不要・HTML直接確認）。`cat-articles` ブロックにリンク付き記事5件が表示され、**法務RSS（IPWatchdog=Senate bills on likeness rights / The Verge Policy=Big Tech's AI regulation push / EFF=UK under-16 SNS ban）が実タイトル＋正URLで反映**。X投稿2件と混在＝法務一色化なし（今朝 legal=6/95 と整合）。dashboard.py の `key_articles` 表示（6/15修正 b94dc68）が本番で機能していることを確認。
 
 ### E. 同セッションで改善実装＝daily_check.py に品質監視2点を追加（テスト+6=全101件green）
 6/20チェック中に判明した「`daily_check.py` のカバレッジ穴」を焼き込んだ。
