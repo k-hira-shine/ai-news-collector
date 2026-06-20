@@ -1,6 +1,23 @@
 import unittest
+from datetime import datetime, timedelta, timezone
 
-from daily_check import evaluate_collection_quality
+from daily_check import (
+    EXPECTED_WORKFLOWS,
+    evaluate_actions_freshness,
+    evaluate_collection_quality,
+)
+
+_NOW = datetime(2026, 6, 21, 19, 20, tzinfo=timezone.utc)  # = 6/21 04:20 JST
+
+
+def _run(name: str, age_h: float, conclusion: str = "success") -> dict:
+    created = _NOW - timedelta(hours=age_h)
+    return {
+        "name": name,
+        "status": "completed",
+        "conclusion": conclusion,
+        "createdAt": created.isoformat().replace("+00:00", "Z"),
+    }
 
 
 def _entry(
@@ -156,6 +173,52 @@ class CollectionQualityTests(unittest.TestCase):
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)
         self.assertIn("/95", msg)
+
+
+class ActionsFreshnessTests(unittest.TestCase):
+    def _all_fresh(self) -> dict:
+        # 各期待workflowを「許容age内」で用意（buzz-collectは週末ギャップ想定の50h）
+        return {
+            "AI News Collector": _run("AI News Collector", 2),
+            "AI Money Cases Collector": _run("AI Money Cases Collector", 2),
+            "Buzz Daily Health Check": _run("Buzz Daily Health Check", 23),
+            "Buzz Ranking Collector": _run("Buzz Ranking Collector", 50),
+        }
+
+    def test_all_within_cadence_passes(self) -> None:
+        self.assertEqual(evaluate_actions_freshness(self._all_fresh(), _NOW), [])
+
+    def test_missing_workflow_flagged(self) -> None:
+        # 6/21(日)実測の再現: Buzz Ranking が窓から漏れ・個別取得もできず不在
+        latest = self._all_fresh()
+        del latest["Buzz Ranking Collector"]
+        problems = evaluate_actions_freshness(latest, _NOW)
+        self.assertEqual(problems, ["Buzz Ranking Collector=実行記録なし"])
+
+    def test_stale_daily_workflow_flagged(self) -> None:
+        # 毎日便が30h前＝26h上限超過でサイレント停止を検知
+        latest = self._all_fresh()
+        latest["AI News Collector"] = _run("AI News Collector", 30)
+        problems = evaluate_actions_freshness(latest, _NOW)
+        self.assertIn("AI News Collector=stale 30h(>26h)", problems)
+
+    def test_weekend_gap_not_false_positive(self) -> None:
+        # 月水金便がFri→Sunで最大72hでもfullの84h上限内＝誤検知しない
+        latest = self._all_fresh()
+        latest["Buzz Ranking Collector"] = _run("Buzz Ranking Collector", 71)
+        self.assertEqual(evaluate_actions_freshness(latest, _NOW), [])
+
+    def test_dead_buzz_collector_eventually_flagged(self) -> None:
+        # 月水金便が84h超＝週末ギャップでは説明できない停止を検知
+        latest = self._all_fresh()
+        latest["Buzz Ranking Collector"] = _run("Buzz Ranking Collector", 90)
+        problems = evaluate_actions_freshness(latest, _NOW)
+        self.assertIn("Buzz Ranking Collector=stale 90h(>84h)", problems)
+
+    def test_registry_covers_scheduled_workflows(self) -> None:
+        names = {n for n, _f, _a in EXPECTED_WORKFLOWS}
+        self.assertIn("Buzz Ranking Collector", names)
+        self.assertEqual(len(EXPECTED_WORKFLOWS), 4)
 
 
 if __name__ == "__main__":

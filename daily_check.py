@@ -2,7 +2,7 @@
 """日次運用チェックを1コマンドに集約する。
 
 「今日のチェック」で見る4点を合否サマリで出す:
-  1. GitHub Actions の直近成否（gh CLI、未認証ならスキップ）
+  1. GitHub Actions の直近成否＋期待スケジュールの不在/stale検知（gh CLI、未認証ならスキップ）
   2. Apify コスト（施策後フロア窓の月額換算。check_cost.py と同じ計測ロジック）
   3. Gemini コスト（直近数日の日額）
   4. Buzz メトリクス最終行の鮮度と guardrail
@@ -47,31 +47,87 @@ def _line(label: str, ok: bool, detail: str) -> tuple[bool, str]:
     return ok, f"{OK if ok else WARN} {label}: {detail}"
 
 
-def check_actions(limit: int = 15) -> tuple[bool, str]:
-    """ワークフロー別の直近runを1件ずつ拾い、failureがあれば要確認。"""
+# 期待するスケジュール済みワークフロー（表示名, ワークフローファイル, 最大許容age時間）。
+# gh run list の窓に出ない＝サイレント停止を検知するため、cadence＋余裕でstaleを判定する。
+EXPECTED_WORKFLOWS = [
+    ("AI News Collector", "collect.yml", 26),            # 毎日2便（02:00/16:00 JST）
+    ("AI Money Cases Collector", "money-collect.yml", 26),  # 毎日（02:20 JST）
+    ("Buzz Daily Health Check", "buzz-health-check.yml", 26),  # 毎日（04:15 JST）
+    ("Buzz Ranking Collector", "buzz-collect.yml", 84),  # 月水金（週末ギャップ最大72h＋余裕）
+]
+
+
+def _is_failure(r: dict) -> bool:
+    return r.get("status") == "completed" and r.get("conclusion") not in ("success", "skipped", None)
+
+
+def _gh_run_list(extra_args: list[str], limit: int) -> tuple[str, list[dict] | None]:
+    """gh run list の薄いラッパ。("ok", runs) か ("skip", None) を返す。"""
     try:
         out = subprocess.run(
             ["gh", "run", "list", "--repo", REPO, "--limit", str(limit),
-             "--json", "name,conclusion,status,createdAt"],
+             "--json", "name,conclusion,status,createdAt", *extra_args],
             capture_output=True, text=True, timeout=30,
         )
-    except (FileNotFoundError, subprocess.TimeoutExpired) as exc:
-        return _line("GitHub Actions", True, f"スキップ（gh利用不可: {exc.__class__.__name__}）")
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return "skip", None
     if out.returncode != 0:
-        return _line("GitHub Actions", True, "スキップ（gh未認証/エラー）")
+        return "skip", None
     try:
-        runs = json.loads(out.stdout or "[]")
+        return "ok", json.loads(out.stdout or "[]")
     except json.JSONDecodeError:
-        return _line("GitHub Actions", True, "スキップ（gh出力を解析できず）")
+        return "skip", None
+
+
+def evaluate_actions_freshness(latest_by_name: dict[str, dict], now: datetime) -> list[str]:
+    """期待ワークフローが cadence 内に走っているか判定する純関数。
+
+    不在（実行記録なし）と stale（最終runが許容ageを超過）を要確認として返す。
+    failure は呼び出し側の横断スキャンが持つのでここでは扱わない。
+    """
+    problems = []
+    for name, _file, max_age in EXPECTED_WORKFLOWS:
+        r = latest_by_name.get(name)
+        if r is None:
+            problems.append(f"{name}=実行記録なし")
+            continue
+        created = datetime.fromisoformat(r["createdAt"].replace("Z", "+00:00"))
+        age_h = (now - created).total_seconds() / 3600
+        if age_h > max_age:
+            problems.append(f"{name}=stale {age_h:.0f}h(>{max_age}h)")
+    return problems
+
+
+def check_actions(limit: int = 30) -> tuple[bool, str]:
+    """横断failure検知＋期待スケジュールの不在/stale検知（サイレント停止を捕まえる）。"""
+    status, runs = _gh_run_list([], limit)
+    if status == "skip":
+        return _line("GitHub Actions", True, "スキップ（gh利用不可/未認証）")
 
     latest: dict[str, dict] = {}
-    for r in runs:
+    for r in runs or []:
         latest.setdefault(r.get("name", "?"), r)  # runsは新しい順
-    failures = [name for name, r in latest.items()
-                if r.get("status") == "completed" and r.get("conclusion") not in ("success", "skipped", None)]
+    # 期待workflowが窓に出ていなければ個別取得（月水金等はlimit窓から漏れる）
+    for name, wf_file, _max in EXPECTED_WORKFLOWS:
+        if name not in latest:
+            st, one = _gh_run_list(["--workflow", wf_file], 1)
+            if st == "ok" and one:
+                latest[name] = one[0]
+
+    failures = sorted({name for name, r in latest.items() if _is_failure(r)})
+    stale = evaluate_actions_freshness(latest, datetime.now(timezone.utc))
+
+    problems = []
     if failures:
-        return _line("GitHub Actions", False, "failure → " + ", ".join(failures))
-    return _line("GitHub Actions", True, f"直近{len(latest)}種すべてsuccess")
+        problems.append("failure → " + ", ".join(failures))
+    if stale:
+        problems.append("鮮度 → " + "; ".join(stale))
+    if problems:
+        return _line("GitHub Actions", False, " / ".join(problems))
+    return _line(
+        "GitHub Actions", True,
+        f"直近{len(latest)}種success・期待{len(EXPECTED_WORKFLOWS)}種cadence内",
+    )
 
 
 def check_apify() -> tuple[bool, str]:
