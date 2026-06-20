@@ -3,8 +3,17 @@ import unittest
 from daily_check import evaluate_collection_quality
 
 
-def _entry(ts: str, total: int, legal: int, must_follow: int, x_mode: str = "full") -> dict:
-    return {
+def _entry(
+    ts: str,
+    total: int,
+    legal: int,
+    must_follow: int,
+    x_mode: str = "full",
+    feeds_total: int | None = None,
+    feeds_ok: int | None = None,
+    feeds_failed: int = 0,
+) -> dict:
+    e = {
         "ts": ts,
         "workflow": "collect",
         "items_collected": total,
@@ -12,6 +21,11 @@ def _entry(ts: str, total: int, legal: int, must_follow: int, x_mode: str = "ful
         "must_follow_count": must_follow,
         "x_mode": x_mode,
     }
+    if feeds_total is not None:
+        e["legal_feeds_total"] = feeds_total
+        e["legal_feeds_ok"] = feeds_ok if feeds_ok is not None else feeds_total
+        e["legal_feeds_failed"] = feeds_failed
+    return e
 
 
 class CollectionQualityTests(unittest.TestCase):
@@ -102,6 +116,34 @@ class CollectionQualityTests(unittest.TestCase):
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)
         self.assertNotIn("急減", msg)
+
+    def test_legal_zero_with_healthy_feeds_is_no_news(self) -> None:
+        # legal_rss=0 でも生entriesを返すフィードがあれば「窓に新着なし」＝合格
+        entries = [
+            _entry("2026-06-21T02:41:00+09:00", 7, 0, 5, feeds_total=8, feeds_ok=6),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertIn("feeds 6/8健全", msg)
+        self.assertNotIn("取得失敗", msg)
+
+    def test_legal_zero_all_feeds_blind_is_fetch_failure(self) -> None:
+        # 全フィードが生0件（feeds_ok=0）＝取得失敗の疑いで要確認
+        entries = [
+            _entry("2026-06-21T02:41:00+09:00", 7, 0, 5, feeds_total=8, feeds_ok=0, feeds_failed=3),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("取得失敗の疑い", msg)
+        self.assertIn("失敗3", msg)
+
+    def test_legal_feed_health_absent_stays_silent(self) -> None:
+        # 旧ログ（feed健全性フィールドなし）は判定せず合格＝ロールアウト互換
+        entries = [_entry("2026-06-20T02:41:00+09:00", 7, 0, 5)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("feeds", msg)
+        self.assertNotIn("取得失敗", msg)
 
     def test_uses_latest_entry_by_timestamp_order(self) -> None:
         # 入力順が前後しても最新行（ts最大）で判定すること

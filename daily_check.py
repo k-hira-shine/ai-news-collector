@@ -169,6 +169,8 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
     - must_follow急減: 朝便(full)の最新値が直近full便の中央値の MUST_FOLLOW_DROP_RATIO 未満なら
       要確認。夕便(light)は対象アカウントを絞るため0が正常 → full便のみで比較。
       full便の履歴が MUST_FOLLOW_DROP_MIN_PRIORS 件貯まるまでは判定しない（ロールアウト互換）。
+    - 法務RSS取得失敗: 全フィードが生entries0（legal_feeds_ok=0）なら「窓に新着なし」ではなく
+      取得失敗の疑い。feedparser は404/空でも例外を投げないため legal_rss=0 だけでは区別できない。
     記録が無い間（旧コードのログのみ）は合格扱い＝次回収集から有効になる。
     """
     if not entries:
@@ -192,6 +194,19 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
     if zero_streak >= MUST_FOLLOW_ZERO_STREAK:
         problems.append(f"must_follow連続ゼロ{zero_streak}回")
 
+    # 法務RSS取得失敗の検知: legal_rss=0 が「窓に新着なし」か「フィード取得失敗」か区別する。
+    # 全フィードが生entries0（feeds_ok=0）なら取得失敗の疑い。新着なしなら古い生entriesが残る。
+    feeds_total = latest.get("legal_feeds_total")
+    feeds_ok = latest.get("legal_feeds_ok", 0)
+    feeds_failed = latest.get("legal_feeds_failed", 0)
+    feed_health = ""
+    if feeds_total:  # 記録があるとき（旧ログはNone→沈黙＝ロールアウト互換）
+        feed_health = f"・feeds {feeds_ok}/{feeds_total}健全"
+        if feeds_failed:
+            feed_health += f"（失敗{feeds_failed}）"
+        if feeds_ok == 0:
+            problems.append(f"法務RSS全{feeds_total}フィード生0件＝取得失敗の疑い")
+
     # must_follow 急減（full便のみで比較）
     full_entries = [r for r in entries if r.get("x_mode") == "full"]
     if len(full_entries) > MUST_FOLLOW_DROP_MIN_PRIORS:
@@ -206,7 +221,7 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
                 f"must_follow急減 full={cur_full}（直近full中央値{baseline:.0f}比）"
             )
 
-    detail = f"legal_rss={legal}/{total}（{ratio:.0%}）・must_follow={must_follow}"
+    detail = f"legal_rss={legal}/{total}（{ratio:.0%}）{feed_health}・must_follow={must_follow}"
     if problems:
         detail += " → " + "; ".join(problems)
     return _line("収集品質", not problems, detail)

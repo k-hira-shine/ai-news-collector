@@ -724,10 +724,17 @@ def _translate_arxiv_items(items: list[dict]) -> None:
 # ━━━━━━━━━━━━━━━━ 著作権・法規制・訴訟 RSS ━━━━━━━━━━━━━━━━
 
 
-def collect_legal_rss(config: dict) -> list[dict]:
+def collect_legal_rss(config: dict, health: dict | None = None) -> list[dict]:
     """legal_news.rss_feeds から AI 著作権・法規制・訴訟ニュースを収集し、
     X 分析パイプライン互換（source="rss"）のアイテムとして返す。
     dedup・保存は collect_all 側で行う。フィード障害は警告のみで他に影響させない。
+
+    health（任意・out引数）に feed 単位の健全性を入れる:
+      legal_feeds_total  … url を持つ設定フィード数
+      legal_feeds_ok     … 生entries>0（到達かつ中身あり）のフィード数
+      legal_feeds_failed … HTTP>=400 / bozo例外 / parse例外のフィード数
+    feedparser は 404/タイムアウト/空でも例外を投げないため、これで
+    「窓に新着なしの0件」と「取得失敗の0件」を区別できるようにする。
     """
     legal_cfg = config.get("legal_news", {})
     if not legal_cfg.get("enabled", False):
@@ -738,6 +745,8 @@ def collect_legal_rss(config: dict) -> list[dict]:
     except ImportError:
         logger.error("feedparser not installed — skipping legal RSS")
         return []
+
+    feeds_total = feeds_ok = feeds_failed = 0
 
     feeds = legal_cfg.get("rss_feeds", [])
     max_per_feed = legal_cfg.get("max_items_per_feed", 20)
@@ -752,8 +761,20 @@ def collect_legal_rss(config: dict) -> list[dict]:
         limit = int(feed_cfg.get("max_items", max_per_feed))
         if not url:
             continue
+        feeds_total += 1
         try:
             feed = feedparser.parse(url)
+            raw = len(feed.entries)
+            status = getattr(feed, "status", None)
+            bozo = getattr(feed, "bozo", 0)
+            if (status is not None and status >= 400) or (bozo and raw == 0):
+                feeds_failed += 1
+                logger.warning(
+                    "Legal RSS unhealthy [%s]: status=%s bozo=%s raw=0", label, status, bozo
+                )
+            elif raw > 0:
+                feeds_ok += 1
+            # raw==0 で error でもない＝到達したが中身なし（曖昧なので ok にも failed にも数えない）
             count = 0
             for entry in feed.entries[:limit]:
                 link = entry.get("link", "")
@@ -798,9 +819,17 @@ def collect_legal_rss(config: dict) -> list[dict]:
                 count += 1
             logger.info("Legal RSS [%s]: %d items", label, count)
         except Exception as e:
+            feeds_failed += 1
             logger.warning("Legal RSS fetch failed [%s]: %s", label, e)
 
-    logger.info("Legal RSS total: %d items (last %dd)", len(items), max_age_days)
+    if health is not None:
+        health["legal_feeds_total"] = feeds_total
+        health["legal_feeds_ok"] = feeds_ok
+        health["legal_feeds_failed"] = feeds_failed
+    logger.info(
+        "Legal RSS total: %d items (last %dd) — feeds ok=%d failed=%d / %d",
+        len(items), max_age_days, feeds_ok, feeds_failed, feeds_total,
+    )
     return items
 
 
@@ -958,11 +987,13 @@ def collect_all(config: dict) -> tuple[list[dict], dict]:
     # 著作権・法規制・訴訟 RSS を X 分析パイプラインに合流（stage1 が AI 無関係を除外）。
     # legal は collect_legal_rss 内で独自の age 窓で絞るため、X 用の 2日フィルタは通さない。
     try:
-        legal_items = collect_legal_rss(config)
+        legal_health: dict = {}
+        legal_items = collect_legal_rss(config, health=legal_health)
         legal_items = deduplicate(legal_items, cache)
         if legal_items:
             items = items + legal_items
         x_meta["legal_rss_count"] = len(legal_items)
+        x_meta.update(legal_health)
     except Exception as e:
         logger.error("Legal RSS collection failed: %s", e)
         x_meta["legal_rss_count"] = 0
