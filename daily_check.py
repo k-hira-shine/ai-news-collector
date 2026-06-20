@@ -7,6 +7,7 @@
   3. Gemini コスト（直近数日の日額）
   4. Buzz メトリクス最終行の鮮度と guardrail
   5. 収集品質（法務一色化・must_follow連続ゼロ・must_follow急減。data/logs の collect 行から）
+  6. 分析構造（top/cat/action/fallback の構造完全性。data/analysis の最新便から）
 
 使い方:
   python3 daily_check.py            # サマリ表示
@@ -27,7 +28,9 @@ from scripts.check_buzz_health import evaluate_health, load_latest_metrics
 BASE = Path(__file__).resolve().parent
 GEMINI_USAGE_DIR = BASE / "data" / "gemini_usage"
 LOGS_DIR = BASE / "data" / "logs"
+ANALYSIS_DIR = BASE / "data" / "analysis"
 BACKLOG_PATH = BASE / "ops_backlog.yaml"
+_SLOT_ORDER = {"morning": 0, "evening": 1}  # 同日内の便の時系列
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
 TODO_STALE_DAYS = 30  # これ以上未了なら ⚠️ を付けて軽く催促（合否には影響しない）
@@ -289,6 +292,64 @@ def check_collection_quality() -> tuple[bool, str]:
     return evaluate_collection_quality(load_collect_entries())
 
 
+def load_latest_analysis() -> dict:
+    """data/analysis/ の最新便（日付→便順）のJSONを読む。読めなければ空。"""
+    if not ANALYSIS_DIR.exists():
+        return {}
+
+    def key(p: Path) -> tuple:
+        parts = p.stem.split("_")
+        return (parts[0], _SLOT_ORDER.get(parts[1] if len(parts) > 1 else "", 9))
+
+    files = sorted(ANALYSIS_DIR.glob("*.json"), key=key)
+    if not files:
+        return {}
+    try:
+        return json.loads(files[-1].read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def evaluate_analysis_structure(analysis: dict) -> tuple[bool, str]:
+    """分析JSONの構造完全性を判定する純関数（top/cat/action/fallback）。
+
+    件数の多寡は見ない（低ニュース日は top/cat が少なくて正常）。ボリューム非依存の
+    構造的失敗だけを要確認にする:
+    - fallback_used_stages 非空 → primaryモデルが429/5xxでfallback＝分析品質低下の疑い
+    - top_articles=0 かつ item>0 → 入力はあるのに掲載記事を出せず（図解も生成されない）
+    - top>0 なのに category_summaries=0 → 構造の不整合
+    - item>0 なのに action_items=0 → 出力崩れ（プロンプトは3〜5件を要求）
+    記録が無い/item=0（収集なし）は合格扱い。
+    """
+    if not analysis:
+        return _line("分析構造", True, "記録なし")
+    top = len(analysis.get("top_articles") or [])
+    cat = len(analysis.get("category_summaries") or [])
+    action = len(analysis.get("action_items") or [])
+    fallback = analysis.get("fallback_used_stages") or []
+    item_count = analysis.get("item_count") or 0
+    slot = analysis.get("slot", "?")
+
+    problems = []
+    if fallback:
+        problems.append(f"fallback={'/'.join(fallback)}（モデル劣化の疑い）")
+    if item_count > 0 and top == 0:
+        problems.append("top_articles=0（掲載記事を出せず・図解も未生成）")
+    if top > 0 and cat == 0:
+        problems.append("category_summaries=0（構造不整合）")
+    if item_count > 0 and action == 0:
+        problems.append("action_items=0（出力崩れ）")
+
+    detail = f"{slot} top={top}/cat={cat}/action={action}/fallback={len(fallback)}（item={item_count}）"
+    if problems:
+        detail += " → " + "; ".join(problems)
+    return _line("分析構造", not problems, detail)
+
+
+def check_analysis_structure() -> tuple[bool, str]:
+    return evaluate_analysis_structure(load_latest_analysis())
+
+
 def load_backlog() -> list[dict]:
     """ops_backlog.yaml の未了TODOを読む。読めなければ空（=表示しないだけ）。"""
     if not BACKLOG_PATH.exists():
@@ -344,6 +405,7 @@ def main(argv: list[str] | None = None) -> int:
         check_gemini(args.days),
         check_buzz(),
         check_collection_quality(),
+        check_analysis_structure(),
     ]
     all_ok = True
     for ok, msg in results:

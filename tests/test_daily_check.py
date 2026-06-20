@@ -5,6 +5,7 @@ from daily_check import (
     EXPECTED_WORKFLOWS,
     TODO_STALE_DAYS,
     evaluate_actions_freshness,
+    evaluate_analysis_structure,
     evaluate_collection_quality,
     format_backlog,
 )
@@ -264,6 +265,60 @@ class BacklogTests(unittest.TestCase):
             [{"title": "宿題", "since": "2026-06-20", "note": "補足メモ"}], self.TODAY
         )
         self.assertIn("— 補足メモ", lines[1])
+
+
+class AnalysisStructureTests(unittest.TestCase):
+    def _analysis(self, top, cat, action, fallback=None, item_count=50, slot="morning") -> dict:
+        return {
+            "top_articles": [{}] * top,
+            "category_summaries": [{}] * cat,
+            "action_items": [""] * action,
+            "fallback_used_stages": fallback or [],
+            "item_count": item_count,
+            "slot": slot,
+        }
+
+    def test_healthy_structure_passes(self) -> None:
+        ok, msg = evaluate_analysis_structure(self._analysis(10, 5, 5))
+        self.assertTrue(ok)
+        self.assertIn("top=10/cat=5/action=5/fallback=0", msg)
+
+    def test_low_volume_day_not_false_positive(self) -> None:
+        # 6/21実測（item=7・top=2/cat=2/action=4）は低ニュース日で正常＝合格
+        ok, _ = evaluate_analysis_structure(self._analysis(2, 2, 4, item_count=7))
+        self.assertTrue(ok)
+
+    def test_fallback_flagged(self) -> None:
+        ok, msg = evaluate_analysis_structure(
+            self._analysis(10, 5, 5, fallback=["stage2"])
+        )
+        self.assertFalse(ok)
+        self.assertIn("fallback=stage2", msg)
+
+    def test_zero_top_with_items_flagged(self) -> None:
+        ok, msg = evaluate_analysis_structure(self._analysis(0, 0, 0, item_count=30))
+        self.assertFalse(ok)
+        self.assertIn("top_articles=0", msg)
+
+    def test_zero_top_without_items_tolerated(self) -> None:
+        # item=0（収集なし）なら top=0 は当然＝合格
+        ok, _ = evaluate_analysis_structure(self._analysis(0, 0, 0, item_count=0))
+        self.assertTrue(ok)
+
+    def test_top_without_category_flagged(self) -> None:
+        ok, msg = evaluate_analysis_structure(self._analysis(5, 0, 5, item_count=40))
+        self.assertFalse(ok)
+        self.assertIn("category_summaries=0", msg)
+
+    def test_zero_action_with_items_flagged(self) -> None:
+        ok, msg = evaluate_analysis_structure(self._analysis(5, 3, 0, item_count=40))
+        self.assertFalse(ok)
+        self.assertIn("action_items=0", msg)
+
+    def test_no_record_passes(self) -> None:
+        ok, msg = evaluate_analysis_structure({})
+        self.assertTrue(ok)
+        self.assertIn("記録なし", msg)
 
 
 if __name__ == "__main__":
