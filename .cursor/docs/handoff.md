@@ -1,6 +1,6 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-21（日次チェック実施＝**全項目合格**。`daily_check.py`1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.17（窓6/14〜6/20・横ばい合格）/ Gemini=6/21 $0.127・直近4日平均で月約$6.7合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**今日の重点＝変更1ロールアウト確認＝6/20 F節①クローズ**: 6/20実装の `main.py` 永続化が6/21朝便で初反映され、`daily_check.py` の「収集品質」項目が**「記録なし」→実値（legal_rss=0/7・must_follow=5）**に切替＝予定どおり。Buzz Health Checkは6/18から連続success。**+改善A実装＝daily_check.py に must_follow急減検知を追加（full便のみ比較・履歴3件貯まるまで沈黙・テスト全105件green）**: official深掘りで判明した本命＝朝便収集量のサイレント縮小（6/20→6/21で total 95→7・must_follow 85→5）を捕まえる。official単独アラートはベースライン1点で時期尚早のため見送り（記録のみ継続）。**+改善B実装＝法務RSSのフィード健全性計測（collector+main+daily_check, テスト全108件green）**: feedparserは404/504/空でも例外を投げず legal=0 の原因が区別できなかったのを、feed単位の生entries/HTTP statusで `feeds ok/failed` を測り「全フィード盲目=取得失敗の疑い」を検知。実測で **IPWatchdog=504/JURIST=空** を発見＝今日の legal=0 は「新着なし（フィード健全）」と確定。**+改善C実装＝Actions鮮度チェック（daily_check, テスト全114件green）**: `check_actions` が gh窓に出た範囲のfailureしか見ず**ワークフローのサイレント停止に盲目**だった（実際6/21は月水金の Buzz Ranking Collector が窓から漏れ「直近4種success」に不可視）。期待スケジュール4種＋最大許容age（週末ギャップ込み）を定義し**不在/stale検知**を追加＝出力 `直近5種success・期待4種cadence内`。**+改善D実装＝未了TODOを日次チェック末尾に表示（`ops_backlog.yaml`新設, テスト全119件green）**: 未了宿題がhandoffに埋もれ塩漬けになるのを防ぐため、合否サマリの下に `📋 未了TODO N件` を古い順（経過日数つき・合否非影響）で常時可視化。残バックログ4点(法務Xクエリ/GH_PAT根本対応/IPWatchdog504/JURIST空)はこの ops_backlog.yaml で管理。**+改善E実装＝分析構造チェック（daily_check, テスト全127件green）**: 分析JSONの構造完全性(top/cat/action/fallback)の手動確認を自動化。件数の多寡は見ず**構造的失敗のみ**（fallback非空/top0/cat0/action0）を判定＝低ニュース日を誤検知しない。**本セッションは日次チェック（全項目合格）＋改善5点(A〜E)を実装、daily_checkは6項目に拡張、コミット10件・全push済み・テスト全127件green・working treeクリーン**。完全ログは下「2026-06-21」節（A=チェック, E=改善A, F=改善B, G=改善C, H=改善D, I=改善E, K=コミット台帳）。）<br>旧: 2026-06-20（日次チェック実施＝**全項目合格**。`daily_check.py`を実運用初投入し1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.67（窓6/13〜6/19・横ばい合格）/ Gemini=6/20 $0.247・直近4日平均で月約$8.1合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**改善1の挙動を実データで確認＝6/19 F節①クローズ**: Buzz Daily Health Check の6/20分(run 27845632239, 6/20 04:53 JST)が`--staleness-only`で**success**＝土曜の収集なし日でもwarning落ちしない。6/16・6/17のfailure以降6/18から3連続success。Buzzメトリクス最終行は6/19のまま＝土曜は収集なし(月水金)で設計どおり。兄弟エラーメールなし。**+同セッションで改善1点を実装＝daily_check.py に収集品質2点(法務一色化・must_follow連続ゼロ)を追加（commit 4b59b19, テスト全101件green。main.pyで legal_rss_count/must_follow_count を data/logs に永続化＝次回収集6/21朝便から実値判定）。+index「規制/政策」目視確認をクローズ（commit 5baf2c3＝6/15からの積み残し。法務RSS反映をHTML直接確認）**。残バックログは2点のみ(法務Xクエリ追加・GH_PAT根本対応、いずれも緊急性なし)。**本セッションのコミットは 7b83a40→4b59b19→5baf2c3 の3件・全push済み・working treeクリーン。完全ログは下「2026-06-20」節 A〜G（特にG＝コミット台帳）。**）<br>旧: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-06-21（日次チェック実施＝**全項目合格**。`daily_check.py`1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.17（窓6/14〜6/20・横ばい合格）/ Gemini=6/21 $0.127・直近4日平均で月約$6.7合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**今日の重点＝変更1ロールアウト確認＝6/20 F節①クローズ**: 6/20実装の `main.py` 永続化が6/21朝便で初反映され、`daily_check.py` の「収集品質」項目が**「記録なし」→実値（legal_rss=0/7・must_follow=5）**に切替＝予定どおり。Buzz Health Checkは6/18から連続success。**+改善A実装＝daily_check.py に must_follow急減検知を追加（full便のみ比較・履歴3件貯まるまで沈黙・テスト全105件green）**: official深掘りで判明した本命＝朝便収集量のサイレント縮小（6/20→6/21で total 95→7・must_follow 85→5）を捕まえる。official単独アラートはベースライン1点で時期尚早のため見送り（記録のみ継続）。**+改善B実装＝法務RSSのフィード健全性計測（collector+main+daily_check, テスト全108件green）**: feedparserは404/504/空でも例外を投げず legal=0 の原因が区別できなかったのを、feed単位の生entries/HTTP statusで `feeds ok/failed` を測り「全フィード盲目=取得失敗の疑い」を検知。実測で **IPWatchdog=504/JURIST=空** を発見＝今日の legal=0 は「新着なし（フィード健全）」と確定。**+改善C実装＝Actions鮮度チェック（daily_check, テスト全114件green）**: `check_actions` が gh窓に出た範囲のfailureしか見ず**ワークフローのサイレント停止に盲目**だった（実際6/21は月水金の Buzz Ranking Collector が窓から漏れ「直近4種success」に不可視）。期待スケジュール4種＋最大許容age（週末ギャップ込み）を定義し**不在/stale検知**を追加＝出力 `直近5種success・期待4種cadence内`。**+改善D実装＝未了TODOを日次チェック末尾に表示（`ops_backlog.yaml`新設, テスト全119件green）**: 未了宿題がhandoffに埋もれ塩漬けになるのを防ぐため、合否サマリの下に `📋 未了TODO N件` を古い順（経過日数つき・合否非影響）で常時可視化。残バックログ4点(法務Xクエリ/GH_PAT根本対応/IPWatchdog504/JURIST空)はこの ops_backlog.yaml で管理。**+改善E実装＝分析構造チェック（daily_check, テスト全127件green）**: 分析JSONの構造完全性(top/cat/action/fallback)の手動確認を自動化。件数の多寡は見ず**構造的失敗のみ**（fallback非空/top0/cat0/action0）を判定＝低ニュース日を誤検知しない。**本セッションは日次チェック（全項目合格）＋改善5点(A〜E)を実装、daily_checkは6項目に拡張、コミット12件（引き継ぎ整備・本修正含む）・全push済み・テスト全127件green・working treeクリーン**。**改善の有効化時期に注意: C/D/Eは本日すでに稼働確認済み、Bは6/22朝便でロールアウト、Aはfull履歴4件目が入る6/24以降に初有効化（それまで沈黙が正常）。** 完全ログは下「2026-06-21」節（A=チェック, E=改善A, F=改善B, G=改善C, H=改善D, I=改善E, K=コミット台帳）。）<br>旧: 2026-06-20（日次チェック実施＝**全項目合格**。`daily_check.py`を実運用初投入し1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.67（窓6/13〜6/19・横ばい合格）/ Gemini=6/20 $0.247・直近4日平均で月約$8.1合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**改善1の挙動を実データで確認＝6/19 F節①クローズ**: Buzz Daily Health Check の6/20分(run 27845632239, 6/20 04:53 JST)が`--staleness-only`で**success**＝土曜の収集なし日でもwarning落ちしない。6/16・6/17のfailure以降6/18から3連続success。Buzzメトリクス最終行は6/19のまま＝土曜は収集なし(月水金)で設計どおり。兄弟エラーメールなし。**+同セッションで改善1点を実装＝daily_check.py に収集品質2点(法務一色化・must_follow連続ゼロ)を追加（commit 4b59b19, テスト全101件green。main.pyで legal_rss_count/must_follow_count を data/logs に永続化＝次回収集6/21朝便から実値判定）。+index「規制/政策」目視確認をクローズ（commit 5baf2c3＝6/15からの積み残し。法務RSS反映をHTML直接確認）**。残バックログは2点のみ(法務Xクエリ追加・GH_PAT根本対応、いずれも緊急性なし)。**本セッションのコミットは 7b83a40→4b59b19→5baf2c3 の3件・全push済み・working treeクリーン。完全ログは下「2026-06-20」節 A〜G（特にG＝コミット台帳）。**）<br>旧: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
 
 ## 次回アクション（日付つき・最新版）
 
@@ -34,22 +34,43 @@
 
 > このセッションでやったこと（2部構成・実施 6/21 04:20〜）:
 > **第1部＝日次チェック**: ①`git pull --rebase`で6/21朝便分を取得 → ②`daily_check.py`で合否1画面確認（全✅） → ③6/21朝便ログに新フィールドが永続化され「収集品質」が実値表示になったことを確認（6/20実装=変更1のロールアウト成功）。
-> **第2部＝改善A〜E**: 上のチェック表を見ながら「見落とし(=静かに壊れて気づけない穴)」を5つ潰した。A=must_follow急減検知 / B=法務RSSフィード健全性 / C=Actions鮮度(サイレント停止検知) / D=未了TODO可視化 / E=分析構造チェック。**daily_check.py は4項目→6項目＋TODOフッタに拡張。テスト 101→127件 全green。コミット10件・全push済み・working treeクリーン。**
+> **第2部＝改善A〜E**: 上のチェック表を見ながら「見落とし(=静かに壊れて気づけない穴)」を5つ潰した。A=must_follow急減検知 / B=法務RSSフィード健全性 / C=Actions鮮度(サイレント停止検知) / D=未了TODO可視化 / E=分析構造チェック。**daily_check.py は4項目→6項目＋TODOフッタに拡張。テスト 101→127件 全green。コミット12件（引き継ぎ整備・本修正含む）・全push済み・working treeクリーン。**
 
 > ### 🧭 次の担当者へ（まずこれだけ読めば動ける）
-> - **現状**: 6/21は全項目合格。本セッションの改善5点は実装・push・テスト完了済み。**ただし A・B・C は次回6/22(月)朝便で初めて本番データに乗る**（=今日はまだ沈黙/ロールアウト前）。
-> - **明日(6/22)やること**: いつもどおり `python3 daily_check.py` を回し、**J節のチェック観点**で A/B/C のロールアウト挙動を答え合わせするだけ。誤報リスクは確認済みで低い（A=履歴不足で沈黙・B=健全フィード6/8で警告閾値未満・C=月曜はbuzz稼働で新鮮）。普通に全項目合格になるはず。
+> - **現状**: 6/21は全項目合格。本セッションの改善5点は実装・push・テスト完了済み。**各改善の"本番データでの有効化"時期は異なる（重要）**:
+>   - **C（Actions鮮度）= 本日すでに実データ確認済み**。今日の実走で fallback取得が Buzz Ranking を拾い `直近5種success・期待4種cadence内` を出した（=もう稼働中・待ち不要）。
+>   - **E（分析構造）= 本日すでに稼働・合格**（6/21分析JSONを判定済み）。
+>   - **B（法務feed健全性）= 6/22(月)朝便でロールアウト**（detail行に `feeds N/M健全` が初表示される）。
+>   - **A（must_follow急減）= 当面は沈黙のまま**。判定には full便履歴が4件必要（`MUST_FOLLOW_DROP_MIN_PRIORS=3`＋当該便）だが現在full便は6/21の**1件のみ**。毎朝1件積み上がり、**4件目が入る6/24(水)朝便以降に初めて有効化**（6/22・6/23はまだ沈黙＝正常）。
+>   - **D（未了TODO）= 本日すでに表示中**。
+> - **明日(6/22)やること**: いつもどおり `python3 daily_check.py` を回し、**J節のチェック観点**で確認するだけ。注目は**Bの `feeds N/M健全` 初表示**。誤報リスクは確認済みで低い（A=履歴不足で沈黙・B=健全フィード6/8で警告閾値未満・C=月曜はbuzz稼働で新鮮）。普通に全項目合格になるはず。
 > - **未了の宿題**: `ops_backlog.yaml`（改善Dで新設＝毎日チェック末尾に表示）に4件集約済み。**唯一の本物はGH_PAT根本対応**（セキュリティ債務・止血済み・別日に単独で）。他3点(IPWatchdog504/JURIST空/法務Xクエリ)は軽微・様子見。
 > - **各改善の詳細・設計判断**: 下のE〜I節（A=E節, B=F節, C=G節, D=H節, E=I節）。コミット対応はK節。
 
-### A. daily_check.py の結果（合否1画面・全✅）※これは改善前=04:20時点の初回チェック結果
+### A. daily_check.py の結果（合否1画面・全✅）
+
+**A-1. 初回スナップショット（改善前・04:20 JST・4項目）** — このセッション開始時に回した素の結果:
 ```
-✅ GitHub Actions: 直近4種すべてsuccess
+✅ GitHub Actions: 直近4種すべてsuccess        ← 改善C前は「窓に出た4種」だけ（Buzz Ranking不可視）
 ✅ Apify: 月換算 $9.17（窓 2026-06-14〜2026-06-20・上限 $12・on_target）
 ✅ Gemini: 2026-06-21 $0.127/日・直近4日平均で月換算 $6.7
 ✅ Buzz: 最終 2026-06-19（49h前）・status=pass・overlap=90.0%
 ✅ 収集品質: legal_rss=0/7（0%）・must_follow=5
 ```
+
+**A-2. 改善後の最終形（改善C/E/D反映後・05:00 JST・6項目＋TODOフッタ）** — このセッション終了時点で `python3 daily_check.py` が出す画面（=次担当が明日見るのと同じ形）:
+```
+✅ GitHub Actions: 直近5種success・期待4種cadence内    ← 改善C: Buzz Rankingを個別取得し明示確認
+✅ Apify: 月換算 $9.17（窓 2026-06-14〜2026-06-20・上限 $12・on_target）
+✅ Gemini: 2026-06-21 $0.127/日・直近4日平均で月換算 $6.7
+✅ Buzz: 最終 2026-06-19（50h前）・status=pass・overlap=90.0%
+✅ 収集品質: legal_rss=0/7（0%）・must_follow=5
+✅ 分析構造: morning top=2/cat=2/action=4/fallback=0（item=7）  ← 改善E（新）
+✅ 全項目合格
+📋 未了TODO 4件（塩漬け防止・合否には影響しない）              ← 改善D（新フッタ）
+  • [6d] GH_PAT のサーバー側中継 / [4d] 法務X検索クエリ / [0d] IPWatchdog504 / [0d] JURIST空
+```
+> 注: 6項目のうち**「収集品質」のfeed健全性(改善B)は6/22朝便からdetail行に出る**（6/21ログに新フィールドが無いため今は legal_rss/must_follow のみ表示）。「分析構造」は item=7 の低ニュース日だが構造的失敗なし＝正常（改善Eの設計どおり誤検知せず）。
 
 ### B. 変更1のロールアウト確認（6/20 F節①クローズ＝今日の重点）
 - 6/20実装の `main.py` 永続化（`legal_rss_count`/`must_follow_count`/`official_count`/`x_count` を `data/logs/*.jsonl` に焼き込み）が **6/21朝便で初めて反映**。`data/logs/2026-06-21.jsonl` に4フィールドが書かれ、`daily_check.py` が「収集品質」を**「記録なし」→実値**に切替＝予定どおりのロールアウト成功。
@@ -105,25 +126,30 @@
 - **テスト**: 8ケース追加（健全/低ボリューム誤検知なし/fallback/top0+item>0/top0+item0許容/top>0でcat0/action0/記録なし）。**全127件green**（119→127）。daily_check は**6項目**に拡張（Actions鮮度・Apify・Gemini・Buzz・収集品質・分析構造）。
 
 ### J. 次回（6/22月）チェック観点
-- **6/22(月)朝便の must_follow / total**（日曜要因か恒常縮小かの切り分け。非ゼロ・前日比で回復するか）。急減検知(改善A)のfull履歴が積み上がる。
-- **6/22(月)朝便で「収集品質」detail行に `feeds N/M健全` が出るか**（改善Bのロールアウト確認）。IPWatchdog/JURIST が継続failed/空なら feeds 6/8前後で安定するはず。
-- **6/22(月)は buzz-collect稼働日**＝Actions鮮度で Buzz Ranking が ~数h に更新されるはず（改善Cの平日挙動確認）。
+- **6/22(月)朝便の must_follow / total**（日曜要因か恒常縮小かの切り分け。非ゼロ・前日比で回復するか）。**改善Aの急減検知はまだ沈黙が正常**＝full便履歴を貯めている段階で、**有効化は4件目が入る6/24(水)朝便以降**（6/21=1件目→6/22=2→6/23=3→6/24=4）。それまでは「履歴不足で判定スキップ」が想定どおりの挙動。
+- **6/22(月)朝便で「収集品質」detail行に `feeds N/M健全` が出るか**（改善Bのロールアウト確認＝今日の本命）。IPWatchdog/JURIST が継続failed/空なら feeds 6/8前後で安定するはず。
+- **6/22(月)は buzz-collect稼働日**＝Actions鮮度（改善C・既に稼働中）で Buzz Ranking が ~数h に更新されるはず（平日挙動の確認）。
 - **6/22(月)の buzz-collect 末尾ステップ**でguardrailが新鮮行で正しく判定されるか（=改善1の「品質判定の正本」側の初動確認・6/20 F節の積み残し）。
 - `official_count` の推移（月曜朝便で非ゼロに戻るか・記録のみ継続）。
 - `daily_check.py` 1本での運用を継続。深掘りが要るときのみ個別ツール。
 
-### K. このセッションのコミット
-| # | commit | 内容 |
-|---|--------|------|
-| 1 | `feb7d2f` | docs: 2026-06-21 日次チェック（全項目合格・「収集品質」実値切替＝変更1ロールアウト確認） |
-| 2 | `7fab3fa` | ops: daily_check.py に must_follow急減検知を追加（full便のみ比較・履歴ゲート・テスト+4＝全105件green）＝改善A |
-| 3 | `e6a610e` | ops: 法務RSSのフィード健全性を計測＝legal=0の新着なし/取得失敗を分離（collector+main+daily_check・テスト+3＝全108件green）＝改善B |
-| 4 | `b11ee93` | ops: Actions鮮度チェック追加＝期待スケジュールの不在/stale検知（daily_check・テスト+6＝全114件green）＝改善C |
-| 5 | `5c8b6dc` | ops: 未了TODOを daily_check 末尾に表示＝塩漬け防止（ops_backlog.yaml新設・テスト+5＝全119件green）＝改善D |
-| 6 | `3f2105b` | docs: 2026-06-21 改善D を記録 |
-| 7 | `da0e190` | ops: 分析構造チェックを daily_check に追加（top/cat/action/fallback・ボリューム非依存・テスト+8＝全127件green）＝改善E |
-| 8 | `2f07d18` | docs: 2026-06-21 改善E を記録（A〜E完了・daily_checkは6項目に） |
-| 9 | （本記録, 引き継ぎ仕上げ） | docs: 2026-06-21節の見出し/冒頭サマリ/次担当ガイドを整備＝完璧な引き継ぎ化 |
+### K. このセッションのコミット（`feb7d2f^..HEAD` = 全12件・古い順）
+| # | commit | 種別 | 内容 |
+|---|--------|------|------|
+| 1 | `feb7d2f` | docs | 2026-06-21 日次チェック（全項目合格・「収集品質」実値切替＝変更1ロールアウト確認） |
+| 2 | `7fab3fa` | code | daily_check.py に must_follow急減検知を追加（full便のみ比較・履歴ゲート・テスト+4＝全105件green）＝**改善A** |
+| 3 | `e6a610e` | code | 法務RSSのフィード健全性を計測＝legal=0の新着なし/取得失敗を分離（collector+main+daily_check・テスト+3＝全108件green）＝**改善B** |
+| 4 | `617c683` | docs | 改善B を記録＝IPWatchdog504/JURIST空を検知 |
+| 5 | `b11ee93` | code | Actions鮮度チェック追加＝期待スケジュールの不在/stale検知（daily_check・テスト+6＝全114件green）＝**改善C** |
+| 6 | `026bc9b` | docs | 改善C を記録＝Buzz Ranking不可視を解消 |
+| 7 | `5c8b6dc` | code | 未了TODOを daily_check 末尾に表示＝塩漬け防止（ops_backlog.yaml新設・テスト+5＝全119件green）＝**改善D** |
+| 8 | `3f2105b` | docs | 改善D を記録＝ops_backlog.yaml運用開始 |
+| 9 | `da0e190` | code | 分析構造チェックを daily_check に追加（top/cat/action/fallback・ボリューム非依存・テスト+8＝全127件green）＝**改善E** |
+| 10 | `2f07d18` | docs | 改善E を記録（A〜E完了・daily_checkは6項目に） |
+| 11 | `21f36e0` | docs | 引き継ぎを完成形に整備（次担当ガイド・daily_check最終形・変更ファイル一覧） |
+| 12 | （本コミット） | docs | 引き継ぎの整合修正（コミット台帳を全12件に補完=617c683/026bc9b追加・A/B/Cの有効化時期を正確化・初回/最終形の混在解消） |
+
+> 内訳: code 5件（A〜E本体）＋ docs 7件（日次記録＋各改善記録＋引き継ぎ整備）。**コード変更は全て daily_check.py 中心**（B のみ collector.py/main.py も触る）。
 
 **daily_check.py の最終形（6項目＋フッタ）**＝次担当が `python3 daily_check.py` で見る画面:
 1. GitHub Actions（横断failure＋**期待4種の不在/stale検知**=改善C）
