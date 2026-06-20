@@ -1,10 +1,12 @@
 import unittest
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 
 from daily_check import (
     EXPECTED_WORKFLOWS,
+    TODO_STALE_DAYS,
     evaluate_actions_freshness,
     evaluate_collection_quality,
+    format_backlog,
 )
 
 _NOW = datetime(2026, 6, 21, 19, 20, tzinfo=timezone.utc)  # = 6/21 04:20 JST
@@ -219,6 +221,49 @@ class ActionsFreshnessTests(unittest.TestCase):
         names = {n for n, _f, _a in EXPECTED_WORKFLOWS}
         self.assertIn("Buzz Ranking Collector", names)
         self.assertEqual(len(EXPECTED_WORKFLOWS), 4)
+
+
+class BacklogTests(unittest.TestCase):
+    TODAY = date(2026, 6, 21)
+
+    def test_empty_returns_no_footer(self) -> None:
+        self.assertEqual(format_backlog([], self.TODAY), [])
+
+    def test_orders_oldest_first(self) -> None:
+        items = [
+            {"title": "新しい宿題", "since": "2026-06-20"},
+            {"title": "古い宿題", "since": "2026-05-01"},
+        ]
+        lines = format_backlog(items, self.TODAY)
+        self.assertIn("未了TODO 2件", lines[0])
+        self.assertIn("古い宿題", lines[1])  # 古い方が上
+        self.assertIn("新しい宿題", lines[2])
+
+    def test_age_and_stale_marker(self) -> None:
+        # since から TODO_STALE_DAYS 以上経過で ⚠️ が付く
+        old = (self.TODAY - timedelta(days=TODO_STALE_DAYS + 5)).isoformat()
+        fresh = (self.TODAY - timedelta(days=3)).isoformat()
+        lines = format_backlog(
+            [{"title": "長期案件", "since": old}, {"title": "最近案件", "since": fresh}],
+            self.TODAY,
+        )
+        stale_line = next(l for l in lines if "長期案件" in l)
+        fresh_line = next(l for l in lines if "最近案件" in l)
+        self.assertIn("⚠️", stale_line)
+        self.assertIn(f"[{TODO_STALE_DAYS + 5}d]", stale_line)
+        self.assertNotIn("⚠️", fresh_line)
+        self.assertIn("[3d]", fresh_line)
+
+    def test_missing_since_is_tolerated(self) -> None:
+        lines = format_backlog([{"title": "日付なし宿題"}], self.TODAY)
+        self.assertIn("[?]", lines[1])
+        self.assertIn("日付なし宿題", lines[1])
+
+    def test_note_is_appended(self) -> None:
+        lines = format_backlog(
+            [{"title": "宿題", "since": "2026-06-20", "note": "補足メモ"}], self.TODAY
+        )
+        self.assertIn("— 補足メモ", lines[1])
 
 
 if __name__ == "__main__":

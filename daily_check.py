@@ -18,7 +18,7 @@ import argparse
 import json
 import subprocess
 from collections import defaultdict
-from datetime import datetime, timedelta, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from check_cost import build_tracking, load_logs, load_plan
@@ -27,8 +27,10 @@ from scripts.check_buzz_health import evaluate_health, load_latest_metrics
 BASE = Path(__file__).resolve().parent
 GEMINI_USAGE_DIR = BASE / "data" / "gemini_usage"
 LOGS_DIR = BASE / "data" / "logs"
+BACKLOG_PATH = BASE / "ops_backlog.yaml"
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
+TODO_STALE_DAYS = 30  # これ以上未了なら ⚠️ を付けて軽く催促（合否には影響しない）
 
 # 品質監視の閾値（[[daily-check-routine]] の「残監視2点」をコード化）
 LEGAL_DOMINANCE_RATIO = 0.5   # legal_rss_count/total がこれ以上なら「規制/政策」一色化を疑う
@@ -287,6 +289,46 @@ def check_collection_quality() -> tuple[bool, str]:
     return evaluate_collection_quality(load_collect_entries())
 
 
+def load_backlog() -> list[dict]:
+    """ops_backlog.yaml の未了TODOを読む。読めなければ空（=表示しないだけ）。"""
+    if not BACKLOG_PATH.exists():
+        return []
+    try:
+        import yaml
+        data = yaml.safe_load(BACKLOG_PATH.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return []
+    items = data.get("items") or []
+    return [i for i in items if isinstance(i, dict) and i.get("title")]
+
+
+def format_backlog(items: list[dict], today: date) -> list[str]:
+    """未了TODOを古い順（=塩漬けが上）に整形する純関数。合否には影響しない。
+
+    各行に since からの経過日数を出し、TODO_STALE_DAYS 以上は ⚠️ で軽く催促する。
+    空なら空リストを返す（フッタごと出さない）。
+    """
+    if not items:
+        return []
+
+    def age(i: dict) -> int:
+        try:
+            return (today - date.fromisoformat(str(i.get("since")))).days
+        except (ValueError, TypeError):
+            return -1
+
+    ordered = sorted(items, key=lambda i: -age(i))
+    lines = [f"📋 未了TODO {len(ordered)}件（塩漬け防止・合否には影響しない）"]
+    for i in ordered:
+        d = age(i)
+        tag = f"{d}d" if d >= 0 else "?"
+        mark = "⚠️ " if d >= TODO_STALE_DAYS else ""
+        note = i.get("note")
+        suffix = f"  — {note}" if note else ""
+        lines.append(f"  • {mark}[{tag}] {i['title']}{suffix}")
+    return lines
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="日次運用チェック集約")
     parser.add_argument("--days", type=int, default=4, help="Gemini平均/表示の日数（既定4）")
@@ -310,6 +352,13 @@ def main(argv: list[str] | None = None) -> int:
 
     print("-" * 64)
     print(("✅ 全項目合格" if all_ok else "⚠️ 要確認あり（上の⚠️行を参照）"))
+
+    backlog_lines = format_backlog(load_backlog(), datetime.now(JST).date())
+    if backlog_lines:
+        print("-" * 64)
+        for ln in backlog_lines:
+            print(ln)
+
     print("=" * 64)
     return 0 if all_ok else 1
 

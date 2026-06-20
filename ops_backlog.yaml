@@ -1,0 +1,20 @@
+# 運用の未了TODO（daily_check.py が末尾に経過日数つきで表示＝塩漬け防止）。
+# 詳細経緯は .cursor/docs/handoff.md（引き継ぎ正本）。完了したら該当ブロックを削除する。
+# since は YYYY-MM-DD。daily_check が古い順に並べるので放置されたものが上に浮く。
+# ここは「いつかやる宿題」の一覧であり合否には影響しない（チェックの exit code を変えない）。
+items:
+  - title: 法務X検索クエリ2本追加（5→7本・想定 月+$1未満）
+    since: 2026-06-17
+    note: config反映後にApify増分を確認
+
+  - title: GH_PAT のサーバー側中継（根本対応・revoke済みで止血中）
+    since: 2026-06-15
+    note: memo gh-pat-public-exposure
+
+  - title: IPWatchdog RSS が504（Gateway Timeout・raw0）
+    since: 2026-06-21
+    note: 一過性の可能性。継続failedなら要対応／改善Bのfeed健全性で可視化
+
+  - title: JURIST RSS が200だが恒常的に空
+    since: 2026-06-21
+    note: フィードURL見直し候補／改善Bのfeed健全性で可視化
