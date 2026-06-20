@@ -6,7 +6,7 @@
   2. Apify コスト（施策後フロア窓の月額換算。check_cost.py と同じ計測ロジック）
   3. Gemini コスト（直近数日の日額）
   4. Buzz メトリクス最終行の鮮度と guardrail
-  5. 収集品質2点（法務一色化・must_follow連続ゼロ。data/logs の collect 行から）
+  5. 収集品質（法務一色化・must_follow連続ゼロ・must_follow急減。data/logs の collect 行から）
 
 使い方:
   python3 daily_check.py            # サマリ表示
@@ -30,9 +30,14 @@ LOGS_DIR = BASE / "data" / "logs"
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
 
-# 品質監視2点の閾値（[[daily-check-routine]] の「残監視2点」をコード化）
+# 品質監視の閾値（[[daily-check-routine]] の「残監視2点」をコード化）
 LEGAL_DOMINANCE_RATIO = 0.5   # legal_rss_count/total がこれ以上なら「規制/政策」一色化を疑う
 MUST_FOLLOW_ZERO_STREAK = 2   # must_follow_count=0 がこの連続回数で要調査（単発は許容）
+# must_follow 急減検知: 朝便(full)の must_follow が直近中央値のこの割合未満なら要確認。
+# 夕便(light)は対象アカウントを絞るため0が正常 → full便のみで比較する。
+MUST_FOLLOW_DROP_RATIO = 0.2
+# full便の履歴がこの件数貯まるまで急減判定はしない（ロールアウト互換＝当面は沈黙）。
+MUST_FOLLOW_DROP_MIN_PRIORS = 3
 
 OK = "✅"
 WARN = "⚠️"
@@ -146,11 +151,24 @@ def load_collect_entries() -> list[dict]:
     return entries
 
 
+def _median(values: list[float]) -> float:
+    """空リストは0。外れ値に強い中央値（依存を増やさず自前実装）。"""
+    if not values:
+        return 0.0
+    s = sorted(values)
+    n = len(s)
+    mid = n // 2
+    return s[mid] if n % 2 else (s[mid - 1] + s[mid]) / 2
+
+
 def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
-    """収集の品質監視2点を判定する純関数。
+    """収集の品質監視を判定する純関数。
 
     - 法務一色化: legal_rss_count / total が LEGAL_DOMINANCE_RATIO 以上で要確認。
     - must_follow連続ゼロ: 末尾から MUST_FOLLOW_ZERO_STREAK 連続で0なら要確認（単発は許容）。
+    - must_follow急減: 朝便(full)の最新値が直近full便の中央値の MUST_FOLLOW_DROP_RATIO 未満なら
+      要確認。夕便(light)は対象アカウントを絞るため0が正常 → full便のみで比較。
+      full便の履歴が MUST_FOLLOW_DROP_MIN_PRIORS 件貯まるまでは判定しない（ロールアウト互換）。
     記録が無い間（旧コードのログのみ）は合格扱い＝次回収集から有効になる。
     """
     if not entries:
@@ -173,6 +191,20 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
         problems.append(f"法務一色化 legal={legal}/{total}={ratio:.0%}")
     if zero_streak >= MUST_FOLLOW_ZERO_STREAK:
         problems.append(f"must_follow連続ゼロ{zero_streak}回")
+
+    # must_follow 急減（full便のみで比較）
+    full_entries = [r for r in entries if r.get("x_mode") == "full"]
+    if len(full_entries) > MUST_FOLLOW_DROP_MIN_PRIORS:
+        cur_full = full_entries[-1].get("must_follow_count", 0) or 0
+        priors = [
+            r.get("must_follow_count", 0) or 0
+            for r in full_entries[-(MUST_FOLLOW_DROP_MIN_PRIORS + 1):-1]
+        ]
+        baseline = _median(priors)
+        if baseline > 0 and cur_full < MUST_FOLLOW_DROP_RATIO * baseline:
+            problems.append(
+                f"must_follow急減 full={cur_full}（直近full中央値{baseline:.0f}比）"
+            )
 
     detail = f"legal_rss={legal}/{total}（{ratio:.0%}）・must_follow={must_follow}"
     if problems:

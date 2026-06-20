@@ -3,13 +3,14 @@ import unittest
 from daily_check import evaluate_collection_quality
 
 
-def _entry(ts: str, total: int, legal: int, must_follow: int) -> dict:
+def _entry(ts: str, total: int, legal: int, must_follow: int, x_mode: str = "full") -> dict:
     return {
         "ts": ts,
         "workflow": "collect",
         "items_collected": total,
         "legal_rss_count": legal,
         "must_follow_count": must_follow,
+        "x_mode": x_mode,
     }
 
 
@@ -52,6 +53,55 @@ class CollectionQualityTests(unittest.TestCase):
         ok, msg = evaluate_collection_quality(entries)
         self.assertFalse(ok)
         self.assertIn("must_follow連続ゼロ", msg)
+
+    def test_must_follow_drop_fires_on_full_runs(self) -> None:
+        # 朝便(full)が直近full中央値の2割未満まで急減＝要確認
+        entries = [
+            _entry("2026-06-18T02:41:00+09:00", 95, 5, 80),
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
+            _entry("2026-06-21T02:41:00+09:00", 7, 0, 5),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("must_follow急減", msg)
+
+    def test_must_follow_drop_silent_until_enough_history(self) -> None:
+        # full便の履歴が閾値未満（3件）の間は急減判定をしない＝ロールアウト互換
+        entries = [
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
+            _entry("2026-06-21T02:41:00+09:00", 7, 0, 5),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("急減", msg)
+
+    def test_mild_dip_within_ratio_tolerated(self) -> None:
+        # 中央値の2割以上残っていれば通常変動として許容
+        entries = [
+            _entry("2026-06-18T02:41:00+09:00", 95, 5, 80),
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
+            _entry("2026-06-21T02:41:00+09:00", 90, 5, 30),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("急減", msg)
+
+    def test_light_zero_runs_excluded_from_drop(self) -> None:
+        # 夕便(light)の must_follow=0 は対象アカウントを絞るため正常＝full比較に混ぜない
+        entries = [
+            _entry("2026-06-18T02:41:00+09:00", 95, 5, 80, x_mode="full"),
+            _entry("2026-06-18T16:10:00+09:00", 3, 1, 0, x_mode="light"),
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85, x_mode="full"),
+            _entry("2026-06-19T16:10:00+09:00", 3, 1, 0, x_mode="light"),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90, x_mode="full"),
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82, x_mode="full"),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("急減", msg)
 
     def test_uses_latest_entry_by_timestamp_order(self) -> None:
         # 入力順が前後しても最新行（ts最大）で判定すること
