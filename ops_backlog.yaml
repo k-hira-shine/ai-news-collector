@@ -11,10 +11,10 @@ items:
     since: 2026-06-15
     note: memo gh-pat-public-exposure
 
-  - title: IPWatchdog RSS が504（Gateway Timeout・raw0）
+  - title: IPWatchdog RSS が504（Gateway Timeout・raw0）→ 6/22自己回復・監視のみ
     since: 2026-06-21
-    note: 一過性の可能性。継続failedなら要対応／改善Bのfeed健全性で可視化
+    note: 6/22朝便で legal_feeds_failed=0・手動curlも200で1件取得＝一過性確定。再発なければ6/24頃クローズ
 
-  - title: JURIST RSS が200だが恒常的に空
+  - title: JURIST 空の原因＝死URL → /news/feed/ に修正済み・6/23朝便で反映確認待ち
     since: 2026-06-21
-    note: フィードURL見直し候補／改善Bのfeed健全性で可視化
+    note: 旧 /feed/ は200だが空スタブ(0件)。/news/feed/ は15件・最新6/21。6/23朝便で legal_feeds_ok=8 になればクローズ
