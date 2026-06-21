@@ -19,7 +19,7 @@
 4. ~~**残監視2点**~~ ✅ **クリア（6/17朝便 run 27639243105）**:
    ① `legal_rss_count=7`（total 116・x_count 109中）→ 法務一色化なし。
    ② `must_follow_count=92` → 連続ゼロ回避。**残: index「規制/政策」リンク一覧の目視確認のみ**（要ブラウザ）。
-5. **未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）は未着手。実施時は config 反映後にApify増分を確認。
+5. ~~**未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）。~~ ❌ **見送り決定（2026-06-22）**: Apifyコストが月+$1増えるだけで必須機能ではなく、法務ニュースは無料のRSS経由で十分流入している（JURIST修正で feed も増強済み）。**やらない宿題**として ops_backlog から削除＝塩漬け解消。将来本当に必要になったら config の `x_search.queries` に追記して段階方式で増分確認する。
 6. **未了（根本対応）**: GH_PAT のサーバー側中継。revoke 済みで止血中、根本対応は未着手（[[gh-pat-public-exposure]]）。
 7. ~~**要確認（6/18朝）**: Buzzガードレール変更後、Buzz Daily Health Check が success に戻るか。~~ ✅ **完了（6/19）＝データで自己回復を確定**:
    6/19 03:13 JSTの新コードbuzz収集（run 27779839241, 6/18T18:11Z）が `guardrail_status="pass"`（`ranking_top20_overlap_pct=90.0% ≥ 閾値75%`、`prior_top20_retention_pct=55%`は判定不使用＝[[buzz-guardrail-overlap-only]]通り、fetched=1267, cost=$0.1756）をメトリクス最終行に書き込み。ヘルスチェック `check_buzz_health.py` は最終行を読むだけなので、6/19 ~05:00 JST発火分はこのpass行を読んでgreen復帰する。**stale行起因の失敗は解消済み＝対応完了。** 自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`（05:00 JST一度きり）は発火後auto-disableされる＝この手動更新で先に確定したため冗長（放置でOK）。
@@ -74,7 +74,7 @@
 ### D. 次の担当者へ
 - **明日(6/23 火)**: いつもどおり `python3 daily_check.py`。火曜はbuzz非稼働日（月水金）なのでBuzz最終行は6/22のまま＝鮮度チェック(改善C)が週末/平日ギャップを許容するので合格のはず。**最注目＝JURIST修正の反映**: 収集品質が `feeds 8/8健全` になればJURIST項目クローズ（ops_backlogから削除）。
 - **注目(6/24 水)**: 改善A（must_follow急減検知）がfull便4件目で初有効化される。6/22・6/23は沈黙が正常。
-- **未了の宿題**: `ops_backlog.yaml` 4件。**実質残る本物はGH_PAT根本対応のみ**（セキュリティ債務・止血済み・別日に単独で）。法務Xクエリ追加は軽微・任意。IPWatchdog/JURISTは上記で反映待ち/監視のみ。
+- **未了の宿題**: `ops_backlog.yaml` を **4件→3件に削減**。**法務Xクエリ追加は見送り決定で削除**（月+$1のコスト増だけで必須でない・RSS流入で十分／次回アクション#5参照）。**実質残る本物はGH_PAT根本対応のみ**（セキュリティ債務・止血済み・別日に単独で）。IPWatchdog/JURISTは上記で反映待ち/監視のみ＝自動クローズ予定。
 
 ### E. コミット台帳（2026-06-22・本セッション2件・全push済み）
 | # | hash | 種別 | 内容 |
@@ -82,7 +82,7 @@
 | D | `d5aa5e4` | docs | 2026-06-22 日次チェック実施＝全項目合格・改善Bロールアウト確認（feeds 7/8健全 初表示）。handoff冒頭＋本節A/Bを追加。 |
 | F | `b3bc5ba` | fix(legal) | JURIST RSSを死URL `/feed/` から実フィード `/news/feed/` へ修正。config.yaml・ops_backlog.yaml・handoff(本節C)を更新。 |
 
-※本コミットでさらにhandoff構成を整備（冒頭サマリ整合・節順A〜E化・台帳追加）。working treeクリーン。
+※handoff構成を整備（冒頭サマリ整合・節順A〜E化・台帳追加）。**＋法務Xクエリ追加を見送り決定し ops_backlog から削除（4件→3件）＝次回アクション#5・本節D参照**。working treeクリーン。
 
 ---
 
