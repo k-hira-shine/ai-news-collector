@@ -20,7 +20,7 @@
    ① `legal_rss_count=7`（total 116・x_count 109中）→ 法務一色化なし。
    ② `must_follow_count=92` → 連続ゼロ回避。**残: index「規制/政策」リンク一覧の目視確認のみ**（要ブラウザ）。
 5. ~~**未了（継続）**: 法務X検索クエリ2本追加（5→7本、想定 月+$1未満）。~~ ❌ **見送り決定（2026-06-22）**: Apifyコストが月+$1増えるだけで必須機能ではなく、法務ニュースは無料のRSS経由で十分流入している（JURIST修正で feed も増強済み）。**やらない宿題**として ops_backlog から削除＝塩漬け解消。将来本当に必要になったら config の `x_search.queries` に追記して段階方式で増分確認する。
-6. **進行中（根本対応・コード完成）**: GH_PAT のサーバー側中継。**2026-06-22にコード実装を完了**＝中継Worker `workers/buzz-dispatch/` 新設＋`build_buzz.py` からPAT埋め込みを撤去（公開buzz.htmlから旧 `ghp_mLJz…` も消去）。**残るはユーザー操作のデプロイのみ**＝①新PAT発行（最小権限）→②`wrangler secret put GH_PAT`→③`wrangler deploy`（手順書 `workers/buzz-dispatch/README.md`）。デプロイ後にbuzzの「収集起動」ボタンが復活する。詳細は下「2026-06-22」節F（[[gh-pat-public-exposure]]）。
+6. ~~**根本対応**: GH_PAT のサーバー側中継。~~ ✅ **完了（2026-06-22）＝デプロイ＆実起動テストまで確認**: 中継Worker `workers/buzz-dispatch/` を実装→Cloudflareへデプロイ（`https://buzz-dispatch.imokonoai.workers.dev`）→新fine-grained PAT（当該repo Actions:RW・最小権限）を**Cloudflareダッシュボードのsecret**に格納。実テスト＝既存アカウント `taziku_co` でWorker経由POST→`{"ok":true}`→**Buzz Ranking Collector が `workflow_dispatch` で実起動**を確認（run 27916723224）。公開buzz.htmlからPATは消去済み（ghp_=0）。**PATはもうブラウザに出ず、Cloudflareの金庫のみに存在＝事故クローズ**。残課題: 別トークン `ai-news-collector`（用途不明）の掃除は未確認。詳細は下「2026-06-22」節F（[[gh-pat-public-exposure]]）。
 7. ~~**要確認（6/18朝）**: Buzzガードレール変更後、Buzz Daily Health Check が success に戻るか。~~ ✅ **完了（6/19）＝データで自己回復を確定**:
    6/19 03:13 JSTの新コードbuzz収集（run 27779839241, 6/18T18:11Z）が `guardrail_status="pass"`（`ranking_top20_overlap_pct=90.0% ≥ 閾値75%`、`prior_top20_retention_pct=55%`は判定不使用＝[[buzz-guardrail-overlap-only]]通り、fetched=1267, cost=$0.1756）をメトリクス最終行に書き込み。ヘルスチェック `check_buzz_health.py` は最終行を読むだけなので、6/19 ~05:00 JST発火分はこのpass行を読んでgreen復帰する。**stale行起因の失敗は解消済み＝対応完了。** 自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`（05:00 JST一度きり）は発火後auto-disableされる＝この手動更新で先に確定したため冗長（放置でOK）。
    <details><summary>旧経緯（6/18時点）</summary>
@@ -93,13 +93,12 @@ ops_backlogで唯一の「本物」だったGH_PAT問題（[[gh-pat-public-expos
 
 **検証**: `python3 -m unittest discover -s tests` → **全127件 OK**。`node --check` でWorker構文OK。buzz.html再ビルドでPAT痕跡ゼロを確認。
 
-**残り＝ユーザー操作のデプロイのみ（コードでは完結不可）**:
-1. 新PAT発行（fine-grained で当該repoの Actions:RW、または classic の workflow スコープのみ＝最小権限）
-2. `cd workers/buzz-dispatch && wrangler secret put GH_PAT`（金庫に入れる）
-3. `wrangler deploy` → 実URL確認。`https://buzz-dispatch.imokonoai.workers.dev` と異なれば `build_buzz.py` の `BUZZ_DISPATCH_URL` を直して再ビルド
-4. buzz.htmlでボタン動作＆ソースにPATが無いことを確認
-- 手順の正本は `workers/buzz-dispatch/README.md`。デプロイ完了でボタン復活＝ops_backlogのGH_PAT項目クローズ。
-- 補足: build_tools.py / build_reviews.py の `gh_pat`(localStorage) は**別物**＝ユーザー自身がブラウザに貼る方式で公開ページには埋まらないため本件の対象外。別トークン `ai-news-collector` の掃除も未確認のまま残置。
+**デプロイ＆実起動テスト＝同日中に完了（✅クローズ）**:
+1. ✅ `wrangler login`（ブラウザOAuth・kazuya.imasaka@gmail.com で Authorize）→ `wrangler deploy` 成功。実URL=`https://buzz-dispatch.imokonoai.workers.dev`＝コードの `BUZZ_DISPATCH_URL` と一致したのでコード修正不要。
+2. ✅ 新fine-grained PAT（当該repo **Actions: Read and write** のみ・最小権限）を発行し、**ターミナル不可のため Cloudflareダッシュボード**（Workers→buzz-dispatch→Settings→Variables and Secrets→Add→Type=Secret）から `GH_PAT` secret に格納。
+3. ✅ 安全プローブ（無効ハンドルPOST→`invalid handle`＝GH_PAT読めている）→ 本番テスト（`taziku_co` でPOST→`{"ok":true}`）→ **Buzz Ranking Collector が `workflow_dispatch` で in_progress**（run 27916723224）を確認＝全チェーン疎通。
+- **結論**: PATは公開ページから消え、Cloudflareの金庫のみに存在。buzz「収集起動」ボタンも復活。ops_backlogのGH_PAT項目は削除済み。
+- 補足: build_tools.py / build_reviews.py の `gh_pat`(localStorage) は**別物**＝ユーザー自身がブラウザに貼る方式で公開ページには埋まらないため本件の対象外。別トークン `ai-news-collector`（用途不明）の掃除は未確認のまま残置（緊急性なし）。
 
 ### E. コミット台帳（2026-06-22・本セッション・全push済み）
 | # | hash | 種別 | 内容 |

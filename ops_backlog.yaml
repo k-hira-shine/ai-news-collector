@@ -3,10 +3,6 @@
 # since は YYYY-MM-DD。daily_check が古い順に並べるので放置されたものが上に浮く。
 # ここは「いつかやる宿題」の一覧であり合否には影響しない（チェックの exit code を変えない）。
 items:
-  - title: GH_PAT サーバー側中継＝コード実装済み・残りはWorkerデプロイのみ
-    since: 2026-06-15
-    note: 中継Worker(workers/buzz-dispatch)実装＋buzz.htmlからPAT埋め込み撤去済み。残=新PAT発行→wrangler secret put GH_PAT→wrangler deploy（手順 workers/buzz-dispatch/README.md）。memo gh-pat-public-exposure
-
   - title: IPWatchdog RSS が504（Gateway Timeout・raw0）→ 6/22自己回復・監視のみ
     since: 2026-06-21
     note: 6/22朝便で legal_feeds_failed=0・手動curlも200で1件取得＝一過性確定。再発なければ6/24頃クローズ
