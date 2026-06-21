@@ -63,9 +63,7 @@ jobs:
             python run_buzz.py "${EXTRA_ARGS[@]}"
           fi
 
-      - name: Rebuild buzz.html with PAT embedded
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+      - name: Rebuild buzz.html
         run: python build_buzz.py
 
       - name: Update Apify cost tracking

@@ -167,9 +167,7 @@ def build_overall_panel(accounts: list[dict]) -> str:
 </div>"""
 
 
-def build(gh_pat: str = "") -> None:
-    gh_pat = gh_pat or os.environ.get("GH_PAT", "")
-
+def build() -> None:
     try:
         import sys as _sys
         _sys.path.insert(0, str(Path(__file__).parent))
@@ -237,13 +235,10 @@ def build(gh_pat: str = "") -> None:
   </div>
 </div>"""
 
-    # GH_PAT を分割して埋め込む（GitHubのシークレットスキャン回避のため2分割）
-    if gh_pat:
-        mid = len(gh_pat) // 2
-        p1, p2 = gh_pat[:mid], gh_pat[mid:]
-        pat_js = f'const GH_PAT = "{p1}" + "{p2}";'
-    else:
-        pat_js = 'const GH_PAT = "";'
+    # 収集起動はサーバー側中継(Cloudflare Worker)経由。PATはWorkerのsecret(env.GH_PAT)に隠し、
+    # ブラウザには一切埋め込まない（旧: 公開ページにPATを分割埋め込み＝誰でも復元可能なセキュリティ事故）。
+    # 実装は workers/buzz-dispatch/ を参照。
+    dispatch_js = 'const BUZZ_DISPATCH_URL = "https://buzz-dispatch.imokonoai.workers.dev";'
 
     html_out = f"""<!DOCTYPE html>
 <html lang="ja">
@@ -384,7 +379,7 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
   </div>
 </div>
 <script>
-{pat_js}
+{dispatch_js}
 function switchTab(account, btn) {{
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -420,32 +415,24 @@ async function addAccount() {{
   const urlMatch = raw.match(/(?:x\\.com|twitter\\.com)\\/([A-Za-z0-9_]+)/);
   let handle = urlMatch ? urlMatch[1] : raw.replace(/^@/, '');
   if (!handle) {{ status.textContent = '⚠️ ハンドルを入力してください'; status.style.color='#f59e0b'; return; }}
-  if (!GH_PAT) {{ status.textContent = '⚠️ 設定が必要です（管理者にお知らせください）'; status.style.color='#f87171'; return; }}
 
   status.textContent = '⏳ 収集ワークフローを起動中...';
   status.style.color = '#60a5fa';
 
   try {{
-    const res = await fetch(
-      'https://api.github.com/repos/k-hira-shine/ai-news-collector/actions/workflows/buzz-collect.yml/dispatches',
-      {{
-        method: 'POST',
-        headers: {{
-          'Authorization': 'Bearer ' + GH_PAT,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json',
-        }},
-        body: JSON.stringify({{ ref: 'main', inputs: {{ account: handle, days: '30' }} }}),
-      }}
-    );
-    if (res.status === 204) {{
+    // PATはブラウザに無い。中継Worker(BUZZ_DISPATCH_URL)へハンドル名だけ送る。
+    const res = await fetch(BUZZ_DISPATCH_URL, {{
+      method: 'POST',
+      headers: {{ 'Content-Type': 'application/json' }},
+      body: JSON.stringify({{ account: handle, days: '30' }}),
+    }});
+    const data = await res.json().catch(() => ({{}}));
+    if (res.ok && data.ok) {{
       status.textContent = '✅ @' + handle + ' の収集を開始しました！約2〜3分で反映されます。';
       status.style.color = '#34d399';
       handleInput.value = '';
-      // PATはセッション保持（再利用できるようlocalStorageには保存しない）
     }} else {{
-      const body = await res.text();
-      status.textContent = '❌ エラー ' + res.status + ': ' + body;
+      status.textContent = '❌ エラー: ' + (data.error || res.status);
       status.style.color = '#f87171';
     }}
   }} catch(e) {{
