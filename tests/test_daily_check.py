@@ -33,6 +33,7 @@ def _entry(
     feeds_ok: int | None = None,
     feeds_failed: int = 0,
     x_valid: int | None = None,
+    critical_zero: list | None = None,
 ) -> dict:
     e = {
         "ts": ts,
@@ -48,6 +49,8 @@ def _entry(
         e["legal_feeds_failed"] = feeds_failed
     if x_valid is not None:
         e["x_valid_count"] = x_valid
+    if critical_zero is not None:
+        e["must_follow_critical_zero"] = critical_zero
     return e
 
 
@@ -251,6 +254,71 @@ class CollectionQualityTests(unittest.TestCase):
         ok, msg = evaluate_collection_quality(entries)
         self.assertFalse(ok)
         self.assertIn("フロア割れ", msg)
+
+    # --- じわ減り（固定リファレンス比・連続）。フロアの上で続く慢性劣化を捕まえる。 ---
+    def test_erosion_fires_on_sustained_above_floor_drop(self) -> None:
+        # must_follow がフロア(25)の上だが健全比50%(40)未満で2連続＝じわ減りで要確認
+        entries = [
+            _entry("2026-06-22T02:41:00+09:00", 90, 5, 35, x_valid=200),
+            _entry("2026-06-23T02:41:00+09:00", 90, 5, 30, x_valid=200),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("must_followじわ減り", msg)
+
+    def test_erosion_silent_on_single_dip(self) -> None:
+        # 単発の落ち込み（直近1便のみ痩せ）は許容＝連続を要求するので発火しない
+        entries = [
+            _entry("2026-06-22T02:41:00+09:00", 90, 5, 82, x_valid=200),
+            _entry("2026-06-23T02:41:00+09:00", 90, 5, 35, x_valid=200),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("じわ減り", msg)
+
+    def test_erosion_silent_when_x_valid_absent(self) -> None:
+        # 旧ログ（x_valid なし）では x_valid のじわ減り判定は沈黙＝ロールアウト互換
+        entries = [
+            _entry("2026-06-22T02:41:00+09:00", 90, 5, 82),
+            _entry("2026-06-23T02:41:00+09:00", 90, 5, 82),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("じわ減り", msg)
+
+    # --- critical アカウントの個別沈黙（advisory・合否非影響） ---
+    def test_critical_dark_advisory_fires_on_consecutive_zero(self) -> None:
+        # あるcriticalアカウントが3連続ゼロ＝合計must_followは健全でも個別沈黙をadvisory表示
+        entries = [
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
+            _entry("2026-06-22T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
+            _entry("2026-06-23T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI", "xai"]),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)  # advisory は合否を変えない
+        self.assertIn("criticalアカウント沈黙", msg)
+        self.assertIn("OpenAI", msg)
+        self.assertNotIn("xai", msg)  # 全便で連続している handle のみ（xaiは最新便だけ）
+
+    def test_critical_dark_silent_when_not_consecutive(self) -> None:
+        entries = [
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
+            _entry("2026-06-22T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=[]),
+            _entry("2026-06-23T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("沈黙", msg)
+
+    def test_critical_dark_silent_until_history(self) -> None:
+        # 履歴が CRITICAL_DARK_STREAK 未満の間は判定しない＝ロールアウト互換
+        entries = [
+            _entry("2026-06-22T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
+            _entry("2026-06-23T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("沈黙", msg)
 
     def test_legal_zero_with_healthy_feeds_is_no_news(self) -> None:
         # legal_rss=0 でも生entriesを返すフィードがあれば「窓に新着なし」＝合格。

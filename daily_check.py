@@ -62,6 +62,21 @@ COLLECT_VOLUME_DROP_RATIO = 0.5
 FULL_X_VALID_FLOOR = 120       # X有効取得（検索+must_follow合算）の下限
 FULL_ITEMS_FLOOR = 40          # 最終収集件数の下限
 FULL_MUST_FOLLOW_FLOOR = 25    # 必須アカウント取得の下限（経路別＝must_follow単独の崩落を捕まえる）
+
+# 「じわ減り」（持続的な中規模劣化）検知。フロア（崖）は単日の崩落を捕まえるが、
+# フロアの“上”で続く劣化（例: must_follow 82→40 が数日）は崖判定では拾えない。本来これを
+# 拾うべき相対(中央値比)判定は劣化追従でベースラインごと汚染され盲目だった（2026-06-23実証）。
+# そこで汚染されない「固定の健全リファレンス」比で、痩せが連続したら本判定で要確認とする。
+# リファレンスは良好期(6月)の実測中央値級の保守値。単発の閑散日は許容（連続を要求）。
+HEALTHY_REF = {"x_valid": 300, "items": 110, "must_follow": 80}
+EROSION_FRACTION = 0.5         # 健全リファレンスのこの割合を下回ると「痩せ」
+EROSION_STREAK = 2            # full便がこの連続回数で痩せ続けたら要確認（崖の上の慢性劣化）
+
+# critical アカウントの個別沈黙検知（advisory）。あるcriticalアカウントが full便で
+# CRITICAL_DARK_STREAK 連続ゼロなら、ハンドル変更/個別収集断の疑い。合計must_followが
+# 健全でも単一アカウントの黙りは隠れるため、経路内のさらに細かい盲点を塞ぐ。
+# 個人アカウントは数日沈黙し得るため advisory（合否非影響）に留める。
+CRITICAL_DARK_STREAK = 3
 # full便の履歴がこの件数貯まるまで判定しない（ロールアウト互換＝当面は沈黙）。
 COLLECT_VOLUME_DROP_MIN_PRIORS = 4
 
@@ -308,6 +323,23 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
         if f_xvalid is not None and f_xvalid < FULL_X_VALID_FLOOR:
             problems.append(f"X取得フロア割れ x_valid={f_xvalid}<{FULL_X_VALID_FLOOR}")
 
+    # じわ減り（固定リファレンス比・EROSION_STREAK 連続で本判定）。
+    # フロアの上で続く中規模劣化を、汚染されない固定基準で捕まえる。
+    if len(full_entries) >= EROSION_STREAK:
+        recent = full_entries[-EROSION_STREAK:]
+        for key, logkey, label in (
+            ("x_valid", "x_valid_count", "x_valid"),
+            ("items", "items_collected", "items"),
+            ("must_follow", "must_follow_count", "must_follow"),
+        ):
+            thr = EROSION_FRACTION * HEALTHY_REF[key]
+            vals = [r.get(logkey) for r in recent]
+            # 旧ログ（値None）が混じる間は判定しない＝ロールアウト互換
+            if all(v is not None and v < thr for v in vals):
+                problems.append(
+                    f"{label}じわ減り {EROSION_STREAK}連続<{thr:.0f}（健全{HEALTHY_REF[key]}比・最新{vals[-1]}）"
+                )
+
     # must_follow 急減（full便のみで比較）
     if len(full_entries) > MUST_FOLLOW_DROP_MIN_PRIORS:
         cur_full = full_entries[-1].get("must_follow_count", 0) or 0
@@ -333,6 +365,20 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
         if vol_baseline > 0 and cur_vol < COLLECT_VOLUME_DROP_RATIO * vol_baseline:
             advisories.append(
                 f"収集量急減 items={cur_vol}（直近full中央値{vol_baseline:.0f}比）"
+            )
+
+    # critical アカウントの個別沈黙（advisory）。あるhandleが直近 full便で連続ゼロなら
+    # ハンドル変更/個別収集断の疑い。合計must_followが健全でも単一アカウントの黙りは隠れる。
+    crit_full = [r for r in full_entries if r.get("must_follow_critical_zero") is not None]
+    if len(crit_full) >= CRITICAL_DARK_STREAK:
+        recent_crit = crit_full[-CRITICAL_DARK_STREAK:]
+        dark = set(recent_crit[0].get("must_follow_critical_zero") or [])
+        for r in recent_crit[1:]:
+            dark &= set(r.get("must_follow_critical_zero") or [])
+        if dark:
+            advisories.append(
+                f"criticalアカウント沈黙{CRITICAL_DARK_STREAK}連続: "
+                f"{', '.join(sorted(dark))}（ハンドル変更/収集断の疑い）"
             )
 
     # 経路別の可視化（x_valid を出すことで「総量は出ているが must_follow が痩せている」型を

@@ -324,8 +324,10 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
         mf_count = 0
         auth_error_seen = False
         all_hints: list[str] = []
+        per_account: dict[str, int] = {}  # handle -> 有効取得件数（個別沈黙検知の材料）
         for acct in must_follow:
             handle = acct["handle"]
+            acct_count = 0
             query = f"from:{handle} -filter:replies"
             try:
                 run_input = {
@@ -347,7 +349,6 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     if run_id and _run_log_has_auth_error(client, run_id):
                         auth_error_seen = True
                     continue
-                acct_count = 0
                 for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
                     item = _normalize_tweet(tweet)
                     if not _is_valid_tweet_item(item):
@@ -370,7 +371,17 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
             except Exception as e:
                 meta["must_follow_error"] = True
                 logger.error("X must-follow failed (%s): %s", handle, e)
+            finally:
+                # 成功・失敗・例外いずれでも個別件数を記録（continueでもfinallyは走る）
+                per_account[handle] = acct_count
         meta["must_follow_items"] = mf_count
+        meta["must_follow_per_account"] = per_account
+        # critical アカウントの個別沈黙（合計must_followでは隠れる単一アカウント断）の材料を出す
+        crit_handles = [a["handle"] for a in must_follow if a.get("priority") == "critical"]
+        meta["must_follow_critical_total"] = len(crit_handles)
+        meta["must_follow_critical_zero"] = [
+            h for h in crit_handles if per_account.get(h, 0) == 0
+        ]
         _merge_failure_hints(meta, all_hints)
         logger.info("X must-follow (%d profiles): %d tweets total", len(must_follow), mf_count)
         # 全アカウント合算で 0 件 & 原因ヒントありなら従来どおり失敗を記録

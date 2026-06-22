@@ -290,6 +290,48 @@ class XMustFollowPerAccountTests(unittest.TestCase):
         self.assertEqual(len(items), 3)
         self.assertEqual(meta["must_follow_items"], 3)
 
+    def test_records_critical_zero_handles(self) -> None:
+        # critical アカウントの個別沈黙（合計では隠れる）を meta に出すこと
+        config = {
+            "x_twitter": {
+                "search_queries": [],
+                "apify_actor": "xquik/x-tweet-scraper",
+                "max_results_per_account": 30,
+                "must_follow_accounts": [
+                    {"handle": "OpenAI", "priority": "critical"},
+                    {"handle": "xai", "priority": "critical"},
+                    {"handle": "someblog", "priority": "normal"},
+                ],
+            }
+        }
+        # OpenAI は取得あり、xai(critical) は0件、normalの0は対象外
+        results = {"OpenAI": [_tweet(1)], "xai": [], "someblog": []}
+        client = _FakeClient(results)
+
+        def fake_actor_call(actor, *, run_input, wait_seconds=300):
+            term = run_input["searchTerms"][0]
+            ds_id = f"ds::{term}"
+            handle = term.split(":", 1)[1].split(" ", 1)[0]
+            client._datasets[ds_id] = results.get(handle, [])
+            return {"status": "SUCCEEDED", "id": f"run::{term}", "defaultDatasetId": ds_id}
+
+        def fake_run_get(run, key, default=None):
+            return run.get(key, default)
+
+        fake_apify_module = types.SimpleNamespace(ApifyClient=lambda token: client)
+        meta = _default_x_runtime_meta()
+        with mock.patch.dict(sys.modules, {"apify_client": fake_apify_module}), \
+                mock.patch.dict("os.environ", {"APIFY_TOKEN": "x"}), \
+                mock.patch.object(collector, "apify_actor_call", side_effect=fake_actor_call), \
+                mock.patch.object(collector, "apify_run_get", side_effect=fake_run_get), \
+                mock.patch.object(collector, "_inspect_apify_run_log", return_value={}), \
+                mock.patch.object(collector, "_fetch_apify_run_log", return_value=""), \
+                mock.patch.object(collector, "_get_apify_usage", return_value=None):
+            collect_x_twitter(config, meta)
+
+        self.assertEqual(meta["must_follow_critical_total"], 2)
+        self.assertEqual(meta["must_follow_critical_zero"], ["xai"])  # criticalで0のもののみ
+
 
 class XSingleTermInvariantTests(unittest.TestCase):
     """回帰防止(横断): collect_x_twitter の *すべての* actor 呼び出しが searchTerms 1語であること。
