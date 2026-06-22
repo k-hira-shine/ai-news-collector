@@ -123,6 +123,47 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertTrue(ok)
         self.assertNotIn("急減", msg)
 
+    def test_volume_drop_advisory_fires_but_keeps_pass(self) -> None:
+        # 総量が直近full中央値の半分未満まで急減＝⚠ advisory。must_follow は健全なので
+        # 既存の判定には引っかからず、advisory は合否(exit code)を変えない＝ok=True のまま。
+        # 2026-06-21 のApify仕様変更による9割減（must_follow一色化に非該当）を捕まえる型。
+        entries = [
+            _entry("2026-06-18T02:41:00+09:00", 95, 5, 80),
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82),
+            _entry("2026-06-22T02:41:00+09:00", 12, 1, 30),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)  # advisory は合否を変えない
+        self.assertIn("収集量急減", msg)
+        self.assertIn("⚠", msg)
+
+    def test_volume_drop_silent_until_enough_history(self) -> None:
+        # full便の履歴が閾値（4件）以下の間は収集量advisoryを出さない＝ロールアウト互換
+        entries = [
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82),
+            _entry("2026-06-22T02:41:00+09:00", 12, 1, 30),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("収集量急減", msg)
+
+    def test_volume_mild_dip_tolerated(self) -> None:
+        # 中央値の半分以上残っていれば通常変動として advisory を出さない
+        entries = [
+            _entry("2026-06-18T02:41:00+09:00", 95, 5, 80),
+            _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
+            _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82),
+            _entry("2026-06-22T02:41:00+09:00", 60, 4, 50),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("収集量急減", msg)
+
     def test_light_zero_runs_excluded_from_drop(self) -> None:
         # 夕便(light)の must_follow=0 は対象アカウントを絞るため正常＝full比較に混ぜない
         entries = [

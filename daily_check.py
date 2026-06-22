@@ -43,6 +43,14 @@ MUST_FOLLOW_ZERO_STREAK = 2   # must_follow_count=0 がこの連続回数で要�
 MUST_FOLLOW_DROP_RATIO = 0.2
 # full便の履歴がこの件数貯まるまで急減判定はしない（ロールアウト互換＝当面は沈黙）。
 MUST_FOLLOW_DROP_MIN_PRIORS = 3
+# 収集量急減検知（advisory）: 朝便(full)の items_collected が直近full便の中央値の
+# この割合未満なら ⚠ で注意喚起する。2026-06-21 の Apify actor 仕様変更（maxItems が
+# クエリ毎→全クエリ合算に変化）で収集が95→7件と9割減したが、must_follow連続ゼロにも
+# 法務一色化にも該当せず daily_check をすり抜けた盲点を塞ぐ。総量を直接見る。
+# 当面は advisory（合否=exit codeには影響しない）。誤検知の様子を見て本判定に昇格する。
+COLLECT_VOLUME_DROP_RATIO = 0.5
+# full便の履歴がこの件数貯まるまで判定しない（ロールアウト互換＝当面は沈黙）。
+COLLECT_VOLUME_DROP_MIN_PRIORS = 4
 
 OK = "✅"
 WARN = "⚠️"
@@ -232,6 +240,9 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
       full便の履歴が MUST_FOLLOW_DROP_MIN_PRIORS 件貯まるまでは判定しない（ロールアウト互換）。
     - 法務RSS取得失敗: 全フィードが生entries0（legal_feeds_ok=0）なら「窓に新着なし」ではなく
       取得失敗の疑い。feedparser は404/空でも例外を投げないため legal_rss=0 だけでは区別できない。
+    - 収集量急減（advisory）: full便の items_collected が直近full便の中央値の
+      COLLECT_VOLUME_DROP_RATIO 未満なら ⚠ で注意喚起（合否=exit codeには影響しない）。
+      上の3点に該当しない総量の崩落（例: 2026-06-21 のApify actor仕様変更による9割減）を捕まえる。
     記録が無い間（旧コードのログのみ）は合格扱い＝次回収集から有効になる。
     """
     if not entries:
@@ -282,9 +293,25 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
                 f"must_follow急減 full={cur_full}（直近full中央値{baseline:.0f}比）"
             )
 
+    # 収集量急減（advisory・合否には影響しない）。full便の items_collected を総量で見る。
+    advisories = []
+    if len(full_entries) > COLLECT_VOLUME_DROP_MIN_PRIORS:
+        cur_vol = full_entries[-1].get("items_collected", 0) or 0
+        vol_priors = [
+            r.get("items_collected", 0) or 0
+            for r in full_entries[-(COLLECT_VOLUME_DROP_MIN_PRIORS + 1):-1]
+        ]
+        vol_baseline = _median(vol_priors)
+        if vol_baseline > 0 and cur_vol < COLLECT_VOLUME_DROP_RATIO * vol_baseline:
+            advisories.append(
+                f"収集量急減 items={cur_vol}（直近full中央値{vol_baseline:.0f}比）"
+            )
+
     detail = f"legal_rss={legal}/{total}（{ratio:.0%}）{feed_health}・must_follow={must_follow}"
     if problems:
         detail += " → " + "; ".join(problems)
+    if advisories:
+        detail += " ⚠ " + "; ".join(advisories)
     return _line("収集品質", not problems, detail)
 
 
