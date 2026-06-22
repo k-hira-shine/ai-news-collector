@@ -5,8 +5,4 @@
 items:
   - title: IPWatchdog RSS が504（Gateway Timeout・raw0）→ 6/22自己回復・監視のみ
     since: 2026-06-21
-    note: 6/22朝便で legal_feeds_failed=0・手動curlも200で1件取得＝一過性確定。再発なければ6/24頃クローズ
-
-  - title: JURIST 空の原因＝死URL → /news/feed/ に修正済み・6/23朝便で反映確認待ち
-    since: 2026-06-21
-    note: 旧 /feed/ は200だが空スタブ(0件)。/news/feed/ は15件・最新6/21。6/23朝便で legal_feeds_ok=8 になればクローズ
+    note: 6/22・6/23朝便とも legal_feeds_failed=0（6/23は feeds 8/8健全）。再発なければ6/24クローズ
