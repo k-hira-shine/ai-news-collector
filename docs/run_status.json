@@ -1,6 +1,6 @@
 {
-  "overall": "success",
-  "updated_at": "2026-06-22 14:13 JST",
+  "overall": "warning",
+  "updated_at": "2026-06-22 18:12 JST",
   "workflows": {
     "buzz": {
       "status": "success",
@@ -16,12 +16,12 @@
       "fallback_triggered": false
     },
     "collect": {
-      "status": "success",
-      "ts": "2026-06-22T14:13:51.537885+09:00",
-      "time": "2026-06-22 14:13 JST",
-      "error": "",
-      "items_collected": 84,
-      "top_articles": 10,
+      "status": "warning",
+      "ts": "2026-06-22T18:12:44.660204+09:00",
+      "time": "2026-06-22 18:12 JST",
+      "error": "必須アカウントのタイムライン取得が失敗",
+      "items_collected": 6,
+      "top_articles": 3,
       "apify_hints": "zero-output-run",
       "search_failure": ""
     },
@@ -46,5 +46,17 @@
       "candidates": 845,
       "mode": "one-off-analysis"
     }
+  },
+  "incident": {
+    "active": "true",
+    "severity": "critical",
+    "title": "必須アカウントのタイムライン取得が失敗",
+    "situation": "健全性アラート 1 件。収集 6 件 / top_articles 3 件。",
+    "cause": "必須アカウントのタイムライン取得が失敗 — timeline batch がエラー終了、または 0 件。Cookie か Actor 側の問題。\n原因: must-follow 0件 / 検出: zero-output-run / ログ抜粋: 2026-06-22T09:10:27.",
+    "impact": "一部の更新・品質が劣化している可能性があります。下記の状況・原因を確認してください。",
+    "technical": "hints=zero-output-run / must-follow 0件 / 検出: zero-output-run / ログ抜粋: 2026-06-22T09:10:27.868Z INFO  [anomaly] zero-output-run {\"event\":\"zero-out",
+    "diagram_latest": "2026-06-22-morning",
+    "workflow": "collect",
+    "updated_at": "2026-06-22 18:12 JST"
   }
 }
