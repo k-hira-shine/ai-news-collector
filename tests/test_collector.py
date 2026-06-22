@@ -1,11 +1,46 @@
+import sys
+import types
 import unittest
+from unittest import mock
 
+import collector
 from collector import (
     _AUTH_ERROR_PATTERN,
     _default_x_runtime_meta,
     _should_warn_x_cookies,
     _x_collection_settings,
+    collect_x_twitter,
 )
+
+
+class _FakeDataset:
+    def __init__(self, tweets):
+        self._tweets = tweets
+
+    def iterate_items(self):
+        return iter(self._tweets)
+
+
+class _FakeClient:
+    """searchTerms[0] をキーに、そのクエリの返すツイートを引く擬似 Apify クライアント。"""
+
+    def __init__(self, results_by_query):
+        self._results_by_query = results_by_query
+        self._datasets = {}
+
+    def actor(self, actor_id):
+        return ("actor", actor_id)
+
+    def dataset(self, dataset_id):
+        return _FakeDataset(self._datasets.get(dataset_id, []))
+
+
+def _tweet(i):
+    return {
+        "url": f"https://x.com/u/status/{i}",
+        "text": f"tweet body {i}",
+        "author": {"userName": "u"},
+    }
 
 
 def _meta_with(**overrides) -> dict:
@@ -126,6 +161,68 @@ class XCollectionModeTests(unittest.TestCase):
         }
 
         self.assertEqual(_x_collection_settings(config), (150, 30, accounts))
+
+
+class XSearchPerQueryTests(unittest.TestCase):
+    """回帰防止: 検索クエリは1クエリ=1 actor run で呼ぶ。
+
+    2026-06-21 に xquik/x-tweet-scraper の新ビルドで maxItems が
+    「全searchTerms合算の上限」に変わり、7クエリを1 runにまとめていた旧実装で
+    収集が約9割減した。各クエリを独立 run にすることで maxItems がクエリ毎に
+    効くことを固定する。
+    """
+
+    def _run(self, results_by_query, *, max_per_query=150):
+        queries = list(results_by_query.keys())
+        config = {
+            "x_twitter": {
+                "search_queries": queries,
+                "apify_actor": "xquik/x-tweet-scraper",
+                "max_results_per_query": max_per_query,
+                "must_follow_accounts": [],
+            }
+        }
+        client = _FakeClient(results_by_query)
+        run_inputs = []
+
+        def fake_actor_call(actor, *, run_input, wait_seconds=300):
+            run_inputs.append(run_input)
+            term = run_input["searchTerms"][0]
+            ds_id = f"ds::{term}"
+            client._datasets[ds_id] = results_by_query.get(term, [])
+            return {"status": "SUCCEEDED", "id": f"run::{term}", "defaultDatasetId": ds_id}
+
+        def fake_run_get(run, key, default=None):
+            return run.get(key, default)
+
+        fake_apify_module = types.SimpleNamespace(ApifyClient=lambda token: client)
+        meta = _default_x_runtime_meta()
+        with mock.patch.dict(sys.modules, {"apify_client": fake_apify_module}), \
+                mock.patch.dict("os.environ", {"APIFY_TOKEN": "x"}), \
+                mock.patch.object(collector, "apify_actor_call", side_effect=fake_actor_call), \
+                mock.patch.object(collector, "apify_run_get", side_effect=fake_run_get), \
+                mock.patch.object(collector, "_get_apify_usage", return_value=None):
+            items = collect_x_twitter(config, meta)
+        return items, meta, run_inputs
+
+    def test_calls_actor_once_per_query_with_single_term(self) -> None:
+        results = {"q1": [_tweet(1), _tweet(2)], "q2": [_tweet(3)], "q3": []}
+        items, meta, run_inputs = self._run(results)
+
+        # クエリ数ぶん run が起き、各 run の searchTerms は必ず1語
+        self.assertEqual(len(run_inputs), 3)
+        for ri in run_inputs:
+            self.assertEqual(len(ri["searchTerms"]), 1)
+            self.assertEqual(ri["maxItems"], 150)
+        self.assertEqual(meta["apify_runs"], 3)
+
+    def test_collects_items_from_all_queries(self) -> None:
+        results = {"q1": [_tweet(1), _tweet(2)], "q2": [_tweet(3)], "q3": []}
+        items, meta, _ = self._run(results)
+
+        # 全クエリ合算 = 3件（先頭クエリで枠を食い潰さない）
+        self.assertEqual(len(items), 3)
+        self.assertEqual(meta["search_total"], 3)
 
 
 if __name__ == "__main__":

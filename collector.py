@@ -242,61 +242,72 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
     since_date = (datetime.now(timezone.utc) - timedelta(days=max_age_days)).strftime("%Y-%m-%d")
 
     if search_queries:
-        # xquik は searchTerms 配列で複数検索を1 runにまとめられる。
-        # maxItems は検索語ごとの上限として適用される（2026-05-11 比較テストで確認）。
-        try:
-            run_input = {
-                "searchTerms": list(search_queries),
-                "queryType": "Top",
-                "maxItems": max_results_per_query,
-                "includeSearchTerms": True,
-                "since": since_date,
-            }
+        # クエリごとに 1 actor run で呼ぶ（searchTerms は常に1語）。
+        # 以前は searchTerms 配列で全クエリを1 runにまとめ、maxItems を
+        # 「検索語ごとの上限」として扱っていた（2026-05-11 比較テストで確認）。
+        # だが 2026-06-21 の xquik/x-tweet-scraper 新ビルドで maxItems が
+        # 「全searchTerms合算の上限」に変わり、先頭クエリが枠を食い潰して
+        # 収集が約9割減した（x_valid 206→39, 2026-06-21〜22）。1 run=1クエリなら
+        # 合算＝クエリ毎に戻り、actor の maxItems 解釈変更に依存しなくなる。
+        # 課金は結果従量制（$0.00015/件）のため、総取得数が同じならコストは不変。
+        total_count = 0
+        auth_error_seen = False
+        all_hints: list[str] = []
+        for query in search_queries:
+            try:
+                run_input = {
+                    "searchTerms": [query],
+                    "queryType": "Top",
+                    "maxItems": max_results_per_query,
+                    "includeSearchTerms": True,
+                    "since": since_date,
+                }
 
-            run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
-            meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
-            run_status = apify_run_get(run, "status", "")
-            run_id = apify_run_get(run, "id", "")
-            if run_status and run_status != "SUCCEEDED":
-                # バッチ内のクエリは全部失敗扱い
-                meta["search_error_count"] += len(search_queries)
-                logger.error("X search batch (%d queries) run status=%s", len(search_queries), run_status)
-                if run_id and _run_log_has_auth_error(client, run_id):
-                    meta["auth_error_count"] += 1
-                    logger.warning("X search batch: auth error detected in run log")
-            else:
+                run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
+                meta["apify_runs"] += 1
+                meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
+                run_status = apify_run_get(run, "status", "")
+                run_id = apify_run_get(run, "id", "")
+                if run_status and run_status != "SUCCEEDED":
+                    meta["search_error_count"] += 1
+                    logger.error("X search query run status=%s: %.60s", run_status, query)
+                    if run_id and _run_log_has_auth_error(client, run_id):
+                        auth_error_seen = True
+                    continue
                 count = 0
                 for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
                     item = _normalize_tweet(tweet)
                     if _is_valid_tweet_item(item):
                         items.append(item)
                         count += 1
-                meta["search_total"] += count
-                logger.info("X search batch (%d queries): %d tweets", len(search_queries), count)
-                inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id)) if run_id else {}
-                _merge_failure_hints(meta, inspection.get("hints") or [])
-                if count == 0 and inspection.get("hints"):
-                    _note_zero_batch_failure(
-                        meta,
-                        batch="search",
-                        configured=len(search_queries),
-                        raw_count=0,
-                        inspection=inspection,
-                    )
-                # SUCCEEDED でも結果が極端に少なく auth エラーがある場合は実質失敗扱い
-                few_results = count < len(search_queries)
-                if (count == 0 or few_results) and inspection.get("auth_error"):
-                    meta["auth_error_count"] += 1
-                    meta["search_error_count"] = max(meta.get("search_error_count", 0), len(search_queries))
-                    logger.warning(
-                        "X search batch: SUCCEEDED but %d results with auth error in log"
-                        " — treating as cookie failure",
-                        count,
-                    )
-        except Exception as e:
-            meta["search_error_count"] += len(search_queries)
-            logger.error("X search batch failed: %s", e)
+                total_count += count
+                logger.info("X search query (%.60s): %d tweets", query, count)
+                # 0件のときだけ run ログを点検（健全時の無駄な7回fetchを避ける）
+                if count == 0 and run_id:
+                    inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id))
+                    all_hints.extend(inspection.get("hints") or [])
+                    if inspection.get("auth_error"):
+                        auth_error_seen = True
+            except Exception as e:
+                meta["search_error_count"] += 1
+                logger.error("X search query failed (%.60s): %s", query, e)
+        meta["search_total"] += total_count
+        _merge_failure_hints(meta, all_hints)
+        logger.info("X search (%d queries): %d tweets total", len(search_queries), total_count)
+        # 全クエリ合算で 0 件 & 原因ヒントありなら従来どおり search_failure を記録
+        if total_count == 0 and all_hints:
+            _note_zero_batch_failure(
+                meta,
+                batch="search",
+                configured=len(search_queries),
+                raw_count=0,
+                inspection={"hints": all_hints, "auth_error": auth_error_seen},
+            )
+        # auth エラーを1つでも検出したら cookie 失敗として扱う
+        if auth_error_seen:
+            meta["auth_error_count"] += 1
+            meta["search_error_count"] = max(meta.get("search_error_count", 0), 1)
+            logger.warning("X search: auth error detected — treating as cookie failure")
     else:
         logger.info("X search queries not configured — skipping search queries")
 
