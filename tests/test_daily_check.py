@@ -32,6 +32,7 @@ def _entry(
     feeds_total: int | None = None,
     feeds_ok: int | None = None,
     feeds_failed: int = 0,
+    x_valid: int | None = None,
 ) -> dict:
     e = {
         "ts": ts,
@@ -45,6 +46,8 @@ def _entry(
         e["legal_feeds_total"] = feeds_total
         e["legal_feeds_ok"] = feeds_ok if feeds_ok is not None else feeds_total
         e["legal_feeds_failed"] = feeds_failed
+    if x_valid is not None:
+        e["x_valid_count"] = x_valid
     return e
 
 
@@ -69,14 +72,26 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("法務一色化", msg)
 
-    def test_single_must_follow_zero_is_tolerated(self) -> None:
-        # 単発の must_follow=0 は許容（収集サイクル差分の可能性が高い）
+    def test_single_light_must_follow_zero_is_tolerated(self) -> None:
+        # 夕便(light)の単発 must_follow=0 は正常（フロアはfull便のみ・streakも単発許容）。
+        # 直近のfull便が健全ならフロアも通る。
         entries = [
-            _entry("2026-06-19T02:41:00+09:00", 90, 5, 80),
-            _entry("2026-06-20T02:41:00+09:00", 90, 5, 0),
+            _entry("2026-06-19T02:41:00+09:00", 90, 5, 80, x_mode="full", x_valid=200),
+            _entry("2026-06-19T17:30:00+09:00", 10, 1, 0, x_mode="light", x_valid=35),
         ]
         ok, _ = evaluate_collection_quality(entries)
         self.assertTrue(ok)
+
+    def test_full_must_follow_zero_fails_via_floor(self) -> None:
+        # full便の must_follow=0 はフロアで即異常（0<8 なので残バグmf=8を捕まえる以上、
+        # 0 を許容するのは論理矛盾＝旧「単発ゼロ許容」の甘さを廃止）。
+        entries = [
+            _entry("2026-06-19T02:41:00+09:00", 90, 5, 80, x_valid=200),
+            _entry("2026-06-20T02:41:00+09:00", 90, 5, 0, x_valid=200),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("must_followフロア割れ", msg)
 
     def test_consecutive_must_follow_zero_fails(self) -> None:
         # 2連続ゼロは要調査
@@ -101,11 +116,12 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertIn("must_follow急減", msg)
 
     def test_must_follow_drop_silent_until_enough_history(self) -> None:
-        # full便の履歴が閾値未満（3件）の間は急減判定をしない＝ロールアウト互換
+        # full便の履歴が閾値未満（3件）の間は相対急減判定をしない＝ロールアウト互換。
+        # フロアを割らない値（mf=30≥25・items=50≥40）で相対判定の沈黙だけを検証する。
         entries = [
             _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
             _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
-            _entry("2026-06-21T02:41:00+09:00", 7, 0, 5),
+            _entry("2026-06-21T02:41:00+09:00", 50, 5, 30),
         ]
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)
@@ -127,12 +143,13 @@ class CollectionQualityTests(unittest.TestCase):
         # 総量が直近full中央値の半分未満まで急減＝⚠ advisory。must_follow は健全なので
         # 既存の判定には引っかからず、advisory は合否(exit code)を変えない＝ok=True のまま。
         # 2026-06-21 のApify仕様変更による9割減（must_follow一色化に非該当）を捕まえる型。
+        # フロアは割らず（items=44≥40・mf=30≥25）、相対の半減だけで advisory を出す型。
         entries = [
             _entry("2026-06-18T02:41:00+09:00", 95, 5, 80),
             _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
             _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
             _entry("2026-06-21T02:41:00+09:00", 95, 5, 82),
-            _entry("2026-06-22T02:41:00+09:00", 12, 1, 30),
+            _entry("2026-06-22T02:41:00+09:00", 44, 1, 30),
         ]
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)  # advisory は合否を変えない
@@ -145,7 +162,7 @@ class CollectionQualityTests(unittest.TestCase):
             _entry("2026-06-19T02:41:00+09:00", 95, 5, 85),
             _entry("2026-06-20T02:41:00+09:00", 95, 5, 90),
             _entry("2026-06-21T02:41:00+09:00", 95, 5, 82),
-            _entry("2026-06-22T02:41:00+09:00", 12, 1, 30),
+            _entry("2026-06-22T02:41:00+09:00", 44, 1, 30),
         ]
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)
@@ -178,10 +195,68 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertTrue(ok)
         self.assertNotIn("急減", msg)
 
-    def test_legal_zero_with_healthy_feeds_is_no_news(self) -> None:
-        # legal_rss=0 でも生entriesを返すフィードがあれば「窓に新着なし」＝合格
+    # --- 絶対フロア（経路別・履歴非依存）。2026-06-23 の取りこぼし再発防止の本丸。 ---
+    def test_must_follow_floor_fails_on_first_full_run(self) -> None:
+        # 相対判定はベースライン汚染で盲目になったが、フロアは履歴1件でも即異常を出す。
+        # 2026-06-23 朝便の must_follow残バグ相当（items=27/mf=8/x_valid=80）を確実に捕まえる。
+        entries = [_entry("2026-06-23T03:28:00+09:00", 27, 4, 8, x_valid=80)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("must_followフロア割れ", msg)
+        self.assertIn("収集量フロア割れ", msg)
+        self.assertIn("X取得フロア割れ", msg)
+
+    def test_must_follow_floor_isolated(self) -> None:
+        # 検索は健全(x_valid/items高)でも must_follow 単独の崩落を経路別フロアで捕まえる
+        entries = [_entry("2026-06-23T03:28:00+09:00", 90, 4, 8, x_valid=200)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("must_followフロア割れ", msg)
+        self.assertNotIn("収集量フロア割れ", msg)
+        self.assertNotIn("X取得フロア割れ", msg)
+
+    def test_x_valid_floor_isolated(self) -> None:
+        entries = [_entry("2026-06-23T03:28:00+09:00", 90, 4, 80, x_valid=110)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("X取得フロア割れ", msg)
+
+    def test_floors_pass_on_healthy_recovered_data(self) -> None:
+        # 2026-06-23 修正後の実測（items=91/mf=82/x_valid=211）は合格しなければならない
+        entries = [_entry("2026-06-23T05:04:00+09:00", 91, 5, 82, x_valid=211)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertIn("x_valid=211", msg)
+
+    def test_x_valid_floor_silent_when_absent(self) -> None:
+        # 旧ログ（x_valid_count なし）では X取得フロアは沈黙＝ロールアウト互換
+        entries = [_entry("2026-06-20T02:41:00+09:00", 95, 6, 85)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("X取得フロア割れ", msg)
+
+    def test_floors_skip_when_only_light_runs(self) -> None:
+        # full便が無い（夕便lightのみ）ときフロアは評価しない＝lightの低値で誤検知しない
+        entries = [_entry("2026-06-23T17:30:00+09:00", 10, 1, 0, x_mode="light", x_valid=35)]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertTrue(ok)
+        self.assertNotIn("フロア割れ", msg)
+
+    def test_floors_evaluate_latest_full_even_when_light_is_last(self) -> None:
+        # 最後が夕便lightでも、直近のfull便がフロアを割っていれば検知する
         entries = [
-            _entry("2026-06-21T02:41:00+09:00", 7, 0, 5, feeds_total=8, feeds_ok=6),
+            _entry("2026-06-23T03:28:00+09:00", 27, 4, 8, x_mode="full", x_valid=80),
+            _entry("2026-06-23T17:30:00+09:00", 10, 1, 0, x_mode="light", x_valid=35),
+        ]
+        ok, msg = evaluate_collection_quality(entries)
+        self.assertFalse(ok)
+        self.assertIn("フロア割れ", msg)
+
+    def test_legal_zero_with_healthy_feeds_is_no_news(self) -> None:
+        # legal_rss=0 でも生entriesを返すフィードがあれば「窓に新着なし」＝合格。
+        # フィード判定を単独で検証するため収集量はフロア健全（95/85）にする。
+        entries = [
+            _entry("2026-06-21T02:41:00+09:00", 95, 0, 85, feeds_total=8, feeds_ok=6),
         ]
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)
@@ -199,8 +274,9 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertIn("失敗3", msg)
 
     def test_legal_feed_health_absent_stays_silent(self) -> None:
-        # 旧ログ（feed健全性フィールドなし）は判定せず合格＝ロールアウト互換
-        entries = [_entry("2026-06-20T02:41:00+09:00", 7, 0, 5)]
+        # 旧ログ（feed健全性フィールドなし）は判定せず合格＝ロールアウト互換。
+        # フィード判定の単独検証のため収集量はフロア健全（95/85）にする。
+        entries = [_entry("2026-06-20T02:41:00+09:00", 95, 0, 85)]
         ok, msg = evaluate_collection_quality(entries)
         self.assertTrue(ok)
         self.assertNotIn("feeds", msg)

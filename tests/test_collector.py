@@ -291,5 +291,60 @@ class XMustFollowPerAccountTests(unittest.TestCase):
         self.assertEqual(meta["must_follow_items"], 3)
 
 
+class XSingleTermInvariantTests(unittest.TestCase):
+    """回帰防止(横断): collect_x_twitter の *すべての* actor 呼び出しが searchTerms 1語であること。
+
+    2026-06-22 の修正は検索経路だけ per-query 化し must_follow 経路をバッチのまま取りこぼした
+    （2026-06-23 発覚）。経路別テストに加え「どの経路でも searchTerms は必ず1語」という不変条件を
+    1本で固定し、将来3本目の経路がバッチで追加されても即落ちるようにする。
+    """
+
+    def test_every_actor_call_uses_single_search_term(self) -> None:
+        config = {
+            "x_twitter": {
+                "search_queries": ["q1", "q2"],
+                "apify_actor": "xquik/x-tweet-scraper",
+                "max_results_per_query": 150,
+                "max_results_per_account": 30,
+                "must_follow_accounts": [
+                    {"handle": "a1", "priority": "normal"},
+                    {"handle": "a2", "priority": "critical"},
+                    {"handle": "a3", "priority": "normal"},
+                ],
+            }
+        }
+        client = _FakeClient({})
+        run_inputs = []
+
+        def fake_actor_call(actor, *, run_input, wait_seconds=300):
+            run_inputs.append(run_input)
+            term = run_input["searchTerms"][0]
+            ds_id = f"ds::{term}"
+            client._datasets[ds_id] = []
+            return {"status": "SUCCEEDED", "id": f"run::{term}", "defaultDatasetId": ds_id}
+
+        def fake_run_get(run, key, default=None):
+            return run.get(key, default)
+
+        fake_apify_module = types.SimpleNamespace(ApifyClient=lambda token: client)
+        meta = _default_x_runtime_meta()
+        with mock.patch.dict(sys.modules, {"apify_client": fake_apify_module}), \
+                mock.patch.dict("os.environ", {"APIFY_TOKEN": "x"}), \
+                mock.patch.object(collector, "apify_actor_call", side_effect=fake_actor_call), \
+                mock.patch.object(collector, "apify_run_get", side_effect=fake_run_get), \
+                mock.patch.object(collector, "_inspect_apify_run_log", return_value={}), \
+                mock.patch.object(collector, "_fetch_apify_run_log", return_value=""), \
+                mock.patch.object(collector, "_get_apify_usage", return_value=None):
+            collect_x_twitter(config, meta)
+
+        # 検索2 + アカウント3 = 5 run、各 run の searchTerms は必ず1語
+        self.assertEqual(len(run_inputs), 5)
+        for ri in run_inputs:
+            self.assertEqual(
+                len(ri["searchTerms"]), 1,
+                f"バッチ呼び出しが復活している: {ri['searchTerms']}",
+            )
+
+
 if __name__ == "__main__":
     unittest.main()

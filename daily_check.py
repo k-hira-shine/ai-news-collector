@@ -49,6 +49,19 @@ MUST_FOLLOW_DROP_MIN_PRIORS = 3
 # 法務一色化にも該当せず daily_check をすり抜けた盲点を塞ぐ。総量を直接見る。
 # 当面は advisory（合否=exit codeには影響しない）。誤検知の様子を見て本判定に昇格する。
 COLLECT_VOLUME_DROP_RATIO = 0.5
+
+# 絶対フロア（full便のみ・経路別の固定アンカー＝合否に影響する本判定）。
+# なぜ相対(中央値比)だけでは不足か: 劣化が数日続くと「直近中央値」自体が劣化値で
+# 埋まり、崩落値すら平常に見えてしまう（2026-06-21 の actor 障害で実証＝6/23 時点の
+# full便ベースラインが must_follow [5,6,17,8] と汚染され急減判定が発火しなかった）。
+# さらに 2026-06-22 の修正は検索経路だけ直し must_follow 経路を取りこぼし、総量(items)や
+# x_valid だけ見て"回復"と誤判定した。これを二度と起こさないため、健全便の実測下限から
+# 引いた固定フロアを経路別に置き、「ここを下回れば履歴に関係なく異常」を直接判定する。
+# 健全実測(6月のfull便): x_valid 206〜528 / items 69〜239 / must_follow 〜85。
+# 障害値: x_valid 39〜80 / items 7〜27 / must_follow 5〜8。フロアは両者を明確に分離する値。
+FULL_X_VALID_FLOOR = 120       # X有効取得（検索+must_follow合算）の下限
+FULL_ITEMS_FLOOR = 40          # 最終収集件数の下限
+FULL_MUST_FOLLOW_FLOOR = 25    # 必須アカウント取得の下限（経路別＝must_follow単独の崩落を捕まえる）
 # full便の履歴がこの件数貯まるまで判定しない（ロールアウト互換＝当面は沈黙）。
 COLLECT_VOLUME_DROP_MIN_PRIORS = 4
 
@@ -279,8 +292,23 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
         if feeds_ok == 0:
             problems.append(f"法務RSS全{feeds_total}フィード生0件＝取得失敗の疑い")
 
-    # must_follow 急減（full便のみで比較）
     full_entries = [r for r in entries if r.get("x_mode") == "full"]
+
+    # 絶対フロア（full便のみ・経路別・本判定）。相対比較のベースライン汚染に強い固定アンカー。
+    # 最新の full便（夕便lightが最後でも直近full便）を経路別に評価する。
+    if full_entries:
+        lf = full_entries[-1]
+        f_items = lf.get("items_collected") or lf.get("total") or 0
+        f_mf = lf.get("must_follow_count", 0) or 0
+        f_xvalid = lf.get("x_valid_count")  # 旧ログにはNone → 沈黙（ロールアウト互換）
+        if f_items < FULL_ITEMS_FLOOR:
+            problems.append(f"収集量フロア割れ items={f_items}<{FULL_ITEMS_FLOOR}")
+        if f_mf < FULL_MUST_FOLLOW_FLOOR:
+            problems.append(f"must_followフロア割れ={f_mf}<{FULL_MUST_FOLLOW_FLOOR}")
+        if f_xvalid is not None and f_xvalid < FULL_X_VALID_FLOOR:
+            problems.append(f"X取得フロア割れ x_valid={f_xvalid}<{FULL_X_VALID_FLOOR}")
+
+    # must_follow 急減（full便のみで比較）
     if len(full_entries) > MUST_FOLLOW_DROP_MIN_PRIORS:
         cur_full = full_entries[-1].get("must_follow_count", 0) or 0
         priors = [
@@ -307,7 +335,11 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
                 f"収集量急減 items={cur_vol}（直近full中央値{vol_baseline:.0f}比）"
             )
 
-    detail = f"legal_rss={legal}/{total}（{ratio:.0%}）{feed_health}・must_follow={must_follow}"
+    # 経路別の可視化（x_valid を出すことで「総量は出ているが must_follow が痩せている」型を
+    # 目視でも切り分けられる）。x_valid が無い旧ログでは省略。
+    xv = latest.get("x_valid_count")
+    xv_str = f"・x_valid={xv}" if xv is not None else ""
+    detail = f"legal_rss={legal}/{total}（{ratio:.0%}）{feed_health}・must_follow={must_follow}{xv_str}"
     if problems:
         detail += " → " + "; ".join(problems)
     if advisories:
