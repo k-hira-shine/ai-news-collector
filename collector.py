@@ -313,31 +313,41 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
 
     meta["must_follow_configured"] = len(must_follow)
     if must_follow:
-        try:
-            handles = [acct["handle"] for acct in must_follow]
-            priority_map = {acct["handle"].lower(): acct for acct in must_follow}
-            account_queries = [f"from:{handle} -filter:replies" for handle in handles]
-            run_input: dict = {
-                "searchTerms": account_queries,
-                "queryType": "Latest",
-                "maxItems": max_results_per_account,
-                "includeSearchTerms": True,
-                "since": since_date,
-            }
+        # アカウントも 1アカウント=1 actor run で呼ぶ（searchTerms は常に1語）。
+        # 検索クエリと同じく、2026-06-21 の xquik/x-tweet-scraper 新ビルドで maxItems が
+        # 「全searchTerms合算の上限」に変わり、全アカウントを1 runにまとめていた旧実装では
+        # maxItems を全アカウントで食い合い、後半アカウントが budget=0 で飢餓して
+        # must_follow が約1件/アカウントに激減した（2026-06-23 発覚＝検索側のみ修正していた）。
+        # 1 run=1アカウントなら maxItems がアカウント毎に効き、actor の解釈変更に依存しない。
+        # 課金は結果従量制（$0.00015/件）のため、総取得数が同じならコストは不変。
+        priority_map = {acct["handle"].lower(): acct for acct in must_follow}
+        mf_count = 0
+        auth_error_seen = False
+        all_hints: list[str] = []
+        for acct in must_follow:
+            handle = acct["handle"]
+            query = f"from:{handle} -filter:replies"
+            try:
+                run_input = {
+                    "searchTerms": [query],
+                    "queryType": "Latest",
+                    "maxItems": max_results_per_account,
+                    "includeSearchTerms": True,
+                    "since": since_date,
+                }
 
-            run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
-            meta["apify_runs"] += 1
-            meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
-            run_status = apify_run_get(run, "status", "")
-            run_id = apify_run_get(run, "id", "")
-            if run_status and run_status != "SUCCEEDED":
-                meta["must_follow_error"] = True
-                logger.error("X must-follow batch run status=%s", run_status)
-                if run_id and _run_log_has_auth_error(client, run_id):
-                    meta["auth_error_count"] += 1
-                    logger.warning("X must-follow: auth error detected in run log")
-            else:
-                mf_count = 0
+                run = apify_actor_call(client.actor(actor_id), run_input=run_input, wait_seconds=300)
+                meta["apify_runs"] += 1
+                meta["apify_cost_usd"] += float(apify_run_get(run, "usageTotalUsd") or 0)
+                run_status = apify_run_get(run, "status", "")
+                run_id = apify_run_get(run, "id", "")
+                if run_status and run_status != "SUCCEEDED":
+                    meta["must_follow_error"] = True
+                    logger.error("X must-follow run status=%s: %s", run_status, handle)
+                    if run_id and _run_log_has_auth_error(client, run_id):
+                        auth_error_seen = True
+                    continue
+                acct_count = 0
                 for tweet in client.dataset(apify_run_get(run, "defaultDatasetId")).iterate_items():
                     item = _normalize_tweet(tweet)
                     if not _is_valid_tweet_item(item):
@@ -349,31 +359,34 @@ def collect_x_twitter(config: dict, runtime_meta: dict | None = None) -> list[di
                     item["priority"] = acct_cfg.get("priority", "normal")
                     items.append(item)
                     mf_count += 1
-                meta["must_follow_items"] = mf_count
-                logger.info("X must-follow batch (%d profiles): %d tweets", len(handles), mf_count)
-                inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id)) if run_id else {}
-                _merge_failure_hints(meta, inspection.get("hints") or [])
-                if mf_count == 0 and inspection.get("hints"):
-                    _note_zero_batch_failure(
-                        meta,
-                        batch="must-follow",
-                        configured=len(handles),
-                        raw_count=0,
-                        inspection=inspection,
-                    )
-                # SUCCEEDED でも結果が少なく auth エラーがある場合は must_follow_error を立てる
-                few_results = mf_count < len(handles)
-                if (mf_count == 0 or few_results) and inspection.get("auth_error"):
-                    meta["auth_error_count"] += 1
-                    meta["must_follow_error"] = True
-                    logger.warning(
-                        "X must-follow: SUCCEEDED but %d results with auth error in log"
-                        " — treating as cookie failure",
-                        mf_count,
-                    )
-        except Exception as e:
+                    acct_count += 1
+                logger.info("X must-follow (%s): %d tweets", handle, acct_count)
+                # 0件のときだけ run ログを点検（健全時の無駄なfetchを避ける）
+                if acct_count == 0 and run_id:
+                    inspection = _inspect_apify_run_log(_fetch_apify_run_log(client, run_id))
+                    all_hints.extend(inspection.get("hints") or [])
+                    if inspection.get("auth_error"):
+                        auth_error_seen = True
+            except Exception as e:
+                meta["must_follow_error"] = True
+                logger.error("X must-follow failed (%s): %s", handle, e)
+        meta["must_follow_items"] = mf_count
+        _merge_failure_hints(meta, all_hints)
+        logger.info("X must-follow (%d profiles): %d tweets total", len(must_follow), mf_count)
+        # 全アカウント合算で 0 件 & 原因ヒントありなら従来どおり失敗を記録
+        if mf_count == 0 and all_hints:
+            _note_zero_batch_failure(
+                meta,
+                batch="must-follow",
+                configured=len(must_follow),
+                raw_count=0,
+                inspection={"hints": all_hints, "auth_error": auth_error_seen},
+            )
+        # auth エラーを1つでも検出したら cookie 失敗として扱う
+        if auth_error_seen:
+            meta["auth_error_count"] += 1
             meta["must_follow_error"] = True
-            logger.error("X must-follow batch failed: %s", e)
+            logger.warning("X must-follow: auth error detected — treating as cookie failure")
 
     before_valid = len(items)
     items = [it for it in items if _is_valid_tweet_item(it)]

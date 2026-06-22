@@ -225,5 +225,71 @@ class XSearchPerQueryTests(unittest.TestCase):
         self.assertEqual(meta["search_total"], 3)
 
 
+class XMustFollowPerAccountTests(unittest.TestCase):
+    """回帰防止: 必須アカウントも1アカウント=1 actor run で呼ぶ。
+
+    2026-06-23 に判明: 6/22 の障害対応では検索クエリだけ per-query 化し、
+    must_follow は全アカウントを1 runにまとめたまま（searchTerms=[全handle]）
+    残っていた。actor 新ビルドで maxItems が「合算上限」化したため
+    must_follow が約1件/アカウントに飢餓した。各アカウントを独立 run にして
+    maxItems がアカウント毎に効くことを固定する。
+    """
+
+    def _run(self, results_by_account, *, max_per_account=30):
+        accounts = [{"handle": h, "priority": "normal"} for h in results_by_account]
+        config = {
+            "x_twitter": {
+                "search_queries": [],
+                "apify_actor": "xquik/x-tweet-scraper",
+                "max_results_per_account": max_per_account,
+                "must_follow_accounts": accounts,
+            }
+        }
+        client = _FakeClient(results_by_account)
+        run_inputs = []
+
+        def fake_actor_call(actor, *, run_input, wait_seconds=300):
+            run_inputs.append(run_input)
+            term = run_input["searchTerms"][0]
+            ds_id = f"ds::{term}"
+            # term は "from:<handle> -filter:replies" 形式
+            handle = term.split(":", 1)[1].split(" ", 1)[0]
+            client._datasets[ds_id] = results_by_account.get(handle, [])
+            return {"status": "SUCCEEDED", "id": f"run::{term}", "defaultDatasetId": ds_id}
+
+        def fake_run_get(run, key, default=None):
+            return run.get(key, default)
+
+        fake_apify_module = types.SimpleNamespace(ApifyClient=lambda token: client)
+        meta = _default_x_runtime_meta()
+        with mock.patch.dict(sys.modules, {"apify_client": fake_apify_module}), \
+                mock.patch.dict("os.environ", {"APIFY_TOKEN": "x"}), \
+                mock.patch.object(collector, "apify_actor_call", side_effect=fake_actor_call), \
+                mock.patch.object(collector, "apify_run_get", side_effect=fake_run_get), \
+                mock.patch.object(collector, "_inspect_apify_run_log", return_value={}), \
+                mock.patch.object(collector, "_get_apify_usage", return_value=None):
+            items = collect_x_twitter(config, meta)
+        return items, meta, run_inputs
+
+    def test_calls_actor_once_per_account_with_single_term(self) -> None:
+        results = {"a1": [_tweet(1)], "a2": [_tweet(2)], "a3": []}
+        items, meta, run_inputs = self._run(results)
+
+        # アカウント数ぶん run が起き、各 run の searchTerms は必ず1語
+        self.assertEqual(len(run_inputs), 3)
+        for ri in run_inputs:
+            self.assertEqual(len(ri["searchTerms"]), 1)
+            self.assertEqual(ri["maxItems"], 30)
+        self.assertEqual(meta["apify_runs"], 3)
+
+    def test_collects_items_from_all_accounts(self) -> None:
+        results = {"a1": [_tweet(1), _tweet(2)], "a2": [_tweet(3)], "a3": []}
+        items, meta, _ = self._run(results)
+
+        # 全アカウント合算 = 3件（先頭アカウントで枠を食い潰さない）
+        self.assertEqual(len(items), 3)
+        self.assertEqual(meta["must_follow_items"], 3)
+
+
 if __name__ == "__main__":
     unittest.main()
