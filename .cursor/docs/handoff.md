@@ -12,6 +12,7 @@
 0b. ⏳ **critical沈黙advisoryの有効化確認（6/26頃）＋初日5件0の追跡**: 追補4の個別沈黙検知は新フィールド
    `must_follow_critical_zero` を使い、**3連続ゼロ（`CRITICAL_DARK_STREAK=3`）で⚠表示**。フィールドの初記録が**6/24**のため、有効化は履歴3件貯まる**6/26頃**（それまで沈黙が正常）。
    - **要注視**: 6/24初日に critical 10中**5件が0**（AnthropicAI/GoogleAI/AIatMeta/huggingface/DarioAmodei）。総量は健全(mf=58)だが、**この5件が6/25・6/26も連続0なら advisory が発火**＝真の局所断（per-account run の後半飢餓 or actorの別制約）を疑い、当日の per-account run 数/`remainingBudget` を run 27979622316（成功例）と突き合わせる。1〜2日で復帰するなら単なる無投稿（個人/組織は数日黙り得る）。
+   - **6/24 actorレベル裏取り済み（次回の切り分け短縮用）**: 今朝の collect run `28044733984` のログを1アカウントずつ確認＝**30 profiles・raw 141件**→dedup後58。各アカウント独立run（`from:{handle} ... maxItems=30 since:2026-06-21`）で**予算飢餓は構造的に再発不能**と確認。黙り5件は専用runが**実0**（取得失敗ではなく窓内の投稿が0）、返った側も OpenAI/GoogleDeepMind/MistralAI/xai/sama=1〜2件と低調。**＝現時点は actor の問題でなく単発の無投稿が濃厚**。同runで日本語検索クエリ1本が xquik側 HTTP 503 `x_api_unavailable` でリトライ枯渇したが**自己回復**（検索352件・x_valid=259健全）＝外部データ源の一過性ゆらぎとして記録（継続なら検索側フロアで捕捉）。
 
    ---
    ~~🔴 **最優先（2026-06-23 朝便後）＝X収集9割減の修正が本番自動収集でも効くか確認**~~ ✅ **完了（6/23）＝検索7クエリは回復確定（ただし must_follow の残バグを別途発見＝上記#0へ）**:
