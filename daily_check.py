@@ -102,6 +102,21 @@ def _is_failure(r: dict) -> bool:
     return r.get("status") == "completed" and r.get("conclusion") not in ("success", "skipped", None)
 
 
+def _format_problem_run(r: dict) -> str:
+    """Actionsの問題runを、conclusion付きで短く表示する。"""
+    name = r.get("name") or "?"
+    conclusion = r.get("conclusion") or r.get("status") or "unknown"
+    created = r.get("createdAt")
+    when = ""
+    if created:
+        try:
+            dt = datetime.fromisoformat(created.replace("Z", "+00:00")).astimezone(JST)
+            when = f" {dt:%m-%d %H:%M}JST"
+        except ValueError:
+            when = f" {created}"
+    return f"{conclusion} → {name}{when}"
+
+
 def _gh_run_list(extra_args: list[str], limit: int) -> tuple[str, list[dict] | None]:
     """gh run list の薄いラッパ。("ok", runs) か ("skip", None) を返す。"""
     try:
@@ -155,12 +170,15 @@ def check_actions(limit: int = 30) -> tuple[bool, str]:
             if st == "ok" and one:
                 latest[name] = one[0]
 
-    failures = sorted({name for name, r in latest.items() if _is_failure(r)})
+    failures = sorted(
+        (_format_problem_run(r) for r in latest.values() if _is_failure(r)),
+        key=str.casefold,
+    )
     stale = evaluate_actions_freshness(latest, datetime.now(timezone.utc))
 
     problems = []
     if failures:
-        problems.append("failure → " + ", ".join(failures))
+        problems.append("run結論 → " + ", ".join(failures))
     if stale:
         problems.append("鮮度 → " + "; ".join(stale))
     if problems:
