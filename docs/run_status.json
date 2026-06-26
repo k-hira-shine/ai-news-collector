@@ -1,6 +1,6 @@
 {
-  "overall": "warning",
-  "updated_at": "2026-06-26 17:22 JST",
+  "overall": "success",
+  "updated_at": "2026-06-27 02:46 JST",
   "workflows": {
     "buzz": {
       "status": "success",
@@ -16,14 +16,14 @@
       "fallback_triggered": false
     },
     "collect": {
-      "status": "warning",
-      "ts": "2026-06-26T17:22:51.071925+09:00",
-      "time": "2026-06-26 17:22 JST",
-      "error": "X 検索クエリが全滅; X 収集結果が実質 0 件; 必須アカウントのタイムライン取得が失敗",
-      "items_collected": 24,
-      "top_articles": 4,
-      "apify_hints": "x_api_unavailable,zero-output-run",
-      "search_failure": "search 0件 / 検出: x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run"
+      "status": "success",
+      "ts": "2026-06-27T02:46:52.974718+09:00",
+      "time": "2026-06-27 02:46 JST",
+      "error": "",
+      "items_collected": 236,
+      "top_articles": 10,
+      "apify_hints": "zero-output-run",
+      "search_failure": ""
     },
     "money": {
       "status": "success",
@@ -46,17 +46,5 @@
       "candidates": 845,
       "mode": "one-off-analysis"
     }
-  },
-  "incident": {
-    "active": "true",
-    "severity": "critical",
-    "title": "X 収集が停止中（上流 API 障害）",
-    "situation": "直近の収集で有効な X ツイートが 0 件。 Apify Actor は成功終了していますが、データは取得できていません。",
-    "cause": "Apify Actor（xquik/x-tweet-scraper）が利用する xquik の X 検索 API が 502 / 503 x_api_unavailable を返しています。 Cookie 失効や設定ミスではなく、データ源側の一時障害です。 詳細: search 0件 / 検出: x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_ap",
-    "impact": "・分析の top_articles が 0 件のため、新しい図解 HTML/PNG は生成されません\n・サイトの「最新図解」リンクが前回便のまま残ります\n・ニュース一覧の内容も更新されません\n・復旧後: probe_x_upstream.py で OK → collect（full）再実行",
-    "technical": "hints=x_api_unavailable, zero-output-run / search 0件 / 検出: x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, z / must-follow 0件 / 検出: x_api_unavailable, zero-output-run, x_api_unavailable, zero-output-run, x_api_unavailable, zero-out",
-    "diagram_latest": "2026-06-26-morning",
-    "workflow": "collect",
-    "updated_at": "2026-06-26 17:22 JST"
   }
 }
