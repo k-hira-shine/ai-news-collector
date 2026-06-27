@@ -1,6 +1,6 @@
 import unittest
 
-from alerts import build_alert_embed, detect_anomalies
+from alerts import detect_anomalies
 
 
 def _stats(**overrides) -> dict:
@@ -186,26 +186,6 @@ class DetectAnomaliesTests(unittest.TestCase):
         matched = [a for a in alerts if "起動回数" in a["title"]]
         self.assertEqual(len(matched), 1)
         self.assertIn("1/2", matched[0]["title"])
-
-
-class BuildAlertEmbedTests(unittest.TestCase):
-    def test_empty_returns_none(self) -> None:
-        self.assertIsNone(build_alert_embed([]))
-
-    def test_critical_color_and_icon(self) -> None:
-        embed = build_alert_embed([{"severity": "critical", "title": "T", "detail": "D"}])
-        self.assertEqual(embed["color"], 0xE74C3C)
-        self.assertIn("🚨", embed["title"])
-
-    def test_warning_only_color(self) -> None:
-        embed = build_alert_embed([{"severity": "warning", "title": "T", "detail": "D"}])
-        self.assertEqual(embed["color"], 0xF39C12)
-        self.assertIn("⚠️", embed["title"])
-
-    def test_description_truncated_to_4096(self) -> None:
-        long_detail = "x" * 5000
-        embed = build_alert_embed([{"severity": "warning", "title": "T", "detail": long_detail}])
-        self.assertLessEqual(len(embed["description"]), 4096)
 
 
 if __name__ == "__main__":

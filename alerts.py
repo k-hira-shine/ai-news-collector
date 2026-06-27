@@ -13,12 +13,6 @@ from typing import Any
 logger = logging.getLogger("ai-news.alerts")
 
 
-SEVERITY_COLORS = {
-    "critical": 0xE74C3C,
-    "warning": 0xF39C12,
-}
-
-
 def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict[str, str]]:
     """stats と config から異常を検出してアラートリストを返す
 
@@ -233,27 +227,6 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             ),
         })
 
-    # 月間予算はエラー扱いにしない（check_cost.py / Discord 収集統計の通算表示のみ）
+    # 月間予算はエラー扱いにしない（check_cost.py の通算表示のみ）
 
     return alerts
-
-
-def build_alert_embed(alerts: list[dict[str, str]]) -> dict | None:
-    """アラートリストから Discord Embed を構築（アラート 0 件なら None）"""
-    if not alerts:
-        return None
-
-    has_critical = any(a["severity"] == "critical" for a in alerts)
-    color = SEVERITY_COLORS["critical"] if has_critical else SEVERITY_COLORS["warning"]
-    icon = "🚨" if has_critical else "⚠️"
-
-    lines: list[str] = []
-    for a in alerts:
-        sev_icon = "🔴" if a["severity"] == "critical" else "🟡"
-        lines.append(f"{sev_icon} **{a['title']}**\n{a['detail']}")
-
-    return {
-        "title": f"{icon} 健全性アラート",
-        "description": "\n\n".join(lines)[:4096],
-        "color": color,
-    }
