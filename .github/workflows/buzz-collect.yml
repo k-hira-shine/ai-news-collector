@@ -18,7 +18,7 @@ on:
   repository_dispatch:
     types: [buzz-add-account]
   schedule:
-    - cron: '10 17 * * 0,2,4' # JST 月・水・金 02:10（UTCでは前日）
+    - cron: '30 18 * * 0,2,4' # JST 月・水・金 03:30（UTCでは前日）
 
 # collect / money と同時 push しない（main への書き込みを直列化）
 concurrency:
