@@ -3,7 +3,7 @@ name: Daily Ops Check
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 21 * * *' # JST 06:30
+    - cron: '15 18 * * *' # JST 03:15
 
 permissions:
   actions: read
@@ -33,11 +33,12 @@ jobs:
           echo "status=$status" >> "$GITHUB_OUTPUT"
           exit 0
 
-      - name: Send failure alert to Discord
-        if: steps.daily.outputs.status != '0'
+      - name: Send daily summary to Discord
+        if: always()
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DAILY_CHECK_STATUS: ${{ steps.daily.outputs.status }}
+          DAILY_CHECK_NOTIFY_SUCCESS: "true"
         run: python scripts/send_daily_check_alert.py daily_check.out
 
       - name: Fail on daily ops issues

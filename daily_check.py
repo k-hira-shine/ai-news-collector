@@ -91,9 +91,10 @@ def _line(label: str, ok: bool, detail: str) -> tuple[bool, str]:
 # 期待するスケジュール済みワークフロー（表示名, ワークフローファイル, 最大許容age時間）。
 # gh run list の窓に出ない＝サイレント停止を検知するため、cadence＋余裕でstaleを判定する。
 EXPECTED_WORKFLOWS = [
-    ("AI News Collector", "collect.yml", 26),            # 毎日2便（02:00/16:00 JST）
-    ("AI Money Cases Collector", "money-collect.yml", 26),  # 毎日（04:30 JST）
-    ("Buzz Daily Health Check", "buzz-health-check.yml", 26),  # 毎日（05:30 JST）
+    ("AI News Collector", "collect.yml", 26),            # 毎日2便（00:00/16:00 JST）
+    ("AI Money Cases Collector", "money-collect.yml", 26),  # 毎日（01:50 JST）
+    ("Buzz Daily Health Check", "buzz-health-check.yml", 26),  # 毎日（03:05 JST）
+    ("Daily Ops Check", "daily-ops-check.yml", 26),  # 毎日（03:15 JST）
     ("Buzz Ranking Collector", "buzz-collect.yml", 84),  # 月水金（週末ギャップ最大72h＋余裕）
 ]
 

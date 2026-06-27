@@ -370,6 +370,7 @@ class ActionsFreshnessTests(unittest.TestCase):
             "AI News Collector": _run("AI News Collector", 2),
             "AI Money Cases Collector": _run("AI Money Cases Collector", 2),
             "Buzz Daily Health Check": _run("Buzz Daily Health Check", 23),
+            "Daily Ops Check": _run("Daily Ops Check", 23),
             "Buzz Ranking Collector": _run("Buzz Ranking Collector", 50),
         }
 
@@ -406,7 +407,8 @@ class ActionsFreshnessTests(unittest.TestCase):
     def test_registry_covers_scheduled_workflows(self) -> None:
         names = {n for n, _f, _a in EXPECTED_WORKFLOWS}
         self.assertIn("Buzz Ranking Collector", names)
-        self.assertEqual(len(EXPECTED_WORKFLOWS), 4)
+        self.assertIn("Daily Ops Check", names)
+        self.assertEqual(len(EXPECTED_WORKFLOWS), 5)
 
 
 class BacklogTests(unittest.TestCase):

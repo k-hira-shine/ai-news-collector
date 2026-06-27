@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Send daily_check.py output to Discord when the scheduled ops check fails."""
+"""Send daily_check.py output to Discord for the scheduled ops check."""
 
 from __future__ import annotations
 

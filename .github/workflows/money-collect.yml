@@ -13,7 +13,7 @@ on:
           - analyze-only   # 収集済みデータの分析のみ（再分析用）
           - page-only      # ページ生成のみ
   schedule:
-    - cron: '30 19 * * *'    # JST 04:30（1日1回）
+    - cron: '50 16 * * *'    # JST 01:50（1日1回）
 
 # collect / buzz と同時 push しない（main への書き込みを直列化）
 concurrency:
