@@ -163,8 +163,15 @@ def _format_operations_section(base: Path) -> str:
         lines.append("")
         if latest:
             workflows_cost = latest.get("workflows") or {}
+            items = latest.get("items_collected") or {}
             lines.append(
-                "本日コスト: "
+                "本日収集件数: "
+                f"AIニュース={items.get('collect', 0)}件, "
+                f"Money/SNS={items.get('money', 0)}件, "
+                f"Buzz={items.get('buzz', 0)}件"
+            )
+            lines.append(
+                "本日Apifyコスト: "
                 f"${latest.get('total_usd', 0):.4f} "
                 f"(collect=${workflows_cost.get('collect', 0):.4f}, "
                 f"money=${workflows_cost.get('money', 0):.4f}, "
