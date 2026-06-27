@@ -47,4 +47,26 @@ python3 scripts/gemini_buzz_research.py \
 
 - `collect_gemini_omni_overseas.py` … `collect.yml` の朝 run のみ（歴史的理由で `scripts/` に配置）
 
+## 緊急停止・再開
+
+Secrets やコードを消さずに、日次運用ワークフローだけをまとめて止める。
+
+```bash
+# 状態確認
+python3 scripts/ops_workflows.py status
+
+# 自動実行を一時停止（デフォルトは日次運用5本だけ）
+python3 scripts/ops_workflows.py pause
+
+# いま実行中のrunも止めてから一時停止
+python3 scripts/ops_workflows.py pause --cancel-running
+
+# 再開
+python3 scripts/ops_workflows.py resume
+```
+
+対象は `collect.yml`, `money-collect.yml`, `buzz-collect.yml`,
+`buzz-health-check.yml`, `daily-ops-check.yml`。検証用・単発用 workflow まで
+含めたい場合だけ `--all` を付ける。
+
 一覧と全体地図: `.cursor/docs/project-layout.md`
