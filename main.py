@@ -306,22 +306,6 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
     status_icon = "⚠️" if anomalies else "✅"
     logger.info("%s AI News Collector 完了 (%ds, %d件収集)", status_icon, int(elapsed), stats["total"])
 
-    # 朝便だけニュース概要をDiscordへ配信する。夕方便(light)はダッシュボード更新のみで、
-    # 毎日の通知ノイズを増やさない。
-    if analysis.get("slot") == "morning":
-        try:
-            from notifier import DiscordNotifier
-
-            delivery = DiscordNotifier().notify(analysis, stats, diagram_png=diagram_png)
-            if delivery.get("skipped"):
-                logger.info("Discord news summary skipped: %s", delivery.get("reason"))
-            elif delivery.get("failed_parts"):
-                logger.warning("Discord news summary partial failure: %s", delivery)
-            else:
-                logger.info("Discord news summary sent: %s/%s", delivery.get("succeeded"), delivery.get("total"))
-        except Exception as e:
-            logger.warning("Discord news summary failed: %s", e)
-
     log_status = "warning" if anomalies else "success"
     error_msg = "; ".join(a["title"] for a in anomalies) if anomalies else ""
     log_run(
