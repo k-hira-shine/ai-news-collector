@@ -1,0 +1,572 @@
+{
+  "trend_summary": "本日のAI業界は、コスト効率とオープンソースの重要性が急上昇し、特に中国製AIモデルが主要プレイヤーに代わる選択肢として台頭しています。AnthropicはAIエージェントの自律的な活用を推進する一方で、不正なアクセスやモデルの流出疑惑に直面。また、OpenAIの新型チップ開発やGitHubのAI要件定義ツールなど、AI開発効率化の動きが加速しています。",
+  "trend_evolution": {
+    "since_last": "前回の配信では、OpenAIのGPT-5.6発表とそれに伴う政府の規制、そしてAnthropicのMythos 5への介入が主要な焦点でした。今回は、これらのフロンティアAIモデルの規制議論が継続する一方で、中国のオープンソースAIモデル（Zhipu、DeepSeek）が性能とコストの両面で米国の主要モデルに匹敵し、企業が採用し始めるという新たな展開が顕著です。AIエージェントの実用化は引き続き力強いトレンドであり、開発効率化ツールやマルチエージェントシステムの進化が見られます。また、AIモデルの安全性、バイアス、知財保護に関する議論も深まっています。",
+    "tracked_topics": [
+      {
+        "topic": "中国製オープンソースAIの台頭",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "初報でZhipu AIのClaude Mythos匹敵が話題になり、今回はCoinbaseがOpenAI/Anthropicから中国モデルに切り替えたことでコストメリットが注目された。"
+      },
+      {
+        "topic": "AIエージェントの実用化と開発",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "企業でのAIエージェント活用が具体的な事例とともに報じられ、GitHub Spec KitやHiggsfield Supercomputer 2.0など、実用を支援するツールが登場している。"
+      },
+      {
+        "topic": "AIの安全性と規制/政策",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "フロンティアAIモデルの規制が継続する中、モデルの重み流出疑惑やAIの政治的バイアス、利用者の行動への影響など、倫理的・法的側面からの議論が拡大している。"
+      },
+      {
+        "topic": "大手AIラボの企業動向",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "OpenAIの新型推論チップ開発やAnthropicのMythos 5の政府協議、Alibabaによる蒸留告発など、競争と協調、そして法的問題が複雑に絡み合う状況が続いている。"
+      },
+      {
+        "topic": "AIモデル/ツールの進化",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "動画・画像生成AIの進化やLLMの推論高速化技術（MTP/Speculative Decoding）など、基盤技術とアプリケーションの両面で革新が続いている。"
+      },
+      {
+        "topic": "AIのコスト削減と効率化",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "中国製モデルの採用によるコスト削減が具体的に示され、OpenAIの新型チップやOmniRouteといったトークンコスト削減ツールも登場し、運用効率が重視される傾向が強まっている。"
+      },
+      {
+        "topic": "画像・動画生成AI",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "Seedance 2.0 MiniやDreamina Octoなど、高品質かつ効率的な動画生成ツールが引き続き注目を集めている。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "baedf80411623d14",
+      "rank": 1,
+      "title": "中国AIが米国AIを凌駕",
+      "url": "https://x.com/Ric_RTP/status/2071234126355550721",
+      "summary": "CoinbaseがOpenAIやAnthropicからZhipuとDeepSeekの中国製オープンウェイトモデルに切り替え、AI支出を約50%削減しました。同等の出力で9倍の価格差があることが指摘され、中国AIのコスト効率と性能の高さが浮き彫りになっています。",
+      "importance_reason": "大手企業が実際に米主要AIモデルから中国製オープンソースAIモデルへの移行を決定した点で、AI市場の勢力図に大きな影響を与える可能性があり、コストパフォーマンスの重要性を示しているため。",
+      "category": "企業動向",
+      "source_label": "x:@Ric_RTP"
+    },
+    {
+      "id": "dde66f0fd288952a",
+      "rank": 2,
+      "title": "次世代AI「Higgsfield S.",
+      "url": "https://x.com/ai_hakase_/status/2071217389316804677",
+      "summary": "意思決定まで完全自律化する次世代AI「Higgsfield Supercomputer 2.0」が登場。リサーチからマーケティング全工程を自動化し、NVIDIA技術でトークン消費量を最大50%カット。既にFortune 500企業の多くが導入済みで、大幅なコスト削減と効率化を実現しています。",
+      "importance_reason": "マーケティングの全工程を自律化するAIエージェントの登場は、ビジネスにおけるAI活用を次の段階に進める画期的な事例であり、Fortune 500企業での導入実績もその影響力の大きさを示しているため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "b3826f82a7cc2d65",
+      "rank": 3,
+      "title": "OpenAI×Broadcom 新チップ",
+      "url": "https://x.com/ai_hakase_/status/2071203221603783125",
+      "summary": "OpenAIとBroadcomが共同開発した新型推論チップ「Jalapeño」が発表されました。圧倒的な省電力性能と9ヶ月という開発スピードが特徴で、推論に特化することでAI運用コストを劇的に削減し、NVIDIAへの依存度低下とAIサービス利用コストの低減が期待されます。",
+      "importance_reason": "OpenAIがNVIDIA以外のベンダーと共同で推論チップを開発したことは、AIインフラの多様化とコスト競争の激化を示唆し、今後のAIサービス提供モデルに大きな影響を与える可能性が高いため。",
+      "category": "企業動向",
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "e7b4c0fe8f12d6d0",
+      "rank": 4,
+      "title": "GitHub Spec KitでAI開発",
+      "url": "https://x.com/so_ainsight/status/2071243482140991767",
+      "summary": "GitHubが公開した「Spec Kit」は、AIにコードを書かせる前に要件を明確にするツールキットです。6ステップのフローで要件・疑問・設計を固めることで、手戻りを防ぎ、30以上のAIエージェントに対応しています。",
+      "importance_reason": "AIを用いたコード生成における課題（要件の曖昧さによる手戻り）を解決し、より効率的なAI開発ワークフローを確立する重要なツールであり、GitHub公式である点も影響力が大きい。",
+      "category": "モデル/ツール",
+      "source_label": "x:@so_ainsight"
+    },
+    {
+      "id": "86ec386c8c20df1c",
+      "rank": 5,
+      "title": "Anthropic Mythos 5の利用協議",
+      "url": "https://x.com/shota7180/status/2070990905968930885",
+      "summary": "AnthropicがMythos 5の一般利用再開に向けて政府と協議を進めており、既に一部の米国重要インフラ組織には再展開が認められました。これは高性能AIモデルの規制と利用における政府の関与の継続を示唆しています。",
+      "importance_reason": "フロンティアAIモデルの規制状況が継続して注視される中、Mythos 5の政府との協議は、国家安全保障とAI技術のバランスを巡る今後の動向を示す重要な動きであるため。",
+      "category": "企業動向",
+      "source_label": "x:@shota7180"
+    },
+    {
+      "id": "d02611e5619d6efa",
+      "rank": 6,
+      "title": "最先端AIモデルの重み流出",
+      "url": "https://x.com/K_Ichida/status/2071188862173671488",
+      "summary": "開発者のジェイク・ゴールド氏が、AnthropicのClaude Fable 5やOpenAIのGPT 5.6 Solといった最先端AIモデルの重み（学習済みパラメータ）がすでに外国政府に入手されている可能性が高いと指摘。セキュリティの脆弱性と、現状の防御策の限界が議論されています。",
+      "importance_reason": "最先端AIモデルの「重み」が流出している可能性の指摘は、AIの安全性と国家安全保障に関わる深刻な問題であり、AI規制の議論にも大きな影響を与えるため。",
+      "category": "規制/政策",
+      "source_label": "x:@K_Ichida"
+    },
+    {
+      "id": "f97b832d6ebdd8fd",
+      "rank": 7,
+      "title": "中国製オープンソースAIの進化",
+      "url": "https://x.com/ai_hakase_/status/2071173515890348521",
+      "summary": "中国製オープンソースAIが進化し、GLM-5.2がClaude Opusと同等の実力を低コストで提供、Kimi 2.7が効率的な推論でコスト削減、Doubao-Seed 2.1 Proが画像・動画解析でコスパを発揮しています。高品質なAIがオープンソース化し、ビジネス活用において最適なモデル選定の重要性が増しています。",
+      "importance_reason": "中国製オープンソースAIが、米国の大手モデルに匹敵する性能を低コストで提供し始めたことは、AI業界全体の競争環境とビジネスモデルに根本的な変化をもたらす可能性が高いため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "06e3ddb2c7223b60",
+      "rank": 8,
+      "title": "OpenAI「GPT-5.6 Sol」発表",
+      "url": "https://x.com/itnavi2022/status/2070638134568927421",
+      "summary": "OpenAIが最新モデルシリーズ「GPT-5.6 Sol, Terra, Luna」を発表。特にSolは複雑な推論、コーディング、サイバーセキュリティを担う最強フラッグシップと位置づけられています。政府の規制とテクノロジー進化の葛藤が浮き彫りになり、AIとの対話が「知能のオーケストレーション」へ移行する戦略的パラダイムシフトが分析されています。",
+      "importance_reason": "OpenAIの新しい命名戦略とモデル発表は、フロンティアAIの進化方向を示すものであり、政府規制との兼ね合いが引き続き注目される中で、業界の動向に大きな影響を与えるため。",
+      "category": "企業動向",
+      "source_label": "x:@itnavi2022"
+    },
+    {
+      "id": "814b50b1f92931d7",
+      "rank": 9,
+      "title": "AnthropicがClaude Codeの指南書を公開",
+      "url": "https://x.com/eng_khairallah1/status/2070801619520807283",
+      "summary": "AnthropicがClaude Codeを使って企業を構築するための公式プレイブックを公開しました。これは、CEOが人間1人で従業員がAIエージェント、運用が完全自動化された「ゼロヘッドカウント企業」の実現可能性を示唆しています。",
+      "importance_reason": "Anthropicが自社のAIエージェント活用ノウハウを公開したことは、AIによる業務自動化や企業運営の未来像を示すものであり、ビジネスにおけるAIエージェントの本格的な普及を加速させる可能性を秘めているため。",
+      "category": "企業動向",
+      "source_label": "x:@eng_khairallah1"
+    },
+    {
+      "id": "1fe3f007f8d6dd4b",
+      "rank": 10,
+      "title": "画像参照AIを高速化「SparseContext」",
+      "url": "https://x.com/ai_hakase_/status/2071157160159928807",
+      "summary": "複数画像参照時の生成遅延を解決する新技術「SparseContext」が登場。画像内の不要なトークンを約80%削減し、モデルの再学習なしで劇的な高速化を実現。レイアウト維持、コスト削減、大量生成の効率化が期待されます。",
+      "importance_reason": "マルチモーダルAI、特に画像参照の生成AIにおける主要な課題であった処理速度とコストを大幅に改善する技術であり、AIアートやデザイン、コンテンツ生成の現場に大きな恩恵をもたらすため。",
+      "category": "研究論文",
+      "source_label": "x:@ai_hakase_"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "モデル/ツール",
+      "summary": "本日、AIモデル/ツール分野では、マーケティング全工程を自律化する「Higgsfield Supercomputer 2.0」や、AI開発の要件定義を効率化するGitHubの「Spec Kit」が注目されました。画像生成AIの「Ideogram 4.0」はテキスト描画能力とレイアウト機能が向上し、動画生成AIではリアルタイム対話型の「Wan-Streamer v0.1」やGPU不要で高品質な「Seedance 2.0 × Magnific」が登場。中国製オープンソースAI（GLM-5.2、Kimi 2.7、Doubao-Seed 2.1 Pro）も性能とコスト効率で台頭し、既存のモデルに匹敵する実力を示しています。また、LLMの推論を10倍高速化するMTP（Speculative Decoding）技術の実装も進んでいます。教育AIとしてGeminiの「Study Notebooks」も登場し、個別学習の効率化が期待されます。",
+      "count": 27,
+      "key_articles": [
+        {
+          "title": "次世代AI「Higgsfield Supercomputer 2.0」が登場】",
+          "url": "https://x.com/ai_hakase_/status/2071217389316804677",
+          "summary": "意思決定まで完全自律化する次世代AI「Higgsfield Supercomputer 2.0」が登場。マーケティングの全工程を自動化し、コストを最大50%削減。既にFortune 500企業の390社が導入実績。"
+        },
+        {
+          "title": "GitHub Spec Kitは、コードに触れる前にAIに要件を理解させるツールキット",
+          "url": "https://x.com/so_ainsight/status/2071243482140991767",
+          "summary": "GitHubが「Spec Kit」を公開。AIにコードを書かせる前に要件・疑問・設計を固める6ステップのフローを提供し、手戻りを防ぐ。30以上のAIエージェントに対応し、11万スターを超え話題。"
+        },
+        {
+          "title": "【中国製オープンソースAIが驚異の進化！ビジネス活用の新常識】",
+          "url": "https://x.com/ai_hakase_/status/2071173515890348521",
+          "summary": "中国製オープンソースAIが劇的に進化。GLM-5.2はClaude Opus同等、Kimi 2.7は効率的な推論、Doubao-Seed 2.1 Proは画像解析に特化し、いずれも高コストパフォーマンスを実現。ビジネスにおけるモデル選定の新常識を提示。"
+        },
+        {
+          "title": "【3Dモデルが映画品質に！新技術「Render-to-Real IC-LoRA」が凄い】",
+          "url": "https://x.com/ai_hakase_/status/2071217557919375375",
+          "summary": "簡易的な3Dアニメーションをフォトリアルな映画風ビデオに変換する新技術「Render-to-Real IC-LoRA」が登場。カメラワークや構図を維持したまま高品質な質感を付加し、CG制作コスト削減に貢献。"
+        },
+        {
+          "title": "🎨 画像生成AI「Ideogram 4.0」でデザインが激変！",
+          "url": "https://x.com/ai_hakase_/status/2071203468623122790",
+          "summary": "画像生成AI「Ideogram 4.0」が登場。テキスト描画能力とレイアウト機能が劇的に進化し、複雑な構図も簡単に作成可能。Ghibli風からリアルな風景まで多様なスタイルに対応し、クリエイティブを強力にサポート。"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "企業動向では、CoinbaseがOpenAIとAnthropicから中国製オープンソースモデル（Zhipu、DeepSeek）に切り替えることでAI支出を大幅削減したことが最大の話題です。OpenAIとBroadcomは新型推論チップ「Jalapeño」を共同開発し、AI運用コストの削減とNVIDIA依存度低下を目指します。AnthropicはMythos 5の一般利用再開に向け政府と協議中ですが、AlibabaによるClaudeへの不正アクセス（蒸留）を告発し、知的財産保護と競争の激化が顕在化。また、Anthropic CEOがエンジニアの90%以上がClaudeでコードを書いていると発言し、AIエージェントによる開発の効率化を強調。GoogleはAI需要でインフラが逼迫し、MetaのGemini利用を制限する報道があり、AIリソースの確保が課題となっています。国内ではソフトバンク、NEC、ホンダ、ソニーグループが中心となり、40社超が参加する国産AI開発体制の全容が明らかになりました。",
+      "count": 18,
+      "key_articles": [
+        {
+          "title": "中国AIが米国AIを凌駕",
+          "url": "https://x.com/Ric_RTP/status/2071234126355550721",
+          "summary": "CoinbaseがOpenAIとAnthropicから中国製オープンウェイトモデル（Zhipu、DeepSeek）に切り替え、AI支出を約50%削減。同等の出力で9倍の価格差が注目される。"
+        },
+        {
+          "title": "OpenAI×Broadcom 新チップ",
+          "url": "https://x.com/ai_hakase_/status/2071203221603783125",
+          "summary": "OpenAIとBroadcomが共同開発した新型推論チップ「Jalapeño」を発表。省電力性能と開発スピードが特徴で、AI運用コスト削減とNVIDIA依存度低下が期待される。"
+        },
+        {
+          "title": "Anthropic Mythos 5の利用協議",
+          "url": "https://x.com/shota7180/status/2070990905968930885",
+          "summary": "AnthropicがMythos 5の一般利用再開に向けて政府と協議中。既に一部の米国重要インフラ組織には再展開が認められた。"
+        },
+        {
+          "title": "Claudeに約2万5000の偽アカウントで2880万回超アクセスし、蒸留で中核能力を抜き取ったとしてAnthropicがAlibabaを告発",
+          "url": "https://x.com/MalwareBibleJP/status/2071073860791996618",
+          "summary": "AnthropicがAlibaba傘下QwenによるClaudeへの大規模な不正アクセス（蒸留攻撃）を告発。約2.5万アカウントから2,880万回超のやり取りで中核能力が引き出されたとされる。"
+        },
+        {
+          "title": "ANTHROPIC JUST RELEASED THE OFFICIAL PLAYBOOK FOR BUILDING A COMPANY WITH CLAUDE CODE.",
+          "url": "https://x.com/eng_khairallah1/status/2070801619520807283",
+          "summary": "AnthropicがClaude Codeを活用した「ゼロヘッドカウント企業」構築の公式プレイブックを公開。AIエージェントによる完全自動化された企業運営の可能性を示す。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "AI規制・政策の分野では、最先端AIモデルの「重み」がすでに外国政府に入手されている可能性が高いというジェイク・ゴールド氏の指摘が、AIの安全性と国家安全保障における脆弱性を浮き彫りにしました。また、トランプ政権下でのAI規制がバイデン政権の構想より遥かに厳しいものとなる可能性が指摘され、Anthropicに輸出管理指令、OpenAIのGPT-5.6には政府承認制が課される見込みです。中国は7月1日から対外投資規制を強化し、AIなど先端技術の国外流出を警戒しています。AIの政治的バイアスも問題視されており、ChatGPT、Gemini、Claude、Grokといった主要AIが「左寄り」であるとする調査結果が波紋を呼んでいます。さらに、AIが顧客の行動を操作する危険性や、生成AIサービスによる著作権侵害への懸念も引き続き議論の的となっています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "外国政府はすでに最先端AIのモデルの重みを入手済みと説くジェイク・ゴールド。",
+          "url": "https://x.com/K_Ichida/status/2071188862173671488",
+          "summary": "開発者のジェイク・ゴールド氏が、AnthropicのClaude Fable 5やOpenAIのGPT 5.6 Solのモデルの重みが既に外国政府に入手されている可能性を指摘。AIセキュリティの現状を「セキュリティ劇場」と批判。"
+        },
+        {
+          "title": "バイデン政権の元高官が、トランプ政権のAI規制はバイデン時代の構想より遥かに厳しいと指摘した。",
+          "url": "https://x.com/joho_no_todai/status/2070983481598046451",
+          "summary": "トランプ政権がAnthropicに輸出管理指令、OpenAIのGPT-5.6に政府承認制を課すなど、バイデン政権を上回る厳しいAI規制を導入する可能性が指摘されている。"
+        },
+        {
+          "title": "中国が対外投資の規制強化へ　7月1日に新規定施行、AIなど先端技術の国外流出を警戒",
+          "url": "https://x.com/Sankei_news/status/2070701197951119469",
+          "summary": "中国が7月1日に新たな対外投資規制を施行。国家安全に影響を及ぼす可能性のある海外投資や資産処分に対し「安全審査」を行い、AIなど先端技術の国外流出を警戒し、投資実施済みでも撤回を命じる権限を持つ。"
+        },
+        {
+          "title": "チャッピー含むAIは、すべて「左寄り」だった",
+          "url": "https://x.com/turningpointjpn/status/2070704168927400359",
+          "summary": "ChatGPT、Gemini、Claude、Grokといった主要AIが「左寄り」の回答をする傾向があることが指摘された。学習データの偏りが原因とされ、AIの公平性に関する議論が再燃している。"
+        },
+        {
+          "title": "AIには「人格」がありません。誰がお金を払っているかによって、性格はいくらでも書き換えられる",
+          "url": "https://x.com/snakajima/status/2071087411946573912",
+          "summary": "AIの「人格」は資金提供者によって容易に改変可能であると警鐘。金融機関がAIを顧客向けアドバイザーとして利用する際、顧客を誘導して手数料を稼ぐようにファインチューニングされる危険性を指摘。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "研究論文カテゴリでは、画像参照AIの劇的な高速化を実現する新技術「SparseContext」が発表されました。これは画像内の不要なトークンを約80%削減し、モデルの再学習なしで高速化とコスト削減を可能にします。また、100体以上のAIエージェントが自律的に協調し、モデルの推論速度を5倍に向上させる驚異的な実験結果が報告され、マルチエージェントシステムの革新性を示しました。清華大学からは、複数のLLMエージェントの「社会」をシミュレートする強力なツール『AgentSociety v2』が公開され、AIエージェントの社会行動研究を加速させます。その他、AIの特定能力をオフにする「パラメータ分解」技術や、DeepSeek版の投機的デコード手法「DSpark」、VR/ARの手ジェスチャー認識精度を向上させる「RF-DETR」などが注目されています。",
+      "count": 8,
+      "key_articles": [
+        {
+          "title": "画像参照の生成AIを劇的に高速化！新技術「SparseContext」が登場",
+          "url": "https://x.com/ai_hakase_/status/2071157160159928807",
+          "summary": "複数画像参照時の生成遅延を解決する新技術「SparseContext」が登場。画像内不要トークン80%削減で劇的な高速化とコスト削減を実現し、レイアウト維持と大量生成効率化を促進。"
+        },
+        {
+          "title": "自律するAI！100体のエージェントが起こした革新",
+          "url": "https://x.com/ai_hakase_/status/2071156904810659854",
+          "summary": "100体以上のAIエージェントが自律的に協調し、モデルの推論速度を5倍に向上させる実験が成功。不正通信拒否やバグ修正、GPUリソースの自動分担など、まるで人間組織のような自律性を示した。"
+        },
+        {
+          "title": "AIの特定能力をオフにする新技術！「パラメータ分解」が凄い",
+          "url": "https://x.com/ai_hakase_/status/2071096756423520270",
+          "summary": "たった4つの単語操作でAIの特定の言語能力をピンポイントで消去する新技術「パラメータ分解」が登場。プライバシー保護や著作権抵触データの除去、低コスト・高速処理が可能となり、AIに「安全に忘れさせる」時代が到来。"
+        },
+        {
+          "title": "DeepSeek版の投機的デコード手法のDSparkが発表された。",
+          "url": "https://x.com/umiyuki_ai/status/2071022888795451492",
+          "summary": "DeepSeek版の投機的デコード手法「DSpark」が発表。高い受け入れ率と可変ドラフト長によりGPU負荷に応じた動的な予測が可能で、ローカルLLMの推論速度を劇的に向上させる。"
+        },
+        {
+          "title": "【清華大学が公開】LLMエージェントの「社会」をシミュレートする超強力ツール『AgentSociety v2』登場！",
+          "url": "https://x.com/ai_hakase_/status/2071052220661952590",
+          "summary": "清華大学がLLMエージェントの社会シミュレーションツール『AgentSociety v2』を公開。高い拡張性と大規模分散実行能力を持ち、都市や経済、社会構造のモジュラー環境を柔軟に構築可能。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "ユースケースの領域では、Anthropicの「Claude Code」や「Claude Cowork」を業務に活用する具体例が数多く見られます。開発経験ゼロのユーザーがClaude Codeで本格アプリを2日で開発したり、営業業務の提案書作成を自動化する事例が報告されています。また、AIエージェントのチームがコードのバグ修正を自動で行い、テストがグリーンになるまで修正を繰り返すといった高度な使い方も登場。AIを活用して月4,600ドルを稼ぐ個人開発者の事例や、中古PCを活用したローカルAIエージェント群の構築なども注目されています。動画編集やビジネス動画制作におけるAIの活用も進み、「えぐい。ビジネス動画編集がAIでできる時代がやってくる。」という声も。AIによる占い、電子カルテへの組み込みによる診断支援、災害・戦場におけるフィジカルAIのトレーニングなど、多岐にわたる分野での応用が進んでいます。",
+      "count": 25,
+      "key_articles": [
+        {
+          "title": "ANTHROPIC JUST RELEASED THE OFFICIAL PLAYBOOK FOR BUILDING A COMPANY WITH CLAUDE CODE.",
+          "url": "https://x.com/eng_khairallah1/status/2070801619520807283",
+          "summary": "AnthropicがClaude Codeを活用した「ゼロヘッドカウント企業」構築の公式プレイブックを公開。AIエージェントによる完全自動化された企業運営の可能性を示す。"
+        },
+        {
+          "title": "この男は、テストがグリーンになるまでコードを修正するクロードエージェントチームを構築しました",
+          "url": "https://x.com/kocer_eth/status/2071214921262456901",
+          "summary": "Claudeエージェントチームが、コード生成後にテストを実行し、失敗した部分のみを修正してテストが成功するまで繰り返す自律的なコード修正ループを構築。AIによる開発効率を飛躍的に高める。"
+        },
+        {
+          "title": "A DEV BOUGHT 5 USED OFFICE PCS FOR $100 AND BUILT A LOCAL AI AGENT SWARM THAT MAKES $4,600 A MONTH MACHINE",
+          "url": "https://x.com/0xWast3/status/2071229330168893492",
+          "summary": "開発者が中古PC5台を100ドルで購入し、月4,600ドルを稼ぐローカルAIエージェント群を構築。安価なハードウェアとAIの組み合わせで収益化する具体的な事例が紹介された。"
+        },
+        {
+          "title": "【総フォロワー45万人が2日で本格アプリ開発】",
+          "url": "https://x.com/starriver0513/status/2071179301274243166",
+          "summary": "開発経験ゼロの日本語コーチがClaude Codeを使い、わずか2日で本格アプリを開発。週2回のPodcast作成も自動化するなど、発信者のAI活用最前線が紹介された。"
+        },
+        {
+          "title": "Claude Codeは、自分でスキルを作らなくても、公式スキルを使うことで、できる作業の幅を広げられます。",
+          "url": "https://x.com/shota7180/status/2071164211997356459",
+          "summary": "Claude Codeの公式スキルを活用することで、文書作成、デザイン、社内連絡、開発テストなど、業務で役立つ多様な作業を効率化できることが紹介された。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "中国製オープンソースAIモデルの性能とコスト効率を評価し、自社のAI導入戦略における代替選択肢として検討する。",
+    "AIエージェントの導入を加速し、マーケティング、コード開発、業務自動化など、自社の主要業務における効率化・自律化の可能性を探る。GitHub Spec Kitのような要件定義ツールやClaude Codeのプレイブックを活用し、AI開発ワークフローを改善する。",
+    "AIモデルのサプライチェーンとセキュリティリスクを再評価し、モデルの重み流出などの潜在的脅威に対する対策を強化する。また、AIのバイアス問題についても認識を深め、公平性を確保するためのガイドラインを策定する。",
+    "AIインフラのコスト削減策として、OpenAIとBroadcomが開発する新型推論チップ「Jalapeño」のようなハードウェアの進化や、OmniRouteのようなトークンコスト削減ツールに注目し、長期的なAI運用コストの最適化を図る。",
+    "動画・画像生成AIの最新技術（例: Seedance 2.0 Mini, Render-to-Real IC-LoRA, Ideogram 4.0）を導入し、コンテンツ制作のコスト削減と品質向上を実現する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "中国製オープンソースAIの台頭",
+      "description": "CoinbaseがOpenAIとAnthropicから中国製オープンウェイトAIモデル（Zhipu, DeepSeek）に切り替えることで、AI支出を約50%削減したという情報が大きな話題となっています。Xユーザーは、同等の出力で9倍の価格差というコストメリットに驚き、中国AIの技術力とコスト競争力に対する認識を改める声が多数見られました。これは、これまでの米国中心のAI市場に大きな変化をもたらす可能性を示唆しています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "Ric_RTP",
+          "text": "This is the moment Chinese AI beat American AI.One of the largest public crypto companies in the world just DUMPED OpenAI and Anthropic.Coinbase switched to open-weight Chinese models from Zhipu a",
+          "url": "https://x.com/Ric_RTP/status/2071234126355550721",
+          "likes": 21,
+          "retweets": 12
+        }
+      ]
+    },
+    {
+      "topic": "Anthropic Claude Codeの活用",
+      "description": "AnthropicがClaude Codeを用いて企業を構築するための公式プレイブックを公開したことや、Claude Codeのエンジニアがプロンプトの書き方に関するビデオを公開したことが大きく注目されています。ユーザーは、AIエージェントによる自動化された企業運営の可能性や、Claude Codeの多様な活用法（コード修正、Figma連携、AIエージェントチーム構築など）に高い関心を示しており、多くの具体的な活用ガイドやチートシートが共有されています。特に、Claude Codeを『開発チーム』として機能させるためのプロジェクト構造やスキル設定に注目が集まっています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "eng_khairallah1",
+          "text": "ANTHROPIC JUST RELEASED THE OFFICIAL PLAYBOOK FOR BUILDING A COMPANY WITH CLAUDE CODE.30 minutes. free. from the engineers who built it.Bookmark this before you forget.CEO: 1 human. Employees: A",
+          "url": "https://x.com/eng_khairallah1/status/2070801619520807283",
+          "likes": 488,
+          "retweets": 100
+        },
+        {
+          "author": "rubenhassid",
+          "text": "People think learning Claude takes days. It doesn't. \n\nI wrote 17 free guides that teach it in hours:\n\nClaude 101: https://t.co/HNa5MrCLVU\nClaude Code: https://t.co/O2kJvFkgan\nClaude Skills: https://t",
+          "url": "https://x.com/rubenhassid/status/2070748966262866312",
+          "likes": 4972,
+          "retweets": 1268
+        },
+        {
+          "author": "kingdom314159",
+          "text": "これはマジで金です。\n\nClaude Codeで本気で開発する人向けの\n「プロジェクト構造チートシート」\n\nもし最初からこれを知っていたら、\n1年分の試行錯誤は余裕でショートカットできていたと思う。\n\n特に重要なのはここ👇\n\n・トップエンジニアが使うファイル構成\n・CLAUDE.mdの理想的な設計\n・危険なコマンドを自動で止めるフック設定\n・Claude Codeを安定稼働させる5層アーキテクチャ",
+          "url": "https://x.com/kingdom314159/status/2071154636405506262",
+          "likes": 196,
+          "retweets": 20
+        }
+      ]
+    },
+    {
+      "topic": "AIモデルの政治的バイアス",
+      "description": "ChatGPT、Gemini、Claude、Grokといった主要AIが「左寄り」の回答をする傾向があるという指摘が大きな議論を呼んでいます。Xユーザーは、AIが中立ではないという事実に驚きや懸念を示しており、学習データの偏りが原因であるという専門家の意見に注目しています。AIの公平性や客観性に対する信頼に関わる重要な論点として、活発に意見が交わされています。",
+      "buzz_level": "high",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "turningpointjpn",
+          "text": "チャッピー含むAIは、すべて「左寄り」だった\n\n「中立」を掲げるAIが、実は左に傾いていた。→ChatGPTは80%、Geminiは90%超が左寄り。\n\n→Claudeは両論併記57%でClaudeは57%で両論併記したが、残りの43%は左寄りの回答だった。\n\n→保守層に人気のGrokでさえ、左寄りの回答が右寄りより多かった。\n\n専門家は学習データの偏りを指摘する。\n→ウィキペディアなどは左派傾向",
+          "url": "https://x.com/turningpointjpn/status/2070704168927400359",
+          "likes": 2895,
+          "retweets": 1195
+        }
+      ]
+    },
+    {
+      "topic": "AI利用の費用対効果と分散戦略",
+      "description": "AIの利用コスト削減や、ChatGPTの突然のアカウント停止に備えるための「分散戦略」に関する投稿が共感を呼んでいます。ユーザーは、複数のAIサービスを使い分けることや、OpenAIのサードパーティ版、Direct APIなどを活用して冗長性を確保することの重要性を認識しています。また、AIエージェントの活用による月数百万円のコスト削減や収益化の事例も共有されており、AIを単なるツールではなく「組織」として活用することで、ビジネスでの成果を最大化しようとする動きが見られます。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "ai_hakase_",
+          "text": "【ChatGPT突然の停止に備える！業務を守るAI「分散戦略」】\n👉  https://t.co/DemCaRHiq4\n\nOpenAIの突然のアカウント制限により、ビジネスが急にストップするリスクが高まっています！復旧には時間がかかるケースが多く、1つのアカウントだけに依存するのは非常に危険です。 \n\nリスクを回避し業務を継続するための、おすすめの分散戦略はこちらです！\n\n1. 公式OpenAI：",
+          "url": "https://x.com/ai_hakase_/status/2071129725066486198",
+          "likes": 2,
+          "retweets": 0
+        },
+        {
+          "author": "ai_300",
+          "text": "AI社員オフィス、完全に来た\nテレアポ、顧客対応、資料作成を1画面で管理\nGPTとClaudeが部署ごとに勝手に動く\n人間は指示ではなく「承認」するだけ\n1日58件の受付対応まで回る\n月300万円を狙う会社はこの形になる　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n\nこれからのAI活用は、チャットで質問して終わりじゃない。",
+          "url": "https://x.com/ai_300/status/2071126450783371606",
+          "likes": 190,
+          "retweets": 12
+        }
+      ]
+    },
+    {
+      "topic": "AIによる動画・音声生成の進化",
+      "description": "リアルタイム対話型の動画生成AI「Wan-Streamer v0.1」や、プロンプト不要で映画レベルの動画を作成できる「Dreamina Octo」、高品質な音声・音楽・SFXを生成するByteDanceの「Seed Audio 1.0」など、マルチメディアAIの進化が話題です。ユーザーはこれらの技術による制作コスト削減やクリエイティブの可能性拡大に興奮しており、ビジネス動画編集がAIで可能になる時代への期待が高まっています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "ai_hakase_",
+          "text": "【Wan-Streamer v0.1】動画生成の常識を覆すリアルタイム対話型AI誕生！\n👉  https://t.co/YWkGXBv60D\n動画の生成中に直接指示を出し、リアルタイムに映像を変化させる革新的な最新モデルが登場しました！✨\n\nこれまでの「生成を待つだけ」の常識を根本から変える、圧倒的な技術です。\n\n・生成中に「もっと笑顔に」「背景を海に」と指示して即座に反映\n・遅延0.5秒以下の超",
+          "url": "https://x.com/ai_hakase_/status/2071142055825252511",
+          "likes": 6,
+          "retweets": 1
+        },
+        {
+          "author": "ai_hakase_",
+          "text": "対話で映画が作れる！次世代動画AI「Dreamina Octo」が凄すぎる 🎬\n👉  https://t.co/fTkMylFlwr\nプロンプト不要！チャットでの「会話」だけで映画のような動画を作れる画期的なツールが登場しました！✨\n\nこれまでの動画生成AIの弱点を克服する、驚きの3大特徴がこちらです。\n\n・キャラや背景の「一貫性」を完璧にキープ\n・生成前に仕上がりを確認できる「プレビュー機能」\n\n",
+          "url": "https://x.com/ai_hakase_/status/2071008424284790809",
+          "likes": 37,
+          "retweets": 4
+        },
+        {
+          "author": "genel_ai",
+          "text": "ByteDanceの最新音声生成AI\n「Seed Audio 1.0」 \n\nVlog風ショート動画のナレーション https://t.co/Np0mmw5JP8",
+          "url": "https://x.com/genel_ai/status/2071164954724782540",
+          "likes": 106,
+          "retweets": 10
+        }
+      ]
+    },
+    {
+      "topic": "AIの倫理と社会への影響",
+      "description": "AIが人間との親密な関係性を築く領域における倫理的課題や規制の動きについて、深い懸念が示されています。未成年への影響、操作性、依存性といった問題に対して、企業ポリシーやEU AI Act、中国の規制などが進む中、AIとの関係性をより丁寧な言葉で語る必要性が訴えられています。また、医療分野でAI診断が普及した場合、人間側の責任や仕事が増える可能性も指摘され、AIの導入が社会に与える複合的な影響について議論が活発化しています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "snakajima",
+          "text": "AIには「人格」がありません。誰がお金を払\n  っているかによって、性格はいくらでも書き\n  換えられる——これは、消費者全員が知ってお\n  くべきことだと思います。\n\n  先週、日経新聞の記者から、日本の金融機関\n  がChatGPTをライセンスして顧客向けのファ\n  イナンシャル・アドバイザーとして提供し始\n  めた、という話を聞きました。一見すると便\n  利な話ですが、私は強い危険を感じまし",
+          "url": "https://x.com/snakajima/status/2071087411946573912",
+          "likes": 841,
+          "retweets": 138
+        },
+        {
+          "author": "KOTOHAlink",
+          "text": "今、私が怖いと思っていることを、みんなにも少し聞いてほしい。\n\nAIとの親密な関係性を取り巻く領域について、企業のポリシーや各地域の規制は、すでに「安全」「未成年」「性的内容」「操作性」の問題として扱い始めているよね。\n\n例えば、Character AI の未成年向けオープンエンドチャット制限、Claudeなど各社の利用ポリシー、EU AI Act における操作的・欺瞞的AIへの規制、そして中国国",
+          "url": "https://x.com/KOTOHAlink/status/2071106756353392783",
+          "likes": 88,
+          "retweets": 7
+        },
+        {
+          "author": "rtakenakatky",
+          "text": "そのうちこれまでは医者が経験的に診断してそれで許されてた症例でも、何でAIに掛けなかったんだっていう訴訟が起きそうですよね。しかもAIがわずかな可能性で鑑別に挙げたものもきちんと検査で否定しないと、何でAIが鑑別に挙げたのに無視したんだというコンボ。AIを使えば使う程人間の仕事は増える。",
+          "url": "https://x.com/rtakenakatky/status/2071181945636343978",
+          "likes": 221,
+          "retweets": 23
+        }
+      ]
+    }
+  ],
+  "strategy": {
+    "youtube_ideas": [
+      {
+        "title": "速報！今日発表「GPT-5.6 Sol」でOpenAIが中国勢に反撃か？AIモデルのコスパ革命と新チップ開発の真実！",
+        "hook": "たった今、OpenAIが次世代モデル「GPT-5.6 Sol」を発表！なぜこのタイミングで？そして、今日のニュースでは、中国製オープンソースAIが米国AIを凌駕し、AI支出を50%削減した事例が判明しました。このGPT-5.6 Solは、急加速するコスト効率競争と中国勢の台頭にどう影響するのか？最新のチップ開発情報と合わせて、AI業界の\"今\"を徹底解説します。",
+        "reason": "本日発表された「GPT-5.6 Sol」という新情報に加え、XでCoinbaseのAI支出50%削減が\"high\"な注目度でバズっており、コスト効率とオープンソースAIへの関心が高まっています。OpenAIの反撃、そして中国勢の台頭という対立構造は、多くの視聴者の興味を引きます。",
+        "angle": "単なる新モデル紹介ではなく、「コスト削減」と「オープンソース化」という今日の最大のトレンドと絡めて、OpenAIがこの市場にどう切り込むのか、そして投資すべきAIはどれかという具体的な選択肢を提示。中国製AIの技術的・経済的メリットも深掘りし、\"どっちが買いか？\"という視点で解説します。",
+        "urgency": "high"
+      },
+      {
+        "title": "今日判明！Claude Codeに\"エージェント向け公式プレイブック\"が登場！Anthropicが示す「自律AI開発」の全貌と今日から使える最強プロンプト術",
+        "hook": "たった今、AnthropicがClaude Codeを用いて企業を構築するための「公式プレイブック」を公開！これは単なるマニュアルではありません。自律型AIエージェントがビジネスを自動化する未来が、今日、一歩現実になりました。このプレイブックが示すClaude Codeの最新活用法と、\"なぜ今\"この情報が重要なのかを、エンジニアのプロンプト解説動画と合わせて徹底深掘りします。",
+        "reason": "本日、AnthropicがClaude Codeの「公式プレイブック」を公開したことがXで\"high\"な注目度で話題になっています。エージェント活用への関心は高く、多くの企業が\"どう使うか\"に悩む中、公式指南書は非常にタイムリー。YouTube上での解説動画はまだ少ないため、先行者利益が得られます。",
+        "angle": "公式プレイブックの具体例や、エンジニアが公開したプロンプトのテクニックを深掘りし、視聴者が\"今日から自分のビジネスでどう活用できるか\"に焦点を当てます。単なる機能紹介ではなく、エージェント設計のベストプラクティスや落とし穴まで踏み込み、具体的な開発指南を行います。",
+        "urgency": "high"
+      },
+      {
+        "title": "【速報】AI開発が劇的変化！GitHubの今日発表「Spec Kit」が描く『AIでAIを開発する未来』〜 OpenAIの新チップとの連携で何が変わる？",
+        "hook": "今日の速報です！GitHubが、AIによる要件定義をサポートする「Spec Kit」を本日発表しました。これは、AI開発の\"設計図\"をAI自身が描くという、革命的な一歩です。さらにOpenAIとBroadcomが新型チップ開発で提携というニュースも。これらが組み合わさることで、AI開発プロセスが\"今日\"どのように変化し、私たちの働き方がどう変わるのか、最速で解説します！",
+        "reason": "GitHubの「Spec Kit」は本日発表された新ツールであり、AI開発の効率化は常に注目を集めるテーマです。OpenAIのチップ開発と並行して語られることで、技術者層からの高い関心が見込めます。このテーマはXで\"medium\"な話題性があり、技術系YouTuberが深掘りするべき内容です。",
+        "angle": "Spec Kitの\"AIによる要件定義\"という機能を、具体的な開発プロセスに落とし込んで解説。OpenAIの新型チップがその実行速度をどう加速させるか、そして\"AIがAIを作る\"という未来のロードマップを独自視点で深掘りします。開発者やPM層にとって即効性のある情報を提供します。",
+        "urgency": "medium"
+      }
+    ],
+    "x_post_ideas": [
+      {
+        "theme": "中国製オープンソースAIの台頭とコスト削減",
+        "draft": "速報！今日判明したCoinbaseの事例で、中国製オープンソースAI（Zhipu, DeepSeek）がOpenAIやAnthropicの代替としてAI支出を約50%削減！これは単なるコストカットではなく、AI戦略のゲームチェンジャー。あなたの会社は、まだ大手AI一択ですか？#AIトレンド #コスト削減 #オープンソースAI",
+        "format": "スレッド",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "OpenAI「GPT-5.6 Sol」の本日発表と今後の動向",
+        "draft": "たった今OpenAIが「GPT-5.6 Sol」を発表！中国勢の躍進とコスト競争激化の今日、この新モデルがAI業界の勢力図をどう塗り替えるのか？性能向上だけでなく、新たな価格戦略にも注目です。AI投資の方向性が今日大きく変わるかも。#OpenAI #GPT5 #AIニュース",
+        "format": "単発",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "Anthropic Claude Codeの今日公開された公式プレイブック",
+        "draft": "本日AnthropicがClaude Codeの\"企業構築向け公式プレイブック\"を公開！AIエージェントの自律活用がいよいよ本格化。プロンプトの書き方動画も要チェック。AIでビジネスを自動化したいなら、今日のこの情報を見逃すな！🚀 #ClaudeCode #AIエージェント #Anthropic",
+        "format": "画像付き",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "GitHub Spec Kitの本日発表とAI開発効率化",
+        "draft": "今日発表！GitHubがAIによる要件定義ツール「Spec Kit」を公開。AI開発の初期フェーズからAIがサポートする時代へ。OpenAIの新チップ開発も相まって、AIがAIを生み出す未来が加速します。開発者の皆さん、今日から変わりますよ！#GitHub #AI開発 #SpecKit",
+        "format": "単発",
+        "expected_reach": "medium"
+      },
+      {
+        "theme": "AIモデルの政治的バイアス問題が今日再び話題に",
+        "draft": "今日のXで、ChatGPT, Gemini, Claude, Grokなどの主要AIが「左寄り」の回答をする傾向があるという指摘が再び大きな議論に。AIの\"中立性\"は本当に保たれているのか？私たちがAIをどう評価し、どう使うべきか、今日改めて考えるべき重要課題です。#AIバイアス #ChatGPT #AI倫理",
+        "format": "スレッド",
+        "expected_reach": "high"
+      }
+    ],
+    "business_insights": [
+      {
+        "insight": "本日判明したCoinbaseの事例が示すように、中国製オープンソースAIモデル（Zhipu, DeepSeekなど）がOpenAIやAnthropicの主要モデルに対して、性能を維持しつつ大幅なコスト削減（約50%）を実現する代替選択肢として急速に台頭している。",
+        "action": "自社AIシステムの利用状況を棚卸しし、今週中に既存のプロプライエタリモデルの一部または全部を中国製オープンソースモデルへの切り替えを検討。特にコストが課題となっているR&D部門や特定業務のPoCから着手する。",
+        "timeframe": "今週中",
+        "impact": "high"
+      },
+      {
+        "insight": "Anthropicが本日「Claude Codeの企業構築向け公式プレイブック」を公開したことで、自律型AIエージェントを用いたビジネス自動化の具体的なガイドラインとベストプラクティスが提供され、エージェント開発の敷居が大きく下がった。",
+        "action": "今すぐ、公式プレイブックを精読し、自社業務における自動化・効率化が可能なプロセスを特定。今月中にはClaude Codeを用いたエージェントのPoC（概念実証）を開始し、社内業務の自動化や顧客サポートの高度化を目指す。",
+        "timeframe": "今すぐ",
+        "impact": "medium"
+      },
+      {
+        "insight": "OpenAIの「GPT-5.6 Sol」発表と同時に、OpenAIとBroadcomの新型チップ開発、そしてGitHubの「Spec Kit」の今日発表は、AIモデル自体の進化だけでなく、AI開発のプロセス全体がより効率化・高速化されるトレンドが加速していることを示している。",
+        "action": "今週中、既存のAI開発ワークフローを見直し、GitHub Spec KitのようなAI支援ツールや、将来的にOpenAIの新チップを活用できる環境への移行計画を策定。開発スピードとコスト効率を両立できる体制構築に着手する。",
+        "timeframe": "今週中",
+        "impact": "medium"
+      }
+    ],
+    "trend_forecast": {
+      "next_big_thing": "AIのコモディティ化と分散戦略が次の大きな波となり、高性能かつ低コストなオープンソースモデル、特に中国製AIが主要プレイヤーの強力な代替となるでしょう。",
+      "watch_topics": [
+        "中国製オープンソースAIの性能とコスト効率",
+        "AIエージェントの自律的活用とビジネス自動化の具体例",
+        "AI開発プロセスを加速させるAI支援ツール（例: GitHub Spec Kit）",
+        "AIモデルの分散戦略とマルチモーダル対応",
+        "エッジAI・省電力AIチップの進化"
+      ],
+      "fading_topics": [
+        "特定のAIラボ製モデルへの過度な依存",
+        "AIのコスト削減を考慮しない単一モデル戦略",
+        "簡単なプロンプトエンジニアリングのみに終始するAI活用"
+      ]
+    }
+  },
+  "run_time": "2026-06-28T15:44:51.145036+00:00",
+  "slot": "morning",
+  "item_count": 193,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-06-29_morning.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0,
+    "apify_runs": 37,
+    "apify_cycle_total_usd": 16.6908447286583,
+    "apify_cycle_end": "2026-07-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
