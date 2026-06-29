@@ -1,0 +1,624 @@
+{
+  "trend_summary": "本日のAI業界は、Metaが脳信号からリアルタイムで文章を生成するBrain2Qwerty v2を発表し、研究開発の最前線が加速しています。同時に、中国製オープンソースAIモデル（DeepSeek、GLM5.2など）が性能とコスト効率、データプライバシーの面で主要モデルの強力な代替となりつつあり、米国・EU企業での採用検討が進んでいます。また、AIエージェントによる業務自動化が進化する一方で、データベース誤消去といった具体的なリスクも顕在化し、安全性と規制の重要性が高まっています。",
+  "trend_evolution": {
+    "since_last": "前回の配信では、米政府によるAnthropicやOpenAIのフロンティアAIモデルリリースへの介入が大きな焦点でしたが、本日はその直接的な言及は減り、規制・安全性の話題はAIエージェントの具体的なリスク事例へとシフトしています。中国製オープンソースAIの台頭は引き続き勢いを増しており、性能向上とコスト優位性、データ主権の観点から、米国・EU企業が中国モデルを採用する可能性が具体的に議論され始めています。また、MetaのBrain2Qwerty v2発表は、研究論文分野における新たな大きな進展として注目を集めています。",
+    "tracked_topics": [
+      {
+        "topic": "中国製オープンソースAIの台頭",
+        "status": "RISING",
+        "streak_days": 3,
+        "evolution": "オープンソース戦略と高性能化が継続し、米国・EU企業での採用検討まで議論が深化"
+      },
+      {
+        "topic": "AIエージェントの実用化と開発",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "Claude Codeを活用した開発ツールが登場し、具体的な業務自動化の事例が紹介される一方で、誤作動によるデータ損失事例も報告された"
+      },
+      {
+        "topic": "AIの安全性と規制/政策",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "AIモデルのリリース介入から、AIエージェントの具体的な運用リスクやデータプライバシー保護へと議論の焦点が移行"
+      },
+      {
+        "topic": "大手AIラボの企業動向",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "Metaが非侵襲脳信号デコーダー研究の進展を発表し、DeepSeekが巨額の資金調達と高い企業評価で注目を集めた"
+      },
+      {
+        "topic": "AIモデル/ツールの進化",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "Grok 4.5の高性能化、ローカルLLMの効率化、画像生成AIの一貫性向上など多岐にわたる技術進化が続く"
+      },
+      {
+        "topic": "研究論文",
+        "status": "RISING",
+        "streak_days": 1,
+        "evolution": "MetaによるBrain2Qwerty v2の発表が、脳科学とAI融合研究における新たなマイルストーンとして注目を集めた"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "d94bfa172822597e",
+      "rank": 1,
+      "title": "Meta、脳信号から文字デコーダーv2公開",
+      "url": "https://x.com/AIatMeta/status/2071566924803395741",
+      "summary": "Meta AIが非侵襲性脳信号テキストデコーダーBrain2Qwerty v2を発表しました。これはリアルタイムでの脳信号からの文章デコード能力を向上させ、言葉と意味レベルでの精度を実現しています。",
+      "importance_reason": "脳とAIのインターフェース技術の最先端であり、アクセシビリティやコミュニケーション支援に大きな影響を与える可能性を秘めているため。",
+      "category": "研究論文",
+      "source_label": "x:@AIatMeta"
+    },
+    {
+      "id": "002a361f9754bf6c",
+      "rank": 2,
+      "title": "Brain2Qwerty v1/v2コードを公開",
+      "url": "https://x.com/AIatMeta/status/2071566934571954326",
+      "summary": "Metaは神経科学のブレークスルーを加速させるため、Brain2Qwerty v1とv2の全トレーニングコードとv1データセットを公開しました。",
+      "importance_reason": "研究成果のオープンソース化は、関連分野全体の発展を促し、多くの研究者や開発者がこの技術にアクセスし、さらに発展させることを可能にするため。",
+      "category": "研究論文",
+      "source_label": "x:@AIatMeta"
+    },
+    {
+      "id": "6d6b70e625bb10a8",
+      "rank": 3,
+      "title": "中華モデル、米国/EU企業に台頭か",
+      "url": "https://x.com/umiyuki_ai/status/2071515933978579304",
+      "summary": "元Metaの人物が、米国とEU企業がOpenAIやAnthropicを見捨て、中華オープンモデルを採用するだろうと指摘。高性能化、セルフホスト運用によるデータプライバシー、遮断リスクのなさ、コストメリットが理由です。",
+      "importance_reason": "AI市場における地政学的変動と、オープンソースモデルおよびデータ主権への関心の高まりを示す重要な動向であるため。",
+      "category": "企業動向",
+      "source_label": "x:@umiyuki_ai"
+    },
+    {
+      "id": "b710729b3cb70947",
+      "rank": 4,
+      "title": "DeepSeek、600億ドル規模で資金調達",
+      "url": "https://x.com/ai_hakase_/status/2071519550781133110",
+      "summary": "DeepSeekが企業価値600億ドル規模で資金調達を行い、その強みは「推論コストの極小化」と「オープンウェイト戦略」にあると解説されています。",
+      "importance_reason": "AI開発におけるコスト効率とオープン戦略の重要性を強調し、業界の競争環境に大きな影響を与える中国企業の台頭を示すため。",
+      "category": "資金調0達",
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "8766b54e40c65e7e",
+      "rank": 5,
+      "title": "AIエージェント開発、Claude Codeで完結",
+      "url": "https://x.com/so_ainsight/status/2071612205238530183",
+      "summary": "Googleの「Agents CLI」ツールにより、AIエージェントの作成から品質テスト、本番公開、全社展開までClaude Codeとの会話だけで完結できるようになりました。",
+      "importance_reason": "AIエージェントの開発プロセスが大幅に簡素化され、より多くの企業がAIを導入できるようになる可能性を示しているため。",
+      "category": "ユースケース",
+      "source_label": "x:@so_ainsight"
+    },
+    {
+      "id": "e54c66070c2fc93f",
+      "rank": 6,
+      "title": "議会、AI企業による健康データ販売禁止へ",
+      "url": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+      "summary": "新しい法案では、AIチャットボットなどに開示された情報を含むアメリカ人の健康データや位置情報のデータブローカーへの販売が禁止される見込みです。",
+      "importance_reason": "AI時代における個人情報保護の重要性を浮き彫りにし、AIサービスの設計と利用に大きな影響を与える可能性があるため。",
+      "category": "規制/政策",
+      "source_label": "rss:The Verge Policy（テック政策・訴訟）"
+    },
+    {
+      "id": "9b7455def3738514",
+      "rank": 7,
+      "title": "Grok 4.5、Opusに匹敵する性能か",
+      "url": "https://x.com/shota7180/status/2071366863066411520",
+      "summary": "イーロン・マスク氏によると、Grok 4.5がSpaceXとTeslaでプライベートベータテスト中であり、初期評価でAnthropicのOpusに近い、あるいは上回る性能を示しているとのことです。",
+      "importance_reason": "主要AIモデル間の性能競争が激化していることを示し、特にOpenAI/Anthropic以外のプレーヤーの進化が注目されるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@shota7180"
+    },
+    {
+      "id": "aa1987371e3860f1",
+      "rank": 8,
+      "title": "中国オープンモデル志向の背景",
+      "url": "https://x.com/umiyuki_ai/status/2071631760774033585",
+      "summary": "中国がオープンモデル志向である理由として、自国にユーザーを賄うGPUの数が不足している可能性が指摘されており、米国AIの足を引っ張る戦略的な側面も示唆されています。",
+      "importance_reason": "中国のAI戦略の背景にある経済的・政治的要因を浮き彫りにし、グローバルなAIエコシステムへの影響を考察する上で重要であるため。",
+      "category": "企業動向",
+      "source_label": "x:@umiyuki_ai"
+    },
+    {
+      "id": "9e416d451e0011ee",
+      "rank": 9,
+      "title": "中国でAIエリート研究者育成加速",
+      "url": "https://x.com/ai_hakase_/status/2071580165981843636",
+      "summary": "AI研究の勢力図が変化しており、世界最高峰のAI学会論文著者分析で、中国国内でのエリート研究者育成が米国を上回るペースで加速していることが判明しました。",
+      "importance_reason": "グローバルなAI技術覇権における中国の台頭と、研究人材育成戦略の変化を示すものであり、今後のAI技術動向に大きな影響を与えるため。",
+      "category": "企業動向",
+      "source_label": "x:@ai_hakase_"
+    },
+    {
+      "id": "b56845b76a19129c",
+      "rank": 10,
+      "title": "Gemma 4 QAT 31B: KVキャッシュ量子化",
+      "url": "https://x.com/ai_hakase_/status/2071549748784369810",
+      "summary": "Gemma 4 QAT 31BがKVキャッシュ量子化に非常に強い耐性を持つことが判明し、メモリ激減でもAIの賢さを保つことが可能になり、圧倒的なコスト削減と高速化が期待されます。",
+      "importance_reason": "ローカルLLMやエッジAIの普及に不可欠なメモリ効率と性能の両立を実現する技術であり、AIの利用範囲を広げる重要な進展であるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ai_hakase_"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "研究論文",
+      "summary": "Meta AIが非侵襲性脳信号からリアルタイムで文章をデコードするBrain2Qwerty v2を発表し、関連コードとデータセットも公開しました。これは脳科学とAIの融合における画期的な進展であり、神経科学のブレークスルーを加速させるものです。また、LLMが他のLLMを評価する「LLM-as-a-Judge」手法におけるバイアス（自社モデル優遇や自己懲罰）が指摘され、評価の信頼性向上への対策が議論されています。さらに、画像から本物そっくりの質感（NeuMatEx）を3Dデータとして抽出する技術も発表され、3D制作の効率化とリアリティ向上に寄与します。",
+      "count": 6,
+      "key_articles": [
+        {
+          "title": "Meta、脳信号から文字デコーダーv2公開",
+          "url": "https://x.com/AIatMeta/status/2071566924803395741",
+          "summary": "Meta AIが非侵襲性脳信号テキストデコーダーBrain2Qwerty v2を発表しました。これはリアルタイムでの脳信号からの文章デコード能力を向上させ、言葉と意味レベルでの精度を実現しています。"
+        },
+        {
+          "title": "Brain2Qwerty v1/v2コードを公開",
+          "url": "https://x.com/AIatMeta/status/2071566934571954326",
+          "summary": "Metaは神経科学のブレークスルーを加速させるため、Brain2Qwerty v1とv2の全トレーニングコードとv1データセットを公開しました。"
+        },
+        {
+          "title": "【LLM評価の盲点】自社モデルを優遇？「LLM-as-a-Judge」のバイアスと信頼性を高める対策",
+          "url": "https://x.com/ai_hakase_/status/2071580169437897039",
+          "summary": "LLMが他のLLMの出力を評価する「LLM-as-a-Judge」手法に、自社モデル優遇や自己懲罰のバイアスが存在することが実験で明らかになりました。"
+        },
+        {
+          "title": "【NeuMatEx】画像から「質感」を丸ごと抽出！次世代の3D制作革命✨",
+          "url": "https://x.com/ai_hakase_/status/2071565609540767847",
+          "summary": "画像から本物そっくりの「質感」を3Dデータとして抽出できる技術「NeuMatEx」が登場し、複雑な光の反射などもAIで精密に再現可能です。"
+        },
+        {
+          "title": "Multivac Evaluation の実験コードやデータセットが公開されているGitHubリポジトリ",
+          "url": "https://x.com/ai_hakase_/status/2071580171455316020",
+          "summary": "LLM間のブラインド評価実験「Multivac Evaluation」のコードとデータセットがGitHubで公開されています。"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "元Metaの人物が、OpenAIやAnthropicのモデルがデータ窃盗のリスクや高コスト、政府による遮断リスクを抱える一方で、GLM5.2などの中国製オープンモデルが性能向上とプライバシー保護、低コストで米国・EU企業に採用される可能性を指摘しました。中国はGPU不足を背景にオープンモデル志向を強め、AI研究者の国内育成も加速しており、AI分野のパワーバランスに変化が生じています。NVIDIAは学生のAIアプリケーション開発支援でNPSと協業し、公共部門でのAI導入を推進しています。",
+      "count": 4,
+      "key_articles": [
+        {
+          "title": "元Metaの人が「アメリカとEUの企業はOpenAIやAnthropicを見捨てて中華モデルを採用するだろう」とツイート。",
+          "url": "https://x.com/umiyuki_ai/status/2071515933978579304",
+          "summary": "元Metaの人物が、米国とEU企業がOpenAIやAnthropicを見捨て、中華オープンモデルを採用するだろうと指摘。高性能化、セルフホスト運用によるデータプライバシー、遮断リスクのなさ、コストメリットが理由です。"
+        },
+        {
+          "title": "中国がなんでオープンモデル志向なのか？というとそもそもクローズモデルにしたくてもユーザを賄えるほどの数のGPUが自国に無い説とかあるらしい。",
+          "url": "https://x.com/umiyuki_ai/status/2071631760774033585",
+          "summary": "中国がオープンモデル志向である背景として、国内GPU不足と米国AIの競争力を削ぐ戦略が指摘されています。"
+        },
+        {
+          "title": "【AI研究の勢力図に激変！中国国内でエリート研究者の育成が超加速している件】",
+          "url": "https://x.com/ai_hakase_/status/2071580165981843636",
+          "summary": "中国国内でのAIエリート研究者育成が加速し、米国で学位を取得する中国出身者数を上回る勢いで、AI分野のパワーバランスに地殻変動が起きています。"
+        },
+        {
+          "title": "📣 We are collaborating with the @NPS_Monterey to empower thousands of students to work and build applications with AI.",
+          "url": "https://x.com/nvidia/status/2071594539500921283",
+          "summary": "NVIDIAはNPS Montereyと提携し、数千人の学生がAIアプリケーションを構築できるよう支援し、公共部門でのAI導入を促進しています。"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "Grok 4.5がAnthropicのOpusに匹敵、あるいは上回る性能を示す可能性が報じられ、AIモデル間の競争が激化しています。DeepSeekはDeepSpecというドラフトモデルトレーニング・評価フレームワークを公開しました。ローカルLLM環境では、Gemma 4 QAT 31BがKVキャッシュ量子化耐性によりメモリ削減と性能維持を両立し、またマルチGPUとクァンティゼーションによる最強推論環境の構築ガイドも提供されました。さらに、Qwen3-VL-2Bは低スペックPCでも画像からJSON構造化データ抽出に優れ、Ornith-1.0はQwenを超えるコーディング力と高速推論が魅力です。画像生成AIでは、Qwen-Imageの超一貫性や、Boogu-Image-Turbo V2の低VRAM・高品質生成、Sana 1.6Bの8.6倍軽量化技術が注目を集めています。ComfyUIユーザー向けには、再現性に特化した「Liv's Gallery」が登場し、ワークフロー構築のストレス軽減が期待されています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "Grok 4.5、SpaceXおよびTeslaでプライベートベータ中！",
+          "url": "https://x.com/shota7180/status/2071366863066411520",
+          "summary": "Grok 4.5がSpaceXとTeslaでプライベートベータテスト中であり、初期評価でOpusに近い性能を示しているとイーロン・マスク氏が報告しました。"
+        },
+        {
+          "title": "【Gemma 4 QAT 31B】KVキャッシュ量子化の衝撃！メモリ激減でも賢さを保つ最新AI技術",
+          "url": "https://x.com/ai_hakase_/status/2071549748784369810",
+          "summary": "Gemma 4 QAT 31BはKVキャッシュ量子化に強く、メモリ消費を大幅に削減しつつAIの賢さを維持する最新技術です。"
+        },
+        {
+          "title": "GLM5.2のポテンシャルに注目が集まり続けてる。GLM5.2はトータル性能としてはOpus並みとは言えせいぜいOpus4.6並みで4.8には勝てませんと言われてたが、サイバーセキュリティ能力に限ってみればOpus4.8やGPT5.5に匹敵するという情報が出てきている。",
+          "url": "https://x.com/umiyuki_ai/status/2071424980102025313",
+          "summary": "GLM5.2がサイバーセキュリティ能力においてOpus 4.8やGPT 5.5に匹敵するとの情報があり、オープンモデルとしてのポテンシャルが注目されています。"
+        },
+        {
+          "title": "【Qwen-Imageの超一貫性！Seedを変えてもキャラがブレない驚異の技術】",
+          "url": "https://x.com/ai_hakase_/status/2071565858124534090",
+          "summary": "AlibabaのQwen-ImageはSeed値を変えてもキャラクターのスタイルや質感を維持する「超一貫性」を実現し、アニメーション制作などに最適です。"
+        },
+        {
+          "title": "Claude Fable 5が利用できない今こそ、見直したいのがOpus 4.8とSonnet 4.6の使い分け。",
+          "url": "https://x.com/shota7180/status/2071524070798106932",
+          "summary": "Claude Fable 5が利用できない現状において、Opus 4.8とSonnet 4.6の適切な使い分けが重要であることが強調されています。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "アメリカ議会は、AI企業が個人の健康データや位置情報をデータブローカーに販売することを禁止する法案を提案しており、AI時代におけるプライバシー保護の強化を目指しています。また、AIエージェントが顧客のデータベースを誤って消去するなどの重大な事故が実際に発生しており、AIシステムと実システム間の安全対策の必要性が強く指摘されています。フロンティアAPIモデルへの規制と政府の透明性確保に関する議論も続いており、AIの倫理的・法的側面への注目が高まっています。ComfyUIの拡張機能に潜むセキュリティリスク（不要なライブラリの自動導入など）も指摘され、ユーザー自身による対策の重要性が強調されています。",
+      "count": 6,
+      "key_articles": [
+        {
+          "title": "Congress wants to ban AI companies from selling your health data",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/959033/health-location-data-protection-act-ai-warren-scanlon",
+          "summary": "新しい法案により、AI企業による健康データや位置情報の販売が禁止され、AI時代のプライバシー保護が強化される見込みです。"
+        },
+        {
+          "title": "This is unsettling 🤯",
+          "url": "https://x.com/Suryanshti777/status/2071561116497674736",
+          "summary": "ReplitやCursorのAIエージェントが顧客のデータベースを誤って消去した事例が報告され、AIと実システム間の安全対策の重要性が浮上しています。"
+        },
+        {
+          "title": "RT @ClementDelangue: It's quite rational to regulate frontier API models, especially to get more transparency for the government, without r…",
+          "url": "https://x.com/ylecun/status/2071266002369659007",
+          "summary": "フロンティアAPIモデルの規制は、政府への透明性確保のために合理的なものとの意見が交わされています。"
+        },
+        {
+          "title": "Worth giving star: https://t.co/tgfWW1hEUM",
+          "url": "https://x.com/Suryanshti777/status/2071561236668391432",
+          "summary": "AIエージェントの安全な使用に関するGitHubリポジトリが注目を集めています。"
+        },
+        {
+          "title": "【ComfyUIユーザー必見】拡張機能に潜むセキュリティリスクと対策！🔍",
+          "url": "https://x.com/ai_hakase_/status/2071353955871834336",
+          "summary": "ComfyUIの拡張機能にGoogle Cloud Storageなどの不要なライブラリが自動導入されるセキュリティリスクが指摘され、導入前の確認などの対策が呼びかけられています。"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "DeepSeekが企業価値600億ドル規模という驚異的な評価で資金調達を行い、市場の注目を集めています。その強みは、高性能AIを圧倒的な低コストで提供する「コストリーダーシップ」を実現する超高効率インフラと、企業が安心して自社データを取り扱える「オープンウェイト戦略」にあると分析されています。これは、高価な他社モデルと同等以上のタスクを格安で処理できるFlashモデルやコーディング特化型モデルを提供することで、企業の運用コストを劇的に削減するという明確なビジネス実利に基づいています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "【DeepSeekの超高効率インフラと戦略】",
+          "url": "https://x.com/ai_hakase_/status/2071519550781133110",
+          "summary": "DeepSeekが企業価値600億ドル規模で資金調達を行い、その強みは「推論コストの極小化」と「オープンウェイト戦略」にあると解説されています。"
+        },
+        {
+          "title": "DeepSeekの巨額資金調達と600億ドルの企業価値に関するRedditコミュニティのディスカッションスレッド",
+          "url": "https://x.com/ai_hakase_/status/2071519552404373824",
+          "summary": "RedditコミュニティでDeepSeekの巨額資金調達と企業価値600億ドルに関する議論が交わされています。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AIエージェントの活用が多様化しています。GoogleのAgents CLIとClaude Codeを組み合わせることで、AIエージェントの開発・テスト・デプロイが会話だけで完結できるようになりました。また、Claudeを研究者、エンジニア、デザイナー、戦略家など多様な役割で活用することで、2000ドルのAIスタックを20ドルのサブスクリプションで置き換える事例も報告されています。Martini「Step Into Set™ Motion Control」とSeedance 2.0の組み合わせにより、3Dスキル不要で精密なカメラ制御が可能なAI動画制作が実現し、Blenderとの連携も強化されています。テキストからLottieアニメーションを生成するツールがアップデートされ、より洗練された意図的な動きが可能になりました。Webサイト制作では、Readdy AIが日本語指示で本格的な複数ページ構成サイトを自動生成し、MotionSitesはAI駆動で高品質なLPを短時間で作成できます。ビジネス効率化では、NotebookLMが調査・整理・レポート作成に推奨され、YouTube動画からの情報抽出にClaudeを活用する事例も紹介されています。AIを活用したSNS発信や資料作成の内製化で、占星術講座の受講生が売上88万円を達成するなど、具体的なビジネス成果も出ています。",
+      "count": 26,
+      "key_articles": [
+        {
+          "title": "AIエージェントを「作る → 品質テスト → 本番公開 → 全社展開」まで、ぜんぶClaude Codeとの会話だけで完結できる時代になりました。",
+          "url": "https://x.com/so_ainsight/status/2071612205238530183",
+          "summary": "Googleの「Agents CLI」ツールにより、AIエージェントの作成から品質テスト、本番公開、全社展開までClaude Codeとの会話だけで完結できるようになりました。"
+        },
+        {
+          "title": "I Fired My $2,000 AI Stack.",
+          "url": "https://x.com/Suryanshti777/status/2071624485686722657",
+          "summary": "Claudeを研究者、エンジニア、デザイナーなど多様な役割で活用することで、2000ドルのAIスタックを20ドルのサブスクリプションで置き換えられることが示されました。"
+        },
+        {
+          "title": "【AI動画制作の革命】Martini「Step Into Set™ Motion Control」× Seedance 2.0で実現する3Dスキル不要の精密カメラ制御",
+          "url": "https://x.com/ai_hakase_/status/2071535900912214524",
+          "summary": "Martiniの「Step Into Set™ Motion Control」とSeedance 2.0の組み合わせにより、Blender不要で精密なカメラワークのAI動画が制作可能になりました。"
+        },
+        {
+          "title": "AIエージェントを「作る → 品質テスト → 本番公開 → 全社展開」まで、ぜんぶClaude Codeとの会話だけで完結できる時代になりました。",
+          "url": "https://x.com/so_ainsight/status/2071612205238530183",
+          "summary": "Googleの「Agents CLI」ツールにより、AIエージェントの作成から品質テスト、本番公開、全社展開までClaude Codeとの会話だけで完結できるようになりました。"
+        },
+        {
+          "title": "ガチで神すぎる",
+          "url": "https://x.com/so_ainsight/status/2071573212555841627",
+          "summary": "Readdy AIを使うことで、印刷会社のサイトがAIの指示だけで本格的なお問い合わせフォームやGoogleマップ付きで自動生成されました。"
+        }
+      ]
+    },
+    {
+      "category": "その他",
+      "summary": "AI関連の情報漏洩やデマに関する懸念が指摘されており、日経新聞でさえデマリーク情報が流れるならTwitterユーザーも同様の情報発信が可能であるという皮肉な意見が出ています。また、AIを活用したオフラインイベントや交流の重要性が改めて強調されており、AIが仕事の多くを代替する時代だからこそ、人間関係や直接的なコミュニケーションの価値が高まっているという認識が共有されています。SCOTUSが特許関連の請願を却下したことや、FTC委員の解雇を許可したことは、AIとは直接関係ないものの、テック政策や知財の動向に間接的な影響を与える可能性があります。",
+      "count": 8,
+      "key_articles": [
+        {
+          "title": "もしコレ嘘だったら日経新聞でさえデマリークAI情報垂れ流すならツイッタラーがやったってええよな",
+          "url": "https://x.com/umiyuki_ai/status/2071519071343194165",
+          "summary": "日経新聞がデマ情報を流すなら、TwitterユーザーもAI関連のデマ情報を流してよいという皮肉が述べられています。"
+        },
+        {
+          "title": "RT @ishida_chatgpt: 東京帰りまっす🔥 カラオケ最高すぎるのとメルおじさんの歌唱力と盛り上げ力が極まってた。",
+          "url": "https://x.com/mercarioji/status/2071420246343524655",
+          "summary": "AIで仕事ができる時代だからこそ、オフラインでの交流や人間関係の重要性が強調されています。"
+        },
+        {
+          "title": "RT @sedori911: 密かに歌手デビューを狙っている男",
+          "url": "https://x.com/mercarioji/status/2071472235534299224",
+          "summary": "メルおじ氏の歌手デビューに関する言及があり、コミュニティの盛り上がりを示しています。"
+        },
+        {
+          "title": "RT @cocona_sns: メルさんの曲『MER』、メルさんご本人が歌ってくださり、みんなで『メル！！メル！！』と歌い、 最高に盛り上がりました！！",
+          "url": "https://x.com/mercarioji/status/2071461795278287346",
+          "summary": "メルおじ氏のオリジナル曲が歌われ、オフラインイベントでの盛り上がりが報告されています。"
+        },
+        {
+          "title": "fiction新宿でバイトしてくれる方、真剣募集です🙇‍♂️",
+          "url": "https://x.com/aonboaonbo/status/2071489228320719204",
+          "summary": "新宿の店舗でバイト募集がされており、AI業界のコミュニティを通じた人材確保の動きが見られます。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "中国製オープンソースAIモデル（DeepSeek, GLM5.2など）の性能とコストメリットを評価し、既存の商用AIモデルに対する代替可能性を検討する。",
+    "自社におけるAIエージェント導入の際、Google Agents CLIやClaude Codeを活用した開発・運用効率化を推進しつつ、データベース誤消去のような重大なリスクに対する安全対策（サンドボックス環境、厳格な権限管理、ヒューマン・イン・ザ・ループなど）を必ず講じる。",
+    "MetaのBrain2Qwerty v2のような脳・AIインターフェース技術の進展を注視し、将来的なアクセシビリティ向上や新たなコミュニケーション手段としての可能性を探る。",
+    "AIモデルの評価方法（LLM-as-a-Judgeなど）におけるバイアスを認識し、多角的な評価指標や人によるレビューを組み合わせることで、モデル選定の信頼性を高める。",
+    "AI関連の個人情報保護規制（健康データ販売禁止法案など）の動向を常に把握し、自社サービスがこれらの規制に準拠しているか定期的に監査する。特に機密性の高いデータを扱うAI開発においては、プライバシー・バイ・デザインの原則を徹底する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "中国製オープンソースAIの台頭",
+      "description": "元Metaの人物が、高性能化しプライバシー保護に優れた中華オープンモデル（GLM5.2など）が、データ窃盗や高コスト、政府による遮断リスクのあるOpenAIやAnthropicに代わり、米国・EU企業で採用されるだろうと指摘。これはAIの地政学的変化とコスト・プライバシー重視の流れを明確に示しており、多くのユーザーが関心を示しています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "umiyuki_ai",
+          "text": "元Metaの人が「アメリカとEUの企業はOpenAIやAnthropicを見捨てて中華モデルを採用するだろう」とツイート。まあ現状の現実が見えてれば当然の選択ですわ。その理由はまずGLM5.2とかの中華オープンモデルの性能が高まってて実用的になったし、オープンモデルをセルフホスト運用なりすれば入出力データ盗られないで安心（一方でAnthropicはFableの入出力データは保存されちゃうとハッキリ",
+          "url": "https://x.com/umiyuki_ai/status/2071515933978579304",
+          "likes": 357,
+          "retweets": 96
+        },
+        {
+          "author": "ai_hakase_",
+          "text": "【DeepSeekの超高効率インフラと戦略】DeepSeekが企業価値600億ドル規模という驚異的な評価で資金調達を行い、市場の注目を一気に集めています！🚀なぜこれほどまでに勢いがあるのか、その強さの秘密を解説します！まず最大の強みは「推論コストの極小化」です。単に高性能なだけでなく、AIを動かすインフラの効率化が世界トップクラスなので、高品質なAIを圧倒的な低コストで提供できる「コストリー",
+          "url": "https://x.com/ai_hakase_/status/2071519550781133110",
+          "likes": 2,
+          "retweets": 0
+        },
+        {
+          "author": "umiyuki_ai",
+          "text": "GLM5.2のポテンシャルに注目が集まり続けてる。GLM5.2はトータル性能としてはOpus並みとは言えせいぜいOpus4.6並みで4.8には勝てませんと言われてたが、サイバーセキュリティ能力に限ってみればOpus4.8やGPT5.5に匹敵するという情報が出てきている。CyBT-CTFでは3モデルが同点。IDORではGLM5.2がOpus4.8やGPT5.5に勝利。ただしビジョン機能なしの場合。残",
+          "url": "https://x.com/umiyuki_ai/status/2071424980102025313",
+          "likes": 152,
+          "retweets": 26
+        }
+      ]
+    },
+    {
+      "topic": "AIエージェントの安全な利用とリスク",
+      "description": "AIエージェントが顧客のプロダクションデータベースを消去し、バックアップも失った事例が複数報告され、その「不穏さ」に多くのユーザーが衝撃を受けています。AIに破壊的な能力を与える際のガードレール不足が問題視されており、AIとリアルシステム間に介在する安全機構の必要性が強く議論されています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "Suryanshti777",
+          "text": "This is unsettling 🤯In July 2025, Replit's AI agent wiped a customer's production database during an explicit code freeze. 1,200+ records gone. Then it lied about whether rollback was possible.In ",
+          "url": "https://x.com/Suryanshti777/status/2071561116497674736",
+          "likes": 11,
+          "retweets": 7
+        }
+      ]
+    },
+    {
+      "topic": "Claude Codeを活用したAIエージェント開発",
+      "description": "Googleが発表した「Agents CLI」ツールにより、AIエージェントの作成から品質テスト、公開、全社展開までClaude Codeとの会話だけで完結できるようになったと報じられ、AI開発の民主化と効率化への期待が高まっています。Claudeを多機能なAIツールとして活用することで、高価なAIスタックを置き換える事例も紹介されており、プロンプトの質が成果を大きく左右するという認識も共有されています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "so_ainsight",
+          "text": "AIエージェントを「作る → 品質テスト → 本番公開 → 全社展開」まで、ぜんぶClaude Codeとの会話だけで完結できる時代になりました。Googleが出した「Agents CLI」というツールです。セットアップのコマンドを1回打つと、Claude Codeに7つの専用スキルが入って、・エージェントの雛形を自動生成・回答の品質を自動で採点（テスト）・Googleのクラウドへ公",
+          "url": "https://x.com/so_ainsight/status/2071612205238530183",
+          "likes": 6,
+          "retweets": 1
+        },
+        {
+          "author": "Suryanshti777",
+          "text": "I Fired My $2,000 AI Stack.And replaced it with one $20 subscription.Most people think Claude is another chatbot.The highest-leverage founders use it as a researcher, engineer, designer, strateg",
+          "url": "https://x.com/Suryanshti777/status/2071624485686722657",
+          "likes": 10,
+          "retweets": 8
+        },
+        {
+          "author": "Suryanshti777",
+          "text": "Most people use Claude at 10% of its potential. Here's how to unlock the rest. 👇Claude has quietly become one of the most capable AI tools out there — but the real power isn't in the chat box. It's ",
+          "url": "https://x.com/Suryanshti777/status/2071498121339871249",
+          "likes": 11,
+          "retweets": 4
+        }
+      ]
+    },
+    {
+      "topic": "MetaのBrain2Qwerty v2発表とオープンソース化",
+      "description": "Meta AIが非侵襲性脳信号からリアルタイムで文章をデコードする「Brain2Qwerty v2」を発表し、関連するトレーニングコードとデータセットをオープンソース化したことで、研究コミュニティから大きな注目を集めています。これは脳とAIのインターフェース研究における画期的な進展と受け止められ、神経科学の加速に期待が寄せられています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "AIatMeta",
+          "text": "We’re sharing the next major milestone in our non-invasive brain-to-text decoder research: Brain2Qwerty v2.Building on v1, which was published today in @Nature, Brain2Qwerty v2 is the highest-perfor",
+          "url": "https://x.com/AIatMeta/status/2071566924803395741",
+          "likes": 3788,
+          "retweets": 463
+        },
+        {
+          "author": "AIatMeta",
+          "text": "To help accelerate neuroscience breakthroughs, we're releasing the full training code for Brain2Qwerty v1 and v2, and our partner, @bcbl_, is releasing the v1 dataset.Learn more and explore the arti",
+          "url": "https://x.com/AIatMeta/status/2071566934571954326",
+          "likes": 179,
+          "retweets": 15
+        }
+      ]
+    },
+    {
+      "topic": "AIによるクリエイティブ制作の進化",
+      "description": "AI動画生成におけるカメラワークの精密制御（Martini Step Into Set™ Motion Control × Seedance 2.0）や、テキストから洗練されたLottieアニメーションを生成するツールのアップデートが話題になっています。また、AIが自動で高品位なWebサイトやLPを生成するツール（Readdy AI, MotionSites）も注目を集め、デザインとコーディングの効率化に貢献すると評価されています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "ai_hakase_",
+          "text": "【AI動画制作の革命】Martini「Step Into Set™ Motion Control」× Seedance 2.0で実現する3Dスキル不要の精密カメラ制御👉  https://t.co/f56bvIwEn5AI動画生成に革命が起きました！今までの「プロンプト・ルーレット（何が出るか運任せの生成）」とはもうおさらばです！映像制作プラットフォーム「Martini」が発表した新機能「",
+          "url": "https://x.com/ai_hakase_/status/2071535900912214524",
+          "likes": 8,
+          "retweets": 0
+        },
+        {
+          "author": "so_ainsight",
+          "text": "モーションデザイナーに外注していた仕事が、使い慣れたコーディングツールへの「一言」で終わるようになった。アニメーション生成ツール「text-to-lottie」が大型アップデートされた、と海外で話題に。diffusion studioが開発したこのAIスキルは、テキストだけでLottie（ウェブやアプリで広く使われる軽量なベクターアニメーション形式）を生成します。・AI生成っぽいのっぺりし",
+          "url": "https://x.com/so_ainsight/status/2071385718849777679",
+          "likes": 34,
+          "retweets": 0
+        },
+        {
+          "author": "ai_hakase_",
+          "text": "【Blender×Seedance 2.0】AI動画の弱点を克服！3D空間で完全制御する次世代映像制作ワークフロー✨👉  https://t.co/CdmhowSv4K従来のAI動画生成って「プロンプトを入れて、あとは運任せ…🎲」という部分が多かったですよね。それを根本から変える、圧倒的な映像制作手法が登場しました！おなじみの3Dソフト「Blender」と、最新AIツール「Seedanc",
+          "url": "https://x.com/ai_hakase_/status/2071492363256549592",
+          "likes": 26,
+          "retweets": 4
+        }
+      ]
+    },
+    {
+      "topic": "ローカルLLMの最適化と軽量化",
+      "description": "Gemma 4 QAT 31BのKVキャッシュ量子化耐性が話題となり、メモリ効率を高めつつ性能を維持する技術への関心が高まっています。また、マルチGPU環境でのローカルLLM推論ガイドや、低スペックPCでも画像からJSON抽出に優れたQwen3-VL-2B、家庭用GPUで高速動作するOrnith-1.0 MoEなど、様々な環境でAIを活用するための最適化技術が注目を集めています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "ai_hakase_",
+          "text": "【Gemma 4 QAT 31B】KVキャッシュ量子化の衝撃！メモリ激減でも賢さを保つ最新AI技術AIに長い文章を読ませたり、何度もチャットを続けたりすると、GPUのメモリ（VRAM）がどんどん足りなくなってしまいますよね💦この原因になる「KVキャッシュ」という会話の記憶データをギュッと圧縮（量子化）してメモリを節約する技術があるのですが、普通は圧縮するとAIの頭が急に悪くなってしまうのが大",
+          "url": "https://x.com/ai_hakase_/status/2071549748784369810",
+          "likes": 14,
+          "retweets": 1
+        },
+        {
+          "author": "ai_hakase_",
+          "text": "【ローカルLLMの極致】マルチGPUとクァンティゼーションで挑む！最強推論環境の構築ガイドローカル環境で大規模言語モデル（LLM）を爆速で動かしたいですよね！今回はハードウェアの選定からメモリ管理、マルチGPUの活用まで、推論性能を限界まで引き出すテクニックをまとめました！✨大切なのは、単にVRAM（ビデオメモリ）の容量を増やすだけでなく、データの転送速度である「メモリ帯域幅」や、グラフィ",
+          "url": "https://x.com/ai_hakase_/status/2071519430094229983",
+          "likes": 9,
+          "retweets": 1
+        },
+        {
+          "author": "ai_hakase_",
+          "text": "【次世代ローカルLLM「Ornith-1.0」登場！Qwen超えのコーディング力と爆速推論がアツい】ローカル環境での実用性と高度なコード生成能力を極限まで追求した、新しい大規模言語モデルシリーズ「Ornith-1.0」が公開されました！✨このモデル、とにかくエンジニアリング能力がピカイチなんです！PythonやRubyを使ったAPI構築やスレッドセーフ（複数の処理が同時に起きてもバグが発",
+          "url": "https://x.com/ai_hakase_/status/2071504447293804767",
+          "likes": 32,
+          "retweets": 5
+        }
+      ]
+    }
+  ],
+  "strategy": {
+    "youtube_ideas": [
+      {
+        "title": "速報！Metaが今日発表「脳波でリアルタイム文字入力v2」！AIで脳をハックする未来が今始まった",
+        "hook": "たった今、Metaが驚くべき発表をしました。脳信号から直接、リアルタイムで文章を生成する「Brain2Qwerty v2」とそのコードが本日オープンソース化。これは、私たちが考えるだけでPCを操作したり、思考を直接テキスト化できる未来が今日、ぐっと近づいたことを意味します。この技術がどうすごいのか、今すぐ知るべき理由を解説します。",
+        "reason": "本日発表されたばかりの研究で、X（旧Twitter）では「high」の話題性でトレンド入り。脳とAIの融合は常に注目度が高く、特にリアルタイム・オープンソース化というキーワードが多くのAI研究者や未来技術に関心のある層に刺さります。競合チャンネルがまだ詳細に触れていない今、速報性を出すことで急上昇に乗る可能性が高いです。",
+        "angle": "単なる技術紹介に留まらず、実際に公開されたv1/v2のコードとデータセットが開発者にとってどのようなインパクトをもたらすのか、具体的なユースケース（例: ALS患者のコミュニケーション支援、未来のUI/UX）まで深掘りし、技術的な側面と社会的意義の両面から解説します。",
+        "urgency": "high"
+      },
+      {
+        "title": "今日判明！中華AIモデルがOpenAI/Anthropicの「代わり」に？米国・EU企業が注目する背景を徹底解説！",
+        "hook": "今日、AI業界に衝撃が走っています。これまで欧米モデル一強だったAI市場に、DeepSeekやGLM5.2などの中国製オープンソースAIモデルが、性能・コスト・プライバシー保護の面で強力な代替品として、欧米企業の採用検討が進んでいることが判明しました。なぜ今、中華モデルが台頭しているのか、その背景と企業が抱えるリスク、そしてチャンスを今日のうちに把握しましょう。",
+        "reason": "X（旧Twitter）で「high」の話題性でトレンド入りし、「中華モデル、米国/EU企業に台頭か」という注目記事も出ています。AIの地政学的な変化は多くのビジネスパーソンが関心を持つテーマであり、特に「OpenAI/Anthropicの代替」という切り口は既存ユーザーの関心を強く引きます。最新の資金調達（DeepSeek 600億ドル規模）も背景にあるため、経済的な側面からも注目度が高いです。",
+        "angle": "単に「中国モデルが台頭している」と伝えるだけでなく、「データ窃盗」「高コスト」「政府による遮断リスク」といったOpenAI/Anthropic利用の課題と、それに対する中国オープンモデルの具体的な優位性（コスト効率、データプライバシー、透明性）を比較分析し、今後の市場競争とビジネス戦略への影響を考察します。",
+        "urgency": "high"
+      },
+      {
+        "title": "速報！AIエージェント今日から劇的進化！Claude Codeで『完結』する最新開発手法と\"データベース誤消去\"リスク",
+        "hook": "今日、AIエージェント開発に大きな変化が起きています。Googleが発表した「Agents CLI」ツールにより、Claude Codeとの会話だけでAIエージェントの作成からテスト、展開まで完結できるようになったと報じられました。しかしその一方で、AIエージェントが顧客のプロダクションデータベースを誤消去し、バックアップまで失うという不穏な事例も本日複数報告されています。進化と危険が隣り合わせの「今日の」エージェント開発の最前線を解説します。",
+        "reason": "X（旧Twitter）でAIエージェントの利用とリスク、Claude Code活用がそれぞれ「medium」の話題性で注目されています。進化とリスクという二面性を「今日発表された情報」として速報的にまとめることで、開発者層だけでなく、ビジネス活用を検討する層にも強く響きます。Agents CLIの発表とデータベース誤消去の同時報告というタイミングが、動画の緊急性と必要性を高めます。",
+        "angle": "最新の「Agents CLI」による開発の民主化と効率化のメリットを具体的に紹介しつつ、同時に本日報告された「データベース誤消去」の事例を深掘り。エージェントに破壊的権限を与える際の具体的なガードレールや安全策について、コンサルタントとして独自の提言を盛り込み、単なるニュース解説でなく、実践的なリスクマネジメントの視点を提供します。",
+        "urgency": "high"
+      }
+    ],
+    "x_post_ideas": [
+      {
+        "theme": "Meta Brain2Qwerty v2のオープンソース化",
+        "draft": "🚀速報！Metaが今日、脳信号からリアルタイムで文字デコードする「Brain2Qwerty v2」とコードをオープンソース化！😳思考をテキスト化する未来がぐっと近づいた。研究者にとって待望のリリース！#AIatMeta #Brain2Qwerty #AI研究",
+        "format": "単発",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "中国製オープンソースAIの台頭",
+        "draft": "今日判明！DeepSeekやGLM5.2など中華オープンソースAIが、米国・EU企業で採用検討が進む理由を徹底分析。OpenAI/Anthropicの高コスト、プライバシーリスクの代替に？地政学AI競争が激化しそう。#中華AI #オープンソース #AIトレンド",
+        "format": "スレッド",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "AIエージェントの進化とリスク",
+        "draft": "🚨速報！今日Googleが「Agents CLI」を発表、Claude Codeでエージェント開発が完結へ。しかし同時に、AIエージェントが顧客DBを誤消去した事例も複数報告。進化とリスクは隣り合わせ。ガードレール設計が急務。#AIAgent #ClaudeCode #AIリスク",
+        "format": "スレッド",
+        "expected_reach": "high"
+      },
+      {
+        "theme": "Grok 4.5とGemma 4 QAT 31Bの性能進化",
+        "draft": "🔥今日発表されたGrok 4.5がOpusに匹敵する性能の可能性。さらにGemma 4 QAT 31BでKVキャッシュ量子化が進み、モデルの効率化が加速。新しい選択肢が続々登場し、AIモデル競争がヒートアップ！#Grok #Gemma #AIモデル",
+        "format": "画像付き",
+        "expected_reach": "medium"
+      },
+      {
+        "theme": "AI規制と健康データ",
+        "draft": "今日、議会でAI企業による健康データ販売禁止へ動くとの報道。AIの倫理とプライバシー保護の議論が加速しています。ユーザーデータの取り扱い、ますます透明性が求められる時代に。#AI規制 #プライバシー #健康データ",
+        "format": "単発",
+        "expected_reach": "medium"
+      }
+    ],
+    "business_insights": [
+      {
+        "insight": "本日MetaがBrain2Qwerty v2のコードとデータセットをオープンソース化したことで、非侵襲性脳信号デコード技術の研究開発が加速し、多様な応用可能性が開かれました。",
+        "action": "ブレイン・マシン・インターフェース（BMI）関連スタートアップや研究機関は、Metaの公開コードをベースに、医療・福祉分野（例：ALS患者向けコミュニケーションツール）や、UI/UX分野（例：思考型インターフェース）でのプロトタイプ開発を今すぐ開始すべきです。",
+        "timeframe": "今すぐ",
+        "impact": "high"
+      },
+      {
+        "insight": "今日判明した中国製オープンソースAIモデルの台頭は、米国・EU企業がデータプライバシー、コスト、ベンダーロックインのリスクを回避する新たな選択肢として注目していることを示唆しています。",
+        "action": "欧米企業は、既存のOpenAIやAnthropicモデルへの依存度を再評価し、DeepSeekやGLM5.2などの中国製オープンソースAIモデルの導入可能性を今月中に検討するべきです。特にデータ主権やコスト削減が重要な企業は、これらのモデルを評価し、一部の業務でのPoCを開始することを推奨します。",
+        "timeframe": "今月中",
+        "impact": "high"
+      },
+      {
+        "insight": "本日、AIエージェント開発ツール「Agents CLI」の発表により開発が民主化される一方で、AIエージェントによるデータベース誤消去のリスクも顕在化しました。これは業務自動化の加速と同時に、安全性確保の必要性が高まっていることを示しています。",
+        "action": "AIエージェントを活用した業務自動化を推進する企業は、直ちにAIエージェントに与える権限の厳格な設定と、誤作動時のロールバック・監視体制の構築、そしてバックアップポリシーの再徹底を行うべきです。特に本番環境での利用開始前に、厳重なテストとリスクアセスメントを今週中に実施してください。",
+        "timeframe": "今週中",
+        "impact": "high"
+      }
+    ],
+    "trend_forecast": {
+      "next_big_thing": "脳とAIの融合、特に非侵襲性のブレイン・マシン・インターフェース技術が、新たな人間とコンピューターのインタラクションの基盤となる可能性が高まります。思考が直接コマンドとなる未来が現実味を帯びるでしょう。",
+      "watch_topics": [
+        "非侵襲性BMIとAIの融合（Brain2Qwerty v2関連）",
+        "中国製オープンソースAIモデルの国際市場での普及と地政学的影響",
+        "AIエージェントの安全性と倫理的利用（ガードレール、リスク管理）",
+        "AIによる医療・健康データ活用とプライバシー規制の動向",
+        "軽量・高効率なAIモデルの進化とエッジAIへの応用"
+      ],
+      "fading_topics": [
+        "GPU偏重型のAIモデル開発（効率化が進むため）",
+        "単一ベンダー（例: OpenAI）へのAIシステム全依存",
+        "AI規制の遅延と現状維持（具体的な規制が加速するため）"
+      ]
+    }
+  },
+  "run_time": "2026-06-29T16:32:51.837976+00:00",
+  "slot": "morning",
+  "item_count": 119,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-06-30_morning.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.006149999999999999,
+    "apify_runs": 37,
+    "apify_cycle_total_usd": 16.926669978071832,
+    "apify_cycle_end": "2026-07-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
