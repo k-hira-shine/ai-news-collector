@@ -1,6 +1,202 @@
 # ai-news-collector 引き継ぎ資料
 
-最終更新: 2026-06-25（**今朝の定期AI News Collectorが環境準備でcancelled → 原因特定 → CI修正 → 手動full実行で今日分を補完 → 追加の再発防止 → ローカル整理まで完了**。原因は `collect.yml` の `Install Japanese fonts (Noto CJK)` で `fonts-noto-cjk-extra` 145MB のapt取得が極端に遅く、job全体の45分timeoutに到達したこと。`Run collector` へ入る前なので収集/分析コードの障害ではない。対処: `fonts-noto-cjk-extra` を外す `c76ab02`、手動 `workflow_dispatch mode=full` run `28124849016` 成功(13m27s)で `data/daily/2026-06-25.jsonl` / `data/analysis/2026-06-25_morning.json` 生成、追加で `ubuntu-24.04` 固定・フォントstep 5分timeout・Playwright step 10分timeout・Actions警告表示を conclusion+JST時刻化 `ce11081`。最新 `daily_check.py` は **全項目合格(exit 0)**: Actions直近5種success・期待4種cadence内 / Apify月換算$3.86 / Gemini6/25 $0.171・月換算$6.6 / Buzz最終6/24 status=pass overlap=100% / 収集品質 legal 11/96(11%)・feeds 8/8・must_follow=77・x_valid=177 / 分析構造 morning top10/cat5/action5/fallback0(item96)。ローカル `main` は `origin/main`=`ce11081` にfast-forward済み、working tree clean。一時autostashは削除済み。古い別件stashは2件残置。詳細は下「2026-06-25」節。<br>旧: 2026-06-24（日次チェック実施＝**全項目合格(exit 0)**。`daily_check.py`1画面: **Actions直近5種success・期待4種cadence内 / Apify=月換算$5.63（窓6/17〜6/23・on_target）/ Gemini=6/24 $0.173・直近4日平均で月$6.1 / Buzz最終=6/24(2h前)status=pass・overlap=100% / 収集品質=legal 7/83(8%)・feeds 8/8健全・must_follow=58・x_valid=259 / 分析構造=morning top10/cat5/action5/fallback0(item83)**。**最優先#0クローズ＝must_follow per-account修正がスケジュール朝便(02:46 JST)でも回復確定**（mf=58/items=83/x_valid=259、修正前mf=8/items=27）＝手動dispatchだけでなく自動便でも有効と確定。**IPWatchdog TODOクローズ**＝6/22〜6/24の朝便とも feeds 8/8健全・failed=0で504再発なし（`ops_backlog.yaml`をitems:[]に）。**新規の注視点＝critical沈黙フィールド初記録(6/24)で critical 10中5が0件**（AnthropicAI/GoogleAI/AIatMeta/huggingface/DarioAmodei）＝総量mf=58は健全だが最重要群が初日から黙り。advisoryは3連続0で発火＝有効化は履歴3件貯まる6/26頃、5件が連続0なら局所断を疑う（次回#0b）。working treeはこのコミットでクリーン。<br>旧: 2026-06-23 追補4（**検知の残る穴（慢性劣化と単一アカウント沈黙）も閉塞＝検知を4層に**。ユーザー「穴を塞いで」。追補3で単日の崩落（崖）はフロアで塞いだが、**フロアの上で続く中規模劣化（じわ減り）と、合計では隠れる単一criticalアカウントの黙りが残穴**だった。対処2点: ①**じわ減り検知（本判定）**＝汚染されない**固定の健全リファレンス**比（`HEALTHY_REF={x_valid:300,items:110,must_follow:80}`・50%未満が`EROSION_STREAK=2`連続で要確認）。相対(中央値比)が劣化追従で盲目になる弱点を固定基準で補う。②**単一criticalアカウント沈黙検知（advisory）**＝`collector.py`がper-account件数を記録→`must_follow_critical_zero`をmain.pyが永続化→daily_checkが3連続ゼロのcritical handleを⚠表示（個人は数日沈黙し得るため非failing）。**検知は4層に**: 絶対フロア(崖/fail)＋じわ減り(傾斜/fail)＋critical沈黙(局所/advisory)＋横断不変テスト(コード取りこぼし/CI fail)。テスト+7=**全150件green**・実データ緑維持・push済み(`2cdc0b1`コード/`7251a49`doc)。**1枚要約はポストモーテム `.cursor/docs/postmortem-2026-06-23-x-collection.md`**（原因/結果/解決策/残リスクを集約）。**残るは確認のみ＝(a)6/24朝便scheduleでmust_follow回復(次回#0) (b)IPWatchdog 6/24クローズ (c)critical沈黙advisoryは履歴3件貯まる6/25頃有効化**。働きツリークリーン。詳細は下「2026-06-23 追補4」節。<br>旧: 2026-06-23 追補3（**なぜ取りこぼし＆検知失敗が起きたかのRCAと恒久対策**。ユーザーの「なぜこの事態になったのか、異常検知がザルだった原因を徹底的に潰せ」という指示。**3層の失敗**だった: ①**コードの取りこぼし**＝6/22の修正が `collect_x_twitter` の2経路(検索/ must_follow)のうち検索だけ直した。②**検知のザル**＝収集品質チェックが全て「直近full中央値比」の相対判定で、劣化が数日続くと**ベースライン自体が劣化値で埋まり崩落値すら平常に見える**（6/23時点のfull便ベースラインが mf[5,6,17,8]・items[7,12,84,27]と汚染され急減判定が一度も発火しなかったことを実データで確認）。③**私の判断ミス**＝総量(x_valid/items)だけ見て経路別に切り分けず"回復"と誤断。**恒久対策**: (a) 収集品質に**経路別の絶対フロア**を本判定として追加(`FULL_X_VALID_FLOOR=120`/`FULL_ITEMS_FLOOR=40`/`FULL_MUST_FOLLOW_FLOOR=25`・full便のみ)＝相対と違い履歴汚染に強く、劣化初日から検知。(b) `x_valid` を収集品質detailに表示し経路別の痩せを目視でも切り分け可能に。(c) **横断不変条件テスト**＝`collect_x_twitter` の全actor呼び出しが `searchTerms` 1語であることを固定（3本目の経路がバッチで足されても即落ちる）。**実ログ再生で過去3障害日(6/21崩落1日目・6/22崩落2日目・6/23 must_follow残バグ)を全て初日から検知・修正後データ(91/82/211)は合格を確認**。テスト全143件green・push済み(`a8dacf3`)。詳細は下「2026-06-23 追補3」節。<br>旧: 2026-06-23 追補2（**X収集の残バグを発見・修正＝must_follow経路が actor仕様変更の巻き添えのまま未修正だった**。ユーザーの「まだ取得件数が少ない気がする」という指摘が起点。朝の#0確認では検索7クエリの回復(39→306)だけ見て"回復"と早合点していたが、**must_follow（必須アカウント）経路は別バグで頭打ち**だった。6/22の障害対応は `collect_x_twitter` の**検索語ループだけ per-query 化し、must_follow バッチ(collector.py:319〜・全30アカウントを1 run・maxItems=30)を直し忘れていた**＝actor新ビルドの「maxItems=合算上限」化で後半アカウントが budget=0 飢餓→must_follow が約1件/アカウントに激減(6/23朝便 `30 profiles=30 tweets`・mf_final=8)。**対処**: ①must_follow も検索側と同型の**アカウント毎1 run**へ修正(`986689c`)＝maxItemsがアカウント毎に効く。回帰テスト2件追加(`XMustFollowPerAccountTests`)・**全134件green**。②**本番検証**(workflow_dispatch run 27979622316・success)＝**must_follow 30→148・X合計 80→211・items 27→91・must_follow_final 8→82**に回復、Apify 37 runs/$0.0000(従量制でコスト不変)。③ライブサイト更新済み・daily_check全項目合格(legal 5/91=5%・feeds 8/8・must_follow=82)。**教訓: 6/22の修正は2経路あるうち1経路だけ直していた。"x_valid"や"items"の総量で回復を判断せず、経路別(検索/ must_follow)に切り分けること。** **次担当の確認＝6/24朝便(schedule)で must_follow も自動で回復するか**(検証は手動dispatchまで・スケジュール起動は未確認)。working treeクリーン。）<br>旧: 2026-06-23（日次チェック実施＝**全項目合格**。最優先#0＝X収集9割減修正の本番自動収集での回復を確認＝成功）。`daily_check.py`1画面: **Actions直近5種success・期待4種cadence内 / Apify=月換算$6.52（窓6/16〜6/22・横ばい合格）/ Gemini=6/23 $0.124・直近4日平均で月約$5.8合格 / Buzz最終=6/22 status=pass・overlap=100% / 収集品質=legal 4/27=15%・feeds 8/8健全・must_follow=8 / 分析構造=morning top10/cat4/action5/fallback0（item27）**。**6/23朝便(03:28 JST・schedule)の核心メトリクス: x_valid=80（崩落時39〜44）・legal_rss=4・must_follow=8・official=4**＝飢餓していた日本語/法務クエリが復活し、**クエリ毎独立run修正がスケジュール起動でも有効と確定**（手動本番テストだけでなく自動便でも回復）。「収集量急減」advisoryは沈黙＝健全。**法務一色化の赤(6/22=54%)は解消(15%)**＝6/22の取り直しによる一過性バックログ放出と確定。**JURIST修正が初反映＝feeds 8/8健全(6/22は7/8)**でJURIST TODOをクローズ（ops_backlogから削除）。IPWatchdogも failed=0（6/22・6/23連続）＝再発なしなら6/24クローズ。**残バックログ1件(IPWatchdog監視・6/24クローズ予定)。working treeはこのコミットでクリーン。** 旧: 2026-06-22 追補（**X収集の9割減を障害対応＝原因はApify actorの外部仕様変更**。ユーザーの「収集推移グラフが6/21からガクッと減っている」という指摘から発覚。`xquik/x-tweet-scraper` が新ビルド(`tVcWiwAfiLajn6Qbb`→`aw35GGxixnBFEFrJj`)で **maxItems の意味を「検索語ごとの上限」→「全searchTerms合算の上限」に変更**したため、7クエリを1 runにまとめていた旧実装で先頭の英語クエリが150枠を食い潰し、**日本語・法務クエリが0件に飢餓→収集 95→7〜12件(約9割減)が6/21〜22の2日連続**。こちらのコードは無変更＝外部由来の回帰。**対処3点**: ①`collector.py` を**クエリ毎の独立run**(1 run=1 searchTerm)へ変更＝maxItemsが必ずクエリ毎に効き、actorの解釈変更に今後も依存しない。従量課金($0.00015/件)のため総取得数が同じならコスト不変。回帰防止テスト2件追加(`15f3174`)。②**本番検証**＝fixブランチで実走し**X取得 44→251件**・日本語/法務クエリ復活を確認(run 27921710038)。③mainへマージ後、今日の薄い収集(12件)を**取り直して保存**＝items 12→84・legal 1→45・must_follow 6→17(本番 run 27930859349・data `f6706cf`・ライブサイト更新済み)。**+再発防止**＝`daily_check.py` に「収集量急減」検知(advisory)を追加。今回9割減が「法務一色化」「must_follow連続ゼロ」のどれにも該当せず**daily_checkをすり抜けた盲点**を塞ぐ＝full便の`items_collected`が直近full中央値の50%未満で⚠。当面advisory(合否=exit code非影響)・full履歴4件貯まるまで沈黙・テスト3件(`158eadf`)。**全テスト132件green・全push済み・working treeクリーン。** **次担当の最注目＝6/23朝便で本番自動収集も正常量(~95件)に戻るか＋"法務一色化54%"の一過性(6/22取り直しで法務45件が一時流入したため)が解消するかを確認**。完全ログは下「2026-06-22 追補」節（A=時系列, B=原因, C=修正, D=本番検証, E=再発防止, F=コミット台帳, G=次担当者へ）。）<br>旧: 2026-06-22（日次チェック実施＝**全項目合格**。`git pull --rebase`で6/22朝便を取得後、`daily_check.py`1画面で確認: **Actions直近5種success・期待4種cadence内 / Apify=月換算$8.35（窓6/15〜6/21・横ばい合格）/ Gemini=6/22 $0.097・直近4日平均で月約$6.1合格 / Buzz最終行=6/22（2h前）status=pass・overlap=95% / 収集品質=legal_rss=1/12・feeds 7/8健全・must_follow=6 / 分析構造=morning top4/cat4/action4/fallback0（item12）**。**今日の重点＝改善Bロールアウト確認＝成功**: 6/21実装の法務RSSフィード健全性計測が6/22(月)朝便で初反映され、収集品質項目に `feeds 7/8健全` が初表示（8フィード中1つfailed＝既知のIPWatchdog 504/JURIST空のいずれか・ops_backlog管理済み・警告閾値未満で合格）。月曜便のBuzz収集(02:10)も正常稼働しoverlap=95%。改善A（must_follow急減検知）はfull便履歴4件目が入る6/24(水)朝便まで沈黙が正常（現在2件目）。**+追加対応＝JURIST死URL修正**: 「他に気になる点」点検で、改善Bの非健全1枠＝JURISTの設定URL `https://www.jurist.org/feed/` が**HTTP200だが空スタブ(0件)の死URL**と特定、実フィード `https://www.jurist.org/news/feed/`（15件・最新6/21確認）へ修正＝6/23朝便で `feeds 8/8健全` になれば反映確認。IPWatchdog 504は6/22自己回復＝一過性確定。残バックログはTODOフッタで可視化中。**+法務Xクエリ追加を見送り削除（4→3件）。+GH_PAT根本対応を完全クローズ**＝中継Worker `workers/buzz-dispatch/` を新設→Cloudflareへデプロイ（`https://buzz-dispatch.imokonoai.workers.dev`）→新fine-grained PAT（当該repo Actions:RW・最小権限）をCloudflareダッシュボードのsecretに格納→実テスト（`taziku_co`でWorker経由POST→`{"ok":true}`→Buzz Ranking Collector が `workflow_dispatch` で実起動 run 27916723224）まで確認。**PATは公開buzz.htmlから消え（ghp_=0）金庫のみに存在＝事故解消・「収集起動」ボタンも復活**（テスト全127件OK）。**これでバックログは2件（JURIST反映待ち6/23・IPWatchdog監視6/24）＝どちらも手当て済みで待つだけ。** **全push済み・working treeクリーン。完全ログは下「2026-06-22」節（A=結果, B=確認点, C=JURIST修正, F=GH_PAT根本対応, D=次担当者へ, E=コミット台帳）。**）<br>旧: 2026-06-21（日次チェック実施＝**全項目合格**。`daily_check.py`1画面で確認（改善C後の最終形）: **Actions直近5種success・期待4種cadence内 / Apify=月換算$9.17（窓6/14〜6/20・横ばい合格）/ Gemini=6/21 $0.127・直近4日平均で月約$6.7合格 / Buzz最終行=6/19 status=pass・overlap=90% / 分析構造=正常 / 収集品質=legal_rss=0/7・must_follow=5**（セッション開始04:20時点は改善前の4項目＝下A-1、終了時は6項目＝下A-2）。**今日の重点＝変更1ロールアウト確認＝6/20 F節①クローズ**: 6/20実装の `main.py` 永続化が6/21朝便で初反映され、`daily_check.py` の「収集品質」項目が**「記録なし」→実値（legal_rss=0/7・must_follow=5）**に切替＝予定どおり。Buzz Health Checkは6/18から連続success。**+改善A実装＝daily_check.py に must_follow急減検知を追加（full便のみ比較・履歴3件貯まるまで沈黙・テスト全105件green）**: official深掘りで判明した本命＝朝便収集量のサイレント縮小（6/20→6/21で total 95→7・must_follow 85→5）を捕まえる。official単独アラートはベースライン1点で時期尚早のため見送り（記録のみ継続）。**+改善B実装＝法務RSSのフィード健全性計測（collector+main+daily_check, テスト全108件green）**: feedparserは404/504/空でも例外を投げず legal=0 の原因が区別できなかったのを、feed単位の生entries/HTTP statusで `feeds ok/failed` を測り「全フィード盲目=取得失敗の疑い」を検知。実測で **IPWatchdog=504/JURIST=空** を発見＝今日の legal=0 は「新着なし（フィード健全）」と確定。**+改善C実装＝Actions鮮度チェック（daily_check, テスト全114件green）**: `check_actions` が gh窓に出た範囲のfailureしか見ず**ワークフローのサイレント停止に盲目**だった（実際6/21は月水金の Buzz Ranking Collector が窓から漏れ「直近4種success」に不可視）。期待スケジュール4種＋最大許容age（週末ギャップ込み）を定義し**不在/stale検知**を追加＝出力 `直近5種success・期待4種cadence内`。**+改善D実装＝未了TODOを日次チェック末尾に表示（`ops_backlog.yaml`新設, テスト全119件green）**: 未了宿題がhandoffに埋もれ塩漬けになるのを防ぐため、合否サマリの下に `📋 未了TODO N件` を古い順（経過日数つき・合否非影響）で常時可視化。残バックログ4点(法務Xクエリ/GH_PAT根本対応/IPWatchdog504/JURIST空)はこの ops_backlog.yaml で管理。**+改善E実装＝分析構造チェック（daily_check, テスト全127件green）**: 分析JSONの構造完全性(top/cat/action/fallback)の手動確認を自動化。件数の多寡は見ず**構造的失敗のみ**（fallback非空/top0/cat0/action0）を判定＝低ニュース日を誤検知しない。**本セッションは日次チェック（全項目合格）＋改善5点(A〜E)を実装、daily_checkは6項目に拡張、コミット13件（引き継ぎ整備・整合修正含む）・全push済み・テスト全127件green・working treeクリーン**。**改善の有効化時期に注意: C/D/Eは本日すでに稼働確認済み、Bは6/22朝便でロールアウト、Aはfull履歴4件目が入る6/24以降に初有効化（それまで沈黙が正常）。** 完全ログは下「2026-06-21」節（A=チェック, E=改善A, F=改善B, G=改善C, H=改善D, I=改善E, K=コミット台帳）。）<br>旧: 2026-06-20（日次チェック実施＝**全項目合格**。`daily_check.py`を実運用初投入し1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.67（窓6/13〜6/19・横ばい合格）/ Gemini=6/20 $0.247・直近4日平均で月約$8.1合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**改善1の挙動を実データで確認＝6/19 F節①クローズ**: Buzz Daily Health Check の6/20分(run 27845632239, 6/20 04:53 JST)が`--staleness-only`で**success**＝土曜の収集なし日でもwarning落ちしない。6/16・6/17のfailure以降6/18から3連続success。Buzzメトリクス最終行は6/19のまま＝土曜は収集なし(月水金)で設計どおり。兄弟エラーメールなし。**+同セッションで改善1点を実装＝daily_check.py に収集品質2点(法務一色化・must_follow連続ゼロ)を追加（commit 4b59b19, テスト全101件green。main.pyで legal_rss_count/must_follow_count を data/logs に永続化＝次回収集6/21朝便から実値判定）。+index「規制/政策」目視確認をクローズ（commit 5baf2c3＝6/15からの積み残し。法務RSS反映をHTML直接確認）**。残バックログは2点のみ(法務Xクエリ追加・GH_PAT根本対応、いずれも緊急性なし)。**本セッションのコミットは 7b83a40→4b59b19→5baf2c3 の3件・全push済み・working treeクリーン。完全ログは下「2026-06-20」節 A〜G（特にG＝コミット台帳）。**）<br>旧: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+最終更新: 2026-07-02（**日次運用チェック＋機能チェック完了。結論＝本番運用継続OK、追加修正なし**。`git pull --ff-only` で `origin/main` を 2026-07-02 朝便まで fast-forward（`data/analysis/2026-07-02_morning.json` / `data/daily/2026-07-02.jsonl` / evening 07-01 等を取得）。`python3 daily_check.py --days 7` は **全項目合格(exit 0)**: Actions直近6種success・期待5種cadence内 / Apify月換算$0.61（窓6/25〜7/1・on_target）/ Gemini 7/2 $0.161・直近7日平均で月換算$7.3 / Buzz最終7/1(26h前)status=pass overlap=100% / 収集品質 legal 4/136(3%)・feeds 8/8・must_follow=131・x_valid=299 / 分析構造 morning top10/cat6/action5/fallback0(item136)。機能チェックは `python3 -m py_compile *.py scripts/*.py .github/scripts/*.py` OK、`scripts/check_incident_css_leak.py` OK、`scripts/check_buzz_health.py --staleness-only` OK、`.venv/bin/python -m pytest` **149 passed, 1 warning**。唯一の注視点は `criticalアカウント沈黙3連続` advisory＝今日は `DarioAmodei / MistralAI` の2件（昨日3連続だった `GoogleAI / GoogleDeepMind` は今日回復し脱落＝縮小）。総量は mf=131 / x_valid=299 / items=136 と全フロアを大きく上回るので収集経路障害ではなく個別アカウントの無投稿ノイズと判断＝運用継続。`ops_backlog.yaml` は `items: []`。なお開始時のローカル `.cursor/STATUS.md` / `handoff.md` 差分は前回07-01セッションの更新が未コミットのまま残っていたもので、本コミットで07-01・07-02分を併せて記録した。次回2026-07-03は critical沈黙が `DarioAmodei / MistralAI` で継続するかだけ確認し、総量が `must_follow<25` / `x_valid<120` / `items<40` に落ちた場合のみ即障害調査。詳細は下「2026-07-02」節。<br>旧: 2026-07-01（**今日の運用チェック＋機能チェック完了。結論＝本番運用継続OK、追加修正なし**。`git pull --ff-only` で `origin/main`=`fe49bc9` まで fast-forward し、`data/analysis/2026-07-01_morning.json` / `data/daily/2026-07-01.jsonl` / `data/logs/2026-07-01.jsonl` を含む最新データを取得。`python3 daily_check.py --days 7` は **全項目合格(exit 0)**: Actions直近6種success・期待5種cadence内 / Apify月換算$0.59（窓6/24〜6/30・on_target）/ Gemini 7/1 $0.160・直近7日平均で月換算$7.3 / Buzz最終7/1(3h前) status=pass overlap=100% / 収集品質 legal 7/104(7%)・feeds 8/8・must_follow=97・x_valid=234 / 分析構造 morning top10/cat6/action5/fallback0(item104)。機能チェックは `python3 -m py_compile *.py scripts/*.py .github/scripts/*.py` OK、`python3 scripts/check_incident_css_leak.py` OK、`python3 scripts/check_buzz_health.py --staleness-only` OK、`.venv/bin/python -m pytest` **149 passed, 1 warning**。system `python3 -m pytest` は pytest 未インストールで失敗したため `.venv` で実行すること。唯一の注視点は `criticalアカウント沈黙3連続` advisory。総量は正常（items=104/must_follow=97/x_valid=234）なので障害扱いせず運用継続。full朝便の critical zero 推移は下「2026-07-01」節に記録。`ops_backlog.yaml` は `items: []`、ローカル working tree は本ログ記録前時点で clean。次回は 2026-07-02 の日次チェックで critical沈黙が継続するかだけ確認し、総量が `must_follow<25` / `x_valid<120` / `items<40` に落ちた場合のみ即障害調査。）<br>旧: 2026-06-25（**今朝の定期AI News Collectorが環境準備でcancelled → 原因特定 → CI修正 → 手動full実行で今日分を補完 → 追加の再発防止 → ローカル整理まで完了**。原因は `collect.yml` の `Install Japanese fonts (Noto CJK)` で `fonts-noto-cjk-extra` 145MB のapt取得が極端に遅く、job全体の45分timeoutに到達したこと。`Run collector` へ入る前なので収集/分析コードの障害ではない。対処: `fonts-noto-cjk-extra` を外す `c76ab02`、手動 `workflow_dispatch mode=full` run `28124849016` 成功(13m27s)で `data/daily/2026-06-25.jsonl` / `data/analysis/2026-06-25_morning.json` 生成、追加で `ubuntu-24.04` 固定・フォントstep 5分timeout・Playwright step 10分timeout・Actions警告表示を conclusion+JST時刻化 `ce11081`。最新 `daily_check.py` は **全項目合格(exit 0)**: Actions直近5種success・期待4種cadence内 / Apify月換算$3.86 / Gemini6/25 $0.171・月換算$6.6 / Buzz最終6/24 status=pass overlap=100% / 収集品質 legal 11/96(11%)・feeds 8/8・must_follow=77・x_valid=177 / 分析構造 morning top10/cat5/action5/fallback0(item96)。ローカル `main` は `origin/main`=`ce11081` にfast-forward済み、working tree clean。一時autostashは削除済み。古い別件stashは2件残置。詳細は下「2026-06-25」節。<br>旧: 2026-06-24（日次チェック実施＝**全項目合格(exit 0)**。`daily_check.py`1画面: **Actions直近5種success・期待4種cadence内 / Apify=月換算$5.63（窓6/17〜6/23・on_target）/ Gemini=6/24 $0.173・直近4日平均で月$6.1 / Buzz最終=6/24(2h前)status=pass・overlap=100% / 収集品質=legal 7/83(8%)・feeds 8/8健全・must_follow=58・x_valid=259 / 分析構造=morning top10/cat5/action5/fallback0(item83)**。**最優先#0クローズ＝must_follow per-account修正がスケジュール朝便(02:46 JST)でも回復確定**（mf=58/items=83/x_valid=259、修正前mf=8/items=27）＝手動dispatchだけでなく自動便でも有効と確定。**IPWatchdog TODOクローズ**＝6/22〜6/24の朝便とも feeds 8/8健全・failed=0で504再発なし（`ops_backlog.yaml`をitems:[]に）。**新規の注視点＝critical沈黙フィールド初記録(6/24)で critical 10中5が0件**（AnthropicAI/GoogleAI/AIatMeta/huggingface/DarioAmodei）＝総量mf=58は健全だが最重要群が初日から黙り。advisoryは3連続0で発火＝有効化は履歴3件貯まる6/26頃、5件が連続0なら局所断を疑う（次回#0b）。working treeはこのコミットでクリーン。<br>旧: 2026-06-23 追補4（**検知の残る穴（慢性劣化と単一アカウント沈黙）も閉塞＝検知を4層に**。ユーザー「穴を塞いで」。追補3で単日の崩落（崖）はフロアで塞いだが、**フロアの上で続く中規模劣化（じわ減り）と、合計では隠れる単一criticalアカウントの黙りが残穴**だった。対処2点: ①**じわ減り検知（本判定）**＝汚染されない**固定の健全リファレンス**比（`HEALTHY_REF={x_valid:300,items:110,must_follow:80}`・50%未満が`EROSION_STREAK=2`連続で要確認）。相対(中央値比)が劣化追従で盲目になる弱点を固定基準で補う。②**単一criticalアカウント沈黙検知（advisory）**＝`collector.py`がper-account件数を記録→`must_follow_critical_zero`をmain.pyが永続化→daily_checkが3連続ゼロのcritical handleを⚠表示（個人は数日沈黙し得るため非failing）。**検知は4層に**: 絶対フロア(崖/fail)＋じわ減り(傾斜/fail)＋critical沈黙(局所/advisory)＋横断不変テスト(コード取りこぼし/CI fail)。テスト+7=**全150件green**・実データ緑維持・push済み(`2cdc0b1`コード/`7251a49`doc)。**1枚要約はポストモーテム `.cursor/docs/postmortem-2026-06-23-x-collection.md`**（原因/結果/解決策/残リスクを集約）。**残るは確認のみ＝(a)6/24朝便scheduleでmust_follow回復(次回#0) (b)IPWatchdog 6/24クローズ (c)critical沈黙advisoryは履歴3件貯まる6/25頃有効化**。働きツリークリーン。詳細は下「2026-06-23 追補4」節。<br>旧: 2026-06-23 追補3（**なぜ取りこぼし＆検知失敗が起きたかのRCAと恒久対策**。ユーザーの「なぜこの事態になったのか、異常検知がザルだった原因を徹底的に潰せ」という指示。**3層の失敗**だった: ①**コードの取りこぼし**＝6/22の修正が `collect_x_twitter` の2経路(検索/ must_follow)のうち検索だけ直した。②**検知のザル**＝収集品質チェックが全て「直近full中央値比」の相対判定で、劣化が数日続くと**ベースライン自体が劣化値で埋まり崩落値すら平常に見える**（6/23時点のfull便ベースラインが mf[5,6,17,8]・items[7,12,84,27]と汚染され急減判定が一度も発火しなかったことを実データで確認）。③**私の判断ミス**＝総量(x_valid/items)だけ見て経路別に切り分けず"回復"と誤断。**恒久対策**: (a) 収集品質に**経路別の絶対フロア**を本判定として追加(`FULL_X_VALID_FLOOR=120`/`FULL_ITEMS_FLOOR=40`/`FULL_MUST_FOLLOW_FLOOR=25`・full便のみ)＝相対と違い履歴汚染に強く、劣化初日から検知。(b) `x_valid` を収集品質detailに表示し経路別の痩せを目視でも切り分け可能に。(c) **横断不変条件テスト**＝`collect_x_twitter` の全actor呼び出しが `searchTerms` 1語であることを固定（3本目の経路がバッチで足されても即落ちる）。**実ログ再生で過去3障害日(6/21崩落1日目・6/22崩落2日目・6/23 must_follow残バグ)を全て初日から検知・修正後データ(91/82/211)は合格を確認**。テスト全143件green・push済み(`a8dacf3`)。詳細は下「2026-06-23 追補3」節。<br>旧: 2026-06-23 追補2（**X収集の残バグを発見・修正＝must_follow経路が actor仕様変更の巻き添えのまま未修正だった**。ユーザーの「まだ取得件数が少ない気がする」という指摘が起点。朝の#0確認では検索7クエリの回復(39→306)だけ見て"回復"と早合点していたが、**must_follow（必須アカウント）経路は別バグで頭打ち**だった。6/22の障害対応は `collect_x_twitter` の**検索語ループだけ per-query 化し、must_follow バッチ(collector.py:319〜・全30アカウントを1 run・maxItems=30)を直し忘れていた**＝actor新ビルドの「maxItems=合算上限」化で後半アカウントが budget=0 飢餓→must_follow が約1件/アカウントに激減(6/23朝便 `30 profiles=30 tweets`・mf_final=8)。**対処**: ①must_follow も検索側と同型の**アカウント毎1 run**へ修正(`986689c`)＝maxItemsがアカウント毎に効く。回帰テスト2件追加(`XMustFollowPerAccountTests`)・**全134件green**。②**本番検証**(workflow_dispatch run 27979622316・success)＝**must_follow 30→148・X合計 80→211・items 27→91・must_follow_final 8→82**に回復、Apify 37 runs/$0.0000(従量制でコスト不変)。③ライブサイト更新済み・daily_check全項目合格(legal 5/91=5%・feeds 8/8・must_follow=82)。**教訓: 6/22の修正は2経路あるうち1経路だけ直していた。"x_valid"や"items"の総量で回復を判断せず、経路別(検索/ must_follow)に切り分けること。** **次担当の確認＝6/24朝便(schedule)で must_follow も自動で回復するか**(検証は手動dispatchまで・スケジュール起動は未確認)。working treeクリーン。）<br>旧: 2026-06-23（日次チェック実施＝**全項目合格**。最優先#0＝X収集9割減修正の本番自動収集での回復を確認＝成功）。`daily_check.py`1画面: **Actions直近5種success・期待4種cadence内 / Apify=月換算$6.52（窓6/16〜6/22・横ばい合格）/ Gemini=6/23 $0.124・直近4日平均で月約$5.8合格 / Buzz最終=6/22 status=pass・overlap=100% / 収集品質=legal 4/27=15%・feeds 8/8健全・must_follow=8 / 分析構造=morning top10/cat4/action5/fallback0（item27）**。**6/23朝便(03:28 JST・schedule)の核心メトリクス: x_valid=80（崩落時39〜44）・legal_rss=4・must_follow=8・official=4**＝飢餓していた日本語/法務クエリが復活し、**クエリ毎独立run修正がスケジュール起動でも有効と確定**（手動本番テストだけでなく自動便でも回復）。「収集量急減」advisoryは沈黙＝健全。**法務一色化の赤(6/22=54%)は解消(15%)**＝6/22の取り直しによる一過性バックログ放出と確定。**JURIST修正が初反映＝feeds 8/8健全(6/22は7/8)**でJURIST TODOをクローズ（ops_backlogから削除）。IPWatchdogも failed=0（6/22・6/23連続）＝再発なしなら6/24クローズ。**残バックログ1件(IPWatchdog監視・6/24クローズ予定)。working treeはこのコミットでクリーン。** 旧: 2026-06-22 追補（**X収集の9割減を障害対応＝原因はApify actorの外部仕様変更**。ユーザーの「収集推移グラフが6/21からガクッと減っている」という指摘から発覚。`xquik/x-tweet-scraper` が新ビルド(`tVcWiwAfiLajn6Qbb`→`aw35GGxixnBFEFrJj`)で **maxItems の意味を「検索語ごとの上限」→「全searchTerms合算の上限」に変更**したため、7クエリを1 runにまとめていた旧実装で先頭の英語クエリが150枠を食い潰し、**日本語・法務クエリが0件に飢餓→収集 95→7〜12件(約9割減)が6/21〜22の2日連続**。こちらのコードは無変更＝外部由来の回帰。**対処3点**: ①`collector.py` を**クエリ毎の独立run**(1 run=1 searchTerm)へ変更＝maxItemsが必ずクエリ毎に効き、actorの解釈変更に今後も依存しない。従量課金($0.00015/件)のため総取得数が同じならコスト不変。回帰防止テスト2件追加(`15f3174`)。②**本番検証**＝fixブランチで実走し**X取得 44→251件**・日本語/法務クエリ復活を確認(run 27921710038)。③mainへマージ後、今日の薄い収集(12件)を**取り直して保存**＝items 12→84・legal 1→45・must_follow 6→17(本番 run 27930859349・data `f6706cf`・ライブサイト更新済み)。**+再発防止**＝`daily_check.py` に「収集量急減」検知(advisory)を追加。今回9割減が「法務一色化」「must_follow連続ゼロ」のどれにも該当せず**daily_checkをすり抜けた盲点**を塞ぐ＝full便の`items_collected`が直近full中央値の50%未満で⚠。当面advisory(合否=exit code非影響)・full履歴4件貯まるまで沈黙・テスト3件(`158eadf`)。**全テスト132件green・全push済み・working treeクリーン。** **次担当の最注目＝6/23朝便で本番自動収集も正常量(~95件)に戻るか＋"法務一色化54%"の一過性(6/22取り直しで法務45件が一時流入したため)が解消するかを確認**。完全ログは下「2026-06-22 追補」節（A=時系列, B=原因, C=修正, D=本番検証, E=再発防止, F=コミット台帳, G=次担当者へ）。）<br>旧: 2026-06-22（日次チェック実施＝**全項目合格**。`git pull --rebase`で6/22朝便を取得後、`daily_check.py`1画面で確認: **Actions直近5種success・期待4種cadence内 / Apify=月換算$8.35（窓6/15〜6/21・横ばい合格）/ Gemini=6/22 $0.097・直近4日平均で月約$6.1合格 / Buzz最終行=6/22（2h前）status=pass・overlap=95% / 収集品質=legal_rss=1/12・feeds 7/8健全・must_follow=6 / 分析構造=morning top4/cat4/action4/fallback0（item12）**。**今日の重点＝改善Bロールアウト確認＝成功**: 6/21実装の法務RSSフィード健全性計測が6/22(月)朝便で初反映され、収集品質項目に `feeds 7/8健全` が初表示（8フィード中1つfailed＝既知のIPWatchdog 504/JURIST空のいずれか・ops_backlog管理済み・警告閾値未満で合格）。月曜便のBuzz収集(02:10)も正常稼働しoverlap=95%。改善A（must_follow急減検知）はfull便履歴4件目が入る6/24(水)朝便まで沈黙が正常（現在2件目）。**+追加対応＝JURIST死URL修正**: 「他に気になる点」点検で、改善Bの非健全1枠＝JURISTの設定URL `https://www.jurist.org/feed/` が**HTTP200だが空スタブ(0件)の死URL**と特定、実フィード `https://www.jurist.org/news/feed/`（15件・最新6/21確認）へ修正＝6/23朝便で `feeds 8/8健全` になれば反映確認。IPWatchdog 504は6/22自己回復＝一過性確定。残バックログはTODOフッタで可視化中。**+法務Xクエリ追加を見送り削除（4→3件）。+GH_PAT根本対応を完全クローズ**＝中継Worker `workers/buzz-dispatch/` を新設→Cloudflareへデプロイ（`https://buzz-dispatch.imokonoai.workers.dev`）→新fine-grained PAT（当該repo Actions:RW・最小権限）をCloudflareダッシュボードのsecretに格納→実テスト（`taziku_co`でWorker経由POST→`{"ok":true}`→Buzz Ranking Collector が `workflow_dispatch` で実起動 run 27916723224）まで確認。**PATは公開buzz.htmlから消え（ghp_=0）金庫のみに存在＝事故解消・「収集起動」ボタンも復活**（テスト全127件OK）。**これでバックログは2件（JURIST反映待ち6/23・IPWatchdog監視6/24）＝どちらも手当て済みで待つだけ。** **全push済み・working treeクリーン。完全ログは下「2026-06-22」節（A=結果, B=確認点, C=JURIST修正, F=GH_PAT根本対応, D=次担当者へ, E=コミット台帳）。**）<br>旧: 2026-06-21（日次チェック実施＝**全項目合格**。`daily_check.py`1画面で確認（改善C後の最終形）: **Actions直近5種success・期待4種cadence内 / Apify=月換算$9.17（窓6/14〜6/20・横ばい合格）/ Gemini=6/21 $0.127・直近4日平均で月約$6.7合格 / Buzz最終行=6/19 status=pass・overlap=90% / 分析構造=正常 / 収集品質=legal_rss=0/7・must_follow=5**（セッション開始04:20時点は改善前の4項目＝下A-1、終了時は6項目＝下A-2）。**今日の重点＝変更1ロールアウト確認＝6/20 F節①クローズ**: 6/20実装の `main.py` 永続化が6/21朝便で初反映され、`daily_check.py` の「収集品質」項目が**「記録なし」→実値（legal_rss=0/7・must_follow=5）**に切替＝予定どおり。Buzz Health Checkは6/18から連続success。**+改善A実装＝daily_check.py に must_follow急減検知を追加（full便のみ比較・履歴3件貯まるまで沈黙・テスト全105件green）**: official深掘りで判明した本命＝朝便収集量のサイレント縮小（6/20→6/21で total 95→7・must_follow 85→5）を捕まえる。official単独アラートはベースライン1点で時期尚早のため見送り（記録のみ継続）。**+改善B実装＝法務RSSのフィード健全性計測（collector+main+daily_check, テスト全108件green）**: feedparserは404/504/空でも例外を投げず legal=0 の原因が区別できなかったのを、feed単位の生entries/HTTP statusで `feeds ok/failed` を測り「全フィード盲目=取得失敗の疑い」を検知。実測で **IPWatchdog=504/JURIST=空** を発見＝今日の legal=0 は「新着なし（フィード健全）」と確定。**+改善C実装＝Actions鮮度チェック（daily_check, テスト全114件green）**: `check_actions` が gh窓に出た範囲のfailureしか見ず**ワークフローのサイレント停止に盲目**だった（実際6/21は月水金の Buzz Ranking Collector が窓から漏れ「直近4種success」に不可視）。期待スケジュール4種＋最大許容age（週末ギャップ込み）を定義し**不在/stale検知**を追加＝出力 `直近5種success・期待4種cadence内`。**+改善D実装＝未了TODOを日次チェック末尾に表示（`ops_backlog.yaml`新設, テスト全119件green）**: 未了宿題がhandoffに埋もれ塩漬けになるのを防ぐため、合否サマリの下に `📋 未了TODO N件` を古い順（経過日数つき・合否非影響）で常時可視化。残バックログ4点(法務Xクエリ/GH_PAT根本対応/IPWatchdog504/JURIST空)はこの ops_backlog.yaml で管理。**+改善E実装＝分析構造チェック（daily_check, テスト全127件green）**: 分析JSONの構造完全性(top/cat/action/fallback)の手動確認を自動化。件数の多寡は見ず**構造的失敗のみ**（fallback非空/top0/cat0/action0）を判定＝低ニュース日を誤検知しない。**本セッションは日次チェック（全項目合格）＋改善5点(A〜E)を実装、daily_checkは6項目に拡張、コミット13件（引き継ぎ整備・整合修正含む）・全push済み・テスト全127件green・working treeクリーン**。**改善の有効化時期に注意: C/D/Eは本日すでに稼働確認済み、Bは6/22朝便でロールアウト、Aはfull履歴4件目が入る6/24以降に初有効化（それまで沈黙が正常）。** 完全ログは下「2026-06-21」節（A=チェック, E=改善A, F=改善B, G=改善C, H=改善D, I=改善E, K=コミット台帳）。）<br>旧: 2026-06-20（日次チェック実施＝**全項目合格**。`daily_check.py`を実運用初投入し1画面で確認: **Actions直近4種すべてsuccess / Apify=月換算$9.67（窓6/13〜6/19・横ばい合格）/ Gemini=6/20 $0.247・直近4日平均で月約$8.1合格 / Buzz最終行=6/19 status=pass・overlap=90%**。**改善1の挙動を実データで確認＝6/19 F節①クローズ**: Buzz Daily Health Check の6/20分(run 27845632239, 6/20 04:53 JST)が`--staleness-only`で**success**＝土曜の収集なし日でもwarning落ちしない。6/16・6/17のfailure以降6/18から3連続success。Buzzメトリクス最終行は6/19のまま＝土曜は収集なし(月水金)で設計どおり。兄弟エラーメールなし。**+同セッションで改善1点を実装＝daily_check.py に収集品質2点(法務一色化・must_follow連続ゼロ)を追加（commit 4b59b19, テスト全101件green。main.pyで legal_rss_count/must_follow_count を data/logs に永続化＝次回収集6/21朝便から実値判定）。+index「規制/政策」目視確認をクローズ（commit 5baf2c3＝6/15からの積み残し。法務RSS反映をHTML直接確認）**。残バックログは2点のみ(法務Xクエリ追加・GH_PAT根本対応、いずれも緊急性なし)。**本セッションのコミットは 7b83a40→4b59b19→5baf2c3 の3件・全push済み・working treeクリーン。完全ログは下「2026-06-20」節 A〜G（特にG＝コミット台帳）。**）<br>旧: 2026-06-19（日次チェック実施。**Buzz Health Check の green復帰をデータで確定**＝6/19 03:13 JSTの新コード収集が `guardrail_status="pass"`（overlap=90%≥閾値75、retention=55%は判定不使用）を書き込み。ヘルスチェックAction（例年04:56〜05:18 JST発火）はこのpass行を読んでgreenになる＝項目7クローズ。**Apify=月$9.59横ばい合格 / Gemini=$0.21〜0.35/日（月約$7〜8）合格 / News朝便・Money・Buzz Ranking・pages全success / 兄弟エラーメールなし**。手動収集は見送りで自己回復どおり。**+同セッションで運用改善3点を実装（commit eb2c8da, テスト全95件green）＝①Buzz Health重複アラート解消[品質判定をbuzz-collect収集直後へ移動＋日次cronは--staleness-only] ②コスト窓フロア焼き込み[plan.measurement.start_date=6/11] ③daily_check.py新設[合否1画面]**。さらに誤コミットしたSDK試用ファイル2点を追跡解除（commit 87a189a, .gitignore済み）。詳細は下「2026-06-19」節（特にE/F/G）。自動ルーティン `trig_01YStz3sHazvZCi6Ktkt7fYa`(05:00 JST)は項目7を手動で先に確定したため冗長＝放置でauto-disable。）<br>旧: 2026-06-18（日次チェック実施。**Apify=月$9.60横ばい合格 / Gemini=直近$0.22〜0.28/日で月約$7〜8合格 / 他Actions全success**。唯一 **Buzz Daily Health Check が6/18も失敗だが想定どおり＝バグではない**：ヘルスチェックはstaleなメトリクス最終行(6/17収集・旧コードのwarning)を読むだけで再計算しない。修正b37951cは正しく（テスト12件OK再確認）、次回buzz-collect=6/19 02:10(金)が新コードでpass行を書けば6/19 04:15のヘルスチェックでgreen復帰見込み。手動収集は見送り＝自己回復を待つ。**+6/19 05:00 JSTに green復帰を自動判定するクラウドルーティン(`trig_01YStz3sHazvZCi6Ktkt7fYa`)をセット済み＝success時はこのファイルを自動でcommit/push更新する**。詳細は下「2026-06-18」節(特にE)と次回アクション#7。）<br>旧: 2026-06-17（全項目正常。Apify=施策後窓6/11〜で月$9.60横ばい合格 / Gemini=6/14以降Flash化で月約$7.8 / 2系統計≈$17.4月 / Buzz full=retention95%・overlap100% / 品質=最新便まで劣化なし / 残監視2点クリア。※check_cost.pyの窓に施策前6/10を混ぜると$11.17に誤膨張する点に注意＝下B節。**+夜にBuzz Daily Health Checkの初失敗(6/17 05:18 JST)を対応＝データ欠落ではなく品質ガードレールの誤アラート。判定をranking_overlap単独に変更しコミット/push済み（b37951c）＝下「2026-06-17 夜」節**）
+
+## 2026-07-02：日次運用チェック・機能チェック・critical沈黙advisoryの判断
+
+> このセッションでやったこと:
+> 1. ユーザー依頼「今日のチェック」で、最新remoteデータを取り込んで日次運用チェックを実施。
+> 2. 機能チェック（pytest・構文・CSS漏れ・Buzz staleness）を実施。
+> 3. `criticalアカウント沈黙3連続` advisory を切り分け、現時点では障害扱いせず運用継続と判断。
+> 4. 前回07-01の未コミット差分（`.cursor/*`）を含めて本コミットで記録。
+
+### A. 事前状態と同期
+
+- 作業開始時のブランチ: `main`
+- 作業開始時の `git status --short`: `.cursor/STATUS.md` / `.cursor/docs/handoff.md` に M（＝前回07-01セッションの更新が未コミットのまま残置。差分内容は07-01分で妥当だったため破棄せず本コミットに含めた）。
+- `git pull --ff-only`: `08cedfd..（07-02朝便）` まで fast-forward。取得物に `data/analysis/2026-07-02_morning.json` / `data/analysis/2026-07-01_evening.json` / `data/daily/2026-07-02.jsonl` / `data/logs/2026-07-02.jsonl` / 各生成HTML等。
+- 残置stash 2件は従来どおり（`pre-reset-stash` / `WIP ... 305c92a`）＝本件と無関係で放置。
+
+### B. 日次運用チェック
+
+```bash
+python3 daily_check.py --days 7
+```
+
+結果: **exit 0 / 全項目合格**
+
+```text
+日次チェック  2026-07-02 03:58 JST
+✅ GitHub Actions: 直近6種success・期待5種cadence内
+✅ Apify: 月換算 $0.61（窓 2026-06-25〜2026-07-01・上限 $12・on_target）
+✅ Gemini: 2026-07-02 $0.161/日・直近7日平均で月換算 $7.3
+✅ Buzz: 最終 2026-07-01（26h前）・status=pass・overlap=100.0%
+✅ 収集品質: legal_rss=4/136（3%）・feeds 8/8健全・must_follow=131・x_valid=299
+   ⚠ criticalアカウント沈黙3連続: DarioAmodei, MistralAI（ハンドル変更/収集断の疑い）
+✅ 分析構造: morning top=10/cat=6/action=5/fallback=0（item=136）
+✅ 全項目合格
+```
+
+### C. 機能チェック
+
+```bash
+python3 -m py_compile *.py scripts/*.py .github/scripts/*.py   # OK
+python3 scripts/check_incident_css_leak.py                     # OK
+python3 scripts/check_buzz_health.py --staleness-only          # overlap=100.0% cost=$0.0028
+.venv/bin/python -m pytest                                     # 149 passed, 1 warning, 17 subtests
+```
+
+- `python3 -m pytest`（system）は pytest 未インストールで失敗＝`.venv/bin/python -m pytest` を使うこと。
+- warning は `google/genai/types.py` の DeprecationWarning 1件のみ（機能判断に影響なし）。
+
+### D. critical沈黙advisoryの切り分け
+
+full朝便の `must_follow_critical_zero` 推移（items>40のfull便）:
+
+```text
+2026-07-01 items 104 mf 97  x_valid 234 zero=OpenAI,AnthropicAI,GoogleDeepMind,GoogleAI,MistralAI,sama,DarioAmodei
+2026-07-02 items 136 mf 131 x_valid 299 zero=MistralAI,sama,DarioAmodei
+```
+
+判断:
+
+- daily_check の advisory は `DarioAmodei` / `MistralAI`（3連続ゼロ）。`sama` は連続2日で未発火。
+- **昨日3連続だった `GoogleAI` / `GoogleDeepMind` は今日ゼロ集合から脱落＝回復**。advisoryは4→2件に縮小。
+- 総量は `mf=131` / `x_valid=299` / `items=136` と全フロア（mf25/xv120/items40）を大きく上回る＝収集経路の構造障害ではなく、個別アカウントの窓内無投稿ノイズ。
+
+次回（2026-07-03）の判断基準:
+
+- advisory が `DarioAmodei` / `MistralAI` で継続し、かつ総量が健全なら「注視」継続でよい。
+- `must_follow < 25` / `x_valid < 120` / `items < 40` のいずれかに落ちたら収集経路障害として即調査。
+- 個別確認する場合は対象ハンドル（`DarioAmodei` / `MistralAI`）の X上の実投稿有無・ハンドル変更・Apify個別run結果を確認。
+
+### E. その他の懸念確認
+
+- `ops_backlog.yaml`: `items: []`。未了TODOなし。
+- Apify月換算 `$0.61` は低いが収集量が正常（items=136）なので問題扱いしない。「低コスト×件数急減」に変わった場合のみ注意。
+
+### F. 結論
+
+- 今日の本番運用は継続OK。追加修正・手動再収集・workflow dispatch 不要。
+- 明日の主確認点は `criticalアカウント沈黙`（DarioAmodei / MistralAI）の継続有無のみ。
+
+## 2026-07-01：日次運用チェック・機能チェック・critical沈黙advisoryの判断
+
+> このセッションでやったこと:
+> 1. ユーザー依頼「今日のチェック」で、最新remoteデータを取り込んで日次運用チェックを実施。
+> 2. 追加確認として、機能チェック（pytest・構文・CSS漏れ・Buzz staleness）を実施。
+> 3. `criticalアカウント沈黙3連続` advisory を切り分け、現時点では障害扱いせず運用継続と判断。
+> 4. 未了TODO・作業ツリー・コストの残懸念を確認し、他の大きな懸念なしと判断。
+
+### A. 事前状態と同期
+
+- 作業開始時のブランチ: `main`
+- 作業開始時の `git status --short`: 空
+- `git pull --ff-only` 実行:
+  - `08cedfd..fe49bc9  main -> origin/main`
+  - `data/analysis/2026-07-01_morning.json`
+  - `data/daily/2026-07-01.jsonl`
+  - `data/logs/2026-07-01.jsonl`
+  - `docs/diagrams/2026-07-01-morning.*`
+  - `docs/index.html` / `docs/home.html` / `docs/tools.html` など最新生成物を取得
+
+### B. 日次運用チェック
+
+実行コマンド:
+
+```bash
+python3 daily_check.py --days 7
+```
+
+結果: **exit 0 / 全項目合格**
+
+```text
+日次チェック  2026-07-01 05:00 JST
+✅ GitHub Actions: 直近6種success・期待5種cadence内
+✅ Apify: 月換算 $0.59（窓 2026-06-24〜2026-06-30・上限 $12・on_target）
+✅ Gemini: 2026-07-01 $0.160/日・直近7日平均で月換算 $7.3
+✅ Buzz: 最終 2026-07-01（3h前）・status=pass・overlap=100.0%
+✅ 収集品質: legal_rss=7/104（7%）・feeds 8/8健全・must_follow=97・x_valid=234
+   ⚠ criticalアカウント沈黙3連続: DarioAmodei, GoogleAI, GoogleDeepMind, MistralAI
+✅ 分析構造: morning top=10/cat=6/action=5/fallback=0（item=104）
+✅ 全項目合格
+```
+
+判断:
+
+- Actions / Apify / Gemini / Buzz / 収集品質 / 分析構造はすべて合格。
+- `criticalアカウント沈黙3連続` は advisory で、exit code には影響しない。
+- 今日の総量は `items=104`, `must_follow=97`, `x_valid=234` と健全。収集経路全体の障害ではない。
+
+### C. 機能チェック
+
+実行コマンドと結果:
+
+```bash
+python3 -m py_compile *.py scripts/*.py .github/scripts/*.py
+# OK
+
+python3 scripts/check_incident_css_leak.py
+# OK: incident CSS leak not found in docs/*.html
+
+python3 scripts/check_buzz_health.py --staleness-only
+# profile=full / fetched=100 / new=5 / retained=119 / ranking_overlap=100.0% / cost=$0.0028
+
+.venv/bin/python -m pytest
+# 149 passed, 1 warning in 0.67s
+```
+
+注意:
+
+- `python3 -m pytest` は `/opt/homebrew/opt/python@3.14/bin/python3.14: No module named pytest` で失敗。
+- このrepoでは `.venv/bin/python -m pytest` を使うこと。
+- pytest warning は `google/genai/types.py` の DeprecationWarning 1件のみで、現時点の機能判断には影響なし。
+
+### D. critical沈黙advisoryの切り分け
+
+full朝便だけに絞った `must_follow_critical_zero` 推移:
+
+```text
+2026-06-24 02:46 JST items 83  mf 58  x_valid 259 zero=AnthropicAI,GoogleAI,AIatMeta,huggingface,DarioAmodei
+2026-06-25 04:52 JST items 96  mf 77  x_valid 177 zero=AnthropicAI,GoogleAI,AIatMeta,huggingface,DarioAmodei
+2026-06-26 03:03 JST items 82  mf 74  x_valid 179 zero=GoogleAI,AIatMeta,sama,DarioAmodei
+2026-06-27 02:46 JST items 236 mf 79  x_valid 441 zero=GoogleAI,AIatMeta,MistralAI,sama,DarioAmodei
+2026-06-28 02:35 JST items 89  mf 79  x_valid 190 zero=GoogleAI,AIatMeta,MistralAI,DarioAmodei
+2026-06-29 00:46 JST items 193 mf 53  x_valid 458 zero=GoogleDeepMind,GoogleAI,AIatMeta,huggingface,MistralAI,xai,DarioAmodei
+2026-06-30 01:34 JST items 119 mf 109 x_valid 196 zero=OpenAI,GoogleDeepMind,GoogleAI,MistralAI,xai,DarioAmodei
+2026-07-01 01:10 JST items 104 mf 97  x_valid 234 zero=OpenAI,AnthropicAI,GoogleDeepMind,GoogleAI,MistralAI,sama,DarioAmodei
+```
+
+判断:
+
+- `GoogleAI`, `DarioAmodei` は長めに0が続いている。
+- `GoogleDeepMind`, `MistralAI` は直近3連続で advisory 対象。
+- 一方、`must_follow` 合計と `x_valid` は正常域。per-account run の構造崩壊や全体の飢餓ではない。
+- 現時点では「個別アカウントの無投稿、検索窓、ハンドル変更、またはApify側の個別取得ゆらぎ」を注視する段階。
+
+次回の判断基準:
+
+- 2026-07-02 も advisory が継続し、かつ総量が健全なら、まだ「注視」でよい。
+- `must_follow < 25`、`x_valid < 120`、`items < 40` のいずれかに落ちたら、収集経路障害として即調査。
+- 個別確認する場合は、対象ハンドル（特に `GoogleAI`, `GoogleDeepMind`, `MistralAI`, `DarioAmodei`）について、X上の実投稿有無・ハンドル変更・Apify個別run結果を確認する。
+
+### E. その他の懸念確認
+
+- `ops_backlog.yaml`: `items: []`。未了TODOなし。
+- `git status --short`: 本ログ記録前は空。ローカル未整理差分なし。
+- `data/cost_tracking.json` 直近:
+  - 2026-07-01 total `$0.019`
+  - collect `$0.003`
+  - money `$0.0132`
+  - buzz `$0.0028`
+- Apify月換算 `$0.59` はかなり低いが、収集量が正常なので現時点では問題扱いしない。今後「低コストかつ件数急減」に変わった場合だけ注意。
+
+### F. 結論
+
+- 今日の本番運用は継続OK。
+- 追加修正・手動再収集・workflow dispatch は不要。
+- 明日の主確認点は `criticalアカウント沈黙` の継続有無のみ。
+- それ以外の未了宿題、コストスパイク、テスト失敗、CSS漏れ、Buzz途絶はなし。
 
 ## 2026-06-25：朝便CI timeout対応・手動補完・再発防止・ローカル整理
 

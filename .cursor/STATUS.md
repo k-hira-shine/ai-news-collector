@@ -1,6 +1,19 @@
 # ai-news-collector 現状整理
 
-最終更新: 2026-06-11
+最終更新: 2026-07-02
+
+> 2026-07-02 の最新状況:
+> `git pull --ff-only` で `origin/main` を 07-02 朝便まで同期済み。
+> `python3 daily_check.py --days 7` は全項目合格(exit 0)。
+> 機能チェックも合格: `.venv/bin/python -m pytest` は 149 passed / 1 warning、
+> `py_compile` OK、`scripts/check_incident_css_leak.py` OK、
+> `scripts/check_buzz_health.py --staleness-only` OK。
+> 未了TODOは `ops_backlog.yaml` が `items: []`。本番運用継続OK。
+> 唯一の注視点は `criticalアカウント沈黙3連続` advisory＝今日は `DarioAmodei / MistralAI`
+> の2件（昨日の `GoogleAI / GoogleDeepMind` は回復し脱落＝縮小）。
+> ただし `items=136` / `must_follow=131` / `x_valid=299` と総量は健全なので、
+> 障害扱いせず翌日も継続確認する。詳細は `.cursor/docs/handoff.md` の
+> 「2026-07-02」節。
 
 > Gemini活用法バズ調査を再開する場合は、最初に
 > `.cursor/docs/gemini-buzz-research-log.md` を参照する。
