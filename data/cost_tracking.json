@@ -35,27 +35,27 @@
     "note": "情報取得を停止せず、重複取得と過剰な再取得だけを削減した場合の概算"
   },
   "latest": {
-    "date": "2026-07-01",
+    "date": "2026-07-02",
     "workflows": {
-      "collect": 0.004,
-      "money": 0.0132,
-      "buzz": 0.0028
+      "collect": 0.0,
+      "money": 0.0,
+      "buzz": 0.0
     },
     "items_collected": {
-      "collect": 142,
-      "money": 145,
-      "buzz": 100
+      "collect": 136,
+      "money": 0,
+      "buzz": 0
     },
-    "total_usd": 0.02
+    "total_usd": 0.0
   },
   "rolling": {
     "days": 7,
     "window": 7,
-    "start_date": "2026-06-24",
-    "end_date": "2026-06-30",
-    "average_daily_usd": 0.0196,
-    "monthly_projection_usd": 0.59,
-    "reduction_vs_baseline_pct": 97.5,
+    "start_date": "2026-06-25",
+    "end_date": "2026-07-01",
+    "average_daily_usd": 0.0204,
+    "monthly_projection_usd": 0.61,
+    "reduction_vs_baseline_pct": 97.4,
     "status": "on_target"
   },
   "daily": [
@@ -352,6 +352,20 @@
         "buzz": 100
       },
       "total_usd": 0.02
+    },
+    {
+      "date": "2026-07-02",
+      "workflows": {
+        "collect": 0.0,
+        "money": 0.0,
+        "buzz": 0.0
+      },
+      "items_collected": {
+        "collect": 136,
+        "money": 0,
+        "buzz": 0
+      },
+      "total_usd": 0.0
     }
   ]
 }
