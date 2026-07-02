@@ -227,6 +227,21 @@ def detect_anomalies(stats: dict[str, Any], config: dict[str, Any]) -> list[dict
             ),
         })
 
+    # ── HTML 生成関連 ──────────────────────────────────────────────────
+    # publish 対象ページの生成失敗は、Actions が success でもサイトが古い/空のまま
+    # 公開される silent failure になるため critical として扱う。
+    for err in stats.get("html_generation_errors") or []:
+        page = (err.get("page") or "ページ").strip()
+        message = (err.get("error") or "")[:300]
+        detail = f"{page} のHTML生成に失敗。既存ページが古い/空のまま公開される可能性。"
+        if message:
+            detail += f"\nError: {message}"
+        alerts.append({
+            "severity": "critical",
+            "title": f"{page} HTML 生成失敗",
+            "detail": detail,
+        })
+
     # 月間予算はエラー扱いにしない（check_cost.py の通算表示のみ）
 
     return alerts
