@@ -36,6 +36,12 @@ def _record_html_generation_error(
     logger.warning("ALERT [%s] %s — %s", anomaly["severity"], anomaly["title"], anomaly["detail"])
 
 
+def _status_for_anomalies(anomalies: list[dict[str, str]]) -> str:
+    if any(a.get("severity") == "critical" for a in anomalies):
+        return "error"
+    return "warning" if anomalies else "success"
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="AI News Collector")
     parser.add_argument("--dry-run", action="store_true", help="Collect only, skip analysis/notification")
@@ -111,7 +117,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
 
     if args.dry_run:
         logger.info("Dry run — skipping analysis and notification")
-        log_status = "warning" if anomalies else "success"
+        log_status = _status_for_anomalies(anomalies)
         error_msg = "; ".join(a["title"] for a in anomalies) if anomalies else ""
         write_run_status(
             "collect",
@@ -330,7 +336,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
     status_icon = "⚠️" if anomalies else "✅"
     logger.info("%s AI News Collector 完了 (%ds, %d件収集)", status_icon, int(elapsed), stats["total"])
 
-    log_status = "warning" if anomalies else "success"
+    log_status = _status_for_anomalies(anomalies)
     error_msg = "; ".join(a["title"] for a in anomalies) if anomalies else ""
     log_run(
         "collect",
