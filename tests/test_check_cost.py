@@ -60,6 +60,33 @@ class CheckCostTests(unittest.TestCase):
         self.assertEqual(tracking["rolling"]["days"], 1)
         self.assertEqual(tracking["rolling"]["average_daily_usd"], 0.2)
 
+    def test_build_tracking_adds_gemini_without_polluting_apify(self) -> None:
+        records = [
+            {"date": "2026-06-11", "workflow": "collect", "apify_cost_usd": 0.3},
+            {"date": "2026-06-12", "workflow": "collect", "apify_cost_usd": 0.3},
+        ]
+        plan = {
+            "implementation_date": "2026-06-10",
+            "baseline": {"daily_usd": 0.8},
+            "projected_after": {"daily_usd": 0.3, "range_daily_usd": {"max": 0.4}},
+            "measurement": {"rolling_average_days": 7, "start_date": "2026-06-11"},
+        }
+        gemini_daily = {"2026-06-11": 0.2, "2026-06-12": 0.2}
+
+        tracking = build_tracking(records, plan, gemini_daily=gemini_daily)
+        rolling = tracking["rolling"]
+
+        # Apify 専用フィールドは Gemini を混ぜない（daily_check.check_apify が依存）。
+        self.assertEqual(rolling["average_daily_usd"], 0.3)
+        self.assertEqual(rolling["monthly_projection_usd"], 9.0)
+        self.assertEqual(tracking["daily"][-1]["total_usd"], 0.3)
+        # Gemini / 合算は別枠で追加される。
+        self.assertEqual(tracking["daily"][-1]["gemini_usd"], 0.2)
+        self.assertEqual(tracking["daily"][-1]["combined_total_usd"], 0.5)
+        self.assertEqual(rolling["gemini_average_daily_usd"], 0.2)
+        self.assertEqual(rolling["combined_average_daily_usd"], 0.5)
+        self.assertEqual(rolling["combined_monthly_projection_usd"], 15.0)
+
     def test_measurement_start_date_floors_window_over_implementation_date(self) -> None:
         # 施策日(6/10)は汚染日のため、measurement.start_date(6/11)を窓フロアに優先する。
         records = [

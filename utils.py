@@ -17,6 +17,32 @@ def setup_logging(level=logging.INFO) -> logging.Logger:
     return logging.getLogger("ai-news")
 
 
+# Apify は取得件数従量課金（約 $0.00015/件）のため、config.yaml の maxItems 系設定を
+# タイプミスで一桁増やすだけでコストが暴走しうる。読み込み時にハードキャップで頭打ちし、
+# 超過時は警告ログを出す（実運用を落とさないよう例外ではなくクランプ）。
+MAX_ITEMS_HARD_CAP = 500
+
+
+def clamp_max_items(value, name: str = "maxItems", cap: int = MAX_ITEMS_HARD_CAP) -> int:
+    """Apify maxItems 系設定を安全域にクランプする。設定ミス・コスト暴走の歯止め。"""
+    logger = logging.getLogger("ai-news")
+    try:
+        v = int(value)
+    except (TypeError, ValueError):
+        logger.warning("clamp_max_items: %s=%r is not an int; using cap %d", name, value, cap)
+        return cap
+    if v < 0:
+        logger.warning("clamp_max_items: %s=%d is negative; using 0", name, v)
+        return 0
+    if v > cap:
+        logger.warning(
+            "clamp_max_items: %s=%d exceeds hard cap %d; clamping (config error / cost guard)",
+            name, v, cap,
+        )
+        return cap
+    return v
+
+
 def retry(max_retries=3, base_delay=2, max_delay=30, exceptions=(Exception,)):
     """Exponential backoff リトライデコレータ（ジッター付き）"""
 

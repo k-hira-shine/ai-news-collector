@@ -7,7 +7,7 @@ from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 
 from collector import _normalize_tweet
-from utils import apify_actor_call, apify_run_get, data_dir
+from utils import apify_actor_call, apify_run_get, clamp_max_items, data_dir
 
 logger = logging.getLogger("ai-news.account_collector")
 
@@ -73,7 +73,7 @@ def collect_shared_accounts(config: dict, accounts: list[dict]) -> tuple[list[di
     settings = config.get("shared_account_collection", {})
     overlap_days = max(1, int(settings.get("overlap_days", 2)))
     initial_days = max(overlap_days, int(settings.get("initial_lookback_days", 365)))
-    max_items = int(settings.get("max_items_per_account", 100))
+    max_items = clamp_max_items(settings.get("max_items_per_account", 100), "shared_account_collection.max_items_per_account")
     actor_id = config.get("x_twitter", {}).get("apify_actor", "xquik/x-tweet-scraper")
     state = _load_state()
     account_state = state.setdefault("accounts", {})

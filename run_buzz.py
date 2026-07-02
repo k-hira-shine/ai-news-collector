@@ -21,6 +21,8 @@ from pathlib import Path
 
 import yaml
 
+from utils import clamp_max_items
+
 BASE = Path(__file__).parent
 BUZZ_JSON = BASE / "data" / "buzz.json"
 BUZZ_METRICS_JSONL = BASE / "data" / "buzz_collection_metrics.jsonl"
@@ -64,10 +66,11 @@ def resolve_collection_settings(
         resolved_profile = "full"
     settings = profiles.get(resolved_profile, FULL_PROFILE)
     days = days_override if days_override is not None else int(settings.get("days", FULL_PROFILE["days"]))
-    max_items = (
+    max_items = clamp_max_items(
         max_items_override
         if max_items_override is not None
-        else int(settings.get("max_items", FULL_PROFILE["max_items"]))
+        else settings.get("max_items", FULL_PROFILE["max_items"]),
+        "buzz_collection.max_items",
     )
     retention_days = int(collection.get("retention_days", DEFAULT_RETENTION_DAYS))
     return resolved_profile, days, max_items, retention_days

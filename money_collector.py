@@ -9,7 +9,7 @@ import os
 from datetime import date, datetime, timezone
 
 from collector import _normalize_tweet
-from utils import apify_actor_call, apify_run_get, data_dir, today_str
+from utils import apify_actor_call, apify_run_get, clamp_max_items, data_dir, today_str
 
 logger = logging.getLogger("ai-news.money_collector")
 
@@ -49,7 +49,7 @@ def collect_money_cases(
 
     accounts = money_cfg.get("accounts", [{"handle": "fiction_log", "label": "ろじん|Levela CXO"}])
     search_queries = money_cfg.get("search_queries", [])
-    max_items_per_query = money_cfg.get("max_items_per_query", 100)
+    max_items_per_query = clamp_max_items(money_cfg.get("max_items_per_query", 100), "money.max_items_per_query")
     search_interval_days = max(1, int(money_cfg.get("search_interval_days", 1)))
 
     import threading
