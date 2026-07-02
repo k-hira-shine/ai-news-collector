@@ -188,7 +188,7 @@ def resolve_incident_for_write(
                 return existing
             return generic
 
-    if clear_on_success and workflow == "collect" and status == "success":
+    if clear_on_success and status == "success":
         return None
 
     if _active_incident(existing):
@@ -225,7 +225,7 @@ def merge_incident_into_run_status(
             **incident,
             "workflow": incident.get("workflow") or workflow,
         }
-    elif clear_on_success and workflow == "collect" and status == "success":
+    elif clear_on_success and status == "success":
         existing.pop("incident", None)
     return existing
 
