@@ -8,6 +8,7 @@
   4. Buzz メトリクス最終行の鮮度と guardrail
   5. 収集品質（法務一色化・must_follow連続ゼロ・must_follow急減。data/logs の collect 行から）
   6. 分析構造（top/cat/action/fallback の構造完全性。data/analysis の最新便から）
+  7. run_status（サイトのバナー源 docs/run_status.json。overall=error/critical incident を運用側でも検知）
 
 使い方:
   python3 daily_check.py            # サマリ表示
@@ -29,6 +30,7 @@ BASE = Path(__file__).resolve().parent
 GEMINI_USAGE_DIR = BASE / "data" / "gemini_usage"
 LOGS_DIR = BASE / "data" / "logs"
 ANALYSIS_DIR = BASE / "data" / "analysis"
+RUN_STATUS_PATH = BASE / "docs" / "run_status.json"
 BACKLOG_PATH = BASE / "ops_backlog.yaml"
 _SLOT_ORDER = {"morning": 0, "evening": 1}  # 同日内の便の時系列
 JST = timezone(timedelta(hours=9))
@@ -474,6 +476,49 @@ def check_analysis_structure() -> tuple[bool, str]:
     return evaluate_analysis_structure(load_latest_analysis())
 
 
+def _load_run_status() -> dict | None:
+    if not RUN_STATUS_PATH.exists():
+        return None
+    try:
+        return json.loads(RUN_STATUS_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return None
+
+
+def evaluate_run_status(data: dict | None) -> tuple[bool, str]:
+    """docs/run_status.json（サイトのバナー源）を運用チェック側でも読む純関数。
+
+    daily_check とサイトの incident 表示が別系統だった盲点を塞ぐ。
+    overall=error か critical incident があれば要確認（exit 1）、warning は advisory 表示のみ。
+    """
+    if not data:
+        return _line("run_status", True, "記録なし")
+    overall = data.get("overall", "success")
+    workflows = data.get("workflows") or {}
+    incident = data.get("incident") or {}
+    incident_active = str(incident.get("active", "")).lower() in ("true", "1")
+    incident_sev = incident.get("severity", "")
+
+    problems: list[str] = []
+    errored = sorted(w for w, v in workflows.items() if (v or {}).get("status") == "error")
+    if overall == "error" or errored:
+        problems.append(f"error: {', '.join(errored)}" if errored else "overall=error")
+    if incident_active and incident_sev == "critical":
+        problems.append(f"critical incident: {incident.get('title', '')}".strip())
+
+    if problems:
+        return _line("run_status", False, " / ".join(problems))
+
+    detail = f"overall={overall}"
+    if incident_active:
+        detail += f"・incident={incident_sev or 'active'}（{incident.get('title', '')}）"
+    return _line("run_status", True, detail)
+
+
+def check_run_status() -> tuple[bool, str]:
+    return evaluate_run_status(_load_run_status())
+
+
 def load_backlog() -> list[dict]:
     """ops_backlog.yaml の未了TODOを読む。読めなければ空（=表示しないだけ）。"""
     if not BACKLOG_PATH.exists():
@@ -530,6 +575,7 @@ def main(argv: list[str] | None = None) -> int:
         check_buzz(),
         check_collection_quality(),
         check_analysis_structure(),
+        check_run_status(),
     ]
     all_ok = True
     for ok, msg in results:
