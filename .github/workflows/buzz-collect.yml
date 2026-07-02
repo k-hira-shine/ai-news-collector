@@ -67,12 +67,15 @@ jobs:
         run: python build_buzz.py
 
       - name: Update Apify cost tracking
+        if: always()
         run: python check_cost.py --record --quiet
 
       - name: Sync navigation across all pages
+        if: always()
         run: python sync_nav.py
 
       - name: Commit & push
+        if: always()
         env:
           REBUILD_BUZZ: "true"
         run: |
@@ -84,4 +87,5 @@ jobs:
       # 品質guardrailは収集直後の新鮮な行で1回だけ判定する（push後に実行＝データは常に保存される）。
       # 日次の Buzz Daily Health Check は --staleness-only で収集途絶のみ見張るため、stale行の重複アラートは出ない。
       - name: Verify buzz quality guardrails (fresh)
+        if: always()
         run: python scripts/check_buzz_health.py

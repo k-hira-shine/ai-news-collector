@@ -43,6 +43,20 @@ class CheckBuzzHealthTests(unittest.TestCase):
         self.assertFalse(healthy)
         self.assertTrue(any("ランキング" in message for message in messages))
 
+    def test_starved_accounts_get_specific_error(self) -> None:
+        now = datetime(2026, 6, 12, tzinfo=timezone.utc)
+        metrics = {
+            "checked_at": now.isoformat(),
+            "profile": "full",
+            "guardrail_status": "warning",
+            "starved_accounts": ["a"],
+        }
+
+        healthy, messages = evaluate_health(metrics, now)
+
+        self.assertFalse(healthy)
+        self.assertTrue(any("取得0件" in message for message in messages))
+
     def test_warning_does_not_realarm_in_staleness_only_mode(self) -> None:
         # 直近収集(2日前)のwarning行を日次cronが再読みしても再アラートしない＝重複失敗メール抑制。
         now = datetime(2026, 6, 12, tzinfo=timezone.utc)

@@ -117,12 +117,15 @@ jobs:
         run: python build_home.py
 
       - name: Update Apify cost tracking
+        if: always()
         run: python check_cost.py --record --quiet
 
       - name: Sync navigation across all pages
+        if: always()
         run: python sync_nav.py
 
       - name: Commit & push data
+        if: always()
         env:
           REBUILD_BUZZ: "true"
         run: |
@@ -132,6 +135,7 @@ jobs:
             data/ docs/
 
       - name: Deploy to GitHub Pages
+        if: always()
         env:
           PAGES_DEPLOY_KEY: ${{ secrets.PAGES_DEPLOY_KEY }}
         run: |

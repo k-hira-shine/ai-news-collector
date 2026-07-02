@@ -46,6 +46,12 @@ def evaluate_health(
         f"ranking_overlap={metrics.get('ranking_top20_overlap_pct', 0)}%",
         f"cost=${metrics.get('apify_cost_usd', 0):.4f}",
     ]
+    starved_accounts = metrics.get("starved_accounts") or []
+    if starved_accounts:
+        messages.append(
+            "starved_accounts="
+            + ",".join(f"@{account}" for account in starved_accounts)
+        )
     healthy = True
     if now - checked_at > timedelta(days=4):
         healthy = False
@@ -53,7 +59,10 @@ def evaluate_health(
     if metrics.get("guardrail_status") == "warning":
         if quality_alarm:
             healthy = False
-            messages.append("ERROR: ランキング保持率が基準未満")
+            if starved_accounts:
+                messages.append("ERROR: Buzz取得0件が連続したアカウントがあります")
+            else:
+                messages.append("ERROR: ランキング保持率が基準未満")
         else:
             messages.append(
                 "NOTICE: 直近収集のguardrail=warning（品質判定はbuzz-collectの収集直後に実施済み・"

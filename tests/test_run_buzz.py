@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from run_buzz import (
     collection_gap_risk,
     evaluate_guardrail_status,
+    load_recent_zero_fetch_streaks,
     merge_account_data,
     overall_ranked_urls,
     resolve_collection_settings,
@@ -189,6 +190,28 @@ class GuardrailStatusTests(unittest.TestCase):
         self.assertEqual(
             evaluate_guardrail_status(95.0, 75.0, fallback_triggered=True), "fallback"
         )
+
+    def test_starved_accounts_trip_warning(self) -> None:
+        self.assertEqual(
+            evaluate_guardrail_status(
+                95.0,
+                75.0,
+                fallback_triggered=False,
+                starved_accounts=["a"],
+            ),
+            "warning",
+        )
+
+
+class ZeroFetchStreakTests(unittest.TestCase):
+    def test_current_zero_fetch_trips_when_threshold_is_one(self) -> None:
+        streaks, starved = load_recent_zero_fetch_streaks(
+            [{"account": "a", "fetched": 0}, {"account": "b", "fetched": 3}],
+            threshold=1,
+        )
+
+        self.assertEqual(streaks, {"a": 1})
+        self.assertEqual(starved, ["a"])
 
 
 if __name__ == "__main__":
