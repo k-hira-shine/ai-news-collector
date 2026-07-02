@@ -364,6 +364,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
             # critical アカウントの個別沈黙検知用（合計must_followでは隠れる単一アカウント断）
             "must_follow_critical_total": x_meta.get("must_follow_critical_total", 0),
             "must_follow_critical_zero": x_meta.get("must_follow_critical_zero", []),
+            "must_follow_per_account": x_meta.get("must_follow_per_account", {}),
             "x_count": stats["x_count"],
             "x_valid_count": x_meta.get("x_valid_count"),
             "invalid_stripped": x_meta.get("invalid_items_stripped", 0),

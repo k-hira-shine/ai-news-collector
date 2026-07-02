@@ -32,6 +32,7 @@ LOGS_DIR = BASE / "data" / "logs"
 ANALYSIS_DIR = BASE / "data" / "analysis"
 RUN_STATUS_PATH = BASE / "docs" / "run_status.json"
 BACKLOG_PATH = BASE / "ops_backlog.yaml"
+CONFIG_PATH = BASE / "config.yaml"
 _SLOT_ORDER = {"morning": 0, "evening": 1}  # 同日内の便の時系列
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
@@ -88,6 +89,21 @@ WARN = "⚠️"
 
 def _line(label: str, ok: bool, detail: str) -> tuple[bool, str]:
     return ok, f"{OK if ok else WARN} {label}: {detail}"
+
+
+def load_critical_silence_exempt_handles() -> set[str]:
+    try:
+        import yaml
+
+        data = yaml.safe_load(CONFIG_PATH.read_text(encoding="utf-8")) or {}
+    except Exception:
+        return set()
+    handles = (
+        data.get("x_twitter", {}).get("critical_silence_exempt_handles", [])
+        if isinstance(data, dict)
+        else []
+    )
+    return {str(h).lower() for h in handles}
 
 
 # 期待するスケジュール済みワークフロー（表示名, ワークフローファイル, 最大許容age時間）。
@@ -320,7 +336,10 @@ def _median(values: list[float]) -> float:
     return s[mid] if n % 2 else (s[mid - 1] + s[mid]) / 2
 
 
-def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
+def evaluate_collection_quality(
+    entries: list[dict],
+    critical_silence_exempt_handles: set[str] | None = None,
+) -> tuple[bool, str]:
     """収集の品質監視を判定する純関数。
 
     - 法務一色化: legal_rss_count / total が LEGAL_DOMINANCE_RATIO 以上で要確認。
@@ -431,12 +450,14 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
 
     # critical アカウントの個別沈黙（advisory）。あるhandleが直近 full便で連続ゼロなら
     # ハンドル変更/個別収集断の疑い。合計must_followが健全でも単一アカウントの黙りは隠れる。
+    exempt = {h.lower() for h in (critical_silence_exempt_handles or set())}
     crit_full = [r for r in full_entries if r.get("must_follow_critical_zero") is not None]
     if len(crit_full) >= CRITICAL_DARK_STREAK:
         recent_crit = crit_full[-CRITICAL_DARK_STREAK:]
-        dark = set(recent_crit[0].get("must_follow_critical_zero") or [])
+        dark = {str(h) for h in (recent_crit[0].get("must_follow_critical_zero") or [])}
         for r in recent_crit[1:]:
-            dark &= set(r.get("must_follow_critical_zero") or [])
+            dark &= {str(h) for h in (r.get("must_follow_critical_zero") or [])}
+        dark = {h for h in dark if h.lower() not in exempt}
         if dark:
             advisories.append(
                 f"criticalアカウント沈黙{CRITICAL_DARK_STREAK}連続: "
@@ -456,7 +477,10 @@ def evaluate_collection_quality(entries: list[dict]) -> tuple[bool, str]:
 
 
 def check_collection_quality() -> tuple[bool, str]:
-    return evaluate_collection_quality(load_collect_entries())
+    return evaluate_collection_quality(
+        load_collect_entries(),
+        load_critical_silence_exempt_handles(),
+    )
 
 
 def load_latest_analysis() -> dict:

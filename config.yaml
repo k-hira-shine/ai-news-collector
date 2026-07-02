@@ -118,6 +118,12 @@ x_twitter:
       priority: high
   min_engagement: 10
   max_results_per_account: 30   # critical アカウントの連投に対応（20→30）
+  # 投稿頻度が低く、2日窓で0件が続いても収集断とは限らないアカウント。
+  # daily_check の「criticalアカウント沈黙」advisory から除外する。
+  critical_silence_exempt_handles:
+    - "DarioAmodei"
+    - "MistralAI"
+    - "sama"
   light_mode:
     max_results_per_query: 75
     max_results_per_account: 10

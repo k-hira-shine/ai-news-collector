@@ -301,6 +301,16 @@ class CollectionQualityTests(unittest.TestCase):
         self.assertIn("OpenAI", msg)
         self.assertNotIn("xai", msg)  # 全便で連続している handle のみ（xaiは最新便だけ）
 
+    def test_critical_dark_exempt_handles_are_ignored(self) -> None:
+        entries = [
+            _entry("2026-06-21T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["sama"]),
+            _entry("2026-06-22T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["sama"]),
+            _entry("2026-06-23T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["sama"]),
+        ]
+        ok, msg = evaluate_collection_quality(entries, {"sama"})
+        self.assertTrue(ok)
+        self.assertNotIn("criticalアカウント沈黙", msg)
+
     def test_critical_dark_silent_when_not_consecutive(self) -> None:
         entries = [
             _entry("2026-06-21T02:41:00+09:00", 95, 5, 82, x_valid=200, critical_zero=["OpenAI"]),
