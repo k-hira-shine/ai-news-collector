@@ -21,6 +21,9 @@ jobs:
           cache: 'pip'
       - run: pip install -r requirements.txt
 
+      - name: Check incident CSS placement
+        run: python scripts/check_incident_css_leak.py
+
       - name: Run daily ops check
         id: daily
         env:
