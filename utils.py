@@ -5,9 +5,10 @@ import hashlib
 import logging
 import os
 import random
+import re
 import time
 import zoneinfo
-from datetime import datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 
 LOG_FORMAT = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
 
@@ -191,16 +192,45 @@ def log_run(
     _purge_old_logs(log_dir, keep_days=30)
 
 
-def _purge_old_logs(log_dir: str, keep_days: int = 30) -> None:
-    from datetime import timezone as _tz
-    cutoff = datetime.now(_tz.utc).timestamp() - keep_days * 86400
-    for fname in os.listdir(log_dir):
-        if not fname.endswith(".jsonl"):
+_DATE_PREFIX_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})")
+
+
+def _date_from_filename(fname: str) -> date | None:
+    match = _DATE_PREFIX_RE.match(fname)
+    if not match:
+        return None
+    try:
+        return date.fromisoformat(match.group(1))
+    except ValueError:
+        return None
+
+
+def purge_dated_files(directory: str, *, keep_days: int, suffixes: tuple[str, ...] = (".jsonl", ".json")) -> list[str]:
+    """日付プレフィックス(YYYY-MM-DD*)基準で古いファイルを削除する。
+
+    GitHub Actions の checkout では mtime が復元されないため、ファイル名の日付を正とする。
+    """
+    if keep_days <= 0 or not os.path.isdir(directory):
+        return []
+
+    cutoff = datetime.now(timezone.utc).date() - timedelta(days=keep_days)
+    removed: list[str] = []
+    for fname in os.listdir(directory):
+        if not fname.endswith(suffixes):
             continue
-        fpath = os.path.join(log_dir, fname)
-        if os.path.getmtime(fpath) < cutoff:
+        file_date = _date_from_filename(fname)
+        if file_date is None or file_date >= cutoff:
+            continue
+        fpath = os.path.join(directory, fname)
+        if os.path.isfile(fpath):
             os.remove(fpath)
-            logging.getLogger("ai-news").info("Purged old log: %s", fname)
+            removed.append(fname)
+    return sorted(removed)
+
+
+def _purge_old_logs(log_dir: str, keep_days: int = 30) -> None:
+    for fname in purge_dated_files(log_dir, keep_days=keep_days, suffixes=(".jsonl",)):
+        logging.getLogger("ai-news").info("Purged old log: %s", fname)
 
 
 from incident_status import INCIDENT_CLIENT_HTML as STATUS_BANNER_HTML  # noqa: E402  # re-export
