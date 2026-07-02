@@ -74,13 +74,13 @@ def resolve_collection_settings(
 
 
 def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 30, max_items: int = 100) -> tuple[dict[str, list[dict]], float]:
-    """複数アカウントを1回のApify起動でまとめて取得"""
+    """指定アカウント群を1回のApify起動で取得する低レベル関数。"""
     since_date = (datetime.now(timezone.utc) - timedelta(days=days)).strftime("%Y-%m-%d")
     search_terms = [f"from:{h} -filter:retweets min_faves:5" for h in handles]
     run_input = {
         "searchTerms": search_terms,
         "queryType": "Latest",
-        "maxItems": max_items,  # アカウントごとの上限
+        "maxItems": max_items,
         "includeSearchTerms": True,
         "since": since_date,
     }
@@ -127,10 +127,34 @@ def fetch_accounts_batch(client, actor_id: str, handles: list[str], days: int = 
     return result, cost
 
 
-def fetch_account_tweets(client, actor_id: str, handle: str, days: int = 30, max_items: int = 100) -> list[dict]:
+def fetch_account_tweets_with_cost(client, actor_id: str, handle: str, days: int = 30, max_items: int = 100) -> tuple[list[dict], float]:
     """単一アカウント取得（追加時などに使用）"""
-    result, _ = fetch_accounts_batch(client, actor_id, [handle], days=days, max_items=max_items)
-    return result.get(handle, [])
+    result, cost = fetch_accounts_batch(client, actor_id, [handle], days=days, max_items=max_items)
+    return result.get(handle, []), cost
+
+
+def fetch_account_tweets(client, actor_id: str, handle: str, days: int = 30, max_items: int = 100) -> list[dict]:
+    tweets, _ = fetch_account_tweets_with_cost(client, actor_id, handle, days=days, max_items=max_items)
+    return tweets
+
+
+def fetch_accounts_individually(client, actor_id: str, handles: list[str], days: int = 30, max_items: int = 100) -> tuple[dict[str, list[dict]], float]:
+    """1 run=1アカウントで取得する。
+
+    xquik/x-tweet-scraper の maxItems は searchTerms 全体の合算上限として扱われる
+    ビルドがあるため、複数アカウントを1 runに束ねると先頭アカウントが枠を食い潰す。
+    """
+    result: dict[str, list[dict]] = {}
+    total_cost = 0.0
+    for index, handle in enumerate(handles, start=1):
+        logger.info("Fetching @%s (%d/%d) ...", handle, index, len(handles))
+        tweets, cost = fetch_account_tweets_with_cost(
+            client, actor_id, handle, days=days, max_items=max_items
+        )
+        result[handle] = tweets
+        total_cost += cost
+    logger.info("Individual account fetch done: %d accounts, cost=$%.4f", len(handles), total_cost)
+    return result, total_cost
 
 
 def normalize_tweet(tweet: dict) -> dict:
@@ -266,6 +290,7 @@ def evaluate_guardrail_status(
     ranking_overlap_pct: float,
     min_ranking_overlap_pct: float,
     fallback_triggered: bool,
+    starved_accounts: list[str] | None = None,
 ) -> str:
     """公開ランキングの実害指標(ranking_overlap)を主軸にガードレールを判定する。
 
@@ -276,6 +301,8 @@ def evaluate_guardrail_status(
     """
     if fallback_triggered:
         return "fallback"
+    if starved_accounts:
+        return "warning"
     return "pass" if ranking_overlap_pct >= min_ranking_overlap_pct else "warning"
 
 
@@ -283,15 +310,17 @@ def load_existing_buzz() -> dict:
     if BUZZ_JSON.exists():
         try:
             return json.loads(BUZZ_JSON.read_text(encoding="utf-8"))
-        except Exception:
-            pass
+        except Exception as e:
+            raise RuntimeError(f"Failed to parse {BUZZ_JSON}: {e}") from e
     return {"updated_at": "", "accounts": []}
 
 
 def save_buzz(data: dict) -> None:
     data["updated_at"] = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
     BUZZ_JSON.parent.mkdir(parents=True, exist_ok=True)
-    BUZZ_JSON.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    tmp_path = BUZZ_JSON.with_suffix(f"{BUZZ_JSON.suffix}.tmp")
+    tmp_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    os.replace(tmp_path, BUZZ_JSON)
     logger.info("Saved → %s (%d accounts)", BUZZ_JSON, len(data["accounts"]))
 
 
@@ -322,6 +351,49 @@ def overall_ranked_urls(accounts: list[dict], limit: int = 20) -> list[str]:
         )
     ranked.sort(key=lambda tweet: tweet.get("likes", 0), reverse=True)
     return [_tweet_key(tweet) for tweet in ranked[:limit]]
+
+
+def load_recent_zero_fetch_streaks(current_metrics: list[dict], threshold: int) -> tuple[dict[str, int], list[str]]:
+    streaks = {
+        item["account"]: 1
+        for item in current_metrics
+        if item.get("fetched", 0) == 0
+    }
+    if not streaks:
+        return {}, []
+
+    if threshold <= 1 or not BUZZ_METRICS_JSONL.exists():
+        return streaks, sorted(streaks)
+
+    lines = [
+        line
+        for line in BUZZ_METRICS_JSONL.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    for line in reversed(lines):
+        try:
+            metrics = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        previous = {
+            item.get("account"): item
+            for item in metrics.get("account_metrics", [])
+            if item.get("account")
+        }
+        if not previous:
+            break
+        for account in list(streaks):
+            if previous.get(account, {}).get("fetched", 0) == 0:
+                streaks[account] += 1
+            else:
+                del streaks[account]
+        if not streaks:
+            break
+        if min(streaks.values()) >= threshold:
+            break
+
+    starved = sorted(account for account, count in streaks.items() if count >= threshold)
+    return streaks, starved
 
 
 def get_display_name(handle: str, config: dict) -> str:
@@ -363,6 +435,7 @@ def main() -> None:
     min_ranking_overlap_pct = float(
         collection_config.get("min_weekly_top20_overlap_pct", 75.0)
     )
+    zero_fetch_warning_streak = int(collection_config.get("zero_fetch_warning_streak", 2))
     logger.info(
         "Buzz collection profile=%s days=%d max_items=%d retention_days=%d",
         profile,
@@ -383,7 +456,9 @@ def main() -> None:
         # 1アカウントだけ追加・更新してマージ
         handle = args.add.lstrip("@")
         display_name = get_display_name(handle, config)
-        tweets = fetch_account_tweets(client, actor_id, handle, days=days, max_items=max_items)
+        tweets, apify_cost = fetch_account_tweets_with_cost(
+            client, actor_id, handle, days=days, max_items=max_items
+        )
         # ツイートが0件でもアカウント自体は登録する
         merged, metrics = merge_account_data(
             existing_map.get(handle),
@@ -403,7 +478,10 @@ def main() -> None:
         for handle in args.accounts:
             handle = handle.lstrip("@")
             display_name = get_display_name(handle, config)
-            tweets = fetch_account_tweets(client, actor_id, handle, days=days, max_items=max_items)
+            tweets, cost = fetch_account_tweets_with_cost(
+                client, actor_id, handle, days=days, max_items=max_items
+            )
+            apify_cost += cost
             merged, metrics = merge_account_data(
                 existing_map.get(handle),
                 handle,
@@ -417,14 +495,14 @@ def main() -> None:
         existing["accounts"] = list(existing_map.values())
 
     else:
-        # config.yaml の buzz_accounts を全取得（1回のApify起動でまとめて）
+        # config.yaml の buzz_accounts を全取得（1 run=1アカウント）
         buzz_accounts = config.get("buzz_accounts", [])
         if not buzz_accounts:
             logger.warning("buzz_accounts not configured in config.yaml")
             sys.exit(0)
         handles = [ac["handle"].lstrip("@") for ac in buzz_accounts]
         display_map = {ac["handle"].lstrip("@"): ac.get("display_name", ac["handle"]) for ac in buzz_accounts}
-        batch_result, apify_cost = fetch_accounts_batch(
+        batch_result, apify_cost = fetch_accounts_individually(
             client, actor_id, handles, days=days, max_items=max_items
         )
         if profile != "full":
@@ -438,7 +516,7 @@ def main() -> None:
                 "Buzz reduced collection may have gaps for %s; retrying full profile",
                 ", ".join(f"@{handle}" for handle in gap_risk_accounts),
             )
-            batch_result, fallback_cost = fetch_accounts_batch(
+            batch_result, fallback_cost = fetch_accounts_individually(
                 client,
                 actor_id,
                 handles,
@@ -451,17 +529,17 @@ def main() -> None:
             max_items = FULL_PROFILE["max_items"]
             fallback_triggered = True
         for handle, tweets in batch_result.items():
+            merged, metrics = merge_account_data(
+                existing_map.get(handle),
+                handle,
+                display_map.get(handle, handle),
+                tweets,
+                retention_days,
+                retention_max_items,
+            )
             if tweets:
-                merged, metrics = merge_account_data(
-                    existing_map.get(handle),
-                    handle,
-                    display_map.get(handle, handle),
-                    tweets,
-                    retention_days,
-                    retention_max_items,
-                )
                 existing_map[handle] = merged
-                account_metrics.append({"account": handle, **metrics})
+            account_metrics.append({"account": handle, **metrics})
         existing["accounts"] = list(existing_map.values())
 
     save_buzz(existing)
@@ -481,8 +559,14 @@ def main() -> None:
             * 100,
             1,
         )
+    zero_fetch_streaks, starved_accounts = load_recent_zero_fetch_streaks(
+        account_metrics, zero_fetch_warning_streak
+    )
     guardrail_status = evaluate_guardrail_status(
-        ranking_overlap_pct, min_ranking_overlap_pct, fallback_triggered
+        ranking_overlap_pct,
+        min_ranking_overlap_pct,
+        fallback_triggered,
+        starved_accounts,
     )
     save_collection_metrics({
         "checked_at": datetime.now(JST).isoformat(),
@@ -499,6 +583,10 @@ def main() -> None:
         "ranking_top20_overlap_pct": ranking_overlap_pct,
         "min_weekly_top20_overlap_pct": min_ranking_overlap_pct,
         "gap_risk_accounts": gap_risk_accounts,
+        "zero_fetch_warning_streak": zero_fetch_warning_streak,
+        "zero_fetch_streaks": zero_fetch_streaks,
+        "starved_accounts": starved_accounts,
+        "account_metrics": account_metrics,
         "fallback_triggered": fallback_triggered,
         "guardrail_status": guardrail_status,
         "apify_cost_usd": round(apify_cost, 4),
@@ -515,7 +603,8 @@ def main() -> None:
     try:
         from utils import log_run, write_run_status
         accounts_count = len(existing.get("accounts", []))
-        log_run("buzz", "success",
+        run_status = "warning" if guardrail_status == "warning" else "success"
+        log_run("buzz", run_status,
                 items_collected=fetched_items,
                 apify_cost_usd=apify_cost,
                 extra={
@@ -525,8 +614,9 @@ def main() -> None:
                     "profile": profile,
                     "guardrail_status": guardrail_status,
                     "fallback_triggered": fallback_triggered,
+                    "starved_accounts": starved_accounts,
                 })
-        write_run_status("buzz", "success",
+        write_run_status("buzz", run_status,
                          extra={
                              "items_collected": fetched_items,
                              "items_retained": retained_items,
@@ -535,6 +625,7 @@ def main() -> None:
                              "profile": profile,
                              "guardrail_status": guardrail_status,
                              "fallback_triggered": fallback_triggered,
+                             "starved_accounts": starved_accounts,
                          })
     except Exception as e:
         logger.warning("log_run failed: %s", e)

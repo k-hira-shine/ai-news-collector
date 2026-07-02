@@ -57,12 +57,15 @@ jobs:
           fi
 
       - name: Update Apify cost tracking
+        if: always()
         run: python check_cost.py --record --quiet
 
       - name: Sync navigation across all pages
+        if: always()
         run: python sync_nav.py
 
       - name: Commit & push data
+        if: always()
         run: |
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \
