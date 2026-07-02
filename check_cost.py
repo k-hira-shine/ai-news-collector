@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGS_DIR = os.path.join(BASE_DIR, "data", "logs")
+GEMINI_USAGE_DIR = os.path.join(BASE_DIR, "data", "gemini_usage")
 CHANGES_PATH = os.path.join(BASE_DIR, "data", "cost_changes.jsonl")
 PLAN_PATH = os.path.join(BASE_DIR, "data", "cost_reduction_plan.json")
 TRACKING_PATH = os.path.join(BASE_DIR, "data", "cost_tracking.json")
@@ -45,6 +46,31 @@ def load_logs(days: int | None = 7) -> list[dict]:
                     except json.JSONDecodeError:
                         continue
     return records
+
+
+def load_gemini_daily() -> dict[str, float]:
+    """data/gemini_usage/*.jsonl から日付→推定USDを集計する。
+
+    Apifyコスト(data/logs)とは別ファイルに記録される Gemini API 費用を、
+    check_cost.py の合算表示に取り込むための読み込み口。
+    """
+    daily: dict[str, float] = defaultdict(float)
+    if not os.path.isdir(GEMINI_USAGE_DIR):
+        return daily
+    for fname in sorted(f for f in os.listdir(GEMINI_USAGE_DIR) if f.endswith(".jsonl")):
+        with open(os.path.join(GEMINI_USAGE_DIR, fname), encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    r = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                ts = r.get("ts", "")
+                if ts:
+                    daily[ts[:10]] += r.get("est_usd") or 0.0
+    return daily
 
 
 def load_changes() -> dict[str, list[dict]]:
@@ -110,14 +136,23 @@ def _daily_items(records: list[dict]) -> dict[str, dict[str, int]]:
     return items
 
 
-def build_tracking(records: list[dict], plan: dict) -> dict:
-    """固定基準と日次ログから、実装後の比較に使う追跡データを作る。"""
+def build_tracking(records: list[dict], plan: dict, gemini_daily: dict[str, float] | None = None) -> dict:
+    """固定基準と日次ログから、実装後の比較に使う追跡データを作る。
+
+    total_usd / rolling.monthly_projection_usd は Apify 専用のまま維持し
+    （daily_check.check_apify が plan 上限と比較するため）、Gemini 費用は
+    gemini_usd / combined_* として別枠で追加する。
+    """
     by_date = summarize(records)
     items_by_date = _daily_items(records)
+    if gemini_daily is None:
+        gemini_daily = load_gemini_daily()
     dates = sorted(d for d in by_date if d)
     daily = []
     for target_date in dates:
         workflows = _workflow_costs(by_date, target_date)
+        apify_total = round(sum(workflows.values()), 4)
+        gemini_usd = round(float(gemini_daily.get(target_date, 0)), 4)
         daily.append({
             "date": target_date,
             "workflows": workflows,
@@ -125,7 +160,9 @@ def build_tracking(records: list[dict], plan: dict) -> dict:
                 workflow: items_by_date[target_date].get(workflow, 0)
                 for workflow in ("collect", "money", "buzz")
             },
-            "total_usd": round(sum(workflows.values()), 4),
+            "total_usd": apify_total,
+            "gemini_usd": gemini_usd,
+            "combined_total_usd": round(apify_total + gemini_usd, 4),
         })
 
     measurement = plan.get("measurement", {})
@@ -145,6 +182,11 @@ def build_tracking(records: list[dict], plan: dict) -> dict:
         sum(day["total_usd"] for day in recent) / len(recent)
         if recent else 0
     )
+    gemini_avg = (
+        sum(day["gemini_usd"] for day in recent) / len(recent)
+        if recent else 0
+    )
+    combined_avg = rolling_avg + gemini_avg
     projected = plan.get("projected_after", {})
     target_daily = float(projected.get("daily_usd", 0))
     baseline_daily = float(plan.get("baseline", {}).get("daily_usd", 0))
@@ -173,6 +215,10 @@ def build_tracking(records: list[dict], plan: dict) -> dict:
             "end_date": recent[-1]["date"] if recent else None,
             "average_daily_usd": round(rolling_avg, 4),
             "monthly_projection_usd": round(rolling_avg * 30, 2),
+            "gemini_average_daily_usd": round(gemini_avg, 4),
+            "gemini_monthly_projection_usd": round(gemini_avg * 30, 2),
+            "combined_average_daily_usd": round(combined_avg, 4),
+            "combined_monthly_projection_usd": round(combined_avg * 30, 2),
             "reduction_vs_baseline_pct": round(reduction_pct, 1),
             "status": status,
         },
@@ -288,9 +334,25 @@ def main() -> None:
 
     print("-" * 60)
     avg = grand_total / len([d for d in all_dates if by_date.get(d)]) if all_dates else 0
-    print(f"{'合計':<12} {'':>8}  {'':>10}  {'':>7}  ${grand_total:>6.4f}")
-    print(f"{'平均/日':<12} {'':>8}  {'':>10}  {'':>7}  ${avg:>6.4f}")
-    print(f"{'月額換算':<12} {'':>8}  {'':>10}  {'':>7}  ${avg*30:>6.2f}")
+    print(f"{'Apify合計':<12} {'':>8}  {'':>10}  {'':>7}  ${grand_total:>6.4f}")
+    print(f"{'Apify平均/日':<12} {'':>8}  {'':>10}  {'':>7}  ${avg:>6.4f}")
+    print(f"{'Apify月額':<12} {'':>8}  {'':>10}  {'':>7}  ${avg*30:>6.2f}")
+    print("=" * 60)
+
+    # Gemini API 費用（別ファイル data/gemini_usage/*.jsonl）を同じ窓で合算表示する。
+    gemini_daily = load_gemini_daily()
+    if floored_window:
+        gemini_daily = {d: v for d, v in gemini_daily.items() if d >= floor_date}
+    gemini_window = {d: gemini_daily.get(d, 0.0) for d in all_dates}
+    gemini_total = sum(gemini_window.values())
+    gemini_days = len([d for d in all_dates if gemini_window.get(d)])
+    gemini_avg = gemini_total / gemini_days if gemini_days else 0
+    combined_month = (avg + gemini_avg) * 30
+    print()
+    print("── Gemini API ──────────────────────────────────────────────")
+    print(f"  合計 ${gemini_total:.4f}  平均 ${gemini_avg:.4f}/日  月額換算 ${gemini_avg*30:.2f}")
+    print("── Apify + Gemini 合算 ─────────────────────────────────────")
+    print(f"  月額換算 ${combined_month:.2f}")
     print("=" * 60)
 
     # 変更前後の比較

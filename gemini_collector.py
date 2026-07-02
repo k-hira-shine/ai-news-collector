@@ -12,6 +12,8 @@ from zoneinfo import ZoneInfo
 
 import yaml
 
+from utils import clamp_max_items
+
 logger = logging.getLogger("ai-news.gemini_collector")
 
 GEMINI_DIR = "gemini"
@@ -633,7 +635,11 @@ def collect_x_accounts(config: dict) -> list[dict]:
 
     x_cfg = config.get("x_twitter", {})
     actor_id = x_cfg.get("apify_actor", "xquik/x-tweet-scraper")
-    max_items = int(cfg.get("max_items_per_account", 20))
+
+    max_items = clamp_max_items(
+        cfg.get("max_items_per_account", 20),
+        "gemini_collection.max_items_per_account",
+    )
     max_age_days = int(cfg.get("max_age_days", 14))
     keyword_handles = {h.lower() for h in cfg.get("x_keyword_filter_handles", [])}
     since_date = (datetime.now(timezone.utc) - timedelta(days=max_age_days)).strftime("%Y-%m-%d")

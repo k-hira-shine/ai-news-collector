@@ -10,7 +10,7 @@ import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
 
-from utils import apify_actor_call, apify_run_get, data_dir, hash_url, now_iso, parse_datetime, retry, today_str
+from utils import apify_actor_call, apify_run_get, clamp_max_items, data_dir, hash_url, now_iso, parse_datetime, retry, today_str
 
 logger = logging.getLogger("ai-news.collector")
 
@@ -195,8 +195,8 @@ def _collect_x_twitter_with_meta(config: dict) -> tuple[list[dict], dict]:
 def _x_collection_settings(x_cfg: dict) -> tuple[int, int, list[dict]]:
     """通常便/夕方軽量便の上限と追跡アカウントを返す。"""
     must_follow = x_cfg.get("must_follow_accounts", [])
-    max_query = int(x_cfg.get("max_results_per_query", 40))
-    max_account = int(x_cfg.get("max_results_per_account", 10))
+    max_query = clamp_max_items(x_cfg.get("max_results_per_query", 40), "x_twitter.max_results_per_query")
+    max_account = clamp_max_items(x_cfg.get("max_results_per_account", 10), "x_twitter.max_results_per_account")
     if x_cfg.get("runtime_mode") != "light":
         return max_query, max_account, must_follow
 
@@ -207,8 +207,8 @@ def _x_collection_settings(x_cfg: dict) -> tuple[int, int, list[dict]]:
         if account.get("handle", "").lower() in selected
     ]
     return (
-        int(light.get("max_results_per_query", 75)),
-        int(light.get("max_results_per_account", 10)),
+        clamp_max_items(light.get("max_results_per_query", 75), "x_twitter.light_mode.max_results_per_query"),
+        clamp_max_items(light.get("max_results_per_account", 10), "x_twitter.light_mode.max_results_per_account"),
         accounts,
     )
 

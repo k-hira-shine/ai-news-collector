@@ -12,7 +12,7 @@ from datetime import date, datetime, timezone
 import requests
 
 from collector import _normalize_tweet
-from utils import apify_actor_call, apify_run_get, data_dir, today_str
+from utils import apify_actor_call, apify_run_get, clamp_max_items, data_dir, today_str
 
 logger = logging.getLogger("ai-news.sns_collector")
 
@@ -54,7 +54,7 @@ def collect_sns_success(
 
     accounts = sns_cfg.get("accounts", [])
     search_queries = sns_cfg.get("search_queries", [])
-    max_items_per_query = sns_cfg.get("max_items_per_query", 100)
+    max_items_per_query = clamp_max_items(sns_cfg.get("max_items_per_query", 100), "sns.max_items_per_query")
     search_interval_days = max(1, int(sns_cfg.get("search_interval_days", 1)))
     search_since_days = sns_cfg.get("search_since_days", 90)
 
