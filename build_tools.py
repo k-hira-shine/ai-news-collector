@@ -744,9 +744,10 @@ function clearDateFilter() {{
 const REPO = 'k-hira-shine/ai-news-collector';
 const FILE_PATH = 'data/reviews.json';
 const REVIEWS_PAGE = 'reviews.html';
+localStorage.removeItem('gh_pat');
 
 function getToken() {{
-  return localStorage.getItem('gh_pat') || '';
+  return sessionStorage.getItem('gh_pat') || '';
 }}
 
 function openMemoModal(toolName) {{
@@ -783,7 +784,8 @@ async function fetchReviews(token) {{
 function saveToken() {{
   const val = (document.getElementById('memoToken')?.value || '').trim();
   if (!val) return;
-  localStorage.setItem('gh_pat', val);
+  localStorage.removeItem('gh_pat');
+  sessionStorage.setItem('gh_pat', val);
   refreshTokenSection();
 }}
 
@@ -792,7 +794,7 @@ function refreshTokenSection() {{
   const status = document.getElementById('tokenStatus');
   const inputRow = document.getElementById('tokenInputRow');
   if (token) {{
-    if (status) {{ status.textContent = '✅ 保存済み'; status.style.color = '#10b981'; }}
+    if (status) {{ status.textContent = '✅ このタブで有効'; status.style.color = '#10b981'; }}
     if (inputRow) inputRow.style.display = 'none';
   }} else {{
     if (status) {{ status.textContent = '未設定'; status.style.color = '#f59e0b'; }}
@@ -805,7 +807,7 @@ async function saveMemo() {{
   if (!token) {{
     const msg = document.getElementById('memoSaveMsg');
     msg.style.color = '#f59e0b';
-    msg.textContent = '⚠️ 上のトークン欄に GitHub PAT を入力して「保存」してください';
+    msg.textContent = '⚠️ 上のトークン欄に GitHub PAT を入力して「このタブで使う」を押してください';
     return;
   }}
 
@@ -873,6 +875,7 @@ async function saveMemo() {{
     msg.style.color = 'var(--error)';
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {{
       localStorage.removeItem('gh_pat');
+      sessionStorage.removeItem('gh_pat');
       refreshTokenSection();
       msg.textContent = '❌ トークンが無効です。トークン欄から再入力してください。';
     }} else {{
@@ -906,12 +909,12 @@ async function saveMemo() {{
     <input type="hidden" id="memoToolNameHidden">
     <div id="tokenSection" style="background:#0a0f1e;border:1px solid #2d3748;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
       <div style="display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:0.78rem;color:#94a3b8">🔑 GitHub Personal Access Token</span>
+        <span style="font-size:0.78rem;color:#94a3b8">🔑 GitHub Personal Access Token（このタブのみ）</span>
         <span id="tokenStatus" style="font-size:0.75rem"></span>
       </div>
       <div id="tokenInputRow" style="display:flex;gap:6px">
         <input id="memoToken" type="password" placeholder="ghp_xxxx…（repo スコープ必要）" style="flex:1;background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px 10px;border-radius:6px;font-size:0.82rem">
-        <button onclick="saveToken()" style="background:#1e3a5f;border:1px solid #2d5986;color:#7dd3fc;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap">保存</button>
+        <button onclick="saveToken()" style="background:#1e3a5f;border:1px solid #2d5986;color:#7dd3fc;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap">このタブで使う</button>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">

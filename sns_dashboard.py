@@ -7,6 +7,7 @@ import json
 import logging
 import os
 import sys
+from html import escape
 from datetime import datetime, timedelta, timezone
 
 from site_nav import NAV_CSS, render_nav
@@ -26,6 +27,24 @@ CATEGORY_ICONS = {
     "自己啓発/メンタル": "💪",
     "その他": "💡",
 }
+
+
+def _json_for_script(value) -> str:
+    """JSONをscript要素内に安全に埋め込む。"""
+    return (
+        json.dumps(value, ensure_ascii=False)
+        .replace("</", "<\\/")
+        .replace("\u2028", "\\u2028")
+        .replace("\u2029", "\\u2029")
+    )
+
+
+def _onclick_json_arg(value: str) -> str:
+    return escape(json.dumps(value, ensure_ascii=False), quote=True)
+
+
+def _rstrip_lines(value: str) -> str:
+    return "\n".join(line.rstrip() for line in value.splitlines())
 
 
 def generate_sns_page(output_path: str) -> None:
@@ -61,9 +80,8 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
 
     # テンプレートJSONを事前生成（f-string内でのネスト回避）
     raw_templates = config.get("post_templates", {}).get("templates", [])
-    templates_js = json.dumps(
+    templates_js = _json_for_script(
         [{"id": t["id"], "name": t["name"], "prompt_hint": t.get("prompt_hint", "")} for t in raw_templates],
-        ensure_ascii=False,
     )
 
     by_category: dict[str, list[dict]] = {}
@@ -83,6 +101,13 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     cache_days = sns_cfg.get("cache_retention_days", 180)
     search_since_days = sns_cfg.get("search_since_days", 90)
     account_since_days = sns_cfg.get("account_since_days", 365)
+    posts_html, posts_json = _render_all_posts(posts) if posts else (_render_empty(), "[]")
+    category_buttons = "".join(
+        f'<button class="filter-btn" onclick="filterCategory({_onclick_json_arg(cat)}, this)">'
+        f'{CATEGORY_ICONS.get(cat, "💡")} {escape(cat)} '
+        f'<span style="opacity:0.6;font-size:0.78rem;">({len(items)})</span></button>'
+        for cat, items in sorted(by_category.items(), key=lambda x: -len(x[1]))
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="ja">
@@ -254,12 +279,12 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
     <div class="filter-section-label">カテゴリ</div>
     <div class="cat-filter-grid" id="catFilterBar">
       <button class="filter-btn active" onclick="filterCategory('all', this)">すべて</button>
-      {"".join(f'<button class="filter-btn" onclick="filterCategory(\'{cat}\', this)">{CATEGORY_ICONS.get(cat, "💡")} {cat} <span style="opacity:0.6;font-size:0.78rem;">({len(items)})</span></button>' for cat, items in sorted(by_category.items(), key=lambda x: -len(x[1])))}
+      {category_buttons}
     </div>
   </div>
 
   <div class="posts-grid" id="postsGrid">
-    {_render_all_posts(posts)[0] if posts else _render_empty()}
+    {posts_html}
   </div>
 </div>
 
@@ -280,10 +305,25 @@ def _render_sns_html(posts: list[dict], config: dict = None) -> str:
 </div>
 
 <script>
+localStorage.removeItem('gh_pat');
 const WORKER_URL = 'https://sns-post-generator.imokonoai.workers.dev';
 const TEMPLATES = {templates_js};
-const POST_DATA = {_render_all_posts(posts)[1] if posts else '[]'};
+const POST_DATA = {posts_json};
 const LS_KEY = 'sns_generated_ids';
+
+function escapeHtml(value) {{
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}}
+
+function safeUrl(value) {{
+  const url = String(value || '');
+  return /^https?:\\/\\//.test(url) ? url : '#';
+}}
 
 function getGeneratedIds() {{
   try {{ return new Set(JSON.parse(localStorage.getItem(LS_KEY) || '[]')); }} catch {{ return new Set(); }}
@@ -414,7 +454,7 @@ async function openGenerator(btn) {{
   const modalBody = document.getElementById('modalBody');
 
   modalTitle.textContent = '✍️ 投稿文を生成中...';
-  modalSource.innerHTML = `<strong>元ポスト:</strong> ${{postData.summary || postData.author_display}} &nbsp;@${{postData.author_display}} <a href="${{postData.url}}" target="_blank" rel="noopener" style="color:#7aa0d4;">ポストを見る →</a>`;
+  modalSource.innerHTML = `<strong>元ポスト:</strong> ${{escapeHtml(postData.summary || postData.author_display)}} &nbsp;@${{escapeHtml(postData.author_display)}} <a href="${{escapeHtml(safeUrl(postData.url))}}" target="_blank" rel="noopener" style="color:#7aa0d4;">ポストを見る →</a>`;
   modalBody.innerHTML = '<div class="modal-loading">⏳ Geminiが6種類の投稿文を生成しています（約20秒）...</div>';
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -442,8 +482,8 @@ async function openGenerator(btn) {{
       const overClass = chars > 140 ? 'over' : '';
       const textId = `rtext-${{i}}`;
       return `<div class="result-card">
-        <div class="result-tmpl-name">${{g.template_name}}</div>
-        <div class="result-text" id="${{textId}}">${{text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}}</div>
+        <div class="result-tmpl-name">${{escapeHtml(g.template_name)}}</div>
+        <div class="result-text" id="${{textId}}">${{escapeHtml(text)}}</div>
         <div class="result-footer">
           <span class="result-chars ${{overClass}}">${{chars}}文字</span>
           <button class="copy-btn" onclick="copyResult(this,'${{textId}}')">コピー</button>
@@ -451,7 +491,7 @@ async function openGenerator(btn) {{
       </div>`;
     }}).join('') + '</div>';
   }} catch(e) {{
-    modalBody.innerHTML = `<div class="modal-error">エラー: ${{e.message}}</div>`;
+    modalBody.innerHTML = `<div class="modal-error">エラー: ${{escapeHtml(e.message)}}</div>`;
   }}
 }}
 
@@ -506,21 +546,21 @@ def _render_all_posts(posts: list[dict]) -> tuple[str, str]:
             "key_insights": p.get("key_insights") or [],
             "url": p.get("url", ""),
         })
-    return html, json.dumps(posts_js_data, ensure_ascii=False)
+    return html, _json_for_script(posts_js_data)
 
 
 def _render_post_card(post: dict, idx: int = 0) -> str:
     category = post.get("category") or "その他"
     icon = CATEGORY_ICONS.get(category, "💡")
-    summary = post.get("summary") or ""
-    theme = post.get("mind_theme") or ""
+    summary = escape(post.get("summary") or "")
+    theme = escape(post.get("mind_theme") or "")
     insights = post.get("key_insights") or []
-    credibility = post.get("credibility") or ""
-    target = post.get("target_audience") or ""
+    credibility = escape(post.get("credibility") or "")
+    target = escape(post.get("target_audience") or "")
     is_jp = post.get("is_japanese", True)
     flag = "🇯🇵" if is_jp else "🌍"
-    url = post.get("url") or "#"
-    author = post.get("author_display") or post.get("author") or ""
+    url = escape(post.get("url") or "#", quote=True)
+    author = escape(post.get("author_display") or post.get("author") or "")
     likes = post.get("engagement", {}).get("likes", 0)
     views = post.get("engagement", {}).get("views", 0)
 
@@ -533,21 +573,21 @@ def _render_post_card(post: dict, idx: int = 0) -> str:
             pub_date = dt.astimezone(JST).strftime("%Y/%m/%d")
             date_val = dt.strftime("%Y%m%d%H%M%S")
         except ValueError:
-            pub_date = raw_date[:10].replace("-", "/")
+            pub_date = escape(raw_date[:10].replace("-", "/"))
             date_val = raw_date[:19].replace("-", "").replace(":", "").replace("T", "").replace(" ", "")
 
     followers = post.get("author_followers") or 1
     eng_rate = likes / followers
 
-    raw_content = post.get("content") or ""
+    raw_content = _rstrip_lines(post.get("content") or "")
     content_length = len(raw_content)
     content_preview_limit = 400
-    content_escaped = raw_content[:content_preview_limit].replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    content_escaped = escape(raw_content[:content_preview_limit])
     has_more = content_length > content_preview_limit
 
     insights_html = ""
     if insights:
-        items_html = "".join(f"<li>{i}</li>" for i in insights[:3])
+        items_html = "".join(f"<li>{escape(str(i))}</li>" for i in insights[:3])
         insights_html = f'<ul class="insights-list">{items_html}</ul>'
 
     views_str = f"{views:,}" if views else ""
@@ -555,9 +595,9 @@ def _render_post_card(post: dict, idx: int = 0) -> str:
     target_html = f'<div class="post-target">👥 {target}</div>' if target else ""
     toggle_html = '<span class="post-body-toggle" onclick="toggleBody(this)">続きを読む ▼</span>' if has_more else ""
 
-    return f"""<div class="post-card" data-category="{category}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{date_val}" data-length="{content_length}" data-idx="{idx}">
+    return f"""<div class="post-card" data-category="{escape(category, quote=True)}" data-jp="{str(is_jp).lower()}" data-eng="{eng_rate:.6f}" data-date="{escape(date_val, quote=True)}" data-length="{content_length}" data-idx="{idx}">
   <div class="post-header">
-    <span class="post-category">{icon} {category}</span>
+    <span class="post-category">{icon} {escape(category)}</span>
     {credibility_html}
   </div>
   <div class="post-summary">{summary}</div>
