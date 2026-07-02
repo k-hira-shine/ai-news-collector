@@ -20,18 +20,18 @@ def test_collect_success_clears_existing_incident_when_requested() -> None:
     assert resolved is None
 
 
-def test_non_collect_success_keeps_existing_incident() -> None:
+def test_buzz_success_clears_existing_incident_when_requested() -> None:
     existing = {
         "active": "true",
         "severity": "warning",
-        "title": "収集パイプラインに警告",
+        "title": "buzz が warning で終了",
     }
 
     resolved = resolve_incident_for_write(
-        "money",
+        "buzz",
         "success",
         existing=existing,
         clear_on_success=True,
     )
 
-    assert resolved == existing
+    assert resolved is None
