@@ -87,7 +87,7 @@
   <a href="gemini-omni.html">🎬 Gemini Omni</a>
 </nav>
 <header>
-  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-05-22 11:23 JST</span></div>
+  <div class="header-title" style="max-width:1200px;margin:0 auto;">📋 AIツール使ってみたレビュー <span>Last updated: 2026-07-02 11:55 JST</span></div>
 </header>
 <div class="container">
   <div class="stats-bar">
@@ -243,12 +243,12 @@ AIに聞きながら導入してみようか？
     <input type="hidden" id="editToolNameHidden">
     <div id="editTokenSection" style="background:#0a0f1e;border:1px solid #2d3748;border-radius:8px;padding:10px 14px;display:flex;flex-direction:column;gap:6px">
       <div style="display:flex;align-items:center;justify-content:space-between">
-        <span style="font-size:0.78rem;color:#94a3b8">🔑 GitHub Personal Access Token</span>
+        <span style="font-size:0.78rem;color:#94a3b8">🔑 GitHub Personal Access Token（このタブのみ）</span>
         <span id="editTokenStatus" style="font-size:0.75rem"></span>
       </div>
       <div id="editTokenRow" style="display:flex;gap:6px">
         <input id="editToken" type="password" placeholder="ghp_xxxx…（repo スコープ必要）" style="flex:1;background:#1a2236;border:1px solid #2d3748;color:#e2e8f0;padding:6px 10px;border-radius:6px;font-size:0.82rem">
-        <button onclick="saveToken()" style="background:#1e3a5f;border:1px solid #2d5986;color:#7dd3fc;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap">保存</button>
+        <button onclick="saveToken()" style="background:#1e3a5f;border:1px solid #2d5986;color:#7dd3fc;padding:6px 12px;border-radius:6px;font-size:0.8rem;cursor:pointer;white-space:nowrap">このタブで使う</button>
       </div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
@@ -343,15 +343,17 @@ document.querySelectorAll('[data-filter-category]').forEach(btn => {
 /* ── 編集モーダル ── */
 const REPO = 'k-hira-shine/ai-news-collector';
 const FILE_PATH = 'data/reviews.json';
+localStorage.removeItem('gh_pat');
 
 function getToken() {
-  return localStorage.getItem('gh_pat') || '';
+  return sessionStorage.getItem('gh_pat') || '';
 }
 
 function saveToken() {
   const val = (document.getElementById('editToken')?.value || '').trim();
   if (!val) return;
-  localStorage.setItem('gh_pat', val);
+  localStorage.removeItem('gh_pat');
+  sessionStorage.setItem('gh_pat', val);
   refreshTokenUI();
 }
 
@@ -360,7 +362,7 @@ function refreshTokenUI() {
   const status = document.getElementById('editTokenStatus');
   const row = document.getElementById('editTokenRow');
   if (token) {
-    if (status) { status.textContent = '✅ 保存済み'; status.style.color = '#10b981'; }
+    if (status) { status.textContent = '✅ このタブで有効'; status.style.color = '#10b981'; }
     if (row) row.style.display = 'none';
   } else {
     if (status) { status.textContent = '未設定'; status.style.color = '#f59e0b'; }
@@ -471,7 +473,7 @@ async function saveEdit() {
   if (!token) {
     const msg = document.getElementById('editSaveMsg');
     msg.style.color = '#f59e0b';
-    msg.textContent = '⚠️ トークン欄に GitHub PAT を入力して「保存」してください';
+    msg.textContent = '⚠️ トークン欄に GitHub PAT を入力して「このタブで使う」を押してください';
     return;
   }
   const toolName = document.getElementById('editToolNameHidden').value;
@@ -513,6 +515,7 @@ async function saveEdit() {
   } catch(e) {
     if (e.message.includes('401') || e.message.includes('Bad credentials')) {
       localStorage.removeItem('gh_pat');
+      sessionStorage.removeItem('gh_pat');
       refreshTokenUI();
       msg.style.color = '#ef4444';
       msg.textContent = '❌ トークンが無効です。再入力してください。';
@@ -578,66 +581,5 @@ async function deleteTool() {
   }
 })();
 </script>
-
-<div id="incidentMount" class="incident-mount-wrap" style="display:none" aria-live="polite"></div>
-
-<span style="margin-left:auto;opacity:0.5;font-size:0.75rem;">✕</span>
-    </div>
-  </div>
-</div>
-<script>
-(function() {
-  function esc(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-  function cardHtml(inc) {
-    var sev = inc.severity === 'critical';
-    var border = sev ? '#f87171' : '#fbbf24';
-    var bg = sev ? 'rgba(248,113,113,0.12)' : 'rgba(251,191,36,0.12)';
-    var icon = sev ? '🚨' : '⚠️';
-    var impact = esc(inc.impact).replace(/\n/g, '<br>');
-    var diagram = inc.diagram_latest
-      ? '<p class="incident-meta">表示中の最新図解: <strong>' + esc(inc.diagram_latest) + '</strong></p>' : '';
-    return '<div class="incident-card" role="alert" style="--inc-border:' + border + ';--inc-bg:' + bg + '">'
-      + '<div class="incident-head"><span class="incident-icon">' + icon + '</span>'
-      + '<h2 class="incident-title">' + esc(inc.title) + '</h2></div>'
-      + '<dl class="incident-dl"><dt>状況</dt><dd>' + esc(inc.situation) + '</dd>'
-      + '<dt>原因</dt><dd>' + esc(inc.cause) + '</dd>'
-      + '<dt>影響</dt><dd>' + impact + '</dd></dl>' + diagram
-      + '<p class="incident-tech"><span>技術メモ:</span> ' + esc(inc.technical) + '</p>'
-      + '<p class="incident-meta">記録: ' + esc(inc.updated_at) + '</p></div>';
-  }
-  function fallbackIncident(data) {
-    var bad = Object.entries(data.workflows || {}).filter(function(e) { return e[1].status !== 'success'; });
-    if (!bad.length) return null;
-    var lines = bad.map(function(e) { return e[0] + ': ' + (e[1].error || e[1].status); });
-    return {
-      active: true, severity: data.overall === 'error' ? 'critical' : 'warning',
-      title: lines[0].slice(0, 120),
-      situation: '直近の自動実行で warning / error が記録されています。',
-      cause: lines.join(' / '),
-      impact: '該当機能の更新が止まっている可能性があります。詳細はログを確認してください。',
-      technical: '', updated_at: data.updated_at || ''
-    };
-  }
-  fetch('run_status.json?_=' + Date.now())
-    .then(function(r) { return r.ok ? r.json() : null; })
-    .catch(function() { return null; })
-    .then(function(data) {
-      if (!data) return;
-      var mount = document.getElementById('incidentMount');
-      var inc = data.incident;
-      if (!inc || !inc.active) {
-        if (data.overall !== 'success') inc = fallbackIncident(data);
-      }
-      if (inc && (inc.active === true || inc.active === 'true' || inc.active === 1)) {
-        if (mount) {
-          mount.innerHTML = cardHtml(inc);
-          mount.style.display = 'block';
-        }
-      }    });
-})();
-</script>
-
 </body>
 </html>
