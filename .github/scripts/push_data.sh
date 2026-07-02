@@ -15,7 +15,9 @@ abort_in_progress_git() {
 }
 
 commit_if_needed() {
+  python3 scripts/purge_old_data.py || true
   git add "${ADD_PATHS[@]}"
+  git add data/logs/ data/daily/ data/hn/ data/gemini_usage/ data/analysis/ data/tools/ 2>/dev/null || true
   if ! git diff --staged --quiet; then
     git commit -m "$COMMIT_MSG"
   fi
