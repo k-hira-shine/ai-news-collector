@@ -617,6 +617,7 @@ def main() -> None:
                     "starved_accounts": starved_accounts,
                 })
         write_run_status("buzz", run_status,
+                         clear_incident_on_success=(run_status == "success"),
                          extra={
                              "items_collected": fetched_items,
                              "items_retained": retained_items,
