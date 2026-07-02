@@ -76,13 +76,40 @@ def analyze_money_cases(items: list[dict], config: dict) -> list[dict]:
 
     for batch_start in range(0, len(candidates), batch_size):
         batch = candidates[batch_start : batch_start + batch_size]
-        cases = _analyze_batch(batch, model_name, api_key, config)
+        cases = _analyze_batch_resilient(batch, model_name, api_key, config)
         all_cases.extend(cases)
         logger.info("Money analysis batch %d-%d: %d cases found", batch_start, batch_start + len(batch), len(cases))
 
     filtered = filter_analysis_results(all_cases)
     logger.info("Money postfilter: %d → %d cases", len(all_cases), len(filtered))
     return filtered
+
+
+def _analyze_batch_resilient(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
+    """Gemini分析を再試行し、巨大/壊れたバッチは分割して欠落を防ぐ。"""
+    if not items:
+        return []
+
+    last_error: Exception | None = None
+    for attempt in range(2):
+        try:
+            return _analyze_batch(items, model_name, api_key, config)
+        except Exception as e:
+            last_error = e
+            logger.warning(
+                "Money analysis batch failed (%d items, attempt %d/2): %s",
+                len(items), attempt + 1, e,
+            )
+
+    if len(items) > 1:
+        mid = len(items) // 2
+        logger.warning("Money analysis splitting failed batch: %d -> %d + %d", len(items), mid, len(items) - mid)
+        return (
+            _analyze_batch_resilient(items[:mid], model_name, api_key, config)
+            + _analyze_batch_resilient(items[mid:], model_name, api_key, config)
+        )
+
+    raise RuntimeError(f"Money analysis failed for item {items[0].get('id', '')}: {last_error}")
 
 
 def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
@@ -154,46 +181,41 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 {posts_text}
 """
 
-    try:
-        thinking_budget = config.get("analysis", {}).get("thinking_budget", {}).get("stage1", 128)
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-            config={
-                "thinking_config": {"thinking_budget": thinking_budget},
-                "response_mime_type": "application/json",
-                "response_json_schema": MONEY_CASE_SCHEMA,
-                "http_options": types.HttpOptions(timeout=300_000),
-            },
-        )
-        from gemini_usage import log_usage
-        log_usage("money_analyzer", model_name, response)
-        result = json.loads(response.text)
-        raw_cases = result.get("cases", [])
+    thinking_budget = config.get("analysis", {}).get("thinking_budget", {}).get("stage1", 128)
+    response = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config={
+            "thinking_config": {"thinking_budget": thinking_budget},
+            "response_mime_type": "application/json",
+            "response_json_schema": MONEY_CASE_SCHEMA,
+            "http_options": types.HttpOptions(timeout=300_000),
+        },
+    )
+    from gemini_usage import log_usage
+    log_usage("money_analyzer", model_name, response)
+    result = json.loads(response.text)
+    raw_cases = result.get("cases", [])
 
-        # is_money_case=True のものだけ返す・post_id で元データを紐付ける
-        min_followers = config.get("money_collection", {}).get("min_followers", 1000)
-        id_to_item = {item["id"]: item for item in items}
-        money_cases = []
-        for case in raw_cases:
-            if not case.get("is_money_case"):
-                continue
-            post_id = case.get("post_id", "")
-            original = id_to_item.get(post_id, {})
-            if not original:
-                continue
-            # フォロワー数フィルター
-            followers = original.get("author_followers") or 0
-            if followers < min_followers:
-                continue
-            merged = {**original, **case}
-            money_cases.append(merged)
+    # is_money_case=True のものだけ返す・post_id で元データを紐付ける
+    min_followers = config.get("money_collection", {}).get("min_followers", 1000)
+    id_to_item = {item["id"]: item for item in items}
+    money_cases = []
+    for case in raw_cases:
+        if not case.get("is_money_case"):
+            continue
+        post_id = case.get("post_id", "")
+        original = id_to_item.get(post_id, {})
+        if not original:
+            continue
+        # フォロワー数フィルター
+        followers = original.get("author_followers") or 0
+        if followers < min_followers:
+            continue
+        merged = {**original, **case}
+        money_cases.append(merged)
 
-        return filter_analysis_results(money_cases)
-
-    except Exception as e:
-        logger.error("Money analysis batch failed: %s", e)
-        return []
+    return filter_analysis_results(money_cases)
 
 
 def save_money_analysis(cases: list[dict], date_str: str, slot: str) -> str:
