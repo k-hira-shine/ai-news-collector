@@ -152,6 +152,16 @@ class DetectAnomaliesTests(unittest.TestCase):
         self.assertTrue(any("図解が生成されなかった" in t for t in titles))
         self.assertTrue(any("top_articles が 0" in t for t in titles))
 
+    def test_html_generation_failure_is_critical(self) -> None:
+        alerts = detect_anomalies(
+            _stats(html_generation_errors=[{"page": "dashboard(index.html)", "error": "disk full"}]),
+            _cfg(),
+        )
+        matched = [a for a in alerts if "dashboard(index.html)" in a["title"]]
+        self.assertEqual(len(matched), 1)
+        self.assertEqual(matched[0]["severity"], "critical")
+        self.assertIn("disk full", matched[0]["detail"])
+
     def test_search_zero_with_hints_is_critical(self) -> None:
         alerts = detect_anomalies(
             _stats(

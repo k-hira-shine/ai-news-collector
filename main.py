@@ -2,6 +2,7 @@
 """AI News Collector — メインオーケストレータ"""
 
 import argparse
+import logging
 import os
 import time
 
@@ -14,6 +15,25 @@ def load_config(path: str = "config.yaml") -> dict:
     config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), path)
     with open(config_path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def _record_html_generation_error(
+    stats: dict,
+    anomalies: list[dict[str, str]],
+    page: str,
+    exc: Exception,
+) -> None:
+    error = str(exc)[:300]
+    stats.setdefault("html_generation_errors", []).append({"page": page, "error": error})
+    anomaly = {
+        "severity": "critical",
+        "title": f"{page} HTML 生成失敗",
+        "detail": f"{page} のHTML生成に失敗。既存ページが古い/空のまま公開される可能性。\nError: {error}",
+    }
+    anomalies.append(anomaly)
+    stats["anomalies"] = anomalies
+    logger = logging.getLogger("ai-news")
+    logger.warning("ALERT [%s] %s — %s", anomaly["severity"], anomaly["title"], anomaly["detail"])
 
 
 def main() -> None:
@@ -205,6 +225,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
             logger.info("Injected incident client into %d docs/*.html", n)
     except Exception as e:
         logger.error("Dashboard generation failed: %s", e)
+        _record_html_generation_error(stats, anomalies, "dashboard(index.html)", e)
 
     # ── Step 3.5: Strategy Page ────────────────────────────────────────
     try:
@@ -215,6 +236,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         logger.info("Strategy page generated → %s", strategy_output)
     except Exception as e:
         logger.error("Strategy page generation failed: %s", e)
+        _record_html_generation_error(stats, anomalies, "strategy.html", e)
 
     # ── Step 4: Tools Tracking ────────────────────────────────────────
     try:
@@ -299,9 +321,11 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
             logger.info("Tools page generated → %s", tools_output)
     except Exception as e:
         logger.error("Tools tracking failed: %s", e)
+        _record_html_generation_error(stats, anomalies, "tools.html", e)
 
 
     elapsed = time.time() - t0
+    stats["anomalies"] = anomalies
     logger.info("=== Complete in %.1fs ===", elapsed)
     status_icon = "⚠️" if anomalies else "✅"
     logger.info("%s AI News Collector 完了 (%ds, %d件収集)", status_icon, int(elapsed), stats["total"])
