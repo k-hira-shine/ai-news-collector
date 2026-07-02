@@ -77,7 +77,7 @@ def analyze_sns_posts(items: list[dict], config: dict) -> list[dict]:
 
     for batch_start in range(0, len(candidates), batch_size):
         batch = candidates[batch_start: batch_start + batch_size]
-        posts = _analyze_batch(batch, model_name, api_key, config)
+        posts = _analyze_batch_resilient(batch, model_name, api_key, config)
         all_posts.extend(posts)
         logger.info(
             "SNS analysis batch %d-%d: %d valuable posts found",
@@ -87,6 +87,33 @@ def analyze_sns_posts(items: list[dict], config: dict) -> list[dict]:
     filtered = filter_analysis_results(all_posts)
     logger.info("SNS postfilter: %d → %d posts", len(all_posts), len(filtered))
     return filtered
+
+
+def _analyze_batch_resilient(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
+    """Gemini分析を再試行し、巨大/壊れたバッチは分割して欠落を防ぐ。"""
+    if not items:
+        return []
+
+    last_error: Exception | None = None
+    for attempt in range(2):
+        try:
+            return _analyze_batch(items, model_name, api_key, config)
+        except Exception as e:
+            last_error = e
+            logger.warning(
+                "SNS analysis batch failed (%d items, attempt %d/2): %s",
+                len(items), attempt + 1, e,
+            )
+
+    if len(items) > 1:
+        mid = len(items) // 2
+        logger.warning("SNS analysis splitting failed batch: %d -> %d + %d", len(items), mid, len(items) - mid)
+        return (
+            _analyze_batch_resilient(items[:mid], model_name, api_key, config)
+            + _analyze_batch_resilient(items[mid:], model_name, api_key, config)
+        )
+
+    raise RuntimeError(f"SNS analysis failed for item {items[0].get('id', '')}: {last_error}")
 
 
 def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dict) -> list[dict]:
@@ -154,44 +181,39 @@ def _analyze_batch(items: list[dict], model_name: str, api_key: str, config: dic
 {posts_text}
 """
 
-    try:
-        thinking_budget = config.get("analysis", {}).get("thinking_budget", {}).get("stage1", 128)
-        response = client.models.generate_content(
-            model=model_name,
-            contents=prompt,
-            config={
-                "thinking_config": {"thinking_budget": thinking_budget},
-                "response_mime_type": "application/json",
-                "response_json_schema": SNS_MIND_SCHEMA,
-                "http_options": types.HttpOptions(timeout=300_000),
-            },
-        )
-        from gemini_usage import log_usage
-        log_usage("sns_analyzer", model_name, response)
-        result = json.loads(response.text)
-        raw_posts = result.get("posts", [])
+    thinking_budget = config.get("analysis", {}).get("thinking_budget", {}).get("stage1", 128)
+    response = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config={
+            "thinking_config": {"thinking_budget": thinking_budget},
+            "response_mime_type": "application/json",
+            "response_json_schema": SNS_MIND_SCHEMA,
+            "http_options": types.HttpOptions(timeout=300_000),
+        },
+    )
+    from gemini_usage import log_usage
+    log_usage("sns_analyzer", model_name, response)
+    result = json.loads(response.text)
+    raw_posts = result.get("posts", [])
 
-        min_followers = config.get("sns_success", {}).get("min_followers", 5000)
-        id_to_item = {item["id"]: item for item in items}
-        valuable_posts = []
-        for post in raw_posts:
-            if not post.get("is_valuable"):
-                continue
-            post_id = post.get("post_id", "")
-            original = id_to_item.get(post_id, {})
-            if not original:
-                continue
-            followers = original.get("author_followers") or 0
-            if followers < min_followers:
-                continue
-            merged = {**original, **post}
-            valuable_posts.append(merged)
+    min_followers = config.get("sns_success", {}).get("min_followers", 5000)
+    id_to_item = {item["id"]: item for item in items}
+    valuable_posts = []
+    for post in raw_posts:
+        if not post.get("is_valuable"):
+            continue
+        post_id = post.get("post_id", "")
+        original = id_to_item.get(post_id, {})
+        if not original:
+            continue
+        followers = original.get("author_followers") or 0
+        if followers < min_followers:
+            continue
+        merged = {**original, **post}
+        valuable_posts.append(merged)
 
-        return filter_analysis_results(valuable_posts)
-
-    except Exception as e:
-        logger.error("SNS analysis batch failed: %s", e)
-        return []
+    return filter_analysis_results(valuable_posts)
 
 
 def save_sns_analysis(posts: list[dict], date_str: str, slot: str) -> str:
