@@ -1,19 +1,20 @@
 {
-  "overall": "success",
-  "updated_at": "2026-07-02 02:36 JST",
+  "overall": "warning",
+  "updated_at": "2026-07-02 11:12 JST",
   "workflows": {
     "buzz": {
-      "status": "success",
-      "ts": "2026-07-01T01:55:50.389064+09:00",
-      "time": "2026-07-01 01:55 JST",
+      "status": "warning",
+      "ts": "2026-07-02T11:12:02.694527+09:00",
+      "time": "2026-07-02 11:12 JST",
       "error": "",
-      "items_collected": 100,
-      "items_retained": 119,
-      "new_items": 5,
+      "items_collected": 1145,
+      "items_retained": 1147,
+      "new_items": 663,
       "accounts": 15,
       "profile": "full",
-      "guardrail_status": "pass",
-      "fallback_triggered": false
+      "guardrail_status": "warning",
+      "fallback_triggered": false,
+      "starved_accounts": []
     },
     "collect": {
       "status": "success",
@@ -46,5 +47,17 @@
       "candidates": 845,
       "mode": "one-off-analysis"
     }
+  },
+  "incident": {
+    "active": "true",
+    "severity": "warning",
+    "title": "buzz が warning で終了",
+    "situation": "ワークフロー「buzz」の直近実行が warning です。",
+    "cause": "buzz が warning で終了",
+    "impact": "該当ページのデータが更新されない、または内容が古いままになる可能性があります。",
+    "technical": "{\"items_collected\": 1145}",
+    "diagram_latest": "2026-07-02-morning",
+    "workflow": "buzz",
+    "updated_at": "2026-07-02 11:12 JST"
   }
 }
