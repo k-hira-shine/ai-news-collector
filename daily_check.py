@@ -120,6 +120,50 @@ def _format_problem_run(r: dict) -> str:
     return f"{conclusion} → {name}{when}"
 
 
+def _run_created_at(r: dict) -> datetime | None:
+    created = r.get("createdAt")
+    if not created:
+        return None
+    try:
+        return datetime.fromisoformat(created.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _is_completed_success(r: dict | None) -> bool:
+    return bool(r) and r.get("status") == "completed" and r.get("conclusion") == "success"
+
+
+def _is_superseded_pages_failure(r: dict, latest_by_name: dict[str, dict]) -> bool:
+    """Ignore legacy Pages failures once the explicit Pages workflow has succeeded.
+
+    The repository moved from GitHub's legacy branch-based Pages deployment
+    ("pages build and deployment") to the explicit "Deploy Static Pages"
+    workflow. The legacy workflow will no longer produce a newer success, so
+    its final failed run should not keep daily checks red after the replacement
+    workflow has deployed a newer artifact.
+    """
+    if r.get("name") != "pages build and deployment":
+        return False
+    replacement = latest_by_name.get("Deploy Static Pages")
+    if not _is_completed_success(replacement):
+        return False
+    failed_at = _run_created_at(r)
+    fixed_at = _run_created_at(replacement)
+    return bool(failed_at and fixed_at and fixed_at > failed_at)
+
+
+def evaluate_action_failures(latest_by_name: dict[str, dict]) -> list[str]:
+    failures = []
+    for r in latest_by_name.values():
+        if not _is_failure(r):
+            continue
+        if _is_superseded_pages_failure(r, latest_by_name):
+            continue
+        failures.append(_format_problem_run(r))
+    return sorted(failures, key=str.casefold)
+
+
 def _gh_run_list(extra_args: list[str], limit: int) -> tuple[str, list[dict] | None]:
     """gh run list の薄いラッパ。("ok", runs) か ("skip", None) を返す。"""
     try:
@@ -173,10 +217,7 @@ def check_actions(limit: int = 30) -> tuple[bool, str]:
             if st == "ok" and one:
                 latest[name] = one[0]
 
-    failures = sorted(
-        (_format_problem_run(r) for r in latest.values() if _is_failure(r)),
-        key=str.casefold,
-    )
+    failures = evaluate_action_failures(latest)
     stale = evaluate_actions_freshness(latest, datetime.now(timezone.utc))
 
     problems = []

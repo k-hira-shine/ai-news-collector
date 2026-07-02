@@ -4,6 +4,7 @@ from datetime import date, datetime, timedelta, timezone
 from daily_check import (
     EXPECTED_WORKFLOWS,
     TODO_STALE_DAYS,
+    evaluate_action_failures,
     evaluate_actions_freshness,
     evaluate_analysis_structure,
     evaluate_collection_quality,
@@ -409,6 +410,22 @@ class ActionsFreshnessTests(unittest.TestCase):
         self.assertIn("Buzz Ranking Collector", names)
         self.assertIn("Daily Ops Check", names)
         self.assertEqual(len(EXPECTED_WORKFLOWS), 5)
+
+    def test_legacy_pages_failure_superseded_by_static_pages_success(self) -> None:
+        latest = {
+            "pages build and deployment": _run("pages build and deployment", 3, "failure"),
+            "Deploy Static Pages": _run("Deploy Static Pages", 1, "success"),
+        }
+        self.assertEqual(evaluate_action_failures(latest), [])
+
+    def test_legacy_pages_failure_still_reported_until_static_pages_success(self) -> None:
+        latest = {
+            "pages build and deployment": _run("pages build and deployment", 1, "failure"),
+            "Deploy Static Pages": _run("Deploy Static Pages", 3, "success"),
+        }
+        failures = evaluate_action_failures(latest)
+        self.assertEqual(len(failures), 1)
+        self.assertIn("pages build and deployment", failures[0])
 
 
 class BacklogTests(unittest.TestCase):
