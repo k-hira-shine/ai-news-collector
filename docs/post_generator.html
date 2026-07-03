@@ -88,7 +88,7 @@
 </nav>
 <header>
   <h1>📋 生成済み投稿ストック</h1>
-  <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: 2026/07/03 02:28 JST</p>
+  <p><a href="sns_success.html" style="color:var(--accent);">SNS成功者マインド</a> で生成した投稿文の保管場所 &nbsp;|&nbsp; 更新: 2026/07/04 03:09 JST</p>
 </header>
 <div class="container">
   <div class="toolbar">
@@ -251,75 +251,5 @@ function showTab(i) {
 
 render();
 </script>
-<style>
-.incident-mount-wrap { max-width: 960px; margin: 52px auto 0; padding: 0 1rem; width: 100%; box-sizing: border-box; }
-.incident-card { background: var(--inc-bg, rgba(248,113,113,0.12)); border: 1px solid var(--inc-border, #f87171); border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
-.incident-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
-.incident-icon { font-size: 1.25rem; }
-.incident-title { font-size: 1.05rem; color: var(--inc-border, #f87171); margin: 0; }
-.incident-dl { margin: 0; font-size: 0.9rem; }
-.incident-dl dt { font-weight: 700; color: var(--text, #e2e8f0); margin-top: 0.65rem; }
-.incident-dl dt:first-of-type { margin-top: 0; }
-.incident-dl dd { margin: 0.2rem 0 0 0; color: var(--muted, #94a3b8); line-height: 1.55; }
-.incident-tech { font-size: 0.78rem; color: var(--muted, #94a3b8); margin: 0.75rem 0 0; word-break: break-word; }
-.incident-tech span { font-weight: 600; color: var(--text, #e2e8f0); }
-.incident-meta { font-size: 0.75rem; color: var(--muted, #94a3b8); margin: 0.35rem 0 0; }
-</style>
-<div id="incidentMount" class="incident-mount-wrap" style="display:none" aria-live="polite"></div>
-<script>
-(function() {
-  function esc(s) {
-    return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-  function cardHtml(inc) {
-    var sev = inc.severity === 'critical';
-    var border = sev ? '#f87171' : '#fbbf24';
-    var bg = sev ? 'rgba(248,113,113,0.12)' : 'rgba(251,191,36,0.12)';
-    var icon = sev ? '🚨' : '⚠️';
-    var impact = esc(inc.impact).replace(/\n/g, '<br>');
-    var diagram = inc.diagram_latest
-      ? '<p class="incident-meta">表示中の最新図解: <strong>' + esc(inc.diagram_latest) + '</strong></p>' : '';
-    return '<div class="incident-card" role="alert" style="--inc-border:' + border + ';--inc-bg:' + bg + '">'
-      + '<div class="incident-head"><span class="incident-icon">' + icon + '</span>'
-      + '<h2 class="incident-title">' + esc(inc.title) + '</h2></div>'
-      + '<dl class="incident-dl"><dt>状況</dt><dd>' + esc(inc.situation) + '</dd>'
-      + '<dt>原因</dt><dd>' + esc(inc.cause) + '</dd>'
-      + '<dt>影響</dt><dd>' + impact + '</dd></dl>' + diagram
-      + '<p class="incident-tech"><span>技術メモ:</span> ' + esc(inc.technical) + '</p>'
-      + '<p class="incident-meta">記録: ' + esc(inc.updated_at) + '</p></div>';
-  }
-  function fallbackIncident(data) {
-    var bad = Object.entries(data.workflows || {}).filter(function(e) { return e[1].status !== 'success'; });
-    if (!bad.length) return null;
-    var lines = bad.map(function(e) { return e[0] + ': ' + (e[1].error || e[1].status); });
-    return {
-      active: true, severity: data.overall === 'error' ? 'critical' : 'warning',
-      title: lines[0].slice(0, 120),
-      situation: '直近の自動実行で warning / error が記録されています。',
-      cause: lines.join(' / '),
-      impact: '該当機能の更新が止まっている可能性があります。詳細はログを確認してください。',
-      technical: '', updated_at: data.updated_at || ''
-    };
-  }
-  fetch('run_status.json?_=' + Date.now())
-    .then(function(r) { return r.ok ? r.json() : null; })
-    .catch(function() { return null; })
-    .then(function(data) {
-      if (!data) return;
-      var mount = document.getElementById('incidentMount');
-      var inc = data.incident;
-      if (!inc || !inc.active) {
-        if (data.overall !== 'success') inc = fallbackIncident(data);
-      }
-      if (inc && (inc.active === true || inc.active === 'true' || inc.active === 1)) {
-        if (mount) {
-          mount.innerHTML = cardHtml(inc);
-          mount.style.display = 'block';
-        }
-      }
-    });
-})();
-</script>
-
 </body>
 </html>
