@@ -96,6 +96,7 @@ def _load_recent_analyses(days: int = 7) -> list[dict]:
 def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | None = None) -> str:
     JST = timezone(timedelta(hours=9))
     now_str = datetime.now(JST).strftime("%Y-%m-%d %H:%M JST")
+    latest_key = _analysis_key(latest)
     diagrams = diagrams or []
     hn_items = _load_hn_today()
     if not latest:
@@ -108,6 +109,10 @@ def _render(latest: dict | None, history: list[dict], diagrams: list[dict] | Non
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="ai-news-latest-key" content="{escape(latest_key)}">
 <title>AI News Dashboard</title>
 <style>
 :root {{
@@ -218,8 +223,39 @@ header .updated {{ color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; 
 </header>
 {body}
 </div>
+{_stale_page_refresh_script()}
 </body>
 </html>"""
+
+
+def _analysis_key(analysis: dict | None) -> str:
+    if not analysis:
+        return ""
+    date = analysis.get("_display_date") or (analysis.get("run_time", ""))[:10]
+    slot = analysis.get("_display_slot") or analysis.get("slot", "")
+    return f"{date}-{slot}" if date or slot else ""
+
+
+def _stale_page_refresh_script() -> str:
+    return """<script>
+(function() {
+  var meta = document.querySelector('meta[name="ai-news-latest-key"]');
+  var currentKey = meta ? meta.getAttribute('content') : '';
+  if (!currentKey || !window.fetch) return;
+
+  var path = window.location.pathname || '/';
+  fetch(path + '?fresh=' + Date.now(), { cache: 'no-store' })
+    .then(function(resp) { return resp.ok ? resp.text() : ''; })
+    .then(function(html) {
+      var match = html.match(/<meta name="ai-news-latest-key" content="([^"]*)"/);
+      var freshKey = match ? match[1] : '';
+      if (freshKey && freshKey !== currentKey) {
+        window.location.replace(path + '?fresh=' + Date.now() + window.location.hash);
+      }
+    })
+    .catch(function() {});
+})();
+</script>"""
 
 
 def _render_news_tabs(history: list[dict]) -> str:
@@ -1023,4 +1059,3 @@ def _render_strategy_body(strategy: dict, analysis: dict) -> str:
         )
 
     return "\n".join(parts) if parts else '<p class="empty">施策データがありません。</p>'
-

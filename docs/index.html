@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="ai-news-latest-key" content="2026-07-04-morning">
 <title>AI News Dashboard</title>
 <style>
 :root {
@@ -199,7 +203,7 @@ header .updated { color: var(--muted); font-size: 0.85rem; margin-top: 0.3rem; }
 <div class="container">
 <header>
   <h1>🤖 AI News Dashboard</h1>
-  <div class="updated">Last updated: 2026-07-04 01:50 JST</div>
+  <div class="updated">Last updated: 2026-07-04 06:19 JST</div>
   <a href="diagrams/2026-07-04-morning.html" class="latest-diagram-btn" target="_blank" rel="noopener">📊 最新図解を見る (2026-07-04 朝便)</a>
 </header>
 <div class="card"><h2>🖼️ 図解版アーカイブ</h2><div class="diagram-grid"><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-04-morning.png','diagrams/2026-07-04-morning.html','2026-07-04 朝便')" style="cursor:pointer"><span>2026-07-04</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-03-morning.png','diagrams/2026-07-03-morning.html','2026-07-03 朝便')" style="cursor:pointer"><span>2026-07-03</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-03-evening.png','diagrams/2026-07-03-evening.html','2026-07-03 夕便')" style="cursor:pointer"><span>2026-07-03</span><span class="slot-tag">夕便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-02-morning.png','diagrams/2026-07-02-morning.html','2026-07-02 朝便')" style="cursor:pointer"><span>2026-07-02</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-02-evening.png','diagrams/2026-07-02-evening.html','2026-07-02 夕便')" style="cursor:pointer"><span>2026-07-02</span><span class="slot-tag">夕便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-01-morning.png','diagrams/2026-07-01-morning.html','2026-07-01 朝便')" style="cursor:pointer"><span>2026-07-01</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-07-01-evening.png','diagrams/2026-07-01-evening.html','2026-07-01 夕便')" style="cursor:pointer"><span>2026-07-01</span><span class="slot-tag">夕便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-30-morning.png','diagrams/2026-06-30-morning.html','2026-06-30 朝便')" style="cursor:pointer"><span>2026-06-30</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-30-evening.png','diagrams/2026-06-30-evening.html','2026-06-30 夕便')" style="cursor:pointer"><span>2026-06-30</span><span class="slot-tag">夕便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-29-morning.png','diagrams/2026-06-29-morning.html','2026-06-29 朝便')" style="cursor:pointer"><span>2026-06-29</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-29-evening.png','diagrams/2026-06-29-evening.html','2026-06-29 夕便')" style="cursor:pointer"><span>2026-06-29</span><span class="slot-tag">夕便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-28-morning.png','diagrams/2026-06-28-morning.html','2026-06-28 朝便')" style="cursor:pointer"><span>2026-06-28</span><span class="slot-tag">朝便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-28-evening.png','diagrams/2026-06-28-evening.html','2026-06-28 夕便')" style="cursor:pointer"><span>2026-06-28</span><span class="slot-tag">夕便</span></div><div class="diagram-item" onclick="openDiagram('diagrams/2026-06-27-morning.png','diagrams/2026-06-27-morning.html','2026-06-27 朝便')" style="cursor:pointer"><span>2026-06-27</span><span class="slot-tag">朝便</span></div></div></div>
@@ -474,5 +478,24 @@ AIとの親密な関係性を取り巻く領域について、企業のポリシ
 </div>
 </div>
 </div>
+<script>
+(function() {
+  var meta = document.querySelector('meta[name="ai-news-latest-key"]');
+  var currentKey = meta ? meta.getAttribute('content') : '';
+  if (!currentKey || !window.fetch) return;
+
+  var path = window.location.pathname || '/';
+  fetch(path + '?fresh=' + Date.now(), { cache: 'no-store' })
+    .then(function(resp) { return resp.ok ? resp.text() : ''; })
+    .then(function(html) {
+      var match = html.match(/<meta name="ai-news-latest-key" content="([^"]*)"/);
+      var freshKey = match ? match[1] : '';
+      if (freshKey && freshKey !== currentKey) {
+        window.location.replace(path + '?fresh=' + Date.now() + window.location.hash);
+      }
+    })
+    .catch(function() {});
+})();
+</script>
 </body>
 </html>
