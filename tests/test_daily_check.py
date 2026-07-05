@@ -1,5 +1,7 @@
 import unittest
 from datetime import date, datetime, timedelta, timezone
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 from daily_check import (
     EXPECTED_WORKFLOWS,
@@ -8,7 +10,9 @@ from daily_check import (
     evaluate_actions_freshness,
     evaluate_analysis_structure,
     evaluate_collection_quality,
+    evaluate_public_pages,
     format_backlog,
+    latest_analysis_key,
 )
 
 _NOW = datetime(2026, 6, 21, 19, 20, tzinfo=timezone.utc)  # = 6/21 04:20 JST
@@ -436,6 +440,50 @@ class ActionsFreshnessTests(unittest.TestCase):
         failures = evaluate_action_failures(latest)
         self.assertEqual(len(failures), 1)
         self.assertIn("pages build and deployment", failures[0])
+
+
+class PublicPagesTests(unittest.TestCase):
+    def test_latest_analysis_key_prefers_evening_on_same_date(self) -> None:
+        with TemporaryDirectory() as tmp:
+            base = Path(tmp)
+            (base / "2026-07-05_morning.json").write_text("{}", encoding="utf-8")
+            (base / "2026-07-04_evening.json").write_text("{}", encoding="utf-8")
+            (base / "2026-07-05_evening.json").write_text("{}", encoding="utf-8")
+            self.assertEqual(latest_analysis_key(base), "2026-07-05-evening")
+
+    def test_all_public_pages_current_passes(self) -> None:
+        ok, msg = evaluate_public_pages(
+            "2026-07-05-morning",
+            {
+                "collector": "2026-07-05-morning",
+                "dashboard": "2026-07-05-morning",
+            },
+        )
+        self.assertTrue(ok)
+        self.assertIn("collector=2026-07-05-morning", msg)
+
+    def test_stale_collector_page_fails(self) -> None:
+        ok, msg = evaluate_public_pages(
+            "2026-07-05-morning",
+            {
+                "collector": "2026-07-04-morning",
+                "dashboard": "2026-07-05-morning",
+            },
+        )
+        self.assertFalse(ok)
+        self.assertIn("stale/missing", msg)
+        self.assertIn("collector=2026-07-04-morning", msg)
+
+    def test_unreachable_public_page_fails(self) -> None:
+        ok, msg = evaluate_public_pages(
+            "2026-07-05-morning",
+            {
+                "collector": None,
+                "dashboard": "2026-07-05-morning",
+            },
+        )
+        self.assertFalse(ok)
+        self.assertIn("collector=取得不可", msg)
 
 
 class BacklogTests(unittest.TestCase):

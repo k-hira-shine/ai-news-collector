@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """日次運用チェックを1コマンドに集約する。
 
-「今日のチェック」で見る4点を合否サマリで出す:
+「今日のチェック」で見る運用項目を合否サマリで出す:
   1. GitHub Actions の直近成否＋期待スケジュールの不在/stale検知（gh CLI、未認証ならスキップ）
   2. Apify コスト（施策後フロア窓の月額換算。check_cost.py と同じ計測ロジック）
   3. Gemini コスト（直近数日の日額）
@@ -9,6 +9,7 @@
   5. 収集品質（法務一色化・must_follow連続ゼロ・must_follow急減。data/logs の collect 行から）
   6. 分析構造（top/cat/action/fallback の構造完全性。data/analysis の最新便から）
   7. run_status（サイトのバナー源 docs/run_status.json。overall=error/critical incident を運用側でも検知）
+  8. 公開ページ鮮度（GitHub Pagesの実HTMLが最新分析キーと一致するか）
 
 使い方:
   python3 daily_check.py            # サマリ表示
@@ -18,7 +19,10 @@
 
 import argparse
 import json
+import re
 import subprocess
+import urllib.error
+import urllib.request
 from collections import defaultdict
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
@@ -36,6 +40,10 @@ CONFIG_PATH = BASE / "config.yaml"
 _SLOT_ORDER = {"morning": 0, "evening": 1}  # 同日内の便の時系列
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
+PUBLIC_PAGES = [
+    ("collector", "https://k-hira-shine.github.io/ai-news-collector/"),
+    ("dashboard", "https://k-hira-shine.github.io/ai-news-dashboard/"),
+]
 TODO_STALE_DAYS = 30  # これ以上未了なら ⚠️ を付けて軽く催促（合否には影響しない）
 
 # 品質監視の閾値（[[daily-check-routine]] の「残監視2点」をコード化）
@@ -584,6 +592,75 @@ def check_run_status() -> tuple[bool, str]:
     return evaluate_run_status(_load_run_status())
 
 
+def latest_analysis_key(analysis_dir: Path = ANALYSIS_DIR) -> str | None:
+    """data/analysis の最新便を、公開HTMLの latest-key 形式へ変換する。"""
+    if not analysis_dir.exists():
+        return None
+
+    def key(p: Path) -> tuple:
+        parts = p.stem.split("_")
+        return (parts[0], _SLOT_ORDER.get(parts[1] if len(parts) > 1 else "", 9))
+
+    files = sorted(analysis_dir.glob("*.json"), key=key)
+    if not files:
+        return None
+    return files[-1].stem.replace("_", "-")
+
+
+def evaluate_public_pages(expected_key: str | None, observed: dict[str, str | None]) -> tuple[bool, str]:
+    """公開URLごとの latest-key が最新分析と一致するか判定する純関数。"""
+    if not expected_key:
+        return _line("公開ページ", True, "最新分析なし")
+    if not observed:
+        return _line("公開ページ", False, f"期待={expected_key} → 取得対象なし")
+
+    details = []
+    problems = []
+    for label, key in observed.items():
+        shown = key or "取得不可"
+        details.append(f"{label}={shown}")
+        if key != expected_key:
+            problems.append(f"{label}={shown}")
+
+    detail = f"期待={expected_key}・" + " / ".join(details)
+    if problems:
+        detail += " → stale/missing: " + ", ".join(problems)
+    return _line("公開ページ", not problems, detail)
+
+
+def _extract_latest_key(html: str) -> str | None:
+    meta = re.search(r"<meta\b[^>]*\bname=[\"']ai-news-latest-key[\"'][^>]*>", html, re.I)
+    if not meta:
+        return None
+    content = re.search(r"\bcontent=[\"']([^\"']+)[\"']", meta.group(0), re.I)
+    return content.group(1) if content else None
+
+
+def _fetch_public_latest_key(url: str) -> str | None:
+    sep = "&" if "?" in url else "?"
+    cache_busted = f"{url}{sep}daily_check={int(datetime.now(timezone.utc).timestamp())}"
+    req = urllib.request.Request(
+        cache_busted,
+        headers={
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "User-Agent": "ai-news-daily-check/1.0",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            html = resp.read(1_500_000).decode("utf-8", errors="replace")
+    except (OSError, urllib.error.URLError, TimeoutError):
+        return None
+    return _extract_latest_key(html)
+
+
+def check_public_pages() -> tuple[bool, str]:
+    expected = latest_analysis_key()
+    observed = {label: _fetch_public_latest_key(url) for label, url in PUBLIC_PAGES}
+    return evaluate_public_pages(expected, observed)
+
+
 def load_backlog() -> list[dict]:
     """ops_backlog.yaml の未了TODOを読む。読めなければ空（=表示しないだけ）。"""
     if not BACKLOG_PATH.exists():
@@ -641,6 +718,7 @@ def main(argv: list[str] | None = None) -> int:
         check_collection_quality(),
         check_analysis_structure(),
         check_run_status(),
+        check_public_pages(),
     ]
     all_ok = True
     for ok, msg in results:
