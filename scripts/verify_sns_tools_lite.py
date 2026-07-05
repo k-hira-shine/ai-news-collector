@@ -38,7 +38,7 @@ def load_jsonl_dir(dirname: str, n_files: int = 2, max_items: int = 120) -> list
     seen: set[str] = set()
     items: list[dict] = []
     for path in reversed(files):
-        for line in path.read_text(encoding="utf-8").splitlines():
+        for line in path.read_text(encoding="utf-8").split("\n"):
             try:
                 item = json.loads(line)
             except json.JSONDecodeError:

@@ -35,7 +35,7 @@ def load_items() -> list[dict]:
     seen: set[str] = set()
     items: list[dict] = []
     for path in reversed(files):
-        for line in path.read_text(encoding="utf-8").splitlines():
+        for line in path.read_text(encoding="utf-8").split("\n"):
             try:
                 item = json.loads(line)
             except json.JSONDecodeError:

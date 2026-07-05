@@ -14,7 +14,7 @@ JST = timezone(timedelta(hours=9))
 def load_latest_metrics(path: Path = METRICS_PATH) -> dict | None:
     if not path.exists():
         return None
-    lines = [line for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    lines = [line for line in path.read_text(encoding="utf-8").split("\n") if line.strip()]
     return json.loads(lines[-1]) if lines else None
 
 

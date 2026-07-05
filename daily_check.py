@@ -284,7 +284,7 @@ def check_gemini(days: int = 4) -> tuple[bool, str]:
     daily: dict[str, float] = defaultdict(float)
     if GEMINI_USAGE_DIR.exists():
         for path in sorted(GEMINI_USAGE_DIR.glob("*.jsonl"))[-days:]:
-            for line in path.read_text(encoding="utf-8").splitlines():
+            for line in path.read_text(encoding="utf-8").split("\n"):
                 try:
                     r = json.loads(line)
                 except json.JSONDecodeError:
@@ -328,7 +328,7 @@ def load_collect_entries() -> list[dict]:
     if not LOGS_DIR.exists():
         return entries
     for path in sorted(LOGS_DIR.glob("*.jsonl")):
-        for line in path.read_text(encoding="utf-8").splitlines():
+        for line in path.read_text(encoding="utf-8").split("\n"):
             try:
                 r = json.loads(line)
             except json.JSONDecodeError:

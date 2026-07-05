@@ -370,7 +370,7 @@ def load_recent_zero_fetch_streaks(current_metrics: list[dict], threshold: int) 
 
     lines = [
         line
-        for line in BUZZ_METRICS_JSONL.read_text(encoding="utf-8").splitlines()
+        for line in BUZZ_METRICS_JSONL.read_text(encoding="utf-8").split("\n")
         if line.strip()
     ]
     for line in reversed(lines):

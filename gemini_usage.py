@@ -68,7 +68,7 @@ def summarize(days: int = 14) -> None:
     rows = []
     if USAGE_DIR.exists():
         for path in sorted(USAGE_DIR.glob("*.jsonl"))[-days:]:
-            for line in path.read_text(encoding="utf-8").splitlines():
+            for line in path.read_text(encoding="utf-8").split("\n"):
                 try:
                     rows.append(json.loads(line))
                 except json.JSONDecodeError:

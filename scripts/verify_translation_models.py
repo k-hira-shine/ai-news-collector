@@ -87,7 +87,7 @@ JUDGE_SCHEMA = {
 
 def _read_jsonl(path: Path) -> list[dict]:
     rows = []
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8").split("\n"):
         try:
             rows.append(json.loads(line))
         except json.JSONDecodeError:
