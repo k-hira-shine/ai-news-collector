@@ -458,9 +458,18 @@ class PublicPagesTests(unittest.TestCase):
                 "collector": "2026-07-05-morning",
                 "dashboard": "2026-07-05-morning",
             },
+            {
+                "money": "2026-07-05 02:54 JST",
+                "sns_success": "2026-07-05 02:54 JST",
+            },
+            {
+                "money": "2026-07-05 02:54 JST",
+                "sns_success": "2026-07-05 02:54 JST",
+            },
         )
         self.assertTrue(ok)
         self.assertIn("collector=2026-07-05-morning", msg)
+        self.assertIn("money=2026-07-05 02:54 JST", msg)
 
     def test_stale_collector_page_fails(self) -> None:
         ok, msg = evaluate_public_pages(
@@ -473,6 +482,27 @@ class PublicPagesTests(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("stale/missing", msg)
         self.assertIn("collector=2026-07-04-morning", msg)
+
+    def test_stale_money_page_fails_even_when_collector_is_current(self) -> None:
+        ok, msg = evaluate_public_pages(
+            "2026-07-06-morning",
+            {"collector": "2026-07-06-morning"},
+            {"money": "2026-07-06 02:54 JST"},
+            {"money": "2026-07-05 02:54 JST"},
+        )
+        self.assertFalse(ok)
+        self.assertIn("money=2026-07-05 02:54 JST", msg)
+        self.assertIn("期待 2026-07-06 02:54 JST", msg)
+
+    def test_stale_run_status_json_fails(self) -> None:
+        ok, msg = evaluate_public_pages(
+            "2026-07-06-morning",
+            {"collector": "2026-07-06-morning"},
+            {"run_status": "2026-07-06 02:54 JST"},
+            {"run_status": "2026-07-06 02:35 JST"},
+        )
+        self.assertFalse(ok)
+        self.assertIn("run_status=2026-07-06 02:35 JST", msg)
 
     def test_unreachable_public_page_fails(self) -> None:
         ok, msg = evaluate_public_pages(

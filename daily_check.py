@@ -40,8 +40,14 @@ CONFIG_PATH = BASE / "config.yaml"
 _SLOT_ORDER = {"morning": 0, "evening": 1}  # 同日内の便の時系列
 JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
+PUBLIC_BASE_URL = "https://k-hira-shine.github.io/ai-news-collector/"
 PUBLIC_PAGES = [
-    ("collector", "https://k-hira-shine.github.io/ai-news-collector/"),
+    ("collector", PUBLIC_BASE_URL),
+]
+PUBLIC_PAGE_TIMESTAMPS = [
+    ("money", BASE / "docs" / "money.html", PUBLIC_BASE_URL + "money.html"),
+    ("sns_success", BASE / "docs" / "sns_success.html", PUBLIC_BASE_URL + "sns_success.html"),
+    ("buzz", BASE / "docs" / "buzz.html", PUBLIC_BASE_URL + "buzz.html"),
 ]
 TODO_STALE_DAYS = 30  # これ以上未了なら ⚠️ を付けて軽く催促（合否には影響しない）
 
@@ -606,8 +612,18 @@ def latest_analysis_key(analysis_dir: Path = ANALYSIS_DIR) -> str | None:
     return files[-1].stem.replace("_", "-")
 
 
-def evaluate_public_pages(expected_key: str | None, observed: dict[str, str | None]) -> tuple[bool, str]:
-    """公開URLごとの latest-key が最新分析と一致するか判定する純関数。"""
+def evaluate_public_pages(
+    expected_key: str | None,
+    observed: dict[str, str | None],
+    expected_updates: dict[str, str | None] | None = None,
+    observed_updates: dict[str, str | None] | None = None,
+) -> tuple[bool, str]:
+    """公開URLが最新生成物と一致するか判定する純関数。
+
+    collector本体は latest-key で最新分析便と照合する。money/sns_success/buzz/run_status は
+    GitHub Pages deploy だけ失敗するとHTMLが古いまま残るため、ローカルの生成済み時刻と
+    公開HTML/JSONの時刻を直接比較する。
+    """
     if not expected_key:
         return _line("公開ページ", True, "最新分析なし")
     if not observed:
@@ -622,6 +638,18 @@ def evaluate_public_pages(expected_key: str | None, observed: dict[str, str | No
             problems.append(f"{label}={shown}")
 
     detail = f"期待={expected_key}・" + " / ".join(details)
+
+    update_details = []
+    for label, expected in (expected_updates or {}).items():
+        actual = (observed_updates or {}).get(label)
+        expected_shown = expected or "期待取得不可"
+        actual_shown = actual or "取得不可"
+        update_details.append(f"{label}={actual_shown}")
+        if not expected or actual != expected:
+            problems.append(f"{label}={actual_shown}（期待 {expected_shown}）")
+    if update_details:
+        detail += "・更新 " + " / ".join(update_details)
+
     if problems:
         detail += " → stale/missing: " + ", ".join(problems)
     return _line("公開ページ", not problems, detail)
@@ -633,6 +661,21 @@ def _extract_latest_key(html: str) -> str | None:
         return None
     content = re.search(r"\bcontent=[\"']([^\"']+)[\"']", meta.group(0), re.I)
     return content.group(1) if content else None
+
+
+def _extract_updated_marker(html: str) -> str | None:
+    match = re.search(
+        r"(?:Last updated:|最終更新:)\s*([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2} JST)",
+        html,
+    )
+    return match.group(1) if match else None
+
+
+def _read_local_updated_marker(path: Path) -> str | None:
+    try:
+        return _extract_updated_marker(path.read_text(encoding="utf-8", errors="replace"))
+    except OSError:
+        return None
 
 
 def _fetch_public_latest_key(url: str) -> str | None:
@@ -654,10 +697,62 @@ def _fetch_public_latest_key(url: str) -> str | None:
     return _extract_latest_key(html)
 
 
+def _fetch_public_updated_marker(url: str) -> str | None:
+    sep = "&" if "?" in url else "?"
+    cache_busted = f"{url}{sep}daily_check={int(datetime.now(timezone.utc).timestamp())}"
+    req = urllib.request.Request(
+        cache_busted,
+        headers={
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "User-Agent": "ai-news-daily-check/1.0",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            html = resp.read(500_000).decode("utf-8", errors="replace")
+    except (OSError, urllib.error.URLError, TimeoutError):
+        return None
+    return _extract_updated_marker(html)
+
+
+def _fetch_public_run_status_updated_at(url: str) -> str | None:
+    sep = "&" if "?" in url else "?"
+    cache_busted = f"{url}{sep}daily_check={int(datetime.now(timezone.utc).timestamp())}"
+    req = urllib.request.Request(
+        cache_busted,
+        headers={
+            "Cache-Control": "no-cache",
+            "Pragma": "no-cache",
+            "User-Agent": "ai-news-daily-check/1.0",
+        },
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            data = json.loads(resp.read(200_000).decode("utf-8", errors="replace"))
+    except (OSError, urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        return None
+    return data.get("updated_at")
+
+
 def check_public_pages() -> tuple[bool, str]:
     expected = latest_analysis_key()
     observed = {label: _fetch_public_latest_key(url) for label, url in PUBLIC_PAGES}
-    return evaluate_public_pages(expected, observed)
+    expected_updates = {
+        label: _read_local_updated_marker(path)
+        for label, path, _url in PUBLIC_PAGE_TIMESTAMPS
+    }
+    observed_updates = {
+        label: _fetch_public_updated_marker(url)
+        for label, _path, url in PUBLIC_PAGE_TIMESTAMPS
+    }
+    run_status = _load_run_status()
+    if run_status and run_status.get("updated_at"):
+        expected_updates["run_status"] = run_status.get("updated_at")
+        observed_updates["run_status"] = _fetch_public_run_status_updated_at(
+            PUBLIC_BASE_URL + "run_status.json",
+        )
+    return evaluate_public_pages(expected, observed, expected_updates, observed_updates)
 
 
 def load_backlog() -> list[dict]:
