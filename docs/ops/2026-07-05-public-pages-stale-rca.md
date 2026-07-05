@@ -43,7 +43,8 @@ Follow-up hardening in this RCA session:
 - The deploy job no longer requires the upstream workflow conclusion to be `success`.
   - Reason: `docs/` may already have been pushed even if a later mirror deploy or notification step fails.
   - Deploying the current `main/docs` artifact is harmless and keeps the repo Pages URL current.
-- `daily_check.py` now checks public HTML freshness for both public URLs by comparing each page's `ai-news-latest-key` against the newest `data/analysis/*.json` key.
+- `daily_check.py` now checks the canonical public HTML freshness by comparing the page's `ai-news-latest-key` against the newest `data/analysis/*.json` key.
+- Follow-up decision: stop mirroring generated pages to `ai-news-dashboard`; keep that repo only as a redirect to the canonical `ai-news-collector` URL.
 
 ## Verification
 
@@ -57,9 +58,8 @@ After redeploy, direct HTML and browser checks for `https://k-hira-shine.github.
 
 ## Regression Guard
 
-Daily ops check now fails if either public URL is stale or unreachable:
+Daily ops check now fails if the canonical public URL is stale or unreachable:
 
 - `collector`: `https://k-hira-shine.github.io/ai-news-collector/`
-- `dashboard`: `https://k-hira-shine.github.io/ai-news-dashboard/`
 
 The regression test `PublicPagesTests.test_stale_collector_page_fails` reproduces the exact failure mode: collector stale while dashboard is current.

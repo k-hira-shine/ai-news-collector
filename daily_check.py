@@ -42,7 +42,6 @@ JST = timezone(timedelta(hours=9))
 REPO = "k-hira-shine/ai-news-collector"
 PUBLIC_PAGES = [
     ("collector", "https://k-hira-shine.github.io/ai-news-collector/"),
-    ("dashboard", "https://k-hira-shine.github.io/ai-news-dashboard/"),
 ]
 TODO_STALE_DAYS = 30  # これ以上未了なら ⚠️ を付けて軽く催促（合否には影響しない）
 

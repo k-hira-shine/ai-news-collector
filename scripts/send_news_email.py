@@ -19,7 +19,7 @@ except ModuleNotFoundError:
 
 JST = timezone(timedelta(hours=9))
 REPO_ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_BASE_URL = "https://k-hira-shine.github.io/ai-news-dashboard"
+PUBLIC_BASE_URL = "https://k-hira-shine.github.io/ai-news-collector"
 SLOT_LABELS = {"morning": "朝便", "evening": "夕便"}
 SLOT_ORDER = {"morning": 0, "evening": 1}
 ANALYSIS_RE = re.compile(r"^(\d{4}-\d{2}-\d{2})_(morning|evening)\.json$")

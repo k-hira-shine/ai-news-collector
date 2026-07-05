@@ -45,8 +45,8 @@ class SendNewsEmailTests(unittest.TestCase):
             body = build_news_body(Path("2026-07-05_morning.json"), analysis, base)
 
             self.assertIn("AIニュース 2026-07-05 朝便", body)
-            self.assertIn("https://k-hira-shine.github.io/ai-news-dashboard/index.html", body)
-            self.assertIn("https://k-hira-shine.github.io/ai-news-dashboard/diagrams/2026-07-05-morning.html", body)
+            self.assertIn("https://k-hira-shine.github.io/ai-news-collector/index.html", body)
+            self.assertIn("https://k-hira-shine.github.io/ai-news-collector/diagrams/2026-07-05-morning.html", body)
             self.assertIn("1. 重要ニュース", body)
             self.assertIn("https://example.com/news", body)
 
