@@ -2,6 +2,14 @@ name: Deploy Static Pages
 
 on:
   workflow_dispatch:
+  workflow_run:
+    workflows:
+      - "AI News Collector"
+      - "AI Money Cases Collector"
+      - "Buzz Ranking Collector"
+      - "Rebuild Reviews Page"
+    types:
+      - completed
   push:
     branches:
       - main
@@ -20,6 +28,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment:
@@ -29,6 +38,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: main
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
