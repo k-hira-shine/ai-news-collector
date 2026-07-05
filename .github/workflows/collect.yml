@@ -53,6 +53,7 @@ jobs:
         run: python -m playwright install --with-deps chromium
 
       - name: Run collector
+        id: run_collector
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
@@ -157,3 +158,20 @@ jobs:
           git push --force \
             "git@github.com:k-hira-shine/ai-news-dashboard.git" \
             HEAD:main
+
+      - name: Send news summary email
+        if: >-
+          always()
+          && steps.run_collector.outcome == 'success'
+          && (
+            github.event_name == 'schedule'
+            || (github.event_name == 'workflow_dispatch' && (github.event.inputs.mode || 'full') != 'dashboard-only')
+          )
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          DAILY_CHECK_EMAIL_TO: ${{ secrets.DAILY_CHECK_EMAIL_TO }}
+          NEWS_EMAIL_TO: ${{ secrets.NEWS_EMAIL_TO }}
+        run: python scripts/send_news_email.py
