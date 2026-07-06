@@ -35,33 +35,33 @@
     "note": "情報取得を停止せず、重複取得と過剰な再取得だけを削減した場合の概算"
   },
   "latest": {
-    "date": "2026-07-06",
+    "date": "2026-07-07",
     "workflows": {
-      "collect": 0.0,
-      "money": 0.0141,
+      "collect": 0.003,
+      "money": 0.0,
       "buzz": 0.0
     },
     "items_collected": {
-      "collect": 147,
-      "money": 210,
-      "buzz": 1168
+      "collect": 139,
+      "money": 0,
+      "buzz": 0
     },
-    "total_usd": 0.0141,
-    "gemini_usd": 0.2193,
-    "combined_total_usd": 0.2334
+    "total_usd": 0.003,
+    "gemini_usd": 0.1194,
+    "combined_total_usd": 0.1224
   },
   "rolling": {
     "days": 7,
     "window": 7,
-    "start_date": "2026-06-29",
-    "end_date": "2026-07-05",
-    "average_daily_usd": 0.0212,
-    "monthly_projection_usd": 0.64,
-    "gemini_average_daily_usd": 0.2425,
-    "gemini_monthly_projection_usd": 7.27,
-    "combined_average_daily_usd": 0.2636,
-    "combined_monthly_projection_usd": 7.91,
-    "reduction_vs_baseline_pct": 97.3,
+    "start_date": "2026-06-30",
+    "end_date": "2026-07-06",
+    "average_daily_usd": 0.0201,
+    "monthly_projection_usd": 0.6,
+    "gemini_average_daily_usd": 0.2307,
+    "gemini_monthly_projection_usd": 6.92,
+    "combined_average_daily_usd": 0.2508,
+    "combined_monthly_projection_usd": 7.53,
+    "reduction_vs_baseline_pct": 97.4,
     "status": "on_target"
   },
   "daily": [
@@ -480,6 +480,22 @@
       "total_usd": 0.0141,
       "gemini_usd": 0.2193,
       "combined_total_usd": 0.2334
+    },
+    {
+      "date": "2026-07-07",
+      "workflows": {
+        "collect": 0.003,
+        "money": 0.0,
+        "buzz": 0.0
+      },
+      "items_collected": {
+        "collect": 139,
+        "money": 0,
+        "buzz": 0
+      },
+      "total_usd": 0.003,
+      "gemini_usd": 0.1194,
+      "combined_total_usd": 0.1224
     }
   ]
 }
