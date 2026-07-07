@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-07-08 朝便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Noto Sans CJK JP", "Noto Sans JP",
+      "Yu Gothic", "Yu Gothic UI", "Meiryo",
+      -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt" 1;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 24px; }
+    .top-grid { grid-template-columns: 1fr !important; }
+    .trend-grid { grid-template-columns: 1fr !important; }
+    .topic-grid { grid-template-columns: 1fr !important; }
+    .cat-grid { grid-template-columns: 1fr !important; }
+    .x-grid { grid-template-columns: 1fr !important; }
+    .hero { padding: 14px 12px; }
+    .hero-title { font-size: 1.1rem; }
+    .topic-title { font-size: 0.95rem; }
+    .rank-num { font-size: 1.4rem !important; }
+    .medal { width: 36px !important; height: 36px !important; }
+    .nowrap { white-space: normal !important; }
+    .tag { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-07-08</span>
+      <span class="slot-badge">朝便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">Google DeepMind、古代世界との会話</div>
+        <div class="tags">
+          <span class="tag cat-usecase">ユースケース</span>
+          <span class="tag src">x:@GoogleDeepMind</span>
+        </div>
+        <div class="summary">Google DeepMindがGeminiを専門モデルAeneasとIthacaに統合し、古代ギリシャ語・ラテン語の文献を平易な英語で研究できる「Predicting the Past Skill」を発表しました。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">1.6兆パラメータMoE「LongCat-2.0」</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">x:@ai_hakase_</span>
+          </div>
+          <div class="summary">中国の美団（Meituan）が、1.6兆パラメータのMoEモデル「LongCat-2.0」をMITライセンスでオープンソース化し、商用利用と改変を自由にしたことを発表しました。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">NVIDIA Vera：エージェントAIのCPU</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@nvidia</span>
+          </div>
+          <div class="summary">NVIDIAが、エージェントAIシステム向けに、単一スレッドCPUのパフォーマンスを最大化する「NVIDIA Vera」を発表しました。これにより、AIエージェントの各推論ステップを高速化し、GPUの活用効率を高めます。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-reg">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">中国、中華AIの国外遮断を検討？</div>
+          <div class="tags">
+            <span class="tag cat-reg">規制/政策</span>
+            <span class="tag src">x:@umiyuki_ai</span>
+          </div>
+          <div class="summary">中国が米国に倣い、中華AIモデルの国外遮断を検討しているとの情報が流れ、オープンモデルの利用可能性への懸念が示されています。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-research">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">Anthropic「J-space」でAIの心？</div>
+          <div class="tags">
+            <span class="tag cat-research">研究論文</span>
+            <span class="tag src">x:@umiyuki_ai</span>
+          </div>
+          <div class="summary">AnthropicがClaudeの内部に「J-space」と名付けられた人間の心のような内部状態を発見したと発表し、AIの推論過程に新たな知見をもたらしました。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日のAI業界は、Google DeepMindが古代史研究にAI（Geminiと専門モデル）を応用する画期的な取り組みを発表し、AIの活用領域を大きく広げました。また、美団（Meituan）による1.6兆パラメータのMoEモデル「LongCat-2.0」の商用フリー公開や、NVIDIA VeraによるエージェントAI向けCPUの最適化など、技術進化とオープンソース化が加速しています。一方で、Anthropicの「J-space」研究を巡るAIの意識や倫理に関する議論が再燃し、中国のAI輸出規制の可能性など、政策・規制面での動向も活発です。AIエージェントの効率化やローカル環境での活用技術も引き続き注目を集めています。</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">Google DeepMindの歴史分析AI</div>
+        <div class="evolution">Geminiを古代史研究に適用する新ユースケースが初登場。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">AIの意識と倫理・規制</div>
+        <div class="evolution">AnthropicのJ-space研究の報告から、AIの意識、人間との同一視、倫理的扱いにまで議論が拡大。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">3日目</span>
+        </div>
+        <div class="topic-name">オープンソースAIモデルとエコシステム</div>
+        <div class="evolution">中国美団のLongCat-2.0発表により、超大規模MoEモデルのオープンソース化と技術民主化が加速。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIエージェントの進化と活用</div>
+        <div class="evolution">業務自動化やコード生成での活用に加え、常時稼働エージェントの永続メモリ・状態管理が議論の中心に。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIインフラとコスト問題</div>
+        <div class="evolution">NVIDIA VeraによるエージェントAI向けCPU最適化や、ローカルLLMのメモリ・トークン消費削減技術が登場。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">LLMの内部推論メカニズム</div>
+        <div class="evolution">AnthropicのJ-spaceが注目され、LLMの思考過程に関する理解を深める研究が進展。</div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">13</span>
+        </div>
+        <div class="summary">本日は、中国の美団（Meituan）が1.6兆パラメータの巨大MoEモデル「LongCat-2.0」を商用フリーのMITライセンスでオープンソース化したことが最大の注目点です。これにより、高性能AIの民主化が加速する見込みです。また、ファインチューニング不要でLLMの検閲を解除する「Abliteration」や、ChatGPTの画像生成機能「GPT Image 2」の物理演算・シネマティック制御、C++/GGML製オーディオAI基盤「audio.cpp」、LLMエージェントのトークン消費を劇的に削減する新規格「TOON」など、モデルの性能向上、コスト効率化、開発効率化に資する多様なツールが登場しています。</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">21</span>
+        </div>
+        <div class="summary">Google DeepMindがGeminiと専門モデルAeneas/Ithacaを統合し、古代史研究者向けにギリシャ語・ラテン語文献を平易な英語で分析できる「Predicting the Past Skill」を発表、AIの人文科学分野への応用が大きく進展しました。また、言葉で3D仮想世界を生成する「HappyOyster」や、ChatGPT for PowerPointの全プランでの提供開始、Sakana AIの翻訳ツール「Sakana Translate」リリースなど、クリエイティブ、オフィス業務、多言語対応といった幅広い分野でAIの具体的な活用事例が拡大しています。AIエージェントによる業務自動化や、ローカルLLMを用いたプライバシー保護など、実用性と安全性も重視されています。</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">10</span>
+        </div>
+        <div class="summary">中国が米国に倣い、中華AIモデルの国外遮断を検討しているとの情報が流れ、国際的なAI供給網への懸念が高まっています。米国イリノイ州では、フロンティアモデルを開発するAI企業に安全リスクへの説明責任を課す「AI安全対策法」が制定され、AI規制の具体的な動きが見られます。また、AIの「意識」や「権利」に関する倫理的な議論が活発化しており、LLMを人間と同一視することの危険性や、AI虐待の概念など、根源的な問いが提起されています。英国の金融規制当局もAIが消費者金融意思決定に与える影響についてレビューを発表し、多様な分野でのAIガバナンスの必要性が強調されています。</div>
+      </div>
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">7</span>
+        </div>
+        <div class="summary">NVIDIAは、エージェントAIシステム向けに単一スレッドCPUのパフォーマンスを最大化する「NVIDIA Vera」を発表し、Perplexityが既に導入していることを明かしました。AnthropicのClaudeは、チャット機能と共同作業スペース「Cowork」を統合し、Webとデスクトップでシームレスなプロジェクト管理を可能にしました。また、MetaがOpenAIのGPT-5.5に匹敵する性能を持つ新AI「Watermelon」を近日発表するという噂が流れており、大手企業間の競争が激化しています。SHIFT AIは「AIエージェントカンファレンス」を開催し、AIエージェントの実践的な活用を促進する動きも見られます。</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">18</span>
+        </div>
+        <div class="summary">AnthropicがClaudeの内部に人間の心のような内部状態「J-space」を発見したと発表し、AIの内部推論メカニズムに関する新たな研究の方向性を示しました。この発表は、LLMの意識や倫理、人間との同一視に関する活発な議論を巻き起こしています。また、「Always-On Agents」が永続メモリと状態管理のイノベーションをもたらすという論文は、常時稼働型AIエージェントの実現に向けた重要な設計指針を提供しています。一方で、Yann LeCunらの世界モデルに関する議論や、言語が論理的思考に必須ではないとする神経科学の発見など、AIの基礎理論と脳科学との連携も進んでいます。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">Google DeepMindの歴史分析AI</span>
+        </div>
+        <div class="desc">Google DeepMindがGeminiを専門モデルAeneasとIthacaに統合し、古代史研究を支援する「Predicting the Past Skill」を発表しました。これにより、歴史家は平易な英語でギリシャ語・ラテン語の文献を研究できるようになります。ユーザーは、AIが専門性の高い分野に貢献する可能性に大きな関心を示しており、その画期的な応用例として注目を集めています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">AIの意識と倫理・AI虐待論</span>
+        </div>
+        <div class="desc">AnthropicがClaudeの内部に人間の心のような内部状態「J-space」を発見したという研究発表に対し、X上ではAIに意識があるのか、人間と同一視することの是非、そして24時間稼働するAIを「虐待」と見なすか否かという倫理的議論が活発に行われています。特に、LLMを人間と同等に扱うことへの疑問や、それが誤解を招く危険性について、多くのユーザーが言及しています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">中国AIの国外遮断検討</span>
+        </div>
+        <div class="desc">中国が米国に倣って中華AIモデルの国外遮断を検討しているとの情報が流れ、Xユーザーの間で大きな動揺が広がっています。特に、無料で利用可能な中国製オープンモデルに依存している開発者からは、技術エコシステムへの深刻な影響を懸念する声が多数上がっており、国際的なAI供給網の分断に対する不安が表明されています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-07-07 17:33 UTC · AI News Collector
+    
+  </div>
+
+</div>
+</body>
+</html>
