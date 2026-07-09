@@ -146,6 +146,9 @@ alerts:
   analysis_json_save_alert: true       # data/analysis への JSON 保存失敗で critical
 
 analysis:
+  # 通常運用はAIニュース収集・分析だけ。YouTube/X/ビジネス施策提案はLegacy扱いで、
+  # enable_strategy=true かつ ALLOW_LEGACY_COSTS=true のときだけ実行する。
+  enable_strategy: false
   models:
     # stage1(1次フィルタ)とMoney/SNS分析はFlash。検証(2026-06-10)で採用判定の
     # Pro一致率97.6%を確認済み。
@@ -162,6 +165,7 @@ analysis:
   thinking_budget:
     stage1: 128
     stage2: 512
+    # enable_strategy=true かつ ALLOW_LEGACY_COSTS=true のときだけ使用。
     stage3: 256
   categories:
     - "モデル/ツール"

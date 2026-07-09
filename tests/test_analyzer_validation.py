@@ -1,4 +1,5 @@
 import unittest
+from unittest.mock import patch
 
 from analyzer import NewsAnalyzer
 
@@ -30,6 +31,17 @@ class AnalyzerValidationTests(unittest.TestCase):
             "x_trends": [],
         }
         self.assertIs(NewsAnalyzer._validate_stage2_result(payload), payload)
+
+    def test_strategy_generation_is_disabled_by_default(self) -> None:
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertFalse(NewsAnalyzer._strategy_enabled({"analysis": {}}))
+
+    def test_strategy_generation_requires_cost_opt_in(self) -> None:
+        config = {"analysis": {"enable_strategy": True}}
+        with patch.dict("os.environ", {}, clear=True):
+            self.assertFalse(NewsAnalyzer._strategy_enabled(config))
+        with patch.dict("os.environ", {"ALLOW_LEGACY_COSTS": "true"}, clear=True):
+            self.assertTrue(NewsAnalyzer._strategy_enabled(config))
 
 
 if __name__ == "__main__":

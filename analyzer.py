@@ -1,4 +1,4 @@
-"""3段 Gemini パイプラインで AI ニュースを分析"""
+"""Gemini パイプラインで AI ニュースを分析"""
 
 import json
 import logging
@@ -212,6 +212,15 @@ class NewsAnalyzer:
             raise ValueError("GEMINI_API_KEY environment variable is required")
         self.client = genai.Client(api_key=api_key)
 
+    @staticmethod
+    def _strategy_enabled(config: dict) -> bool:
+        """Legacy strategy generation is opt-in because it is not news collection."""
+        analysis_cfg = config.get("analysis", {})
+        return (
+            bool(analysis_cfg.get("enable_strategy", False))
+            and os.environ.get("ALLOW_LEGACY_COSTS") == "true"
+        )
+
     # ── public ────────────────────────────────────────────────────────
 
     def analyze(self, items: list[dict]) -> dict:
@@ -246,13 +255,17 @@ class NewsAnalyzer:
         recent_analyses = self._load_recent_analyses(count=5)
         analysis = self._stage2_analyze(top_items, items_by_id, recent_analyses)
 
-        # Stage 3: 施策提案
-        time.sleep(15)
-        try:
-            analysis["strategy"] = self._stage3_strategy(analysis)
-        except Exception as e:
-            logger.warning("Stage 3 (strategy) failed, skipping: %s", e)
-            analysis["strategy"] = {}
+        # Legacy Stage 3: 施策提案。通常運用はAIニュース収集だけに限定する。
+        analysis["strategy"] = {}
+        if self._strategy_enabled(self.config):
+            time.sleep(15)
+            try:
+                analysis["strategy"] = self._stage3_strategy(analysis)
+            except Exception as e:
+                logger.warning("Stage 3 (strategy) failed, skipping: %s", e)
+                analysis["strategy"] = {}
+        else:
+            logger.info("Stage 3 (strategy) disabled for news-only operation")
 
         # メタデータ付与
         analysis["run_time"] = now_iso()

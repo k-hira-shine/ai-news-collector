@@ -62,7 +62,7 @@ jobs:
           if [ "$MODE" = "analyze-only" ]; then
             python main.py --analyze-only
           elif [ "$MODE" = "dashboard-only" ]; then
-            python -c "import sys; sys.path.insert(0,'.'); from dashboard import generate_dashboard, generate_strategy_page; generate_dashboard('docs/index.html'); generate_strategy_page('docs/strategy.html'); print('AI news dashboard regenerated')"
+            python -c "import sys; sys.path.insert(0,'.'); from dashboard import generate_dashboard; generate_dashboard('docs/index.html'); print('AI news dashboard regenerated')"
           else
             if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 7 * * *" ]; then
               python main.py --x-mode light

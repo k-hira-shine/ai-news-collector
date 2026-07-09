@@ -233,16 +233,19 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         logger.error("Dashboard generation failed: %s", e)
         _record_html_generation_error(stats, anomalies, "dashboard(index.html)", e)
 
-    # ── Step 3.5: Strategy Page ────────────────────────────────────────
-    try:
-        from dashboard import generate_strategy_page
+    # ── Legacy: Strategy Page ─────────────────────────────────────────
+    if analyzer._strategy_enabled(config):
+        try:
+            from dashboard import generate_strategy_page
 
-        strategy_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "strategy.html")
-        generate_strategy_page(strategy_output)
-        logger.info("Strategy page generated → %s", strategy_output)
-    except Exception as e:
-        logger.error("Strategy page generation failed: %s", e)
-        _record_html_generation_error(stats, anomalies, "strategy.html", e)
+            strategy_output = os.path.join(os.path.dirname(os.path.abspath(__file__)), "docs", "strategy.html")
+            generate_strategy_page(strategy_output)
+            logger.info("Strategy page generated → %s", strategy_output)
+        except Exception as e:
+            logger.error("Strategy page generation failed: %s", e)
+            _record_html_generation_error(stats, anomalies, "strategy.html", e)
+    else:
+        logger.info("Strategy page generation disabled for news-only operation")
 
     # ── Legacy: Tools Tracking ────────────────────────────────────────
     # 通常運用はAIニュース収集に限定するため config.yaml で無効化している。

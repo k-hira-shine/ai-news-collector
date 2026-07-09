@@ -1,6 +1,6 @@
 # AI News Collector
 
-X から AI 関連ポストを 1 日 2 回自動収集し、Gemini 2.5 Pro で分析して GitHub Pages に公開するシステム。
+X から AI 関連ポストを 1 日 2 回自動収集し、Gemini 2.5 Flash で分析して GitHub Pages に公開するシステム。
 
 ## スコープ
 
@@ -8,6 +8,8 @@ X から AI 関連ポストを 1 日 2 回自動収集し、Gemini 2.5 Pro で�
 Money/SNS/Buzz/Gemini個別追跡/ツール追跡などの旧機能は、必要なときだけ手動実行する Legacy 扱い。
 旧機能のコード・データ・workflow は残すが、cron では起動せず、ポータルにも表示しない。
 `collect.yml` 内の旧ページ生成・収集は `ENABLE_LEGACY_PORTAL_JOBS=true` と
+`ALLOW_LEGACY_COSTS=true` の両方を設定した場合だけ動く。
+施策提案(Stage 3)はニュース収集ではないため、`analysis.enable_strategy=true` と
 `ALLOW_LEGACY_COSTS=true` の両方を設定した場合だけ動く。
 Legacy workflow は手動実行時も `allow_costs=true` を選ばない限り no-op にする。
 
@@ -20,9 +22,8 @@ Legacy workflow は手動実行時も `allow_costs=true` を選ばない限り n
   ↓ 重複排除 → data/daily/*.jsonl に追記
 
 分析 (analyzer.py)
-  ├── Stage 1: Gemini 2.5 Pro — フィルタ & スコアリング (鮮度ボーナス付き)
-  ├── Stage 2: Gemini 2.5 Pro — 深層分析 & トレンド (前日コンテキスト参照)
-  └── Stage 3: Gemini 2.5 Pro — YouTube / X / ビジネス施策提案
+  ├── Stage 1: Gemini 2.5 Flash — フィルタ & スコアリング (鮮度ボーナス付き)
+  └── Stage 2: Gemini 2.5 Flash — 深層分析 & トレンド (前日コンテキスト参照)
 
   ↓ data/analysis/*.json に保存
 
