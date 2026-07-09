@@ -11,6 +11,11 @@ on:
         description: '比較モデルB（Aと同じにすると揺らぎ測定）'
         required: false
         default: 'gemini-2.5-flash-lite'
+      allow_costs:
+        description: 'SNS/Tools検証の課金処理を明示的に許可する'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -20,7 +25,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  disabled:
+    if: ${{ github.event.inputs.allow_costs != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "SNS/Tools model verification is disabled by default to avoid non-AI-news costs."
+
   verify:
+    if: ${{ github.event.inputs.allow_costs == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -32,6 +44,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run model comparison
         env:
+          ALLOW_LEGACY_COSTS: "true"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           MODEL_A: ${{ inputs.model_a || 'gemini-2.5-flash' }}
           MODEL_B: ${{ inputs.model_b || 'gemini-2.5-flash-lite' }}

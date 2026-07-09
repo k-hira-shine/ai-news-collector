@@ -1,9 +1,7 @@
-name: Buzz Daily Health Check
+name: Legacy Buzz Health Check
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '5 18 * * *' # JST 03:05
 
 permissions:
   contents: read

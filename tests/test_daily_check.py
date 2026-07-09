@@ -380,24 +380,19 @@ class CollectionQualityTests(unittest.TestCase):
 
 class ActionsFreshnessTests(unittest.TestCase):
     def _all_fresh(self) -> dict:
-        # 各期待workflowを「許容age内」で用意（buzz-collectは週末ギャップ想定の50h）
         return {
             "AI News Collector": _run("AI News Collector", 2),
-            "AI Money Cases Collector": _run("AI Money Cases Collector", 2),
-            "Buzz Daily Health Check": _run("Buzz Daily Health Check", 23),
             "Daily Ops Check": _run("Daily Ops Check", 23),
-            "Buzz Ranking Collector": _run("Buzz Ranking Collector", 50),
         }
 
     def test_all_within_cadence_passes(self) -> None:
         self.assertEqual(evaluate_actions_freshness(self._all_fresh(), _NOW), [])
 
     def test_missing_workflow_flagged(self) -> None:
-        # 6/21(日)実測の再現: Buzz Ranking が窓から漏れ・個別取得もできず不在
         latest = self._all_fresh()
-        del latest["Buzz Ranking Collector"]
+        del latest["Daily Ops Check"]
         problems = evaluate_actions_freshness(latest, _NOW)
-        self.assertEqual(problems, ["Buzz Ranking Collector=実行記録なし"])
+        self.assertEqual(problems, ["Daily Ops Check=実行記録なし"])
 
     def test_stale_daily_workflow_flagged(self) -> None:
         # 毎日便が30h前＝26h上限超過でサイレント停止を検知
@@ -406,24 +401,11 @@ class ActionsFreshnessTests(unittest.TestCase):
         problems = evaluate_actions_freshness(latest, _NOW)
         self.assertIn("AI News Collector=stale 30h(>26h)", problems)
 
-    def test_weekend_gap_not_false_positive(self) -> None:
-        # 月水金便がFri→Sunで最大72hでもfullの84h上限内＝誤検知しない
-        latest = self._all_fresh()
-        latest["Buzz Ranking Collector"] = _run("Buzz Ranking Collector", 71)
-        self.assertEqual(evaluate_actions_freshness(latest, _NOW), [])
-
-    def test_dead_buzz_collector_eventually_flagged(self) -> None:
-        # 月水金便が84h超＝週末ギャップでは説明できない停止を検知
-        latest = self._all_fresh()
-        latest["Buzz Ranking Collector"] = _run("Buzz Ranking Collector", 90)
-        problems = evaluate_actions_freshness(latest, _NOW)
-        self.assertIn("Buzz Ranking Collector=stale 90h(>84h)", problems)
-
     def test_registry_covers_scheduled_workflows(self) -> None:
         names = {n for n, _f, _a in EXPECTED_WORKFLOWS}
-        self.assertIn("Buzz Ranking Collector", names)
         self.assertIn("Daily Ops Check", names)
-        self.assertEqual(len(EXPECTED_WORKFLOWS), 5)
+        self.assertIn("AI News Collector", names)
+        self.assertEqual(len(EXPECTED_WORKFLOWS), 2)
 
     def test_legacy_pages_failure_superseded_by_static_pages_success(self) -> None:
         latest = {
@@ -458,18 +440,9 @@ class PublicPagesTests(unittest.TestCase):
                 "collector": "2026-07-05-morning",
                 "dashboard": "2026-07-05-morning",
             },
-            {
-                "money": "2026-07-05 02:54 JST",
-                "sns_success": "2026-07-05 02:54 JST",
-            },
-            {
-                "money": "2026-07-05 02:54 JST",
-                "sns_success": "2026-07-05 02:54 JST",
-            },
         )
         self.assertTrue(ok)
         self.assertIn("collector=2026-07-05-morning", msg)
-        self.assertIn("money=2026-07-05 02:54 JST", msg)
 
     def test_stale_collector_page_fails(self) -> None:
         ok, msg = evaluate_public_pages(
@@ -482,17 +455,6 @@ class PublicPagesTests(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("stale/missing", msg)
         self.assertIn("collector=2026-07-04-morning", msg)
-
-    def test_stale_money_page_fails_even_when_collector_is_current(self) -> None:
-        ok, msg = evaluate_public_pages(
-            "2026-07-06-morning",
-            {"collector": "2026-07-06-morning"},
-            {"money": "2026-07-06 02:54 JST"},
-            {"money": "2026-07-05 02:54 JST"},
-        )
-        self.assertFalse(ok)
-        self.assertIn("money=2026-07-05 02:54 JST", msg)
-        self.assertIn("期待 2026-07-06 02:54 JST", msg)
 
     def test_stale_run_status_json_fails(self) -> None:
         ok, msg = evaluate_public_pages(

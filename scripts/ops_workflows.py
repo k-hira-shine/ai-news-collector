@@ -23,9 +23,6 @@ REPO = "k-hira-shine/ai-news-collector"
 # stay outside the default target so they are not disabled accidentally.
 OPS_WORKFLOWS = [
     "collect.yml",
-    "money-collect.yml",
-    "buzz-collect.yml",
-    "buzz-health-check.yml",
     "daily-ops-check.yml",
 ]
 

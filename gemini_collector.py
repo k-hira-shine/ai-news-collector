@@ -1072,6 +1072,11 @@ def main() -> None:
     )
     args = parser.parse_args()
 
+    cost_mode = not (args.apply_guardrails or args.fix_dates)
+    if cost_mode and os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        logger.error("Legacy Gemini tracker is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
+        raise SystemExit(2)
+
     if args.fix_dates:
         items = backfill_published_dates()
         rewrite_gemini_jsonl(items)

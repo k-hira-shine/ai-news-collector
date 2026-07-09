@@ -87,6 +87,9 @@ def compare(result_a: list[dict], result_b: list[dict]) -> dict:
 
 
 def main() -> None:
+    if os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        raise SystemExit("SNS/Tools verification is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
+
     sns_items = load_jsonl_dir("sns_success", max_items=MAX_SNS)
     tools_items = load_jsonl_dir("tools", max_items=MAX_TOOLS)
     if len(sns_items) < 30 or len(tools_items) < 20:

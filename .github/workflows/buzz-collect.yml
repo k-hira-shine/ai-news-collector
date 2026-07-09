@@ -1,4 +1,4 @@
-name: Buzz Ranking Collector
+name: Legacy Buzz Ranking Collector
 
 on:
   workflow_dispatch:
@@ -15,12 +15,13 @@ on:
         description: '収集プロファイル: auto / reduced / full'
         required: false
         default: 'auto'
-  repository_dispatch:
-    types: [buzz-add-account]
-  schedule:
-    - cron: '10 16 * * 0,2,4' # JST 月・水・金 01:10（UTCでは前日）
+      allow_costs:
+        description: 'Legacy課金処理を明示的に許可する'
+        required: false
+        type: boolean
+        default: false
 
-# collect / money と同時 push しない（main への書き込みを直列化）
+# Legacy: AIニュース専用運用では手動実行のみ。main への書き込みを直列化
 concurrency:
   group: repo-data-push
   cancel-in-progress: false
@@ -29,7 +30,14 @@ permissions:
   contents: write
 
 jobs:
+  disabled:
+    if: ${{ github.event.inputs.allow_costs != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Legacy buzz collector is disabled by default to avoid non-AI-news costs."
+
   collect:
+    if: ${{ github.event.inputs.allow_costs == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
@@ -47,12 +55,12 @@ jobs:
 
       - name: Run buzz collector
         env:
+          ALLOW_LEGACY_COSTS: "true"
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: |
-          # workflow_dispatch か repository_dispatch かで引数を分岐
-          ACCOUNT="${{ github.event.inputs.account || github.event.client_payload.account }}"
-          DAYS="${{ github.event.inputs.days || github.event.client_payload.days }}"
-          PROFILE="${{ github.event.inputs.profile || github.event.client_payload.profile || 'auto' }}"
+          ACCOUNT="${{ github.event.inputs.account }}"
+          DAYS="${{ github.event.inputs.days }}"
+          PROFILE="${{ github.event.inputs.profile || 'auto' }}"
           EXTRA_ARGS=(--profile "$PROFILE")
           if [ -n "$DAYS" ]; then
             EXTRA_ARGS+=(--days "$DAYS")
@@ -84,8 +92,7 @@ jobs:
             "buzz: $(date -u +%Y-%m-%d_%H%M) ${{ github.event.inputs.account }}" \
             data/buzz.json data/buzz_collection_metrics.jsonl data/logs/ data/cost_tracking.json docs/ config.yaml
 
-      # 品質guardrailは収集直後の新鮮な行で1回だけ判定する（push後に実行＝データは常に保存される）。
-      # 日次の Buzz Daily Health Check は --staleness-only で収集途絶のみ見張るため、stale行の重複アラートは出ない。
+      # 品質guardrailは手動収集直後の新鮮な行で1回だけ判定する（push後に実行＝データは常に保存される）。
       - name: Verify buzz quality guardrails (fresh)
         if: always()
         run: python scripts/check_buzz_health.py

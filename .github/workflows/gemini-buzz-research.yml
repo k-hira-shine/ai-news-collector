@@ -38,6 +38,11 @@ on:
         required: false
         type: boolean
         default: false
+      allow_costs:
+        description: 'Legacy課金処理を明示的に許可する'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -47,7 +52,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  disabled:
+    if: ${{ github.event.inputs.allow_costs != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Legacy Gemini buzz research is disabled by default to avoid non-AI-news costs."
+
   research:
+    if: ${{ github.event.inputs.allow_costs == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -59,6 +71,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Run capped one-off research
         env:
+          ALLOW_LEGACY_COSTS: "true"
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |

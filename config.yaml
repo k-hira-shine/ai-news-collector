@@ -507,7 +507,8 @@ buzz_collection:
 
 # ── AIツール・機能リリース追跡 ────────────────────────────────
 tools_tracking:
-  enabled: true
+  # Legacy: 通常運用はAIニュース収集に限定するため無効。
+  enabled: false
   max_age_days: 7          # 何日前までのRSSを取得するか
   max_items_per_feed: 30   # 1フィードあたり最大取得件数
   # Gemini / Claude / ChatGPT を分類し、表示上で上位に優先する

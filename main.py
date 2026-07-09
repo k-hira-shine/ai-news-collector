@@ -244,7 +244,10 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         logger.error("Strategy page generation failed: %s", e)
         _record_html_generation_error(stats, anomalies, "strategy.html", e)
 
-    # ── Step 4: Tools Tracking ────────────────────────────────────────
+    # ── Legacy: Tools Tracking ────────────────────────────────────────
+    # 通常運用はAIニュース収集に限定するため config.yaml で無効化している。
+    # 必要なときだけ tools_tracking.enabled=true と ALLOW_LEGACY_COSTS=true を設定して
+    # 手動実行できるよう、実装は残す。
     try:
         from tools_collector import (
             collect_reddit_posts,
@@ -258,7 +261,7 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
         from tools_analyzer import analyze_tools_items, save_tools_analysis
 
         tools_cfg = config.get("tools_tracking", {})
-        if tools_cfg.get("enabled", True):
+        if tools_cfg.get("enabled", False) and os.environ.get("ALLOW_LEGACY_COSTS") == "true":
             # RSS収集
             rss_items = collect_rss_feeds(config) if not args.analyze_only else []
             reddit_items = collect_reddit_posts(config) if not args.analyze_only else []
@@ -328,7 +331,6 @@ def _run_main(args, config: dict, logger, t0: float) -> None:
     except Exception as e:
         logger.error("Tools tracking failed: %s", e)
         _record_html_generation_error(stats, anomalies, "tools.html", e)
-
 
     elapsed = time.time() - t0
     stats["anomalies"] = anomalies

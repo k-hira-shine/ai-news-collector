@@ -192,6 +192,9 @@ def curate_hands_on(posts: list[dict], *, max_age_days: int = 14) -> list[dict]:
 
 
 def main() -> None:
+    if os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        raise SystemExit("Legacy Gemini Omni collection is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
+
     _load_env()
 
     existing_video: list[dict] = []

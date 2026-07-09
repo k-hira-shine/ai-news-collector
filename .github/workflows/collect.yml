@@ -16,7 +16,7 @@ on:
     - cron: '0 15 * * *'     # JST 00:00（1日2回）
     - cron: '0 7 * * *'      # JST 16:00（1日2回）
 
-# buzz / money と同時 push しない（main への書き込みを直列化）
+# data/docs への push を直列化する
 concurrency:
   group: repo-data-push
   cancel-in-progress: false
@@ -57,16 +57,12 @@ jobs:
         env:
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
-          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
-          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
-          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
         run: |
           MODE="${{ github.event.inputs.mode || 'full' }}"
           if [ "$MODE" = "analyze-only" ]; then
             python main.py --analyze-only
           elif [ "$MODE" = "dashboard-only" ]; then
-            python -c "import sys; sys.path.insert(0,'.'); from dashboard import generate_dashboard, generate_strategy_page; from money_dashboard import generate_money_page; generate_dashboard('docs/index.html'); generate_strategy_page('docs/strategy.html'); generate_money_page('docs/money.html'); print('Dashboard regenerated')"
+            python -c "import sys; sys.path.insert(0,'.'); from dashboard import generate_dashboard, generate_strategy_page; generate_dashboard('docs/index.html'); generate_strategy_page('docs/strategy.html'); print('AI news dashboard regenerated')"
           else
             if [ "${{ github.event_name }}" = "schedule" ] && [ "${{ github.event.schedule }}" = "0 7 * * *" ]; then
               python main.py --x-mode light
@@ -75,7 +71,14 @@ jobs:
             fi
           fi
 
-      - name: Build buzz ranking page
+      - name: Build HN + arxiv page
+        run: python build_hn.py
+
+      - name: Build AI news portal page
+        run: python build_home.py
+
+      - name: Build legacy buzz ranking page
+        if: ${{ vars.ENABLE_LEGACY_PORTAL_JOBS == 'true' && vars.ALLOW_LEGACY_COSTS == 'true' }}
         run: |
           if [ -f "data/buzz.json" ]; then
             python build_buzz.py
@@ -83,39 +86,42 @@ jobs:
             echo "data/buzz.json not found, skipping buzz page build"
           fi
 
-      - name: Build HN + arxiv page
-        run: python build_hn.py
-
-      - name: Build tools tracking page
+      - name: Build legacy tools tracking page
+        if: ${{ vars.ENABLE_LEGACY_PORTAL_JOBS == 'true' && vars.ALLOW_LEGACY_COSTS == 'true' }}
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python build_tools.py
 
-      - name: Collect Gemini official sources
+      - name: Collect legacy Gemini official sources
+        if: ${{ vars.ENABLE_LEGACY_PORTAL_JOBS == 'true' && vars.ALLOW_LEGACY_COSTS == 'true' }}
         env:
+          ALLOW_LEGACY_COSTS: "true"
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python gemini_collector.py
 
-      - name: Build Gemini tracker page
+      - name: Build legacy Gemini tracker page
+        if: ${{ vars.ENABLE_LEGACY_PORTAL_JOBS == 'true' && vars.ALLOW_LEGACY_COSTS == 'true' }}
         run: python build_gemini.py
 
-      # 朝のみ Apify 収集（約 $0.04/回）。夕方 run では build のみ。
-      - name: Collect Gemini Omni overseas posts
+      - name: Collect legacy Gemini Omni overseas posts
         if: >-
-          (github.event_name == 'schedule' && github.event.schedule == '0 15 * * *')
-          || (github.event_name == 'workflow_dispatch' && (github.event.inputs.mode || 'full') == 'full')
+          vars.ENABLE_LEGACY_PORTAL_JOBS == 'true'
+          && vars.ALLOW_LEGACY_COSTS == 'true'
+          && (
+            (github.event_name == 'schedule' && github.event.schedule == '0 15 * * *')
+            || (github.event_name == 'workflow_dispatch' && (github.event.inputs.mode || 'full') == 'full')
+          )
         env:
+          ALLOW_LEGACY_COSTS: "true"
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
         run: python scripts/collect_gemini_omni_overseas.py
 
-      - name: Build Gemini Omni page
+      - name: Build legacy Gemini Omni page
+        if: ${{ vars.ENABLE_LEGACY_PORTAL_JOBS == 'true' && vars.ALLOW_LEGACY_COSTS == 'true' }}
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python build_gemini_omni.py
-
-      - name: Build home page
-        run: python build_home.py
 
       - name: Update Apify cost tracking
         if: always()
@@ -127,8 +133,6 @@ jobs:
 
       - name: Commit & push data
         if: always()
-        env:
-          REBUILD_BUZZ: "true"
         run: |
           chmod +x .github/scripts/push_data.sh
           .github/scripts/push_data.sh \

@@ -43,6 +43,10 @@ def main() -> None:
     )
     logger = logging.getLogger("run_money")
 
+    if not args.page_only and os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        logger.error("Legacy money/SNS workflow is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
+        sys.exit(2)
+
     config = load_config()
     t0 = time.time()
     from utils import log_run, write_run_status

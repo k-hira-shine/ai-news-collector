@@ -275,6 +275,9 @@ def summarize(judgments: list[dict], samples: list[dict]) -> dict:
 
 
 def main() -> None:
+    if os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        raise SystemExit("Translation model verification is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
+
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise SystemExit("GEMINI_API_KEY missing")

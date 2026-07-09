@@ -781,6 +781,8 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     args = _parse_args()
     _validate_args(args)
+    if not args.build_only and not args.reclassify_only and os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        raise SystemExit("Legacy Gemini buzz research is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
     if args.refresh_costs_only:
         refresh_manifest_costs()
     elif args.review_only:

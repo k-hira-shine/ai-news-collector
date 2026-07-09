@@ -132,8 +132,6 @@ def _format_operations_section(base: Path) -> str:
     workflows = status.get("workflows") or {}
     for key, label in [
         ("collect", "AIニュース収集"),
-        ("money", "AIマネー収集"),
-        ("buzz", "Buzz収集"),
     ]:
         workflow = workflows.get(key) or {}
         if not workflow:
@@ -143,11 +141,6 @@ def _format_operations_section(base: Path) -> str:
         for metric in [
             "items_collected",
             "top_articles",
-            "money_collected",
-            "sns_collected",
-            "new_items",
-            "items_retained",
-            "guardrail_status",
         ]:
             if metric in workflow:
                 parts.append(f"{metric}={workflow[metric]}")
@@ -166,16 +159,12 @@ def _format_operations_section(base: Path) -> str:
             items = latest.get("items_collected") or {}
             lines.append(
                 "本日収集件数: "
-                f"AIニュース={items.get('collect', 0)}件, "
-                f"Money/SNS={items.get('money', 0)}件, "
-                f"Buzz={items.get('buzz', 0)}件"
+                f"AIニュース={items.get('collect', 0)}件"
             )
             lines.append(
                 "本日Apifyコスト: "
                 f"${latest.get('total_usd', 0):.4f} "
-                f"(collect=${workflows_cost.get('collect', 0):.4f}, "
-                f"money=${workflows_cost.get('money', 0):.4f}, "
-                f"buzz=${workflows_cost.get('buzz', 0):.4f})"
+                f"(collect=${workflows_cost.get('collect', 0):.4f})"
             )
         if rolling:
             lines.append(

@@ -416,6 +416,10 @@ def main() -> None:
     parser.add_argument("--max-items", type=int, help="アカウントあたりの最大取得件数（profile設定を上書き）")
     args = parser.parse_args()
 
+    if os.environ.get("ALLOW_LEGACY_COSTS") != "true":
+        logger.error("Legacy buzz workflow is cost-disabled. Set ALLOW_LEGACY_COSTS=true to run.")
+        sys.exit(2)
+
     token = os.environ.get("APIFY_TOKEN")
     if not token:
         logger.error("APIFY_TOKEN not set")

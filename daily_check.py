@@ -5,11 +5,10 @@
   1. GitHub Actions の直近成否＋期待スケジュールの不在/stale検知（gh CLI、未認証ならスキップ）
   2. Apify コスト（施策後フロア窓の月額換算。check_cost.py と同じ計測ロジック）
   3. Gemini コスト（直近数日の日額）
-  4. Buzz メトリクス最終行の鮮度と guardrail
-  5. 収集品質（法務一色化・must_follow連続ゼロ・must_follow急減。data/logs の collect 行から）
-  6. 分析構造（top/cat/action/fallback の構造完全性。data/analysis の最新便から）
-  7. run_status（サイトのバナー源 docs/run_status.json。overall=error/critical incident を運用側でも検知）
-  8. 公開ページ鮮度（GitHub Pagesの実HTMLが最新分析キーと一致するか）
+  4. 収集品質（法務一色化・must_follow連続ゼロ・must_follow急減。data/logs の collect 行から）
+  5. 分析構造（top/cat/action/fallback の構造完全性。data/analysis の最新便から）
+  6. run_status（サイトのバナー源 docs/run_status.json。overall=error/critical incident を運用側でも検知）
+  7. 公開ページ鮮度（GitHub Pagesの実HTMLが最新分析キーと一致するか）
 
 使い方:
   python3 daily_check.py            # サマリ表示
@@ -28,7 +27,6 @@ from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 from check_cost import build_tracking, load_logs, load_plan
-from scripts.check_buzz_health import evaluate_health, load_latest_metrics
 
 BASE = Path(__file__).resolve().parent
 GEMINI_USAGE_DIR = BASE / "data" / "gemini_usage"
@@ -44,11 +42,7 @@ PUBLIC_BASE_URL = "https://k-hira-shine.github.io/ai-news-collector/"
 PUBLIC_PAGES = [
     ("collector", PUBLIC_BASE_URL),
 ]
-PUBLIC_PAGE_TIMESTAMPS = [
-    ("money", BASE / "docs" / "money.html", PUBLIC_BASE_URL + "money.html"),
-    ("sns_success", BASE / "docs" / "sns_success.html", PUBLIC_BASE_URL + "sns_success.html"),
-    ("buzz", BASE / "docs" / "buzz.html", PUBLIC_BASE_URL + "buzz.html"),
-]
+PUBLIC_PAGE_TIMESTAMPS = []
 TODO_STALE_DAYS = 30  # これ以上未了なら ⚠️ を付けて軽く催促（合否には影響しない）
 
 # 品質監視の閾値（[[daily-check-routine]] の「残監視2点」をコード化）
@@ -123,10 +117,7 @@ def load_critical_silence_exempt_handles() -> set[str]:
 # gh run list の窓に出ない＝サイレント停止を検知するため、cadence＋余裕でstaleを判定する。
 EXPECTED_WORKFLOWS = [
     ("AI News Collector", "collect.yml", 26),            # 毎日2便（00:00/16:00 JST）
-    ("AI Money Cases Collector", "money-collect.yml", 26),  # 毎日（01:50 JST）
-    ("Buzz Daily Health Check", "buzz-health-check.yml", 26),  # 毎日（03:05 JST）
     ("Daily Ops Check", "daily-ops-check.yml", 26),  # 毎日（03:15 JST）
-    ("Buzz Ranking Collector", "buzz-collect.yml", 84),  # 月水金（週末ギャップ最大72h＋余裕）
 ]
 
 
@@ -301,25 +292,6 @@ def check_gemini(days: int = 4) -> tuple[bool, str]:
         "Gemini", ok,
         f"{latest_day} ${latest_usd:.3f}/日・直近{len(recent)}日平均で月換算 ${monthly:.1f}",
     )
-
-
-def check_buzz() -> tuple[bool, str]:
-    metrics = load_latest_metrics()
-    if metrics is None:
-        return _line("Buzz", True, "メトリクス未記録")
-    now = datetime.now(JST)
-    # full判定（収集途絶＋品質guardrail）で総合確認する。
-    healthy, messages = evaluate_health(metrics, now, quality_alarm=True)
-    checked_at = datetime.fromisoformat(metrics["checked_at"])
-    age_h = (now - checked_at).total_seconds() / 3600
-    detail = (
-        f"最終 {checked_at.date()}（{age_h:.0f}h前）・"
-        f"status={metrics.get('guardrail_status')}・"
-        f"overlap={metrics.get('ranking_top20_overlap_pct')}%"
-    )
-    if not healthy:
-        detail += " → " + "; ".join(m for m in messages if m.startswith("ERROR"))
-    return _line("Buzz", healthy, detail)
 
 
 def load_collect_entries() -> list[dict]:
@@ -620,9 +592,8 @@ def evaluate_public_pages(
 ) -> tuple[bool, str]:
     """公開URLが最新生成物と一致するか判定する純関数。
 
-    collector本体は latest-key で最新分析便と照合する。money/sns_success/buzz/run_status は
-    GitHub Pages deploy だけ失敗するとHTMLが古いまま残るため、ローカルの生成済み時刻と
-    公開HTML/JSONの時刻を直接比較する。
+    collector本体は latest-key で最新分析便と照合する。run_status は GitHub Pages deploy
+    だけ失敗するとJSONが古いまま残るため、ローカルの生成済み時刻と公開JSONの時刻を直接比較する。
     """
     if not expected_key:
         return _line("公開ページ", True, "最新分析なし")
@@ -808,7 +779,6 @@ def main(argv: list[str] | None = None) -> int:
         check_actions(),
         check_apify(),
         check_gemini(args.days),
-        check_buzz(),
         check_collection_quality(),
         check_analysis_structure(),
         check_run_status(),

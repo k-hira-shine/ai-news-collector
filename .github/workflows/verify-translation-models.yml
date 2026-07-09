@@ -2,6 +2,12 @@ name: Verify Translation Flash vs Flash-Lite
 
 on:
   workflow_dispatch:
+    inputs:
+      allow_costs:
+        description: '翻訳モデル検証の課金処理を明示的に許可する'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -11,7 +17,14 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  disabled:
+    if: ${{ github.event.inputs.allow_costs != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Translation model verification is disabled by default to avoid non-AI-news costs."
+
   verify:
+    if: ${{ github.event.inputs.allow_costs == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -23,6 +36,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Compare translation models
         env:
+          ALLOW_LEGACY_COSTS: "true"
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: python scripts/verify_translation_models.py
       - name: Commit comparison result

@@ -44,7 +44,7 @@ def _get_git_log(n: int = 8) -> list[dict]:
             capture_output=True, text=True, cwd=BASE_DIR,
         )
         logs = []
-        skip_prefixes = ("build:", "Merge", "data:")
+        skip_prefixes = ("build:", "Merge", "data:", "money:", "buzz:", "research:", "verify:")
         for line in result.stdout.strip().split("\n"):
             if not line:
                 continue
@@ -159,6 +159,25 @@ def _latest_strategy_topic() -> dict:
     return {}
 
 
+def _latest_hn_topic() -> dict:
+    """hn/ から最新のHN/arxiv 1件を返す"""
+    files = sorted(glob(os.path.join(DATA_DIR, "hn", "*.jsonl")), reverse=True)
+    for fpath in files[:3]:
+        try:
+            with open(fpath, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    obj = json.loads(line)
+                    title = obj.get("title_ja") or obj.get("title") or ""
+                    if title:
+                        return {"text": title[:70], "url": "hn.html"}
+        except Exception:
+            continue
+    return {}
+
+
 def _latest_money_topic() -> dict:
     """money/ から最新1件を返す"""
     files = sorted(glob(os.path.join(DATA_DIR, "money", "*.jsonl")), reverse=True)
@@ -266,9 +285,9 @@ def _get_latest_diagram() -> dict:
     return {"href": f"diagrams/{latest}", "label": latest.replace(".html", "")}
 
 
-# ── ページ定義（順序は全ページ共通ナビと同じ）──
+# ── ポータル表示定義 ─────────────────────────────
 
-PAGES = [
+ACTIVE_PAGES = [
     {
         "file": "index.html",
         "title": "📰 ニュース",
@@ -277,12 +296,24 @@ PAGES = [
         "topic_fn": _latest_news_topic,
     },
     {
+        "file": "hn.html",
+        "title": "🧪 HN/arxiv",
+        "desc": "Hacker News と arxiv からAI関連の技術ニュース・論文を収集",
+        "color": "#22c55e",
+        "topic_fn": _latest_hn_topic,
+    },
+    {
         "file": "strategy.html",
         "title": "🎯 施策提案",
         "desc": "収集ニュースからYouTube施策をAIが自動提案。今すぐ使える企画アイデアを毎日更新",
         "color": "#f472b6",
         "topic_fn": _latest_strategy_topic,
     },
+]
+
+
+# 旧機能のページ定義。通常ポータルには出さないが、手動再有効化しやすいよう残す。
+LEGACY_PAGES = [
     {
         "file": "buzz.html",
         "title": "🔥 バズりランキング",
@@ -357,7 +388,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
     diagram = _get_latest_diagram()
     # ── 機能リスト（1行1機能、3行構成）──
     rows_html = ""
-    for page in PAGES:
+    for page in ACTIVE_PAGES:
         updated = _get_last_updated(page["file"])
         color = page["color"]
         href = page["file"]
@@ -484,7 +515,7 @@ def build_home_page(output_path: str = OUTPUT_PATH) -> None:
 {render_nav("home.html")}
 <header>
   <div class="site-title">🤖 AI News Collector</div>
-  <div class="site-sub">RSS・X・HackerNews・Redditから自動収集 → Geminiが分析・整理</div>
+  <div class="site-sub">RSS・X・HackerNews・arxivから自動収集 → Geminiが分析・整理</div>
   <div class="site-updated">Generated: {now_str}</div>
 </header>
 {INCIDENT_BODY_HTML}

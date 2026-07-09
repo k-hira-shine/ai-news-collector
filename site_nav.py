@@ -3,16 +3,8 @@
 NAV_LINKS: list[tuple[str, str]] = [
     ("home.html",           "🏠 ホーム"),
     ("index.html",          "📰 ニュース"),
+    ("hn.html",             "🧪 HN/arxiv"),
     ("strategy.html",       "🎯 施策提案"),
-    ("buzz.html",           "🔥 バズりランキング"),
-    ("money.html",          "🎬 マネタイズ"),
-    ("sns_success.html",    "🧠 SNS成功者"),
-    ("post_generator.html", "✍️ 投稿ストック"),
-    ("tools.html",          "🔧 ツール追跡"),
-    ("reviews.html",        "📋 使ってみた"),
-    ("gemini.html",         "✨ Gemini追跡"),
-    ("gemini-buzz.html",    "🏆 Gemini活用"),
-    ("gemini-omni.html",    "🎬 Gemini Omni"),
 ]
 
 NAV_CSS = """
