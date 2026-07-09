@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-07-09 夕便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Noto Sans CJK JP", "Noto Sans JP",
+      "Yu Gothic", "Yu Gothic UI", "Meiryo",
+      -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt" 1;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 24px; }
+    .top-grid { grid-template-columns: 1fr !important; }
+    .trend-grid { grid-template-columns: 1fr !important; }
+    .topic-grid { grid-template-columns: 1fr !important; }
+    .cat-grid { grid-template-columns: 1fr !important; }
+    .x-grid { grid-template-columns: 1fr !important; }
+    .hero { padding: 14px 12px; }
+    .hero-title { font-size: 1.1rem; }
+    .topic-title { font-size: 0.95rem; }
+    .rank-num { font-size: 1.4rem !important; }
+    .medal { width: 36px !important; height: 36px !important; }
+    .nowrap { white-space: normal !important; }
+    .tag { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-07-09</span>
+      <span class="slot-badge">夕便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">GPT-Live発表、新世代音声モデル</div>
+        <div class="tags">
+          <span class="tag cat-model">モデル/ツール</span>
+          <span class="tag src">x:@OpenAI</span>
+        </div>
+        <div class="summary">OpenAIが人間とAIの自然な対話を可能にする新世代音声モデル「GPT-Live」を発表しました。本日よりChatGPTでロールアウトが開始され、その没入感のある体験が注目されています。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-research">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">SWE-Bench Proの信頼性低下</div>
+          <div class="tags">
+            <span class="tag cat-research">研究論文</span>
+            <span class="tag src">x:@OpenAI</span>
+          </div>
+          <div class="summary">OpenAIは、広く使われているAIコーディングベンチマーク「SWE-Bench Pro」を監査し、その30%が破損しており、最先端のコーディング能力を信頼性高く測定できないことを発見しました。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">NVIDIAは、Grok 4.5がNVIDIA GB300 NVL72システムで…</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@nvidia</span>
+          </div>
+          <div class="summary">NVIDIAは、Grok 4.5がNVIDIA GB300 NVL72システムで学習され、コーディング、エージェントタスク、知識作業に特化していることを祝福しました。これは世界クラスのAIインフラと研究の融合です。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">GPT-Live、全ユーザーに展開中</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@OpenAI</span>
+          </div>
+          <div class="summary">GPT-LiveがChatGPT Go, Plus, Proプランの全ユーザーに完全に展開されました。無料ユーザーへの展開も進行中で、最新版アプリへの更新で利用可能です。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">GPT-Liveでリアルな会話</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">x:@OpenAI</span>
+          </div>
+          <div class="summary">GPT-LiveはAIとの会話をよりリアルに感じさせ、OpenAI史上最もスマートな音声モデルであると紹介されています。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日のAI業界は、OpenAIが次世代音声モデル「GPT-Live」の全ユーザーへの展開を発表し、AIとの自然な会話体験の向上に大きな注目が集まっています。また、OpenAIはAIコーディングベンチマーク「SWE-Bench Pro」の信頼性低下を指摘し、より公平で信頼性の高い評価指標の必要性を訴えました。NVIDIAはGrok 4.5のNVIDIAシステムでの学習、Hugging Faceとのロボティクス連携、LangChainとの企業向けエージェント開発協力を発表し、AIインフラとエコシステムの強化が続いています。全体として、AIモデルのユーザー体験向上と評価基準の厳格化、そしてエンタープライズ領域でのAI活用推進が主要な動向となっています。</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">OpenAI GPT-Live</div>
+        <div class="evolution">次世代音声機能の予告から、全ユーザーへの本格展開フェーズへ移行し、対話AIの進化が進行中。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">AIコーディングベンチマークの信頼性</div>
+        <div class="evolution">OpenAIが主要ベンチマークの信頼性低下を指摘し、より厳格な評価指標の必要性を提起。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIエージェントの進化と活用</div>
+        <div class="evolution">自己改善能力や企業向けカスタマイズの話題が継続し、NVIDIAとLangChainの連携によりエンタープライズ領域での活用が加速。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">オープンソースAIモデルとエコシステム</div>
+        <div class="evolution">Hugging FaceがNVIDIA RoboticsやSkyPilotとの連携を深め、オープンロボティクスおよびクラウド上でのAIワークロード実行を支援。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIインフラとコスト問題</div>
+        <div class="evolution">NVIDIAがGrok 4.5の学習におけるGB300 NVL72システムの活用を強調し、最先端AIモデル開発におけるインフラの重要性を示唆。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">ロボティクスAIの発展</div>
+        <div class="evolution">MistralAIの自然言語ロボットナビゲーションモデル発表後、NVIDIAとHugging Faceによるオープンロボティクス拡大の話題が浮上し、物理AIツールの開発者コミュニティ拡大へ。</div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">4</span>
+        </div>
+        <div class="summary">OpenAIが「GPT-Live」という新世代の音声モデルを発表し、ChatGPTのiOS、Android、Web版での提供を開始しました。このモデルはAIとの会話を非常に自然なものにし、複雑な質問に対しては裏で最先端モデルに処理を委譲して結果を返す機能も備えています。これは、人間とAIのインタラクションにおける大きな進歩を意味します。</div>
+      </div>
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">6</span>
+        </div>
+        <div class="summary">OpenAIは新音声モデル「GPT-Live」をChatGPTの有料プランユーザーに展開開始し、無料ユーザーにも順次提供しています。NVIDIAはSpaceXAIのGrok 4.5がNVIDIAのシステムで学習されたことを祝福し、AIインフラの重要性を強調。また、Hugging FaceはNVIDIA Roboticsとの提携でオープンロボティクスを拡大し、SkyPilotとの連携でクラウドAIワークロードの効率化も進めています。NVIDIAはLangChainとの協力で企業向け特化型エージェントの開発も支援しており、AIエコシステム全体での連携強化が見られます。</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">3</span>
+        </div>
+        <div class="summary">OpenAIは、広く利用されているAIコーディングベンチマーク「SWE-Bench Pro」を監査し、その30%のタスクが破損しており、最先端のコーディング能力を信頼性高く測定できないことを指摘しました。この監査には、モデルベースの調査エージェントと独立したソフトウェアエンジニアのレビューが用いられました。この結果は、AIモデルの進化に伴い、より厳しく、公平で信頼性の高い評価基準の必要性を示唆しています。</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">5</span>
+        </div>
+        <div class="summary">AIのユースケースは多岐にわたり、富裕層が子供の教育にAIを活用する動きや、Googleが創業者がAIを使って独立宣言を起草するコマーシャルを公開するなど、その適用範囲は広がっています。NVIDIAはLangChainと協力し、企業が専門知識をカスタマイズ可能なAIエージェントに変換できるよう支援しており、エンタープライズ分野でのAIエージェント活用が加速しています。</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">1</span>
+        </div>
+        <div class="summary">AIモデルの「世界観」の所有権に関する議論が提起されており、特定の宗教的価値観に基づいてAIモデルを評価するベンチマークも登場しています。これは、AIの倫理的側面や、その出力が持つ潜在的な偏見に対する関心の高まりを示しています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">OpenAI GPT-Liveの発表と展開</span>
+        </div>
+        <div class="desc">OpenAIが人間とAIの対話を革新する新音声モデル「GPT-Live」を発表し、その自然な会話体験に大きな注目が集まっています。有料プランユーザーへのロールアウトが始まり、多くのユーザーがその「魔法」を体験し、期待を寄せています。同時に、ウェブ検索や高度な推論を裏側で処理する機能も紹介され、単なる音声インターフェース以上の能力が示されています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">AIコーディングベンチマークの監査と信頼性</span>
+        </div>
+        <div class="desc">OpenAIが、広く利用されているAIコーディングベンチマーク「SWE-Bench Pro」が信頼性を欠いていると指摘し、その30%のタスクが破損していることを発表しました。これは、AIモデルの性能評価の透明性と信頼性に対する業界全体の懸念を浮き彫りにし、より厳格で公平なベンチマークの必要性について議論を巻き起こしています。AIと人間の専門家を組み合わせた監査方法も注目されています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">NVIDIAとパートナーシップによるAIインフラ・エージェント強化</span>
+        </div>
+        <div class="desc">NVIDIAが、SpaceXAIのGrok 4.5がNVIDIAの高性能システムGB300 NVL72で学習されたことを祝福し、AIインフラの優位性を強調しています。また、Hugging Faceとの提携によりオープンロボティクスを拡大し、1900万人の開発者向けに物理AIツールへのアクセスを強化。さらにLangChainとの連携で、企業がカスタマイズ可能なAIエージェントを構築できるよう支援しており、エンタープライズAI市場への影響力も高めています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-07-09 10:33 UTC · AI News Collector
+    
+  </div>
+
+</div>
+</body>
+</html>

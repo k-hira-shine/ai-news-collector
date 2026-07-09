@@ -1,0 +1,401 @@
+{
+  "trend_summary": "本日のAI業界は、OpenAIが次世代音声モデル「GPT-Live」の全ユーザーへの展開を発表し、AIとの自然な会話体験の向上に大きな注目が集まっています。また、OpenAIはAIコーディングベンチマーク「SWE-Bench Pro」の信頼性低下を指摘し、より公平で信頼性の高い評価指標の必要性を訴えました。NVIDIAはGrok 4.5のNVIDIAシステムでの学習、Hugging Faceとのロボティクス連携、LangChainとの企業向けエージェント開発協力を発表し、AIインフラとエコシステムの強化が続いています。全体として、AIモデルのユーザー体験向上と評価基準の厳格化、そしてエンタープライズ領域でのAI活用推進が主要な動向となっています。",
+  "trend_evolution": {
+    "since_last": "前回の報告ではOpenAIの次世代ChatGPT音声機能とGPT-5.6のリリース予告が主要な話題でしたが、本日はその予告されていた「GPT-Live」の本格展開が中心となりました。これにより、AIとの対話体験がよりリアルになることへの期待が高まっています。また、OpenAIによる主要AIコーディングベンチマーク「SWE-Bench Pro」の監査結果発表は、AIモデルの性能評価の透明性と信頼性に関する新たな議論を提起しています。NVIDIAの企業連携を通じたAIインフラおよびエージェントの進化も引き続き活発です。",
+    "tracked_topics": [
+      {
+        "topic": "OpenAI GPT-Live",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "次世代音声機能の予告から、全ユーザーへの本格展開フェーズへ移行し、対話AIの進化が進行中。"
+      },
+      {
+        "topic": "AIコーディングベンチマークの信頼性",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "OpenAIが主要ベンチマークの信頼性低下を指摘し、より厳格な評価指標の必要性を提起。"
+      },
+      {
+        "topic": "AIエージェントの進化と活用",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "自己改善能力や企業向けカスタマイズの話題が継続し、NVIDIAとLangChainの連携によりエンタープライズ領域での活用が加速。"
+      },
+      {
+        "topic": "オープンソースAIモデルとエコシステム",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "Hugging FaceがNVIDIA RoboticsやSkyPilotとの連携を深め、オープンロボティクスおよびクラウド上でのAIワークロード実行を支援。"
+      },
+      {
+        "topic": "AIインフラとコスト問題",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "NVIDIAがGrok 4.5の学習におけるGB300 NVL72システムの活用を強調し、最先端AIモデル開発におけるインフラの重要性を示唆。"
+      },
+      {
+        "topic": "ロボティクスAIの発展",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "MistralAIの自然言語ロボットナビゲーションモデル発表後、NVIDIAとHugging Faceによるオープンロボティクス拡大の話題が浮上し、物理AIツールの開発者コミュニティ拡大へ。"
+      },
+      {
+        "topic": "AIの倫理・規制・著作権",
+        "status": "FADING",
+        "streak_days": 3,
+        "evolution": "先日の「AIの意識」や「ChatGPT悪用」に関する高い関心から、本日はAIモデルの「世界観」やAIによる子供の教育といった、より具体的な倫理的側面に焦点が移りつつある。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "59c65e55e7d057bb",
+      "rank": 1,
+      "title": "GPT-Live発表、新世代音声モデル",
+      "url": "https://x.com/OpenAI/status/2074907025537224840",
+      "summary": "OpenAIが人間とAIの自然な対話を可能にする新世代音声モデル「GPT-Live」を発表しました。本日よりChatGPTでロールアウトが開始され、その没入感のある体験が注目されています。",
+      "importance_reason": "OpenAIからの公式発表であり、AIとのインタラクションの未来を大きく変える可能性を秘めた新機能であるため。非常に高いエンゲージメントを集めている。",
+      "category": "モデル/ツール",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "300376a2d4df0e19",
+      "rank": 2,
+      "title": "SWE-Bench Proの信頼性低下",
+      "url": "https://x.com/OpenAI/status/2074972179385720836",
+      "summary": "OpenAIは、広く使われているAIコーディングベンチマーク「SWE-Bench Pro」を監査し、その30%が破損しており、最先端のコーディング能力を信頼性高く測定できないことを発見しました。",
+      "importance_reason": "AIモデルの評価基準そのものに対する重要な指摘であり、今後のAI開発とベンチマークのあり方に影響を与えるため。",
+      "category": "研究論文",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "44cf55bc7d62190d",
+      "rank": 3,
+      "title": "Grok 4.5とNVIDIA GB300",
+      "url": "https://x.com/nvidia/status/2074979063106843131",
+      "summary": "NVIDIAは、Grok 4.5がNVIDIA GB300 NVL72システムで学習され、コーディング、エージェントタスク、知識作業に特化していることを祝福しました。これは世界クラスのAIインフラと研究の融合です。",
+      "importance_reason": "最先端AIモデルの開発におけるNVIDIAのハードウェアの重要性と、企業間の連携を示す重要な情報であるため。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "d38e241657ced362",
+      "rank": 4,
+      "title": "GPT-Live、全ユーザーに展開中",
+      "url": "https://x.com/OpenAI/status/2075019750569378007",
+      "summary": "GPT-LiveがChatGPT Go, Plus, Proプランの全ユーザーに完全に展開されました。無料ユーザーへの展開も進行中で、最新版アプリへの更新で利用可能です。",
+      "importance_reason": "主要なAIモデルの新機能が広く一般ユーザーに利用可能になるという、市場への影響が大きいニュースであるため。",
+      "category": "企業動向",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "264a735eb6335528",
+      "rank": 5,
+      "title": "GPT-Liveでリアルな会話",
+      "url": "https://x.com/OpenAI/status/2074907027378511884",
+      "summary": "GPT-LiveはAIとの会話をよりリアルに感じさせ、OpenAI史上最もスマートな音声モデルであると紹介されています。",
+      "importance_reason": "GPT-Liveの主要な特徴を直接的に示しており、ユーザー体験の向上への期待感を高めるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "822874df7adb3527",
+      "rank": 6,
+      "title": "GPT-Liveの連携機能",
+      "url": "https://x.com/OpenAI/status/2074907033577693636",
+      "summary": "GPT-Liveは、Web検索やより深い推論が必要な質問に対して、裏で最先端モデルに処理を委譲し、結果を会話にシームレスに戻す機能を備えています。",
+      "importance_reason": "GPT-Liveの技術的な優位性と、複雑なタスク処理能力を示す詳細情報であるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "8d609d3c00239093",
+      "rank": 7,
+      "title": "GPT-Live、APIにも提供予定",
+      "url": "https://x.com/OpenAI/status/2074907035225981169",
+      "summary": "GPT-Liveを搭載した新モデルは、iOS、Android、Web版ChatGPTで展開され、近日中にAPIでも利用可能になる予定です。",
+      "importance_reason": "新機能の提供チャネルと将来的なAPI展開の計画を示しており、開発者コミュニティへの影響も大きいと見られるため。",
+      "category": "企業動向",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "63255c2332b392d4",
+      "rank": 8,
+      "title": "SWE-Bench Pro監査方法",
+      "url": "https://x.com/OpenAI/status/2074972182640492731",
+      "summary": "SWE-Bench Proの監査には、モデルベースの調査エージェントと5人の経験豊富なソフトウェアエンジニアによる独立したレビューが用いられました。",
+      "importance_reason": "OpenAIがベンチマークの信頼性検証に、AIと人間の専門知識を組み合わせたハイブリッドなアプローチを採用したことを示しているため。",
+      "category": "研究論文",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "8874dfe60dcdd801",
+      "rank": 9,
+      "title": "コーディング評価の重要性",
+      "url": "https://x.com/OpenAI/status/2074972185895342084",
+      "summary": "コーディングモデルの進化に伴い、評価基準はより厳しく、公平で信頼性の高いものになる必要があります。より良いベンチマークは、分野の真の進歩を理解するのに役立ちます。",
+      "importance_reason": "AIモデルの評価基準の改善が業界全体の進歩に不可欠であるという、OpenAIの戦略的な見解を示すため。",
+      "category": "研究論文",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "085c7223bb1ff9ed",
+      "rank": 10,
+      "title": "Hugging FaceとNVIDIA Robotics",
+      "url": "https://x.com/huggingface/status/2075150733096149112",
+      "summary": "Hugging Faceは、NVIDIA Roboticsとの連携により、1900万人の開発者が最先端の物理AIツールをより活用できるようになると発表しました。",
+      "importance_reason": "AI開発者コミュニティの拡大と、物理AI（ロボティクス）分野におけるオープンソースとハードウェアの連携の重要性を示唆しているため。",
+      "category": "企業動向",
+      "source_label": "x:@huggingface"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "モデル/ツール",
+      "summary": "OpenAIが「GPT-Live」という新世代の音声モデルを発表し、ChatGPTのiOS、Android、Web版での提供を開始しました。このモデルはAIとの会話を非常に自然なものにし、複雑な質問に対しては裏で最先端モデルに処理を委譲して結果を返す機能も備えています。これは、人間とAIのインタラクションにおける大きな進歩を意味します。",
+      "count": 4,
+      "key_articles": [
+        {
+          "title": "GPT-Live発表、新世代音声モデル",
+          "url": "https://x.com/OpenAI/status/2074907025537224840",
+          "summary": "OpenAIが人間とAIの自然な対話を可能にする新世代音声モデル「GPT-Live」を発表。"
+        },
+        {
+          "title": "GPT-Liveでリアルな会話",
+          "url": "https://x.com/OpenAI/status/2074907027378511884",
+          "summary": "GPT-LiveはAIとの会話をよりリアルに感じさせ、OpenAI史上最もスマートな音声モデル。"
+        },
+        {
+          "title": "GPT-Liveの連携機能",
+          "url": "https://x.com/OpenAI/status/2074907033577693636",
+          "summary": "GPT-Liveは、Web検索や深い推論が必要な質問を最先端モデルに委譲し、結果を会話に統合する。"
+        },
+        {
+          "title": "AI活用関連本が安い！最大70％OFF",
+          "url": "https://internet.watch.impress.co.jp/docs/shopping/2123672.html",
+          "summary": "KindleストアでAI活用関連本が最大70%オフになるセールが開催中。"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "OpenAIは新音声モデル「GPT-Live」をChatGPTの有料プランユーザーに展開開始し、無料ユーザーにも順次提供しています。NVIDIAはSpaceXAIのGrok 4.5がNVIDIAのシステムで学習されたことを祝福し、AIインフラの重要性を強調。また、Hugging FaceはNVIDIA Roboticsとの提携でオープンロボティクスを拡大し、SkyPilotとの連携でクラウドAIワークロードの効率化も進めています。NVIDIAはLangChainとの協力で企業向け特化型エージェントの開発も支援しており、AIエコシステム全体での連携強化が見られます。",
+      "count": 6,
+      "key_articles": [
+        {
+          "title": "GPT-Live、全ユーザーに展開中",
+          "url": "https://x.com/OpenAI/status/2075019750569378007",
+          "summary": "GPT-LiveがChatGPT Go, Plus, Proプランの全ユーザーに完全に展開。"
+        },
+        {
+          "title": "Grok 4.5とNVIDIA GB300",
+          "url": "https://x.com/nvidia/status/2074979063106843131",
+          "summary": "NVIDIAがGrok 4.5の学習にGB300 NVL72システムが使用されたことを祝福。"
+        },
+        {
+          "title": "GPT-Live、APIにも提供予定",
+          "url": "https://x.com/OpenAI/status/2074907035225981169",
+          "summary": "GPT-Liveを搭載した新モデルは、iOS、Android、Web版ChatGPTで展開され、近日中にAPIでも利用可能に。"
+        },
+        {
+          "title": "Hugging FaceとNVIDIA Robotics",
+          "url": "https://x.com/huggingface/status/2075150733096149112",
+          "summary": "Hugging FaceとNVIDIA Roboticsの連携により、1900万人の開発者が物理AIツールをより活用可能に。"
+        },
+        {
+          "title": "Hugging FaceとSkyPilotの連携",
+          "url": "https://x.com/huggingface/status/2074916302628565287",
+          "summary": "Hugging FaceとSkyPilotが連携し、あらゆるクラウドでAIワークロードを実行、ストレージをHugging Faceに保存し、 egress料金なしで利用可能に。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "OpenAIは、広く利用されているAIコーディングベンチマーク「SWE-Bench Pro」を監査し、その30%のタスクが破損しており、最先端のコーディング能力を信頼性高く測定できないことを指摘しました。この監査には、モデルベースの調査エージェントと独立したソフトウェアエンジニアのレビューが用いられました。この結果は、AIモデルの進化に伴い、より厳しく、公平で信頼性の高い評価基準の必要性を示唆しています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "SWE-Bench Proの信頼性低下",
+          "url": "https://x.com/OpenAI/status/2074972179385720836",
+          "summary": "OpenAIがAIコーディングベンチマーク「SWE-Bench Pro」の信頼性低下を指摘。"
+        },
+        {
+          "title": "SWE-Bench Pro監査方法",
+          "url": "https://x.com/OpenAI/status/2074972182640492731",
+          "summary": "SWE-Bench Proの監査には、モデルベースのエージェントと独立したソフトウェアエンジニアのレビューが用いられた。"
+        },
+        {
+          "title": "コーディング評価の重要性",
+          "url": "https://x.com/OpenAI/status/2074972185895342084",
+          "summary": "コーディングモデルの進化に伴い、評価基準はより厳しく、公平で信頼性の高いものになる必要がある。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AIのユースケースは多岐にわたり、富裕層が子供の教育にAIを活用する動きや、Googleが創業者がAIを使って独立宣言を起草するコマーシャルを公開するなど、その適用範囲は広がっています。NVIDIAはLangChainと協力し、企業が専門知識をカスタマイズ可能なAIエージェントに変換できるよう支援しており、エンタープライズ分野でのAIエージェント活用が加速しています。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "LangChainと企業向けエージェント",
+          "url": "https://x.com/nvidia/status/2074961724164214951",
+          "summary": "NVIDIAがLangChainと協力し、企業が専門知識をカスタマイズ可能なAIエージェントに変換できるよう支援。"
+        },
+        {
+          "title": "LangChainとの連携事例",
+          "url": "https://x.com/nvidia/status/2074935713444081710",
+          "summary": "NVIDIAがLangChainとの連携により、ベンチマークをリードするエージェント性能とオープンスタックを提供。"
+        },
+        {
+          "title": "富裕層がAIで子供を教育",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/961505/wealthy-ai-schools-alpha-forge-prep",
+          "summary": "一部の富裕層が、伝統的な学校の代わりにAIを子供の教育に利用している。"
+        },
+        {
+          "title": "Googleの建国の父AIコマーシャル",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/961468/google-ai-commercial-founding-fathers-declaration-of-independence",
+          "summary": "GoogleのCMが、建国の父がAIを使って独立宣言を起草するという内容で物議を醸している。"
+        },
+        {
+          "title": "AI活用関連本が安い！最大70％OFF",
+          "url": "https://internet.watch.impress.co.jp/docs/shopping/2123672.html",
+          "summary": "KindleストアでAI活用関連本が最大70%オフになるセールが開催中。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "AIモデルの「世界観」の所有権に関する議論が提起されており、特定の宗教的価値観に基づいてAIモデルを評価するベンチマークも登場しています。これは、AIの倫理的側面や、その出力が持つ潜在的な偏見に対する関心の高まりを示しています。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "AIモデルの世界観は誰のもの？",
+          "url": "https://ipwatchdog.com/2026/07/08/who-owns-the-worldview-inside-an-ai-model/",
+          "summary": "AIモデルに内在する「世界観」の所有権と、そのモデルが特定の価値観を反映しているかどうかの評価に関する議論が提起された。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "OpenAIの「GPT-Live」は顧客対応や音声アシスタント機能に革命をもたらす可能性が高いため、自社の製品やサービスへの組み込み、または業務効率化への活用を検討する。",
+    "OpenAIによるAIコーディングベンチマークの信頼性低下の指摘を受け、自社のAIモデル開発や評価プロセスにおいて、使用するベンチマークの選定や検証方法を見直し、より厳格な評価基準を導入する。",
+    "NVIDIAとHugging Faceの連携によるオープンロボティクスや、NVIDIAとLangChainの連携によるエンタープライズ向けエージェントの動向を注視し、ロボティクス分野や企業内業務自動化におけるAI技術の導入可能性を調査する。",
+    "AIが子供の教育に活用される事例や、AIモデルの世界観に関する議論など、AIの社会実装に伴う倫理的・社会的な側面への関心が高まっている。自社のAI戦略において、技術開発だけでなく、倫理ガイドラインの策定や社会受容性を高める取り組みも考慮に入れる。",
+    "主要テック企業のAI投資動向（NVIDIAのインフラ、SpaceXAIのGrok 4.5）から、最先端AIモデル開発には高性能なAIインフラが不可欠であることを再確認し、将来的なAI投資計画に反映させる。"
+  ],
+  "x_trends": [
+    {
+      "topic": "OpenAI GPT-Liveの発表と展開",
+      "description": "OpenAIが人間とAIの対話を革新する新音声モデル「GPT-Live」を発表し、その自然な会話体験に大きな注目が集まっています。有料プランユーザーへのロールアウトが始まり、多くのユーザーがその「魔法」を体験し、期待を寄せています。同時に、ウェブ検索や高度な推論を裏側で処理する機能も紹介され、単なる音声インターフェース以上の能力が示されています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "OpenAI",
+          "text": "Introducing GPT-Live, a new generation of voice models for natural human-AI interaction. Rolling out in ChatGPT starting today.You’ll want to turn the sound on for this one. https://t.co/WzoQFvA5ir",
+          "url": "https://x.com/OpenAI/status/2074907025537224840",
+          "likes": 20811,
+          "retweets": 1854
+        },
+        {
+          "author": "OpenAI",
+          "text": "GPT-Live makes talking with AI feel like having a real conversation. It’s also our smartest voice model yet.https://t.co/vMCjodjicC",
+          "url": "https://x.com/OpenAI/status/2074907027378511884",
+          "likes": 1778,
+          "retweets": 131
+        },
+        {
+          "author": "OpenAI",
+          "text": "GPT-Live is now fully rolled out to all ChatGPT users on Go, Plus, and Pro plans. Free user rollout is in progress. Update to the latest version of the ChatGPT app on iOS or Android to try it out.",
+          "url": "https://x.com/OpenAI/status/2075019750569378007",
+          "likes": 3036,
+          "retweets": 234
+        }
+      ]
+    },
+    {
+      "topic": "AIコーディングベンチマークの監査と信頼性",
+      "description": "OpenAIが、広く利用されているAIコーディングベンチマーク「SWE-Bench Pro」が信頼性を欠いていると指摘し、その30%のタスクが破損していることを発表しました。これは、AIモデルの性能評価の透明性と信頼性に対する業界全体の懸念を浮き彫りにし、より厳格で公平なベンチマークの必要性について議論を巻き起こしています。AIと人間の専門家を組み合わせた監査方法も注目されています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "OpenAI",
+          "text": "We audited SWE-Bench Pro, one of the most widely used AI coding benchmarks, and found it no longer reliably measures frontier coding capability.We find 30% of SWE-Bench Pro tasks to be broken, and a",
+          "url": "https://x.com/OpenAI/status/2074972179385720836",
+          "likes": 6293,
+          "retweets": 442
+        },
+        {
+          "author": "OpenAI",
+          "text": "To audit SWE-Bench Pro, we used model-based investigator agents alongside independent reviews from five independent experienced software engineers.That helped us examine tasks at scale while keeping",
+          "url": "https://x.com/OpenAI/status/2074972182640492731",
+          "likes": 504,
+          "retweets": 9
+        },
+        {
+          "author": "OpenAI",
+          "text": "As coding models improve, evals need to become harder, fairer, and more trustworthy.Better benchmarks help the field understand real progress and where the frontier is moving.",
+          "url": "https://x.com/OpenAI/status/2074972185895342084",
+          "likes": 485,
+          "retweets": 13
+        }
+      ]
+    },
+    {
+      "topic": "NVIDIAとパートナーシップによるAIインフラ・エージェント強化",
+      "description": "NVIDIAが、SpaceXAIのGrok 4.5がNVIDIAの高性能システムGB300 NVL72で学習されたことを祝福し、AIインフラの優位性を強調しています。また、Hugging Faceとの提携によりオープンロボティクスを拡大し、1900万人の開発者向けに物理AIツールへのアクセスを強化。さらにLangChainとの連携で、企業がカスタマイズ可能なAIエージェントを構築できるよう支援しており、エンタープライズAI市場への影響力も高めています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "nvidia",
+          "text": "Congrats to @SpaceXAI on Grok 4.5 — trained on NVIDIA GB300 NVL72 systems and purpose-built for coding, agentic tasks, and knowledge work. This is what happens when world-class AI infrastructure meets",
+          "url": "https://x.com/nvidia/status/2074979063106843131",
+          "likes": 3430,
+          "retweets": 409
+        },
+        {
+          "author": "huggingface",
+          "text": "RT @NVIDIARobotics: 19 million developers can now do more with frontier physical AI tools. 🤗We're expanding open robotics with @HuggingFa…",
+          "url": "https://x.com/huggingface/status/2075150733096149112",
+          "likes": 0,
+          "retweets": 41
+        },
+        {
+          "author": "nvidia",
+          "text": "Every company has specialized intelligence that sets it apart.With @langchain, we’re helping enterprises turn that knowledge into specialized agents they can customize, secure and improve over time.",
+          "url": "https://x.com/nvidia/status/2074961724164214951",
+          "likes": 452,
+          "retweets": 52
+        }
+      ]
+    },
+    {
+      "topic": "AIの倫理と社会への影響",
+      "description": "AIの倫理的側面として、「AIモデルの世界観は誰のものか」という問いや、信仰技術企業がキリスト教徒の価値観でAIを評価するベンチマークを開発した事例が議論されています。また、富裕層が子供の教育にAIを利用する動きや、GoogleのAIコマーシャルが歴史的文脈でのAI活用を想像し、賛否両論を呼んでいることも、AIの社会受容性や倫理的課題に対する関心の高まりを示しています。",
+      "buzz_level": "low",
+      "sentiment": "mixed",
+      "representative_tweets": []
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-07-09T10:33:02.219839+00:00",
+  "slot": "evening",
+  "item_count": 42,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-07-09_evening.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0,
+    "apify_runs": 15,
+    "apify_cycle_total_usd": 26.808304709182572,
+    "apify_cycle_end": "2026-07-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
