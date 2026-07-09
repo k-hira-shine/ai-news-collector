@@ -295,6 +295,11 @@ ACTIVE_PAGES = [
         "color": "#38bdf8",
         "topic_fn": _latest_news_topic,
     },
+]
+
+
+# 生成物は残すが、通常ポータルには出さないページ。
+HIDDEN_PAGES = [
     {
         "file": "hn.html",
         "title": "🧪 HN/arxiv",

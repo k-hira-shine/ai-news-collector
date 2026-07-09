@@ -27,9 +27,7 @@ Legacy workflow は手動実行時も `allow_costs=true` を選ばない限り n
   ↓ data/analysis/*.json に保存
 
 ダッシュボード (dashboard.py)
-  ├── docs/index.html — ニュースダッシュボード
-  ├── docs/hn.html — Hacker News / arxiv のAI関連一覧
-  └── docs/strategy.html — 施策提案ページ
+  └── docs/index.html — ニュースダッシュボード
 ```
 
 ## セットアップ

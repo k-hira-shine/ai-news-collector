@@ -1,10 +1,7 @@
 """全ページ共通ナビゲーション"""
 
 NAV_LINKS: list[tuple[str, str]] = [
-    ("home.html",           "🏠 ホーム"),
     ("index.html",          "📰 ニュース"),
-    ("hn.html",             "🧪 HN/arxiv"),
-    ("strategy.html",       "🎯 施策提案"),
 ]
 
 NAV_CSS = """
