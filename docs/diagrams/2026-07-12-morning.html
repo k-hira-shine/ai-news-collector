@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-07-12 朝便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Noto Sans CJK JP", "Noto Sans JP",
+      "Yu Gothic", "Yu Gothic UI", "Meiryo",
+      -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt" 1;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 24px; }
+    .top-grid { grid-template-columns: 1fr !important; }
+    .trend-grid { grid-template-columns: 1fr !important; }
+    .topic-grid { grid-template-columns: 1fr !important; }
+    .cat-grid { grid-template-columns: 1fr !important; }
+    .x-grid { grid-template-columns: 1fr !important; }
+    .hero { padding: 14px 12px; }
+    .hero-title { font-size: 1.1rem; }
+    .topic-title { font-size: 0.95rem; }
+    .rank-num { font-size: 1.4rem !important; }
+    .medal { width: 36px !important; height: 36px !important; }
+    .nowrap { white-space: normal !important; }
+    .tag { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-07-12</span>
+      <span class="slot-badge">朝便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">OpenAIが「Build Week」を7月13日から開催し、ライブセッションや…</div>
+        <div class="tags">
+          <span class="tag cat-biz">企業動向</span>
+          <span class="tag src">x:@sama</span>
+        </div>
+        <div class="summary">OpenAIが「Build Week」を7月13日から開催し、ライブセッションやコミュニティイベントを通じてビルダーを招待することを発表しました。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">Meta、AIチップ「Iris」生産開始</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@umiyuki_ai</span>
+          </div>
+          <div class="summary">Metaが自社開発AIチップ「Iris」の生産を開始。NVIDIA GPUへの依存を減らし、Googleなどの大手企業に続く自社チップ開発の流れを加速させる動きです。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">vLLM-Moetで284Bモデル高速推論</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">x:@ai_hakase_</span>
+          </div>
+          <div class="summary">284BのDeepSeek-V4 FlashをRTX 6000 Adaなどの単一GPUで高速推論する最適化実装「vLLM-Moet」が公開され、ローカル環境での大規模モデル運用に革命をもたらします。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">GPT-5.6/Codexの推論レベル制御</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@ai_hakase_</span>
+          </div>
+          <div class="summary">OpenAIの「GPT-5.6」と「Codex」が、タスクの複雑さに応じてAIの思考の深さを調整できる階層構造に移行。専用ハードウェア「Cerebras」導入で爆速スループットも計画中です。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">GPT-5.6 Solと特化型モデル登場</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@ai_hakase_</span>
+          </div>
+          <div class="summary">OpenAIが次世代LLM「GPT-5.6 Sol」に加え、地理空間情報処理に強い「Terra」と低遅延推論に強い「Luna」を発表。目的に応じたモデル使い分けの時代が到来します。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日のAI業界は、OpenAIの次世代モデル「GPT-5.6」シリーズ（Sol, Terra, Luna）と「ChatGPT Work」の機能強化が中心となり、AIエージェントの自律性と実用性が大きく向上しました。同時に、Metaが自社製AIチップ「Iris」の生産を開始し、AIインフラの自社開発競争が激化しています。また、DeepSeek-V4 Flashを単一GPUで高速推論する技術「vLLM-Moet」の登場は、大規模モデルのローカル運用における効率化の可能性を示しています。</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">OpenAI新モデル・機能発表</div>
+        <div class="evolution">GPT-5.6シリーズとChatGPT Workのリリースが予告され、その後具体的なモデル（Sol, Terra, Luna）の機能詳細と幅広いユースケースが活発に議論されています。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">AIエージェントの進化と活用</div>
+        <div class="evolution">当初の抽象的な議論から、ComfyUIのワークフロー自動化、経理処理の自動化、リアルタイムでの世界生成といった具体的な業務・クリエイティブ活用事例へと進化しています。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">AIインフラと効率化</div>
+        <div class="evolution">NVIDIA GPUへの依存からの脱却を目指すMetaの自社チップ開発や、大規模LLMを単一GPUで動かす技術、モデルの量子化によるVRAM削減など、運用効率化の重要性が増しています。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">AIモデルのリーダーシップ争い</div>
+        <div class="evolution">OpenAIのGPT-5.6、xAIのGrok 4.5、GoogleのGemini 3.5、AnthropicのClaude Fable 5など、主要企業のモデル性能比較や特徴が引き続き活発に議論されています。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">ローカルAIの最適化</div>
+        <div class="evolution">大規模モデルの単一GPUでの高速推論技術「vLLM-Moet」や、Llama 3.1をローカルで高速化するテクニック、Stable DiffusionモデルのINT4変換など、ローカル環境でのAI運用効率化が新たなトレンドとして浮上しました。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">AIによるクリエイティブ制作</div>
+        <div class="evolution">音楽解析と連携したMV制作、リアルタイムの3D空間生成、ComfyUIのUI改善など、AIを活用したクリエイティブワークフローの自動化と高度化が進展しています。</div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">12</span>
+        </div>
+        <div class="summary">OpenAIは「GPT-5.6」シリーズ（Sol, Terra, Luna）とデスクトップアプリ「ChatGPT Work」をリリースし、AIの推論レベル制御や自律型エージェント機能の強化により、AIをより多様なタスクに最適化し、ビジネスワークフローに深く統合する方向性を示しました。同時に、Metaが自社開発AIチップ「Iris」の生産を開始するなど、大手テック企業によるAIインフラの自社開発競争が激化しています。OpenAIは開発者向けの「Build Week」開催や既存サービスの利用制限リセットを通じてコミュニティエンゲージメントも高めています。</div>
+      </div>
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">21</span>
+        </div>
+        <div class="summary">AIモデルとツール分野では、大規模LLMを一般のGPUで高速推論可能にする「vLLM-Moet」が注目を集め、ローカル環境でのAI活用を加速させます。xAIからは広大なコンテキストウィンドウを持つコーディング特化型「grok-4.5」が発表され、開発者コミュニティに大きなインパクトを与えています。また、ComfyUI関連では、画像生成ワークフローの自動化ツール「Vibeコーディング」や、モデルの軽量化ツール「Starnodes Ultimate Model Converter」、動画編集ノード「ComfyUI-Sequencer」、そして使いやすいUI「Noofy」など、多様な進化が見られます。動画解析ではGemini 3.5の圧倒的な性能が際立っています。</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">1</span>
+        </div>
+        <div class="summary">AIガバナンスに関する議論は継続しており、米国におけるAI規制の岐路にあるという見解が示されています。</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">10</span>
+        </div>
+        <div class="summary">研究論文分野では、AlibabaのオムニモーダルAI「Wan-Streamer」がリアルタイムでの超低遅延対話を実現し、次世代のAIインタラクションに大きな期待を寄せています。また、Kyutai Labsは複数楽器の音源を自動採譜する「MuScriptor」を発表し、音楽AIの進化を示しました。データ圧縮理論の検証に「逆説的プロンプト」を用いたAI支援研究手法や、LLMの量子化レベルを比較するユニークなベンチマーク「Döner Bench」も公開され、AIの信頼性向上と効率的な運用に関する研究が進んでいます。</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">21</span>
+        </div>
+        <div class="summary">AIのユースケースは多様化しており、ゲーム制作ではリアルタイムで無限に世界を生成する「Lingbot-World-2」が登場し、没入型体験の可能性を広げています。ビジネス分野では、Claude Codeを活用した経理業務の自動化（月15〜16時間の削減）や、GPT-5.6とEigent AIによる抽象的なアイデアから科学的計画への自動変換が、具体的な業務効率化と意思決定支援を示しています。また、ComfyUIとLLMを組み合わせた「Vibeコーディング」による画像生成ワークフローの自動化、通知表所見作成の時間短縮事例など、クリエイティブから教育、マーケティングまで幅広い分野でAIの応用が進展しています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">OpenAI GPT-5.6シリーズの機能と応用</span>
+        </div>
+        <div class="desc">OpenAIのGPT-5.6（特にSol, Terra, Luna）およびChatGPT Workに関する情報が大量にシェアされています。ユーザーは、モデルの推論レベル制御、マルチモーダル能力、自律型エージェントとしての機能に強い関心を示しており、具体的なビジネスや開発での活用事例が活発に議論されています。特に「AI博士」からの連投ツイートが非常に多くの情報を発信し、注目を集めています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">AIチップの自社開発競争</span>
+        </div>
+        <div class="desc">Metaが自社開発AIチップ「Iris」の生産を開始したというニュースが話題になっています。NVIDIAのGPUへの依存を減らし、GoogleやAmazonのように自社でAIハードウェアを開発する動きは、長期的なコスト削減と性能最適化を目指す大手企業の戦略として注目されています。ユーザーはJensen Huang（NVIDIA CEO）がイライラしていると想像するなど、競争の激化に言及しています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">大規模LLMのローカル高速化</span>
+        </div>
+        <div class="desc">284Bの超大規模モデルであるDeepSeek-V4 Flashを単一GPUで爆速起動できる「vLLM-Moet」という最適化実装の登場が、技術コミュニティで大きな反響を呼んでいます。高価なエンタープライズGPUが複数枚必要だったモデルが個人ワークステーションで動く可能性に、ユーザーは驚きと期待を表明しています。Llama 3.1をローカルで高速化する技術も同様に注目されています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-07-11 16:11 UTC · AI News Collector
+    
+  </div>
+
+</div>
+</body>
+</html>
