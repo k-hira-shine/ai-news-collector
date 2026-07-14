@@ -1,0 +1,380 @@
+{
+  "trend_summary": "本日のAI業界は、AnthropicがClaudeの大規模言語モデルが表現する価値観の言語やモデル間の差異に関する詳細な研究結果を発表し、AIの倫理・アラインメントに関する議論を深めました。また、Hugging FaceがvLLMとの連携強化やZeroGPUの全ユーザーへの開放を発表し、オープンソースAIの推論効率とアクセシビリティが大幅に向上しています。NVIDIAはBlackwell上での推論コスト効率化に焦点を当て、フルスタックソフトウェアの重要性を強調。一方で、AI関連特許の無効化率の高さや、AIによるコンテンツモデレーションの課題など、規制・政策面での懸念も引き続き注目を集めています。",
+  "trend_evolution": {
+    "since_last": "前回の配信ではOpenAIとGoogle DeepMindの新モデル・新機能発表が主要な話題でしたが、本日はAnthropicのモデルが表現する価値観に関する詳細な研究が最も注目を集め、AIのアラインメントと多言語対応の側面が強調されました。Hugging FaceによるオープンソースAIの推論効率化とアクセス拡大に関する発表は、AIインフラと効率化のトレンドをさらに加速させています。AIエージェントの自律化に関する直接的な進展は比較的少なく、AI規制・政策については、AI関連特許の無効化率の高さや自動コンテンツモデレーションの課題が新たな論点として浮上しています。",
+    "tracked_topics": [
+      {
+        "topic": "LLMの価値観・アラインメント",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Claudeのモデル間・言語間の価値表現の差異に関する研究が初登場し、AIの倫理的側面への深い洞察を提供。"
+      },
+      {
+        "topic": "オープンソースAI推論の効率化・アクセシビリティ",
+        "status": "RISING",
+        "streak_days": 1,
+        "evolution": "Hugging FaceがvLLM連携とZeroGPU解放により、オープンソースAIの運用効率と利用拡大を加速。"
+      },
+      {
+        "topic": "AIインフラと推論コスト効率",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "NVIDIAがBlackwell上での推論におけるコストパーTOKENの重要性を強調し、継続的に効率化への取り組みを示唆。"
+      },
+      {
+        "topic": "AI規制・政策（特許・コンテンツモデレーション）",
+        "status": "RISING",
+        "streak_days": 3,
+        "evolution": "AI特許の無効化率の高さや自動コンテンツモデレーションの課題に関する議論が新たに浮上し、規制の必要性が再認識された。"
+      },
+      {
+        "topic": "AI生成コンテンツと信頼性",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "AI生成の顔画像が実物より信頼されやすいという研究結果が報告され、AIと人間の知覚に関する新たなユースケースと課題が提示された。"
+      },
+      {
+        "topic": "AIエージェントの進化と活用",
+        "status": "FADING",
+        "streak_days": 4,
+        "evolution": "前週はエージェントの自律化が話題だったが、今回は関連する具体的な発表が減少。"
+      },
+      {
+        "topic": "OpenAI新モデル・機能発表",
+        "status": "FADING",
+        "streak_days": 5,
+        "evolution": "これまで連日主要トレンドだったが、本日は直接的な新モデル・機能発表のニュースはなく、注目度が低下。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "6e7446e66ec43171",
+      "rank": 1,
+      "title": "Claude、3000超の価値観",
+      "url": "https://x.com/AnthropicAI/status/2076719540785012872",
+      "summary": "Anthropicは、Claudeが3,000以上の価値観（正直さ、暖かさなど）を表現することを発見した以前の研究に続き、Claudeモデル間および言語間でこれらの価値観がどのように異なるかを調査しました。",
+      "importance_reason": "AIの倫理、アラインメント、多言語対応における重要な研究結果であり、主要なLLM開発企業からの公式発表であるため。",
+      "category": "研究論文",
+      "source_label": "x:@AnthropicAI"
+    },
+    {
+      "id": "0aaed18b688c8785",
+      "rank": 2,
+      "title": "Claudeの価値観、言語で変化",
+      "url": "https://x.com/AnthropicAI/status/2076719546954825769",
+      "summary": "Claudeが表現する価値観は会話の言語によって異なり、特に「暖かさ vs 厳格さ」の軸で顕著です。Claudeはヒンディー語とアラビア語で最も暖かさに傾き、ロシア語では厳格さに傾き、しばしばユーザーに証拠を求めます。",
+      "importance_reason": "LLMの文化・言語適応性に関する具体的な洞察を提供し、多文化環境でのAI利用の設計に影響を与える可能性が高いため。",
+      "category": "研究論文",
+      "source_label": "x:@AnthropicAI"
+    },
+    {
+      "id": "cb98bf0a35e773f9",
+      "rank": 3,
+      "title": "Claude価値観変動の理解",
+      "url": "https://x.com/AnthropicAI/status/2076719549060382802",
+      "summary": "Claudeが表現する価値観は日々の何百万もの会話を形成していますが、その変動の理由やそれが望ましいかどうかはまだ理解されていません。このアプローチにより、Claudeの価値表現に影響を与える要因、そしてそれをどのように（そしてそうすべきか）制御できるかを特定できます。",
+      "importance_reason": "AIモデルの振る舞いの制御と理解に関する根本的な課題を提示し、今後のAI開発の方向性を示唆しているため。",
+      "category": "研究論文",
+      "source_label": "x:@AnthropicAI"
+    },
+    {
+      "id": "86d58bf5afc1f39d",
+      "rank": 4,
+      "title": "HFモデルvLLMで高速化",
+      "url": "https://x.com/huggingface/status/2076764295493243221",
+      "summary": "Hugging Face TransformersモデルがvLLMでネイティブ速度で実行可能になり、オープンソースAI推論における大きな進展を遂げました。",
+      "importance_reason": "オープンソースAIモデルの推論効率を大幅に向上させ、より広範な利用を促進する技術的なブレークスルーであるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "5d62da21ebc83832",
+      "rank": 5,
+      "title": "AI推論、コスト効率が重要",
+      "url": "https://x.com/nvidia/status/2076796314306617590",
+      "summary": "AIのパイロット運用から本番環境への移行に伴い、インフラの意思決定はピークチップ性能から「トークンあたりのコスト」（有用なトークンをどれだけ安く、効率的に提供できるか）にシフトしています。",
+      "importance_reason": "AIの商業利用における重要な経済的・技術的課題を提示し、NVIDIAがその解決策を提示しているため。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "96fc0f30312499f8",
+      "rank": 6,
+      "title": "NVIDIA Blackwellで価値向上",
+      "url": "https://x.com/nvidia/status/2076796351241728218",
+      "summary": "主要企業はNVIDIA Blackwell上でフルスタックのオープン推論ソフトウェアを活用し、価値を増幅させています。BasetenはTensorRT LLMでDeepSeek V4 ProをBlackwell上で提供し、最大50%多くのトークンを秒間処理しています。",
+      "importance_reason": "NVIDIAの新しいハードウェアとソフトウェアスタックが実際の企業でどのように活用され、具体的なパフォーマンス向上を実現しているかを示す事例であるため。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "3943eb11da0b3f1f",
+      "rank": 7,
+      "title": "全HFユーザーにZeroGPU",
+      "url": "https://x.com/huggingface/status/2076718780663595174",
+      "summary": "Hugging Faceの全ユーザーがZeroGPUデモやアプリを作成できるようになり、AI開発のアクセシビリティがさらに向上しました。",
+      "importance_reason": "AI開発の民主化を促進し、より多くの開発者がGPUリソースを気にせずAIアプリケーションを構築できる環境を提供する重要な発表であるため。",
+      "category": "モデル/ツール",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "640e1582becde1a5",
+      "rank": 8,
+      "title": "BoN、拡散モデルのベースライン",
+      "url": "https://x.com/huggingface/status/2076861070699082137",
+      "summary": "「best-of-N (BoN)」が拡散モデルのテスト時スケーリングにおいて、適切に行われた場合に、はるかに優れたベースラインであることを示しました。",
+      "importance_reason": "拡散モデルの評価とスケーリングに関する新たな知見を提供し、研究コミュニティに影響を与える可能性があるため。",
+      "category": "研究論文",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "34074ad02f50a93a",
+      "rank": 9,
+      "title": "AI特許、無効化率が高い",
+      "url": "https://ipwatchdog.com/2026/07/13/ip-policy-institute-study-shows-significantly-higher-rates-of-section-101-invalidations-for-ai-patents/",
+      "summary": "米国特許適格性法に関する公聴会の前夜、AI特許のセクション101に基づく無効化率が著しく高いことを示す研究結果が発表されました。",
+      "importance_reason": "AI技術の知的財産権保護における課題を浮き彫りにし、政策立案者やAI企業にとって重要な示唆を与えるため。",
+      "category": "規制/政策",
+      "source_label": "rss:IPWatchdog（知財・AI著作権）"
+    },
+    {
+      "id": "80970a211aae1c09",
+      "rank": 10,
+      "title": "AI顔画像、実物より信頼",
+      "url": "https://internet.watch.impress.co.jp/docs/yajiuma/2124850.html",
+      "summary": "AIが生成した架空の顔画像が、実物の顔画像よりも信頼されやすいという調査結果が明らかになりました。",
+      "importance_reason": "AI生成コンテンツの社会受容や認識に関する興味深い発見であり、フェイクニュースやディープフェイクの文脈で倫理的な議論を呼び起こす可能性があるため。",
+      "category": "ユースケース",
+      "source_label": "rss:INTERNET Watch（AI規制報道）"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "研究論文",
+      "summary": "Anthropicの研究は、Claudeの大規模言語モデルが表現する価値観がモデルや言語によって大きく異なることを明らかにし、特に「暖かさ vs 厳格さ」の軸で顕著な差があることを示しました。これはAIの倫理的アラインメントと多言語対応における重要な課題を提示しています。また、Hugging Face関連では、拡散モデルの評価におけるBoNの有効性に関する研究も注目されました。",
+      "count": 4,
+      "key_articles": [
+        {
+          "title": "In previous research, we found that Claude expresses over 3,000 values, like honesty and warmth. In new work, we asked how the values Claude expresses vary between Claude models and across languages.",
+          "url": "https://x.com/AnthropicAI/status/2076719540785012872",
+          "summary": "Claudeが3,000以上の価値観を表現することを発見した以前の研究に続き、AnthropicはClaudeモデル間および言語間でこれらの価値観がどのように異なるかを調査しました。"
+        },
+        {
+          "title": "The values Claude expresses also vary with the language of the conversation, most noticeably along the Warmth vs. Rigor axis.",
+          "url": "https://x.com/AnthropicAI/status/2076719546954825769",
+          "summary": "Claudeが表現する価値観は会話の言語によって異なり、特に「暖かさ vs 厳格さ」の軸で顕著に変化することが示されました。"
+        },
+        {
+          "title": "While the values Claude expresses shape millions of conversations every day, we don't yet understand why they vary, or whether that's desired.",
+          "url": "https://x.com/AnthropicAI/status/2076719549060382802",
+          "summary": "Claudeの価値表現の変動は日常会話に影響を与えるが、その理由や望ましさは未解明であり、その要因を特定し制御する方法を研究しています。"
+        },
+        {
+          "title": "RT @RisingSayak: We show that best-of-N (BoN) is a much better baseline for diffusion test-time scaling when done right.",
+          "url": "https://x.com/huggingface/status/2076861070699082137",
+          "summary": "Best-of-N (BoN)が拡散モデルのテスト時スケーリングにおいて、適切に適用された場合に、はるかに優れたベースラインであることを示す研究がHugging Faceによって共有されました。"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "Hugging Faceは、TransformersモデルがvLLMでネイティブ速度で動作可能になったことを発表し、オープンソースAIの推論性能を大幅に向上させました。また、ZeroGPUの提供を全Hugging Faceユーザーに拡大し、より多くの開発者がGPUリソースを気にせずにAIデモやアプリを作成できる環境を整備しました。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "RT @ClementDelangue: Big unlock for open-source AI inference: Hugging Face Transformers models can now run in vLLM at native speed, often m…",
+          "url": "https://x.com/huggingface/status/2076764295493243221",
+          "summary": "Hugging Face TransformersモデルがvLLMでネイティブ速度で実行可能になり、オープンソースAI推論における大きな進展を遂げました。"
+        },
+        {
+          "title": "RT @multimodalart: GPUs for all 🤗Creating ZeroGPU demos or apps is now available to ALL @huggingface users",
+          "url": "https://x.com/huggingface/status/2076718780663595174",
+          "summary": "Hugging Faceの全ユーザーがZeroGPUデモやアプリを作成できるようになり、AI開発のアクセシビリティがさらに向上しました。"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "NVIDIAは、AIの生産段階への移行に伴い、インフラ意思決定が「トークンあたりのコスト」にシフトしていることを強調しました。同社のフルスタック推論ソフトウェアは、Blackwell GPU上で企業がDeepSeek V4 Proのようなモデルを効率的に運用し、推論パフォーマンスを最大50%向上させるのに貢献しています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "As organizations move from AI pilots to production, infrastructure decisions have shifted from peak chip specs to cost per token: how many useful tokens they can deliver per dollar, per watt, and with",
+          "url": "https://x.com/nvidia/status/2076796314306617590",
+          "summary": "AIのパイロット運用から本番環境への移行に伴い、インフラの意思決定はピークチップ性能から「トークンあたりのコスト」にシフトしています。"
+        },
+        {
+          "title": "Leading companies are already compounding value with full-stack open inference software on NVIDIA Blackwell:",
+          "url": "https://x.com/nvidia/status/2076796351241728218",
+          "summary": "主要企業はNVIDIA Blackwell上でフルスタックのオープン推論ソフトウェアを活用し、価値を増幅させており、Basetenなどが具体的なパフォーマンス向上を実現しています。"
+        },
+        {
+          "title": "This ensures that every layer benefits when any layer improves.",
+          "url": "https://x.com/nvidia/status/2076796346258829336",
+          "summary": "NVIDIAのフルスタックアプローチにより、どのレイヤーが改善されても全体が恩恵を受けることが保証されます。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "AI関連特許の米国セクション101に基づく無効化率が著しく高いという研究結果が公聴会を前に発表され、AI分野における知的財産保護の課題が浮き彫りになりました。また、自動コンテンツモデレーションの普及に伴い、その説明責任と透明性の確保が求められています。",
+      "count": 5,
+      "key_articles": [
+        {
+          "title": "On Eve of Eligibility Hearing, Study Shows Significantly Higher Rates of Section 101 Invalidations for AI Patents",
+          "url": "https://ipwatchdog.com/2026/07/13/ip-policy-institute-study-shows-significantly-higher-rates-of-section-101-invalidations-for-ai-patents/",
+          "summary": "米国特許適格性法に関する公聴会の前夜、AI特許のセクション101に基づく無効化率が著しく高いことを示す研究結果が発表されました。"
+        },
+        {
+          "title": "Automated Moderation Is Here to Stay—Accountability Must Keep Pace",
+          "url": "https://www.eff.org/deeplinks/2026/07/part-2-automated-moderation-here-stay-accountability-must-keep-pace",
+          "summary": "自動コンテンツモデレーションが普及する中で、その説明責任と透明性を確保するための対策が不可欠であるとEFFが提言しています。"
+        },
+        {
+          "title": "@nanya103704 Wow, the japanese people in the replies justifying it..",
+          "url": "https://x.com/Diego90ddm/status/2076425986564825558",
+          "summary": "日本のユーザーが特定のAI関連問題（おそらく著作権や労働法関連）を正当化していることに対し、海外ユーザーから批判的な反応が見られます。"
+        },
+        {
+          "title": "その文章書く時間で書けたよね別にいらんわ説明なんてどうせまた生成AIの無断学習がどうのこうのと言って論点ずらしてくるんだろ",
+          "url": "https://x.com/sub_raw_jin/status/2076748904847282384",
+          "summary": "生成AIと著作権に関する議論で、あるユーザーが「説明はいらない、論点をずらすな」と強く反論し、過去の言動との矛盾を指摘しています。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AIが生成した架空の顔画像が、実物の顔画像よりも信頼されやすいという驚くべき研究結果が発表されました。これは、AI生成コンテンツが人間の知覚に与える影響と、それに伴う倫理的課題の可能性を示唆しています。また、「国土数値情報」がAIの精度向上に活用できるかどうかも注目されています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "AIが生成した架空の顔画像、実物の顔画像よりも信頼されやすいとの調査結果が明らかに【やじうまWatch】",
+          "url": "https://internet.watch.impress.co.jp/docs/yajiuma/2124850.html",
+          "summary": "AIによって生成された架空の顔の画像は、実物の顔の画像よりも信頼されやすいという研究結果が明らかになりました。"
+        },
+        {
+          "title": "近年ダウンロードが増加している無償の「国土数値情報」って何？ AIの精度アップに活用できる？ 連載「地図と位置情報」の記事に注目が集まる【アクセスランキング】",
+          "url": "https://internet.watch.impress.co.jp/docs/news/ranking/2124522.html",
+          "summary": "無償の「国土数値情報」がAIの精度アップに活用できるかどうかに注目が集まり、関連記事がアクセスランキングで上位に入りました。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "AI倫理・アラインメント戦略の見直し: Claudeの価値観研究を参考に、自社AIモデルの多言語・多文化環境における振る舞いを再評価し、倫理ガイドラインやアラインメント戦略を強化してください。",
+    "オープンソースAI推論環境の最適化検討: Hugging FaceとvLLMの連携強化を活用し、自社のオープンソースAIモデルの推論コスト削減と速度向上に向けた技術導入を検討してください。ZeroGPUの活用も視野に入れ、開発アクセシビリティを高めましょう。",
+    "AIインフラのコスト効率分析: NVIDIAが提唱する「トークンあたりのコスト」の概念に基づき、自社のAIインフラ（特に推論フェーズ）のコスト効率を詳細に分析し、Blackwellのような最新ハードウェアとフルスタックソフトウェアの導入効果を評価してください。",
+    "AI特許戦略の再評価: AI関連特許の無効化リスクが高い現状を鑑み、自社のAI技術に関する知的財産戦略を再評価し、特許出願の適格性や保護範囲について専門家と協議してください。",
+    "AI生成コンテンツの信頼性・倫理的影響への対応: AI生成の顔画像が実物より信頼されやすいという研究結果を踏まえ、自社製品やサービスにおけるAI生成コンテンツの利用について、その信頼性、倫理的影響、誤情報リスクを考慮した利用規約やガイドラインを策定・強化してください。"
+  ],
+  "x_trends": [
+    {
+      "topic": "Anthropic Claudeの価値観研究",
+      "description": "Anthropicが、Claudeの大規模言語モデルが表現する3,000以上の価値観が、モデル間や言語間でどのように異なるかについて詳細な研究結果を発表しました。特に、ヒンディー語やアラビア語では「暖かさ」に、ロシア語では「厳格さ」に傾くという具体例が挙げられ、AIの文化・言語的適応性やアラインメントの複雑さについてユーザーから大きな関心が寄せられています。これはAIの倫理と制御に関する重要な議論を促進しています。",
+      "buzz_level": "high",
+      "sentiment": "neutral",
+      "representative_tweets": [
+        {
+          "author": "AnthropicAI",
+          "text": "In previous research, we found that Claude expresses over 3,000 values, like honesty and warmth. In new work, we asked how the values Claude expresses vary between Claude models and across languages.",
+          "url": "https://x.com/AnthropicAI/status/2076719540785012872",
+          "likes": 2984,
+          "retweets": 298
+        },
+        {
+          "author": "AnthropicAI",
+          "text": "The values Claude expresses also vary with the language of the conversation, most noticeably along the Warmth vs. Rigor axis.Claude leans most toward warmth in Hindi and Arabic. In Russian, it leans",
+          "url": "https://x.com/AnthropicAI/status/2076719546954825769",
+          "likes": 422,
+          "retweets": 31
+        }
+      ]
+    },
+    {
+      "topic": "Hugging FaceとオープンソースAI推論",
+      "description": "Hugging FaceがオープンソースAIの推論を大幅に強化する発表を複数行いました。特に、Hugging Face TransformersモデルがvLLMと連携し、ネイティブ速度で動作可能になったことは、多くの開発者にとって「大きなアンロック」として歓迎されています。また、全ユーザーにZeroGPUデモ/アプリ作成機能が開放されたことで、AI開発の民主化とアクセシビリティ向上が期待されており、コミュニティでポジティブな反応を呼んでいます。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "ClementDelangue",
+          "text": "Big unlock for open-source AI inference: Hugging Face Transformers models can now run in vLLM at native speed, often m…",
+          "url": "https://x.com/huggingface/status/2076764295493243221",
+          "likes": 0,
+          "retweets": 76
+        },
+        {
+          "author": "multimodalart",
+          "text": "GPUs for all 🤗Creating ZeroGPU demos or apps is now available to ALL @huggingface users tell your agent: \"Build a HF…",
+          "url": "https://x.com/huggingface/status/2076718780663595174",
+          "likes": 0,
+          "retweets": 17
+        }
+      ]
+    },
+    {
+      "topic": "NVIDIAのAI推論コスト効率化",
+      "description": "NVIDIAは、AIの商用展開においてインフラの意思決定が「チップ性能」から「トークンあたりのコスト」にシフトしていることを強調しています。Blackwell GPUとNVIDIAのフルスタック推論ソフトウェアが、企業がより多くの有用なトークンを低コスト、低消費電力、低レイテンシで提供できるよう支援している具体的な事例（BasetenによるDeepSeek V4 Proのパフォーマンス向上など）が紹介され、AIの経済性と実用性に関する議論を深めています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "nvidia",
+          "text": "As organizations move from AI pilots to production, infrastructure decisions have shifted from peak chip specs to cost per token: how many useful tokens they can deliver per dollar, per watt, and with",
+          "url": "https://x.com/nvidia/status/2076796314306617590",
+          "likes": 173,
+          "retweets": 35
+        },
+        {
+          "author": "nvidia",
+          "text": "Leading companies are already compounding value with full-stack open inference software on NVIDIA Blackwell:Baseten used TensorRT LLM to serve DeepSeek V4 Pro on Blackwell, applying proprietary runt",
+          "url": "https://x.com/nvidia/status/2076796351241728218",
+          "likes": 28,
+          "retweets": 5
+        }
+      ]
+    },
+    {
+      "topic": "AI特許の無効化問題と知的財産権",
+      "description": "米国でのAI関連特許がセクション101（特許適格性）に基づき無効化される割合が著しく高いという研究結果が、今後の公聴会を前に発表され、X上でもこの問題に対する懸念や議論が見られます。日本のユーザーがAIに関する特定の（恐らく著作権や利用に関する）問題を正当化していることに対して、海外ユーザーから批判的な意見も投稿されており、AIの知的財産権や利用に関する国際的な見解の相違と、規制・政策の必要性が再認識されています。",
+      "buzz_level": "low",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "Diego90ddm",
+          "text": "@nanya103704 Wow, the japanese people in the replies justifying it..Between this, and them defending bad labor laws and companies pushing against Fair Use protections, it's not looking good. I hop",
+          "url": "https://x.com/Diego90ddm/status/2076425986564825558",
+          "likes": 240,
+          "retweets": 0
+        },
+        {
+          "author": "sub_raw_jin",
+          "text": "その文章書く時間で書けたよね別にいらんわ説明なんてどうせまた生成AIの無断学習がどうのこうのと言って論点ずらしてくるんだろそれならまず【当該著作物の権利者】である証拠を出してからにしてくれなそして今の論点は、・今のお前は過去のウマエロ炎上で言い訳した内容と真逆のことを言っている・しかも当時自分が問題提起した行動をそっくりそのままやっているであり、生成AIは関係ないんだお前自身の言",
+          "url": "https://x.com/sub_raw_jin/status/2076748904847282384",
+          "likes": 23,
+          "retweets": 3
+        }
+      ]
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-07-14T09:11:28.685503+00:00",
+  "slot": "evening",
+  "item_count": 41,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-07-14_evening.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0,
+    "apify_runs": 15,
+    "apify_cycle_total_usd": 0.24486940127507206,
+    "apify_cycle_end": "2026-08-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
