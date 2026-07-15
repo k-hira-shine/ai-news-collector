@@ -1,0 +1,359 @@
+{
+  "trend_summary": "今日のAI業界は、Meta AIが物理オリンピックで満点を獲得し、AIの高度な推論能力を示す一方で、Bonsai 27Bが1-bit量子化によりスマートフォンでの大規模言語モデル実行を可能にするなど、モデルの性能と実用性の両面で大きな進展を見せました。OpenAIは既存モデル「GPT-5.6 Sol」へのユーザーエンゲージメントを促進しており、Hugging Faceはオープンソースエコシステムの拡大を支援しています。一方で、AppleがOpenAIを提訴、MetaがAIを用いたレイオフで訴訟に直面、日本の個人情報保護法改正といったAIを取り巻く法的・倫理的側面に関する動きも活発化しています。",
+  "trend_evolution": {
+    "since_last": "前回の配信以降、AIモデルの性能向上と実用化、特に軽量化とエッジデバイス対応が顕著に加速しました。Meta AIが物理オリンピックで満点を獲得したニュースは、AIの高度な推論能力を示す新たなベンチマークとなり、学術的な成果が注目を集めています。また、Bonsai 27BによるスマートフォンでのLLM実行の実現は、AIのローカル運用とアクセシビリティにおける重要な進展です。規制・政策面では、AppleによるOpenAI提訴やMetaのAIレイオフ訴訟、日本の個人情報保護法改正など、AIの法的・倫理的課題が多角的に議論されています。OpenAIは新モデル発表に加えて既存モデルのエンゲージメント強化にも注力しており、主要AI企業の競争と戦略が複雑化しています。",
+    "tracked_topics": [
+      {
+        "topic": "AIモデルの高性能化と評価",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "GPT-5.6 Sol Ultraの性能報から、Meta AIの物理オリンピック満点取得、OvisOCR2のSOTA達成と、具体的な成果でモデル性能の優位性が示されている。"
+      },
+      {
+        "topic": "AIモデルの軽量化とローカル運用",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "AIモデルの軽量化とローカル運用が話題になり、Bonsai 27Bが1-bit量子化でスマホでのLLM実行を実現し、実用性が飛躍的に向上した。"
+      },
+      {
+        "topic": "AI規制・政策・法的問題",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "改正個人情報保護法の進展から、AppleによるOpenAI提訴、MetaのAIレイオフ訴訟など、AIに関する法的・倫理的課題が継続的に議論されている。"
+      },
+      {
+        "topic": "OpenAIの企業戦略とモデル動向",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "新モデル発表やChatGPT Workに続き、既存のGPT-5.6 Solのエンゲージメント強化キャンペーンを展開し、多角的な戦略が見える。"
+      },
+      {
+        "topic": "オープンソースAIエコシステムの進化",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "Hugging FaceがvLLM連携やZeroGPU開放で推論効率・アクセシビリティを向上させた後、データワークにおけるハブの重要性を強調し、エコシステム拡大を牽引している。"
+      },
+      {
+        "topic": "AIエージェントの進化と活用",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "自律的な機能拡張からゲーム開発、コード生成への活用と進化を続け、Perplexity AIがWANDRで評価手法を提唱し、信頼性向上に寄与している。"
+      },
+      {
+        "topic": "エンタープライズAIの信頼性とカスタマイズ",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "NVIDIAがオープンモデルを介した企業向けAIの信頼性、制御、カスタマイズの重要性を提唱し、新たな焦点となっている。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "bff33540f0974c2e",
+      "rank": 1,
+      "title": "Meta AIが物理五輪で満点",
+      "url": "https://x.com/AIatMeta/status/2077138553210028042",
+      "summary": "Meta AIのモデルがアジア物理オリンピックの理論試験に参加し、30点満点を獲得。これは上位3名の学生と同等の成績であり、AIの高度な推論能力とマルチモーダル機能を示す。",
+      "importance_reason": "AIが現実世界の複雑な学術試験で人間と同等のトップ成績を収めたことは、AIの推論能力の画期的な進歩を示すと同時に、今後の教育や研究分野におけるAIの可能性を広げる。",
+      "category": "企業動向",
+      "source_label": "x:@AIatMeta"
+    },
+    {
+      "id": "5aca52a349cab345",
+      "rank": 2,
+      "title": "Bonsai 27B、スマホでLLM",
+      "url": "https://x.com/huggingface/status/2077244214341980557",
+      "summary": "Bonsai 27Bが1-bit量子化により54GBから3.8GBへと大幅にサイズが縮小され、スマートフォンで大規模言語モデル（LLM）を実行できるようになった。これはローカルLLMの新たな局面を開く。",
+      "importance_reason": "AIモデルの極端な軽量化により、スマートフォンなどのエッジデバイスで高性能なLLMが直接動作する可能性を示し、AIの普及と利用シーンを劇的に拡大させる画期的な技術進展。",
+      "category": "モデル/ツール",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "f138585d0d3a3f0b",
+      "rank": 3,
+      "title": "Bonsai 27Bがスマホで実行",
+      "url": "https://x.com/huggingface/status/2077164993989017668",
+      "summary": "PrismMLがBonsai 27Bを発表。これは27Bクラスのモデルとしては初めてスマートフォンで動作し、マルチモーダル機能を持つ新しいフラッグシップモデルとなる。",
+      "importance_reason": "上記と同様、モデルの軽量化とエッジデバイスでの実行可能性は、AIの実用性とアクセシビリティを大きく向上させる重要なステップ。",
+      "category": "モデル/ツール",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "309cabaf1763461a",
+      "rank": 4,
+      "title": "OpenAIがGPT-5.6 Solに言及",
+      "url": "https://x.com/OpenAI/status/2077250227665572059",
+      "summary": "OpenAIがGPT-5.6 Solに関するユーザーの意見を募り、Codexクレジット100ドルのインセンティブを提供。ユーザーからのフィードバックを通じて、モデルの評価と改善を狙っている。",
+      "importance_reason": "OpenAIが既存モデルへのエンゲージメントを高めるためのキャンペーンを展開しており、ユーザーコミュニティとの関係構築とモデル改善への注力が伺える。",
+      "category": "企業動向",
+      "source_label": "x:@OpenAI"
+    },
+    {
+      "id": "304152b2b36244a3",
+      "rank": 5,
+      "title": "AppleがOpenAIを提訴",
+      "url": "https://www.jurist.org/news/2026/07/apple-challenges-openais-hardware-push-in-trade-secret-lawsuit/",
+      "summary": "AppleがOpenAIとそのハードウェア子会社io Productsを、盗用された企業秘密を用いてコンシューマーデバイス開発を加速したとして連邦訴訟を提起した。これは、両社がChatGPTをApple製品に統合するパートナーシップを結んでいる中で起こった直接的な法的対立である。",
+      "importance_reason": "AppleとOpenAIの提携関係にある中での訴訟は、AI業界の企業間の競争激化と知的財産権に関する複雑な問題を浮き彫りにし、今後の業界動向に大きな影響を与える可能性がある。",
+      "category": "企業動向",
+      "source_label": "rss:JURIST（法律ニュース・AI Act）"
+    },
+    {
+      "id": "12b8256221e42e6b",
+      "rank": 6,
+      "title": "改正個人情報保護法とAI開発",
+      "url": "https://storialaw.jp/blog/13143",
+      "summary": "改正個人情報保護法が可決・成立し、「統計作成等の特例」が新設されたことで、複数社のデータを用いたAI開発の可能性が大きく変わると解説されている。特に顔特徴データ等の利用に関する規制緩和がAI開発に与える影響が大きい。",
+      "importance_reason": "AI開発におけるデータ利用の法的枠組みが日本で大きく変化することで、新たなAIサービスや研究開発の加速が期待される一方、プライバシー保護とのバランスが引き続き重要になる。",
+      "category": "規制/政策",
+      "source_label": "rss:STORIA法律事務所（AI法務）"
+    },
+    {
+      "id": "9da5578804ea2333",
+      "rank": 7,
+      "title": "0.9BモデルがSOTAを達成",
+      "url": "https://x.com/huggingface/status/2077121771271049495",
+      "summary": "0.9BモデルのOvisOCR2が、ドキュメント解析のOmniDocBench v1.6で96.58のSOTAを達成。これはエンドツーエンドのドキュメント解析で初めての成果とされている。",
+      "importance_reason": "小規模モデルでも特定タスクで最先端の性能を達成できることを示し、AIモデルの効率性と専門性向上の可能性を広げる。",
+      "category": "モデル/ツール",
+      "source_label": "x:@huggingface"
+    },
+    {
+      "id": "15ef79d67e642bc0",
+      "rank": 8,
+      "title": "NVIDIAがオープンモデルを推奨",
+      "url": "https://x.com/nvidia/status/2077075654210695537",
+      "summary": "NVIDIAは、企業がAIに信頼、制御、カスタマイズを求める中で、オープンモデルがそのニーズを満たし、AIの評価、専門知識による特化、精度と効率の向上に貢献すると主張している。",
+      "importance_reason": "エンタープライズAI市場におけるオープンモデルの重要性をNVIDIAが強調しており、企業のAI導入における信頼性と柔軟性の要求が高まっていることを示唆する。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "299bc3d1cdce6c01",
+      "rank": 9,
+      "title": "MetaがAIレイオフで訴訟",
+      "url": "https://www.theverge.com/tech/965486/meta-lawsuit-former-employees-ai-layoffs",
+      "summary": "元Meta従業員26人が、AIツールを用いて不公平にレイオフのターゲットにされたとしてMetaを提訴。特に、育児休暇や病気休暇中の従業員がAIの評価システムから除外されず、不均衡に解雇されたと主張している。",
+      "importance_reason": "AIが人事決定に利用される際の倫理的・法的課題を具体的に示す事例であり、AIの公平性や人権への影響に関する議論を加速させる。",
+      "category": "規制/政策",
+      "source_label": "rss:The Verge Policy（テック政策・訴訟）"
+    },
+    {
+      "id": "c3ffb1c271265b44",
+      "rank": 10,
+      "title": "LINEヤフー「Agent i」の展望",
+      "url": "https://internet.watch.impress.co.jp/docs/special/30thinterview/2121737.html",
+      "summary": "LINEヤフーは、AIで「便利さ」だけでなく「豊かさ」も提供できるサービスを目指し、進化を続ける「Agent i」で新しい体験を追求している。同社のインターネットサービスにおけるAI活用の戦略が語られている。",
+      "importance_reason": "国内大手インターネットサービス企業が、AIを単なる効率化ツールとしてだけでなく、ユーザー体験の質を高めるための手段として捉え、具体的なサービスに落とし込もうとしている点で注目される。",
+      "category": "企業動向",
+      "source_label": "rss:INTERNET Watch（AI規制報道）"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "企業動向",
+      "summary": "今日の企業動向は、AIの技術的優位性の実証と、その利用を巡る法的課題が中心となりました。Meta AIが物理オリンピックでトップレベルの成績を収め、AIの高度な推論能力を示しました。OpenAIはGPT-5.6 Solへのユーザーエンゲージメントを強化するキャンペーンを展開。しかし、AppleがOpenAIを企業秘密窃盗で提訴し、MetaもAIによるレイオフを巡り訴訟に直面するなど、競争と倫理的・法的問題が顕在化しています。NVIDIAはエンタープライズ分野でのオープンモデルの重要性を強調し、LINEヤフーはAIによる豊かなユーザー体験の提供を目指すなど、各社がAI戦略を深化させています。",
+      "count": 6,
+      "key_articles": [
+        {
+          "title": "To demonstrate Meta AI's advanced reasoning and multimodal capabilities, we submitted a model to participate in the Asian Physics Olympiad’s theoretical exam. We’re happy to share that our model achie",
+          "url": "https://x.com/AIatMeta/status/2077138553210028042",
+          "summary": "Meta AIのモデルがアジア物理オリンピックの理論試験で満点を獲得し、AIの高度な推論能力を示した。"
+        },
+        {
+          "title": "RT @thsottiaux: Or… what if we gave you $100 in Codex credits if you tell us what you love about GPT-5.6 Sol or why you switched? Tweet it…",
+          "url": "https://x.com/OpenAI/status/2077250227665572059",
+          "summary": "OpenAIがGPT-5.6 Solに関するユーザーのフィードバックを募り、インセンティブを提供。"
+        },
+        {
+          "title": "Apple challenges OpenAI’s hardware push in trade-secret lawsuit",
+          "url": "https://www.jurist.org/news/2026/07/apple-challenges-openais-hardware-push-in-trade-secret-lawsuit/",
+          "summary": "AppleがOpenAIを企業秘密窃盗で提訴。両社の提携関係に影響を与える可能性。"
+        },
+        {
+          "title": "Enterprises need AI they can trust, control and customize. Open models give teams the visibility and ownership to evaluate AI against their standards, specialize AI with domain knowledge, and improv",
+          "url": "https://x.com/nvidia/status/2077075654210695537",
+          "summary": "NVIDIAがエンタープライズAIにおけるオープンモデルの信頼性とカスタマイズの重要性を強調。"
+        },
+        {
+          "title": "AIで「便利さ」だけでなく、「豊かさ」も提供できるサービスでありたい～LINEヤフー　進化を続ける「Agent i」で目指す新しい体験",
+          "url": "https://internet.watch.impress.co.jp/docs/special/30thinterview/2121737.html",
+          "summary": "LINEヤフーがAIアシスタント「Agent i」を通じて、利便性だけでなく豊かなユーザー体験を提供することを目指している。"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "モデル/ツール分野では、AIモデルの軽量化とエッジデバイスでの実行が大きな注目を集めました。Bonsai 27Bが1-bit量子化によりスマートフォンでの大規模言語モデル実行を実現し、ローカルAIの新たな可能性を開拓しました。また、0.9Bという小規模モデルのOvisOCR2がドキュメント解析で最先端の性能を達成するなど、効率的で専門性の高いモデル開発が進展しています。Hugging Faceはこれらの技術的進歩を積極的に発信し、オープンソースコミュニティの活性化に貢献しています。",
+      "count": 3,
+      "key_articles": [
+        {
+          "title": "RT @xenovacom: Bonsai 27B just changed the local LLM game forever. 1-bit quantization shrinks it from 54GB to just 3.8GB (-93%), while ret…",
+          "url": "https://x.com/huggingface/status/2077244214341980557",
+          "summary": "Bonsai 27Bが1-bit量子化で大幅にサイズを縮小し、ローカルLLMのゲームを変革した。"
+        },
+        {
+          "title": "RT @PrismML: Today, we’re announcing Bonsai 27B: the first 27B-class model to run on a phone. Bonsai 27B is the new multimodal flagship of…",
+          "url": "https://x.com/huggingface/status/2077164993989017668",
+          "summary": "Bonsai 27Bがスマートフォンで動作する初の27Bクラスモデルとして発表された。"
+        },
+        {
+          "title": "RT @vanstriendaniel: A 0.9B model is claiming SOTA for document parsing! OvisOCR2: 96.58 on OmniDocBench v1.6 — reportedly the first end-t…",
+          "url": "https://x.com/huggingface/status/2077121771271049495",
+          "summary": "0.9BモデルのOvisOCR2がドキュメント解析でSOTAを達成し、小規模モデルの高性能化を示した。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "規制/政策の分野では、AIに関する法的・倫理的課題が多方面から浮上しています。日本では改正個人情報保護法が成立し、「統計作成等の特例」により複数社データを用いたAI開発の可能性が広がります。しかし、MetaがAIを用いたレイオフで不公平な選定をしたとして元従業員から訴訟を起こされるなど、AIの人事への利用における公平性や透明性が問われています。これらの動きは、AI技術の進歩に伴い、社会におけるAIの責任と倫理的運用がますます重要になっていることを示しています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "改正個人情報保護法「統計作成等の特例」で、複数社データを使ったAI開発はどう変わるか",
+          "url": "https://storialaw.jp/blog/13143",
+          "summary": "改正個人情報保護法により、「統計作成等の特例」が導入され、複数社データによるAI開発の新たな可能性が開かれる。"
+        },
+        {
+          "title": "Meta accused of using biased AI targeting for mass layoffs",
+          "url": "https://www.theverge.com/tech/965486/meta-lawsuit-former-employees-ai-layoffs",
+          "summary": "MetaがAIツールを使い、休暇中の従業員を不公平にレイオフの対象としたとして訴訟に直面している。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "ユースケースの領域では、PFUがAIを活用した文書整理サービス「ScanSnap Cloud＋」と、スマホカメラでスキャンできる「ScanSnap Camera」を提供開始しました。これは、既存のハードウェアとAI技術を組み合わせることで、文書管理の効率化と利便性向上を図る具体的な事例です。AIが日常的な業務プロセスに組み込まれることで、ユーザーはより手軽に高度な機能を利用できるようになります。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "PFU、AIがスキャンした文書を整えるクラウドサービス「ScanSnap Cloud＋」提供開始　スマホのカメラでスキャンできる新機能「ScanSnap Camera」も",
+          "url": "https://internet.watch.impress.co.jp/docs/news/2125097.html",
+          "summary": "PFUがAIによるスキャン文書整理サービス「ScanSnap Cloud＋」と、スマホカメラ連携の新機能を提供開始。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "研究論文の分野では、Perplexity AIが「WANDR」という新しいエージェント評価フレームワークを発表しました。WANDRは、エージェントが多数のエンティティを発見し、事実を検証する能力をテストすることで、その失敗箇所を特定できる密で解釈可能な評価信号を提供します。このパイプラインは、トレーニングデータの半自動生成工場としても機能し、エージェント開発と評価の効率化に貢献する可能性があります。",
+      "count": 1,
+      "key_articles": [
+        {
+          "title": "WANDR tests how well agents discover large sets of entities and verify specific facts about each one. It provides a dense, interpretable eval signal that reveals whether an agent fails, and where. Th",
+          "url": "https://x.com/perplexity_ai/status/2077099552247881877",
+          "summary": "Perplexity AIがエージェントのエンティティ発見・事実検証能力を評価するWANDRを発表。トレーニングデータ生成にも応用可能。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "AIモデルの軽量化とエッジデバイス対応技術（1-bit量子化など）を注視し、スマートフォンやローカル環境でのAIサービス展開の可能性を検討する。",
+    "自社ビジネスにおけるAIの倫理的・法的リスクを再評価し、特に人事決定や個人情報利用の場面でのAI活用における公平性、透明性、説明責任に関するガイドラインを策定または見直す。",
+    "日本における改正個人情報保護法の内容を深く理解し、「統計作成等の特例」を活用した複数社データ連携による新たなAI開発やサービスモデルの創出を検討する。",
+    "Meta AIが学術分野で示したような、AIの高度な推論能力が要求されるニッチな専門領域（研究、高度な分析など）でのAI導入の機会を探る。",
+    "NVIDIAが提唱するオープンモデルの利点（信頼性、制御、カスタマイズ性）を踏まえ、自社のエンタープライズAI戦略においてオープンモデルの導入や活用を検討する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "Meta AIの物理五輪満点達成",
+      "description": "Meta AIがアジア物理オリンピックの理論試験で満点を獲得し、上位の学生と同等の成績を収めたという発表が大きな話題となっています。Xユーザーからは、AIの驚異的な推論能力と学術分野での可能性に感嘆の声が上がっており、AIの知的能力の新たなベンチマークとして注目されています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@AIatMeta",
+          "text": "To demonstrate Meta AI's advanced reasoning and multimodal capabilities, we submitted a model to participate in the Asian Physics Olympiad’s theoretical exam. We’re happy to share that our model achieved a perfect score of 30/30, tying with the top 3 student contestants.We appreciate the APhO committee for letting our model participate in the competition:  https://t.co/dpyMyST2n4",
+          "url": "https://x.com/AIatMeta/status/2077138553210028042",
+          "likes": 307,
+          "retweets": 47
+        }
+      ]
+    },
+    {
+      "topic": "Bonsai 27BによるスマホLLM",
+      "description": "PrismMLが発表したBonsai 27Bが、1-bit量子化によって54GBからわずか3.8GBに圧縮され、スマートフォンで動作する初の27Bクラスモデルとなったことが大きな反響を呼んでいます。Xユーザーは、ローカル環境でのLLM実行の可能性と、それに伴うプライバシーやアクセシビリティの向上に興奮しており、今後のAI利用のあり方を変える技術として高く評価しています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@huggingface",
+          "text": "RT @xenovacom: Bonsai 27B just changed the local LLM game forever.1-bit quantization shrinks it from 54GB to just 3.8GB (-93%), while ret…",
+          "url": "https://x.com/huggingface/status/2077244214341980557",
+          "likes": 0,
+          "retweets": 216
+        },
+        {
+          "author": "@huggingface",
+          "text": "RT @PrismML: Today, we’re announcing Bonsai 27B: the first 27B-class model to run on a phone.Bonsai 27B is the new multimodal flagship of…",
+          "url": "https://x.com/huggingface/status/2077164993989017668",
+          "likes": 0,
+          "retweets": 740
+        }
+      ]
+    },
+    {
+      "topic": "OpenAIのGPT-5.6 Solキャンペーン",
+      "description": "OpenAIがGPT-5.6 Solのユーザー体験に関するフィードバックを募り、Codexクレジット100ドルを提供するキャンペーンを実施しています。これは新モデルの発表だけでなく、既存モデルのエンゲージメントと満足度向上にも注力していることを示唆しています。ユーザーからは、モデルの具体的な改善点や魅力について活発な意見が交わされており、OpenAIの顧客志向の姿勢が評価されています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@OpenAI",
+          "text": "RT @thsottiaux: Or… what if we gave you $100 in Codex credits if you tell us what you love about GPT-5.6 Sol or why you switched?Tweet it…",
+          "url": "https://x.com/OpenAI/status/2077250227665572059",
+          "likes": 0,
+          "retweets": 2300
+        }
+      ]
+    },
+    {
+      "topic": "NVIDIAのオープンモデル推進",
+      "description": "NVIDIAが、エンタープライズ顧客向けに信頼性、制御、カスタマイズ性を重視したAIとしてオープンモデルを推奨する投稿をしています。企業がAIを導入する際の懸念点に対し、オープンモデルがどのようにソリューションを提供できるかを具体的に説明しており、ビジネス層からの関心を集めています。オープンソースの利点を再確認する声や、具体的な導入事例への期待が寄せられています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@nvidia",
+          "text": "Enterprises need AI they can trust, control and customize. Open models give teams the visibility and ownership to evaluate AI against their standards, specialize AI with domain knowledge, and improve accuracy and efficiency. https://t.co/DSEV4McGUx",
+          "url": "https://x.com/nvidia/status/2077075654210695537",
+          "likes": 254,
+          "retweets": 33
+        }
+      ]
+    },
+    {
+      "topic": "Hugging FaceとAIデータワーク",
+      "description": "Hugging Faceが、AIデータワークの多くがHugging Face Hubで始まるという投稿をリツイートし、データとモデルのハブとしての役割を強調しています。AI開発者や研究者からは、Hugging Faceが提供するリソースの価値を再認識する声や、コミュニティの重要性に対する共感が広がっており、オープンサイエンスへの貢献が評価されています。",
+      "buzz_level": "low",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "@huggingface",
+          "text": "RT @everettkleven: A lot of AI data work starts on the Hugging Face Hub. @Daftengine should meet people there.Here are three patterns we…",
+          "url": "https://x.com/huggingface/status/2077071647421452432",
+          "likes": 0,
+          "retweets": 5
+        }
+      ]
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-07-15T09:15:47.163007+00:00",
+  "slot": "evening",
+  "item_count": 36,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-07-15_evening.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0,
+    "apify_runs": 15,
+    "apify_cycle_total_usd": 0.3042466793871615,
+    "apify_cycle_end": "2026-08-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
