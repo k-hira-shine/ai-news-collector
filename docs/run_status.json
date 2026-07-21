@@ -1,6 +1,6 @@
 {
-  "overall": "success",
-  "updated_at": "2026-07-21 18:35 JST",
+  "overall": "warning",
+  "updated_at": "2026-07-22 01:44 JST",
   "workflows": {
     "buzz": {
       "status": "success",
@@ -17,11 +17,11 @@
       "starved_accounts": []
     },
     "collect": {
-      "status": "success",
-      "ts": "2026-07-21T18:35:55.455030+09:00",
-      "time": "2026-07-21 18:35 JST",
-      "error": "",
-      "items_collected": 49,
+      "status": "warning",
+      "ts": "2026-07-22T01:44:54.928765+09:00",
+      "time": "2026-07-22 01:44 JST",
+      "error": "X 検索で 1 クエリが失敗",
+      "items_collected": 161,
       "top_articles": 10,
       "apify_hints": "zero-output-run",
       "search_failure": ""
@@ -47,5 +47,17 @@
       "candidates": 845,
       "mode": "one-off-analysis"
     }
+  },
+  "incident": {
+    "active": "true",
+    "severity": "warning",
+    "title": "収集パイプラインに警告",
+    "situation": "健全性アラート 1 件。収集 161 件 / top_articles 10 件。",
+    "cause": "X 検索で 1 クエリが失敗 — 1/7 クエリがエラー。部分的劣化。\n検出: zero-output-run",
+    "impact": "一部の更新・品質が劣化している可能性があります。下記の状況・原因を確認してください。",
+    "technical": "hints=zero-output-run",
+    "diagram_latest": "2026-07-22-morning",
+    "workflow": "collect",
+    "updated_at": "2026-07-22 01:44 JST"
   }
 }
