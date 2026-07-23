@@ -35,52 +35,36 @@
     "note": "情報取得を停止せず、重複取得と過剰な再取得だけを削減した場合の概算"
   },
   "latest": {
-    "date": "2026-07-23",
+    "date": "2026-07-24",
     "workflows": {
-      "collect": 0.0034,
+      "collect": 0.05,
       "money": 0.0,
       "buzz": 0.0
     },
     "items_collected": {
-      "collect": 251,
+      "collect": 200,
       "money": 0,
       "buzz": 0
     },
-    "total_usd": 0.0034,
-    "gemini_usd": 0.0982,
-    "combined_total_usd": 0.1016
+    "total_usd": 0.05,
+    "gemini_usd": 0.0643,
+    "combined_total_usd": 0.1143
   },
   "rolling": {
     "days": 7,
     "window": 7,
-    "start_date": "2026-07-16",
-    "end_date": "2026-07-22",
-    "average_daily_usd": 0.0075,
-    "monthly_projection_usd": 0.22,
-    "gemini_average_daily_usd": 0.0723,
-    "gemini_monthly_projection_usd": 2.17,
-    "combined_average_daily_usd": 0.0798,
-    "combined_monthly_projection_usd": 2.39,
+    "start_date": "2026-07-17",
+    "end_date": "2026-07-23",
+    "average_daily_usd": 0.008,
+    "monthly_projection_usd": 0.24,
+    "gemini_average_daily_usd": 0.0756,
+    "gemini_monthly_projection_usd": 2.27,
+    "combined_average_daily_usd": 0.0836,
+    "combined_monthly_projection_usd": 2.51,
     "reduction_vs_baseline_pct": 99.0,
     "status": "on_target"
   },
   "daily": [
-    {
-      "date": "2026-06-24",
-      "workflows": {
-        "collect": 0.0,
-        "money": 0.0118,
-        "buzz": 0.0028
-      },
-      "items_collected": {
-        "collect": 104,
-        "money": 130,
-        "buzz": 100
-      },
-      "total_usd": 0.0146,
-      "gemini_usd": 0.2378,
-      "combined_total_usd": 0.2524
-    },
     {
       "date": "2026-06-25",
       "workflows": {
@@ -544,6 +528,22 @@
       "total_usd": 0.0034,
       "gemini_usd": 0.0982,
       "combined_total_usd": 0.1016
+    },
+    {
+      "date": "2026-07-24",
+      "workflows": {
+        "collect": 0.05,
+        "money": 0.0,
+        "buzz": 0.0
+      },
+      "items_collected": {
+        "collect": 200,
+        "money": 0,
+        "buzz": 0
+      },
+      "total_usd": 0.05,
+      "gemini_usd": 0.0643,
+      "combined_total_usd": 0.1143
     }
   ]
 }
