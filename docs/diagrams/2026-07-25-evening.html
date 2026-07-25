@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-07-25 夕便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Noto Sans CJK JP", "Noto Sans JP",
+      "Yu Gothic", "Yu Gothic UI", "Meiryo",
+      -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt" 1;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 24px; }
+    .top-grid { grid-template-columns: 1fr !important; }
+    .trend-grid { grid-template-columns: 1fr !important; }
+    .topic-grid { grid-template-columns: 1fr !important; }
+    .cat-grid { grid-template-columns: 1fr !important; }
+    .x-grid { grid-template-columns: 1fr !important; }
+    .hero { padding: 14px 12px; }
+    .hero-title { font-size: 1.1rem; }
+    .topic-title { font-size: 0.95rem; }
+    .rank-num { font-size: 1.4rem !important; }
+    .medal { width: 36px !important; height: 36px !important; }
+    .nowrap { white-space: normal !important; }
+    .tag { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-07-25</span>
+      <span class="slot-badge">夕便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">Opus 5、コーディングでSOTA</div>
+        <div class="tags">
+          <span class="tag cat-model">モデル/ツール</span>
+          <span class="tag src">x:@claudeai</span>
+        </div>
+        <div class="summary">Claude Opus 5が複数のコーディングおよび知識作業評価において、新たなSOTA（State-of-the-Art）を達成したことを公式に発表しました。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">Opus 5、ARC-AGI-3で新記録</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">x:@arcprize</span>
+          </div>
+          <div class="summary">AnthropicのClaude Opus 5がARC-AGI-3で30.2%という新SOTAを記録し、GPT-5.6 Solの以前の記録7.8%を大幅に更新しました。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">NVIDIAフアン氏、オープンモデル擁護</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@JensenHuang</span>
+          </div>
+          <div class="summary">NVIDIAのジェンスン・フアンCEOが、AI業界の変革においてオープンモデルがいかに重要であるかを説明する書簡を公開しました。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">AnthropicAIが「Claude Opus 5」を発表し、Fable 5に…</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@AnthropicAI</span>
+          </div>
+          <div class="summary">AnthropicAIが「Claude Opus 5」を発表し、Fable 5に近いフロンティア知能を持つ、思慮深く積極的なモデルとして紹介しています。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">SKとNVIDIA、AIファクトリーへ</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@nvidia</span>
+          </div>
+          <div class="summary">SKグループとNVIDIAが5000億ドル規模超のAIファクトリーおよび次世代メモリに関する大規模な提携を発表しました。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日、Anthropicは新世代モデル「Claude Opus 5」を発表し、特にARC-AGI-3ベンチマークでGPT-5.6 Solを大幅に上回る30.2%の性能を達成し、AI業界の最先端技術を牽引しています。これと並行して、NVIDIA CEOのジェンスン・フアン氏がオープンモデルの重要性を主張する書簡を公開し、主要なテックリーダーがこれに賛同するなど、AIモデルのオープン性と規制に関する議論が業界内で活発化しています。さらに、NVIDIAは韓国での「AIファクトリー」構築に大規模な投資を発表し、各国のAIインフラ競争が激化しています。一方、AIの安全性と規制に関しては、「キルスイッチ」法案やFRONTIER Actなど具体的な動きが見られ、AIの自律性に伴うリスクへの懸念が高まっています。</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">Claude Opus 5の発表と性能</div>
+        <div class="evolution">AnthropicがOpus 5をリリースし、ARC-AGI-3でGPT-5.6 Solを大幅に上回る性能を見せた。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">オープンモデルの重要性と規制議論</div>
+        <div class="evolution">NVIDIAのジェンスン・フアン氏がオープンモデルの重要性を主張し、業界の主要人物が賛同したことで議論が再燃。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">AIインフラ投資と国家競争</div>
+        <div class="evolution">NVIDIAが韓国で大規模なAIファクトリー構築を発表し、各国のAIインフラ競争が表面化。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">AIの安全性と規制法案</div>
+        <div class="evolution">AIの自律性に伴うリスクを受け、米国で「AIキルスイッチ」法案やFRONTIER Actが提案され、具体的な規制の動きが加速。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-FADING">📉 FADING</span>
+          <span class="streak">3日目</span>
+        </div>
+        <div class="topic-name">AIエージェントの能力と限界</div>
+        <div class="evolution">OpenAIのハッキング事件に関する議論は沈静化しつつあるが、AIの自律性への懸念は残る。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-FADING">📉 FADING</span>
+          <span class="streak">3日目</span>
+        </div>
+        <div class="topic-name">AIによる著作権問題</div>
+        <div class="evolution">Anthropicの著作権和解の話題は落ち着き、国内でのAI学習と著作権に関する限定的な議論に移行。</div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">12</span>
+        </div>
+        <div class="summary">Anthropicが「Claude Opus 5」を発表し、ARC-AGI-3ベンチマークでGPT-5.6 Solを大幅に上回る30.2%を記録し、その高度な論理的推論能力が注目されています。Opus 5はコーディングや知識作業、サイバーセキュリティタスクにおいて新たなSOTAを達成し、効率性も高いとされています。また、AMDも初のMoE基盤モデル「Instella 16B MoE」を公開し、オープンモデルの多様性が増しています。</div>
+      </div>
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">19</span>
+        </div>
+        <div class="summary">NVIDIAのジェンスン・フアンCEOがオープンモデルの重要性を強く訴える書簡を公開し、Sam Altman、Elon Musk、Satya Nadellaなど主要なテックリーダーがこれに賛同する動きが広がり、オープン/クローズドモデル論争の業界内での対立軸が鮮明になりました。同時に、NVIDIAは韓国においてSKグループやNAVERと提携し、5000億ドル規模超の「AIファクトリー」を構築する大規模な投資を発表しました。また、Google DeepMindのCEOが「Antigravity」がOSを一晩で構築できる能力を語り、AIによる自動化の進展を示唆しています。</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">9</span>
+        </div>
+        <div class="summary">AIの安全性に関する懸念が高まる中、米国では超党派の議員がAIが制御不能になった場合に政府がシャットダウンさせる権限を持つ「AIキルスイッチ」法案を提案しました。また、フロンティアモデル開発者に対し透明性レポートやリスク管理フレームワーク、セキュリティ監査を義務付ける「FRONTIER Act」も導入されました。これらの動きは、AIの自律性の進化に対応するための具体的な規制強化の試みを示しています。国内では、AI学習と著作権に関する解釈を巡る議論が継続しています。</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">3</span>
+        </div>
+        <div class="summary">Gary Marcus氏がAGI達成の条件について問いかけ、GPT 3.5から現在までの期間よりもAGIまでの時間が短いという見方も示されるなど、フロンティアモデルの進化に伴いAGIへの期待と議論が高まっています。</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">2</span>
+        </div>
+        <div class="summary">AIは新薬開発において、臨床試験の失敗率が高い問題に対し、患者の生物学的な反応を予測する基盤モデルで70-90%の精度で反応者と非反応者を区別する可能性が示されました。また、AIエージェントの構築、AIエンジニアリング、オープンモデルのファインチューニング、マルチモーダルAIなどが現在最も需要の高いAIスキルとして挙げられています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">Claude Opus 5の驚異的性能</span>
+        </div>
+        <div class="desc">Anthropicが「Claude Opus 5」を発表し、特にARC-AGI-3ベンチマークでGPT-5.6 Solを大幅に上回る30.2%のスコアを達成したことがX上で大きな話題となっています。ユーザーはOpus 5の新たな論理的推論能力やコーディング性能に驚きと期待の声を上げており、その圧倒的な進化に「lmao」といった感嘆のコメントも見られます。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">NVIDIAフアン氏によるオープンモデル擁護</span>
+        </div>
+        <div class="desc">NVIDIAのジェンスン・フアンCEOがオープンモデルの重要性を主張する書簡を公開したことが、X上で圧倒的な支持を集めています。Elon Musk、Sam Altman、Satya Nadellaなど、AI業界の主要なインフルエンサーや企業トップがフアン氏の意見に賛同し、「オープンソースこそ勝利」「健全なAIエコシステムに不可欠」といった肯定的なコメントを投稿しています。これはオープンモデルへの業界内の強い支持を反映しており、AIの未来におけるオープン性と中央集権化に関する議論が活発化しています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥</span>
+          <span class="topic">AIキルスイッチ法案の提案</span>
+        </div>
+        <div class="desc">米国議会で、AIが制御不能になった際に政府が介入しシャットダウンさせる権限を持つ「AIキルスイッチ」法案が提案されたことが、X上で大きな注目を集めています。ユーザーはこの法案の必要性や、AIの安全性と規制のあり方について議論しており、特に「ホワイトハウスがOpenAIの事件を注視している」という背景が、この提案の緊急性を高めていると受け止められています。技術の進歩とリスク管理のバランスが論点です。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-07-25 09:09 UTC · AI News Collector
+    
+  </div>
+
+</div>
+</body>
+</html>
