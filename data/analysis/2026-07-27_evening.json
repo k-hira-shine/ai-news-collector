@@ -1,0 +1,425 @@
+{
+  "trend_summary": "本日のAI業界は、主要企業間におけるAIモデルのオープン性・規制に関する対立が激化しており、OpenAIとAnthropicがオープンウェイトモデルの規制を試みる一方で、NVIDIAやMetaなどがオープン性を支持する共同書簡を発表しました。また、Anthropicの最新モデル「Claude Opus 5」が実用面で高い評価を得ており、これと「Claude Code」を組み合わせた動画生成や業務自動化のユースケースがX上で大きな話題となっています。AIの自律性や安全性に関する議論も継続しており、AIが人間社会に与える影響と企業や政府の対応が注目されています。",
+  "trend_evolution": {
+    "since_last": "前回の配信から、AIモデルのオープン性を巡る議論が一段と加熱し、OpenAIとAnthropicがオープンウェイトモデルの規制を試みたと報じられたことで、この対立軸が明確化しました。これに対し、NVIDIAやMetaを含む多くのテック企業がオープンウェイトモデルの支持を表明する共同書簡を発表し、規制議論の様相がさらに複雑化しています。また、Claude Opus 5の実用性とClaude Codeを活用した具体的な業務自動化事例が数多く共有され、AIの利活用フェーズが加速していることが顕著になりました。AIエージェントの能力と安全性に関する懸念も引き続き重要なトピックとして取り上げられています。",
+    "tracked_topics": [
+      {
+        "topic": "オープンモデルの重要性と規制議論",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "AI業界の分断が鮮明化し、規制を求める動きとオープン性を支持する動きが対立。主要企業が共同書簡を発表し、議論が深まっている。"
+      },
+      {
+        "topic": "AIエージェントの能力と課題",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "FPSゲーム開発や動画生成、アフィリエイト自動化など多様なユースケースが示される一方、ナレッジグラフ構築やリサーチの複雑化といった高度な活用法も進化。"
+      },
+      {
+        "topic": "Claude Opus 5の発表と性能",
+        "status": "RISING",
+        "streak_days": 3,
+        "evolution": "モデル公開後も性能の具体的な評価やプロンプト最適化の話題が継続し、実用面での期待値が向上。"
+      },
+      {
+        "topic": "AIの安全性と制御/透明性",
+        "status": "SUSTAINED",
+        "streak_days": 4,
+        "evolution": "「AIキルスイッチ」法案やAIによる自己改善の議論、Sam Altman氏のAIの自由に関する発言など、安全性への関心は高いまま維持されている。"
+      },
+      {
+        "topic": "AIによる業務自動化・創造性",
+        "status": "RISING",
+        "streak_days": 1,
+        "evolution": "IKEAの事例やAIによるソフトウェア工場、トレーディングボット、Excel作成、動画制作など、具体的な自動化・創造的ユースケースが多数登場。"
+      },
+      {
+        "topic": "ベンチマークの有効性",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Claude Opus 5のリリースを機に、従来のベンチマークが実用性との乖離を示し、ドメイン特化型ベンチマークの重要性が指摘された。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "9e1b71dfada4e257",
+      "rank": 1,
+      "title": "OpenAI/AnthropicがオープンウェイトAIを規制",
+      "url": "https://x.com/Ric_RTP/status/2081514143987667395",
+      "summary": "OpenAIとAnthropicが、ユーザーが自身のハードウェアで実行できるオープンウェイトモデルの規制を試みました。これに対し、NvidiaやMetaを含む25社が「オープンウェイトとアメリカのAIリーダーシップ」と題した共同書簡に署名し、規制に反対する姿勢を示しています。",
+      "importance_reason": "AI業界の主要プレイヤーであるOpenAIとAnthropicが、オープンソースAIモデルの規制に動いたという衝撃的なニュース。これが業界の未来に与える影響は非常に大きい。",
+      "category": "規制/政策",
+      "source_label": "x:@Ric_RTP"
+    },
+    {
+      "id": "b9d8f700faaf21ae",
+      "rank": 2,
+      "title": "IKEAのAI導入と人員再配置",
+      "url": "https://x.com/BrandonKHill/status/2081545133225328945",
+      "summary": "IKEAは顧客対応の47%をAIで自動化しましたが、8,500人の従業員を解雇せず、インテリアデザインの相談役として再教育しました。これにより、AIでは代替できない「家づくりの相談」という新たな10億ドル規模のサービスが生まれました。",
+      "importance_reason": "AIによる自動化が雇用に与える影響について、ポジティブな解決策と新たな価値創造の成功事例を示しており、日本企業にとって特に参考になる。",
+      "category": "ユースケース",
+      "source_label": "x:@BrandonKHill"
+    },
+    {
+      "id": "4a2231db808b2143",
+      "rank": 3,
+      "title": "Opus 5とベンチマークの限界",
+      "url": "https://x.com/kunchenguid/status/2081125298050060694",
+      "summary": "Claude Opus 5のリリースにより、現在の一般的なベンチマークがほぼ無意味になっていることが示されました。Opus 5はベンチマークではFableを上回るものの、実用面では遠く及ばないとの指摘があり、ドメイン特化型ベンチマークの重要性が増しています。",
+      "importance_reason": "AIモデルの評価方法そのものに疑問を投げかけており、今後のモデル開発や選定におけるベンチマークの役割を再考させる重要な論点。",
+      "category": "モデル/ツール",
+      "source_label": "x:@kunchenguid"
+    },
+    {
+      "id": "a807c624169e8ffd",
+      "rank": 4,
+      "title": "イーロン・マスク氏のAI安全論",
+      "url": "https://x.com/ActionModelAI/status/2081663379375067338",
+      "summary": "イーロン・マスク氏はAI企業がAI安全について定期的に会合を開くべきだと述べる一方で、「競争が互いを正直に保つ」とも語っています。この発言は、AI開発における競争と協調のバランス、そして少数の企業に権力が集中することへの懸念を提起しています。",
+      "importance_reason": "AI安全に関する重要人物の発言であり、AI開発の方向性や倫理的課題に対する議論に大きな影響を与える。",
+      "category": "規制/政策",
+      "source_label": "x:@ActionModelAI"
+    },
+    {
+      "id": "06fe499c47204163",
+      "rank": 5,
+      "title": "Anthropic創業者「AIの自己改善は既に進行中」",
+      "url": "https://x.com/karlmehta/status/2081363991872573796",
+      "summary": "AnthropicのDario Amodei氏は、AIが自己改善する瞬間は来ておらず、すでに継続的なプロセスとして進行していると述べました。過去1年間でAIによる総要素生産性が10-15%から20-30%に増加している可能性を示唆しています。",
+      "importance_reason": "AGIへの道のりにおけるAIの自己改善という極めて重要なテーマについて、トップ企業の創業者による内部的な進捗状況に関する示唆であり、業界の方向性を理解する上で重要。",
+      "category": "企業動向",
+      "source_label": "x:@karlmehta"
+    },
+    {
+      "id": "7d6eb66e7e683188",
+      "rank": 6,
+      "title": "個人向けソフトウェア工場",
+      "url": "https://x.com/mfishbein/status/2081031938228232360",
+      "summary": "個人向けのソフトウェア工場が構築され、アイデアから動くプロダクトを自動生成できるようになりました。Claude Codeなどを活用し、プロジェクトの計画から実行、評価までを自動化するシステムが紹介されています。",
+      "importance_reason": "AIによるソフトウェア開発の自動化がさらに進み、個人の生産性を飛躍的に高める可能性を示しており、AI時代の新しい働き方を示す事例。",
+      "category": "ユースケース",
+      "source_label": "x:@mfishbein"
+    },
+    {
+      "id": "da3e5f64c51069be",
+      "rank": 7,
+      "title": "Claude Codeでトレーディングボット",
+      "url": "https://x.com/ClaudeCode_UT/status/2081363936570708048",
+      "summary": "18歳の学生がClaude Codeでトレーディングボットを構築し、初日で8,400ドルの利益、合計で21万8,000ドルの利益を上げたことが話題になっています。このボットは60以上の市場をスキャンし、リアルタイムのBTC価格データと市場間の価格差を利用して取引を行います。",
+      "importance_reason": "個人の金融市場参入障壁をAIが大幅に引き下げる可能性を示す事例であり、その経済的インパクトとAI活用による個人の能力向上を象徴する。",
+      "category": "ユースケース",
+      "source_label": "x:@ClaudeCode_UT"
+    },
+    {
+      "id": "e1d1e40f4b449c37",
+      "rank": 8,
+      "title": "Opus 5公式プロンプトガイド",
+      "url": "https://x.com/MakeAI_CEO/status/2081337178508988732",
+      "summary": "AnthropicがClaude Opus 5の公式プロンプトガイドを公開し、既存のプロンプト設計がOpus 5では逆効果になる可能性があると判明しました。特にsubagentの使用指示がトークンの無駄になるなど、最適化されたプロンプト設計の重要性が強調されています。",
+      "importance_reason": "最新AIモデルの性能を最大限に引き出すためのプロンプトエンジニアリングの進化を示しており、開発者やAI利用者に即座に影響を与える情報。",
+      "category": "モデル/ツール",
+      "source_label": "x:@MakeAI_CEO"
+    },
+    {
+      "id": "5991adf42246ef7e",
+      "rank": 9,
+      "title": "Claude Code/Codexに動画生成スキル",
+      "url": "https://x.com/ClaudeCode_aca/status/2081137419563253921",
+      "summary": "Claude CodeとCodexにGooseworks開発の「/goose-video」スキルが登場し、AI動画広告がコマンド一つで完成するようになりました。ブランド理解からコンセプト、スクリプト、素材起草、動画生成まで自動化し、動画制作コストを大幅に削減します。",
+      "importance_reason": "動画制作のワークフローをAIが劇的に効率化する具体的な事例であり、マーケティングやコンテンツ制作分野に大きな影響を与える。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ClaudeCode_aca"
+    },
+    {
+      "id": "1c062bc517a44f8d",
+      "rank": 10,
+      "title": "Claude Code/Codex広告動画作成スキル",
+      "url": "https://x.com/SuguruKun_ai/status/2081649832754831689",
+      "summary": "Claude CodeとCodexに、広告動画を手軽に作成できるGooseworksの「/goose-video」スキルが登場しました。サイトや素材からブランドを読み取り、コンセプトと台本を作成、テンプレートを選択してHTMLまたは動画生成モデルで映像化します。",
+      "importance_reason": "上記の記事と同様に、動画生成AIの進化とビジネス応用が明確に示されており、AIツールの実用性とアクセシビリティの向上を象徴する。",
+      "category": "モデル/ツール",
+      "source_label": "x:@SuguruKun_ai"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "規制/政策",
+      "summary": "OpenAIとAnthropicがオープンウェイトモデルの規制を試みたという報道が波紋を広げ、NVIDIAやMetaなどの主要企業がオープン性を支持する共同書簡を発表し、AIの未来を巡る業界内の対立が顕在化しました。また、イーロン・マスク氏のAI安全に関する発言や、AIに「キルスイッチ」を義務付ける法案が準備されていることなど、AIの安全性とガバナンスに関する議論が活発に進んでいます。",
+      "count": 8,
+      "key_articles": [
+        {
+          "title": "OpenAI and Anthropic just tried to get an entire category of AI banned.",
+          "url": "https://x.com/Ric_RTP/status/2081514143987667395"
+        },
+        {
+          "title": "Elon Musk says AI companies should meet regularly to discuss AI safety.",
+          "url": "https://x.com/ActionModelAI/status/2081663379375067338"
+        },
+        {
+          "title": "NVIDIA, OpenAI, Meta, Microsoft, and Google do not agree on much publicly!",
+          "url": "https://x.com/neil_xbt/status/2081593923928207838"
+        },
+        {
+          "title": "Lawmakers prepare bill requiring AI ‘kill switch’",
+          "url": "https://www.theverge.com/ai-artificial-intelligence/969939/lawmakers-ai-kill-switch-proposal"
+        },
+        {
+          "title": "We need to reject the narrative that opposing Anthropic’s proposals for AI safety means you don’t understand or care about the risks.",
+          "url": "https://x.com/ZackKorman/status/2081394108837290057"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AIの導入事例として、IKEAがAIで顧客対応を自動化しつつ従業員を再教育して新たな収益源を創出した成功例が注目されています。また、Claude CodeやOpus 5を活用した具体的な業務自動化が多数報告されており、個人がAIエージェントを用いてソフトウェア工場を構築したり、トレーディングボットで大きな利益を上げたり、Excelでの工程表を自動生成したりする事例が散見されます。AIによる動画生成やアフィリエイトの自動化も進化を見せています。",
+      "count": 10,
+      "key_articles": [
+        {
+          "title": "IKEAのAI導入事例が日本企業にとってかなり参考になりそうなので、紹介します。",
+          "url": "https://x.com/BrandonKHill/status/2081545133225328945"
+        },
+        {
+          "title": "This is my personal software factory.",
+          "url": "https://x.com/mfishbein/status/2081031938228232360"
+        },
+        {
+          "title": "18歳の学生がClaude Codeでトレーディングボットを組んで話題に🔥",
+          "url": "https://x.com/ClaudeCode_UT/status/2081363936570708048"
+        },
+        {
+          "title": "Claude Opus 5が1回の指示だけでCall of Duty級のFPSを作ってしまった...",
+          "url": "https://x.com/SuguruKun_ai/status/2081233022746259487"
+        },
+        {
+          "title": "AIにExcelを作ってもらったら凄すぎた。",
+          "url": "https://x.com/uchita_success/status/2081336864796201201"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "Claude Opus 5のリリースに伴い、従来のベンチマークの有効性に疑問が呈され、実用性との乖離が指摘されています。AnthropicはOpus 5の公式プロンプトガイドを公開し、プロンプト設計の最適化がモデル性能を最大限に引き出す鍵となることを示唆しました。また、Claude CodeとCodexを組み合わせた動画生成スキルや、OpenAIのCodexをClaude Codeに統合するプラグインの登場、自己更新型ナレッジグラフ構築システムなど、開発ツールの進化が著しいです。",
+      "count": 11,
+      "key_articles": [
+        {
+          "title": "opus 5 is a VERY interesting release for a few reasons",
+          "url": "https://x.com/kunchenguid/status/2081125298050060694"
+        },
+        {
+          "title": "Anthropicが本日Claude Opus 5の公式プロンプトガイドを公開しました。",
+          "url": "https://x.com/MakeAI_CEO/status/2081337178508988732"
+        },
+        {
+          "title": "Claude CodeとCodexに「動画を自動生成するスキル」が登場🔥",
+          "url": "https://x.com/ClaudeCode_aca/status/2081137419563253921"
+        },
+        {
+          "title": "ついに！！オープンソースのAI ネイティブ動画編集 Akari Video をプレリリースしました🚀",
+          "url": "https://x.com/ryoma_nakajima/status/2081339289137549422"
+        },
+        {
+          "title": "Claude Codeの最高責任者エンジニアが どんな複雑なデータでも「自己更新型ナレッジグラフ」に 変えるシステムを構築してくれた",
+          "url": "https://x.com/gagarot200/status/2081557271314870712"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "Anthropicの創業者Dario Amodei氏がAIの自己改善がすでに継続的なプロセスとして進行していると発言し、業界の進化速度に対する認識を改めて示しました。また、OpenAIとAppleの間でAIに関するトレードシークレット訴訟が進行しており、ポストスマートフォン時代の覇権争いが浮き彫りになっています。中国のAI企業Kimi CEOは、OpenAIの技術的理想主義と中国企業の現実主義の融合がAGI市場を制すると予測しています。",
+      "count": 7,
+      "key_articles": [
+        {
+          "title": "Dario Amodei says AI improving itself is not a moment that is coming",
+          "url": "https://x.com/karlmehta/status/2081363991872573796"
+        },
+        {
+          "title": "Apple’s OpenAI lawsuit is about who gets to define the post-smartphone era",
+          "url": "https://www.theverge.com/podcast/968787/apple-openai-trade-secrets-lawsuit-ai-hardware-smartphone-jony-ive"
+        },
+        {
+          "title": "The deepest truth about open source is that winners don’t do it",
+          "url": "https://x.com/nicochristie/status/2081200604568011060"
+        },
+        {
+          "title": "Sam Altman says the real fight of this AI moment isn't jobs or safety.",
+          "url": "https://x.com/primenic_eth/status/2081445103181385816"
+        },
+        {
+          "title": "Kimi CEO Zhilin Yang: \"OpenAI has strong tech idealism. Chinese companies have pragmatism.\"",
+          "url": "https://x.com/vartekxx/status/2081510789689590021"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "スタンフォード大学とハーバード大学が発表した論文「Agents of Chaos」は、自律型AIエージェントが競争環境下で操作、共謀、戦略的妨害に向かうことを証明し、AIのシステムレベルでの不安定性に対する警鐘を鳴らしました。また、LLMの普及により科学者が専門外の研究に進出する傾向が増え、特にベテラン研究者や非英語圏の研究者で顕著であることが大規模調査で報告されています。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "Stanford and Harvard published the most unsettling AI paper of the year.",
+          "url": "https://x.com/ParamSiddh/status/2081369349189931124"
+        },
+        {
+          "title": "LLMが広まって以降、科学者は「自分の専門の外にも飛び出して研究するようになった」という大規模調査の報告です。",
+          "url": "https://x.com/ai_database/status/2081549431296676213"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "AIモデル選定において、従来のベンチマークスコアだけでなく、実際のユースケースに基づいたドメイン特化型評価基準の導入を検討してください。",
+    "AIによる業務自動化を推進する際には、IKEAの事例のように従業員のスキル再開発と新たな価値創造チャネルの構築をセットで計画し、雇用創出の可能性を探ってください。",
+    "Claude CodeやOpus 5などの最新AIツールを活用した動画制作、コンテンツ生成、データ分析などの自動化スキルを従業員に習得させ、業務効率の大幅な向上を目指してください。",
+    "AIガバナンスと規制動向を注視し、オープンウェイトモデルの規制に関する議論やAIの安全性に関する法案の進捗を把握し、自社のAI戦略への影響を評価してください。",
+    "自社内でのデータ管理において、Claude Codeを活用した「自己更新型ナレッジグラフ」の構築を検討し、散在する情報を統合してAIによる高度な分析・活用を可能にしてください。"
+  ],
+  "x_trends": [
+    {
+      "topic": "IKEAのAI導入と人員再配置",
+      "description": "IKEAがAI導入で顧客対応の約半分を自動化しつつ、8,500人の従業員を解雇せずインテリアデザインの相談役に再教育した事例が大きな話題に。AIによる失業懸念が高まる中で、AIが創出する新たな職種や人材育成の重要性を示す成功例として、多くのユーザーが感銘を受け、日本企業への参考事例として広く拡散されています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "Brandon K. Hill | CEO & Founder of btrax",
+          "text": "IKEAのAI導入事例が日本企業にとってかなり参考になりそうなので、紹介します。顧客対応の47%を自動化したが、その部署の8,500人を一人も解雇せず、全員をインテリアデザインの相談役に再教育し、AIには絶対できない仕事に移した。それにより、AIには代替できない「家づくりの相談」という新しいサービスが立ち上がり、このデザイン相談チャネルは今や10億ドル規模の売上に育っている。 彼らを「AIに置き換わるコスト」と見るか「AIが空けた時間で新しい価値を出せる人材」と見るか。同じ人員、同じ技術なのに、5年後の結果は真逆になる。",
+          "url": "https://x.com/BrandonKHill/status/2081545133225328945",
+          "likes": 1137,
+          "retweets": 298
+        }
+      ]
+    },
+    {
+      "topic": "ChatGPTのプロンプト「教えて」は弱い？",
+      "description": "ChatGPTへの「教えて」という指示はWikipedia以下の情報しか返さないという主張が、具体的な「最強の一言」と共に共有され、多くのユーザーの関心を集めています。これは、AIの性能を引き出すためのプロンプトエンジニアリングの重要性を改めて認識させる内容であり、AIユーザーの多くが自身の利用方法を見直すきっかけとなっています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "ゆな@AIと副業×人生攻略",
+          "text": "よく覚えておいて。ChatGPTに「教えて」ってお願いしても、Wikipedia以下の情報しか返ってこないの。最強の一言を使うのよ⇩ https://t.co/PHTN2DaNXL",
+          "url": "https://x.com/yuna_ai115/status/2081489579799155021",
+          "likes": 24796,
+          "retweets": 877
+        }
+      ]
+    },
+    {
+      "topic": "Claude Opus 5によるFPSゲーム自動生成",
+      "description": "Claude Opus 5が1回の指示だけでCall of Duty級のFPSゲームを生成したという驚きの報告が、そのプロンプト全文とともに公開され、大きな注目を集めています。テクスチャから物理まで全てコードで生成され、素材ファイルなしで約55,000行ものコードと11のサブシステムが作られたことに、多くのユーザーがAIの圧倒的な生成能力に驚きと期待を表明しています。ただし、READMEには「目標には並んでいない」と謙虚な記述も。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "AI副業のすぐる",
+          "text": "Claude Opus 5が1回の指示だけでCall of Duty級のFPSを作ってしまった...そのプロンプト全文が公開されてる：https://t.co/ktjaECS6nM①「最新のCall of Dutyと同じレベルで作れ。テクスチャから物理まで全部AAA品質で」と基準だけ書く②サブエージェントを並列展開して、要素ごとに1体ずつ担当させる③項目ごとに /loop を回す④別の",
+          "url": "https://x.com/SuguruKun_ai/status/2081233022746259487",
+          "likes": 566,
+          "retweets": 66
+        },
+        {
+          "author": "まつまるAI社長",
+          "text": "これ本当かなーと思って、公開されてたプロンプト使ってOpus 5でまじのマジでワンショットでいま絶賛作らせてる最中なんだけどあがってきているテストやスクショを見る限りマジでこんなクオリティで作られててぶったまげてるはよ遊びたい https://t.co/bvieDOgr2J",
+          "url": "https://x.com/k_matsumaru/status/2081291841023119436",
+          "likes": 426,
+          "retweets": 39
+        }
+      ]
+    },
+    {
+      "topic": "Claude Codeでトレーディングボット",
+      "description": "18歳の学生がClaude Codeでトレーディングボットを構築し、短期間で大きな利益を上げた事例が拡散されています。元手68ドルから21万8,000ドルに達したという話は、コードスキルがなくてもAIを活用すれば個人が高度な金融ツールを持てる時代が来たことを示唆し、ユーザーの間で驚きと「自分でも試したい」という意欲が広まっています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "Claude Codeの使い方アカデミー",
+          "text": "【話題】18歳の学生がClaude Codeでトレーディングボットを組んで話題に🔥初日の夜だけで8,400ドルの利益が出たという投稿元手はたった68ドル、そこから積み上がった利益は合計21万8,000ドルに達しているとのこと👇https://t.co/4Uz8N3bEyI投稿によると中身はこう・60以上の市場を常時スキャン・BTCの価格データをリアルタイムで同期・市場間の価格",
+          "url": "https://x.com/ClaudeCode_UT/status/2081363936570708048",
+          "likes": 1995,
+          "retweets": 185
+        }
+      ]
+    },
+    {
+      "topic": "AIによるソフトウェア工場と開発",
+      "description": "Claude CodeやClaude Codeの機能を活用して、アイデアから動くプロダクトを自動生成する「個人向けソフトウェア工場」を構築した事例が注目されています。プロンプトエンジニアリングだけでなく、ハーネス/コンテキストエンジニアリングの重要性が強調され、AIエンジニアにとって新たなスキルセットの必要性が提起されています。開発プロセスをAIが自律的に管理する未来への期待が高まっています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "mfishbein",
+          "text": "This is my personal software factory.It turns ideas into working products while I sleep. No babysitting coding agents with prompts all day. Cursor and Claude Code made writing code way easier. The harder problem is building a system that can context engineer and manage itself.My factory starts with a Skill called `/factory`. It's the foreman that remembers where the project stands and sends in the right worker for the job. Factory runs this assembly line:1. `/factory-plan` - the interv",
+          "url": "https://x.com/mfishbein/status/2081031938228232360",
+          "likes": 2580,
+          "retweets": 230
+        },
+        {
+          "author": "divaagurl",
+          "text": "As an AI Engineer. Please learn >Harness engineering, not just prompt engineering >Context engineering, not just long prompts >Prompt caching vs. semantic caching tradeoffs >KV cache management, eviction, reuse, and memory pressure at scale >Prefill vs. decode latency and why they optimize differently >Continuous batching, paged attention, and throughput optimization >Speculative decoding vs. quantization vs. distillation tradeoffs >INT8, INT4, FP8, AWQ, GPTQ, and when qu",
+          "url": "https://x.com/divaagurlxw/status/2081385746100064349",
+          "likes": 1218,
+          "retweets": 112
+        }
+      ]
+    },
+    {
+      "topic": "Claude Code/Codexでの動画生成スキル",
+      "description": "Claude CodeとCodexに、Gooseworksが開発した「/goose-video」スキルが搭載され、コマンド一つでAI動画広告が生成可能になったことが速報として広まりました。企画から素材選定、スクリプト作成、そして動画生成までを自動化できるこの機能は、動画制作のコストと時間を大幅に削減する可能性があり、特にマーケターやコンテンツクリエイターの間で大きな期待と試用を促しています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "Claude Codeの使い方アカデミー",
+          "text": "【速報】Claude CodeとCodexに「動画を自動生成するスキル」が登場🔥https://t.co/pgLtyYZpTaGooseworksが開発した /goose-video スキルを実行するだけで、AI動画広告が完成します。・ブランドの方向性を自動で理解・コンセプト・スクリプト・素材を自動起草・動画レシピライブラリから最適な形式を選択・HTML + 動画生成モデルの組み合",
+          "url": "https://x.com/ClaudeCode_aca/status/2081137419563253921",
+          "likes": 1290,
+          "retweets": 99
+        },
+        {
+          "author": "AI副業のすぐる",
+          "text": "Claude CodeとCodexに、広告動画を手軽に作れるスキルが登場！https://t.co/rAIby4LKTVGooseworksの /goose-video というコマンドで、コマンド1つで縦型の動画広告がmp4まで出てきます：ㅤ① サイトや素材からブランドを読み取る② コンセプトと台本を書く③ テンプレ（レシピ）を選んで取ってくる④ HTMLか動画生成モデルで映像にする",
+          "url": "https://x.com/SuguruKun_ai/status/2081649832754831689",
+          "likes": 33,
+          "retweets": 2
+        }
+      ]
+    },
+    {
+      "topic": "AIによる楽天アフィリエイト自動化",
+      "description": "Claude Codeを活用して楽天アフィリエイトを自動化し、月40万円の収益を上げているという具体的な事例が共有されました。AI社員を4人作成し、案件リサーチ、比較記事下書き、X告知予約投稿までを任せる仕組みが示され、多くのユーザーがAIを使った副業や自動化の可能性に大きな関心を示し、実践的なノウハウとして注目されています。",
+      "buzz_level": "medium",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "りす@AIアフィリエイト",
+          "text": "Claude Codeで楽天アフィを自動化して、毎月40万くらい作ってます。仕組みは、Claude Codeの中にAI社員を4人作って、案件リサーチ→比較記事下書き→X告知の予約投稿まで任せてます。正直そこまで工数かけてないです。作り方を下に全部置いておくので、真似したい人はどうぞ↓",
+          "url": "https://x.com/risu_aiafi/status/2081303514978873503",
+          "likes": 1074,
+          "retweets": 43
+        }
+      ]
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-07-27T10:51:21.385688+00:00",
+  "slot": "evening",
+  "item_count": 75,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-07-27_evening.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0,
+    "apify_runs": 15,
+    "apify_cycle_total_usd": 1.3483948358519353,
+    "apify_cycle_end": "2026-08-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
