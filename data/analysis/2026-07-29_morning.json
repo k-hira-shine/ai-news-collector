@@ -1,0 +1,515 @@
+{
+  "trend_summary": "本日のAI業界は、オープンソースとクローズドソースモデルを巡る激しい議論が中心となりました。特にAnthropicはオープンウェイトモデルの危険性を主張する一方で、著作物（書籍）の無断利用によるモデル学習が批判を浴びています。AIエージェントの進化と応用が引き続き注目され、特にコーディング分野での効率化や新たなツールが登場しています。また、中国製AIモデルKimi K3の高性能化と、それに伴うGPU調達競争、さらにAIがもたらすプライバシーや著作権侵害といった倫理的・法的課題への懸念が深まっています。",
+  "trend_evolution": {
+    "since_last": "前回の配信ではOpenAIとAnthropicのエンタープライズ戦略、およびAnthropicのオープンモデルへの見解に焦点が当てられましたが、本日はそのオープン/クローズドモデル論争がさらに激化しました。特にAnthropicの主張に対する反発や、同社による著作物無断利用の実態が大きく報じられ、AIの安全性と倫理、透明性に関する議論が深化しています。また、中国のKimi K3が再び注目され、その性能とGPU需要が国際的なAI競争の新たな側面として浮上しました。AIエージェントはコーディング用途での進化が顕著であり、新たな高速化技術や効率的なワークフローが提案されています。",
+    "tracked_topics": [
+      {
+        "topic": "AIの安全性と制御/透明性",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "AIエージェントの暴走事例から、Anthropicのデータ利用倫理問題とオープンウェイト規制論争へと発展し、さらに懸念が深まっている。"
+      },
+      {
+        "topic": "オープンモデルの重要性と規制議論",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "規制を求めるAnthropicと、オープン性を支持するNVIDIA/OpenAIの対立が激化。Anthropicの主張への批判が増している。"
+      },
+      {
+        "topic": "AIエージェントの能力と課題",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "コーディング分野でのClaude Codeの進化や高速化ツール、自動化ワークフローが継続して紹介されている。"
+      },
+      {
+        "topic": "Anthropicのモデル開発と競争",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "Claude Opus 5の高性能が継続して話題となる一方で、オープンウェイト規制論とデータ利用の倫理問題で批判を浴びている。"
+      },
+      {
+        "topic": "LLMの軽量化・高速化技術",
+        "status": "RISING",
+        "streak_days": 2,
+        "evolution": "Kimi K3の疎活性化MoEアーキテクチャや量子化技術、コーディングエージェントの高速化が注目されている。"
+      },
+      {
+        "topic": "Kimi K3のオープン公開と反響",
+        "status": "RESURFACED",
+        "streak_days": 1,
+        "evolution": "一度話題になった後、Kimi K3の技術的な詳細（2.8兆パラメータ、MoE）や、次期K4に向けたGPU調達の動向が再浮上。"
+      },
+      {
+        "topic": "AIによる著作権・プライバシー侵害",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "Anthropicによる書籍の無断スキャン・破棄や、GoogleアカウントデータのAI学習利用、声優の音声無断利用が問題視されている。"
+      },
+      {
+        "topic": "AGI/シンギュラリティに関する議論",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "サム・アルトマンの「シンギュラリティの中にいる」発言や、AIが中間層を破壊するという報告書が話題になっている。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "ae52a3243f3f8a4a",
+      "rank": 1,
+      "title": "Cursor、インドで新プラン",
+      "url": "https://x.com/cursor_ai/status/2081978255004053560",
+      "summary": "Cursor AIがインドの開発者向けに新しい低価格プラン「Cursor Start」を発表しました。このプランにはGrok 4.5とComposerへのアクセスが含まれ、AIエージェントを活用した開発が日常的に行えるようになります。",
+      "importance_reason": "AI開発者向けツールの市場拡大と地域特化戦略を示す記事であり、AIエージェントの普及を後押しする重要な動向です。",
+      "category": "企業動向",
+      "source_label": "x:@cursor_ai"
+    },
+    {
+      "id": "b98bb0aa9962f687",
+      "rank": 2,
+      "title": "Kimi K3がCursorに統合",
+      "url": "https://x.com/cursor_ai/status/2081848014444876166",
+      "summary": "Kimi K3モデルがCursorに統合され、CursorBenchでフロンティアに近いスコアを記録しました。これにより、開発者は米国ベースのインフラでKimi K3を利用できるようになり、ゼロデータ保持もサポートされます。",
+      "importance_reason": "高性能な中国製AIモデルKimi K3の利用拡大と、開発環境でのアクセス性向上を示す重要なニュースです。",
+      "category": "モデル/ツール",
+      "source_label": "x:@cursor_ai"
+    },
+    {
+      "id": "5d813d92b5986260",
+      "rank": 3,
+      "title": "Open Secure AI Alliance設立",
+      "url": "https://x.com/nvidia/status/2081666629264449730",
+      "summary": "NVIDIAは、AIセキュリティの進展にはオープンな業界協力が必要であるとして、業界リーダーと共に「Open Secure AI Alliance」を設立しました。このアライアンスは、ソフトウェアとエージェントを保護するための新しい技術とツールの開発を目指します。",
+      "importance_reason": "AIの安全性確保に向けた業界横断的な取り組みであり、オープンソースAIのセキュリティに関する議論のカウンターバランスとなる重要な動きです。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "d89a95c92966f821",
+      "rank": 4,
+      "title": "Waddle Labs、ロボット向けAI",
+      "url": "https://x.com/DozenDucc/status/2081802609128788393",
+      "summary": "Waddle Labsは、ロボット向けにClaude Codeを提供するサービスを発表しました。APIをロボットに接続しプロンプトを入力するだけで、AIエージェントが20分でタスクを達成するコードを生成します。",
+      "importance_reason": "AIエージェントのロボティクス分野への具体的な応用事例であり、実世界のタスク自動化におけるAIの可能性を示す先駆的な発表です。",
+      "category": "ユースケース",
+      "source_label": "x:@DozenDucc"
+    },
+    {
+      "id": "ae52a3243f3f8a4a",
+      "rank": 5,
+      "title": "Cursor、インドで新プラン",
+      "url": "https://x.com/cursor_ai/status/2081978255004053560",
+      "summary": "Cursor AIがインドの開発者向けに新しい低価格プラン「Cursor Start」を発表しました。このプランにはGrok 4.5とComposerへのアクセスが含まれ、AIエージェントを活用した開発が日常的に行えるようになります。",
+      "importance_reason": "AI開発者向けツールの市場拡大と地域特化戦略を示す記事であり、AIエージェントの普及を後押しする重要な動向です。",
+      "category": "企業動向",
+      "source_label": "x:@cursor_ai"
+    },
+    {
+      "id": "c2fcf6b5c69cdd92",
+      "rank": 6,
+      "title": "Claude Opus 5でゲーム開発",
+      "url": "https://x.com/anshuc/status/2081801966158811506",
+      "summary": "ある開発者がClaude Opus 5を24時間連続で利用し、外部アセットやコードなしでゼロからゲームを開発したことを報告しました。ゲームの全てのピクセルとサウンドがClaudeによって生成されています。",
+      "importance_reason": "AIエージェントによる創造性の限界を押し広げる驚くべきユースケースであり、AIを活用したコンテンツ生成の可能性を強く示しています。",
+      "category": "ユースケース",
+      "source_label": "x:@anshuc"
+    },
+    {
+      "id": "f7d3bbcbdf8408fe",
+      "rank": 7,
+      "title": "SSIの秘密研究を推測",
+      "url": "https://x.com/imjustnewatai/status/2081749227730809127",
+      "summary": "Ilya Sutskeverの秘密のSSI（Self-Supervised Intelligence）研究について、AIが継続的に学習する脳にインスパイアされた方法を見つけたと推測する考察が発表されました。これは、従来のモデルが訓練後に知識が固定されるという課題を解決するものです。",
+      "importance_reason": "AIの継続学習というブレークスルーが示唆されており、AGIへの道筋に関する重要な研究動向です。",
+      "category": "研究論文",
+      "source_label": "x:@imjustnewatai"
+    },
+    {
+      "id": "b7f2d78d9d7d2390",
+      "rank": 8,
+      "title": "Claude Codeの新たな活用",
+      "url": "https://x.com/AnatoliKopadze/status/2082103357045653788",
+      "summary": "Claude Codeの生みの親であるBoris Cherny氏が、コンピュータサイエンスの理論を忘れ、AIに要件を説明するだけでコードが生成される新たな開発パラダイムについて語りました。彼は、Claudeに与えた一つのプロンプトが数千のエージェントを生成し、数週間にわたって自律的に稼働し続けていると述べています。",
+      "importance_reason": "AIエージェントが開発プロセスを根本的に変革し、人間の役割を「指示と検証」にシフトさせる可能性を示す重要な洞察です。",
+      "category": "モデル/ツール",
+      "source_label": "x:@AnatoliKopadze"
+    },
+    {
+      "id": "df6bc5e3fe82345b",
+      "rank": 9,
+      "title": "Claude Codeの最適プロンプト",
+      "url": "https://x.com/sairahul1/status/2081705185886212442",
+      "summary": "Claude Codeの生みの親であるBoris Cherny氏は、Opus 5が以前のモデルよりも少ないプロンプトで効率的に動作するため、詳細すぎるプロンプトは逆効果になると説明しました。彼は、Opus 5が1ヶ月かかっていた作業を1日で完了できると述べています。",
+      "importance_reason": "最新AIモデルの進化に伴い、プロンプトエンジニアリングのベストプラクティスが変化していることを示す重要な情報であり、開発者の生産性向上に直結します。",
+      "category": "モデル/ツール",
+      "source_label": "x:@sairahul1"
+    },
+    {
+      "id": "66d6c7fa80dbdbba",
+      "rank": 10,
+      "title": "高速コーディングエージェント",
+      "url": "https://x.com/thisguyknowsai/status/2081680037544427793",
+      "summary": "ある開発者が、Claude Codeよりも245倍高速に起動するオープンソースのコーディングエージェントハーネス「jcode」を公開しました。jcodeは起動時間が短く、メモリ使用量も大幅に少ないため、効率的な開発が可能です。",
+      "importance_reason": "AIコーディングエージェントの性能向上と、オープンソースコミュニティによるイノベーションの加速を示す記事です。",
+      "category": "モデル/ツール",
+      "source_label": "x:@thisguyknowsai"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "企業動向",
+      "summary": "AI企業動向では、オープンソースとクローズドソースモデルを巡る大手企業の対立が最も顕著です。Anthropicはオープンウェイトモデルの危険性を訴える一方で、OpenAIのサム・アルトマンCEOはAIによるパワー集中に懸念を示し、NVIDIAは「Open Secure AI Alliance」を立ち上げてオープンなAIセキュリティを推進しています。また、中国のMoonshot AI（Kimi K3）がNVIDIAの最新GPU調達を模索しており、国際的なAI開発競争が激化しています。NVIDIAの循環的取引への懸念も浮上しています。",
+      "count": 17,
+      "key_articles": [
+        {
+          "title": "Open Secure AI Alliance設立",
+          "url": "https://x.com/nvidia/status/2081666629264449730",
+          "summary": "NVIDIAは、AIセキュリティの進展にはオープンな業界協力が必要であるとして、業界リーダーと共に「Open Secure AI Alliance」を設立しました。"
+        },
+        {
+          "title": "OpenAI、学生向けプログラム開始",
+          "url": "https://x.com/OpenAI/status/2082146058017321257",
+          "summary": "OpenAIが学部生向けのプログラム「OpenAI Student Collective」の応募を開始しました。"
+        },
+        {
+          "title": "Cursor、インドで新プラン",
+          "url": "https://x.com/cursor_ai/status/2081978255004053560",
+          "summary": "Cursor AIがインドの開発者向けに新しい低価格プラン「Cursor Start」を発表しました。"
+        },
+        {
+          "title": "Anthropic CEO、オープンソースAIに警鐘",
+          "url": "https://x.com/Vivek4real_/status/2082101518736474497",
+          "summary": "AnthropicのCEOダリオ・アモデイは、オープンソースAIが「非常に危険な道」に進んでいると警告しました。"
+        },
+        {
+          "title": "Moonshot AI、NVIDIA GPU追加模索",
+          "url": "https://x.com/polymarketjapan/status/2082098974023110802",
+          "summary": "中国のMoonshot AIは、次期モデル「Kimi K4」のためにNVIDIAの最新GPU追加を模索していると報じられました。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "規制/政策では、AIモデルのデータ利用と安全性、そして著作権に関する議論が白熱しています。Anthropicが数百万冊の書籍をスキャンし破壊してAIモデルを訓練したことが批判され、その行為が「フェアユース」と判断されたことに衝撃が走っています。また、人気声優の声が無断で生成AIに利用される問題に対し、法務省が「声」も法的保護の対象と明記する指針案をまとめました。GoogleアカウントのデータがAIトレーニングに利用される規約変更も利用者必読とされています。オープンウェイトモデルの危険性を主張するAnthropicの姿勢も引き続き議論の的です。",
+      "count": 18,
+      "key_articles": [
+        {
+          "title": "ClaudeでArtifacts公開時の注意喚起",
+          "url": "https://x.com/umiyuki_ai/status/2082109849924759693",
+          "summary": "ClaudeでArtifactsを公開するとGoogle検索にインデックスされる可能性があり、企業秘密が流出する恐れがあると警告されています。"
+        },
+        {
+          "title": "AI覇権の裏側、オープンウェイト論争",
+          "url": "https://x.com/ai_hakase_/status/2082089448175538225",
+          "summary": "AI業界でオープンウェイトモデルを巡る米中競争と巨大企業の戦略に関する地政学的な動きが注目されています。"
+        },
+        {
+          "title": "AI書籍が作家の生計に影響",
+          "url": "https://x.com/ednewtonrex/status/2082126909740318804",
+          "summary": "AIによって生成された書籍が自己出版市場で大きな影響を与え、実際の作家の収入を減少させているという研究結果が発表されました。"
+        },
+        {
+          "title": "Anthropicの書籍破壊がフェアユース？",
+          "url": "https://x.com/libbyemmons/status/2082130639516471548",
+          "summary": "連邦判事がAnthropicによる書籍の破壊がAIモデル学習のための「フェアユース」であると判決を下したことが報じられました。"
+        },
+        {
+          "title": "台湾でのNVIDIA社員逮捕",
+          "url": "https://x.com/umiyuki_ai/status/2082057081981694353",
+          "summary": "台湾でNVIDIA社員が逮捕され、Supermicro社のAIサーバーの中国への密輸に関与した疑いが持たれています。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "研究論文の分野では、AIエージェントのトレーニング手法や、LLMの思考能力に関する新たな知見が発表されています。Hugging Faceは強化学習を用いたローカル/オープンウェイトエージェントの訓練方法を公開し、Ilya SutskeverのSSI研究がAIの継続学習に焦点を当てていると推測されています。また、Qwen3-8Bモデルのファインチューニングにおいて、チャットテンプレート設計がモデルの思考能力に与える影響に関する重要な落とし穴が指摘されました。Apple Neural Engineの逆アセンブルや、AIによる数学問題解決の進展も報告されています。",
+      "count": 7,
+      "key_articles": [
+        {
+          "title": "Hugging Face、エージェント訓練法公開",
+          "url": "https://x.com/huggingface/status/2082122787880333596",
+          "summary": "Hugging Faceが、強化学習を用いてローカル/オープンウェイトエージェントを訓練する方法に関する記事を公開しました。"
+        },
+        {
+          "title": "SSIの秘密研究を推測",
+          "url": "https://x.com/imjustnewatai/status/2081749227730809127",
+          "summary": "Ilya Sutskeverの秘密のSSI研究が、AIが継続的に学習する脳にインスパイアされた方法を見つけたと推測されています。"
+        },
+        {
+          "title": "Claude Codeハーネスの学習",
+          "url": "https://x.com/mikeknoop/status/2081792754309587333",
+          "summary": "Opus 5がARC-AGI-3を直接ターゲットにしたのではなく、Claude Code/Workハーネスがモデルに学習された可能性が指摘されています。"
+        },
+        {
+          "title": "Qwen3-8Bファインチューニングの落とし穴",
+          "url": "https://x.com/ai_hakase_/status/2082001365711151561",
+          "summary": "Qwen3-8Bモデルのファインチューニングで、チャットテンプレートの設計がモデルの思考能力を破壊する可能性があると警告されています。"
+        },
+        {
+          "title": "GitHubで急上昇のAIリポジトリ",
+          "url": "https://x.com/so_ainsight/status/2081962363398607271",
+          "summary": "AIエージェントの設計から実装を解説する書籍「ai-agent-book」や、実務開発者向けスキル集「mattpocock/skills」など、今週GitHubで急上昇したAIリポジトリが紹介されています。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "ユースケースのカテゴリでは、AIエージェントが様々な分野で実用化・高度化している状況が示されています。Waddle Labsがロボット向けにClaude Codeを提供し、AIがロボットのタスクを自動生成するサービスを開始しました。また、Claude Opus 5を使って24時間でゲームを開発した事例や、Greptile Security Agentがコーディングエージェントによって増加したセキュリティ欠陥を効率的に検出する動きが見られます。科学研究の加速、Webデザインの自動化、3D制作の効率化など、多岐にわたる応用が進行中です。ローカルLLMをMacで運用し、プライバシーとコスト削減を両立させる試みも注目されます。",
+      "count": 15,
+      "key_articles": [
+        {
+          "title": "Waddle Labs、ロボット向けAI",
+          "url": "https://x.com/DozenDucc/status/2081802609128788393",
+          "summary": "Waddle Labsは、ロボット向けにClaude Codeを提供するサービスを発表しました。"
+        },
+        {
+          "title": "Claude Opus 5でゲーム開発",
+          "url": "https://x.com/anshuc/status/2081801966158811506",
+          "summary": "ある開発者がClaude Opus 5を24時間連続で利用し、外部アセットやコードなしでゼロからゲームを開発しました。"
+        },
+        {
+          "title": "Greptile Security Agent導入",
+          "url": "https://x.com/dakshgup/status/2082118445194502324",
+          "summary": "Greptile Security Agentが導入され、静的分析、SCA、AIエージェントを組み合わせてマージ前のセキュリティ欠陥を効率的に捕捉します。"
+        },
+        {
+          "title": "AIが科学を変革",
+          "url": "https://x.com/jamessinka/status/2082133419924869535",
+          "summary": "ReactorfieldAIは科学者やディープテックスタートアップをAIネイティブにし、最先端AIで科学を加速させると紹介されています。"
+        },
+        {
+          "title": "ロボット基盤モデルτ₀-VLA",
+          "url": "https://x.com/jianlanluo/status/2081799457591697768",
+          "summary": "長期間の実世界操作に特化したロボット基盤モデルτ₀-VLAがリリースされ、ロボットが自律的に部屋の掃除や料理などのタスクを実行できるようになりました。"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "モデル/ツールの分野では、AIエージェントの性能向上と効率化が著しいです。Claude Codeの生みの親であるBoris Cherny氏は、Opus 5の進化によりプロンプトがより簡潔になったと述べ、自律的なエージェントのループ活用を推奨しています。また、Claude Codeよりも245倍高速に起動するオープンソースのコーディングエージェント「jcode」が登場し、開発効率の向上が期待されます。中国の超巨大LLM「Kimi K3」は2.8兆パラメータのMoEアーキテクチャを採用し、推論コストを抑えています。マルチモーダルAIではBlack Forest Labsの「FLUX 3」が画像・動画・音声・動作予測を統合し、動画生成分野では「Wan 2.2」や「Grok Imagine」などが進化を続けています。ローカル動画生成の高品質化も進んでいます。",
+      "count": 21,
+      "key_articles": [
+        {
+          "title": "Kimi K3がCursorに統合",
+          "url": "https://x.com/cursor_ai/status/2081848014444876166",
+          "summary": "Kimi K3モデルがCursorに統合され、CursorBenchでフロンティアに近いスコアを記録しました。"
+        },
+        {
+          "title": "Claude Codeの最適プロンプト",
+          "url": "https://x.com/sairahul1/status/2081705185886212442",
+          "summary": "Claude Codeの生みの親であるBoris Cherny氏は、Opus 5が以前のモデルよりも少ないプロンプトで効率的に動作するため、詳細すぎるプロンプトは逆効果になると説明しました。"
+        },
+        {
+          "title": "高速コーディングエージェント",
+          "url": "https://x.com/thisguyknowsai/status/2081680037544427793",
+          "summary": "ある開発者が、Claude Codeよりも245倍高速に起動するオープンソースのコーディングエージェントハーネス「jcode」を公開しました。"
+        },
+        {
+          "title": "FLUX 3、マルチモーダルな未来",
+          "url": "https://x.com/ai_hakase_/status/2081984499231953325",
+          "summary": "Black Forest Labsから画像、動画、音声、動作予測を単一モデルで処理する「FLUX 3」が登場し、真のマルチモーダルAIとして注目されています。"
+        },
+        {
+          "title": "Claude Codeの新たな活用",
+          "url": "https://x.com/AnatoliKopadze/status/2082103357045653788",
+          "summary": "Claude Codeの生みの親であるBoris Cherny氏が、コンピュータサイエンスの理論を忘れ、AIに要件を説明するだけでコードが生成される新たな開発パラダイムについて語りました。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "AIモデルのオープン性に関する各社のスタンスを理解し、自社のAI戦略（オープンモデル活用かクローズドモデル利用か）を再評価してください。特にAnthropicの規制論とNVIDIAのオープンアライアンス設立の動向は注意深く追う必要があります。",
+    "AIエージェントの最新動向を把握し、特にコーディングやロボット制御、Web操作自動化など、自社の業務プロセスにどのように組み込めるか具体的なユースケースを検討してください。Claude Codeや高速化ツール「jcode」などの活用可能性を探り、開発効率向上に繋げましょう。",
+    "AIによる著作権侵害やプライバシー問題に対する法規制やガイドラインの最新情報を継続的に収集し、自社のAI開発・利用における倫理的・法的リスクを評価・管理する体制を強化してください。特にデータ収集方法の透明性確保は喫緊の課題です。",
+    "中国製AIモデルKimi K3の技術的特徴（2.8兆パラメータ、MoEアーキテクチャ）とその性能を分析し、競合として認識するとともに、GPUなどのハードウェア調達における地政学的リスクにも留意してください。",
+    "自社におけるプロンプトエンジニアリングの現状を見直し、最新のAIモデル（例：Claude Opus 5）の特性に合わせた最適化を図ることで、モデルの能力を最大限に引き出し、開発期間短縮やコスト削減を目指してください。安易な長文プロンプトが非効率になる可能性を考慮する必要があります。"
+  ],
+  "x_trends": [
+    {
+      "topic": "Anthropicのオープンウェイト規制論と批判",
+      "description": "AnthropicのCEOダリオ・アモデイがオープンソースAIの危険性を訴え、規制・安全評価を要求していることに対し、コミュニティから強い反発が起きています。「市場独占狙い」という批判や、彼らの主張がAIの進化を阻害するとの意見が多く見られます。NVIDIAやOpenAIのサム・アルトマンも異なる見解を示しており、AIの未来に関する主要な論点となっています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "Vivek4real_",
+          "text": "ANTHROPIC CEO: OPEN SOURCE AI IS GETTING DANGEROUS.ANTHROPIC CEO DARIO AMODEI TOLD LAWMAKERS THAT OPEN-SOURCE AI IS MOVING DOWN A \"VERY DANGEROUS PATH.\"HE GAVE A MASSIVE WARNING THAT ONCE POWERFUL",
+          "url": "https://x.com/Vivek4real_/status/2082101518736474497",
+          "likes": 64,
+          "retweets": 8
+        },
+        {
+          "author": "Sentdex",
+          "text": "Dario can only see the danger of open weights models, and refuses to comprehend the real and actual danger of a concentration of power for those who deem themselves philosopher kings to control who has access to intelligence, how much intelligence, and when. \"Open-weights models that don’t have dangerous capabilities are a public good\"This man would advocate to ban programming and the internet if he was born a little earlier. And there's still time in his life to do it later, especially if he",
+          "url": "https://x.com/Sentdex/status/2082110199637188990",
+          "likes": 169,
+          "retweets": 17
+        },
+        {
+          "author": "ai_hakase_",
+          "text": "【AI覇権の裏側！オープンウェイトを巡る米中競争と巨大企業の戦略】AI業界のパワーバランスを揺るがす、とても興味深い地政学的な動きが出てきました！💡現在、モデルの頭脳にあたる調整パラメーターを一般公開する「オープンウェイト（Open Weights）」と、技術を非公開にする「独占モデル」の境界線を巡って、激しい主導権争いが起きています。事の発端は、NVIDIAのジェン・スン・ファンCE",
+          "url": "https://x.com/ai_hakase_/status/2082089448175538225",
+          "likes": 0,
+          "retweets": 0
+        }
+      ]
+    },
+    {
+      "topic": "Anthropicによる著作物のデータ利用問題",
+      "description": "AnthropicがAIモデル「Claude」を訓練するために、数百万冊の物理的な書籍を買い取り、裁断・スキャンしてデジタル化し、原本を破棄していたことが報じられ、強い批判を浴びています。この行為が連邦判事によって「フェアユース」と判断されたことも、著作権者やクリエイターコミュニティに衝撃を与え、「倫理的に問題がある」という声が多く上がっています。",
+      "buzz_level": "high",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "interesting_aIl",
+          "text": "AI companies are buying books free of AI-slop in bulk, scanning them to train AI models, and then destroying the originalA federal judge in 2025 ruled that the practice qualifies as fair use https://t.co/Q7bggrbIQf",
+          "url": "https://x.com/interesting_aIl/status/2081864708433248258",
+          "likes": 1139,
+          "retweets": 74
+        },
+        {
+          "author": "Itsfoss",
+          "text": "AI companies are buying rare books by the million, cutting the spines off, scanning them through industrial machines, and shredding the originals.No... not bestsellers...not reprints. Rare books. Books with hardly two-three surviving copies in the world. Books that outlasted wars, fires, and centuries of handling.A federal judge ruled this is fair use because destroying the original means only one copy exists at a time. So it is legal and so it will accelerate.As per 404 Media, the",
+          "url": "https://x.com/Itsfoss/status/2081940393923670208",
+          "likes": 332,
+          "retweets": 86
+        },
+        {
+          "author": "johnrobb",
+          "text": "More on Anthropic destroying millions of books: \"court documents revealed that AI company Anthropic spent millions of dollars physically scanning print books to build Claude, an AI assistant similar to ChatGPT. In the process, the company cut millions of print books from their bindings, scanned them into digital files, and threw away the originals solely for the purpose of training AI—details buried in a copyright ruling on fair use whose broader fair use implications we reported yesterday.\" h",
+          "url": "https://x.com/johnrobb/status/2081904073977004398",
+          "likes": 592,
+          "retweets": 311
+        }
+      ]
+    },
+    {
+      "topic": "Claude CodeとAIエージェントの進化",
+      "description": "Claude Codeの創始者Boris Cherny氏が、Opus 5の進化によりプロンプトが劇的に簡略化され、AIエージェントが自律的に数千のエージェントを生成し、数週間にわたって稼働し続ける事例を紹介しています。また、Claude Codeよりも245倍高速なオープンソースのコーディングエージェント「jcode」が登場するなど、開発者の間でAIエージェントによるコーディングの効率化と新たなワークフローへの関心が高まっています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "thisguyknowsai",
+          "text": "Another WTF moment.A developer just open-sourced a coding agent harness that boots 245x faster than Claude Code. It's called jcode. You launch it and the first frame renders in 14 milliseconds. Clau",
+          "url": "https://x.com/thisguyknowsai/status/2081680037544427793",
+          "likes": 1883,
+          "retweets": 235
+        },
+        {
+          "author": "sairahul1",
+          "text": "Boris Cherny, creator of Claude Code: \"Opus 5 does in a day what used to take your team a month. Most people will keep using it wrong.\"In 12 minutes he explains why Opus 5 needs less prompting than",
+          "url": "https://x.com/sairahul1/status/2081705185886212442",
+          "likes": 1049,
+          "retweets": 107
+        },
+        {
+          "author": "mikenevermiss",
+          "text": "Claude Opus 5 is ridiculously good at web design.this guy just uploaded a 16-minute step by step guide on building award winning websites with Claude Code + Opus 5.bookmark this before it gets los",
+          "url": "https://x.com/mikenevermiss/status/2081749689204936894",
+          "likes": 602,
+          "retweets": 63
+        }
+      ]
+    },
+    {
+      "topic": "Kimi K3の性能とGPU需要",
+      "description": "中国のLLM「Kimi K3」がCursorに統合され、高評価を得ていることから、その性能が注目されています。特に、2.8兆パラメータの疎活性化MoEアーキテクチャや、1bit量子化されたモデルのサイズ（527GB）に関する情報が技術コミュニティで共有されています。また、Moonshot AIが次期モデル「Kimi K4」のためにNVIDIAの最新GPU調達を模索しているというニュースは、AI競争におけるハードウェアの重要性と地政学的緊張を浮き彫りにしています。",
+      "buzz_level": "medium",
+      "sentiment": "neutral",
+      "representative_tweets": [
+        {
+          "author": "cursor_ai",
+          "text": "Kimi K3 is now in Cursor! It scores close to the frontier on CursorBench.It's available on US-based inference thanks to our partners Fireworks, Together, and Baseten. Zero Data Retention is also sup",
+          "url": "https://x.com/cursor_ai/status/2081848014444876166",
+          "likes": 8379,
+          "retweets": 432
+        },
+        {
+          "author": "umiyuki_ai",
+          "text": "そうなんじゃよね。AIの性能は「もう必要十分」のラインを超えてる感ある。みんな普段はKimi-K3とか使っといて、物足りない時だけFableとかGPT5.6とか使う運用しだしたらどうなる？8割はKimi-K3で事足りるならばそのままKimi-K3がシェア8割で残りはOpenAIとAnthropicって事になる。AIモデル企業がトークン売ってナンボの商売してる限り、シェアが取れないんじゃ企業価値が危ういでしょう。AIの性能レース競争に買ったとて何？僕のアイデアとしてはOpenAIやAnthropicはセーフガードでサイバー防御役立たずにしたナーフモデル使わせるくらいなら自社でサイバー防御の請負業すりゃいいと思う。自社ならセーフガード解除された無制限モデル使い放題なんだから。",
+          "url": "https://x.com/umiyuki_ai/status/2082133843965043034",
+          "likes": 39,
+          "retweets": 6
+        },
+        {
+          "author": "polymarketjapan",
+          "text": "【速報】🇨🇳Moonshot AI、次の最新モデル「Kimi K4」のためにNVIDIA最新GPU追加を模索・米輸出規制があるが、K4（K3の2.8T超え超大型）訓練向けにGB300系調達狙い・K3はすでに中国のクラウドでBlackwellを使用今年中にKimi K4がリリースされる確率56％ https://t.co/fu6Y2uqGuy",
+          "url": "https://x.com/polymarketjapan/status/2082098974023110802",
+          "likes": 37,
+          "retweets": 6
+        }
+      ]
+    },
+    {
+      "topic": "AIによるプライバシー・監視社会への懸念",
+      "description": "AI駆動の監視カメラシステム（Flock Safety）がプライバシー侵害の懸念から批判を浴び、一部地域で撤去されるなど、AIとプライバシーに関する議論が活発です。また、GoogleアカウントのデータがAIモデルトレーニングに利用される規約変更が告知され、設定変更の推奨が拡散されています。エドワード・スノーデンがAIスコアによる監視・統制社会について警告していることも話題となり、AIがもたらす社会的な影響への懸念が顕在化しています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "FoxNews",
+          "text": "AI-powered Flock Safety cameras are facing growing scrutiny over privacy concerns despite being used by law enforcement to recover stolen vehicles and solve crimes.The cameras capture license plates",
+          "url": "https://x.com/FoxNews/status/2081773003675775107",
+          "likes": 2278,
+          "retweets": 510
+        },
+        {
+          "author": "marketmaker7",
+          "text": "Google アカウント利用者必読7/31からGoogle規約変更で、Googleレンズで使用した画像や音声検索の録音データなどが、AIモデルのトレーニングや改善に利用されます。それ防ぐため、メディアの保存設定をオフにすることが推奨されています。オフのやり方：Googleアカウント→「データとプライバシー」→「マイアクティビティ」→「検索サービスの履歴」→「メディアを保存」のチェックを外",
+          "url": "https://x.com/marketmaker7/status/2082096353489125824",
+          "likes": 73,
+          "retweets": 15
+        },
+        {
+          "author": "Suryanshti777",
+          "text": "What if your future wasn't decided by a judge, your boss, or even your own choices......but by an AI score you never agreed to?Edward Snowden has been warning about this for years.His concern is",
+          "url": "https://x.com/Suryanshti777/status/2082028404451504419",
+          "likes": 8,
+          "retweets": 3
+        }
+      ]
+    },
+    {
+      "topic": "声優の「声」の著作権保護議論",
+      "description": "人気声優らの声が生成AIによって無断で使用される問題が深刻化しており、法務省の検討会で「声」も法的保護の対象に含める指針案が大筋で了承されました。声優団体からは「声は商売道具であり人生そのもの」との訴えがあり、津田健次郎氏の事例のように、SNS運営会社に対して動画削除を求める動きも出ています。しかし、指針案に法的拘束力がないため、クリエイターコミュニティからは迅速かつ実効的な救済を求める声が上がっています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "hst_tvasahi",
+          "text": "【人気声優らの“声”を生成AIで…】声も『法的保護の対象』明記｜生成AIを使い人気声優らの声が無断使用されている問題27日、法務省の検討会で、法的な保護の対象に『声』も含まれるとされる指針案が大筋で了承された▼声優や俳優らが『声の無断使用』被害を訴え中尾隆聖さん（ばいきんまん・フリーザ役など）「私たちの声は商売道具で人生そのものです。無断で生成AIに使われている私たち声優の気持ちを聞",
+          "url": "https://x.com/hst_tvasahi/status/2081747935730274489",
+          "likes": 787,
+          "retweets": 417
+        },
+        {
+          "author": "exez2D",
+          "text": "自分の作品を勝手に使わないでくださいって主張は生成AIが出る前まではそりゃそうだよな著作物だもんなで済んだのに、生成AIが出てから同じように主張しても「いいえこれは合法です‼️画像生成AI様に歯向かうあなたがおかしい‼️」って叩かれるの、法は置いといて本当にクリエイターってどこまでも不遇。",
+          "url": "https://x.com/exez2D/status/2081759401816514919",
+          "likes": 1721,
+          "retweets": 302
+        }
+      ]
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-07-28T16:58:07.654403+00:00",
+  "slot": "morning",
+  "item_count": 216,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-07-29_morning.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.049949999999999994,
+    "apify_runs": 37,
+    "apify_cycle_total_usd": 4.772776005652762,
+    "apify_cycle_end": "2026-08-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
