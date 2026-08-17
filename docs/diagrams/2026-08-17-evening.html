@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-08-17 夕便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Noto Sans CJK JP", "Noto Sans JP",
+      "Yu Gothic", "Yu Gothic UI", "Meiryo",
+      -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt" 1;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 24px; }
+    .top-grid { grid-template-columns: 1fr !important; }
+    .trend-grid { grid-template-columns: 1fr !important; }
+    .topic-grid { grid-template-columns: 1fr !important; }
+    .cat-grid { grid-template-columns: 1fr !important; }
+    .x-grid { grid-template-columns: 1fr !important; }
+    .hero { padding: 14px 12px; }
+    .hero-title { font-size: 1.1rem; }
+    .topic-title { font-size: 0.95rem; }
+    .rank-num { font-size: 1.4rem !important; }
+    .medal { width: 36px !important; height: 36px !important; }
+    .nowrap { white-space: normal !important; }
+    .tag { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-08-17</span>
+      <span class="slot-badge">夕便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">Codexの1Mトークンコンテキスト</div>
+        <div class="tags">
+          <span class="tag cat-model">モデル/ツール</span>
+          <span class="tag src">x:@thsottiaux</span>
+        </div>
+        <div class="summary">GPT-5.6 Sol向けのCodexで1Mトークンコンテキストウィンドウを有効にする方法が公開された。これは大規模なコード、ツール出力、会話履歴を保持できる。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">OpenAIがAIリスクチームを解散</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@UnDrogado_poeta</span>
+          </div>
+          <div class="summary">Financial Timesによると、OpenAIが壊滅的なAIリスク評価チームを解散し、責任が他部門に再配分された。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">CodexのGPT-5.6 Sol 1MがChatGPTアカウントで利用可能に</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">x:@thsottiaux</span>
+          </div>
+          <div class="summary">CodexのGPT-5.6 Solの1Mトークンコンテキストが、APIキーだけでなくChatGPTアカウント経由でも利用可能になった。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">AnthropicのClaudeで大規模障害</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@Polymarket</span>
+          </div>
+          <div class="summary">AnthropicのClaudeが現在「大規模な障害」を経験している。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-model">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">ByteDanceのAI IDE「trae」で無料モデル利用可能</div>
+          <div class="tags">
+            <span class="tag cat-model">モデル/ツール</span>
+            <span class="tag src">x:@Alan_Earn</span>
+          </div>
+          <div class="summary">ByteDanceの無料VS Codeフォーク「trae」で、APIキーなしでClaude、GPT、DeepSeek、Kimiなどのプレミアムモデルが無料で利用できる。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日のAI業界は、OpenAIがAIリスクチームを解散したと報じられるなど、大手企業の戦略変更が注目されています。一方で、OpenAIのGPT-5.6 Solが1Mトークンコンテキストに対応し、AnthropicのClaude CodeやDeepSeekなどのエージェント機能が高度化・無料化される動きが加速しており、開発競争は激化しています。特にAIエージェントの開発において「プロンプトからグラフエンジニアリングへ」というパラダイムシフトが提唱され、生産性向上の新たな方向性を示しています。また、AI生成コンテンツの著作権や倫理、ウォーターマーク導入など、社会的な側面での議論も活発です。</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-NEW">⚡ NEW</span>
+          
+        </div>
+        <div class="topic-name">OpenAI企業戦略とAI安全性</div>
+        <div class="evolution">AIリスクチーム解散のニュースが本日報じられ、OpenAIの安全性への姿勢が議論の焦点となった。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">AIモデルのコンテキストウィンドウと性能</div>
+        <div class="evolution">GPT-5.6 Solの1Mトークンコンテキスト対応が報じられ、高コンテキストモデルの一般利用が進展。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">Anthropicのサービス状況と戦略</div>
+        <div class="evolution">Claudeの主要な障害発生が報じられる一方、エージェント開発に関する講演やコスト最適化の話題が継続。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIエージェント開発手法</div>
+        <div class="evolution">「プロンプトからグラフエンジニアリングへ」というパラダイムシフトがAnthropicのエンジニアから提唱され、開発コミュニティで広く議論されている。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">3日目</span>
+        </div>
+        <div class="topic-name">オープンソースAIモデルの台頭</div>
+        <div class="evolution">DeepSeekやQwenなど高性能なオープンソースモデルが無料で提供され、市場の価格競争とアクセス性を加速させている。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AI生成コンテンツの著作権と規制</div>
+        <div class="evolution">AI生成画像の著作権侵害訴訟や、AIウォーターマークの義務化など、法規制や倫理に関する具体的な動きが継続している。</div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">18</span>
+        </div>
+        <div class="summary">本日は、OpenAIのGPT-5.6 SolがCodexで1Mトークンという大規模なコンテキストウィンドウに対応し、ChatGPTアカウントユーザーにも開放されたことが大きな話題となりました。これにより、より複雑なコードや長文の処理が可能になります。また、ByteDanceの「trae」がClaudeやGPTなどのプレミアムモデルを無料で提供するなど、高性能AIモデルへのアクセス障壁が低下する動きが見られます。DeepSeekは無料のコーディングエージェントハーネスでClaude Codeの有料プランを代替し、AlibabaのQwen3.8-27BもOrcaRouterを通じて無料で提供されるなど、オープンソースモデルが市場の競争を激化させています。さらに、AIエージェントの開発において「グラフエンジニアリング」の重要性が強調され、AIが自律的にタスクを遂行する次世代のアーキテクチャへの注目が高まっています。</div>
+      </div>
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">14</span>
+        </div>
+        <div class="summary">OpenAIがAIリスク評価チームを解散したとの報道が最も注目を集めました。これはIPO準備に向けた組織再編の一部とされ、AIの安全性への姿勢について議論を呼んでいます。AnthropicのClaudeでは大規模な障害が発生し、サービスの安定性確保が課題として浮上しました。一方で、Anthropicのエンジニアがエージェント開発における「グラフエンジニアリング」へのシフトを強調するなど、効率的な開発手法の探求が進んでいます。また、OpenAIやAnthropicがモデル価格を引き下げ、中国のオープンモデルがさらに低コスト化を推進する価格競争の激化も指摘されており、AI業界の経済構造に大きな影響を与えています。</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">17</span>
+        </div>
+        <div class="summary">AI生成コンテンツに関する規制と著作権の問題が本日も重要なテーマでした。AIで生成した画像が既存作品と「酷似」したことによる著作権侵害訴訟が発生しており、AI生成物の著作物性の判断基準が改めて問われています。味の素のAI画像加工による文字崩壊の謝罪は、AIの品質管理と誤情報の拡散リスクを示唆しています。EU AI Actの施行により、AnthropicのClaudeが出力にウォーターマークを埋め込み始めたことは、AI生成コンテンツの透明性確保に向けた業界全体の動きを象徴しています。また、米国カリフォルニア州では弁護士によるAI利用に関する具体的な規制が議論されており、専門職におけるAI活用と倫理・責任のバランスが模索されています。生成AIが文学賞に殺到する問題や、AI生成コンテンツへの若年層の嫌悪感も報じられ、社会受容に関する多角的な視点が示されています。</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">10</span>
+        </div>
+        <div class="summary">AIに物理世界を学ばせる基盤をAIが自律的に構築し、仮想世界でAIエージェント同士が競い合う研究が注目を集めています。これにより、AIがAIを賢くする「ループ」が形成され、将来的な自律性の高さに期待と懸念が寄せられています。特に、Dots3-note previewのようなマルチモーダルモデルは、複雑なタスクを長期間にわたって処理する能力を示しており、効率的なアーキテクチャと自己批判の重要性が強調されています。また、LLM単体ではAGIに不十分であるというGoogle DeepMindの研究が示唆するように、AIシステムは世界モデルや計画コンポーネントといった専門化された要素を統合した「ファウンデーションエージェント」へと進化する可能性が議論されています。StanfordとHarvardによるAIエージェントのレッドチーム研究では、サンドボックス環境下での深刻なセキュリティ・ガバナンス障害が明らかになり、AIの安全性と制御に関する研究の重要性が浮き彫りになりました。</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">18</span>
+        </div>
+        <div class="summary">AIエージェントを活用した生産性向上と、それに伴うエンジニアリングスキルへの注目が高まっています。Andrew Ng氏は、AIエージェント、ツール、ループ、グラフを統合した「エージェントエンジニアリング」が2026年に必要とされる重要なスキルであると強調し、無料のコースを提供しています。Claude Codeの活用法では、プロンプトに頼らずCLAUDE.md、Skills、Hooks、Agentsの4層構造で仕組みを構築することで本領を発揮すると解説されています。これにより、開発の効率化や定型作業の自動化が実現できると期待されます。また、ChatGPTのVoiceモードによる同時通訳や、Tripo AIとClaude Codeを組み合わせた3Dサイト生成など、マルチモーダルAIの具体的な応用事例も紹介され、クリエイティブな分野でのAIの活用が広がっています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">OpenAI AIリスクチーム解散</span>
+        </div>
+        <div class="desc">OpenAIがAIリスク評価チームを解散したというFinancial Timesの報道がXで大きく拡散され、その判断に対する懸念や批判の声が多数上がっています。多くのユーザーがAI安全性への取り組みが後退しているのではないかと疑問を呈し、企業の倫理的責任について議論しています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">AI生成コンテンツの著作権と倫理</span>
+        </div>
+        <div class="desc">AI生成画像が既存作品と酷似しているとして著作権侵害訴訟に発展したニュースや、味の素の事例でAI画像加工による文字崩壊が批判されたことに対し、多くのユーザーが生成AI利用の倫理的側面や法的責任について議論しています。特に、AI生成コンテンツの価値や、AI利用の透明性確保の必要性が指摘されています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">Codexの1Mトークンコンテキスト利用可能化</span>
+        </div>
+        <div class="desc">GPT-5.6 Sol向けのCodexで1Mトークンコンテキストウィンドウが利用可能になったというニュースは、開発者コミュニティで非常に高い関心を集めています。特に、ChatGPTアカウント経由でも利用できるようになったことで、より広範なユーザーがこの恩恵を受けられることへの期待が表明されています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-08-17 08:00 UTC · AI News Collector
+    
+  </div>
+
+</div>
+</body>
+</html>
