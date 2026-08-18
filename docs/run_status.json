@@ -1,6 +1,6 @@
 {
-  "overall": "error",
-  "updated_at": "2026-08-18 16:46 JST",
+  "overall": "success",
+  "updated_at": "2026-08-19 01:00 JST",
   "workflows": {
     "buzz": {
       "status": "success",
@@ -17,13 +17,13 @@
       "starved_accounts": []
     },
     "collect": {
-      "status": "error",
-      "ts": "2026-08-18T16:46:55.056432+09:00",
-      "time": "2026-08-18 16:46 JST",
-      "error": "必須アカウントのタイムライン取得が失敗",
-      "items_collected": 272,
+      "status": "success",
+      "ts": "2026-08-19T01:00:22.975031+09:00",
+      "time": "2026-08-19 01:00 JST",
+      "error": "",
+      "items_collected": 532,
       "top_articles": 10,
-      "apify_hints": "",
+      "apify_hints": "zero-output-run",
       "search_failure": ""
     },
     "money": {
@@ -47,17 +47,5 @@
       "candidates": 845,
       "mode": "one-off-analysis"
     }
-  },
-  "incident": {
-    "active": "true",
-    "severity": "critical",
-    "title": "必須アカウントのタイムライン取得が失敗",
-    "situation": "健全性アラート 1 件。収集 272 件 / top_articles 10 件。",
-    "cause": "必須アカウントのタイムライン取得が失敗 — timeline batch がエラー終了、または 0 件。Cookie か Actor 側の問題。",
-    "impact": "一部の更新・品質が劣化している可能性があります。下記の状況・原因を確認してください。",
-    "technical": "必須アカウントのタイムライン取得が失敗",
-    "diagram_latest": "2026-08-18-evening",
-    "workflow": "collect",
-    "updated_at": "2026-08-18 16:46 JST"
   }
 }
