@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI News 図解版 2026-08-20 夕便</title>
+<style>
+  :root {
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --ink: #1a1a2e;
+    --ink2: #334155;
+    --muted: #64748b;
+    --line: #e2e8f0;
+    --accent: #6366f1;
+    --gold: #f59e0b;
+    --silver: #94a3b8;
+    --bronze: #b45309;
+    --cat-model: #10b981;
+    --cat-biz: #f59e0b;
+    --cat-reg: #ec4899;
+    --cat-research: #6366f1;
+    --cat-fund: #f97316;
+    --cat-usecase: #3b82f6;
+    --cat-default: #64748b;
+    --st-new: #16a34a;
+    --st-rising: #dc2626;
+    --st-sustained: #2563eb;
+    --st-fading: #64748b;
+    --st-resurfaced: #f59e0b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family:
+      "Hiragino Sans", "Hiragino Kaku Gothic ProN",
+      "Noto Sans CJK JP", "Noto Sans JP",
+      "Yu Gothic", "Yu Gothic UI", "Meiryo",
+      -apple-system, BlinkMacSystemFont, "Segoe UI",
+      "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji",
+      sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    line-break: strict;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "palt" 1;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 28px 24px 32px;
+  }
+  .nowrap { white-space: nowrap; }
+
+  /* ── ヘッダー ─────────────────────────── */
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 14px;
+    margin-bottom: 18px;
+  }
+  .hero-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+  .hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: #cbd5e1;
+  }
+  .slot-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+  }
+
+  /* ── セクション共通 ─────────────────────── */
+  .section {
+    background: var(--surface);
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-title .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── セクション01: TOP ニュース（メイン・45%） ────────── */
+  .top-section { padding: 20px 22px 22px; }
+  .top-hero {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 16px;
+    align-items: stretch;
+    padding: 18px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border: 1.5px solid var(--gold);
+    margin-bottom: 14px;
+  }
+  .top-hero .medal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    background: var(--gold);
+    color: #fff;
+    border-radius: 12px;
+    padding: 10px 6px;
+  }
+  .top-hero .medal .rank-num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .top-hero .medal .rank-label { font-size: 10px; letter-spacing: 0.08em; font-weight: 700; }
+  .top-hero .body {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .top-hero .title {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-hero .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+  .top-hero .summary {
+    font-size: 13.5px;
+    color: var(--ink2);
+    line-height: 1.6;
+  }
+
+  .top-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .top-card {
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 14px;
+    background: #fafbfc;
+    border: 1.5px solid var(--line);
+    border-left: 4px solid var(--cat-default);
+    border-radius: 10px;
+  }
+  .top-card .rank-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--silver);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+  }
+  .top-card .rank-badge.r3 { background: var(--bronze); }
+  .top-card.cat-model { border-left-color: var(--cat-model); }
+  .top-card.cat-biz { border-left-color: var(--cat-biz); }
+  .top-card.cat-reg { border-left-color: var(--cat-reg); }
+  .top-card.cat-research { border-left-color: var(--cat-research); }
+  .top-card.cat-fund { border-left-color: var(--cat-fund); }
+  .top-card.cat-usecase { border-left-color: var(--cat-usecase); }
+  .top-card .body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .top-card .title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.45;
+  }
+  .top-card .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .top-card .summary {
+    font-size: 12px;
+    color: var(--ink2);
+    line-height: 1.55;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #e2e8f0;
+    color: var(--ink2);
+    white-space: nowrap;
+  }
+  .tag.cat-model { background: #d1fae5; color: #047857; }
+  .tag.cat-biz { background: #fef3c7; color: #92400e; }
+  .tag.cat-reg { background: #fce7f3; color: #be185d; }
+  .tag.cat-research { background: #e0e7ff; color: #4338ca; }
+  .tag.cat-fund { background: #ffedd5; color: #c2410c; }
+  .tag.cat-usecase { background: #dbeafe; color: #1e40af; }
+  .tag.src { background: #f1f5f9; color: var(--muted); font-weight: 600; }
+
+  /* ── セクション02: トレンド（補助） ─────────── */
+  .trend-box {
+    background: var(--ink);
+    color: #fff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+  }
+  .trend-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
+  }
+  .topic-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .topic-chip {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px;
+    border: 1.5px solid var(--line);
+    border-radius: 10px;
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .topic-chip .chip-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .topic-chip .status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    color: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status.st-NEW { background: var(--st-new); }
+  .status.st-RISING { background: var(--st-rising); }
+  .status.st-SUSTAINED { background: var(--st-sustained); }
+  .status.st-FADING { background: var(--st-fading); }
+  .status.st-RESURFACED { background: var(--st-resurfaced); }
+  .topic-chip .topic-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .topic-chip .streak {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-left: auto;
+  }
+  .topic-chip .evolution {
+    font-size: 11px;
+    color: #64748b;
+    line-height: 1.5;
+    border-top: 1px solid var(--line);
+    padding-top: 5px;
+    margin-top: 2px;
+  }
+
+  /* ── セクション03: カテゴリ分布（補助） ───────── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    border-top: 4px solid var(--cat-default);
+    background: #fafbfc;
+    min-width: 0;
+  }
+  .cat-card.cat-model { border-top-color: var(--cat-model); }
+  .cat-card.cat-biz { border-top-color: var(--cat-biz); }
+  .cat-card.cat-reg { border-top-color: var(--cat-reg); }
+  .cat-card.cat-research { border-top-color: var(--cat-research); }
+  .cat-card.cat-fund { border-top-color: var(--cat-fund); }
+  .cat-card.cat-usecase { border-top-color: var(--cat-usecase); }
+  .cat-card .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .cat-card .name { font-size: 13px; font-weight: 800; color: var(--ink); }
+  .cat-card .count {
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--accent);
+  }
+  .cat-card .summary {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── セクション04: X トピック（補助） ─────────── */
+  .x-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .x-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--line);
+    background: #fafbfc;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .x-card .head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .x-card .buzz { font-size: 12px; }
+  .x-card .topic {
+    font-size: 12.5px;
+    font-weight: 800;
+    color: var(--ink);
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .x-card .desc {
+    font-size: 11.5px;
+    color: var(--ink2);
+    line-height: 1.5;
+  }
+
+  /* ── フッタ ─────────────────────────── */
+  .footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: 11px;
+    margin-top: 14px;
+    padding: 8px;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* スマホ対応 */
+  @media (max-width: 600px) {
+    .page { padding: 16px 12px 24px; }
+    .top-grid { grid-template-columns: 1fr !important; }
+    .trend-grid { grid-template-columns: 1fr !important; }
+    .topic-grid { grid-template-columns: 1fr !important; }
+    .cat-grid { grid-template-columns: 1fr !important; }
+    .x-grid { grid-template-columns: 1fr !important; }
+    .hero { padding: 14px 12px; }
+    .hero-title { font-size: 1.1rem; }
+    .topic-title { font-size: 0.95rem; }
+    .rank-num { font-size: 1.4rem !important; }
+    .medal { width: 36px !important; height: 36px !important; }
+    .nowrap { white-space: normal !important; }
+    .tag { font-size: 0.7rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="hero">
+    <div class="hero-title">🤖 AI News 図解版</div>
+    <div class="hero-meta">
+      <span>2026-08-20</span>
+      <span class="slot-badge">夕便</span>
+    </div>
+  </div>
+
+  
+  
+  <div class="section top-section">
+    <div class="section-title"><span class="num">01</span>今日の TOP ニュース</div>
+
+    
+    <div class="top-hero">
+      <div class="medal">
+        <div class="rank-num">1</div>
+        <div class="rank-label">TOP</div>
+      </div>
+      <div class="body">
+        <div class="title">Gemini、学生に1年間無料提供</div>
+        <div class="tags">
+          <span class="tag cat-biz">企業動向</span>
+          <span class="tag src">x:@GeminiApp</span>
+        </div>
+        <div class="summary">Googleは新学期シーズンに合わせて、米国の学生にGoogle AI Proを1年間無料で、140カ国以上の学生にGoogle AI Plusを1年間無料で提供すると発表しました。</div>
+      </div>
+    </div>
+
+    
+    <div class="top-grid">
+      
+      <div class="top-card cat-research">
+        <div class="rank-badge ">2</div>
+        <div class="body">
+          <div class="title">Ornith-1.5、SOTAオープンLLM発表</div>
+          <div class="tags">
+            <span class="tag cat-research">研究論文</span>
+            <span class="tag src">x:@ornith_</span>
+          </div>
+          <div class="summary">オープンソースLLM「Ornith-1.5」ファミリーが発表され、自己改善戦略で訓練された9B、35B、397B MoEモデルは、同規模のオープンソースモデルの中でSOTA性能を達成し、Claude Opus 4.8に匹敵する能力を示します。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge r3">3</div>
+        <div class="body">
+          <div class="title">OpenAI、RL訓練を一時停止</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@sama</span>
+          </div>
+          <div class="summary">OpenAIのSam Altman CEOは、フロンティア強化学習（RL）訓練の一部を一時停止したと発表しました。これは、AIモデルの能力向上が急速であるため、適切なアライメント、セキュリティ、監視基準を満たすためです。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">4</div>
+        <div class="body">
+          <div class="title">OpenAI、プライベート安全処理を発表</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@thsottiaux</span>
+          </div>
+          <div class="summary">OpenAIは「プライベート安全処理」のプレビューを発表しました。これにより、顧客が機密データのコントロールを維持しつつ、ゼロデータ保持を提供し、安全対策を強化できると説明しています。</div>
+        </div>
+      </div>
+      
+      <div class="top-card cat-biz">
+        <div class="rank-badge ">5</div>
+        <div class="body">
+          <div class="title">OpenAI、ZDRをフロンティアモデルに提供継続</div>
+          <div class="tags">
+            <span class="tag cat-biz">企業動向</span>
+            <span class="tag src">x:@OpenAI</span>
+          </div>
+          <div class="summary">OpenAIはフロンティアモデルに対してゼロデータ保持（Zero Data Retention）を引き続き提供すると発表しました。Private Safety Processingにより、OpenAIが顧客の基盤コンテンツにアクセスすることなく、安全システムを改善できるとしています。</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">02</span>今日のトレンド</div>
+    
+    <div class="trend-box">
+      <p>本日のAI業界では、OpenAIがフロンティア強化学習の一時停止を発表し、AIの安全性とアライメントへのコミットメントを強調しました。これは、プライベート安全性処理やゼロデータ保持の提供といった顧客プライバシー強化の動きと連動しています。一方で、Google Geminiは学生向けに無料アクセスを提供し、データ分析で優れた性能を示すなど、市場拡大を図っています。また、Ornith-1.5のような高性能オープンソースLLMが登場し、Claude Codeはコーディング支援や生産性向上ツールとして進化を続けるなど、AIモデルの開発と応用が多角的に進展しています。</p>
+    </div>
+    
+    
+    <div class="topic-grid">
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">4日目</span>
+        </div>
+        <div class="topic-name">OpenAIの企業戦略とAI安全性</div>
+        <div class="evolution">AIリスクチーム解散の報道から、フロンティアRL訓練の一時停止へと発展し、安全性を重視する姿勢を明確化した。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIモデルの性能競争と新モデルリリース</div>
+        <div class="evolution">Qwen 3.8-27Bなどの登場が続き、今回はOrnith-1.5がClaude Opusに匹敵する性能を示し、オープンソースモデルの進化が継続。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-RISING">📈 RISING</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">AIエージェントの進化と開発手法</div>
+        <div class="evolution">自己改善ループやグラフエンジニアリングに加え、OpenCodeやGrok Botなどのエージェントツールが強化され、活用事例が拡大。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">主要LLMの価格競争と戦略</div>
+        <div class="evolution">OpenAIのプライバシー重視戦略とGoogleの学生向け無料提供が、Anthropicとの差別化競争を加速。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">2日目</span>
+        </div>
+        <div class="topic-name">計算資源（コンピュート）の重要性</div>
+        <div class="evolution">AI能力のボトルネックとしての認識が継続し、効率的な利用や最適化の議論が続く。</div>
+      </div>
+      
+      <div class="topic-chip">
+        <div class="chip-header">
+          <span class="status st-SUSTAINED">➡️ SUSTAINED</span>
+          <span class="streak">5日目</span>
+        </div>
+        <div class="topic-name">Anthropicのサービス状況と戦略</div>
+        <div class="evolution">Claude Codeの機能拡張や利用制限の延長、Googleサービス連携など、利便性向上と既存顧客維持に注力。</div>
+      </div>
+      
+    </div>
+    
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">03</span>カテゴリ分布</div>
+    <div class="cat-grid">
+      
+      <div class="cat-card cat-biz">
+        <div class="head">
+          <span class="name">企業動向</span>
+          <span class="count">17</span>
+        </div>
+        <div class="summary">本日は、Googleが学生向けにGeminiの無料アクセスを提供し、OpenAIがフロンティアRL訓練の一時停止とプライベート安全処理を発表するなど、大手AI企業がサービス普及と安全性・プライバシー保護の両面で戦略的な動きを見せました。また、ReplitがOpenAIの最新モデルを搭載したフリーモードを導入し、AIを活用した開発環境の民主化が進んでいます。</div>
+      </div>
+      
+      <div class="cat-card cat-research">
+        <div class="head">
+          <span class="name">研究論文</span>
+          <span class="count">11</span>
+        </div>
+        <div class="summary">オープンソースLLMの分野でOrnith-1.5ファミリーが発表され、Claude Opus 4.8に匹敵するSOTA性能を達成し、物理的汎用知能（PGI）やロボット学習データの不足に関する議論が深まりました。AIによるマトリックス乗算の計算速度記録更新や、LLMおよびマルチモーダルモデル向けのRLフレームワーク「Miles v0.1」の公開も注目されます。</div>
+      </div>
+      
+      <div class="cat-card cat-usecase">
+        <div class="head">
+          <span class="name">ユースケース</span>
+          <span class="count">19</span>
+        </div>
+        <div class="summary">Claudeは新薬設計、GmailやGoogle Drive連携、学術研究、自動会社設立など、多岐にわたる分野でその応用範囲を広げています。Codexはコード移行を数年から数週間に短縮するなど、開発現場での生産性向上に貢献。AIエージェントによる自律的分析やデータ整理の可能性も示されており、実用化が加速しています。</div>
+      </div>
+      
+      <div class="cat-card cat-model">
+        <div class="head">
+          <span class="name">モデル/ツール</span>
+          <span class="count">21</span>
+        </div>
+        <div class="summary">Ornith-1.5、GLM-5.3、Qwen 3.8など高性能なオープンソースLLMが続々と登場し、Claude Codeは「Concise」出力スタイルやデスクトップ版の高速化、マネージドエージェントのメモリ機能強化など、機能改善を重ねています。Vercel Labsからは小型のネイティブコーディングエージェントfxがオープンソース化され、AIエージェントの多様な開発と利用が加速しています。</div>
+      </div>
+      
+      <div class="cat-card cat-reg">
+        <div class="head">
+          <span class="name">規制/政策</span>
+          <span class="count">4</span>
+        </div>
+        <div class="summary">OpenAIがPrivate Safety Processingを通じてビジネスプライバシーとデータ保護を強化する動きは、企業がAI導入を進める上での信頼性向上を目指すものです。一方で、非エンジニアがClaude Codeを用いてWebアプリを公開することのセキュリティリスクが指摘され、AI利用におけるセキュリティ意識の向上が課題となっています。</div>
+      </div>
+      
+      <div class="cat-card cat-fund">
+        <div class="head">
+          <span class="name">資金調達</span>
+          <span class="count">1</span>
+        </div>
+        <div class="summary">AIエージェント向け決済プラットフォームのNaturalが、デットで最大約150億円の融資枠を確保しました。創業から短期間で多額の資金を調達しており、AIエージェント経済における決済インフラの重要性が高まっていることを示しています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  
+  
+  <div class="section">
+    <div class="section-title"><span class="num">04</span>X で話題</div>
+    <div class="x-grid">
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">OpenAIの安全性重視戦略</span>
+        </div>
+        <div class="desc">Sam AltmanがフロンティアRL訓練を一時停止したことに加え、OpenAIがPrivate Safety ProcessingやZero Data Retention（ZDR）を提供し、ビジネスプライバシーを支援する姿勢を強調しました。これは、AI開発の最前線で安全性と倫理を重視する企業の責任を示すものとして、ユーザーから注目と評価を得ています。一部では、他社の動向を懸念する声も上がっています。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">Google Geminiの学生向け無料提供</span>
+        </div>
+        <div class="desc">Googleが新学期に合わせて、USの学生にGemini AI Proを、140カ国以上の学生にGoogle AI Plusを1年間無料で提供すると発表し、大きな反響を呼んでいます。これはGeminiの普及を加速させる強力な戦略として、学生やAIコミュニティから熱い視線が注がれています。将来のGoogle AIの進化に期待する声も多く聞かれます。</div>
+      </div>
+      
+      <div class="x-card">
+        <div class="head">
+          <span class="buzz">🔥🔥🔥</span>
+          <span class="topic">オープンソースLLM「Ornith-1.5」のSOTA性能</span>
+        </div>
+        <div class="desc">自己改善戦略で訓練されたオープンソースLLM「Ornith-1.5」ファミリーが発表され、Claude Opus 4.8に匹敵する最先端性能を達成したことが、AIコミュニティで大きな話題となっています。特に、様々なベンチマークでの高スコアが公開され、オープンソースモデルが商用モデルに肉薄していることに驚きと期待の声が上がっています。</div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+  <div class="footer">
+    Generated 2026-08-20 07:52 UTC · AI News Collector
+    
+  </div>
+
+</div>
+</body>
+</html>
