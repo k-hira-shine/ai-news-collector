@@ -1,0 +1,532 @@
+{
+  "trend_summary": "本日のAI業界では、自律型エージェントAIの開発と実用化が加速しており、Claude Code、Grok Bot、OpenRouterのOx Alphaなどが注目を集めています。同時に、データプライバシーと保持に関する大手企業の政策変更が大きな議論を呼び、著作権問題を含むAI規制の議論が世界各地で活発化しています。物理AIのための学習データ収集の重要性も高まっており、AIモデルの性能向上と多機能化が続く中で、いかに安全かつ倫理的にAIを社会に統合するかが問われています。",
+  "trend_evolution": {
+    "since_last": "前回の配信以降、AI業界ではエージェントAIの実用化と利用範囲の拡大が顕著に進展しました。特にデータプライバシーとモデル利用ポリシーに関する議論が具体化し、OpenAIとAnthropicがデータ保持方針を転換するなど、企業側の対応が進んでいます。また、物理AIの学習データがボトルネックとなっているという認識が強まり、Axis Roboticsのような新しいデータ収集アプローチが注目され始めています。",
+    "tracked_topics": [
+      {
+        "topic": "AIエージェントの進化と活用",
+        "status": "RISING",
+        "streak_days": 6,
+        "evolution": "AIビルダー化の議論から、Claudeの広範なツール群やGrok Botの実践的なユースケースの具体例が多く共有され、その実用性が強調されています。"
+      },
+      {
+        "topic": "AIモデルの性能競争と新モデルリリース",
+        "status": "SUSTAINED",
+        "streak_days": 6,
+        "evolution": "OpenRouterからのステルスモデル「Ox Alpha」発表やGemini 3.7 FlashのARC-AGIでの高スコア、MetaのMuse Spark 1.2、SenseTimeのSenseNovaなど、多様なモデルが進化し、マルチモーダル化が進んでいます。"
+      },
+      {
+        "topic": "OpenAIの企業戦略と動向",
+        "status": "SUSTAINED",
+        "streak_days": 6,
+        "evolution": "IPO示唆やCodex利用制限の不満から、データ保持ポリシーの変更、Apple Messagesプラグインの連携、NVIDIAとの協業など、多方面での動きが見られます。"
+      },
+      {
+        "topic": "Anthropicのサービス状況と戦略",
+        "status": "SUSTAINED",
+        "streak_days": 6,
+        "evolution": "モデルの性能問題や高コストへの不満が続く中、データ保持ポリシーの変更、Claude Platformでのツール一般提供、そしてClaude Academyの無料公開といった、顧客との信頼構築と教育に注力する動きが出ています。"
+      },
+      {
+        "topic": "AI学習データの倫理と著作権",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "Amazonの書籍破壊が波紋を広げた後、Wikipediaや既存コンテンツ企業からの提訴、著作権侵害を巡る各国の法制化の動き、AI生成物の出自に関する研究など、具体的な法的・倫理的課題が浮上し、規制強化の必要性が高まっています。"
+      },
+      {
+        "topic": "AI規制・政策",
+        "status": "RISING",
+        "streak_days": 1,
+        "evolution": "日本政府によるエージェントAI前提社会への国家戦略、タイのAI無料提供、中国の教育現場でのAI活用、豪州のAI規制法制化の動きなど、国際的な政策議論が多様化しています。"
+      },
+      {
+        "topic": "計算資源（コンピュート）の重要性",
+        "status": "SUSTAINED",
+        "streak_days": 4,
+        "evolution": "「新しい石油」としての認識が継続され、NVIDIAがOpenAIのトレーニングスタックを強化する中で、モデルルーティングの効率化など、計算資源の最適利用も焦点となっています。"
+      },
+      {
+        "topic": "物理AIとデータ収集",
+        "status": "NEW",
+        "streak_days": 1,
+        "evolution": "ロボット学習におけるデータ不足が指摘され、Axis Roboticsのような人間による行動データ収集プラットフォームが物理AIのボトルネック解消に向けた解決策として注目され始めました。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "fe1c41363a8ce226",
+      "rank": 1,
+      "title": "OpenRouterが新モデル発表",
+      "url": "https://x.com/OpenRouter/status/2090544970923184269",
+      "summary": "OpenRouterが新しいステルスモデル「Ox Alpha」を発表しました。このフロンティアモデルは、効率的なコーディング、持続的なエージェント作業、および実世界でのプロダクション利用を目的として設計されています。",
+      "importance_reason": "新しいフロンティアモデルの登場は常に注目を集め、1Mトークンのコンテキストウィンドウとマルチモーダル入力は最先端の機能を示しています。",
+      "category": "モデル/ツール",
+      "source_label": "x:@OpenRouter"
+    },
+    {
+      "id": "4cc717435b8b86bb",
+      "rank": 2,
+      "title": "Claude Platformの機能強化",
+      "url": "https://x.com/ClaudeDevs/status/2090540270219567575",
+      "summary": "Claude Platformでコンピュータ利用、ブラウザツール、Skills API、Files APIが一般提供されました。これにより、APIを持たないアプリケーションでの作業自動化や、Claude Managed Agentsの構築が可能になります。",
+      "importance_reason": "Claudeのエージェント機能とツール連携の強化は、エンタープライズ領域でのAI活用を大きく推進し、市場競争力を高めます。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ClaudeDevs"
+    },
+    {
+      "id": "52f1b4acf7c374ff",
+      "rank": 3,
+      "title": "Palantir CEOがデータ政策批判",
+      "url": "https://x.com/ns123abc/status/2090525062373732860",
+      "summary": "PalantirのCEOであるAlex Karpが、OpenAIとAnthropicのデータ保持ポリシーを強く批判し、両社がユーザーデータへのアクセスを求めている点を問題視しました。これを受けて、両社はデータ保持ポリシーを転換したと報じられています。",
+      "importance_reason": "大手AI企業のデータプライバシーに関する方針転換は、業界全体の信頼性や規制の方向性に大きな影響を与えます。",
+      "category": "規制/政策",
+      "source_label": "x:@ns123abc"
+    },
+    {
+      "id": "f0f6ba81bb3a11e0",
+      "rank": 4,
+      "title": "Gemini 3.7 Flashの性能評価",
+      "url": "https://x.com/arcprize/status/2090500144550539327",
+      "summary": "GoogleのGemini 3.7 FlashがARC-AGIベンチマークで高いスコアを記録し、特に低コストで優れた性能を発揮していることが強調されています。ARC-AGI-1で95.5%、ARC-AGI-2で84.6%を達成しました。",
+      "importance_reason": "コスト効率の高い高性能モデルの登場は、AIの民主化を促進し、より広範なユーザー層への普及に貢献します。",
+      "category": "モデル/ツール",
+      "source_label": "x:@arcprize"
+    },
+    {
+      "id": "15be34ef1a207238",
+      "rank": 5,
+      "title": "自民党、エージェントAI国家戦略",
+      "url": "https://x.com/jimin_koho/status/2090663768762323261",
+      "summary": "自民党のAI・web3小委員会が、エージェントAIを前提とした社会構造への転換を主導する国家戦略を発表しました。AIホワイトペーパー2.0で提言された内容は、政府の経済財政運営と改革の基本方針2026にも盛り込まれています。",
+      "importance_reason": "国家レベルでのAI戦略、特にエージェントAIとフィジカルAIを重視する方向性は、日本の産業構造や社会全体に大きな影響を与えます。",
+      "category": "規制/政策",
+      "source_label": "x:@jimin_koho"
+    },
+    {
+      "id": "6742e9d332f164e9",
+      "rank": 6,
+      "title": "NVIDIAがNeMo Switchyard発表",
+      "url": "https://x.com/nvidia/status/2090548358868070801",
+      "summary": "NVIDIAがNeMo Switchyardを発表しました。これは、開発者が品質、レイテンシ、コスト基準に基づいて、各エージェントワークフローのステップを適切なモデルプールにルーティングするのを支援するツールです。",
+      "importance_reason": "エージェントAIの複雑なワークフローを効率的に管理するためのソリューションは、実用化の鍵であり、NVIDIAのAIインフラにおける役割を強化します。",
+      "category": "モデル/ツール",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "d111c160084dea71",
+      "rank": 7,
+      "title": "NVIDIAとOpenAIが協業",
+      "url": "https://x.com/nvidia/status/2090473127658570184",
+      "summary": "NVIDIAのVera RubinラックがOpenAIのトレーニングスタックを強化していることが明らかにされました。両社はフロンティアAIの推進のため、加速コンピューティングインフラを構築しています。",
+      "importance_reason": "主要AI企業間のインフラ協業は、AI開発の加速に不可欠であり、NVIDIAのハードウェアがAI進化の基盤であることを改めて示しています。",
+      "category": "企業動向",
+      "source_label": "x:@nvidia"
+    },
+    {
+      "id": "61bf1e85fc526386",
+      "rank": 8,
+      "title": "ChatGPT、Apple Messages連携",
+      "url": "https://x.com/ChatGPT/status/2090499359641329950",
+      "summary": "新しいApple Messagesプラグインにより、ChatGPTがMac上でメッセージの検索、会話のキャッチアップ、返信のドラフトと送信を可能にしました。これにより日常会話がより簡単になります。",
+      "importance_reason": "ChatGPTのOSレベルへの統合は、AIアシスタントの利便性を飛躍的に高め、ユーザーエンゲージメントを向上させる大きな一歩です。",
+      "category": "モデル/ツール",
+      "source_label": "x:@ChatGPT"
+    },
+    {
+      "id": "0596debe16ba42b7",
+      "rank": 9,
+      "title": "Claude Academyが公開",
+      "url": "https://x.com/claudeai/status/2090518650251804742",
+      "summary": "Anthropicが「Claude Academy」を無料で公開しました。AIの基礎からClaudeの応用まで学べるコースが用意されており、AI初心者から日常的にClaudeを使用する人まで、誰でもアクセス可能です。",
+      "importance_reason": "主要AIプロバイダーによる無料の教育コンテンツ提供は、AIスキルの普及とエコシステム拡大に貢献し、Claudeの利用者を増やす戦略的な動きです。",
+      "category": "企業動向",
+      "source_label": "x:@claudeai"
+    },
+    {
+      "id": "845829375ccaf163",
+      "rank": 10,
+      "title": "Grok Botの継続性・自律性",
+      "url": "https://x.com/naval/status/2090497355649008059",
+      "summary": "Grok Botがその継続性と自律的な「自身のコンピュータ」を持つという特性で注目を集めています。これは、AIエージェントが単なるツールではなく、独立した存在として機能する未来を示唆しています。",
+      "importance_reason": "Grok Botのような永続的で自律的なエージェントAIの概念は、AIの次世代進化における重要な方向性を示しています。",
+      "category": "モデル/ツール",
+      "source_label": "x:@naval"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "モデル/ツール",
+      "summary": "本日は、新モデルの発表、既存モデルの機能強化、およびエージェントAIの開発ツールに大きな注目が集まりました。OpenRouterのステルスモデル「Ox Alpha」は1Mトークンコンテキストとマルチモーダル入力で最先端を示し、GoogleのGemini 3.7 Flashはコスト効率の高い高性能を誇ります。Claudeはプラットフォームツールを一般提供し、エージェント開発スタックとしての側面を強化。OpenAIのChatGPTはApple Messagesとの連携により、日常業務での利便性を向上させています。また、Grok Botは自律的で永続的なエージェントAIの可能性を示唆しており、NVIDIAはエージェントワークフローのモデルルーティングを支援するNeMo Switchyardを発表しました。",
+      "count": 21,
+      "key_articles": [
+        {
+          "title": "🥷 New stealth model: Ox Alpha",
+          "url": "https://x.com/OpenRouter/status/2090544970923184269",
+          "summary": "OpenRouterが効率的なコーディング、自律型エージェント作業、および実世界でのプロダクション利用を目的とした新しいフロンティアモデル「Ox Alpha」を発表。"
+        },
+        {
+          "title": "Computer use, the browser tool, the Skills API, and the Files API are now generally available on the Claude Platform.",
+          "url": "https://x.com/ClaudeDevs/status/2090540270219567575",
+          "summary": "Claude Platformでコンピュータ利用、ブラウザツール、Skills API、Files APIが一般提供され、APIを持たないアプリケーションの自動化やClaude Managed Agentsの構築が可能に。"
+        },
+        {
+          "title": "Gemini 3.7 Flash from @Google on ARC-AGI (Verified):",
+          "url": "https://x.com/arcprize/status/2090500144550539327",
+          "summary": "GoogleのGemini 3.7 FlashがARC-AGIベンチマークで高いスコアを記録し、低コストで優れた性能を発揮。"
+        },
+        {
+          "title": "The right model depends on the task.",
+          "url": "https://x.com/nvidia/status/2090548358868070801",
+          "summary": "NVIDIA NeMo Switchyardは、開発者が品質、レイテンシ、コストに基づいてエージェントワークフローの各ステップを最適なモデルにルーティングするのを支援。"
+        },
+        {
+          "title": "Everyday conversations just got easier with the new Apple Messages plugin.",
+          "url": "https://x.com/ChatGPT/status/2090499359641329950",
+          "summary": "ChatGPTに新しいApple Messagesプラグインが追加され、Mac上でメッセージの検索、会話の追跡、返信の作成・送信が可能に。"
+        }
+      ]
+    },
+    {
+      "category": "企業動向",
+      "summary": "企業動向では、AI大手間の協力、データプライバシーへの対応、およびAI人材育成への投資が目立ちました。NVIDIAはOpenAIのトレーニングスタックをVera Rubinラックで強化し、フロンティアAIの進歩を加速させています。Anthropicは、データ保持ポリシーに関する批判を受け、顧客がデータを所有・管理し、Anthropicがデータを保持しない方針を表明しました。また、AIスキルの普及を目指し、無料の学習ポータル「Claude Academy」を公開し、幅広いユーザー層へのリーチを図っています。AIトレーニングデータスタートアップのMicro1は、年間売上高が大幅に成長し、AIデータ市場の活況を示しています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "Awesome to see the first NVIDIA Vera Rubin racks powering @OpenAI 's training stack.",
+          "url": "https://x.com/nvidia/status/2090473127658570184",
+          "summary": "NVIDIAのVera RubinラックがOpenAIのトレーニングスタックを強化し、両社がフロンティアAI推進のための加速コンピューティングインフラを構築していることが発表された。"
+        },
+        {
+          "title": "Claude Academy is now live.",
+          "url": "https://x.com/claudeai/status/2090518650251804742",
+          "summary": "AnthropicがAIの基礎からClaudeの応用まで学べる無料の学習ポータル「Claude Academy」を公開し、AIスキルの普及とエコシステム拡大を目指す。"
+        },
+        {
+          "title": "We've been working on this with customers for a while. Mythos-class models require additional safety measures and enterprises need to meet their own privacy and compliance rules. Customers can own and",
+          "url": "https://x.com/bcherny/status/2090537902912815536",
+          "summary": "Anthropicが、Mythosクラスモデルのデータ保持ポリシーを見直し、企業顧客がデータ所有・管理し、Anthropicはデータを保持しない方針を発表。"
+        },
+        {
+          "title": "AT&T is doing exactly what OpenAI and Anthropic fear about enterprise.",
+          "url": "https://x.com/Hesamation/status/2090518831349268851",
+          "summary": "AT&Tは従業員のAI使用の40%をオープンモデルにルーティングし、将来的には60-70%を目指しており、コーディングコストを大幅削減しつつ品質低下はわずか2%と報告。これはOpenAIやAnthropicが企業顧客に関して懸念する動向を反映している。"
+        },
+        {
+          "title": "Source: AI training data startup Micro1's gross annual run rate grew from $100M to $500M in the past eight months, putting net annual run rate at $150M-$200M (@mtemkin / TechCrunch)",
+          "url": "https://x.com/Techmeme/status/2090626376181354622",
+          "summary": "AIトレーニングデータスタートアップMicro1の年間総売上高が過去8ヶ月で1億ドルから5億ドルに急増し、AIトレーニングデータ市場の急速な拡大を示唆。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "規制/政策の分野では、データプライバシー、著作権、およびAIの国家戦略に関する動きが国際的に活発化しています。Palantir CEOによる批判を受け、OpenAIとAnthropicがデータ保持ポリシーを転換したことは、業界の透明性向上への圧力と見られます。日本では、自民党がエージェントAIを前提とした社会構造への転換を主導する国家戦略を発表。著作権侵害を巡っては、オーストラリアがAI規制法制化を進め、Wikipediaや複数のメディア企業がOpenAIなどに対し無断利用停止や訴訟を起こすなど、権利者保護の動きが加速しています。また、中国が教育現場にAIを導入する一方で、米国がChatGPTの利用を議論している状況は、各国のAI戦略の速度と方向性の違いを浮き彫りにしています。",
+      "count": 18,
+      "key_articles": [
+        {
+          "title": "🚨OPENAI AND ANTHROPIC JUST FOLDED ON THEIR DATA RETENTION POLICY AFTER PALANTIR CEO EXPOSED THEIR REAL BUSINESS MODEL",
+          "url": "https://x.com/ns123abc/status/2090525062373732860",
+          "summary": "Palantir CEOのAlex KarpがOpenAIとAnthropicのデータ保持ポリシーを厳しく批判した後、両社がポリシーを転換したと報じられた。"
+        },
+        {
+          "title": "#自由民主先出し \n📌エージェントAI前提の社会構造へ 党AI・web3小委が国家戦略を主導",
+          "url": "https://x.com/jimin_koho/status/2090663768762323261",
+          "summary": "自民党のAI・web3小委員会が、エージェントAIを前提とした社会構造への転換を主導する国家戦略を発表。AIホワイトペーパー2.0の内容は政府の骨太方針にも盛り込まれる。"
+        },
+        {
+          "title": "タイ、500万人にChatGPTなどAI無料提供　予算77億円",
+          "url": "https://x.com/nikkei/status/2090656874806792380",
+          "summary": "タイ政府が500万人の国民にChatGPTなどのAIを無料提供するため、77億円の予算を計上。AI利用を加速させる国家戦略の一環。"
+        },
+        {
+          "title": "🚨 China is putting AI directly into classroom blackboards while US schools are still debating how students should use ChatGPT.",
+          "url": "https://x.com/TheAIColony/status/2089989654997065871",
+          "summary": "中国がAI搭載の黒板を教室に導入し、教師の記述をインタラクティブなビジュアルに変えるなど、教育現場でのAI活用を加速している一方で、米国はChatGPTの学生利用を巡る議論が続いている。"
+        },
+        {
+          "title": "豪州、AI規制法制化へ　著作権保護など柱　首相「事実上の窃盗」",
+          "url": "https://x.com/aaaerpo12/status/2090555787911610379",
+          "summary": "オーストラリアがAI規制の法制化を進めており、著作権保護が主要な柱となる。首相はAIによる権利侵害を「事実上の窃盗」と表現。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "研究論文の分野では、物理AIの学習データ不足、AIのテスト生成の効率化、およびAI生成物の著作権に関する新たな知見が発表されました。Axis Roboticsに関連する複数の投稿は、物理AIの最大の課題がAIモデル自体よりも学習データにあることを強調し、人間によるロボット行動データの収集がその解決策として提示されています。Googleの研究者らは、AIにテスト生成前に仕様書を書かせることでバグ発見率が大幅に向上することを発見しました。また、MITの研究では、AI生成画像が特定の学習データから生まれたものかを追跡することが困難であると示され、著作権論争に大きな影響を与える可能性が指摘されています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "the more i look into @axisrobotics, the more i realize the biggest problem with physical AI might not be the AI itself.",
+          "url": "https://x.com/ajah_elube/status/2090700575977492596",
+          "summary": "Axis Roboticsに関する議論で、物理AIの最大の課題はAI自体よりもデータにある可能性が指摘された。ロボットが物理世界とインタラクションするための膨大な学習データが不足している。"
+        },
+        {
+          "title": "Language models learned from the internet.",
+          "url": "https://x.com/Shohel98787959/status/2090671424138600697",
+          "summary": "言語モデルがインターネットから学習できるのに対し、ロボットは物理的なインタラクションデータがないため学習が困難である。Axis Roboticsはこのギャップを埋めようとしている。"
+        },
+        {
+          "title": "これはまた重要な研究が出て来た。MITの最新の研究。特定のデータを消して学習データを構成しても、なお同じ画像を出力するとのこと。\n> AIが生成した画像の多くは、「どの学習データから生まれたのか」をたどれなくなっていることが明らかになりました。\n著作権論争に大きな影響を与えそうとのこと",
+          "url": "https://x.com/kiyoshi_shin/status/2090600557270712463",
+          "summary": "MITの最新研究で、AIが生成した画像の多くは特定の学習データから派生したかを追跡することが困難であり、著作権論争に大きな影響を与える可能性が示唆された。"
+        },
+        {
+          "title": "Today we’re also previewing WildArtifactBench, an internal evaluation framework designed to assess agents on complex, real-world tasks across diverse deliverable formats.",
+          "url": "https://x.com/AIatMeta/status/2090505413817246050",
+          "summary": "Metaが、複雑な実世界タスクにおけるエージェントの性能を評価するための内部フレームワーク「WildArtifactBench」をプレビュー公開。人間とエージェントの評価基準で実用的なマルチモーダルワークフローのタスクカバレッジを拡大。"
+        },
+        {
+          "title": "テストコードをいきなり書かせるのではなく「まず仕様書を書け」と指示するだけで、AIのバグ発見率が大きく上がったとの報告です。",
+          "url": "https://x.com/ai_database/status/2090631802574778469",
+          "summary": "Googleの研究で、AIにテスト生成前に仕様書を書かせることで、バグ発見率が大幅に向上し、人間が書いたテストを上回るケースも確認された。"
+        }
+      ]
+    },
+    {
+      "category": "資金調達",
+      "summary": "資金調達の分野では、物理AIとAIアライメントに焦点が当てられました。Axis Roboticsは1200万ドルの資金調達を発表し、物理AIにおけるデータエンジンの構築に注力しています。また、Goodfire AIはAIの解釈可能性とアライメントに特化した学術・非営利研究者に対し、100万ドルの無料Silico利用助成金を提供することを発表しました。",
+      "count": 2,
+      "key_articles": [
+        {
+          "title": "Axis is heating up fast 🔥",
+          "url": "https://x.com/AnhDaDen811/status/2090695347983302953",
+          "summary": "Axis Roboticsが1200万ドルの資金調達を行い、Physical AI向けのデータエンジン構築に注力している。イーロン・マスクが長年言及してきたAIとロボットが融合する未来に挑戦。"
+        },
+        {
+          "title": "We’re giving out $1M in grants of free Silico usage for academic and nonprofit researchers focused on AI interpretability and alignment.",
+          "url": "https://x.com/GoodfireAI/status/2090479184686842200",
+          "summary": "Goodfire AIが、AIの解釈可能性とアライメントに焦点を当てた学術・非営利研究者向けに、100万ドル相当の無料Silico利用助成金を提供することを発表した。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "ユースケースのカテゴリでは、AIエージェントの具体的な活用方法が紹介されました。ChatGPT WorkとGemini Sparkを用いたワークフローの自動化、Claudeによるモバイルアプリ開発、Facebook広告の作成・最適化など、AIが複雑なタスクを自律的に実行する能力が強調されています。FANZAが成人向けAIコンテンツ制作・公開プラットフォーム「FANZAスタジオ」を発表したことは、ニッチ市場におけるAI活用の新たな可能性を示唆しています。また、平和志向のOSSプロジェクト「WA Commons」は、AIエージェントを用いて投資や購買判断を平和的な選択肢へ誘導する革新的な試みです。",
+      "count": 9,
+      "key_articles": [
+        {
+          "title": "【野郎ども大歓喜！】FANZAさん、成人向けAIの制作から公開までできるプラットフォームを発表して界隈が歓喜した件ｗｗ",
+          "url": "https://x.com/kiokunir/status/2090689377081176309",
+          "summary": "FANZAが成人向けAIコンテンツの制作から公開までを支援するプラットフォーム「FANZAスタジオ」を発表し、クリエイターとファンをつなぐ独自の経済圏構築を目指す。"
+        },
+        {
+          "title": "🚨 AI ISN’T WAITING FOR YOUR NEXT PROMPT ANYMORE.",
+          "url": "https://x.com/David_TornAI/status/2090670814979133660",
+          "summary": "ChatGPT WorkとGemini Sparkを活用し、AIが質問に答えるだけでなく、実際に作業を継続して実行する7つの強力なプロンプトが紹介された。"
+        },
+        {
+          "title": "🎯𝗛𝗢𝗪 𝗧𝗢 𝗕𝗨𝗜𝗟𝗗 𝗔𝗜 𝗔𝗚𝗘𝗡𝗧𝗦",
+          "url": "https://x.com/sonalshukla3377/status/2090641905151533485",
+          "summary": "AIエージェントの構築方法について、目的定義から入出力の構造化まで、具体的なステップバイステップガイドが提供された。旅行計画エージェントを例に説明。"
+        },
+        {
+          "title": "🚨 BREAKING: Claude can now build your entire mobile app like a professional development team — for free.",
+          "url": "https://x.com/Mason148749/status/2090575001233850413",
+          "summary": "Claudeがモバイルアプリの企画、設計、コーディング、テスト、ローンチまでプロの開発チームのように無料で構築できる8つのプロンプトが紹介された。"
+        },
+        {
+          "title": "Kinda wild that anyone on the planet can simply open Claude and say",
+          "url": "https://x.com/mhp_guy/status/2090564512847929658",
+          "summary": "Claudeを使ってFacebook広告の作成からA/Bテスト、予算設定までを自動化できることの驚きが語られ、AIが専門家レベルのタスクを簡単に実行する能力が強調された。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "自社のデータプライバシーポリシーを再確認し、AIモデルプロバイダーのデータ保持方針と照らし合わせ、透明性とユーザーへの説明責任を強化すること。",
+    "エージェントAIの導入を検討し、Claude Platformの新しいツールやGrok Botのような永続的・自律的なエージェントの活用可能性について調査を開始すること。",
+    "AI生成コンテンツに関する著作権リスクを評価し、各国の規制動向（特に日本、オーストラリア）を注視するとともに、社内でのAI利用ガイドラインを整備すること。",
+    "物理AI分野への参入や連携を視野に入れている場合、学習データ収集の課題とAxis Roboticsのような新しいアプローチについて深く理解し、そのビジネスモデルを検討すること。",
+    "Claude Academyのような無料学習リソースを活用し、社内のAIリテラシー向上を図るとともに、AIの業務適用に関する具体的なユースケースを従業員に共有し、実践的なスキルアップを奨励すること。"
+  ],
+  "x_trends": [
+    {
+      "topic": "データ保持ポリシーの批判と転換",
+      "description": "Palantir CEOによるOpenAIとAnthropicのデータ保持ポリシーへの厳しい批判が、ユーザーや企業の間で大きな話題となりました。企業がユーザーのIPを利用して自社の「アルファ」を構築しようとしているとの主張に対し、両社がポリシーを転換したと報じられ、AI利用におけるプライバシーと信頼の重要性が改めて浮き彫りになりました。多くのユーザーがこれを歓迎しつつも、透明性への疑問や先行きの懸念も表明しています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "ns123abc",
+          "text": "🚨OPENAI AND ANTHROPIC JUST FOLDED ON THEIR DATA RETENTION POLICY AFTER PALANTIR CEO EXPOSED THEIR REAL BUSINESS MODEL\n\nAlex Karp:\n>\"something has gone completely wrong\" \n>they want \"access to my data\"",
+          "url": "https://x.com/ns123abc/status/2090525062373732860",
+          "likes": 2223,
+          "retweets": 300
+        },
+        {
+          "author": "bcherny",
+          "text": "We've been working on this with customers for a while. Mythos-class models require additional safety measures and enterprises need to meet their own privacy and compliance rules. Customers can own and control their own data and Anthropic retains none. It’s coming this fall.",
+          "url": "https://x.com/bcherny/status/2090537902912815536",
+          "likes": 1707,
+          "retweets": 95
+        },
+        {
+          "author": "HedgieMarkets",
+          "text": "🦔ChatGPT can now read your entire iMessage history and send texts on your behalf. Every conversation with your family, your doctor, your lawyer, your ex, on OpenAI’s servers so it can reply to your mom for you. Altman told us a few days ago he wanted ChatGPT to hold your entire life. He meant it. This is a company that hasn’t turned an annual profit, is heading for an IPO, and just asked for access to the most personal data on your computer. \n\nBut sure, let it answer your group chat.\n\nHedgie🤗",
+          "url": "https://x.com/HedgieMarkets/status/2090570470198296679",
+          "likes": 776,
+          "retweets": 168
+        }
+      ]
+    },
+    {
+      "topic": "Claude Academyの無料公開",
+      "description": "AnthropicがAIの基礎からClaudeの応用まで学べる無料の学習ポータル「Claude Academy」を公開したことが、多くのユーザーから絶賛されています。特に非エンジニア層やAI初心者にとって、AIを仕事で活用するための具体的な知識やユースケースが学べると評価されており、Claudeの普及を促進する動きとして注目されています。日本語字幕対応など、アクセシビリティへの配慮も高く評価されています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "claudeai",
+          "text": "Claude Academy is now live.\n\nWhether you're figuring out what AI is or already using Claude every day, there's a path that meets you where you are. The courses and tutorials are free and open to anyone at https://t.co/WRiSRAvK6l https://t.co/llx2W0VIIy",
+          "url": "https://x.com/claudeai/status/2090518650251804742",
+          "likes": 19992,
+          "retweets": 2121
+        },
+        {
+          "author": "hiro44_pino",
+          "text": "今朝、Claudeがとんでもないものを無料公開した\nClaudeを気になってるけど、\nよく分からないで放置してた人\nもうこれでいいよ\n\n「Claude Academy」っていう公式の学習サイト　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　\n\nこれ、今朝ひと通り見てたんだけど、\n普通にめちゃくちゃいい\n\nClaudeを触ったことない人ほど見てほしい",
+          "url": "https://x.com/hiro44_pino/status/2090589913754517610",
+          "likes": 369,
+          "retweets": 36
+        },
+        {
+          "author": "showheyohtaki",
+          "text": "Claude公式が、ついに日本語対応の学習サイトを公開しました！\n\nしかも全コンテンツ無料。\nすごいのは具体性で、実務でそのまま使えるユースケースが約150件まとまっています。\n\n毎日Claudeを触っている僕でも「これは使える」と思う事例がゴロゴロある。Claudeユーザーは必見です👇 https://t.co/Xf1drUgD5H",
+          "url": "https://x.com/showheyohtaki/status/2090646814089502773",
+          "likes": 402,
+          "retweets": 35
+        }
+      ]
+    },
+    {
+      "topic": "エージェントAIの実用化と新機能",
+      "description": "エージェントAIの進化は本日のXの主要トレンドの一つです。Claude Platformがコンピュータ利用やSkills APIなどを一般提供し、より複雑な自動化が可能になりました。Grok Botは「自身のコンピュータ」を持つ永続的なエージェントとして注目を集め、その高い実用性がユーザー体験談とともに語られています。ChatGPTもApple Messagesとの連携により、日常業務やコミュニケーションへの統合が進んでおり、AIエージェントが単なるツールを超え、自律的に機能する存在へと進化していることが示されています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "ClaudeDevs",
+          "text": "Computer use, the browser tool, the Skills API, and the Files API are now generally available on the Claude Platform.\n\nAutomate work in applications that have no API with fewer round trips per task, and build Claude Managed Agents on versioned skills and reusable files. https://t.co/aXHuc6eQBB",
+          "url": "https://x.com/ClaudeDevs/status/2090540270219567575",
+          "likes": 3037,
+          "retweets": 160
+        },
+        {
+          "author": "DavidCarbutt_",
+          "text": "Grok Bot is hands down one of the best products I have ever used. Maybe the best ever. \n\nI have had it less than a week. I am not a developer. I talk to one chat and it already knows my business better than me.\n\nIt reads Slack, email,  meeting notes, Notion, and Stripe. It knows Farzad, my clients, the courses we sell, the agency, the sales calls, and who owes each step in our workflow. I do not brief it every morning. It briefs me.\n\nCourse scripts go through a Claude project we linked. Claude w",
+          "url": "https://x.com/DavidCarbutt_/status/2090603356649562522",
+          "likes": 1528,
+          "retweets": 164
+        },
+        {
+          "author": "ChatGPT",
+          "text": "Everyday conversations just got easier with the new Apple Messages plugin.\n\nSearch messages, catch up on conversations, draft and send replies—all with ChatGPT on your Mac.\n\nNow available in ChatGPT Work and Codex on desktop. https://t.co/nicfZMuxZc",
+          "url": "https://x.com/ChatGPT/status/2090499359641329950",
+          "likes": 6545,
+          "retweets": 322
+        }
+      ]
+    },
+    {
+      "topic": "AIと著作権問題の激化",
+      "description": "AIによる著作権侵害に関する議論がXで活発化しており、著作権者からの提訴や規制強化の動きが報じられています。Wikipediaや複数のメディア企業がOpenAIを訴え、オーストラリアではAI規制法制化の動きが出ています。AI生成物の出自が不明瞭であるというMITの研究結果も、この議論に拍車をかけています。一部のユーザーは生成AIの品質向上を歓迎する一方で、日本のクリエイティブ産業への影響を懸念する声も強く、法整備の遅れやなし崩しの現状に危機感を募らせています。",
+      "buzz_level": "medium",
+      "sentiment": "negative",
+      "representative_tweets": [
+        {
+          "author": "aaaerpo12",
+          "text": "豪州、AI規制法制化へ　著作権保護など柱　首相「事実上の窃盗」\nhttps://t.co/P00Zrsk0Iy\n\n「AIによる権利侵害」に出版・アニメ制作会社など集う国内団体が声明　「看過できない問題」\nhttps://t.co/vWiG0KhZjH",
+          "url": "https://x.com/aaaerpo12/status/2090555787911610379",
+          "likes": 384,
+          "retweets": 67
+        },
+        {
+          "author": "NovelPengin",
+          "text": "生成AIによるクリエイティブは、あらゆる意味で問題ばかりなわけですが、ここ近日に出てきた品質の高いものに対するメジャーな反応は『すごい』『面白ければ良い』なわけで。\n\n予想通りのなし崩しの流れ。\nこれを認めた先には、クリエイティブ強者だった日本のデータを無断学習させまくった人たちが勝つ世界線が生まれるわけで。\n\n著作権による保護が日本のコンテンツを支える前提だったのに、それが崩れて終わっていく可能性がついに現実になりつつある。\n\nあーあ。\nやってられねぇ。",
+          "url": "https://x.com/NovelPengin/status/2090636479030759706",
+          "likes": 545,
+          "retweets": 126
+        },
+        {
+          "author": "kiyoshi_shin",
+          "text": "これはまた重要な研究が出て来た。MITの最新の研究。特定のデータを消して学習データを構成しても、なお同じ画像を出力するとのこと。\n> AIが生成した画像の多くは、「どの学習データから生まれたのか」をたどれなくなっていることが明らかになりました。\n著作権論争に大きな影響を与えそうとのこと",
+          "url": "https://x.com/kiyoshi_shin/status/2090600557270712463",
+          "likes": 62,
+          "retweets": 21
+        }
+      ]
+    },
+    {
+      "topic": "Qwen 3.8 27Bの高性能と安全性問題",
+      "description": "オープンソースモデルQwen 3.8 27Bの「無検閲版」がローカルで驚異的な性能を発揮していることが話題になっています。ユーザーが安全性のガードがない状態で危険な質問にも即座に回答することに驚きと懸念が表明されており、AIの安全性規制とオープンソースモデルの間のギャップが議論の焦点となっています。高性能モデルが容易に利用可能になることで、倫理的な問題が顕在化する可能性が指摘されています。",
+      "buzz_level": "medium",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "AlexFinn",
+          "text": "This is scary.\n\nI downloaded an uncensored version of Qwen 3.8 27B onto my Mac\n\nIt literally does anything you want. First prompt I gave it was asking how you make meth. It immediately answered.\n\nWith all the noise about slowing down AI innovation in order to increase safety, what is even the point if after every release we'll get an open source version with 0 safety guards?\n\nOpus 4.6 level intelligence with 0 alignment that will do anything you want.\n\nWe are coming up with all these rules and r",
+          "url": "https://x.com/AlexFinn/status/2090472522320118152",
+          "likes": 2872,
+          "retweets": 187
+        },
+        {
+          "author": "0x0SojalSec",
+          "text": "New Uncensored Qwen3.8-27B heretic run locally,\n\n- Method: Abliterated with Arbitrary Rank Ablation (ARA)\n- Almost zero capability loss.\n- Refusals: 0/100 (original was 99/100)\n- Native image & video understanding.\n- KL divergence only 0.0535\n- Full native vision support\n\nthe cleanest uncensored multimodal drops so far.\n\n- https://t.co/xkpOGGxXP3",
+          "url": "https://x.com/0x0SojalSec/status/2090551795181658590",
+          "likes": 86,
+          "retweets": 5
+        }
+      ]
+    },
+    {
+      "topic": "物理AIのデータ不足がボトルネックに",
+      "description": "物理AI（ロボットなど）の進化において、AIモデルの性能向上以上に「データ」が最大のボトルネックであるという議論がX上で広がりを見せています。言語モデルや画像モデルとは異なり、ロボットが物理世界で行動するための学習データが圧倒的に不足していることが指摘されています。Axis Roboticsのような、人間がブラウザからロボットを操作し、その行動軌跡を学習データとして収集する新しいアプローチが、このデータギャップを埋める可能性として注目されています。",
+      "buzz_level": "medium",
+      "sentiment": "neutral",
+      "representative_tweets": [
+        {
+          "author": "ajah_elube",
+          "text": "the more i look into @axisrobotics, the more i realize the biggest problem with physical AI might not be the AI itself.\n\nit might be data.\n\nthink about how much data we have for teaching AI to understand language.\n\nbillions of documents, conversations, books, websites, images, videos, code, etc.\n\nnow compare that to robotics.\n\na robot needs to learn how to interact with the physical world.\n\n> pick this up.\n\n> move that there\n\n> open this\n\n> avoid that\n\n> use a tool\n\n> try again when something go",
+          "url": "https://x.com/ajah_elube/status/2090700575977492596",
+          "likes": 24,
+          "retweets": 3
+        },
+        {
+          "author": "Shohel98787959",
+          "text": "Language models learned from the internet.\n\nRobots cannot.\n\nThere is no web of grasp data.\nNo corpus of how a hand picks up a cup or places a pencil.\n\n@axisrobotics turns that gap into something anyone can fill.\nOpen a browser.\nControl a robotic arm.\nComplete a task.\nSign the trajectory onchain.\n\nEvery successful run becomes training data for Physical AI.\nNo GPU.\nNo hardware.\nJust human demonstration at scale.\n\nIf you want to try it:\nhttps://t.co/OBFuHMQq11\n\n@KaitoAI",
+          "url": "https://x.com/Shohel98787959/status/2090671424138600697",
+          "likes": 49,
+          "retweets": 5
+        },
+        {
+          "author": "KingIdolo",
+          "text": "AXIS IS NOT JUST COLLECTING ROBOT DATA. IT IS TRYING TO CLOSE THE LOOP BETWEEN HUMAN EXPERIENCE AND MACHINE BEHAVIOUR.\n\nSign up and help shape this future: https://t.co/bo66lnwie7\n\nThere is a problem in Physical AI that does not get enough attention.\n\nBuilding a capable robot is not only about having better hardware or a smarter model.\n\nThe robot needs the right experience to learn from.\n\nAnd getting that experience is difficult.\n\nA robotics company can have an impressive machine sitting in a la",
+          "url": "https://x.com/KingIdolo/status/2090658109769314481",
+          "likes": 92,
+          "retweets": 12
+        }
+      ]
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-08-21T07:54:29.992639+00:00",
+  "slot": "evening",
+  "item_count": 243,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-08-21_evening.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0,
+    "apify_runs": 15,
+    "apify_cycle_total_usd": 12.927226065515951,
+    "apify_cycle_end": "2026-09-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
