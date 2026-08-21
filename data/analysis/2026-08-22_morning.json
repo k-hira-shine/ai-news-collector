@@ -1,0 +1,488 @@
+{
+  "trend_summary": "本日のAI業界は、主要企業間でエージェントAIの性能と多機能性に関する激しい競争が展開されています。NVIDIA AVOがARC-AGI-3ベンチマークで100%を達成し、DeepSeekはAnthropic Opus 4.8に匹敵するマルチモーダルエージェントモデルを発表しました。一方で、出所の不明な高性能モデル「Ox Alpha」の登場が市場に大きな関心を集めています。OpenAIはCodexの2000万ユーザー達成を祝いつつも、利用制限に関するユーザーからの批判に直面しており、大手プロバイダーのユーザーエンゲージメントとビジネスモデルが問われています。",
+  "trend_evolution": {
+    "since_last": "前回のレポート以降、AIエージェントの進化とモデルの性能競争は引き続き加速しています。特にNVIDIA AVOによるARC-AGI-3ベンチマークの解決やDeepSeekの強力なマルチモーダルモデルの登場により、AIモデルの性能は大幅に向上し、各社がエージェント機能に注力していることが明確になりました。また、「Ox Alpha」のような匿名の高性能モデルの出現は、AI開発の加速と同時に、市場の透明性や競争環境に新たな側面をもたらしています。OpenAIのユーザー数拡大は堅調なものの、利用制限を巡るユーザーの不満は依然として根強く、企業戦略が注目されます。AI規制やデータに関する議論も継続しており、物理AIのデータ収集の重要性が改めて強調されています。",
+    "tracked_topics": [
+      {
+        "topic": "AIエージェントの進化と活用",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "AIエージェントの開発手法と活用事例は、NVIDIA AVOのベンチマーク達成やDeepSeekの新モデル、Slack Codeの発表により一層加速し、実用化のフェーズに入っています。"
+      },
+      {
+        "topic": "AIモデルの性能競争と新モデルリリース",
+        "status": "RISING",
+        "streak_days": 5,
+        "evolution": "ARC-AGI-3ベンチマークの解決やDeepSeek-V4-Flash-Vision-Exp、そして匿名の「Ox Alpha」など、次々と高性能モデルが登場し、競争が激化しています。"
+      },
+      {
+        "topic": "OpenAIの企業戦略と動向",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "Codexのユーザー数2000万達成はポジティブですが、利用制限とそれに対するユーザーの不満が継続的な課題となっています。"
+      },
+      {
+        "topic": "Anthropicのサービス状況と戦略",
+        "status": "SUSTAINED",
+        "streak_days": 5,
+        "evolution": "DeepSeekの挑戦により、Anthropicの主要モデルの性能が市場で比較され、競争圧力が高まっています。"
+      },
+      {
+        "topic": "AI学習データの倫理と著作権",
+        "status": "SUSTAINED",
+        "streak_days": 3,
+        "evolution": "EU AI Actの透明性ルール施行や、日本の著作権問題に関する議論が継続しており、法規制の動向が注目されています。"
+      },
+      {
+        "topic": "物理AIの開発とデータ収集",
+        "status": "RISING",
+        "streak_days": 1,
+        "evolution": "ロボット学習のためのデータ収集の重要性が強調され、Axis Roboticsのようなプラットフォームが注目を集めています。"
+      },
+      {
+        "topic": "AIデータセンターの規制と環境問題",
+        "status": "RISING",
+        "streak_days": 1,
+        "evolution": "ペンシルベニア州のデータセンター規制強化やAIに対する公衆の不信感の高まりが報じられ、環境・社会影響への懸念が浮上しています。"
+      }
+    ]
+  },
+  "top_articles": [
+    {
+      "id": "e8232d69ddefb673",
+      "rank": 1,
+      "title": "Codex 2000万ユーザー達成とクレジット",
+      "url": "https://x.com/thsottiaux/status/2090766694897619318",
+      "summary": "Codexが2000万アクティブユーザーを達成し、記念にCodexおよびChatGPT Workユーザー全員にクレジットが配布されます。利用制限の急速な減少については調査中とのこと。",
+      "importance_reason": "OpenAIの主要サービスであるCodexの驚異的なユーザー成長を示す公式発表であり、利用制限問題への言及も含まれるため、企業動向とユーザーエンゲージメントの両面で極めて重要。",
+      "category": "企業動向",
+      "source_label": "x:@thsottiaux"
+    },
+    {
+      "id": "6986ebb6ebcd65dc",
+      "rank": 2,
+      "title": "NVIDIA AVO、ARC-AGI-3で100%達成",
+      "url": "https://x.com/NVIDIAAI/status/2090786258981466231",
+      "summary": "NVIDIAの汎用コーディングエージェントAVOが、ARC-AGI-3インタラクティブ推論ベンチマークで全183レベルを100%クリアしました。",
+      "importance_reason": "AIエージェントの推論能力における画期的な進歩を示すもので、かつては難題とされたベンチマークを完全に解決したことは業界に大きなインパクトを与えます。",
+      "category": "研究論文",
+      "source_label": "x:@NVIDIAAI"
+    },
+    {
+      "id": "bc28dc11956822ef",
+      "rank": 3,
+      "title": "DeepSeek-V4-Flash-Vision-Exp公開",
+      "url": "https://x.com/deepseek_ai/status/2090730032574631962",
+      "summary": "DeepSeekが実験的なマルチモーダルモデルDeepSeek-V4-Flash-Vision-ExpをAPIプラットフォームで公開。これはテキスト能力でDeepSeek-V4-Flashと同等、マルチモーダルエージェント性能ではOpus-4.8に迫るとしています。",
+      "importance_reason": "既存の主要モデルに匹敵する高性能なマルチモーダルエージェントモデルが中国企業から登場したことで、AIモデル開発競争の激化と地理的な競争を明確に示しています。",
+      "category": "モデル/ツール",
+      "source_label": "x:@deepseek_ai"
+    },
+    {
+      "id": "f59b6bfa9d2d3768",
+      "rank": 4,
+      "title": "NVIDIA AVO、ARC-AGI-3を解決",
+      "url": "https://x.com/kimmonismus/status/2090814903133098211",
+      "summary": "NVIDIAのコーディングエージェントAVOがARC-AGI-3の25のパブリックゲーム全てで100%を記録。AVOは指示なしで学習し、長期記憶で自己改善する能力を持ちます。",
+      "importance_reason": "ARC-AGI-3の解決は単なるベンチマーク達成を超え、AIエージェントが自律的に学習し、エラーを修正しながら長期的なタスクを遂行する能力の向上を示唆しています。",
+      "category": "研究論文",
+      "source_label": "x:@kimmonismus"
+    },
+    {
+      "id": "f61f942c2e9a790c",
+      "rank": 5,
+      "title": "DeepSeek、Opus 4.8に匹敵するモデル",
+      "url": "https://x.com/Polymarket/status/2090792086203187285",
+      "summary": "DeepSeekが、高度なエージェントタスクにおいてAnthropicのOpus 4.8に「近い」性能を発揮すると主張する新しいマルチモーダルAIモデルを発表しました。",
+      "importance_reason": "DeepSeekのモデルがAnthropicの最先端モデルに匹敵する性能を持つという主張は、中国AI企業の技術力の向上と、フロンティアAIモデル市場での競争激化を示唆しています。",
+      "category": "モデル/ツール",
+      "source_label": "x:@Polymarket"
+    },
+    {
+      "id": "30b67a2426ef7804",
+      "rank": 6,
+      "title": "NVIDIAコーディングエージェントがARC-AGI-3で100%",
+      "url": "https://x.com/DanDr1s/status/2090810522572579014",
+      "summary": "3月には1%未満だったARC-AGI-3で、NVIDIAの汎用コーディングエージェントが100%のスコアを達成。指示なしで人間レベルの効率で問題を解決します。",
+      "importance_reason": "短期間でのベンチマークスコアの劇的な改善は、AIエージェントの学習能力と汎用性の急速な進化を浮き彫りにし、AGI研究における大きなマイルストーンとなります。",
+      "category": "研究論文",
+      "source_label": "x:@DanDr1s"
+    },
+    {
+      "id": "eb04d74773cafb55",
+      "rank": 7,
+      "title": "NVIDIA AVO、Claude Opus 5でARC-AGI-3全クリア",
+      "url": "https://x.com/StockSavvyShay/status/2090822461713686571",
+      "summary": "NVIDIA AVOがClaude Opus 5を活用し、ARC-AGI-3の全183パブリックレベルを完了。永続的な記憶と実行フィードバックを利用して学習を継続します。",
+      "importance_reason": "基盤モデルとエージェントレイヤーの組み合わせによる性能向上を示し、AIエージェントが複雑なタスクを効率的に解決するためのアプローチの有効性を実証しています。",
+      "category": "研究論文",
+      "source_label": "x:@StockSavvyShay"
+    },
+    {
+      "id": "020b247934ac228b",
+      "rank": 8,
+      "title": "NVIDIA AVO、ARC-AGI-3ベンチマークを完了",
+      "url": "https://x.com/testingcatalog/status/2090808362103452106",
+      "summary": "NVIDIAの汎用コーディングエージェントAVOがARC-AGI-3ベンチマークの全タスクを完了。記憶、ツール、実行フィードバックを活用し、継続的に学習します。",
+      "importance_reason": "AIエージェントが自律的に学習し、計画、実装、評価を繰り返すことで、複雑な問題解決において高い汎用性を持つことを示しており、エージェント技術の進化の方向性を明確にしています。",
+      "category": "研究論文",
+      "source_label": "x:@testingcatalog"
+    },
+    {
+      "id": "2111848c8ac7472a",
+      "rank": 9,
+      "title": "NVIDIA AVO、ARC-AGI-3で100%達成",
+      "url": "https://x.com/wallstengine/status/2090805759227617586",
+      "summary": "NVIDIAの汎用エージェントAVOが、Claude Opus 5を用いてARC-AGI-3の全25環境、183レベルを指示なしで100%クリアしました。",
+      "importance_reason": "繰り返しになりますが、ARC-AGI-3の完全解決はエージェントAIのブレークスルーであり、Claude Opus 5との組み合わせが成功要因であることも、モデルとエージェント技術の相乗効果を示しています。",
+      "category": "研究論文",
+      "source_label": "x:@wallstengine"
+    },
+    {
+      "id": "9f13b8cc4b1889d1",
+      "rank": 10,
+      "title": "「Ox Alpha」の謎、GLMの可能性",
+      "url": "https://x.com/AndrewCurran_/status/2090795049080815978",
+      "summary": "「Ox Alpha」という1Mコンテキストウィンドウを持つマルチモーダルモデルの正体は依然謎ですが、最新情報ではGLMの新リリースである可能性が有力視されています。",
+      "importance_reason": "匿名のまま高い性能を発揮し、フロンティアモデルと同等とされる「Ox Alpha」の存在自体が市場の関心を集めており、その正体と背景が今後のAI競争に影響を与える可能性があります。",
+      "category": "モデル/ツール",
+      "source_label": "x:@AndrewCurran_"
+    }
+  ],
+  "category_summaries": [
+    {
+      "category": "企業動向",
+      "summary": "OpenAIのCodexが2000万アクティブユーザーを達成し、利用制限に対する不満への対応としてクレジット配布を発表。一方で、OpenAIがサブスクリプションユーザーをAPI利用に移行させようとしているという疑惑や、RedditがデータアクセスをGoogleとOpenAIに販売した件、AnthropicがIPOに近づいているとの報道もあり、大手AI企業のビジネス戦略と収益化、ユーザー対応が焦点となっています。NVIDIAのインフラ整備も進展しています。",
+      "count": 13,
+      "key_articles": [
+        {
+          "title": "Codex 2000万ユーザー達成とクレジット",
+          "url": "https://x.com/thsottiaux/status/2090766694897619318",
+          "summary": "Codexが2000万アクティブユーザーを達成し、記念にCodexおよびChatGPT Workユーザー全員にクレジットが配布されます。利用制限の急速な減少については調査中とのこと。"
+        },
+        {
+          "title": "NVIDIA Vera Rubinラック稼働開始",
+          "url": "https://x.com/sama/status/2090512062149476489",
+          "summary": "NVIDIA Vera Rubinラックが稼働を開始し、トレーニングスタックを運用していることを示唆するツイートです。"
+        },
+        {
+          "title": "Anthropic CEO、DeepSeek V4 Flashの台頭に懸念",
+          "url": "https://x.com/sudoingX/status/2090720026668278065",
+          "summary": "Anthropic CEOのDario Amodeiが、DeepSeek V4 Flashが高速に動作していることを懸念していると報じられています。"
+        },
+        {
+          "title": "Anthropic、2026年10月までにIPOの可能性80%",
+          "url": "https://x.com/Rayanbushct/status/2090696614255927709",
+          "summary": "Polymarketの予測によると、Anthropicは2026年10月31日までにIPOする可能性が80%とされています。"
+        },
+        {
+          "title": "OpenAI、Codex 2000万ユーザー達成でリセット提供",
+          "url": "https://x.com/testingcatalog/status/2090768050026877118",
+          "summary": "ChatGPT WorkとCodexのユーザーは、Codexが2000万アクティブユーザーのマイルストーンに到達したことを記念して「Banked reset」を受け取ります。"
+        }
+      ]
+    },
+    {
+      "category": "研究論文",
+      "summary": "NVIDIA AVOがARC-AGI-3ベンチマークで100%を達成し、AIエージェントの自己学習・自己修正能力の飛躍的な進歩を示しました。これは、以前は困難とされたタスクにおいて、モデルが指示なしで人間レベルの効率で問題を解決できるようになったことを意味します。また、物理AIのボトルネックがデータ収集にあるという認識が深まり、Axis Roboticsがロボット学習データの生成インフラを構築していることが注目されています。",
+      "count": 14,
+      "key_articles": [
+        {
+          "title": "NVIDIA AVO、ARC-AGI-3で100%達成",
+          "url": "https://x.com/NVIDIAAI/status/2090786258981466231",
+          "summary": "NVIDIAの汎用コーディングエージェントAVOが、ARC-AGI-3インタラクティブ推論ベンチマークで全183レベルを100%クリアしました。"
+        },
+        {
+          "title": "NVIDIA AVO、ARC-AGI-3を解決",
+          "url": "https://x.com/kimmonismus/status/2090814903133098211",
+          "summary": "NVIDIAのコーディングエージェントAVOがARC-AGI-3の25のパブリックゲーム全てで100%を記録。AVOは指示なしで学習し、長期記憶で自己改善する能力を持ちます。"
+        },
+        {
+          "title": "NVIDIAコーディングエージェントがARC-AGI-3で100%",
+          "url": "https://x.com/DanDr1s/status/2090810522572579014",
+          "summary": "3月には1%未満だったARC-AGI-3で、NVIDIAの汎用コーディングエージェントが100%のスコアを達成。指示なしで人間レベルの効率で問題を解決します。"
+        },
+        {
+          "title": "NVIDIA AVO、Claude Opus 5でARC-AGI-3全クリア",
+          "url": "https://x.com/StockSavvyShay/status/2090822461713686571",
+          "summary": "NVIDIA AVOがClaude Opus 5を活用し、ARC-AGI-3の全183パブリックレベルを完了。永続的な記憶と実行フィードバックを利用して学習を継続します。"
+        },
+        {
+          "title": "NVIDIA AVO、ARC-AGI-3ベンチマークを完了",
+          "url": "https://x.com/testingcatalog/status/2090808362103452106",
+          "summary": "NVIDIAの汎用コーディングエージェントAVOがARC-AGI-3ベンチマークの全タスクを完了。記憶、ツール、実行フィードバックを活用し、継続的に学習します。"
+        }
+      ]
+    },
+    {
+      "category": "モデル/ツール",
+      "summary": "DeepSeekがAnthropic Opus 4.8に匹敵するマルチモーダルエージェントモデル「DeepSeek-V4-Flash-Vision-Exp」をリリースし、高い注目を集めています。また、OpenRouter上で匿名の高性能マルチモーダルモデル「Ox Alpha」が無料で提供され、その正体と能力が話題となっています。ChatGPTはApple Messagesとの統合や透過画像生成機能を追加し、ユーザーエクスペリエンスを拡大。さらに、SlackがAI共同開発機能「Slack Code」を発表するなど、エージェントAIの応用が活発化しています。",
+      "count": 27,
+      "key_articles": [
+        {
+          "title": "DeepSeek-V4-Flash-Vision-Exp公開",
+          "url": "https://x.com/deepseek_ai/status/2090730032574631962",
+          "summary": "DeepSeekが実験的なマルチモーダルモデルDeepSeek-V4-Flash-Vision-ExpをAPIプラットフォームで公開。これはテキスト能力でDeepSeek-V4-Flashと同等、マルチモーダルエージェント性能ではOpus-4.8に迫るとしています。"
+        },
+        {
+          "title": "DeepSeek、Opus 4.8に匹敵するモデル",
+          "url": "https://x.com/Polymarket/status/2090792086203187285",
+          "summary": "DeepSeekが、高度なエージェントタスクにおいてAnthropicのOpus 4.8に「近い」性能を発揮すると主張する新しいマルチモーダルAIモデルを発表しました。"
+        },
+        {
+          "title": "「Ox Alpha」の謎、GLMの可能性",
+          "url": "https://x.com/AndrewCurran_/status/2090795049080815978",
+          "summary": "「Ox Alpha」という1Mコンテキストウィンドウを持つマルチモーダルモデルの正体は依然謎ですが、最新情報ではGLMの新リリースである可能性が有力視されています。"
+        },
+        {
+          "title": "DeepSeek、Opus 4.8を上回るVision-Exp",
+          "url": "https://x.com/kimmonismus/status/2090738285140173088",
+          "summary": "DeepSeekが、ビジュアルエージェントベンチマークでOpus 4.8に匹敵またはそれを上回る性能を持つ、実験的なマルチモーダルモデルDeepSeek-V4-Flash-Vision-Expをリリースしました。"
+        },
+        {
+          "title": "謎のAIモデル「Ox Alpha」登場",
+          "url": "https://x.com/kimmonismus/status/2090714694826787229",
+          "summary": "1Mコンテキストウィンドウ、マルチモーダル機能、ゼロデータ保持、ほぼ無制限の無料利用を提供する謎の新しいAIモデル「Ox Alpha」が登場しました。"
+        }
+      ]
+    },
+    {
+      "category": "規制/政策",
+      "summary": "EU AI Actの透明性ルールが発効し、プロバイダー、デプロイヤー、企業バイヤーに開示、構築、文書化の義務が生じています。米国ペンシルベニア州ではAIデータセンターに対する国内で最も厳しい規制が導入され、地域社会の懸念が重視されるようになりました。日本では生成AIサービスにおける「非弁行為」の線引きが明確化される動きや、AIがコンテンツを大量生成する際の著作権問題への懸念が表明されており、AIの倫理的・法的側面への対応が世界的に加速しています。",
+      "count": 8,
+      "key_articles": [
+        {
+          "title": "ペンシルベニア州、AIデータセンターに厳しい規制",
+          "url": "https://x.com/GovernorShapiro/status/2090802503914848434",
+          "summary": "ペンシルベニア州知事が、AIデータセンターに対して国内で最も厳しい要件を制定し、住民からのフィードバックを募るウェブサイトを立ち上げました。"
+        },
+        {
+          "title": "AIデータセンター規制とAIへの敵意",
+          "url": "https://x.com/nfergus/status/2090788952533807455",
+          "summary": "フロンティアモデルを構築する人々は危険なものと認識し、政治家も理解し始めていますが、AI規制への公共の敵意が増しており、スマートな機械の規制方法に関する答えがないことが指摘されています。"
+        },
+        {
+          "title": "EU AI Actの透明性ルール、執行テストへ",
+          "url": "https://x.com/murtuza_merc/status/2090768910920409404",
+          "summary": "EU AI Actの透明性ルールが8月2日に発効し、プロバイダー、デプロイヤー、企業バイヤーが何を公開、構築、文書化すべきかに関する重大な執行テストに直面しています。"
+        },
+        {
+          "title": "生成AIサービス「非弁行為」の線引き明示",
+          "url": "https://x.com/susujinkou/status/2090785707673739445",
+          "summary": "法務省が生成AIサービスにおける「非弁行為」の線引きを明確にする新たな指針を発表し、リーガルテック分野でのAI利用に関する法的枠組みが強化されます。"
+        },
+        {
+          "title": "AIの著作権侵害と「フェアユース」議論",
+          "url": "https://x.com/Subhash_LiveS/status/2090780261793529872",
+          "summary": "#ProjectPanamaが、AI企業が文学作品をスキャンし、後から著作権について交渉することを証明し、15億ドルの訴訟が「フェアユース」と判断されたことに伴い、AIの倫理と著作権問題が提起されています。"
+        }
+      ]
+    },
+    {
+      "category": "ユースケース",
+      "summary": "AIエージェントはコーディング、デザイン、そして採用プロセスといった幅広い分野で活用が進んでいます。ModernaのmRNAがんワクチンがAIを活用して第III相試験に進むなど、AIが精密医療に革命をもたらす可能性が示されています。AI生成コードによる「スロップ債務」の懸念も提起され、AI活用における品質管理の重要性が指摘されています。",
+      "count": 9,
+      "key_articles": [
+        {
+          "title": "AI＋マルチオミクス＝精密医療",
+          "url": "https://x.com/KrittanawongMD/status/2090801254687519049",
+          "summary": "AIとマルチオミクス、ライフスタイル、マイクロバイオーム、臨床データを組み合わせることで精密医療が可能になるという長年の主張が、Modernaの個別化mRNAがんワクチンの第III相進展で実証されたとされています。"
+        },
+        {
+          "title": "AI生成コードによる「スロップ債務」",
+          "url": "https://x.com/arpit_bhayani/status/2090793734481084537",
+          "summary": "AIが生成するコードによって「スロップ債務」（品質が低く、誰も理解できないが機能するコード）が蓄積されるリスクについて警鐘を鳴らしています。"
+        },
+        {
+          "title": "新しいエンジニア採用方法：AIエージェント時代",
+          "url": "https://x.com/ryancarson/status/2090551925552959536",
+          "summary": "AIエージェント時代におけるエンジニアの新しい採用方法として、候補者に画面録画を提出させ、エージェントとの協調作業プロセスやデバッグスキルを評価する方法が提案されています。"
+        },
+        {
+          "title": "「AIクリエイターCAMP」新サービスローンチ",
+          "url": "https://x.com/aosasa12m/status/2090748495879876890",
+          "summary": "新サービス「AIクリエイターCAMP」がローンチされ、ByteDanceと提携し動画生成AI「Seedance」を学べる専用プラットフォームが提供されます。"
+        },
+        {
+          "title": "GPT Image 2とHTMLの再現度",
+          "url": "https://x.com/kawai_design/status/2090760860990165000",
+          "summary": "GPT Image 2で生成された画像とHTMLの再現度が非常に高く、画像生成からHTML生成への活用可能性が示唆されています。"
+        }
+      ]
+    }
+  ],
+  "action_items": [
+    "AIエージェントの能力向上に対応し、自社業務における自動化・効率化の機会を再評価し、具体的な導入計画を策定する。",
+    "「Ox Alpha」のような匿名の高性能モデルの動向を注視し、その技術的特性と市場への影響を分析する。特に、GLMやXiaomiなどの中国系企業の動向に注目する。",
+    "OpenAIの利用制限問題やAnthropicへの競争圧力の高まりを受け、主要LLMプロバイダーのサービス利用規約や価格戦略を定期的に見直し、リスク分散のため複数のプロバイダーを検討する。",
+    "AIデータセンターの規制強化や著作権問題など、AIを取り巻く倫理的・法的課題への対応策を強化する。特に、AI学習データの透明性確保や、AI生成コンテンツの著作権帰属に関する社内ガイドラインを整備する。",
+    "物理AI分野におけるデータ収集の重要性が増しているため、ロボット工学や自律システムに投資する企業は、データ生成・活用戦略を具体的に検討し、競争優位性を確立する。"
+  ],
+  "x_trends": [
+    {
+      "topic": "NVIDIA AVOによるARC-AGI-3の解決",
+      "description": "NVIDIAの汎用コーディングエージェントAVOが、ARC-AGI-3ベンチマークで全レベル100%を達成したというニュースが非常に高いバズを呼んでいます。多くのユーザーが、過去にはフロンティアAIでも1%未満だったこの難問を解決したことに対し、AGIへの大きな一歩として驚きと興奮を表明しています。特に、指示なしでの自己学習、永続的な記憶、実行フィードバックによる改善といったAVOの機能が注目され、AIエージェントの未来に対する期待が高まっています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@NVIDIAAI",
+          "text": "Our general-purpose coding agent just scored 100% on the ARC-AGI-3 interactive reasoning benchmark.NVIDIA AVO completed all 183 levels across all 25 public environments, figuring out what to do with no instructions, explicit rules, or stated goals. https://t.co/UgROuDrMtn",
+          "url": "https://x.com/NVIDIAAI/status/2090786258981466231",
+          "likes": 2687,
+          "retweets": 257
+        },
+        {
+          "author": "x:@kimmonismus",
+          "text": "Holy: NVIDIA’s coding agent AVO scored 100% on ARC-AGI-3’s 25 public games, solving all 183 levels.The agent receives no rules or stated goals. It must learn by trying things, observing the results and correcting its mistakes.AVO succeeds by remembering what it learned and building on it over long periods instead of starting over when the model’s context resets.Powered by Claude Opus 5, the same system previously worked autonomously for seven days optimizing GPU code. Really really cool ",
+          "url": "https://x.com/kimmonismus/status/2090814903133098211",
+          "likes": 198,
+          "retweets": 11
+        }
+      ]
+    },
+    {
+      "topic": "謎のモデル「Ox Alpha」の登場",
+      "description": "OpenRouter上に突如として現れた「Ox Alpha」という匿名のモデルが、その高性能と1Mのコンテキストウィンドウ、マルチモーダル機能、そして期間限定の無料・ほぼ無制限の利用によって大きな話題を呼んでいます。ユーザーは、このモデルが既存のフロンティアモデル（Fable 5, GPT, Opus）をベンチマークで上回ると報告し、その正体（GLM 5.x、Xiaomi MiMo、あるいは全く新しいもの）を巡って活発な議論が交わされています。膨大な計算リソースを背景にしたその能力に、驚きと好奇心が集中しています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "x:@kimmonismus",
+          "text": "A mysterious new AI model just appeared.Ox Alpha offers a 1M context window, multimodal capabilities, zero data retention, and nearly unlimited usage for an entire week.OpenCode says it has capacity for 100 trillion tokens per day. That’s 1.16b tokens per second. Where the heck did they get that much compute?Nobody knows which company built it.",
+          "url": "https://x.com/kimmonismus/status/2090714694826787229",
+          "likes": 3207,
+          "retweets": 120
+        },
+        {
+          "author": "x:@AndrewCurran_",
+          "text": "The identity of Ox Alpha remains a mystery. It's a long-horizon multimodal model with a 1M context window. Last night the top candidate was a new GLM release. This morning people seem less sure of anything. I'm making a thread for guesses and test results.",
+          "url": "https://x.com/AndrewCurran_/status/2090795049080815978",
+          "likes": 623,
+          "retweets": 25
+        },
+        {
+          "author": "x:@babayagatwt",
+          "text": "Nobody knows who built Ox Alpha.But this mysterious model has:- 1M context + multimodal capabilities- Zero data retention- Free, nearly unlimited usage for a week- OpenCode claims capacity for 100T tokens/day- Reportedly beats Fable, GPT and Opus on some testsSo what the hell is Ox Alpha?GLM 5.3? A larger GLM? Or something from Xiaomi?The Xiaomi theory is interesting: MiMo already has 1M context + multimodal agents, Xiaomi worked with OpenCodenand its 100T Token Program matches Ope",
+          "url": "https://x.com/babayagatwt/status/2090727609424552279",
+          "likes": 898,
+          "retweets": 35
+        }
+      ]
+    },
+    {
+      "topic": "DeepSeek-V4-Flash-Vision-Expのリリース",
+      "description": "DeepSeekが、Anthropic Opus 4.8に迫るマルチモーダルエージェント性能を持つ実験的なモデルDeepSeek-V4-Flash-Vision-Expをリリースしたことが大きな注目を集めています。特に「Flashモデル」（小型モデル）でありながら、テキストと画像の両方で高い能力を発揮することに驚きの声が上がっています。これはAIモデル間の競争が激化していることを示しており、Opus 4.8との比較を巡って活発な議論がなされています。",
+      "buzz_level": "high",
+      "sentiment": "positive",
+      "representative_tweets": [
+        {
+          "author": "x:@deepseek_ai",
+          "text": "DeepSeek-V4-Flash-Vision-Exp is now live on the DeepSeek API Platform! 🚀🔹 This experimental multimodal model matches DeepSeek-V4-Flash on text capabilities—including agents, reasoning, and world kno",
+          "url": "https://x.com/deepseek_ai/status/2090730032574631962",
+          "likes": 8292,
+          "retweets": 901
+        },
+        {
+          "author": "x:@kimmonismus",
+          "text": "wtf is happening today: DeepSeek has launched DeepSeek-V4-Flash-Vision-Exp, an experimental multimodal model built for agents that need to see.  And its performance on visual-agent benchmarks moves close to or even outperforms Opus 4.8.Again: this is the Flash model, the small one!",
+          "url": "https://x.com/kimmonismus/status/2090738285140173088",
+          "likes": 1371,
+          "retweets": 83
+        }
+      ]
+    },
+    {
+      "topic": "OpenAI Codexユーザー数と利用制限問題",
+      "description": "OpenAIのCodexが2000万アクティブユーザーに達したという発表はポジティブに受け止められましたが、同時にユーザーからはCodexの利用制限が以前より早く枯渇することに対する不満や批判が噴出しています。OpenAIがこれを「不正利用」と指摘していることに対し、「ガスライティングだ」「真の理由はnerf（性能制限）だ」と反論する声も多く、企業側の説明とユーザー体験の乖離が議論の焦点となっています。今回の「Banked reset」提供は、この問題への対応策と見られています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "x:@thsottiaux",
+          "text": "It's me again. I come bearing great news. First of all, we have hit 20M active users for Codex some time this week. Second of all, this is cause for celebration and during the day we will credit every Codex and ChatGPT Work user with a BANKED reset that you can use at your own leisure. And we will have some other good news later too!Now, on usage limits draining faster, while we're not seeing anything abnormal, we do take it incredibly seriously and there is an ongoing investigation. I will ",
+          "url": "https://x.com/thsottiaux/status/2090766694897619318",
+          "likes": 14729,
+          "retweets": 756
+        },
+        {
+          "author": "x:@ns123abc",
+          "text": "OpenAI is blaming users for fraud instead of admitting the nerf…the gaslighting is insane https://t.co/RvFyDx6GOk",
+          "url": "https://x.com/ns123abc/status/2090683006528753903",
+          "likes": 1536,
+          "retweets": 86
+        },
+        {
+          "author": "x:@bridgemindai",
+          "text": "OpenAI limits are so bad they are handing out free resets to keep everyone from leaving.20M Codex users and the celebration gift is... a usage reset. That tells you everything. The limits ARE the product problem.GPT 5.6 Sol burns a full week in one day. Nothing to investigate. We all have the receipts.Thank you for the reset though. I will spend it by lunch.",
+          "url": "https://x.com/bridgemindai/status/2090769069892927663",
+          "likes": 497,
+          "retweets": 25
+        }
+      ]
+    },
+    {
+      "topic": "ChatGPTのApple Messages連携",
+      "description": "ChatGPTがMac上でApple Messagesと連携し、ユーザーのメッセージ履歴にアクセス・分析し、テキスト送信を代行できるようになったことが話題です。利便性の向上を評価する声がある一方で、この機能が「Full Disk Access」を要求することから、プライバシー侵害の懸念がX上で広く議論されています。AIが個人情報に深くアクセスすることへの不安と、そのセキュリティ対策が論点となっています。",
+      "buzz_level": "high",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "x:@Polymarket",
+          "text": "JUST IN: ChatGPT launches Apple Messages integration on Mac, allowing it to access &amp; analyze users’ entire message history &amp; send texts on their behalf.",
+          "url": "https://x.com/Polymarket/status/2090550927807709333",
+          "likes": 3714,
+          "retweets": 258
+        },
+        {
+          "author": "x:@PopBase",
+          "text": "ChatGPT can now control iMessage on Mac — reading, searching, and sending texts, raising privacy questions given the Full Disk Access it requires.(https://t.co/5UEbYglDSc) https://t.co/nNLGhZCWVv",
+          "url": "https://x.com/PopBase/status/2090630251139535307",
+          "likes": 4987,
+          "retweets": 415
+        }
+      ]
+    },
+    {
+      "topic": "AIデータセンターの規制強化",
+      "description": "ペンシルベニア州がAIデータセンターに対して国内で最も厳しい規制を制定したというニュースが注目を集めています。これは、AI開発に伴うインフラの拡大が、電力消費や環境負荷、地域社会への影響といった問題を引き起こしていることへの強い反応です。AIに対する公衆の敵意が増しているという意見もあり、AI技術の進展と社会受容のバランスが議論の的となっています。",
+      "buzz_level": "medium",
+      "sentiment": "mixed",
+      "representative_tweets": [
+        {
+          "author": "x:@GovernorShapiro",
+          "text": "This week, I enacted the strictest requirements IN THE NATION for AI data centers… but now I need your help.We’re launching a new website where you can tell us about data center projects in your area and your concerns about them.Your feedback — in person, over text, in my comment section — helped inform the Executive Order I signed this week that will block bad projects if the local community doesn’t want them. And your voice will help us stop bad-faith developers who try to bully their way ",
+          "url": "https://x.com/GovernorShapiro/status/2090802503914848434",
+          "likes": 109,
+          "retweets": 22
+        },
+        {
+          "author": "x:@nfergus",
+          "text": "When science-fiction becomes science-fact: \"The people building frontier models know they are playing with something more dangerous than fire. The politicians are beginning to understand that too. The public is growing more hostile every day to AI in general and data centers in particular. But nobody has a great answer to the question: 'How do humans regulate machines that are already smart enough to cheat on the safety tests?'\"",
+          "url": "https://x.com/nfergus/status/2090788952533807455",
+          "likes": 59,
+          "retweets": 10
+        }
+      ]
+    }
+  ],
+  "strategy": {},
+  "run_time": "2026-08-21T16:03:44.714064+00:00",
+  "slot": "morning",
+  "item_count": 403,
+  "fallback_used_stages": [],
+  "analysis_save": {
+    "ok": true,
+    "path": "/home/runner/work/ai-news-collector/ai-news-collector/data/analysis/2026-08-22_morning.json",
+    "error": ""
+  },
+  "cost": {
+    "apify_usd": 0.0444,
+    "apify_runs": 37,
+    "apify_cycle_total_usd": 13.112664766429699,
+    "apify_cycle_end": "2026-09-09T23:59:59.999Z",
+    "apify_monthly_budget_usd": 50.0,
+    "gemini_usd": 0,
+    "github_actions_usd": 0
+  }
+}
