@@ -1,6 +1,6 @@
 {
-  "overall": "error",
-  "updated_at": "2026-09-05 20:36 JST",
+  "overall": "success",
+  "updated_at": "2026-09-06 02:54 JST",
   "workflows": {
     "buzz": {
       "status": "success",
@@ -17,14 +17,14 @@
       "starved_accounts": []
     },
     "collect": {
-      "status": "error",
-      "ts": "2026-09-05T20:36:57.937180+09:00",
-      "time": "2026-09-05 20:36 JST",
-      "error": "X 検索クエリが全滅",
-      "items_collected": 13,
-      "top_articles": 7,
-      "apify_hints": "zero-output-run,http_503",
-      "search_failure": "search 0件 / 検出: zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503"
+      "status": "success",
+      "ts": "2026-09-06T02:54:44.174510+09:00",
+      "time": "2026-09-06 02:54 JST",
+      "error": "",
+      "items_collected": 463,
+      "top_articles": 10,
+      "apify_hints": "zero-output-run",
+      "search_failure": ""
     },
     "money": {
       "status": "success",
@@ -47,17 +47,5 @@
       "candidates": 845,
       "mode": "one-off-analysis"
     }
-  },
-  "incident": {
-    "active": "true",
-    "severity": "critical",
-    "title": "X 検索クエリが全滅",
-    "situation": "健全性アラート 1 件。収集 13 件 / top_articles 7 件。",
-    "cause": "X 検索クエリが全滅 — 7/7 クエリが失敗。Apify Actor の入力バリデーション、Cookie 失効、上流 API 障害の可能性。\n→ `gh run view <RUN_ID> --log | grep -E 'X search|x_api_unava",
-    "impact": "一部の更新・品質が劣化している可能性があります。下記の状況・原因を確認してください。",
-    "technical": "hints=zero-output-run, http_503 / search 0件 / 検出: zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, zero-output-run, http_503, ze",
-    "diagram_latest": "2026-09-05-morning",
-    "workflow": "collect",
-    "updated_at": "2026-09-05 20:36 JST"
   }
 }
